@@ -56,7 +56,11 @@ export default {
 					primary: 'hsl(var(--cuizly-primary))',
 					'primary-light': 'hsl(var(--cuizly-primary-light))',
 					accent: 'hsl(var(--cuizly-accent))',
-					'accent-light': 'hsl(var(--cuizly-accent-light))'
+					'accent-light': 'hsl(var(--cuizly-accent-light))',
+					secondary: 'hsl(var(--cuizly-secondary))',
+					'secondary-light': 'hsl(var(--cuizly-secondary-light))',
+					forest: 'hsl(var(--cuizly-forest))',
+					'forest-light': 'hsl(var(--cuizly-forest-light))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -76,7 +80,8 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-hero': 'var(--gradient-hero)',
-				'gradient-card': 'var(--gradient-card)'
+				'gradient-card': 'var(--gradient-card)',
+				'gradient-quebec': 'var(--gradient-quebec)'
 			},
 			boxShadow: {
 				'soft': 'var(--shadow-soft)',

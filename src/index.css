@@ -17,7 +17,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
 
-    --primary: 215 28% 17%;
+    --primary: 220 100% 25%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 220 13% 91%;
@@ -34,24 +34,29 @@ All colors MUST be HSL.
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 215 28% 17%;
+    --ring: 220 100% 25%;
 
     --radius: 0.5rem;
 
-    /* Cuizly specific colors */
-    --cuizly-primary: 215 28% 17%;
-    --cuizly-primary-light: 215 16% 47%;
-    --cuizly-accent: 142 76% 36%;
-    --cuizly-accent-light: 142 69% 58%;
+    /* Cuizly Quebec inspired colors */
+    --cuizly-primary: 220 100% 25%;        /* Quebec blue */
+    --cuizly-primary-light: 220 60% 50%;   /* Lighter Quebec blue */
+    --cuizly-accent: 25 85% 53%;           /* Maple orange */
+    --cuizly-accent-light: 25 70% 65%;     /* Lighter maple */
+    --cuizly-secondary: 0 75% 55%;         /* Quebec red */
+    --cuizly-secondary-light: 0 60% 70%;   /* Lighter red */
+    --cuizly-forest: 140 30% 35%;          /* Quebec forest green */
+    --cuizly-forest-light: 140 25% 50%;    /* Lighter forest */
     
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(220 14.3% 95.9%), hsl(210 40% 98%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 14.3% 95.9%));
+    --gradient-hero: linear-gradient(135deg, hsl(220 100% 96%), hsl(220 50% 98%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 30% 97%));
+    --gradient-quebec: linear-gradient(135deg, hsl(220 100% 25%), hsl(220 80% 35%));
     
     /* Shadows */
-    --shadow-soft: 0 2px 8px -2px hsl(215 28% 17% / 0.08);
-    --shadow-card: 0 4px 12px -4px hsl(215 28% 17% / 0.15);
-    --shadow-elevated: 0 8px 24px -8px hsl(215 28% 17% / 0.2);
+    --shadow-soft: 0 2px 8px -2px hsl(220 100% 25% / 0.08);
+    --shadow-card: 0 4px 12px -4px hsl(220 100% 25% / 0.15);
+    --shadow-elevated: 0 8px 24px -8px hsl(220 100% 25% / 0.2);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
