@@ -1,11 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useRestaurantCount } from "@/hooks/useRestaurantCount";
 
 const HeroSection = () => {
-  const restaurantCount = useRestaurantCount();
-
   return (
     <section className="bg-background py-16 md:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -35,34 +32,6 @@ const HeroSection = () => {
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-6 md:gap-12 max-w-lg md:max-w-2xl mx-auto mt-16 md:mt-20">
-          <div className="text-center group">
-            <div className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-cuizly-accent transition-colors duration-300">
-              {restaurantCount}+
-            </div>
-            <div className="text-sm md:text-base text-cuizly-neutral mt-1">
-              Restaurants partenaires
-            </div>
-          </div>
-          <div className="text-center group">
-            <div className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-cuizly-accent transition-colors duration-300">
-              IA
-            </div>
-            <div className="text-sm md:text-base text-cuizly-neutral mt-1">
-              Recommandations personnalisées
-            </div>
-          </div>
-          <div className="text-center group">
-            <div className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-cuizly-accent transition-colors duration-300">
-              MTL
-            </div>
-            <div className="text-sm md:text-base text-cuizly-neutral mt-1">
-              Montréal & environs
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
