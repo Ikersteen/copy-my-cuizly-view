@@ -1,17 +1,11 @@
 import HeroSection from "@/components/HeroSection";
-import StatsSection from "@/components/StatsSection";
-import MissionSection from "@/components/MissionSection";
-import RestaurantsSection from "@/components/RestaurantsSection";
-import PricingSection from "@/components/PricingSection";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
     <>
       <HeroSection />
-      <StatsSection />
-      <MissionSection />
-      <RestaurantsSection />
-      <PricingSection />
+      <Footer />
     </>
   );
 };

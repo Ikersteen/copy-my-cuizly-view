@@ -7,6 +7,14 @@ import Header from "@/components/Header";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import Pricing from "./pages/Pricing";
+import Features from "./pages/Features";
+import Contact from "./pages/Contact";
+import Legal from "./pages/Legal";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Mentions from "./pages/Mentions";
+import Cookies from "./pages/Cookies";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +38,54 @@ const App = () => (
               <>
                 <Header />
                 <Dashboard />
+              </>
+            } />
+            <Route path="/pricing" element={
+              <>
+                <Header />
+                <Pricing />
+              </>
+            } />
+            <Route path="/features" element={
+              <>
+                <Header />
+                <Features />
+              </>
+            } />
+            <Route path="/contact" element={
+              <>
+                <Header />
+                <Contact />
+              </>
+            } />
+            <Route path="/legal" element={
+              <>
+                <Header />
+                <Legal />
+              </>
+            } />
+            <Route path="/privacy" element={
+              <>
+                <Header />
+                <Privacy />
+              </>
+            } />
+            <Route path="/terms" element={
+              <>
+                <Header />
+                <Terms />
+              </>
+            } />
+            <Route path="/mentions" element={
+              <>
+                <Header />
+                <Mentions />
+              </>
+            } />
+            <Route path="/cookies" element={
+              <>
+                <Header />
+                <Cookies />
               </>
             } />
             <Route path="*" element={<NotFound />} />
