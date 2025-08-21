@@ -38,10 +38,21 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-border mt-8 pt-8 text-center">
-          <p className="text-cuizly-neutral text-sm">
-            © 2024 Cuizly Technologie Inc. Tous droits réservés.
-          </p>
+        <div className="border-t border-border mt-8 pt-8">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-6 h-6 bg-foreground rounded-full flex items-center justify-center">
+                <span className="text-background font-semibold text-xs">C</span>
+              </div>
+              <span className="font-semibold text-foreground">Cuizly</span>
+            </div>
+            <p className="text-cuizly-neutral text-sm italic">
+              Ton prochain coup de cœur culinaire en un swipe
+            </p>
+            <p className="text-cuizly-neutral text-xs">
+              © 2024 Cuizly Technologie Inc. Tous droits réservés.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

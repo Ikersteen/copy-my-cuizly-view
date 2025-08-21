@@ -33,10 +33,10 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo - Ultra minimal */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-7 h-7 bg-cuizly-primary rounded-md flex items-center justify-center">
-              <span className="text-white font-medium text-sm">C</span>
+            <div className="w-8 h-8 bg-foreground rounded-full flex items-center justify-center">
+              <span className="text-background font-semibold text-sm">C</span>
             </div>
-            <span className="text-lg font-medium text-foreground">Cuizly</span>
+            <span className="text-lg font-semibold text-foreground">Cuizly</span>
           </Link>
 
           {/* Navigation - Clean */}
@@ -71,7 +71,7 @@ const Header = () => {
               </div>
             ) : (
               <Link to="/auth">
-                <Button size="sm" className="bg-cuizly-primary hover:bg-cuizly-primary/90 text-white">
+                <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
                   Se connecter
                 </Button>
               </Link>

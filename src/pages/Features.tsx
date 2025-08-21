@@ -1,5 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bot, MapPin, Bell, Star, BarChart3, Users } from "lucide-react";
+import { Bot, MapPin, Bell, Star, BarChart3, Users, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 const Features = () => {
   const features = [
@@ -38,6 +40,13 @@ const Features = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="mb-6">
+          <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Retour à l'accueil
+          </Link>
+        </div>
+        
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-foreground mb-4">
             Fonctionnalités
@@ -70,6 +79,7 @@ const Features = () => {
           })}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

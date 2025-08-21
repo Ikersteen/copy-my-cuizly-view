@@ -149,8 +149,8 @@ const Auth = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-8 h-8 bg-cuizly-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">C</span>
+            <div className="w-8 h-8 bg-foreground rounded-full flex items-center justify-center">
+              <span className="text-background font-semibold text-sm">C</span>
             </div>
             <span className="text-lg font-semibold">Cuizly</span>
           </div>

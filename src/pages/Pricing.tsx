@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Check, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 const Pricing = () => {
   const plans = [
@@ -56,6 +57,13 @@ const Pricing = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="mb-6">
+          <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Retour à l'accueil
+          </Link>
+        </div>
+        
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-foreground mb-4">
             Des tarifs pensés pour tous
@@ -100,6 +108,7 @@ const Pricing = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
