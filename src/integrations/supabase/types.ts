@@ -14,6 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      offers: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          discount_amount: number | null
+          discount_percentage: number | null
+          id: string
+          is_active: boolean
+          restaurant_id: string
+          title: string
+          updated_at: string
+          valid_until: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          discount_amount?: number | null
+          discount_percentage?: number | null
+          id?: string
+          is_active?: boolean
+          restaurant_id: string
+          title: string
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          discount_amount?: number | null
+          discount_percentage?: number | null
+          id?: string
+          is_active?: boolean
+          restaurant_id?: string
+          title?: string
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          created_at: string
+          id: string
+          restaurant_id: string
+          status: string
+          total_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          restaurant_id: string
+          status?: string
+          total_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          restaurant_id?: string
+          status?: string
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -101,6 +173,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_favorites: {
+        Row: {
+          created_at: string
+          id: string
+          restaurant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          restaurant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          restaurant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           allergens: string[] | null
@@ -110,9 +203,9 @@ export type Database = {
           dietary_restrictions: string[] | null
           favorite_meal_times: string[] | null
           id: string
-          max_delivery_time: number | null
           notification_preferences: Json | null
           price_range: string | null
+          street: string | null
           updated_at: string
           user_id: string
         }
@@ -124,9 +217,9 @@ export type Database = {
           dietary_restrictions?: string[] | null
           favorite_meal_times?: string[] | null
           id?: string
-          max_delivery_time?: number | null
           notification_preferences?: Json | null
           price_range?: string | null
+          street?: string | null
           updated_at?: string
           user_id: string
         }
@@ -138,9 +231,9 @@ export type Database = {
           dietary_restrictions?: string[] | null
           favorite_meal_times?: string[] | null
           id?: string
-          max_delivery_time?: number | null
           notification_preferences?: Json | null
           price_range?: string | null
+          street?: string | null
           updated_at?: string
           user_id?: string
         }

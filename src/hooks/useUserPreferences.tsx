@@ -9,11 +9,10 @@ export interface UserPreferences {
   dietary_restrictions: string[];
   allergens: string[];
   price_range: string;
-  max_delivery_time: number;
+  street?: string;
   delivery_radius: number;
   favorite_meal_times: string[];
   notification_preferences: {
-    sms: boolean;
     push: boolean;
     email: boolean;
   };
@@ -24,11 +23,10 @@ const defaultPreferences: Omit<UserPreferences, 'user_id'> = {
   dietary_restrictions: [],
   allergens: [],
   price_range: "$$",
-  max_delivery_time: 45,
+  street: "",
   delivery_radius: 10,
   favorite_meal_times: [],
   notification_preferences: {
-    sms: false,
     push: true,
     email: true
   }
@@ -62,7 +60,6 @@ export const useUserPreferences = () => {
         setPreferences({
           ...data,
           notification_preferences: data.notification_preferences as any || {
-            sms: false,
             push: true,
             email: true
           }
@@ -84,7 +81,6 @@ export const useUserPreferences = () => {
         setPreferences({
           ...created,
           notification_preferences: created.notification_preferences as any || {
-            sms: false,
             push: true,
             email: true
           }
@@ -118,7 +114,6 @@ export const useUserPreferences = () => {
       setPreferences({
         ...data,
         notification_preferences: data.notification_preferences as any || {
-          sms: false,
           push: true,
           email: true
         }
