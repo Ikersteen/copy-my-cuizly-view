@@ -54,6 +54,11 @@ export default {
 				},
 				cuizly: {
 					primary: 'hsl(var(--cuizly-primary))',
+					'primary-glow': 'hsl(var(--cuizly-primary-glow))',
+					secondary: 'hsl(var(--cuizly-secondary))',
+					success: 'hsl(var(--cuizly-success))',
+					warning: 'hsl(var(--cuizly-warning))',
+					accent: 'hsl(var(--cuizly-accent))',
 					neutral: 'hsl(var(--cuizly-neutral))',
 					surface: 'hsl(var(--cuizly-surface))'
 				},
