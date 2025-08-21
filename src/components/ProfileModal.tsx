@@ -43,16 +43,24 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
   const loadProfile = async () => {
     try {
+      console.log('Loading profile...');
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      if (!session) {
+        console.log('No session found');
+        return;
+      }
 
       setUser(session.user);
+      console.log('User session:', session.user.id);
 
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', session.user.id)
         .maybeSingle();
+
+      console.log('Profile data:', data);
+      console.log('Profile error:', error);
 
       if (!error && data) {
         setProfile({
@@ -65,6 +73,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             email: true
           }
         });
+        console.log('Profile loaded successfully');
       }
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -74,9 +83,10 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const handleSave = async () => {
     if (!user) return;
     
+    console.log('Saving profile with data:', profile);
     setLoading(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .upsert({
           user_id: user.id,
@@ -84,7 +94,11 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           last_name: profile.last_name,
           phone: profile.phone,
           username: profile.username
-        });
+        })
+        .select()
+        .single();
+
+      console.log('Upsert result:', { data, error });
 
       if (error) throw error;
 
@@ -92,6 +106,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         title: "Profil mis à jour",
         description: "Vos informations ont été sauvegardées"
       });
+      
+      // Fermer le modal après la sauvegarde réussie
+      onOpenChange(false);
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
