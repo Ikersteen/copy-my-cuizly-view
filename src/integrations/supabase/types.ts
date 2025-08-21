@@ -113,6 +113,7 @@ export type Database = {
           updated_at: string
           user_id: string
           user_type: Database["public"]["Enums"]["user_type"]
+          username: string | null
         }
         Insert: {
           created_at?: string
@@ -124,6 +125,7 @@ export type Database = {
           updated_at?: string
           user_id: string
           user_type?: Database["public"]["Enums"]["user_type"]
+          username?: string | null
         }
         Update: {
           created_at?: string
@@ -135,6 +137,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
           user_type?: Database["public"]["Enums"]["user_type"]
+          username?: string | null
         }
         Relationships: []
       }

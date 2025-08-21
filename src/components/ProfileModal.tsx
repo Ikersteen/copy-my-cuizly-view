@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { User } from "@supabase/supabase-js";
@@ -18,13 +19,20 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     first_name: "",
     last_name: "",
     phone: "",
+    username: "",
     notifications: {
       push: true,
       email: true
     }
   });
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -44,13 +52,14 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         .from('profiles')
         .select('*')
         .eq('user_id', session.user.id)
-        .single();
+        .maybeSingle();
 
       if (!error && data) {
         setProfile({
           first_name: data.first_name || "",
           last_name: data.last_name || "",
           phone: data.phone || "",
+          username: data.username || "",
           notifications: {
             push: true,
             email: true
@@ -73,7 +82,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           user_id: user.id,
           first_name: profile.first_name,
           last_name: profile.last_name,
-          phone: profile.phone
+          phone: profile.phone,
+          username: profile.username
         });
 
       if (error) throw error;
@@ -82,12 +92,56 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         title: "Profil mis à jour",
         description: "Vos informations ont été sauvegardées"
       });
-      onOpenChange(false);
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
         title: "Erreur",
         description: "Impossible de sauvegarder le profil",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast({
+        title: "Erreur",
+        description: "Les mots de passe ne correspondent pas",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      toast({
+        title: "Erreur", 
+        description: "Le mot de passe doit contenir au moins 6 caractères",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: passwordData.newPassword
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Mot de passe mis à jour",
+        description: "Votre mot de passe a été modifié avec succès"
+      });
+      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setShowPasswordSection(false);
+    } catch (error) {
+      console.error('Error updating password:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de changer le mot de passe",
         variant: "destructive"
       });
     } finally {
@@ -125,6 +179,16 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           </div>
 
           <div>
+            <Label htmlFor="username">Nom d'utilisateur</Label>
+            <Input
+              id="username"
+              value={profile.username}
+              onChange={(e) => setProfile(prev => ({ ...prev, username: e.target.value }))}
+              placeholder="Votre nom d'utilisateur"
+            />
+          </div>
+
+          <div>
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -144,6 +208,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             />
           </div>
 
+          <Separator />
+
           <div className="space-y-3">
             <Label>Notifications</Label>
             
@@ -162,9 +228,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="email">Notifications email</Label>
+              <Label htmlFor="email_notif">Notifications email</Label>
               <Switch
-                id="email"
+                id="email_notif"
                 checked={profile.notifications.email}
                 onCheckedChange={(checked) => 
                   setProfile(prev => ({ 
@@ -174,6 +240,53 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                 }
               />
             </div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <Label>Changer le mot de passe</Label>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setShowPasswordSection(!showPasswordSection)}
+              >
+                {showPasswordSection ? "Annuler" : "Modifier"}
+              </Button>
+            </div>
+
+            {showPasswordSection && (
+              <div className="space-y-3">
+                <div>
+                  <Label htmlFor="newPassword">Nouveau mot de passe</Label>
+                  <Input
+                    id="newPassword"
+                    type="password"
+                    value={passwordData.newPassword}
+                    onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
+                    placeholder="Nouveau mot de passe"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={passwordData.confirmPassword}
+                    onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                    placeholder="Confirmer le mot de passe"
+                  />
+                </div>
+                <Button 
+                  onClick={handlePasswordChange} 
+                  disabled={loading || !passwordData.newPassword || !passwordData.confirmPassword}
+                  className="w-full"
+                >
+                  Changer le mot de passe
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 
