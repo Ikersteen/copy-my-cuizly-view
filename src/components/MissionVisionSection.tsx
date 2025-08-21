@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Target, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Target } from "lucide-react";
 
 const MissionVisionSection = () => {
   return (
@@ -40,13 +38,6 @@ const MissionVisionSection = () => {
               </p>
             </div>
           </div>
-
-          <Link to="/auth">
-            <Button size="lg" className="bg-cuizly-accent hover:bg-cuizly-accent/90 text-white">
-              Rejoignez l'aventure
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
         </div>
       </section>
     </div>
