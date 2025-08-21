@@ -103,90 +103,75 @@ const ConsumerDashboard = () => {
     <div className="min-h-screen bg-gradient-hero">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
-        {/* Header personnalisé */}
-        <div className="relative">
-          <Card className="bg-gradient-primary text-white border-0 shadow-elevated overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-cuizly-primary/20 to-cuizly-secondary/10"></div>
-            <CardContent className="relative p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                    <span className="text-2xl font-bold text-white">
-                      {user?.email?.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-                    <h1 className="text-2xl font-bold text-white">
-                      Bonjour ! 👋
-                    </h1>
-                    <p className="text-white/80 text-lg">
-                      Prêt pour votre prochaine découverte culinaire ?
-                    </p>
-                    {preferences?.cuisine_preferences?.length && (
-                      <div className="flex items-center space-x-2 mt-2">
-                        <span className="text-sm text-white/70">Vos goûts:</span>
-                        <div className="flex gap-1">
-                          {preferences.cuisine_preferences.slice(0, 3).map(cuisine => (
-                            <Badge key={cuisine} className="bg-white/20 text-white border-white/30 text-xs">
-                              {cuisine}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                <Button 
-                  variant="secondary"
-                  onClick={() => setShowPreferences(true)}
-                  className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30"
-                >
-                  <Settings className="h-4 w-4 mr-2" />
-                  Préférences
-                </Button>
+        {/* Header minimaliste */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-cuizly-primary rounded-lg flex items-center justify-center">
+                <span className="text-white font-semibold text-lg">
+                  {user?.email?.charAt(0).toUpperCase()}
+                </span>
               </div>
-            </CardContent>
-          </Card>
+              <div>
+                <h1 className="text-2xl font-semibold text-foreground">
+                  Bonjour ! 👋
+                </h1>
+                <p className="text-cuizly-neutral">
+                  Découvrez les meilleures offres du jour
+                </p>
+                {preferences?.cuisine_preferences?.length && (
+                  <div className="flex items-center space-x-2 mt-1">
+                    <span className="text-xs text-cuizly-neutral">Vos goûts:</span>
+                    <div className="flex gap-1">
+                      {preferences.cuisine_preferences.slice(0, 3).map(cuisine => (
+                        <Badge key={cuisine} variant="outline" className="text-xs">
+                          {cuisine}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <Button 
+              variant="outline"
+              onClick={() => setShowPreferences(true)}
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              Préférences
+            </Button>
+          </div>
         </div>
 
-        {/* Barre de recherche améliorée */}
-        <Card className="shadow-card">
-          <CardContent className="p-4">
-            <div className="flex gap-3">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cuizly-neutral h-5 w-5" />
-                <Input 
-                  placeholder="Rechercher un restaurant, un plat, une cuisine..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-12 border-0 bg-cuizly-surface/50 focus:bg-white transition-all duration-200"
-                />
-              </div>
-              <Button size="lg" className="bg-cuizly-primary hover:bg-cuizly-primary/90">
-                <Search className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Barre de recherche */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cuizly-neutral h-5 w-5" />
+          <Input 
+            placeholder="Rechercher un restaurant, un plat, une cuisine..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 h-12"
+          />
+        </div>
 
-        {/* Actions rapides avec nouvelles fonctionnalités */}
+        {/* Actions rapides */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {[
-            { icon: TrendingUp, label: "Tendances", color: "cuizly-accent" },
-            { icon: Zap, label: "Livraison rapide", color: "cuizly-warning" },
-            { icon: Gift, label: "Promotions", color: "cuizly-success" },
-            { icon: Heart, label: "Favoris", color: "cuizly-accent" },
-            { icon: History, label: "Historique", color: "cuizly-neutral" },
-            { icon: Filter, label: "Filtres", color: "cuizly-secondary" }
+            { icon: TrendingUp, label: "Tendances" },
+            { icon: Zap, label: "Rapide" },
+            { icon: Gift, label: "Promotions" },
+            { icon: Heart, label: "Favoris" },
+            { icon: History, label: "Historique" },
+            { icon: Filter, label: "Filtres" }
           ].map((action, index) => (
             <Button 
               key={index}
               variant="outline" 
-              className="h-20 flex flex-col space-y-2 hover:shadow-soft transition-all duration-200 hover:scale-105 bg-white/50 backdrop-blur-sm"
+              className="h-20 flex flex-col space-y-2"
             >
-              <action.icon className={`h-5 w-5 text-${action.color}`} />
-              <span className="text-xs font-medium">{action.label}</span>
+              <action.icon className="h-5 w-5" />
+              <span className="text-xs">{action.label}</span>
             </Button>
           ))}
         </div>
@@ -194,12 +179,11 @@ const ConsumerDashboard = () => {
         {/* Système de recommandations IA */}
         <RecommendationEngine preferences={preferences} />
 
-        {/* Offres du moment améliorées */}
+        {/* Offres du moment */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Zap className="h-6 w-6 text-cuizly-warning" />
-              Offres du moment
+            <h2 className="text-xl font-semibold text-foreground">
+              Offres du moment 🔥
             </h2>
             <Button variant="ghost" size="sm">
               Voir toutes
@@ -210,72 +194,37 @@ const ConsumerDashboard = () => {
             {mockOffers.map((offer) => (
               <Card 
                 key={offer.id} 
-                className="bg-gradient-card backdrop-blur-sm border-0 shadow-card hover:shadow-elevated transition-all duration-300 hover:scale-105 group relative overflow-hidden"
+                className="shadow-card hover:shadow-elevated transition-all duration-200"
               >
-                {/* Badges de statut */}
-                {offer.trending && (
-                  <Badge className="absolute top-3 right-3 bg-cuizly-accent text-white z-10">
-                    <TrendingUp className="h-3 w-3 mr-1" />
-                    Tendance
-                  </Badge>
-                )}
-                {offer.hot && (
-                  <Badge className="absolute top-3 right-3 bg-cuizly-warning text-white z-10">
-                    <Zap className="h-3 w-3 mr-1" />
-                    Hot
-                  </Badge>
-                )}
-                {offer.limited && (
-                  <Badge className="absolute top-3 right-3 bg-cuizly-success text-white z-10">
-                    <Clock className="h-3 w-3 mr-1" />
-                    Limité
-                  </Badge>
-                )}
-
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="text-xl group-hover:text-cuizly-primary transition-colors">
-                        {offer.restaurant}
-                      </CardTitle>
-                      <CardDescription className="text-cuizly-primary font-semibold text-lg">
+                      <CardTitle className="text-lg">{offer.restaurant}</CardTitle>
+                      <CardDescription className="text-cuizly-accent font-medium">
                         {offer.offer}
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary" className="bg-cuizly-surface text-lg px-3 py-1">
+                    <Badge variant="secondary" className="bg-cuizly-surface">
                       {offer.price}
                     </Badge>
                   </div>
                 </CardHeader>
                 
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between text-sm">
+                <CardContent>
+                  <div className="flex items-center justify-between text-sm text-cuizly-neutral mb-4">
                     <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4 fill-cuizly-warning text-cuizly-warning" />
-                      <span className="font-semibold">{offer.rating}</span>
+                      <Star className="h-4 w-4 fill-current text-yellow-500" />
+                      <span>{offer.rating}</span>
                     </div>
-                    <div className="flex items-center space-x-1 text-cuizly-neutral">
+                    <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
                       <span>{offer.time}</span>
                     </div>
                   </div>
-                  
                   <div className="flex items-center justify-between">
-                    <Badge 
-                      variant="outline" 
-                      className={`${
-                        preferences?.cuisine_preferences?.includes(offer.cuisine)
-                          ? 'bg-cuizly-primary/10 text-cuizly-primary border-cuizly-primary/30'
-                          : ''
-                      }`}
-                    >
-                      {offer.cuisine}
-                    </Badge>
-                    <Button 
-                      size="sm" 
-                      className="bg-cuizly-primary hover:bg-cuizly-primary/90 transition-all duration-200 shadow-soft hover:shadow-elevated"
-                    >
-                      Commander
+                    <Badge variant="outline">{offer.cuisine}</Badge>
+                    <Button size="sm" className="bg-cuizly-primary hover:bg-cuizly-primary/90">
+                      Voir l'offre
                     </Button>
                   </div>
                 </CardContent>
@@ -284,77 +233,33 @@ const ConsumerDashboard = () => {
           </div>
         </div>
 
-        {/* Restaurants partenaires avec amélirations */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-foreground">
-              Tous les restaurants
-            </h2>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary">
-                {restaurants.length} restaurants
-              </Badge>
-              <Button variant="outline" size="sm">
-                <Filter className="h-4 w-4 mr-2" />
-                Filtrer
-              </Button>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Restaurants partenaires */}
+        <div>
+          <h2 className="text-xl font-semibold text-foreground mb-4">
+            Restaurants partenaires
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {restaurants.map((restaurant) => (
-              <Card 
-                key={restaurant.id} 
-                className="bg-gradient-card backdrop-blur-sm border-0 shadow-card hover:shadow-elevated transition-all duration-300 hover:scale-105 group"
-              >
+              <Card key={restaurant.id} className="shadow-card hover:shadow-elevated transition-all duration-200">
                 <CardHeader>
-                  <CardTitle className="text-lg group-hover:text-cuizly-primary transition-colors">
-                    {restaurant.name}
-                  </CardTitle>
-                  <CardDescription className="line-clamp-2">
-                    {restaurant.description}
-                  </CardDescription>
+                  <CardTitle className="text-lg">{restaurant.name}</CardTitle>
+                  <CardDescription>{restaurant.description}</CardDescription>
                 </CardHeader>
-                
-                <CardContent className="space-y-4">
-                  <div className="flex items-center space-x-1 text-sm text-cuizly-neutral">
+                <CardContent>
+                  <div className="flex items-center space-x-1 text-sm text-cuizly-neutral mb-3">
                     <MapPin className="h-4 w-4" />
-                    <span className="line-clamp-1">{restaurant.address || 'Adresse non disponible'}</span>
+                    <span>{restaurant.address || 'Adresse non disponible'}</span>
                   </div>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {restaurant.cuisine_type?.slice(0, 3).map((cuisine, index) => (
-                      <Badge 
-                        key={index} 
-                        variant="outline" 
-                        className={`text-xs ${
-                          preferences?.cuisine_preferences?.includes(cuisine)
-                            ? 'bg-cuizly-primary/10 text-cuizly-primary border-cuizly-primary/30'
-                            : ''
-                        }`}
-                      >
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {restaurant.cuisine_type?.map((cuisine, index) => (
+                      <Badge key={index} variant="outline" className="text-xs">
                         {cuisine}
                       </Badge>
                     ))}
-                    {restaurant.cuisine_type?.length > 3 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{restaurant.cuisine_type.length - 3}
-                      </Badge>
-                    )}
                   </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary">
-                      {restaurant.price_range}
-                    </Badge>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      className="hover:bg-cuizly-primary hover:text-white transition-all duration-200"
-                    >
-                      Voir le menu
-                    </Button>
-                  </div>
+                  <Button className="w-full" variant="outline">
+                    Voir le menu
+                  </Button>
                 </CardContent>
               </Card>
             ))}

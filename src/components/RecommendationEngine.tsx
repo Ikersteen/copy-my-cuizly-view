@@ -163,11 +163,13 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center space-x-2">
-        <Sparkles className="h-5 w-5 text-cuizly-primary" />
-        <h2 className="text-xl font-semibold">Recommandé pour vous</h2>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <Sparkles className="h-5 w-5" />
+          <h2 className="text-xl font-semibold">Recommandé pour vous</h2>
+        </div>
         {preferences?.cuisine_preferences?.length && (
-          <Badge variant="outline" className="ml-auto">
+          <Badge variant="outline">
             Basé sur vos goûts
           </Badge>
         )}
@@ -177,8 +179,8 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
         {recommendations.map((restaurant, index) => (
           <Card 
             key={restaurant.id} 
-            className={`bg-gradient-card backdrop-blur-sm border-0 shadow-card hover:shadow-elevated transition-all duration-300 hover:scale-105 ${
-              index === 0 ? 'ring-2 ring-cuizly-primary/20' : ''
+            className={`shadow-card hover:shadow-elevated transition-all duration-200 ${
+              index === 0 ? 'border-cuizly-primary' : ''
             }`}
           >
             <CardHeader className="pb-3">
@@ -207,9 +209,9 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
 
             <CardContent className="space-y-4">
               {/* Informations principales */}
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center space-x-1 text-cuizly-warning">
-                  <Star className="h-4 w-4 fill-current" />
+                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center space-x-1">
+                  <Star className="h-4 w-4 fill-current text-yellow-500" />
                   <span className="font-medium">{restaurant.rating}</span>
                 </div>
                 <div className="flex items-center space-x-1 text-cuizly-neutral">
@@ -260,7 +262,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
               )}
 
               <Button 
-                className="w-full bg-cuizly-primary hover:bg-cuizly-primary/90 transition-all duration-200"
+                className="w-full" 
                 size="sm"
               >
                 Voir le menu

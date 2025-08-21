@@ -38,26 +38,20 @@ All colors MUST be HSL.
 
     --radius: 8px;
 
-    /* Cuizly vibrant design system */
-    --cuizly-primary: 27 96% 61%;
-    --cuizly-primary-glow: 33 100% 70%;
-    --cuizly-secondary: 217 91% 60%;
-    --cuizly-success: 142 76% 36%;
-    --cuizly-warning: 45 93% 47%;
+    /* Cuizly ultra minimal colors - all black and white */
+    --cuizly-primary: 0 0% 9%;
     --cuizly-neutral: 0 0% 45%;
     --cuizly-surface: 0 0% 98%;
-    --cuizly-accent: 277 92% 61%;
+    --cuizly-accent: 0 0% 20%;
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(27 96% 61% / 0.1), hsl(217 91% 60% / 0.05));
-    --gradient-primary: linear-gradient(135deg, hsl(var(--cuizly-primary)), hsl(var(--cuizly-primary-glow)));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.8), hsl(0 0% 98% / 0.9));
+    /* Minimal gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(0 0% 99%));
 
-    /* Shadows */
-    --shadow-soft: 0 2px 8px hsl(var(--cuizly-primary) / 0.1);
-    --shadow-card: 0 4px 12px hsl(var(--cuizly-primary) / 0.15);
-    --shadow-elevated: 0 8px 25px hsl(var(--cuizly-primary) / 0.2);
-    --shadow-glow: 0 0 30px hsl(var(--cuizly-primary-glow) / 0.3);
+    /* Subtle shadows */
+    --shadow-soft: 0 2px 8px hsl(0 0% 0% / 0.04);
+    --shadow-card: 0 4px 12px hsl(0 0% 0% / 0.08);
+    --shadow-elevated: 0 8px 25px hsl(0 0% 0% / 0.12);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
