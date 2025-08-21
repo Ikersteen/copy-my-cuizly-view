@@ -25,8 +25,8 @@ const PricingSection = () => {
       type: "pro",
       title: "Cuizly Pro",
       subtitle: "Pour restaurants qui veulent attirer plus de clients",
-      price: "59$/mois",
-      priceNote: "ou 499$/an (économisez !)",
+      price: "59$ CAD/mois",
+      priceNote: "ou 499$ CAD/an (économisez 2 mois !)",
       features: [
         "Publicité ciblée de vos offres",
         "Promotion dans l'app selon localisation",
@@ -41,8 +41,8 @@ const PricingSection = () => {
       type: "analytics",
       title: "Cuizly Analytics+",
       subtitle: "Pour optimiser votre stratégie avec les données",
-      price: "349$/trimestre",
-      priceNote: "ou 999$/an (économisez !)",
+      price: "349$ CAD/trimestre",
+      priceNote: "ou 999$ CAD/an (économisez 47$ !)",
       features: [
         "Toutes les fonctionnalités Pro",
         "Rapports anonymisés détaillés",

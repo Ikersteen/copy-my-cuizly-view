@@ -1,18 +1,18 @@
 const StatsSection = () => {
   const stats = [
     {
-      number: "1+",
-      label: "Restaurants",
+      number: "500+",
+      label: "Restaurants partenaires",
       icon: "🍽️"
     },
     {
-      number: "AI",
-      label: "Personnalisé",
+      number: "IA",
+      label: "Recommandations personnalisées",
       icon: "🤖"
     },
     {
       number: "MTL",
-      label: "Montréal",
+      label: "Montréal & environs",
       icon: "🏙️"
     }
   ];

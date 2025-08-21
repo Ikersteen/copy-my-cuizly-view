@@ -16,14 +16,14 @@ const HeroSection = () => {
 
           {/* Main Title */}
           <h1 className="text-4xl md:text-6xl font-bold text-cuizly-primary mb-6 leading-tight">
-            Découvrez les<br />
-            meilleures offres<br />
-            <span className="text-cuizly-primary">culinaires</span>
+            <span className="text-cuizly-accent">Ton prochain</span><br />
+            <span className="text-cuizly-accent">coup de cœur</span><br />
+            <span className="text-cuizly-primary">culinaire en un swipe</span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-lg md:text-xl text-cuizly-primary-light max-w-2xl mx-auto mb-8 leading-relaxed">
-            Intelligence artificielle. Recommandations personnalisées. Les meilleures adresses de Montréal selon vos goûts.
+            Trouvez facilement les meilleures offres culinaires à Montréal grâce à l'IA. Connectons les gourmets aux meilleures adresses.
           </p>
 
           {/* CTA Button */}
