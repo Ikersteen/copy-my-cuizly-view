@@ -97,7 +97,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
 
         // Temps de livraison simulé
         const deliveryTime = Math.floor(15 + Math.random() * 40); // Entre 15 et 55 min
-        if (preferences?.max_delivery_time && deliveryTime <= preferences.max_delivery_time) {
+        if (deliveryTime <= 30) { // Delivery rapide si moins de 30 min
           score += 15;
           reasons.push("Livraison rapide");
         }

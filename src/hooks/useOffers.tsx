@@ -64,9 +64,21 @@ export const useOffers = (category?: string) => {
       
       if (error) throw error;
       
-      const formattedOffers = (data || []).map(offer => ({
-        ...offer,
-        restaurant: offer.restaurants || undefined
+      // Gérer les données avec une jointure correcte
+      const formattedOffers = (data || []).map((item: any) => ({
+        id: item.id,
+        restaurant_id: item.restaurant_id,
+        title: item.title,
+        description: item.description,
+        discount_percentage: item.discount_percentage,
+        discount_amount: item.discount_amount,
+        valid_until: item.valid_until,
+        category: item.category,
+        restaurant: item.restaurants ? {
+          name: item.restaurants.name,
+          cuisine_type: item.restaurants.cuisine_type || [],
+          price_range: item.restaurants.price_range
+        } : undefined
       }));
       
       setOffers(formattedOffers);

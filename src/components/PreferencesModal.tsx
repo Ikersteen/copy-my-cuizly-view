@@ -14,6 +14,15 @@ interface PreferencesModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
+// Liste des rues de Montréal (échantillon)
+const montrealStreets = [
+  "Rue Saint-Denis", "Boulevard Saint-Laurent", "Rue Sainte-Catherine", 
+  "Avenue du Mont-Royal", "Rue Sherbrooke", "Boulevard René-Lévesque",
+  "Rue Saint-Jacques", "Avenue du Parc", "Rue Rachel", "Boulevard de Maisonneuve",
+  "Rue Crescent", "Rue Peel", "Boulevard Décarie", "Rue Fleury",
+  "Avenue Christophe-Colomb", "Rue Ontario", "Boulevard Pie-IX"
+];
+
 const CUISINE_OPTIONS = [
   "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
   "Thaï", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
@@ -38,7 +47,16 @@ const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 
 export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) => {
   const { preferences, updatePreferences } = useUserPreferences();
-  const [localPrefs, setLocalPrefs] = useState<Partial<UserPreferences>>(preferences || {});
+  const [localPrefs, setLocalPrefs] = useState<Partial<UserPreferences>>({
+    cuisine_preferences: preferences?.cuisine_preferences || [],
+    dietary_restrictions: preferences?.dietary_restrictions || [],
+    allergens: preferences?.allergens || [],
+    price_range: preferences?.price_range || "$$",
+    street: preferences?.street || "",
+    delivery_radius: preferences?.delivery_radius || 10,
+    favorite_meal_times: preferences?.favorite_meal_times || [],
+    notification_preferences: preferences?.notification_preferences || { push: true, email: true }
+  });
 
   const handleSave = () => {
     updatePreferences(localPrefs);
@@ -69,7 +87,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Cuisines préférées */}
           <div>
             <Label className="text-base font-medium">Cuisines préférées</Label>
-            <p className="text-sm text-cuizly-neutral mb-3">
+            <p className="text-sm text-muted-foreground mb-3">
               Sélectionnez vos types de cuisine favoris
             </p>
             <div className="flex flex-wrap gap-2">
@@ -94,7 +112,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Restrictions alimentaires */}
           <div>
             <Label className="text-base font-medium">Restrictions alimentaires</Label>
-            <p className="text-sm text-cuizly-neutral mb-3">
+            <p className="text-sm text-muted-foreground mb-3">
               Indiquez vos préférences et restrictions alimentaires
             </p>
             <div className="flex flex-wrap gap-2">
@@ -119,7 +137,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Allergènes */}
           <div>
             <Label className="text-base font-medium">Allergènes à éviter</Label>
-            <p className="text-sm text-cuizly-neutral mb-3">
+            <p className="text-sm text-muted-foreground mb-3">
               Sélectionnez vos allergies alimentaires
             </p>
             <div className="flex flex-wrap gap-2">
@@ -144,7 +162,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Gamme de prix */}
           <div>
             <Label className="text-base font-medium">Gamme de prix préférée</Label>
-            <p className="text-sm text-cuizly-neutral mb-3">
+            <p className="text-sm text-muted-foreground mb-3">
               Choisissez votre budget habituel
             </p>
             <div className="flex gap-2">
@@ -163,19 +181,21 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Temps de livraison max */}
+          {/* Sélection de rue */}
           <div>
-            <Label className="text-base font-medium">
-              Temps de livraison maximum: {localPrefs.max_delivery_time || 45} min
-            </Label>
-            <Slider
-              value={[localPrefs.max_delivery_time || 45]}
-              onValueChange={([value]) => setLocalPrefs(prev => ({ ...prev, max_delivery_time: value }))}
-              max={90}
-              min={15}
-              step={5}
-              className="mt-3"
-            />
+            <Label className="text-sm font-medium mb-3 block">Votre rue à Montréal</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {montrealStreets.map(street => (
+                <Badge
+                  key={street}
+                  variant={localPrefs.street === street ? "default" : "outline"}
+                  className="cursor-pointer justify-center text-xs py-1"
+                  onClick={() => setLocalPrefs(prev => ({ ...prev, street }))}
+                >
+                  {street}
+                </Badge>
+              ))}
+            </div>
           </div>
 
           <Separator />
@@ -200,7 +220,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Moments de repas favoris */}
           <div>
             <Label className="text-base font-medium">Moments de repas favoris</Label>
-            <p className="text-sm text-cuizly-neutral mb-3">
+            <p className="text-sm text-muted-foreground mb-3">
               Quand commandez-vous habituellement ?
             </p>
             <div className="flex flex-wrap gap-2">
@@ -258,22 +278,6 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   }
                 />
               </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="sms-notifications">Notifications SMS</Label>
-                <Switch
-                  id="sms-notifications"
-                  checked={localPrefs.notification_preferences?.sms === true}
-                  onCheckedChange={(checked) =>
-                    setLocalPrefs(prev => ({
-                      ...prev,
-                      notification_preferences: {
-                        ...prev.notification_preferences,
-                        sms: checked
-                      } as any
-                    }))
-                  }
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -282,7 +286,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1">
             Annuler
           </Button>
-          <Button onClick={handleSave} className="flex-1 bg-cuizly-primary hover:bg-cuizly-primary/90">
+          <Button onClick={handleSave} className="flex-1">
             Sauvegarder
           </Button>
         </div>

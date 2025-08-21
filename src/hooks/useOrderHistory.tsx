@@ -38,9 +38,17 @@ export const useOrderHistory = () => {
 
       if (error) throw error;
       
-      const formattedOrders = (data || []).map(order => ({
-        ...order,
-        restaurant: order.restaurants || undefined
+      // Gérer les données avec une jointure correcte  
+      const formattedOrders = (data || []).map((item: any) => ({
+        id: item.id,
+        restaurant_id: item.restaurant_id,
+        total_amount: item.total_amount,
+        status: item.status,
+        created_at: item.created_at,
+        restaurant: item.restaurants ? {
+          name: item.restaurants.name,
+          cuisine_type: item.restaurants.cuisine_type || []
+        } : undefined
       }));
       
       setOrders(formattedOrders);

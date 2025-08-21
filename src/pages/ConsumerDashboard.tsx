@@ -2,113 +2,113 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { 
-  MapPin, Clock, Star, Heart, Search, Filter, Settings, 
-  TrendingUp, Zap, Gift, History, Bell
+  MapPin, Clock, Star, Heart, Settings, 
+  TrendingUp, Zap, Gift, History, Filter, User as UserIcon
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useOffers } from "@/hooks/useOffers";
+import { useFavorites } from "@/hooks/useFavorites";
 import { PreferencesModal } from "@/components/PreferencesModal";
+import { ProfileModal } from "@/components/ProfileModal";
+import { FavoritesModal } from "@/components/FavoritesModal";
+import { HistoryModal } from "@/components/HistoryModal";
+import { FiltersModal, FilterOptions } from "@/components/FiltersModal";
 import { RecommendationEngine } from "@/components/RecommendationEngine";
 import type { User } from "@supabase/supabase-js";
 
-interface Restaurant {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-  cuisine_type: string[];
-  price_range: string;
-}
-
 const ConsumerDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
   const [showPreferences, setShowPreferences] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  
   const { preferences, loading: preferencesLoading } = useUserPreferences();
+  const { offers: allOffers } = useOffers();
+  const { offers: trendingOffers } = useOffers('trending');
+  const { offers: fastOffers } = useOffers('fast');
+  const { offers: promotionOffers } = useOffers('promotion');
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
 
   useEffect(() => {
-    // Get user
     const getUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
-    };
-
-    // Get restaurants
-    const getRestaurants = async () => {
-      const { data, error } = await supabase
-        .from('restaurants')
-        .select('*')
-        .eq('is_active', true)
-        .limit(8);
-
-      if (!error && data) {
-        setRestaurants(data);
-      }
       setLoading(false);
     };
 
     getUser();
-    getRestaurants();
   }, []);
 
-  const mockOffers = [
-    {
-      id: 1,
-      restaurant: "Chez Marie",
-      offer: "20% sur tous les plats",
-      cuisine: "Française",
-      rating: 4.8,
-      time: "25-35 min",
-      price: "$$",
-      trending: true
-    },
-    {
-      id: 2,
-      restaurant: "Ramen House",
-      offer: "Plat + boisson à 15$",
-      cuisine: "Japonaise", 
-      rating: 4.6,
-      time: "15-25 min",
-      price: "$",
-      hot: true
-    },
-    {
-      id: 3,
-      restaurant: "Bistro du Coin",
-      offer: "Menu du midi dès 12$",
-      cuisine: "Québécoise",
-      rating: 4.7,
-      time: "20-30 min",
-      price: "$$",
-      limited: true
+  const handleActionClick = (action: string) => {
+    switch (action) {
+      case 'Tendances':
+        setActiveFilter('trending');
+        break;
+      case 'Rapide':
+        setActiveFilter('fast');
+        break;
+      case 'Promotions':
+        setActiveFilter('promotion');
+        break;
+      case 'Favoris':
+        setShowFavorites(true);
+        break;
+      case 'Historique':
+        setShowHistory(true);
+        break;
+      case 'Filtres':
+        setShowFilters(true);
+        break;
     }
-  ];
+  };
+
+  const handleApplyFilters = (filters: FilterOptions) => {
+    console.log('Applying filters:', filters);
+  };
+
+  const getDisplayOffers = () => {
+    if (activeFilter === 'trending') return trendingOffers;
+    if (activeFilter === 'fast') return fastOffers;
+    if (activeFilter === 'promotion') return promotionOffers;
+    return allOffers;
+  };
+
+  const getOffersTitle = () => {
+    switch (activeFilter) {
+      case 'trending': return 'Tendances du moment 📈';
+      case 'fast': return 'Livraison rapide ⚡';
+      case 'promotion': return 'Promotions spéciales 🎉';
+      default: return 'Offres du moment 🔥';
+    }
+  };
 
   if (loading || preferencesLoading) {
     return (
-      <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 bg-gradient-primary rounded-xl animate-pulse mx-auto shadow-glow"></div>
-          <p className="text-cuizly-neutral animate-pulse">Chargement de votre expérience personnalisée...</p>
+          <div className="w-12 h-12 bg-primary rounded-xl animate-pulse mx-auto"></div>
+          <p className="text-muted-foreground animate-pulse">Chargement de votre expérience personnalisée...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* Header minimaliste */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-cuizly-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-semibold text-lg">
+              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                <span className="text-primary-foreground font-semibold text-lg">
                   {user?.email?.charAt(0).toUpperCase()}
                 </span>
               </div>
@@ -116,12 +116,12 @@ const ConsumerDashboard = () => {
                 <h1 className="text-2xl font-semibold text-foreground">
                   Bonjour ! 👋
                 </h1>
-                <p className="text-cuizly-neutral">
+                <p className="text-muted-foreground">
                   Découvrez les meilleures offres du jour
                 </p>
                 {preferences?.cuisine_preferences?.length && (
                   <div className="flex items-center space-x-2 mt-1">
-                    <span className="text-xs text-cuizly-neutral">Vos goûts:</span>
+                    <span className="text-xs text-muted-foreground">Vos goûts:</span>
                     <div className="flex gap-1">
                       {preferences.cuisine_preferences.slice(0, 3).map(cuisine => (
                         <Badge key={cuisine} variant="outline" className="text-xs">
@@ -131,47 +131,58 @@ const ConsumerDashboard = () => {
                     </div>
                   </div>
                 )}
+                {preferences?.street && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    📍 {preferences.street}
+                  </p>
+                )}
               </div>
             </div>
             
-            <Button 
-              variant="outline"
-              onClick={() => setShowPreferences(true)}
-            >
-              <Settings className="h-4 w-4 mr-2" />
-              Préférences
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={() => setShowProfile(true)}
+              >
+                <UserIcon className="h-4 w-4 mr-2" />
+                Profil
+              </Button>
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPreferences(true)}
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Préférences
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* Barre de recherche */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cuizly-neutral h-5 w-5" />
-          <Input 
-            placeholder="Rechercher un restaurant, un plat, une cuisine..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 h-12"
-          />
-        </div>
-
         {/* Actions rapides */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
-            { icon: TrendingUp, label: "Tendances" },
-            { icon: Zap, label: "Rapide" },
-            { icon: Gift, label: "Promotions" },
-            { icon: Heart, label: "Favoris" },
+            { icon: TrendingUp, label: "Tendances", color: activeFilter === 'trending' },
+            { icon: Zap, label: "Rapide", color: activeFilter === 'fast' },
+            { icon: Gift, label: "Promotions", color: activeFilter === 'promotion' },
+            { icon: Heart, label: "Favoris", count: favorites.length },
             { icon: History, label: "Historique" },
             { icon: Filter, label: "Filtres" }
           ].map((action, index) => (
             <Button 
               key={index}
-              variant="outline" 
-              className="h-20 flex flex-col space-y-2"
+              variant={action.color ? "default" : "outline"} 
+              className="h-20 flex flex-col space-y-2 relative"
+              onClick={() => handleActionClick(action.label)}
             >
               <action.icon className="h-5 w-5" />
               <span className="text-xs">{action.label}</span>
+              {action.count && action.count > 0 && (
+                <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 text-xs">
+                  {action.count}
+                </Badge>
+              )}
             </Button>
           ))}
         </div>
@@ -179,98 +190,110 @@ const ConsumerDashboard = () => {
         {/* Système de recommandations IA */}
         <RecommendationEngine preferences={preferences} />
 
-        {/* Offres du moment */}
+        {/* Offres filtrées */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-foreground">
-              Offres du moment 🔥
+              {getOffersTitle()}
             </h2>
-            <Button variant="ghost" size="sm">
-              Voir toutes
-            </Button>
+            {activeFilter && (
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setActiveFilter(null)}
+              >
+                Voir toutes
+              </Button>
+            )}
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockOffers.map((offer) => (
-              <Card 
-                key={offer.id} 
-                className="shadow-card hover:shadow-elevated transition-all duration-200"
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg">{offer.restaurant}</CardTitle>
-                      <CardDescription className="text-cuizly-accent font-medium">
-                        {offer.offer}
-                      </CardDescription>
-                    </div>
-                    <Badge variant="secondary" className="bg-cuizly-surface">
-                      {offer.price}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                
-                <CardContent>
-                  <div className="flex items-center justify-between text-sm text-cuizly-neutral mb-4">
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4 fill-current text-yellow-500" />
-                      <span>{offer.rating}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{offer.time}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Badge variant="outline">{offer.cuisine}</Badge>
-                    <Button size="sm" className="bg-cuizly-primary hover:bg-cuizly-primary/90">
-                      Voir l'offre
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Restaurants partenaires */}
-        <div>
-          <h2 className="text-xl font-semibold text-foreground mb-4">
-            Restaurants partenaires
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {restaurants.map((restaurant) => (
-              <Card key={restaurant.id} className="shadow-card hover:shadow-elevated transition-all duration-200">
-                <CardHeader>
-                  <CardTitle className="text-lg">{restaurant.name}</CardTitle>
-                  <CardDescription>{restaurant.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center space-x-1 text-sm text-cuizly-neutral mb-3">
-                    <MapPin className="h-4 w-4" />
-                    <span>{restaurant.address || 'Adresse non disponible'}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {restaurant.cuisine_type?.map((cuisine, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {cuisine}
+          {getDisplayOffers().length === 0 ? (
+            <Card className="text-center py-8">
+              <CardContent>
+                <Gift className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                  Aucune offre disponible
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Revenez bientôt pour découvrir de nouvelles offres
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {getDisplayOffers().slice(0, 6).map((offer) => (
+                <Card 
+                  key={offer.id} 
+                  className="hover:shadow-lg transition-all duration-200"
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-lg">
+                          {offer.restaurant?.name || 'Restaurant'}
+                        </CardTitle>
+                        <CardDescription className="text-primary font-medium">
+                          {offer.title}
+                        </CardDescription>
+                      </div>
+                      <Badge variant="secondary">
+                        {offer.restaurant?.price_range || '$$'}
                       </Badge>
-                    ))}
-                  </div>
-                  <Button className="w-full" variant="outline">
-                    Voir le menu
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-4 w-4 fill-current text-yellow-500" />
+                        <span>4.{Math.floor(Math.random() * 5) + 3}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Clock className="h-4 w-4" />
+                        <span>{15 + Math.floor(Math.random() * 30)}-{25 + Math.floor(Math.random() * 30)} min</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex gap-1">
+                        {offer.restaurant?.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
+                          <Badge key={idx} variant="outline" className="text-xs">
+                            {cuisine}
+                          </Badge>
+                        ))}
+                      </div>
+                      <Button size="sm">
+                        Voir l'offre
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Modal des préférences */}
+      {/* Modals */}
       <PreferencesModal 
         open={showPreferences} 
         onOpenChange={setShowPreferences}
+      />
+      <ProfileModal 
+        open={showProfile} 
+        onOpenChange={setShowProfile}
+      />
+      <FavoritesModal 
+        open={showFavorites} 
+        onOpenChange={setShowFavorites}
+      />
+      <HistoryModal 
+        open={showHistory} 
+        onOpenChange={setShowHistory}
+      />
+      <FiltersModal 
+        open={showFilters} 
+        onOpenChange={setShowFilters}
+        onApplyFilters={handleApplyFilters}
       />
     </div>
   );
