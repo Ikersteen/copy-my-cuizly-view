@@ -22,21 +22,31 @@ const Dashboard = () => {
         return;
       }
 
-      // Get user profile to determine dashboard type
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('user_type')
-        .eq('user_id', session.user.id)
-        .single();
+      try {
+        // Get user profile to determine dashboard type
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('user_type')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
 
-      if (!error && data) {
-        setProfile(data);
-      } else {
-        // Default to consumer if no profile found
+        if (error) {
+          console.error('Erreur lors du chargement du profil:', error);
+          // Default to consumer if profile fetch fails
+          setProfile({ user_type: 'consumer' });
+        } else if (data) {
+          setProfile(data);
+        } else {
+          // No profile found - this shouldn't happen with the trigger but handle it
+          console.log('Aucun profil trouvé, création en cours...');
+          setProfile({ user_type: 'consumer' });
+        }
+      } catch (error) {
+        console.error('Erreur inattendue:', error);
         setProfile({ user_type: 'consumer' });
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
     };
 
     getProfile();

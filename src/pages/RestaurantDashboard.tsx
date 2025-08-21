@@ -32,10 +32,12 @@ const RestaurantDashboard = () => {
           .from('restaurants')
           .select('*')
           .eq('owner_id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (!error && data) {
           setRestaurant(data);
+        } else if (error) {
+          console.error('Erreur lors du chargement du restaurant:', error);
         }
       }
       setLoading(false);

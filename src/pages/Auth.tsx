@@ -47,7 +47,7 @@ const Auth = () => {
           data: {
             full_name: fullName,
             user_type: userType,
-            restaurant_name: restaurantName
+            restaurant_name: userType === 'restaurant_owner' ? restaurantName : null
           }
         }
       });
