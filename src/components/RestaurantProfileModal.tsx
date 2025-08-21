@@ -23,6 +23,7 @@ interface Restaurant {
   price_range: string;
   is_active: boolean;
   logo_url: string;
+  cover_image_url?: string;
   delivery_radius: number;
 }
 
@@ -42,8 +43,10 @@ export const RestaurantProfileModal = ({
   const [formData, setFormData] = useState<Partial<Restaurant>>({});
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
   const [newCuisine, setNewCuisine] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -59,6 +62,7 @@ export const RestaurantProfileModal = ({
         price_range: restaurant.price_range || "$$",
         is_active: restaurant.is_active ?? true,
         logo_url: restaurant.logo_url || "",
+        cover_image_url: restaurant.cover_image_url || "",
         delivery_radius: restaurant.delivery_radius || 5
       });
     }
@@ -95,7 +99,7 @@ export const RestaurantProfileModal = ({
     }
   };
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'cover' = 'logo') => {
     const file = event.target.files?.[0];
     if (!file || !restaurant?.id) return;
 
@@ -119,12 +123,17 @@ export const RestaurantProfileModal = ({
       return;
     }
 
-    setUploading(true);
+    if (type === 'logo') {
+      setUploading(true);
+    } else {
+      setUploadingCover(true);
+    }
+    
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('No session');
 
-      const fileName = `${session.user.id}/logo-${Date.now()}.${file.type.split('/')[1]}`;
+      const fileName = `${session.user.id}/${type}-${Date.now()}.${file.type.split('/')[1]}`;
       
       const { error: uploadError } = await supabase.storage
         .from('restaurant-images')
@@ -136,11 +145,15 @@ export const RestaurantProfileModal = ({
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
-      setFormData(prev => ({ ...prev, logo_url: data.publicUrl }));
+      if (type === 'logo') {
+        setFormData(prev => ({ ...prev, logo_url: data.publicUrl }));
+      } else {
+        setFormData(prev => ({ ...prev, cover_image_url: data.publicUrl }));
+      }
       
       toast({
         title: "Image uploadée",
-        description: "L'image de profil a été mise à jour avec succès"
+        description: `${type === 'logo' ? 'Le logo' : 'La photo de couverture'} a été mis à jour avec succès`
       });
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -150,7 +163,11 @@ export const RestaurantProfileModal = ({
         variant: "destructive"
       });
     } finally {
-      setUploading(false);
+      if (type === 'logo') {
+        setUploading(false);
+      } else {
+        setUploadingCover(false);
+      }
     }
   };
 
@@ -201,40 +218,85 @@ export const RestaurantProfileModal = ({
         </DialogHeader>
         
         <div className="space-y-6">
-          {/* Logo Section */}
-          <div className="flex flex-col items-center space-y-4">
-            <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-                {formData.logo_url ? (
-                  <img 
-                    src={formData.logo_url} 
-                    alt="Logo"
-                    className="w-full h-full object-cover"
+          {/* Images Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Logo Upload */}
+            <div className="space-y-4">
+              <Label className="text-base font-medium">Logo du restaurant</Label>
+              <div className="flex flex-col items-center space-y-4">
+                <div className="relative">
+                  <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
+                    {formData.logo_url ? (
+                      <img 
+                        src={formData.logo_url} 
+                        alt="Logo"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Camera className="h-8 w-8 text-muted-foreground" />
+                    )}
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                  >
+                    <Upload className="h-4 w-4" />
+                  </Button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileUpload(e, 'logo')}
+                    className="hidden"
                   />
-                ) : (
-                  <Camera className="h-8 w-8 text-muted-foreground" />
+                </div>
+                {uploading && (
+                  <p className="text-sm text-muted-foreground">Upload du logo...</p>
                 )}
               </div>
-              <Button
-                size="sm"
-                variant="outline"
-                className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-              >
-                <Upload className="h-4 w-4" />
-              </Button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
             </div>
-            {uploading && (
-              <p className="text-sm text-muted-foreground">Upload en cours...</p>
-            )}
+
+            {/* Cover Image Upload */}
+            <div className="space-y-4">
+              <Label className="text-base font-medium">Photo de couverture</Label>
+              <div className="flex flex-col items-center space-y-4">
+                <div className="relative w-full">
+                  <div className="w-full h-24 bg-muted rounded-lg flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
+                    {formData.cover_image_url ? (
+                      <img 
+                        src={formData.cover_image_url} 
+                        alt="Couverture"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Camera className="h-8 w-8 text-muted-foreground" />
+                    )}
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
+                    onClick={() => coverInputRef.current?.click()}
+                    disabled={uploadingCover}
+                  >
+                    <Upload className="h-4 w-4" />
+                  </Button>
+                  <input
+                    ref={coverInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileUpload(e, 'cover')}
+                    className="hidden"
+                  />
+                </div>
+                {uploadingCover && (
+                  <p className="text-sm text-muted-foreground">Upload de la couverture...</p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Basic Info */}

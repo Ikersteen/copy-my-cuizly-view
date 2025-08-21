@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      menus: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image_url: string
+          is_active: boolean
+          restaurant_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          image_url: string
+          is_active?: boolean
+          restaurant_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          restaurant_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       offers: {
         Row: {
           category: string | null
@@ -144,6 +174,7 @@ export type Database = {
       restaurants: {
         Row: {
           address: string | null
+          cover_image_url: string | null
           created_at: string
           cuisine_type: string[] | null
           delivery_radius: number | null
@@ -161,6 +192,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          cover_image_url?: string | null
           created_at?: string
           cuisine_type?: string[] | null
           delivery_radius?: number | null
@@ -178,6 +210,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          cover_image_url?: string | null
           created_at?: string
           cuisine_type?: string[] | null
           delivery_radius?: number | null
