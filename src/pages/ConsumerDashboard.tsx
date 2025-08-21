@@ -107,7 +107,7 @@ const ConsumerDashboard = () => {
         
         {/* Header minimaliste */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-primary-foreground font-semibold text-lg">
@@ -115,10 +115,10 @@ const ConsumerDashboard = () => {
                 </span>
               </div>
               <div>
-                <h1 className="text-2xl font-semibold text-foreground">
+                <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
                   Bonjour {profile?.first_name || user?.email?.split('@')[0]} ! 👋
                 </h1>
-                <p className="text-muted-foreground">
+                <p className="text-sm sm:text-base text-muted-foreground">
                   Découvrez les meilleures offres du jour
                 </p>
                 {preferences?.street && (
@@ -129,29 +129,31 @@ const ConsumerDashboard = () => {
               </div>
             </div>
             
-            <div className="flex gap-2">
+            <div className="flex gap-2 self-start sm:self-auto">
               <Button 
                 variant="outline"
                 size="sm"
                 onClick={() => setShowProfile(true)}
+                className="flex-1 sm:flex-none"
               >
-                <UserIcon className="h-4 w-4 mr-2" />
-                Profil
+                <UserIcon className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Profil</span>
               </Button>
               <Button 
                 variant="outline"
                 size="sm"
                 onClick={() => setShowPreferences(true)}
+                className="flex-1 sm:flex-none"
               >
-                <Settings className="h-4 w-4 mr-2" />
-                Préférences
+                <Settings className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Préférences</span>
               </Button>
             </div>
           </div>
         </div>
 
         {/* Actions rapides */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           {[
             { icon: TrendingUp, label: "Tendances", color: activeFilter === 'trending' },
             { icon: Zap, label: "Rapide", color: activeFilter === 'fast' },
@@ -163,13 +165,13 @@ const ConsumerDashboard = () => {
             <Button 
               key={index}
               variant={action.color ? "default" : "outline"} 
-              className="h-20 flex flex-col space-y-2 relative"
+              className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 relative text-xs sm:text-sm"
               onClick={() => handleActionClick(action.label)}
             >
-              <action.icon className="h-5 w-5" />
-              <span className="text-xs">{action.label}</span>
+              <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span>{action.label}</span>
               {action.count && action.count > 0 && (
-                <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 text-xs">
+                <Badge className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-4 w-4 sm:h-5 sm:w-5 p-0 text-xs">
                   {action.count}
                 </Badge>
               )}
@@ -210,7 +212,7 @@ const ConsumerDashboard = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {getDisplayOffers().slice(0, 6).map((offer) => (
                 <Card 
                   key={offer.id} 
@@ -218,40 +220,40 @@ const ConsumerDashboard = () => {
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-lg">
+                      <div className="min-w-0 flex-1">
+                        <CardTitle className="text-base sm:text-lg truncate">
                           {offer.restaurant?.name || 'Restaurant'}
                         </CardTitle>
-                        <CardDescription className="text-primary font-medium">
+                        <CardDescription className="text-primary font-medium text-sm truncate">
                           {offer.title}
                         </CardDescription>
                       </div>
-                      <Badge variant="secondary">
+                      <Badge variant="secondary" className="ml-2 text-xs">
                         {offer.restaurant?.price_range || '$$'}
                       </Badge>
                     </div>
                   </CardHeader>
                   
-                  <CardContent>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                  <CardContent className="space-y-3">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
                       <div className="flex items-center space-x-1">
                         <Star className="h-4 w-4 fill-current text-yellow-500" />
                         <span>4.{Math.floor(Math.random() * 5) + 3}</span>
                       </div>
                       <div className="flex items-center space-x-1">
                         <Clock className="h-4 w-4" />
-                        <span>{15 + Math.floor(Math.random() * 30)}-{25 + Math.floor(Math.random() * 30)} min</span>
+                        <span className="text-xs sm:text-sm">{15 + Math.floor(Math.random() * 30)}-{25 + Math.floor(Math.random() * 30)} min</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 flex-wrap">
                         {offer.restaurant?.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
                           <Badge key={idx} variant="outline" className="text-xs">
                             {cuisine}
                           </Badge>
                         ))}
                       </div>
-                      <Button size="sm">
+                      <Button size="sm" className="text-xs px-3">
                         Voir l'offre
                       </Button>
                     </div>

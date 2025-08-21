@@ -31,35 +31,35 @@ const RestaurantsSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-16 sm:py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-cuizly-primary mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-cuizly-primary mb-4">
             Restaurants populaires
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {restaurants.map((restaurant) => (
-            <Card key={restaurant.id} className="p-6 bg-gradient-card shadow-card hover:shadow-elevated transition-all duration-300 cursor-pointer group">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="font-semibold text-lg text-cuizly-primary mb-1 group-hover:text-cuizly-accent transition-colors">
+            <Card key={restaurant.id} className="p-4 sm:p-6 bg-gradient-card shadow-card hover:shadow-elevated transition-all duration-300 cursor-pointer group">
+              <div className="flex items-start justify-between mb-3 sm:mb-4">
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-semibold text-base sm:text-lg text-cuizly-primary mb-1 group-hover:text-cuizly-accent transition-colors truncate">
                     {restaurant.name}
                   </h3>
                   <div className="flex items-center text-sm text-muted-foreground mb-2">
-                    <MapPin className="h-4 w-4 mr-1" />
-                    {restaurant.location}
+                    <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
+                    <span className="truncate">{restaurant.location}</span>
                   </div>
                 </div>
-                <div className="flex items-center space-x-1 bg-cuizly-accent/10 px-2 py-1 rounded-full">
+                <div className="flex items-center space-x-1 bg-cuizly-accent/10 px-2 py-1 rounded-full ml-2">
                   <Star className="h-4 w-4 fill-cuizly-accent text-cuizly-accent" />
                   <span className="text-sm font-medium text-cuizly-accent">{restaurant.rating}</span>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <p className="text-foreground font-medium">{restaurant.cuisine}</p>
+                <p className="text-foreground font-medium text-sm sm:text-base truncate">{restaurant.cuisine}</p>
                 <Badge variant="secondary" className="text-xs">
                   {restaurant.category}
                 </Badge>
