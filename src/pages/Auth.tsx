@@ -148,15 +148,15 @@ const Auth = () => {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-8 h-8 bg-foreground rounded-full flex items-center justify-center">
-              <span className="text-background font-semibold text-sm">C</span>
+          <div className="flex items-center justify-center space-x-2 mb-6">
+            <div className="w-12 h-12 bg-foreground rounded-full flex items-center justify-center">
+              <span className="text-background font-bold text-lg">C</span>
             </div>
-            <span className="text-lg font-semibold">Cuizly</span>
+            <span className="text-2xl font-bold">Cuizly</span>
           </div>
-          <h1 className="text-2xl font-bold text-foreground">Rejoignez Cuizly</h1>
-          <p className="text-cuizly-neutral mt-2">
-            Découvrez les meilleures offres culinaires de Montréal
+          <h1 className="text-3xl font-bold text-foreground mb-2">Rejoignez Cuizly</h1>
+          <p className="text-cuizly-neutral text-lg">
+            Ton prochain coup de cœur culinaire en un swipe
           </p>
         </div>
 
