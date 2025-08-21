@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useOffers } from "@/hooks/useOffers";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useProfile } from "@/hooks/useProfile";
 import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
@@ -29,6 +30,7 @@ const ConsumerDashboard = () => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   
   const { preferences, loading: preferencesLoading } = useUserPreferences();
+  const { profile, loading: profileLoading } = useProfile();
   const { offers: allOffers } = useOffers();
   const { offers: trendingOffers } = useOffers('trending');
   const { offers: fastOffers } = useOffers('fast');
@@ -88,7 +90,7 @@ const ConsumerDashboard = () => {
     }
   };
 
-  if (loading || preferencesLoading) {
+  if (loading || preferencesLoading || profileLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
@@ -114,23 +116,11 @@ const ConsumerDashboard = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-semibold text-foreground">
-                  Bonjour ! 👋
+                  Bonjour {profile?.first_name || user?.email?.split('@')[0]} ! 👋
                 </h1>
                 <p className="text-muted-foreground">
                   Découvrez les meilleures offres du jour
                 </p>
-                {preferences?.cuisine_preferences?.length && (
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="text-xs text-muted-foreground">Vos goûts:</span>
-                    <div className="flex gap-1">
-                      {preferences.cuisine_preferences.slice(0, 3).map(cuisine => (
-                        <Badge key={cuisine} variant="outline" className="text-xs">
-                          {cuisine}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 {preferences?.street && (
                   <p className="text-xs text-muted-foreground mt-1">
                     📍 {preferences.street}
