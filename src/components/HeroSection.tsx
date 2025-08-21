@@ -14,32 +14,16 @@ const HeroSection = () => {
 
         {/* Main Title */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight px-2 sm:px-0">
-          L'IA qui connecte<br />
-          <span className="text-cuizly-accent">restaurants & clients</span><br />
+          Découvrez vos prochains<br />
+          <span className="text-cuizly-accent">coups de cœur culinaires</span><br />
           à Montréal
         </h1>
 
         {/* Subtitle */}
-        <p className="text-base sm:text-lg md:text-xl text-cuizly-neutral max-w-3xl mx-auto mb-6 px-2 sm:px-4 leading-relaxed">
-          <strong className="text-cuizly-primary">85% des clients</strong> ne trouvent pas de nouveaux restaurants. <strong className="text-cuizly-primary">70% des restaurants</strong> peinent à attirer de nouveaux clients.<br className="hidden sm:block" />
-          <span className="text-cuizly-accent font-semibold">Cuizly résout ce problème avec l'IA.</span>
+        <p className="text-base sm:text-lg md:text-xl text-cuizly-neutral max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-14 px-2 sm:px-4 leading-relaxed">
+          Grâce à notre intelligence artificielle, profitez de recommandations personnalisées<br className="hidden sm:block" />
+          et trouvez facilement les meilleures adresses en ville, adaptées à vos goûts et à votre budget.
         </p>
-
-        {/* Key metrics */}
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mb-8 sm:mb-10 md:mb-14">
-          <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-cuizly-primary">97%</div>
-            <div className="text-sm text-cuizly-neutral">Satisfaction client</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-cuizly-primary">2.3x</div>
-            <div className="text-sm text-cuizly-neutral">Plus de découvertes</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-cuizly-primary">40%</div>
-            <div className="text-sm text-cuizly-neutral">Revenus restaurants ↗</div>
-          </div>
-        </div>
 
         {/* CTA */}
         <Link to="/auth">
