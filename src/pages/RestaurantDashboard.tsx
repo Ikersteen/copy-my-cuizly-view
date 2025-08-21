@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { 
-  Plus, Edit3, Settings, MapPin, ChefHat, Camera, Power 
+  Plus, Edit3, MapPin, ChefHat 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/RestaurantProfileModal";
@@ -77,34 +75,12 @@ const RestaurantDashboard = () => {
       case 'Modifier profil':
         setShowProfileModal(true);
         break;
-      case 'Photo de couverture':
-        setShowProfileModal(true);
-        break;
-      case 'Paramètres':
-        setShowProfileModal(true);
-        break;
       case 'Menus':
         setShowMenusModal(true);
         break;
     }
   };
 
-  const handleToggleRestaurantStatus = async () => {
-    if (!restaurant) return;
-    
-    try {
-      const { error } = await supabase
-        .from('restaurants')
-        .update({ is_active: !restaurant.is_active })
-        .eq('id', restaurant.id);
-
-      if (error) throw error;
-
-      setRestaurant(prev => prev ? { ...prev, is_active: !prev.is_active } : null);
-    } catch (error) {
-      console.error('Erreur lors de la modification du statut:', error);
-    }
-  };
 
 
   if (loading) {
@@ -154,35 +130,14 @@ const RestaurantDashboard = () => {
                 )}
               </div>
             </div>
-            
-            <div className="flex items-center gap-4 self-start sm:self-auto">
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="restaurant-status"
-                  checked={restaurant?.is_active || false}
-                  onCheckedChange={handleToggleRestaurantStatus}
-                />
-                <Label htmlFor="restaurant-status" className="text-sm">
-                  <Badge 
-                    variant={restaurant?.is_active ? "default" : "secondary"}
-                    className={restaurant?.is_active ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100" : ""}
-                  >
-                    <Power className="h-3 w-3 mr-1" />
-                    {restaurant?.is_active ? "Actif" : "Inactif"}
-                  </Badge>
-                </Label>
-              </div>
-            </div>
           </div>
         </div>
 
         {/* Actions rapides */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           {[
             { icon: Plus, label: "Nouvelle offre", primary: true },
             { icon: Edit3, label: "Modifier profil" },
-            { icon: Camera, label: "Photo de couverture" },
-            { icon: Settings, label: "Paramètres" },
             { icon: ChefHat, label: "Menus" }
           ].map((action, index) => (
             <Button 
@@ -227,18 +182,6 @@ const RestaurantDashboard = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {/* Image de couverture */}
-                  {restaurant.cover_image_url && (
-                    <div className="mb-4">
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Photo de couverture</p>
-                      <img
-                        src={restaurant.cover_image_url}
-                        alt="Couverture du restaurant"
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                    </div>
-                  )}
-                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">Nom</p>
@@ -263,12 +206,6 @@ const RestaurantDashboard = () => {
                           </Badge>
                         )}
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs sm:text-sm text-muted-foreground">Statut</span>
-                      <Badge variant={restaurant.is_active ? "default" : "secondary"} className="text-xs">
-                        {restaurant.is_active ? "Actif" : "Inactif"}
-                      </Badge>
                     </div>
                   </div>
                   
