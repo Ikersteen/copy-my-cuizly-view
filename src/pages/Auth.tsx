@@ -120,6 +120,21 @@ const Auth = () => {
 
       if (error) {
         console.error('Error creating profile:', error);
+        return;
+      }
+
+      // Si c'est un propriétaire de restaurant, créer automatiquement le restaurant
+      if (user.user_metadata.user_type === 'restaurant_owner' && user.user_metadata.restaurant_name) {
+        const { error: restaurantError } = await supabase.from('restaurants').insert({
+          name: user.user_metadata.restaurant_name,
+          owner_id: user.id,
+          description: `Bienvenue chez ${user.user_metadata.restaurant_name}`,
+          is_active: true
+        });
+
+        if (restaurantError) {
+          console.error('Error creating restaurant:', restaurantError);
+        }
       }
     } catch (error) {
       console.error('Error creating profile:', error);
