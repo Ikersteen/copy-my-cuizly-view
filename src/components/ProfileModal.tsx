@@ -53,16 +53,18 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       setUser(session.user);
       console.log('User session:', session.user.id);
 
+      // Charger le profil depuis la base de données
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', session.user.id)
         .maybeSingle();
 
-      console.log('Profile data:', data);
+      console.log('Profile data from DB:', data);
       console.log('Profile error:', error);
 
-      if (!error && data) {
+      if (data) {
+        // Si le profil existe, utiliser les données de la DB
         setProfile({
           first_name: data.first_name || "",
           last_name: data.last_name || "",
@@ -73,8 +75,39 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             email: true
           }
         });
-        console.log('Profile loaded successfully');
+      } else {
+        // Si pas de profil en DB, créer avec les données de l'auth
+        const newProfile = {
+          user_id: session.user.id,
+          first_name: session.user.user_metadata?.first_name || "",
+          last_name: session.user.user_metadata?.last_name || "",
+          phone: session.user.phone || "",
+          username: ""
+        };
+
+        const { data: createdProfile, error: createError } = await supabase
+          .from('profiles')
+          .insert(newProfile)
+          .select()
+          .single();
+
+        if (createError) {
+          console.error('Error creating profile:', createError);
+        } else {
+          console.log('Created new profile:', createdProfile);
+          setProfile({
+            first_name: createdProfile.first_name || "",
+            last_name: createdProfile.last_name || "",
+            phone: createdProfile.phone || "",
+            username: createdProfile.username || "",
+            notifications: {
+              push: true,
+              email: true
+            }
+          });
+        }
       }
+      console.log('Profile loaded successfully');
     } catch (error) {
       console.error('Error loading profile:', error);
     }
@@ -83,6 +116,11 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const handleSave = async () => {
     if (!user) {
       console.log('No user found, cannot save profile');
+      toast({
+        title: "Erreur",
+        description: "Session utilisateur introuvable",
+        variant: "destructive"
+      });
       return;
     }
     
@@ -93,17 +131,20 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     try {
       const updateData = {
         user_id: user.id,
-        first_name: profile.first_name,
-        last_name: profile.last_name,
-        phone: profile.phone,
+        first_name: profile.first_name || user.user_metadata?.first_name || "",
+        last_name: profile.last_name || user.user_metadata?.last_name || "",
+        phone: profile.phone || user.phone || "",
         username: profile.username
       };
       
-      console.log('Update data:', updateData);
+      console.log('Update data being sent:', updateData);
       
       const { data, error } = await supabase
         .from('profiles')
-        .upsert(updateData)
+        .upsert(updateData, { 
+          onConflict: 'user_id',
+          ignoreDuplicates: false 
+        })
         .select()
         .single();
 
@@ -116,9 +157,18 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
       console.log('Profile saved successfully:', data);
       
+      // Mettre à jour l'état local avec les données sauvegardées
+      setProfile({
+        first_name: data.first_name || "",
+        last_name: data.last_name || "",
+        phone: data.phone || "",
+        username: data.username || "",
+        notifications: profile.notifications
+      });
+      
       toast({
         title: "Profil mis à jour",
-        description: "Vos informations ont été sauvegardées"
+        description: "Vos informations ont été sauvegardées avec succès"
       });
       
       // Fermer le modal après la sauvegarde réussie
@@ -127,7 +177,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       console.error('Error updating profile:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de sauvegarder le profil",
+        description: `Impossible de sauvegarder le profil: ${error.message}`,
         variant: "destructive"
       });
     } finally {
