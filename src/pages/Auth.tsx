@@ -18,7 +18,27 @@ const Auth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user is already authenticated
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          // Check if user has profile, create if needed
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .single();
+
+          if (!profile && session.user.user_metadata) {
+            await createUserProfile(session.user);
+          }
+
+          navigate('/dashboard');
+        }
+      }
+    );
+
+    // Check for existing session
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -26,6 +46,8 @@ const Auth = () => {
       }
     };
     checkAuth();
+
+    return () => subscription.unsubscribe();
   }, [navigate]);
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,11 +61,11 @@ const Auth = () => {
     const restaurantName = userType === 'restaurant_owner' ? formData.get('restaurantName') as string : '';
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/`,
           data: {
             full_name: fullName,
             user_type: userType,
@@ -54,18 +76,53 @@ const Auth = () => {
 
       if (error) throw error;
 
+      // If user is created and confirmed, create profile
+      if (data.user && !data.user.email_confirmed_at) {
+        toast({
+          title: "Compte créé !",
+          description: "Vérifiez votre email pour confirmer votre compte.",
+        });
+      } else if (data.user) {
+        // User is auto-confirmed, create profile and redirect
+        await createUserProfile(data.user);
+        navigate('/dashboard');
+      }
+    } catch (error: any) {
+      let errorMessage = "Une erreur est survenue";
+      
+      if (error.message?.includes("User already registered")) {
+        errorMessage = "Un compte existe déjà avec cet email";
+      } else if (error.message?.includes("Invalid email")) {
+        errorMessage = "Adresse email invalide";
+      } else if (error.message?.includes("Password should be at least")) {
+        errorMessage = "Le mot de passe doit contenir au moins 6 caractères";
+      }
+
       toast({
-        title: "Compte créé !",
-        description: "Vérifiez votre email pour confirmer votre compte.",
-      });
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: error instanceof Error ? error.message : "Une erreur est survenue",
+        title: "Erreur d'inscription",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const createUserProfile = async (user: any) => {
+    try {
+      const { error } = await supabase.from('profiles').insert({
+        user_id: user.id,
+        first_name: user.user_metadata.full_name?.split(' ')[0] || '',
+        last_name: user.user_metadata.full_name?.split(' ').slice(1).join(' ') || '',
+        user_type: user.user_metadata.user_type || 'consumer',
+        restaurant_name: user.user_metadata.restaurant_name || null
+      });
+
+      if (error) {
+        console.error('Error creating profile:', error);
+      }
+    } catch (error) {
+      console.error('Error creating profile:', error);
     }
   };
 
@@ -78,18 +135,30 @@ const Auth = () => {
     const password = formData.get('password') as string;
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) throw error;
 
-      navigate('/dashboard');
-    } catch (error) {
+      if (data.user) {
+        navigate('/dashboard');
+      }
+    } catch (error: any) {
+      let errorMessage = "Identifiants incorrects";
+      
+      if (error.message?.includes("Invalid login credentials")) {
+        errorMessage = "Email ou mot de passe incorrect";
+      } else if (error.message?.includes("Email not confirmed")) {
+        errorMessage = "Veuillez confirmer votre email avant de vous connecter";
+      } else if (error.message?.includes("Too many requests")) {
+        errorMessage = "Trop de tentatives, veuillez réessayer plus tard";
+      }
+
       toast({
-        title: "Erreur de connexion",
-        description: error instanceof Error ? error.message : "Identifiants incorrects",
+        title: "Erreur de connexion", 
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -102,15 +171,21 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/`
         }
       });
       
       if (error) throw error;
-    } catch (error) {
+    } catch (error: any) {
+      let errorMessage = "Impossible de se connecter avec Google";
+      
+      if (error.message?.includes("provider is not enabled")) {
+        errorMessage = "Google OAuth n'est pas configuré pour cette application";
+      }
+
       toast({
-        title: "Erreur",
-        description: "Impossible de se connecter avec Google",
+        title: "Erreur OAuth",
+        description: errorMessage,
         variant: "destructive",
       });
     }
@@ -121,15 +196,21 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'apple',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/`
         }
       });
       
       if (error) throw error;
-    } catch (error) {
+    } catch (error: any) {
+      let errorMessage = "Impossible de se connecter avec Apple";
+      
+      if (error.message?.includes("provider is not enabled")) {
+        errorMessage = "Apple OAuth n'est pas configuré pour cette application";
+      }
+
       toast({
-        title: "Erreur",
-        description: "Impossible de se connecter avec Apple",
+        title: "Erreur OAuth",
+        description: errorMessage,
         variant: "destructive",
       });
     }
