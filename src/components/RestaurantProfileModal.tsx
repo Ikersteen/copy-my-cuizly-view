@@ -6,10 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, X, Upload, LogOut } from "lucide-react";
+import { Camera, X, Upload, LogOut, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Restaurant {
@@ -20,10 +20,7 @@ interface Restaurant {
   phone: string;
   email: string;
   cuisine_type: string[];
-  price_range: string;
-  is_active: boolean;
   logo_url: string;
-  delivery_radius: number;
 }
 
 interface RestaurantProfileModalProps {
@@ -43,6 +40,8 @@ export const RestaurantProfileModal = ({
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [newCuisine, setNewCuisine] = useState("");
+  const [showDeleteSection, setShowDeleteSection] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -56,10 +55,7 @@ export const RestaurantProfileModal = ({
         phone: restaurant.phone || "",
         email: restaurant.email || "",
         cuisine_type: restaurant.cuisine_type || [],
-        price_range: restaurant.price_range || "$$",
-        is_active: restaurant.is_active ?? true,
-        logo_url: restaurant.logo_url || "",
-        delivery_radius: restaurant.delivery_radius || 5
+        logo_url: restaurant.logo_url || ""
       });
     }
   }, [restaurant, open]);
@@ -189,6 +185,36 @@ export const RestaurantProfileModal = ({
       toast({
         title: "Erreur",
         description: "Impossible de se déconnecter",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmation !== "Supprimer mon compte") {
+      toast({
+        title: "Erreur",
+        description: "Veuillez taper exactement 'Supprimer mon compte' pour confirmer",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      toast({
+        title: "Demande de suppression enregistrée",
+        description: "Votre compte sera automatiquement supprimé dans 30 jours. Vous pouvez vous reconnecter avant cette échéance pour annuler la suppression.",
+        duration: 10000
+      });
+      
+      await supabase.auth.signOut();
+      onOpenChange(false);
+      navigate("/");
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de traiter la demande de suppression",
         variant: "destructive"
       });
     }
@@ -333,72 +359,6 @@ export const RestaurantProfileModal = ({
 
           <Separator />
 
-          {/* Paramètres du restaurant */}
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="price_range">Gamme de prix</Label>
-                <select 
-                  id="price_range"
-                  value={formData.price_range || "$$"}
-                  onChange={(e) => setFormData(prev => ({ ...prev, price_range: e.target.value }))}
-                  className="w-full px-3 py-2 border border-input bg-background rounded-md"
-                >
-                  <option value="$">$ - Économique</option>
-                  <option value="$$">$$ - Modéré</option>
-                  <option value="$$$">$$$ - Cher</option>
-                  <option value="$$$$">$$$$ - Très cher</option>
-                </select>
-              </div>
-              <div>
-                <Label htmlFor="delivery_radius">Rayon de livraison (km)</Label>
-                <Input
-                  id="delivery_radius"
-                  type="number"
-                  min="1"
-                  max="50"
-                  value={formData.delivery_radius || 5}
-                  onChange={(e) => setFormData(prev => ({ 
-                    ...prev, 
-                    delivery_radius: parseInt(e.target.value) || 5 
-                  }))}
-                />
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Statut du restaurant */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-              <div className="space-y-1">
-                <Label htmlFor="is_active" className="text-base font-medium">
-                  Restaurant {formData.is_active ? "actif" : "inactif"}
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  {formData.is_active 
-                    ? "Votre restaurant apparaît dans les recherches des consommateurs" 
-                    : "Votre restaurant n'apparaît pas dans les recherches"}
-                </p>
-              </div>
-              <Switch
-                id="is_active"
-                checked={formData.is_active ?? true}
-                onCheckedChange={(checked) => 
-                  setFormData(prev => ({ ...prev, is_active: checked }))
-                }
-                className={`transition-all duration-300 ${
-                  formData.is_active 
-                    ? 'data-[state=checked]:bg-green-500 shadow-lg shadow-green-500/25' 
-                    : 'bg-red-200 shadow-lg shadow-red-500/25'
-                }`}
-              />
-            </div>
-          </div>
-
-          <Separator />
-
           {/* Actions */}
           <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-end">
@@ -410,14 +370,72 @@ export const RestaurantProfileModal = ({
               </Button>
             </div>
 
-            <Button 
-              variant="outline" 
-              onClick={handleLogout}
-              className="w-full justify-start"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Se déconnecter
-            </Button>
+            <div className="space-y-2">
+              <Button 
+                variant="outline" 
+                onClick={handleLogout}
+                className="w-full justify-start"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Se déconnecter
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                onClick={() => setShowDeleteSection(!showDeleteSection)}
+                className="w-full justify-start text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Supprimer mon compte
+              </Button>
+            </div>
+
+            {showDeleteSection && (
+              <div className="space-y-3 p-4 border rounded-lg bg-destructive/5">
+                <div className="space-y-2">
+                  <Label className="text-destructive font-medium">Confirmation de suppression</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Cette action est irréversible. Pour confirmer, tapez exactement : <strong>"Supprimer mon compte"</strong>
+                  </p>
+                  <Input
+                    value={deleteConfirmation}
+                    onChange={(e) => setDeleteConfirmation(e.target.value)}
+                    placeholder="Tapez: Supprimer mon compte"
+                  />
+                </div>
+                
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="destructive"
+                      disabled={deleteConfirmation !== "Supprimer mon compte"}
+                      className="w-full"
+                    >
+                      Confirmer la suppression
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Supprimer définitivement le compte ?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, 
+                        vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, 
+                        toutes vos données seront définitivement supprimées.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={handleDeleteAccount}
+                        className="bg-destructive hover:bg-destructive/90"
+                      >
+                        Supprimer mon compte
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            )}
           </div>
         </div>
       </DialogContent>
