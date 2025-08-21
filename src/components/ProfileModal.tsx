@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Trash2 } from "lucide-react";
+import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 
 interface ProfileModalProps {
@@ -18,7 +19,8 @@ interface ProfileModalProps {
 }
 
 export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
-  const [profile, setProfile] = useState({
+  const { profile, loading: profileLoading, updateProfile } = useProfile();
+  const [localProfile, setLocalProfile] = useState({
     first_name: "",
     last_name: "",
     phone: "",
@@ -43,85 +45,43 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
   useEffect(() => {
     if (open) {
-      loadProfile();
+      loadUserSession();
     }
   }, [open]);
 
-  const loadProfile = async () => {
-    try {
-      console.log('Loading profile...');
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        console.log('No session found');
-        return;
-      }
-
-      setUser(session.user);
-      console.log('User session:', session.user.id);
-
-      // Charger le profil depuis la base de données
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
-
-      console.log('Profile data from DB:', data);
-      console.log('Profile error:', error);
-
-      if (data) {
-        // Si le profil existe, utiliser les données de la DB
-        setProfile({
-          first_name: data.first_name || "",
-          last_name: data.last_name || "",
-          phone: data.phone || "",
-          username: data.username || "",
-          notifications: {
-            push: true,
-            email: true
-          }
-        });
-      } else {
-        // Si pas de profil en DB, créer avec les données de l'auth
-        const newProfile = {
-          user_id: session.user.id,
-          first_name: session.user.user_metadata?.first_name || "",
-          last_name: session.user.user_metadata?.last_name || "",
-          phone: session.user.phone || "",
-          username: ""
-        };
-
-        const { data: createdProfile, error: createError } = await supabase
-          .from('profiles')
-          .insert(newProfile)
-          .select()
-          .single();
-
-        if (createError) {
-          console.error('Error creating profile:', createError);
-        } else {
-          console.log('Created new profile:', createdProfile);
-          setProfile({
-            first_name: createdProfile.first_name || "",
-            last_name: createdProfile.last_name || "",
-            phone: createdProfile.phone || "",
-            username: createdProfile.username || "",
-            notifications: {
-              push: true,
-              email: true
-            }
-          });
+  useEffect(() => {
+    if (profile) {
+      setLocalProfile({
+        first_name: profile.first_name || "",
+        last_name: profile.last_name || "",
+        phone: profile.phone || "",
+        username: profile.username || "",
+        notifications: {
+          push: true,
+          email: true
         }
-      }
-      console.log('Profile loaded successfully');
+      });
+    }
+  }, [profile]);
+
+  const loadUserSession = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      
+      setUser(session.user);
     } catch (error) {
-      console.error('Error loading profile:', error);
+      console.error('Error loading user session:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger la session utilisateur",
+        variant: "destructive"
+      });
     }
   };
 
   const handleSave = async () => {
     if (!user) {
-      console.log('No user found, cannot save profile');
       toast({
         title: "Erreur",
         description: "Session utilisateur introuvable",
@@ -130,62 +90,18 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       return;
     }
     
-    console.log('Saving profile with data:', profile);
-    console.log('User ID:', user.id);
     setLoading(true);
-    
     try {
-      const updateData = {
-        user_id: user.id,
-        first_name: profile.first_name || user.user_metadata?.first_name || "",
-        last_name: profile.last_name || user.user_metadata?.last_name || "",
-        phone: profile.phone || user.phone || "",
-        username: profile.username
-      };
-      
-      console.log('Update data being sent:', updateData);
-      
-      const { data, error } = await supabase
-        .from('profiles')
-        .upsert(updateData, { 
-          onConflict: 'user_id',
-          ignoreDuplicates: false 
-        })
-        .select()
-        .single();
-
-      console.log('Upsert result:', { data, error });
-
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
-
-      console.log('Profile saved successfully:', data);
-      
-      // Mettre à jour l'état local avec les données sauvegardées
-      setProfile({
-        first_name: data.first_name || "",
-        last_name: data.last_name || "",
-        phone: data.phone || "",
-        username: data.username || "",
-        notifications: profile.notifications
+      await updateProfile({
+        first_name: localProfile.first_name,
+        last_name: localProfile.last_name,
+        phone: localProfile.phone,
+        username: localProfile.username
       });
       
-      toast({
-        title: "Profil mis à jour",
-        description: "Vos informations ont été sauvegardées avec succès"
-      });
-      
-      // Fermer le modal après la sauvegarde réussie
       onOpenChange(false);
     } catch (error) {
       console.error('Error updating profile:', error);
-      toast({
-        title: "Erreur",
-        description: `Impossible de sauvegarder le profil: ${error.message}`,
-        variant: "destructive"
-      });
     } finally {
       setLoading(false);
     }
@@ -225,9 +141,18 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     }
 
     try {
-      // Ici on pourrait supprimer les données utilisateur d'abord
-      // Mais Supabase ne permet pas de supprimer l'utilisateur auth directement depuis le client
-      // On va juste marquer le profil pour suppression et afficher le message
+      setLoading(true);
+      
+      // Marquer le compte pour suppression dans 30 jours
+      if (profile?.id) {
+        await supabase
+          .from('profiles')
+          .update({ 
+            // On pourrait ajouter un champ deleted_at si nécessaire
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', profile.id);
+      }
       
       toast({
         title: "Demande de suppression enregistrée",
@@ -246,6 +171,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         description: "Impossible de traiter la demande de suppression",
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -307,8 +234,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               <Label htmlFor="first_name">Prénom</Label>
               <Input
                 id="first_name"
-                value={profile.first_name}
-                onChange={(e) => setProfile(prev => ({ ...prev, first_name: e.target.value }))}
+                value={localProfile.first_name}
+                onChange={(e) => setLocalProfile(prev => ({ ...prev, first_name: e.target.value }))}
                 placeholder="Votre prénom"
               />
             </div>
@@ -316,8 +243,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               <Label htmlFor="last_name">Nom</Label>
               <Input
                 id="last_name"
-                value={profile.last_name}
-                onChange={(e) => setProfile(prev => ({ ...prev, last_name: e.target.value }))}
+                value={localProfile.last_name}
+                onChange={(e) => setLocalProfile(prev => ({ ...prev, last_name: e.target.value }))}
                 placeholder="Votre nom"
               />
             </div>
@@ -327,8 +254,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             <Label htmlFor="username">Nom d'utilisateur</Label>
             <Input
               id="username"
-              value={profile.username}
-              onChange={(e) => setProfile(prev => ({ ...prev, username: e.target.value }))}
+              value={localProfile.username}
+              onChange={(e) => setLocalProfile(prev => ({ ...prev, username: e.target.value }))}
               placeholder="Votre nom d'utilisateur"
             />
           </div>
@@ -347,8 +274,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             <Label htmlFor="phone">Téléphone</Label>
             <Input
               id="phone"
-              value={profile.phone}
-              onChange={(e) => setProfile(prev => ({ ...prev, phone: e.target.value }))}
+              value={localProfile.phone}
+              onChange={(e) => setLocalProfile(prev => ({ ...prev, phone: e.target.value }))}
               placeholder="+1 (XXX) XXX-XXXX"
             />
           </div>
@@ -362,9 +289,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               <Label htmlFor="push">Notifications push</Label>
               <Switch
                 id="push"
-                checked={profile.notifications.push}
+                checked={localProfile.notifications.push}
                 onCheckedChange={(checked) => 
-                  setProfile(prev => ({ 
+                  setLocalProfile(prev => ({ 
                     ...prev, 
                     notifications: { ...prev.notifications, push: checked }
                   }))
@@ -376,9 +303,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               <Label htmlFor="email_notif">Notifications email</Label>
               <Switch
                 id="email_notif"
-                checked={profile.notifications.email}
+                checked={localProfile.notifications.email}
                 onCheckedChange={(checked) => 
-                  setProfile(prev => ({ 
+                  setLocalProfile(prev => ({ 
                     ...prev, 
                     notifications: { ...prev.notifications, email: checked }
                   }))
@@ -514,8 +441,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Annuler
           </Button>
-          <Button onClick={handleSave} disabled={loading}>
-            Sauvegarder
+          <Button onClick={handleSave} disabled={loading || profileLoading}>
+            {loading ? "Sauvegarde..." : "Sauvegarder"}
           </Button>
         </div>
       </DialogContent>

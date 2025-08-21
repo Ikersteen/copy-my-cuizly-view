@@ -201,6 +201,19 @@ export const RestaurantProfileModal = ({
     }
 
     try {
+      setLoading(true);
+      
+      // Marquer le restaurant et le profil pour suppression
+      if (restaurant?.id) {
+        await supabase
+          .from('restaurants')
+          .update({ 
+            is_active: false,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', restaurant.id);
+      }
+      
       toast({
         title: "Demande de suppression enregistrée",
         description: "Votre compte sera automatiquement supprimé dans 30 jours. Vous pouvez vous reconnecter avant cette échéance pour annuler la suppression.",
@@ -217,6 +230,8 @@ export const RestaurantProfileModal = ({
         description: "Impossible de traiter la demande de suppression",
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 
