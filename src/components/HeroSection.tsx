@@ -16,14 +16,14 @@ const HeroSection = () => {
         </div>
 
         {/* Main Title */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 md:mb-6 leading-tight">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 md:mb-8 leading-tight tracking-tight">
           Découvrez vos prochains<br />
-          coups de cœur culinaires<br />
+          <span className="text-cuizly-accent">coups de cœur culinaires</span><br />
           à Montréal
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg md:text-xl text-cuizly-neutral max-w-3xl mx-auto mb-8 md:mb-12 px-4 leading-relaxed">
+        <p className="text-lg md:text-xl text-cuizly-neutral max-w-4xl mx-auto mb-10 md:mb-14 px-4 leading-relaxed">
           Grâce à notre intelligence artificielle, profitez de recommandations personnalisées<br className="hidden sm:block" />
           et trouvez facilement les meilleures adresses en ville, adaptées à vos goûts et à votre budget.
         </p>
@@ -37,18 +37,30 @@ const HeroSection = () => {
         </Link>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-xs md:max-w-md mx-auto mt-12 md:mt-16">
-          <div className="text-center">
-            <div className="text-xl md:text-2xl font-bold text-foreground">{restaurantCount}+</div>
-            <div className="text-xs md:text-sm text-cuizly-neutral">Restaurants</div>
+        <div className="grid grid-cols-3 gap-6 md:gap-12 max-w-lg md:max-w-2xl mx-auto mt-16 md:mt-20">
+          <div className="text-center group">
+            <div className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-cuizly-accent transition-colors duration-300">
+              {restaurantCount}+
+            </div>
+            <div className="text-sm md:text-base text-cuizly-neutral mt-1">
+              Restaurants partenaires
+            </div>
           </div>
-          <div className="text-center">
-            <div className="text-xl md:text-2xl font-bold text-foreground">AI</div>
-            <div className="text-xs md:text-sm text-cuizly-neutral">Personnalisé</div>
+          <div className="text-center group">
+            <div className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-cuizly-accent transition-colors duration-300">
+              IA
+            </div>
+            <div className="text-sm md:text-base text-cuizly-neutral mt-1">
+              Recommandations personnalisées
+            </div>
           </div>
-          <div className="text-center">
-            <div className="text-xl md:text-2xl font-bold text-foreground">MTL</div>
-            <div className="text-xs md:text-sm text-cuizly-neutral">Montréal</div>
+          <div className="text-center group">
+            <div className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-cuizly-accent transition-colors duration-300">
+              MTL
+            </div>
+            <div className="text-sm md:text-base text-cuizly-neutral mt-1">
+              Montréal & environs
+            </div>
           </div>
         </div>
       </div>
