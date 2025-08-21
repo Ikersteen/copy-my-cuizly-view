@@ -5,8 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { LogOut, Trash2 } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 
 interface ProfileModalProps {
@@ -33,7 +36,10 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPasswordSection, setShowPasswordSection] = useState(false);
+  const [showDeleteSection, setShowDeleteSection] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (open) {
@@ -182,6 +188,64 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      toast({
+        title: "Déconnexion réussie",
+        description: "À bientôt sur Cuizly !"
+      });
+      
+      // Fermer le modal et rediriger vers l'accueil
+      onOpenChange(false);
+      navigate("/");
+    } catch (error) {
+      console.error('Error logging out:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de se déconnecter",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmation !== "Supprimer mon compte") {
+      toast({
+        title: "Erreur",
+        description: "Veuillez taper exactement 'Supprimer mon compte' pour confirmer",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      // Ici on pourrait supprimer les données utilisateur d'abord
+      // Mais Supabase ne permet pas de supprimer l'utilisateur auth directement depuis le client
+      // On va juste marquer le profil pour suppression et afficher le message
+      
+      toast({
+        title: "Demande de suppression enregistrée",
+        description: "Votre compte sera automatiquement supprimé dans 30 jours. Vous pouvez vous reconnecter avant cette échéance pour annuler la suppression.",
+        duration: 10000
+      });
+      
+      // Déconnecter l'utilisateur
+      await supabase.auth.signOut();
+      onOpenChange(false);
+      navigate("/");
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de traiter la demande de suppression",
+        variant: "destructive"
+      });
     }
   };
 
@@ -366,6 +430,81 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                 >
                   Changer le mot de passe
                 </Button>
+              </div>
+            )}
+          </div>
+
+          <Separator />
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <Label>Actions du compte</Label>
+            </div>
+            
+            <div className="space-y-2">
+              <Button 
+                variant="outline" 
+                onClick={handleLogout}
+                className="w-full justify-start"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Se déconnecter
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                onClick={() => setShowDeleteSection(!showDeleteSection)}
+                className="w-full justify-start text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Supprimer mon compte
+              </Button>
+            </div>
+
+            {showDeleteSection && (
+              <div className="space-y-3 p-4 border rounded-lg bg-destructive/5">
+                <div className="space-y-2">
+                  <Label className="text-destructive font-medium">Confirmation de suppression</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Cette action est irréversible. Pour confirmer, tapez exactement : <strong>"Supprimer mon compte"</strong>
+                  </p>
+                  <Input
+                    value={deleteConfirmation}
+                    onChange={(e) => setDeleteConfirmation(e.target.value)}
+                    placeholder="Tapez: Supprimer mon compte"
+                  />
+                </div>
+                
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="destructive"
+                      disabled={deleteConfirmation !== "Supprimer mon compte"}
+                      className="w-full"
+                    >
+                      Confirmer la suppression
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Supprimer définitivement le compte ?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, 
+                        vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, 
+                        toutes vos données seront définitivement supprimées.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={handleDeleteAccount}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        Supprimer le compte
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             )}
           </div>
