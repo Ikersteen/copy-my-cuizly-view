@@ -23,7 +23,6 @@ interface Restaurant {
   price_range: string;
   is_active: boolean;
   logo_url: string;
-  cover_image_url?: string;
   delivery_radius: number;
 }
 
@@ -43,10 +42,8 @@ export const RestaurantProfileModal = ({
   const [formData, setFormData] = useState<Partial<Restaurant>>({});
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [uploadingCover, setUploadingCover] = useState(false);
   const [newCuisine, setNewCuisine] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const coverInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -62,7 +59,6 @@ export const RestaurantProfileModal = ({
         price_range: restaurant.price_range || "$$",
         is_active: restaurant.is_active ?? true,
         logo_url: restaurant.logo_url || "",
-        cover_image_url: restaurant.cover_image_url || "",
         delivery_radius: restaurant.delivery_radius || 5
       });
     }
@@ -99,7 +95,7 @@ export const RestaurantProfileModal = ({
     }
   };
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'cover' = 'logo') => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file || !restaurant?.id) return;
 
@@ -123,17 +119,13 @@ export const RestaurantProfileModal = ({
       return;
     }
 
-    if (type === 'logo') {
-      setUploading(true);
-    } else {
-      setUploadingCover(true);
-    }
+    setUploading(true);
     
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('No session');
 
-      const fileName = `${session.user.id}/${type}-${Date.now()}.${file.type.split('/')[1]}`;
+      const fileName = `${session.user.id}/logo-${Date.now()}.${file.type.split('/')[1]}`;
       
       const { error: uploadError } = await supabase.storage
         .from('restaurant-images')
@@ -145,15 +137,11 @@ export const RestaurantProfileModal = ({
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
-      if (type === 'logo') {
-        setFormData(prev => ({ ...prev, logo_url: data.publicUrl }));
-      } else {
-        setFormData(prev => ({ ...prev, cover_image_url: data.publicUrl }));
-      }
+      setFormData(prev => ({ ...prev, logo_url: data.publicUrl }));
       
       toast({
-        title: "Image uploadée",
-        description: `${type === 'logo' ? 'Le logo' : 'La photo de couverture'} a été mis à jour avec succès`
+        title: "Logo mis à jour",
+        description: "Le logo a été uploadé avec succès"
       });
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -163,11 +151,7 @@ export const RestaurantProfileModal = ({
         variant: "destructive"
       });
     } finally {
-      if (type === 'logo') {
-        setUploading(false);
-      } else {
-        setUploadingCover(false);
-      }
+      setUploading(false);
     }
   };
 
@@ -216,93 +200,53 @@ export const RestaurantProfileModal = ({
         <DialogHeader>
           <DialogTitle>Profil du restaurant</DialogTitle>
           <DialogDescription>
-            Modifiez les informations de votre restaurant, logo et photo de couverture
+            Modifiez les informations de votre restaurant et votre logo
           </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-6">
-          {/* Images Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Logo Upload */}
-            <div className="space-y-4">
-              <Label className="text-base font-medium">Logo du restaurant</Label>
-              <div className="flex flex-col items-center space-y-4">
-                <div className="relative">
-                  <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
-                    {formData.logo_url ? (
-                      <img 
-                        src={formData.logo_url} 
-                        alt="Logo"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <Camera className="h-8 w-8 text-muted-foreground" />
-                    )}
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploading}
-                  >
-                    <Upload className="h-4 w-4" />
-                  </Button>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleFileUpload(e, 'logo')}
-                    className="hidden"
-                  />
+        <div className="space-y-4">
+          {/* Logo Section */}
+          <div className="space-y-4">
+            <Label className="text-base font-medium">Logo du restaurant</Label>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
+                  {formData.logo_url ? (
+                    <img 
+                      src={formData.logo_url} 
+                      alt="Logo"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Camera className="h-8 w-8 text-muted-foreground" />
+                  )}
                 </div>
-                {uploading && (
-                  <p className="text-sm text-muted-foreground">Upload du logo...</p>
-                )}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                >
+                  <Upload className="h-4 w-4" />
+                </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
               </div>
-            </div>
-
-            {/* Cover Image Upload */}
-            <div className="space-y-4">
-              <Label className="text-base font-medium">Photo de couverture</Label>
-              <div className="flex flex-col items-center space-y-4">
-                <div className="relative w-full">
-                  <div className="w-full h-24 bg-muted rounded-lg flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
-                    {formData.cover_image_url ? (
-                      <img 
-                        src={formData.cover_image_url} 
-                        alt="Couverture"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <Camera className="h-8 w-8 text-muted-foreground" />
-                    )}
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
-                    onClick={() => coverInputRef.current?.click()}
-                    disabled={uploadingCover}
-                  >
-                    <Upload className="h-4 w-4" />
-                  </Button>
-                  <input
-                    ref={coverInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleFileUpload(e, 'cover')}
-                    className="hidden"
-                  />
-                </div>
-                {uploadingCover && (
-                  <p className="text-sm text-muted-foreground">Upload de la couverture...</p>
-                )}
-              </div>
+              {uploading && (
+                <p className="text-sm text-muted-foreground">Upload du logo...</p>
+              )}
             </div>
           </div>
 
-          {/* Basic Info */}
+          <Separator />
+
+          {/* Informations de base */}
           <div className="space-y-4">
             <div>
               <Label htmlFor="name">Nom du restaurant *</Label>
@@ -322,6 +266,16 @@ export const RestaurantProfileModal = ({
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 placeholder="Décrivez votre restaurant en quelques mots..."
                 rows={3}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="address">Adresse complète</Label>
+              <Input
+                id="address"
+                value={formData.address || ""}
+                onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
+                placeholder="123 Rue de la Paix, Montréal, QC"
               />
             </div>
 
@@ -345,16 +299,6 @@ export const RestaurantProfileModal = ({
                   placeholder="contact@restaurant.com"
                 />
               </div>
-            </div>
-
-            <div>
-              <Label htmlFor="address">Adresse complète</Label>
-              <Input
-                id="address"
-                value={formData.address || ""}
-                onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                placeholder="123 Rue de la Paix, Montréal, QC"
-              />
             </div>
           </div>
 
@@ -389,7 +333,7 @@ export const RestaurantProfileModal = ({
 
           <Separator />
 
-          {/* Settings */}
+          {/* Paramètres du restaurant */}
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -421,15 +365,34 @@ export const RestaurantProfileModal = ({
                 />
               </div>
             </div>
+          </div>
 
-            <div className="flex items-center justify-between">
-              <Label htmlFor="is_active">Restaurant actif</Label>
+          <Separator />
+
+          {/* Statut du restaurant */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+              <div className="space-y-1">
+                <Label htmlFor="is_active" className="text-base font-medium">
+                  Restaurant {formData.is_active ? "actif" : "inactif"}
+                </Label>
+                <p className="text-sm text-muted-foreground">
+                  {formData.is_active 
+                    ? "Votre restaurant apparaît dans les recherches des consommateurs" 
+                    : "Votre restaurant n'apparaît pas dans les recherches"}
+                </p>
+              </div>
               <Switch
                 id="is_active"
                 checked={formData.is_active ?? true}
                 onCheckedChange={(checked) => 
                   setFormData(prev => ({ ...prev, is_active: checked }))
                 }
+                className={`transition-all duration-300 ${
+                  formData.is_active 
+                    ? 'data-[state=checked]:bg-green-500 shadow-lg shadow-green-500/25' 
+                    : 'bg-red-200 shadow-lg shadow-red-500/25'
+                }`}
               />
             </div>
           </div>
