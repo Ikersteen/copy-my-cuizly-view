@@ -71,7 +71,7 @@ const Footer = () => {
             </div>
             
             <p className="text-cuizly-neutral text-xs">
-              © 2024 Cuizly Technologie Inc. Tous droits réservés.
+              © 2025 Cuizly Technologie Inc. Tous droits réservés.
             </p>
           </div>
         </div>
