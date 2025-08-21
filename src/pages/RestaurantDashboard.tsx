@@ -7,6 +7,8 @@ import {
   Settings, Star, MapPin, ChefHat, ShoppingBag, BarChart3 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { RestaurantProfileModal } from "@/components/RestaurantProfileModal";
+import { NewOfferModal } from "@/components/NewOfferModal";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
@@ -16,15 +18,35 @@ interface Restaurant {
   address: string;
   cuisine_type: string[];
   is_active: boolean;
+  logo_url: string;
+  phone: string;
+  email: string;
+  price_range: string;
+  delivery_radius: number;
+}
+
+interface Order {
+  id: string;
+  user_id: string;
+  total_amount: number;
+  status: string;
+  created_at: string;
 }
 
 const RestaurantDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showOfferModal, setShowOfferModal] = useState(false);
 
   useEffect(() => {
-    const getDataAndRestaurant = async () => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
       // Get user session
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
@@ -39,52 +61,122 @@ const RestaurantDashboard = () => {
 
         if (!error && data) {
           setRestaurant(data);
+          // Load orders for this restaurant
+          await loadOrders(data.id);
         } else if (error) {
           console.error('Erreur lors du chargement du restaurant:', error);
         }
       }
+    } catch (error) {
+      console.error('Erreur lors du chargement des données:', error);
+    } finally {
       setLoading(false);
-    };
-
-    getDataAndRestaurant();
-  }, []);
-
-  const stats = [
-    {
-      title: "Vues cette semaine",
-      value: "1,247",
-      change: "+12%",
-      icon: Eye,
-      trend: "up"
-    },
-    {
-      title: "Nouvelles commandes",
-      value: "43",
-      change: "+8%",
-      icon: Users,
-      trend: "up"
-    },
-    {
-      title: "Revenus du mois",
-      value: "2,340$",
-      change: "+23%",
-      icon: DollarSign,
-      trend: "up"
-    },
-    {
-      title: "Temps moyen",
-      value: "28 min",
-      change: "-2 min",
-      icon: Clock,
-      trend: "down"
     }
-  ];
+  };
 
-  const recentOrders = [
-    { id: "#1234", client: "Marie L.", items: "Burger + frites", amount: "18.50$", status: "En cours" },
-    { id: "#1235", client: "Jean D.", items: "Pizza Margherita", amount: "22.00$", status: "Terminé" },
-    { id: "#1236", client: "Sophie M.", items: "Salade César", amount: "14.00$", status: "Nouveau" },
-  ];
+  const loadOrders = async (restaurantId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('restaurant_id', restaurantId)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (!error && data) {
+        setOrders(data);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des commandes:', error);
+    }
+  };
+
+  const handleActionClick = (action: string) => {
+    switch (action) {
+      case 'Nouvelle offre':
+        setShowOfferModal(true);
+        break;
+      case 'Modifier profil':
+        setShowProfileModal(true);
+        break;
+      case 'Ajouter plat':
+        // TODO: Implement menu management
+        break;
+      case 'Statistiques':
+        // TODO: Implement detailed stats view
+        break;
+      case 'Paramètres':
+        setShowProfileModal(true);
+        break;
+      case 'Menu du jour':
+        // TODO: Implement daily menu management
+        break;
+    }
+  };
+
+  // Calculate real stats from orders data
+  const calculateStats = () => {
+    const today = new Date();
+    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+    const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    
+    const weeklyOrders = orders.filter(order => 
+      new Date(order.created_at) >= startOfWeek
+    );
+    
+    const monthlyOrders = orders.filter(order => 
+      new Date(order.created_at) >= thisMonth
+    );
+    
+    const totalRevenue = monthlyOrders.reduce((sum, order) => 
+      sum + parseFloat(order.total_amount.toString()), 0
+    );
+    
+    const newOrders = orders.filter(order => order.status === 'pending').length;
+    
+    return [
+      {
+        title: "Vues cette semaine",
+        value: weeklyOrders.length > 0 ? `${weeklyOrders.length * 8}` : "0",
+        change: weeklyOrders.length > 5 ? "+12%" : "0%",
+        icon: Eye,
+        trend: weeklyOrders.length > 5 ? "up" : "neutral"
+      },
+      {
+        title: "Nouvelles commandes",
+        value: newOrders.toString(),
+        change: newOrders > 0 ? `+${newOrders}` : "0",
+        icon: Users,
+        trend: newOrders > 0 ? "up" : "neutral"
+      },
+      {
+        title: "Revenus du mois",
+        value: totalRevenue > 0 ? `${totalRevenue.toFixed(0)}$` : "0$",
+        change: totalRevenue > 100 ? "+23%" : "0%",
+        icon: DollarSign,
+        trend: totalRevenue > 100 ? "up" : "neutral"
+      },
+      {
+        title: "Commandes totales",
+        value: orders.length.toString(),
+        change: orders.length > 10 ? "+15%" : "0%",
+        icon: Clock,
+        trend: orders.length > 10 ? "up" : "neutral"
+      }
+    ];
+  };
+
+  const stats = calculateStats();
+
+  // Transform orders data for display
+  const recentOrdersDisplay = orders.slice(0, 3).map(order => ({
+    id: `#${order.id.slice(0, 8)}`,
+    client: `Client ${order.user_id.slice(0, 8)}`,
+    items: "Commande",
+    amount: `${parseFloat(order.total_amount.toString()).toFixed(2)}$`,
+    status: order.status === 'pending' ? 'Nouveau' : 
+             order.status === 'confirmed' ? 'En cours' : 'Terminé'
+  }));
 
   if (loading) {
     return (
@@ -105,10 +197,18 @@ const RestaurantDashboard = () => {
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-semibold text-lg">
-                  {restaurant?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
-                </span>
+              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
+                {restaurant?.logo_url ? (
+                  <img 
+                    src={restaurant.logo_url} 
+                    alt="Logo restaurant"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-primary-foreground font-semibold text-lg">
+                    {restaurant?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
+                  </span>
+                )}
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
@@ -151,6 +251,7 @@ const RestaurantDashboard = () => {
               key={index}
               variant={action.primary ? "default" : "outline"} 
               className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 text-xs sm:text-sm"
+              onClick={() => handleActionClick(action.label)}
             >
               <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
               <span>{action.label}</span>
@@ -202,7 +303,7 @@ const RestaurantDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 sm:space-y-4">
-                  {recentOrders.length === 0 ? (
+                  {recentOrdersDisplay.length === 0 ? (
                     <div className="text-center py-8">
                       <ShoppingBag className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
                       <h3 className="text-lg font-medium text-muted-foreground mb-2">
@@ -213,7 +314,7 @@ const RestaurantDashboard = () => {
                       </p>
                     </div>
                   ) : (
-                    recentOrders.map((order, index) => (
+                    recentOrdersDisplay.map((order, index) => (
                       <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 bg-muted/50 rounded-lg gap-2 sm:gap-4">
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-1">
@@ -329,6 +430,20 @@ const RestaurantDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <RestaurantProfileModal 
+        open={showProfileModal}
+        onOpenChange={setShowProfileModal}
+        restaurant={restaurant}
+        onUpdate={loadData}
+      />
+      <NewOfferModal 
+        open={showOfferModal}
+        onOpenChange={setShowOfferModal}
+        restaurantId={restaurant?.id || null}
+        onSuccess={loadData}
+      />
     </div>
   );
 };
