@@ -56,11 +56,8 @@ export default {
 					primary: 'hsl(var(--cuizly-primary))',
 					'primary-light': 'hsl(var(--cuizly-primary-light))',
 					accent: 'hsl(var(--cuizly-accent))',
-					'accent-light': 'hsl(var(--cuizly-accent-light))',
-					secondary: 'hsl(var(--cuizly-secondary))',
-					'secondary-light': 'hsl(var(--cuizly-secondary-light))',
-					forest: 'hsl(var(--cuizly-forest))',
-					'forest-light': 'hsl(var(--cuizly-forest-light))'
+					neutral: 'hsl(var(--cuizly-neutral))',
+					surface: 'hsl(var(--cuizly-surface))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

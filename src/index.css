@@ -9,54 +9,50 @@ All colors MUST be HSL.
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 215 25% 27%;
+    --foreground: 220 15% 25%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 27%;
+    --card-foreground: 220 15% 25%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 27%;
+    --popover-foreground: 220 15% 25%;
 
-    --primary: 220 100% 25%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 220 100% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 13% 91%;
-    --secondary-foreground: 215 25% 27%;
+    --secondary: 220 10% 96%;
+    --secondary-foreground: 220 15% 25%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    --muted: 220 10% 96%;
+    --muted-foreground: 220 8% 46%;
 
-    --accent: 220 13% 91%;
-    --accent-foreground: 215 25% 27%;
+    --accent: 220 10% 96%;
+    --accent-foreground: 220 15% 25%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 220 100% 25%;
+    --ring: 220 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 8px;
 
-    /* Cuizly Quebec inspired colors */
-    --cuizly-primary: 220 100% 25%;        /* Quebec blue */
-    --cuizly-primary-light: 220 60% 50%;   /* Lighter Quebec blue */
-    --cuizly-accent: 25 85% 53%;           /* Maple orange */
-    --cuizly-accent-light: 25 70% 65%;     /* Lighter maple */
-    --cuizly-secondary: 0 75% 55%;         /* Quebec red */
-    --cuizly-secondary-light: 0 60% 70%;   /* Lighter red */
-    --cuizly-forest: 140 30% 35%;          /* Quebec forest green */
-    --cuizly-forest-light: 140 25% 50%;    /* Lighter forest */
+    /* Cuizly minimalist Quebec colors */
+    --cuizly-primary: 220 100% 50%;        /* Clean Quebec blue */
+    --cuizly-primary-light: 220 30% 70%;   /* Subtle blue */
+    --cuizly-accent: 25 85% 53%;           /* Maple accent (minimal use) */
+    --cuizly-neutral: 220 8% 46%;          /* Neutral gray */
+    --cuizly-surface: 220 10% 98%;         /* Almost white surface */
     
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(220 100% 96%), hsl(220 50% 98%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 30% 97%));
-    --gradient-quebec: linear-gradient(135deg, hsl(220 100% 25%), hsl(220 80% 35%));
+    /* Minimalist gradients */
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%), hsl(220 20% 99%));
+    --gradient-card: hsl(0 0% 100%);
     
-    /* Shadows */
-    --shadow-soft: 0 2px 8px -2px hsl(220 100% 25% / 0.08);
-    --shadow-card: 0 4px 12px -4px hsl(220 100% 25% / 0.15);
-    --shadow-elevated: 0 8px 24px -8px hsl(220 100% 25% / 0.2);
+    /* Subtle shadows */
+    --shadow-soft: 0 1px 3px 0 hsl(220 15% 25% / 0.05);
+    --shadow-card: 0 4px 6px -1px hsl(220 15% 25% / 0.05), 0 2px 4px -1px hsl(220 15% 25% / 0.03);
+    --shadow-elevated: 0 10px 15px -3px hsl(220 15% 25% / 0.08), 0 4px 6px -2px hsl(220 15% 25% / 0.03);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
