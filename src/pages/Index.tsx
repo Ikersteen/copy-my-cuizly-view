@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import HeroSection from "@/components/HeroSection";
+import MarketOpportunitySection from "@/components/MarketOpportunitySection";
+import TractionSection from "@/components/TractionSection";
+import BusinessModelSection from "@/components/BusinessModelSection";
+import TeamSection from "@/components/TeamSection";
+import FundingSection from "@/components/FundingSection";
 import MissionVisionSection from "@/components/MissionVisionSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import CTASection from "@/components/CTASection";
@@ -37,6 +42,11 @@ const Index = () => {
           <PersonalizedRecommendations />
         </>
       )}
+      <MarketOpportunitySection />
+      <TractionSection />
+      <BusinessModelSection />
+      <TeamSection />
+      <FundingSection />
       <MissionVisionSection />
       <HowItWorksSection />
       <CTASection />
