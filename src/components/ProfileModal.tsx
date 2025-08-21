@@ -81,27 +81,41 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   };
 
   const handleSave = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('No user found, cannot save profile');
+      return;
+    }
     
     console.log('Saving profile with data:', profile);
+    console.log('User ID:', user.id);
     setLoading(true);
+    
     try {
+      const updateData = {
+        user_id: user.id,
+        first_name: profile.first_name,
+        last_name: profile.last_name,
+        phone: profile.phone,
+        username: profile.username
+      };
+      
+      console.log('Update data:', updateData);
+      
       const { data, error } = await supabase
         .from('profiles')
-        .upsert({
-          user_id: user.id,
-          first_name: profile.first_name,
-          last_name: profile.last_name,
-          phone: profile.phone,
-          username: profile.username
-        })
+        .upsert(updateData)
         .select()
         .single();
 
       console.log('Upsert result:', { data, error });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
+      console.log('Profile saved successfully:', data);
+      
       toast({
         title: "Profil mis à jour",
         description: "Vos informations ont été sauvegardées"

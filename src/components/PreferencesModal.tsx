@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -47,19 +47,27 @@ const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 
 export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) => {
   const { preferences, updatePreferences } = useUserPreferences();
-  const [localPrefs, setLocalPrefs] = useState<Partial<UserPreferences>>({
-    cuisine_preferences: preferences?.cuisine_preferences || [],
-    dietary_restrictions: preferences?.dietary_restrictions || [],
-    allergens: preferences?.allergens || [],
-    price_range: preferences?.price_range || "$$",
-    street: preferences?.street || "",
-    delivery_radius: preferences?.delivery_radius || 10,
-    favorite_meal_times: preferences?.favorite_meal_times || [],
-    notification_preferences: preferences?.notification_preferences || { push: true, email: true }
-  });
+  const [localPrefs, setLocalPrefs] = useState<Partial<UserPreferences>>({});
 
-  const handleSave = () => {
-    updatePreferences(localPrefs);
+  // Réinitialiser les préférences locales à chaque ouverture du modal
+  useEffect(() => {
+    if (open && preferences) {
+      setLocalPrefs({
+        cuisine_preferences: preferences.cuisine_preferences || [],
+        dietary_restrictions: preferences.dietary_restrictions || [],
+        allergens: preferences.allergens || [],
+        price_range: preferences.price_range || "$$",
+        street: preferences.street || "",
+        delivery_radius: preferences.delivery_radius || 10,
+        favorite_meal_times: preferences.favorite_meal_times || [],
+        notification_preferences: preferences.notification_preferences || { push: true, email: true }
+      });
+    }
+  }, [open, preferences]);
+
+  const handleSave = async () => {
+    console.log('Saving preferences:', localPrefs);
+    await updatePreferences(localPrefs);
     onOpenChange(false);
   };
 

@@ -17,7 +17,6 @@ export interface FilterOptions {
   cuisines: string[];
   priceRange: string[];
   rating: number;
-  deliveryTime: number;
   distance: number;
 }
 
@@ -34,7 +33,6 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
     cuisines: [],
     priceRange: [],
     rating: 0,
-    deliveryTime: 60,
     distance: 15
   });
 
@@ -48,7 +46,6 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
       cuisines: [],
       priceRange: [],
       rating: 0,
-      deliveryTime: 60,
       distance: 15
     });
   };
@@ -136,27 +133,6 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
             <div className="flex justify-between text-xs text-muted-foreground mt-1">
               <span>0 ⭐</span>
               <span>5 ⭐</span>
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Temps de livraison */}
-          <div>
-            <Label className="text-base font-medium">
-              Temps de livraison max: {filters.deliveryTime} min
-            </Label>
-            <Slider
-              value={[filters.deliveryTime]}
-              onValueChange={([value]) => setFilters(prev => ({ ...prev, deliveryTime: value }))}
-              max={120}
-              min={15}
-              step={15}
-              className="mt-3"
-            />
-            <div className="flex justify-between text-xs text-muted-foreground mt-1">
-              <span>15 min</span>
-              <span>120 min</span>
             </div>
           </div>
 

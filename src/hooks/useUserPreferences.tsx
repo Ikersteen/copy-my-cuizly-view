@@ -38,7 +38,38 @@ export const useUserPreferences = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    let realtimeChannel: any;
+    
+    const setupRealtime = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        realtimeChannel = supabase
+          .channel('user-preferences-changes')
+          .on(
+            'postgres_changes',
+            {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'user_preferences',
+              filter: `user_id=eq.${session.user.id}`
+            },
+            (payload) => {
+              console.log('Preferences updated in real-time:', payload.new);
+              setPreferences(payload.new as UserPreferences);
+            }
+          )
+          .subscribe();
+      }
+    };
+
     loadPreferences();
+    setupRealtime();
+
+    return () => {
+      if (realtimeChannel) {
+        supabase.removeChannel(realtimeChannel);
+      }
+    };
   }, []);
 
   const loadPreferences = async () => {
@@ -99,9 +130,14 @@ export const useUserPreferences = () => {
   };
 
   const updatePreferences = async (updates: Partial<UserPreferences>) => {
-    if (!preferences) return;
+    if (!preferences?.id) return;
 
+    console.log('Updating preferences with:', updates);
+    
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
       const { data, error } = await supabase
         .from('user_preferences')
         .update(updates)
@@ -111,6 +147,9 @@ export const useUserPreferences = () => {
 
       if (error) throw error;
 
+      console.log('Preferences updated successfully:', data);
+      
+      // Update local state immediately
       setPreferences({
         ...data,
         notification_preferences: data.notification_preferences as any || {
@@ -118,6 +157,7 @@ export const useUserPreferences = () => {
           email: true
         }
       });
+      
       toast({
         title: "Préférences mises à jour",
         description: "Vos préférences ont été sauvegardées avec succès"
