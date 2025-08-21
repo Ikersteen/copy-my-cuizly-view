@@ -136,10 +136,10 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-3 sm:p-4">
       <div className="w-full max-w-md">
         {/* Back to home */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Retour à l'accueil
@@ -147,31 +147,31 @@ const Auth = () => {
         </div>
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <div className="w-12 h-12 bg-foreground rounded-full flex items-center justify-center">
-              <span className="text-background font-bold text-lg">C</span>
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="flex items-center justify-center space-x-2 mb-4 sm:mb-6">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-foreground rounded-full flex items-center justify-center">
+              <span className="text-background font-bold text-base sm:text-lg">C</span>
             </div>
-            <span className="text-2xl font-bold">Cuizly</span>
+            <span className="text-xl sm:text-2xl font-bold">Cuizly</span>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Rejoignez Cuizly</h1>
-          <p className="text-cuizly-neutral text-lg">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Rejoignez Cuizly</h1>
+          <p className="text-cuizly-neutral text-base sm:text-lg px-2 sm:px-0">
             Ton prochain coup de cœur culinaire en un swipe
           </p>
         </div>
 
         <Card className="shadow-card border border-border">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="signin">Connexion</TabsTrigger>
-                <TabsTrigger value="signup">Inscription</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-4 sm:mb-6">
+                <TabsTrigger value="signin" className="text-sm">Connexion</TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm">Inscription</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="signin" className="space-y-4">
-                <form onSubmit={handleSignIn} className="space-y-4">
+              <TabsContent value="signin" className="space-y-3 sm:space-y-4">
+                <form onSubmit={handleSignIn} className="space-y-3 sm:space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
+                    <Label htmlFor="signin-email" className="text-sm">Email</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
@@ -179,14 +179,14 @@ const Auth = () => {
                         name="email"
                         type="email"
                         placeholder="votre@email.com"
-                        className="pl-10"
+                        className="pl-10 text-sm"
                         required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signin-password">Mot de passe</Label>
+                    <Label htmlFor="signin-password" className="text-sm">Mot de passe</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
@@ -194,13 +194,13 @@ const Auth = () => {
                         name="password"
                         type="password"
                         placeholder="••••••••"
-                        className="pl-10"
+                        className="pl-10 text-sm"
                         required
                       />
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button type="submit" className="w-full text-sm" disabled={isLoading}>
                     {isLoading ? "Connexion..." : "Se connecter"}
                   </Button>
                 </form>
@@ -214,10 +214,10 @@ const Auth = () => {
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <Button 
                     variant="outline" 
-                    className="w-full" 
+                    className="w-full text-sm" 
                     onClick={handleGoogleAuth}
                     type="button"
                   >
@@ -225,7 +225,7 @@ const Auth = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full" 
+                    className="w-full text-sm" 
                     onClick={handleAppleAuth}
                     type="button"
                   >
@@ -234,10 +234,10 @@ const Auth = () => {
                 </div>
               </TabsContent>
 
-              <TabsContent value="signup" className="space-y-4">
-                <form onSubmit={handleSignUp} className="space-y-4">
+              <TabsContent value="signup" className="space-y-3 sm:space-y-4">
+                <form onSubmit={handleSignUp} className="space-y-3 sm:space-y-4">
                   <div className="space-y-3">
-                    <Label>Je suis</Label>
+                    <Label className="text-sm">Je suis</Label>
                     <RadioGroup
                       value={userType}
                       onValueChange={(value: 'consumer' | 'restaurant_owner') => setUserType(value)}
@@ -245,13 +245,13 @@ const Auth = () => {
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="consumer" id="consumer" />
-                        <Label htmlFor="consumer" className="text-sm cursor-pointer">
+                        <Label htmlFor="consumer" className="text-xs sm:text-sm cursor-pointer">
                           Consommateur
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="restaurant_owner" id="restaurant_owner" />
-                        <Label htmlFor="restaurant_owner" className="text-sm cursor-pointer">
+                        <Label htmlFor="restaurant_owner" className="text-xs sm:text-sm cursor-pointer">
                           Restaurateur
                         </Label>
                       </div>
@@ -259,14 +259,14 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Nom complet</Label>
+                    <Label htmlFor="fullName" className="text-sm">Nom complet</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
                         id="fullName"
                         name="fullName"
                         placeholder="John Doe"
-                        className="pl-10"
+                        className="pl-10 text-sm"
                         required
                       />
                     </div>
@@ -274,14 +274,14 @@ const Auth = () => {
 
                   {userType === 'restaurant_owner' && (
                     <div className="space-y-2">
-                      <Label htmlFor="restaurantName">Nom du restaurant</Label>
+                      <Label htmlFor="restaurantName" className="text-sm">Nom du restaurant</Label>
                       <div className="relative">
                         <Building className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                         <Input
                           id="restaurantName"
                           name="restaurantName"
                           placeholder="Mon Restaurant"
-                          className="pl-10"
+                          className="pl-10 text-sm"
                           required={userType === 'restaurant_owner'}
                         />
                       </div>
@@ -289,7 +289,7 @@ const Auth = () => {
                   )}
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
+                    <Label htmlFor="signup-email" className="text-sm">Email</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
@@ -297,14 +297,14 @@ const Auth = () => {
                         name="email"
                         type="email"
                         placeholder="votre@email.com"
-                        className="pl-10"
+                        className="pl-10 text-sm"
                         required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Mot de passe</Label>
+                    <Label htmlFor="signup-password" className="text-sm">Mot de passe</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
@@ -312,14 +312,14 @@ const Auth = () => {
                         name="password"
                         type="password"
                         placeholder="••••••••"
-                        className="pl-10"
+                        className="pl-10 text-sm"
                         minLength={6}
                         required
                       />
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button type="submit" className="w-full text-sm" disabled={isLoading}>
                     {isLoading ? "Création..." : "Créer mon compte"}
                   </Button>
                 </form>
@@ -333,10 +333,10 @@ const Auth = () => {
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <Button 
                     variant="outline" 
-                    className="w-full" 
+                    className="w-full text-sm" 
                     onClick={handleGoogleAuth}
                     type="button"
                   >
@@ -344,7 +344,7 @@ const Auth = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full" 
+                    className="w-full text-sm" 
                     onClick={handleAppleAuth}
                     type="button"
                   >
@@ -356,7 +356,7 @@ const Auth = () => {
           </CardContent>
         </Card>
 
-        <div className="text-center text-xs text-cuizly-neutral mt-6 space-y-2">
+        <div className="text-center text-xs text-cuizly-neutral mt-4 sm:mt-6 space-y-2 px-2">
           <p>
             En vous inscrivant, vous acceptez nos{" "}
             <Link to="/terms" className="underline hover:no-underline">
