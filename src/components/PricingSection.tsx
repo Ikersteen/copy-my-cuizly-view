@@ -59,25 +59,25 @@ const PricingSection = () => {
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-cuizly-primary mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Des tarifs pensés pour tous
           </h2>
-          <p className="text-lg text-cuizly-primary-light max-w-3xl mx-auto">
+          <p className="text-lg text-cuizly-neutral max-w-3xl mx-auto">
             Une offre gratuite pour les gourmets, des solutions professionnelles abordables pour les restaurateurs. Commencez dès aujourd'hui !
           </p>
         </div>
 
         {/* Consumer Section */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold text-cuizly-primary mb-6">Pour les consommateurs</h3>
-          <Card className="max-w-md bg-gradient-card shadow-card border-2 border-cuizly-accent/20 relative">
+          <h3 className="text-xl font-semibold text-foreground mb-6">Pour les consommateurs</h3>
+          <Card className="max-w-md bg-background/60 backdrop-blur-sm shadow-card border border-border/50 relative">
             <Badge className="absolute -top-3 left-6 bg-cuizly-accent text-white">
               Populaire
             </Badge>
             <div className="p-8">
-              <h4 className="text-xl font-bold text-cuizly-primary mb-2">{plans[0].title}</h4>
-              <p className="text-muted-foreground mb-4">{plans[0].subtitle}</p>
-              <div className="text-3xl font-bold text-cuizly-primary mb-6">{plans[0].price}</div>
+              <h4 className="text-xl font-bold text-foreground mb-2">{plans[0].title}</h4>
+              <p className="text-cuizly-neutral mb-4">{plans[0].subtitle}</p>
+              <div className="text-3xl font-bold text-foreground mb-6">{plans[0].price}</div>
               
               <ul className="space-y-3 mb-8">
                 {plans[0].features.map((feature, index) => (
@@ -97,17 +97,17 @@ const PricingSection = () => {
 
         {/* Restaurant Section */}
         <div>
-          <h3 className="text-xl font-semibold text-cuizly-primary mb-6">Pour les restaurateurs</h3>
+          <h3 className="text-xl font-semibold text-foreground mb-6">Pour les restaurateurs</h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {plans.slice(1).map((plan, index) => (
-              <Card key={index} className="p-8 bg-gradient-card shadow-card hover:shadow-elevated transition-all duration-300">
-                <h4 className="text-xl font-bold text-cuizly-primary mb-2">{plan.title}</h4>
-                <p className="text-muted-foreground mb-4">{plan.subtitle}</p>
+              <Card key={index} className="p-8 bg-background/60 backdrop-blur-sm shadow-card border border-border/50 hover:shadow-elevated transition-all duration-300">
+                <h4 className="text-xl font-bold text-foreground mb-2">{plan.title}</h4>
+                <p className="text-cuizly-neutral mb-4">{plan.subtitle}</p>
                 
                 <div className="mb-6">
-                  <div className="text-3xl font-bold text-cuizly-primary">{plan.price}</div>
+                  <div className="text-3xl font-bold text-foreground">{plan.price}</div>
                   {plan.priceNote && (
-                    <div className="text-sm text-cuizly-accent-light">{plan.priceNote}</div>
+                    <div className="text-sm text-cuizly-accent">{plan.priceNote}</div>
                   )}
                 </div>
                 
