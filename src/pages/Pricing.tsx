@@ -75,9 +75,9 @@ const Pricing = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
-            <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-cuizly-primary' : ''}`}>
+            <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''}`}>
               {plan.popular && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-cuizly-primary text-white">
+                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-foreground text-background">
                   Populaire
                 </Badge>
               )}
@@ -93,13 +93,13 @@ const Pricing = () => {
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start space-x-3">
-                      <Check className="h-4 w-4 text-cuizly-primary mt-1 flex-shrink-0" />
+                      <Check className="h-4 w-4 text-foreground mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">{feature}</span>
                     </li>
                   ))}
                 </ul>
                 <Link to="/auth">
-                  <Button className="w-full bg-cuizly-primary hover:bg-cuizly-primary/90 text-white">
+                  <Button className="w-full bg-foreground hover:bg-foreground/90 text-background">
                     {plan.cta}
                   </Button>
                 </Link>

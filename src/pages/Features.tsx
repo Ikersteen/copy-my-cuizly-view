@@ -63,7 +63,7 @@ const Features = () => {
               <Card key={index} className="shadow-card border border-border">
                 <CardHeader>
                   <div className="w-12 h-12 bg-cuizly-surface rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="h-6 w-6 text-cuizly-primary" />
+                    <Icon className="h-6 w-6 text-foreground" />
                   </div>
                   <CardTitle className="text-lg font-semibold text-foreground">
                     {feature.title}

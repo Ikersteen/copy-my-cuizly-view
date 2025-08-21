@@ -17,7 +17,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 9%;
 
-    --primary: 220 100% 50%;
+    --primary: 0 0% 9%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -34,22 +34,14 @@ All colors MUST be HSL.
 
     --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 220 100% 50%;
+    --ring: 0 0% 9%;
 
     --radius: 8px;
 
-    /* Cuizly ultra minimal colors */
-    --cuizly-primary: 220 100% 50%;
+    /* Cuizly ultra minimal colors - all black and white */
+    --cuizly-primary: 0 0% 9%;
     --cuizly-neutral: 0 0% 45%;
     --cuizly-surface: 0 0% 98%;
-    
-    /* Minimal gradients */
-    --gradient-hero: hsl(0 0% 100%);
-    
-    /* Ultra subtle shadows */
-    --shadow-soft: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
-    --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow-elevated: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

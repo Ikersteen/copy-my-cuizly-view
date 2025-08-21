@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useRestaurantCount } from "@/hooks/useRestaurantCount";
 
 const HeroSection = () => {
+  const restaurantCount = useRestaurantCount();
+
   return (
     <section className="bg-background py-20">
       <div className="max-w-4xl mx-auto px-6 text-center">
@@ -35,7 +38,7 @@ const HeroSection = () => {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-8 max-w-md mx-auto mt-16">
           <div className="text-center">
-            <div className="text-2xl font-bold text-foreground">1+</div>
+            <div className="text-2xl font-bold text-foreground">{restaurantCount}+</div>
             <div className="text-sm text-cuizly-neutral">Restaurants</div>
           </div>
           <div className="text-center">

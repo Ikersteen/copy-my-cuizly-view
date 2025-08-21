@@ -1,7 +1,18 @@
+import { ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
+import Footer from "@/components/Footer";
+
 const Privacy = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-6 py-16">
+        <div className="mb-6">
+          <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Retour à l'accueil
+          </Link>
+        </div>
+        
         <h1 className="text-4xl font-bold text-foreground mb-8">
           Politique de confidentialité
         </h1>
@@ -67,6 +78,7 @@ const Privacy = () => {
           </section>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

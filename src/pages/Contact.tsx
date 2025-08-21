@@ -70,7 +70,7 @@ const Contact = () => {
                       required 
                     />
                   </div>
-                  <Button type="submit" className="w-full bg-cuizly-primary hover:bg-cuizly-primary/90 text-white">
+                  <Button type="submit" className="w-full bg-foreground hover:bg-foreground/90 text-background">
                     Envoyer le message
                   </Button>
                 </form>
@@ -86,7 +86,7 @@ const Contact = () => {
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="w-10 h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                    <Mail className="h-5 w-5 text-cuizly-primary" />
+                    <Mail className="h-5 w-5 text-foreground" />
                   </div>
                   <div>
                     <h3 className="font-medium text-foreground">Email</h3>
@@ -96,7 +96,7 @@ const Contact = () => {
                 
                 <div className="flex items-start space-x-4">
                   <div className="w-10 h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                    <MapPin className="h-5 w-5 text-cuizly-primary" />
+                    <MapPin className="h-5 w-5 text-foreground" />
                   </div>
                   <div>
                     <h3 className="font-medium text-foreground">Adresse</h3>
@@ -106,7 +106,7 @@ const Contact = () => {
                 
                 <div className="flex items-start space-x-4">
                   <div className="w-10 h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                    <Phone className="h-5 w-5 text-cuizly-primary" />
+                    <Phone className="h-5 w-5 text-foreground" />
                   </div>
                   <div>
                     <h3 className="font-medium text-foreground">Téléphone</h3>
