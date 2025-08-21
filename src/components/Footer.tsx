@@ -49,6 +49,27 @@ const Footer = () => {
             <p className="text-cuizly-neutral text-sm italic">
               Ton prochain coup de cœur culinaire en un swipe
             </p>
+            
+            {/* Social Links */}
+            <div className="flex items-center space-x-6">
+              <a 
+                href="https://www.instagram.com/cuizly?igsh=MXB4MXRuN3hkM2o4dg%3D%3D&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cuizly-neutral hover:text-foreground transition-colors"
+              >
+                <span className="text-sm">Instagram</span>
+              </a>
+              <a 
+                href="https://www.linkedin.com/company/cuizly"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cuizly-neutral hover:text-foreground transition-colors"
+              >
+                <span className="text-sm">LinkedIn</span>
+              </a>
+            </div>
+            
             <p className="text-cuizly-neutral text-xs">
               © 2024 Cuizly Technologie Inc. Tous droits réservés.
             </p>
