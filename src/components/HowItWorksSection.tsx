@@ -6,13 +6,13 @@ const HowItWorksSection = () => {
   const steps = [
     {
       icon: Smartphone,
-      title: "Téléchargez l'app",
-      description: "Disponible bientôt sur iOS et Android. Créez votre profil en quelques secondes."
+      title: "Rejoignez Cuizly dès aujourd'hui",
+      description: "L'inscription est rapide et gratuite : indiquez vos préférences culinaires, et notre IA vous proposera instantanément les meilleures adresses à Montréal."
     },
     {
       icon: MapPin,
-      title: "Explorez Montréal",
-      description: "Découvrez les restaurants près de vous avec notre carte interactive."
+      title: "Repérez. Découvrez. Régalez-vous.",
+      description: "Découvrez en temps réel les meilleures adresses culinaires de Montréal autour de vous."
     },
     {
       icon: Star,
@@ -36,8 +36,8 @@ const HowItWorksSection = () => {
               Comment ça fonctionne ?
             </h2>
             <p className="text-lg text-cuizly-neutral mb-12 leading-relaxed">
-              Notre intelligence artificielle révolutionne la façon de découvrir 
-              les meilleures adresses culinaires à Montréal.
+              Fini les recherches interminables : notre IA vous guide vers les meilleures adresses de Montréal, 
+              simples, personnalisées et selon vos préférences culinaires.
             </p>
 
             <div className="space-y-6">

@@ -18,10 +18,6 @@ const CTASection = () => {
 
       {/* Content */}
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-        <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 mb-8">
-          <Bell className="h-5 w-5 mr-2 text-cuizly-accent" />
-          <span className="text-sm font-medium">Lancement prévu début 2025</span>
-        </div>
 
         <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
           Prêt à révolutionner votre<br />
@@ -46,9 +42,6 @@ const CTASection = () => {
           </Link>
 
           <div className="text-center sm:text-left">
-            <div className="text-sm text-white/80 mb-1">
-              Déjà <span className="font-semibold text-cuizly-accent">500+</span> restaurants partenaires
-            </div>
             <div className="text-xs text-white/70">
               Inscription gratuite • Sans engagement
             </div>
