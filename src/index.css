@@ -110,4 +110,14 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Allow copy-paste everywhere */
+  * {
+    user-select: text !important;
+  }
+
+  /* Reset user-select for interactive elements */
+  button, input, select, textarea {
+    user-select: auto;
+  }
 }
