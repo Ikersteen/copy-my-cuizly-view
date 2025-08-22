@@ -21,6 +21,7 @@ interface Restaurant {
   email: string;
   cuisine_type: string[];
   logo_url: string;
+  cover_image_url?: string;
 }
 
 interface RestaurantProfileModalProps {
@@ -39,10 +40,12 @@ export const RestaurantProfileModal = ({
   const [formData, setFormData] = useState<Partial<Restaurant>>({});
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
   const [newCuisine, setNewCuisine] = useState("");
   const [showDeleteSection, setShowDeleteSection] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -55,7 +58,8 @@ export const RestaurantProfileModal = ({
         phone: restaurant.phone || "",
         email: restaurant.email || "",
         cuisine_type: restaurant.cuisine_type || [],
-        logo_url: restaurant.logo_url || ""
+        logo_url: restaurant.logo_url || "",
+        cover_image_url: restaurant.cover_image_url || ""
       });
     }
   }, [restaurant, open]);
@@ -91,7 +95,7 @@ export const RestaurantProfileModal = ({
     }
   };
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'cover') => {
     const file = event.target.files?.[0];
     if (!file || !restaurant?.id) return;
 
@@ -115,13 +119,17 @@ export const RestaurantProfileModal = ({
       return;
     }
 
-    setUploading(true);
+    if (type === 'cover') {
+      setUploadingCover(true);
+    } else {
+      setUploading(true);
+    }
     
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('No session');
 
-      const fileName = `${session.user.id}/logo-${Date.now()}.${file.type.split('/')[1]}`;
+      const fileName = `${session.user.id}/${type}-${Date.now()}.${file.type.split('/')[1]}`;
       
       const { error: uploadError } = await supabase.storage
         .from('restaurant-images')
@@ -133,11 +141,15 @@ export const RestaurantProfileModal = ({
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
-      setFormData(prev => ({ ...prev, logo_url: data.publicUrl }));
+      if (type === 'cover') {
+        setFormData(prev => ({ ...prev, cover_image_url: data.publicUrl }));
+      } else {
+        setFormData(prev => ({ ...prev, logo_url: data.publicUrl }));
+      }
       
       toast({
-        title: "Logo mis à jour",
-        description: "Le logo a été uploadé avec succès"
+        title: type === 'cover' ? "Photo de couverture mise à jour" : "Logo mis à jour",
+        description: type === 'cover' ? "La photo de couverture a été uploadée avec succès" : "Le logo a été uploadé avec succès"
       });
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -147,7 +159,11 @@ export const RestaurantProfileModal = ({
         variant: "destructive"
       });
     } finally {
-      setUploading(false);
+      if (type === 'cover') {
+        setUploadingCover(false);
+      } else {
+        setUploading(false);
+      }
     }
   };
 
@@ -241,11 +257,52 @@ export const RestaurantProfileModal = ({
         <DialogHeader>
           <DialogTitle>Profil du restaurant</DialogTitle>
           <DialogDescription>
-            Modifiez les informations de votre restaurant et votre logo
+            Modifiez les informations de votre restaurant, votre logo et votre photo de couverture
           </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">
+          {/* Cover Image Section */}
+          <div className="space-y-4">
+            <Label className="text-base font-medium">Photo de couverture</Label>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="relative">
+                <div className="w-full h-32 rounded-lg bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
+                  {formData.cover_image_url ? (
+                    <img 
+                      src={formData.cover_image_url} 
+                      alt="Photo de couverture"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Camera className="h-8 w-8 text-muted-foreground" />
+                  )}
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
+                  onClick={() => coverInputRef.current?.click()}
+                  disabled={uploadingCover}
+                >
+                  <Upload className="h-4 w-4" />
+                </Button>
+                <input
+                  ref={coverInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleFileUpload(e, 'cover')}
+                  className="hidden"
+                />
+              </div>
+              {uploadingCover && (
+                <p className="text-sm text-muted-foreground">Upload de la photo de couverture...</p>
+              )}
+            </div>
+          </div>
+
+          <Separator />
+
           {/* Logo Section */}
           <div className="space-y-4">
             <Label className="text-base font-medium">Logo du restaurant</Label>
@@ -275,7 +332,7 @@ export const RestaurantProfileModal = ({
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  onChange={handleFileUpload}
+                  onChange={(e) => handleFileUpload(e, 'logo')}
                   className="hidden"
                 />
               </div>
