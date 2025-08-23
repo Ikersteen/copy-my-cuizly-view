@@ -14,6 +14,7 @@ interface Menu {
   id: string;
   image_url: string;
   description: string;
+  cuisine_type: string;
   is_active: boolean;
 }
 
@@ -28,7 +29,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [newMenu, setNewMenu] = useState({ description: "", image_url: "" });
+  const [newMenu, setNewMenu] = useState({ description: "", image_url: "", cuisine_type: "" });
   const { toast } = useToast();
 
   useEffect(() => {
@@ -97,10 +98,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
   };
 
   const handleAddMenu = async () => {
-    if (!restaurantId || !newMenu.image_url || !newMenu.description.trim()) {
+    if (!restaurantId || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim()) {
       toast({
         title: "Erreur",
-        description: "Veuillez ajouter une image et une description",
+        description: "Veuillez ajouter une image, une description et un type de cuisine",
         variant: "destructive"
       });
       return;
@@ -122,12 +123,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
         .insert({
           restaurant_id: restaurantId,
           image_url: newMenu.image_url,
-          description: newMenu.description.trim()
+          description: newMenu.description.trim(),
+          cuisine_type: newMenu.cuisine_type.trim()
         });
 
       if (error) throw error;
 
-      setNewMenu({ description: "", image_url: "" });
+      setNewMenu({ description: "", image_url: "", cuisine_type: "" });
       await loadMenus();
       
       toast({
@@ -232,7 +234,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           variant="destructive"
                           size="sm"
                           className="absolute -top-2 -right-2 h-6 w-6 p-0"
-                          onClick={() => setNewMenu(prev => ({ ...prev, image_url: "" }))}
+                        onClick={() => setNewMenu(prev => ({ ...prev, image_url: "" }))}
                         >
                           <X className="h-3 w-3" />
                         </Button>
@@ -242,16 +244,36 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 </div>
 
                 <div className="space-y-2">
+                  <Label>Type de cuisine</Label>
+                  <select
+                    value={newMenu.cuisine_type}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
+                    className="w-full px-3 py-2 border border-input bg-background rounded-md"
+                  >
+                    <option value="">Sélectionner un type</option>
+                    <option value="Italienne">Italienne</option>
+                    <option value="Française">Française</option>
+                    <option value="Chinoise">Chinoise</option>
+                    <option value="Japonaise">Japonaise</option>
+                    <option value="Mexicaine">Mexicaine</option>
+                    <option value="Indienne">Indienne</option>
+                    <option value="Libanaise">Libanaise</option>
+                    <option value="Thaïlandaise">Thaïlandaise</option>
+                    <option value="Grecque">Grecque</option>
+                    <option value="Américaine">Américaine</option>
+                    <option value="Africaine">Africaine</option>
+                  </select>
+
                   <Label>Description</Label>
                   <Textarea
                     value={newMenu.description}
                     onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Décrivez ce menu..."
-                    className="min-h-[100px]"
+                    className="min-h-[80px]"
                   />
                   <Button 
                     onClick={handleAddMenu}
-                    disabled={loading || !newMenu.image_url || !newMenu.description.trim() || menus.length >= 5}
+                    disabled={loading || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim() || menus.length >= 5}
                     className="w-full"
                   >
                     <Plus className="h-4 w-4 mr-2" />
@@ -300,9 +322,12 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         </Badge>
                       </div>
                       
-                      <p className="text-sm text-foreground mb-3">
-                        {menu.description}
-                      </p>
+                      <div className="mb-3">
+                        <Badge variant="outline" className="mb-2">{menu.cuisine_type}</Badge>
+                        <p className="text-sm text-foreground">
+                          {menu.description}
+                        </p>
+                      </div>
 
                       <div className="flex gap-2">
                         <Button

@@ -26,7 +26,7 @@ const montrealStreets = [
 const CUISINE_OPTIONS = [
   "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
   "Thaï", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
-  "Vietnamienne", "Espagnole", "Marocaine", "Turque"
+  "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine"
 ];
 
 const DIETARY_OPTIONS = [

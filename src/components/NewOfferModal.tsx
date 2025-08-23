@@ -29,6 +29,7 @@ export const NewOfferModal = ({
     discount_amount: "",
     valid_until: "",
     category: "general",
+    cuisine_type: "",
     is_active: true
   });
   const [loading, setLoading] = useState(false);
@@ -63,6 +64,7 @@ export const NewOfferModal = ({
         discount_amount: formData.discount_amount ? parseFloat(formData.discount_amount) : null,
         valid_until: formData.valid_until ? new Date(formData.valid_until).toISOString() : null,
         category: formData.category,
+        cuisine_type: formData.cuisine_type || null,
         is_active: formData.is_active
       };
 
@@ -85,6 +87,7 @@ export const NewOfferModal = ({
         discount_amount: "",
         valid_until: "",
         category: "general",
+        cuisine_type: "",
         is_active: true
       });
       
@@ -184,6 +187,29 @@ export const NewOfferModal = ({
               <option value="dinner">Dîner</option>
               <option value="weekend">Week-end</option>
               <option value="happy_hour">Happy Hour</option>
+            </select>
+          </div>
+
+          <div>
+            <Label htmlFor="cuisine_type">Type de cuisine</Label>
+            <select 
+              id="cuisine_type"
+              value={formData.cuisine_type}
+              onChange={(e) => setFormData(prev => ({ ...prev, cuisine_type: e.target.value }))}
+              className="w-full px-3 py-2 border border-input bg-background rounded-md"
+            >
+              <option value="">Tous types</option>
+              <option value="Italienne">Italienne</option>
+              <option value="Française">Française</option>
+              <option value="Chinoise">Chinoise</option>
+              <option value="Japonaise">Japonaise</option>
+              <option value="Mexicaine">Mexicaine</option>
+              <option value="Indienne">Indienne</option>
+              <option value="Libanaise">Libanaise</option>
+              <option value="Thaïlandaise">Thaïlandaise</option>
+              <option value="Grecque">Grecque</option>
+              <option value="Américaine">Américaine</option>
+              <option value="Africaine">Africaine</option>
             </select>
           </div>
 

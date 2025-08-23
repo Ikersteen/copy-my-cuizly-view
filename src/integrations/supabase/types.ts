@@ -17,6 +17,7 @@ export type Database = {
       menus: {
         Row: {
           created_at: string
+          cuisine_type: string | null
           description: string
           id: string
           image_url: string
@@ -26,6 +27,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          cuisine_type?: string | null
           description: string
           id?: string
           image_url: string
@@ -35,6 +37,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          cuisine_type?: string | null
           description?: string
           id?: string
           image_url?: string
@@ -48,6 +51,7 @@ export type Database = {
         Row: {
           category: string | null
           created_at: string
+          cuisine_type: string | null
           description: string | null
           discount_amount: number | null
           discount_percentage: number | null
@@ -61,6 +65,7 @@ export type Database = {
         Insert: {
           category?: string | null
           created_at?: string
+          cuisine_type?: string | null
           description?: string | null
           discount_amount?: number | null
           discount_percentage?: number | null
@@ -74,6 +79,7 @@ export type Database = {
         Update: {
           category?: string | null
           created_at?: string
+          cuisine_type?: string | null
           description?: string | null
           discount_amount?: number | null
           discount_percentage?: number | null
