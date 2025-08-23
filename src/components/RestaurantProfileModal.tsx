@@ -267,7 +267,7 @@ export const RestaurantProfileModal = ({
             <Label className="text-base font-medium">Photo de couverture</Label>
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
-                <div className="w-full h-32 rounded-lg bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
+                <div className="w-full aspect-[5/2] max-w-md rounded-xl bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25 sm:aspect-[16/9] lg:aspect-[5/2]">
                   {formData.cover_image_url ? (
                     <img 
                       src={formData.cover_image_url} 

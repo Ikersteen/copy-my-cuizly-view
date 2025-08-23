@@ -31,12 +31,6 @@ const Index = () => {
   return (
     <>
       <HeroSection />
-      {user && (
-        <>
-          <SavedFavoritesSection />
-          <PersonalizedRecommendations />
-        </>
-      )}
       <MissionVisionSection />
       <HowItWorksSection />
       <CTASection />

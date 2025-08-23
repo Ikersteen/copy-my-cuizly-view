@@ -106,10 +106,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       return;
     }
 
-    if (menus.length >= 10) {
+    if (menus.length >= 5) {
       toast({
         title: "Limite atteinte",
-        description: "Vous ne pouvez ajouter que 10 menus maximum",
+        description: "Vous ne pouvez ajouter que 5 menus maximum",
         variant: "destructive"
       });
       return;
@@ -200,7 +200,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
         <DialogHeader>
           <DialogTitle>Gérer vos menus</DialogTitle>
           <DialogDescription>
-            Ajoutez jusqu'à 10 photos de vos menus avec leurs descriptions (max 100 caractères)
+            Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions
           </DialogDescription>
         </DialogHeader>
 
@@ -242,20 +242,16 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Description ({newMenu.description.length}/100)</Label>
+                  <Label>Description</Label>
                   <Textarea
                     value={newMenu.description}
-                    onChange={(e) => {
-                      if (e.target.value.length <= 100) {
-                        setNewMenu(prev => ({ ...prev, description: e.target.value }));
-                      }
-                    }}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Décrivez ce menu..."
                     className="min-h-[100px]"
                   />
                   <Button 
                     onClick={handleAddMenu}
-                    disabled={loading || !newMenu.image_url || !newMenu.description.trim() || menus.length >= 10}
+                    disabled={loading || !newMenu.image_url || !newMenu.description.trim() || menus.length >= 5}
                     className="w-full"
                   >
                     <Plus className="h-4 w-4 mr-2" />
@@ -269,7 +265,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           {/* Liste des menus existants */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">Vos menus ({menus.length}/10)</h3>
+              <h3 className="font-medium">Vos menus ({menus.length}/5)</h3>
               <Badge variant="outline">{menus.filter(m => m.is_active).length} actifs</Badge>
             </div>
 
