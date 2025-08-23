@@ -22,6 +22,7 @@ interface Restaurant {
   cuisine_type: string[];
   logo_url: string;
   cover_image_url?: string;
+  chef_emoji_color?: string;
 }
 
 interface RestaurantProfileModalProps {
@@ -59,7 +60,8 @@ export const RestaurantProfileModal = ({
         email: restaurant.email || "",
         cuisine_type: restaurant.cuisine_type || [],
         logo_url: restaurant.logo_url || "",
-        cover_image_url: restaurant.cover_image_url || ""
+        cover_image_url: restaurant.cover_image_url || "",
+        chef_emoji_color: restaurant.chef_emoji_color || "🧑‍🍳"
       });
     }
   }, [restaurant, open]);
@@ -426,6 +428,26 @@ export const RestaurantProfileModal = ({
               <Button onClick={addCuisine} variant="outline">
                 Ajouter
               </Button>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Emoji cuisinier */}
+          <div className="space-y-4">
+            <Label className="text-base font-medium">Emoji cuisinier</Label>
+            <div className="flex flex-wrap gap-2">
+              {['🧑‍🍳', '👨‍🍳', '👩‍🍳', '🧑🏽‍🍳', '👨🏽‍🍳', '👩🏽‍🍳', '🧑🏾‍🍳', '👨🏾‍🍳', '👩🏾‍🍳'].map(emoji => (
+                <Button
+                  key={emoji}
+                  variant={formData.chef_emoji_color === emoji ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFormData(prev => ({ ...prev, chef_emoji_color: emoji }))}
+                  className="text-2xl h-12 w-12 p-0"
+                >
+                  {emoji}
+                </Button>
+              ))}
             </div>
           </div>
 
