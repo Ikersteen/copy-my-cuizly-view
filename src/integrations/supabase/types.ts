@@ -140,6 +140,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          chef_emoji_color: string | null
           created_at: string
           first_name: string | null
           id: string
@@ -152,6 +153,7 @@ export type Database = {
           username: string | null
         }
         Insert: {
+          chef_emoji_color?: string | null
           created_at?: string
           first_name?: string | null
           id?: string
@@ -164,6 +166,7 @@ export type Database = {
           username?: string | null
         }
         Update: {
+          chef_emoji_color?: string | null
           created_at?: string
           first_name?: string | null
           id?: string
