@@ -25,7 +25,7 @@ const Privacy = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">1. Introduction</h2>
             <p className="text-cuizly-neutral">
-              Cuizly Technologie Inc. ("nous", "notre" ou "Cuizly") respecte votre vie privée et s'engage à protéger vos données personnelles. Cette politique de confidentialité vous informe sur la façon dont nous collectons, utilisons et protégeons vos informations lorsque vous utilisez notre service.
+              Cuizly Technologies ("nous", "notre" ou "Cuizly") respecte votre vie privée et s'engage à protéger vos données personnelles. Cette politique de confidentialité vous informe sur la façon dont nous collectons, utilisons et protégeons vos informations lorsque vous utilisez notre service.
             </p>
           </section>
 

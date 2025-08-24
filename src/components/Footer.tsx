@@ -150,7 +150,7 @@ const Footer = () => {
             
             <div className="flex items-center space-x-2 text-cuizly-neutral/80 text-xs sm:text-sm">
               <span>© 2025</span>
-              <span className="font-medium">Cuizly Technologies Inc.</span>
+              <span className="font-medium">Cuizly Technologies</span>
               <span>•</span>
               <span>Tous droits réservés</span>
             </div>

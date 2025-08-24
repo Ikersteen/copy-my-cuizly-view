@@ -49,7 +49,7 @@ const Terms = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">4. Propriété intellectuelle</h2>
             <p className="text-cuizly-neutral">
-              Tout le contenu de Cuizly, y compris les textes, graphiques, logos et logiciels, est la propriété de Cuizly Technologie Inc. et est protégé par les lois sur la propriété intellectuelle.
+              Tout le contenu de Cuizly, y compris les textes, graphiques, logos et logiciels, est la propriété de Cuizly Technologies et est protégé par les lois sur la propriété intellectuelle.
             </p>
           </section>
 
@@ -70,7 +70,7 @@ const Terms = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">6. Responsabilité</h2>
             <p className="text-cuizly-neutral">
-              Cuizly Technologies Inc. ne peut être tenue responsable des dommages directs ou indirects résultant de l'utilisation de notre plateforme. Pour exercer ce droit, contactez-nous à cuizlycanada@gmail.com
+              Cuizly Technologies ne peut être tenue responsable des dommages directs ou indirects résultant de l'utilisation de notre plateforme. Pour exercer ce droit, contactez-nous à cuizlycanada@gmail.com
             </p>
           </section>
 
