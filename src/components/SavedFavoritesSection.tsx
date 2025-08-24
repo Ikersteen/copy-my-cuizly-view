@@ -99,19 +99,9 @@ export const SavedFavoritesSection = () => {
     <section className="py-16 bg-gradient-to-br from-background to-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Heart className="h-6 w-6 text-primary fill-current" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
-                Vos restaurants favoris
-              </h2>
-            </div>
-            <Badge variant="secondary" className="hidden sm:flex">
-              {favoriteRestaurants.length} restaurant{favoriteRestaurants.length > 1 ? 's' : ''}
-            </Badge>
-          </div>
-          <p className="text-muted-foreground mt-2">
-            Retrouvez facilement vos endroits préférés
+          <h1 className="text-3xl font-bold mb-2">Vos restaurants favoris</h1>
+          <p className="text-muted-foreground">
+            Découvrez et retrouvez facilement vos restaurants préférés
           </p>
         </div>
 
