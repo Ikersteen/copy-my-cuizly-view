@@ -104,11 +104,23 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
     try {
       setLoading(true);
       
-      // Récupérer restaurants avec analytics
+      // Récupérer restaurants avec analytics (excluant les informations de contact sensibles)
       const { data: restaurants, error } = await supabase
         .from('restaurants')
         .select(`
-          *,
+          id,
+          name,
+          description,
+          address,
+          cuisine_type,
+          price_range,
+          opening_hours,
+          logo_url,
+          cover_image_url,
+          delivery_radius,
+          is_active,
+          created_at,
+          updated_at,
           restaurant_analytics(
             profile_views,
             menu_views, 

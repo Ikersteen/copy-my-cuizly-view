@@ -98,13 +98,6 @@ export type Database = {
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "fk_offers_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       orders: {
@@ -141,13 +134,6 @@ export type Database = {
             columns: ["restaurant_id"]
             isOneToOne: false
             referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_orders_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants_public"
             referencedColumns: ["id"]
           },
         ]
@@ -377,13 +363,6 @@ export type Database = {
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "fk_favorites_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       user_preferences: {
@@ -433,54 +412,7 @@ export type Database = {
       }
     }
     Views: {
-      restaurants_public: {
-        Row: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          cuisine_type: string[] | null
-          delivery_radius: number | null
-          description: string | null
-          id: string | null
-          is_active: boolean | null
-          logo_url: string | null
-          name: string | null
-          opening_hours: Json | null
-          price_range: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          address?: string | null
-          cover_image_url?: string | null
-          created_at?: string | null
-          cuisine_type?: string[] | null
-          delivery_radius?: number | null
-          description?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          logo_url?: string | null
-          name?: string | null
-          opening_hours?: Json | null
-          price_range?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          address?: string | null
-          cover_image_url?: string | null
-          created_at?: string | null
-          cuisine_type?: string[] | null
-          delivery_radius?: number | null
-          description?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          logo_url?: string | null
-          name?: string | null
-          opening_hours?: Json | null
-          price_range?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       get_public_restaurants: {
