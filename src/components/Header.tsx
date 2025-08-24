@@ -57,20 +57,11 @@ const Header = () => {
           {/* Auth Actions Desktop */}
           <div className="hidden md:flex items-center space-x-3">
             {user ? (
-              <div className="flex items-center space-x-2">
-                <Link to="/dashboard">
-                  <Button variant="ghost" size="sm">
-                    Dashboard
-                  </Button>
-                </Link>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleSignOut}
-                >
-                  Déconnexion
+              <Link to="/dashboard">
+                <Button variant="ghost" size="sm">
+                  Tableau de bord
                 </Button>
-              </div>
+              </Link>
             ) : (
               <Link to="/auth">
                 <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
@@ -112,20 +103,11 @@ const Header = () => {
                   
                   <div className="pt-4">
                     {user ? (
-                      <div className="space-y-3">
-                        <Link to="/dashboard" className="block">
-                          <Button variant="ghost" className="w-full justify-start text-lg">
-                            Tableau de bord
-                          </Button>
-                        </Link>
-                        <Button 
-                          variant="outline" 
-                          className="w-full justify-start text-lg"
-                          onClick={handleSignOut}
-                        >
-                          Déconnexion
+                      <Link to="/dashboard" className="block">
+                        <Button variant="ghost" className="w-full justify-start text-lg">
+                          Tableau de bord
                         </Button>
-                      </div>
+                      </Link>
                     ) : (
                       <Link to="/auth" className="block">
                         <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-lg">

@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/RestaurantProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { MenusModal } from "@/components/MenusModal";
+import { OffersSection } from "@/components/OffersSection";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
@@ -72,10 +73,10 @@ const RestaurantDashboard = () => {
       case 'Nouvelle offre':
         setShowOfferModal(true);
         break;
-      case 'Modifier profil':
+      case 'Profil du restaurant':
         setShowProfileModal(true);
         break;
-      case 'Menus':
+      case 'Gérer vos menus':
         setShowMenusModal(true);
         break;
     }
@@ -87,7 +88,9 @@ const RestaurantDashboard = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 bg-primary rounded-xl animate-pulse mx-auto"></div>
+          <div className="w-16 h-16 bg-foreground rounded-full flex items-center justify-center animate-pulse mx-auto">
+            <span className="text-background font-semibold text-xl">C</span>
+          </div>
           <p className="text-muted-foreground animate-pulse">Chargement de votre tableau de bord...</p>
         </div>
       </div>
@@ -137,8 +140,8 @@ const RestaurantDashboard = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           {[
             { icon: Plus, label: "Nouvelle offre", primary: true },
-            { icon: Edit3, label: "Modifier profil" },
-            { icon: ChefHat, label: "Menus" }
+            { icon: Edit3, label: "Profil du restaurant" },
+            { icon: ChefHat, label: "Gérer vos menus" }
           ].map((action, index) => (
             <Button 
               key={index}
@@ -168,6 +171,9 @@ const RestaurantDashboard = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Section des offres */}
+        <OffersSection userType="restaurant" restaurantId={restaurant?.id} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
 

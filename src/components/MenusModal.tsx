@@ -30,6 +30,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [newMenu, setNewMenu] = useState({ description: "", image_url: "", cuisine_type: "" });
+  const [editingMenu, setEditingMenu] = useState<Menu | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -60,9 +61,29 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     }
   };
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, isEditing = false) => {
     const file = event.target.files?.[0];
     if (!file || !restaurantId) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner une image valide",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Erreur", 
+        description: "L'image doit faire moins de 5MB",
+        variant: "destructive"
+      });
+      return;
+    }
 
     setUploading(true);
     try {
@@ -79,11 +100,16 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
-      setNewMenu(prev => ({ ...prev, image_url: publicUrl }));
+      if (isEditing && editingMenu) {
+        setEditingMenu(prev => prev ? ({ ...prev, image_url: publicUrl }) : null);
+      } else {
+        setNewMenu(prev => ({ ...prev, image_url: publicUrl }));
+      }
       
       toast({
-        title: "Image téléchargée",
-        description: "Votre image a été ajoutée avec succès"
+        title: "Image téléchargée avec succès",
+        description: "Votre image a été uploadée (Limite: 5MB maximum)",
+        duration: 3000
       });
     } catch (error) {
       console.error('Erreur lors du téléchargement:', error);
@@ -196,6 +222,37 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     }
   };
 
+  const handleEditMenu = async () => {
+    if (!editingMenu) return;
+
+    try {
+      const { error } = await supabase
+        .from('menus')
+        .update({
+          description: editingMenu.description,
+          cuisine_type: editingMenu.cuisine_type,
+          image_url: editingMenu.image_url
+        })
+        .eq('id', editingMenu.id);
+
+      if (error) throw error;
+
+      await loadMenus();
+      setEditingMenu(null);
+      toast({
+        title: "Menu modifié",
+        description: "Les modifications ont été sauvegardées"
+      });
+    } catch (error) {
+      console.error('Erreur lors de la modification:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de modifier le menu",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
@@ -219,9 +276,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     <Input
                       type="file"
                       accept="image/*"
-                      onChange={handleImageUpload}
+                      onChange={(e) => handleImageUpload(e, false)}
                       disabled={uploading}
                     />
+                    <p className="text-xs text-muted-foreground">Taille maximum: 5MB</p>
                     {uploading && <p className="text-sm text-muted-foreground">Téléchargement en cours...</p>}
                     {newMenu.image_url && (
                       <div className="relative w-32 h-32">
@@ -333,8 +391,15 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleToggleActive(menu.id, menu.is_active)}
+                          onClick={() => setEditingMenu(menu)}
                           className="flex-1"
+                        >
+                          Modifier
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleToggleActive(menu.id, menu.is_active)}
                         >
                           {menu.is_active ? "Désactiver" : "Activer"}
                         </Button>
@@ -352,6 +417,82 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
               </div>
             )}
           </div>
+
+          {/* Modal de modification */}
+          {editingMenu && (
+            <Card className="mt-6">
+              <CardContent className="p-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-medium">Modifier le menu</h3>
+                  <Button variant="ghost" size="sm" onClick={() => setEditingMenu(null)}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Image du menu</Label>
+                    <div className="flex flex-col space-y-2">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(e, true)}
+                        disabled={uploading}
+                      />
+                      <p className="text-xs text-muted-foreground">Taille maximum: 5MB</p>
+                      {uploading && <p className="text-sm text-muted-foreground">Téléchargement en cours...</p>}
+                      {editingMenu.image_url && (
+                        <div className="relative w-32 h-32">
+                          <img
+                            src={editingMenu.image_url}
+                            alt="Aperçu"
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Type de cuisine</Label>
+                    <select
+                      value={editingMenu.cuisine_type}
+                      onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, cuisine_type: e.target.value }) : null)}
+                      className="w-full px-3 py-2 border border-input bg-background rounded-md"
+                    >
+                      <option value="">Sélectionner un type</option>
+                      <option value="Italienne">Italienne</option>
+                      <option value="Française">Française</option>
+                      <option value="Chinoise">Chinoise</option>
+                      <option value="Japonaise">Japonaise</option>
+                      <option value="Mexicaine">Mexicaine</option>
+                      <option value="Indienne">Indienne</option>
+                      <option value="Libanaise">Libanaise</option>
+                      <option value="Thaïlandaise">Thaïlandaise</option>
+                      <option value="Grecque">Grecque</option>
+                      <option value="Américaine">Américaine</option>
+                      <option value="Africaine">Africaine</option>
+                    </select>
+
+                    <Label>Description</Label>
+                    <Textarea
+                      value={editingMenu.description}
+                      onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, description: e.target.value }) : null)}
+                      placeholder="Décrivez ce menu..."
+                      className="min-h-[80px]"
+                    />
+                    <Button 
+                      onClick={handleEditMenu}
+                      disabled={loading || !editingMenu.description.trim() || !editingMenu.cuisine_type.trim()}
+                      className="w-full"
+                    >
+                      Sauvegarder les modifications
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </DialogContent>
     </Dialog>

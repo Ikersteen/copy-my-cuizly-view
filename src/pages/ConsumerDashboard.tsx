@@ -18,6 +18,7 @@ import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
 import { FiltersModal, FilterOptions } from "@/components/FiltersModal";
 import { RecommendationEngine } from "@/components/RecommendationEngine";
+import { OffersSection } from "@/components/OffersSection";
 import type { User } from "@supabase/supabase-js";
 
 const ConsumerDashboard = () => {
@@ -53,9 +54,6 @@ const ConsumerDashboard = () => {
     switch (action) {
       case 'Tendances':
         setActiveFilter('trending');
-        break;
-      case 'Rapide':
-        setActiveFilter('fast');
         break;
       case 'Promotions':
         setActiveFilter('promotion');
@@ -107,7 +105,6 @@ const ConsumerDashboard = () => {
 
   const getDisplayOffers = () => {
     if (activeFilter === 'trending') return trendingOffers;
-    if (activeFilter === 'fast') return fastOffers;
     if (activeFilter === 'promotion') return promotionOffers;
     return allOffers;
   };
@@ -115,7 +112,6 @@ const ConsumerDashboard = () => {
   const getOffersTitle = () => {
     switch (activeFilter) {
       case 'trending': return 'Tendances du moment 📈';
-      case 'fast': return 'Livraison rapide ⚡';
       case 'promotion': return 'Promotions spéciales 🎉';
       default: return 'Offres du moment 🔥';
     }
@@ -125,7 +121,9 @@ const ConsumerDashboard = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 bg-primary rounded-xl animate-pulse mx-auto"></div>
+          <div className="w-16 h-16 bg-foreground rounded-full flex items-center justify-center animate-pulse mx-auto">
+            <span className="text-background font-semibold text-xl">C</span>
+          </div>
           <p className="text-muted-foreground animate-pulse">Chargement de votre expérience personnalisée...</p>
         </div>
       </div>
@@ -193,10 +191,9 @@ const ConsumerDashboard = () => {
         </div>
 
         {/* Actions rapides */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {[
             { icon: TrendingUp, label: "Tendances", color: activeFilter === 'trending' },
-            { icon: Zap, label: "Rapide", color: activeFilter === 'fast' },
             { icon: Gift, label: "Promotions", color: activeFilter === 'promotion' },
             { icon: Heart, label: "Favoris", count: favorites.length },
             { icon: History, label: "Historique" },
@@ -221,6 +218,9 @@ const ConsumerDashboard = () => {
 
         {/* Système de recommandations IA */}
         <RecommendationEngine preferences={preferences} />
+
+        {/* Section des offres */}
+        <OffersSection userType="consumer" />
 
         {/* Offres filtrées */}
         <div className="space-y-6">

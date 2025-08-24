@@ -25,6 +25,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     last_name: "",
     phone: "",
     username: "",
+    chef_emoji_color: "👋",
     notifications: {
       push: true,
       email: true
@@ -56,6 +57,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         last_name: profile.last_name || "",
         phone: profile.phone || "",
         username: profile.username || "",
+        chef_emoji_color: profile.chef_emoji_color || "👋",
         notifications: {
           push: true,
           email: true
@@ -96,7 +98,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         first_name: localProfile.first_name,
         last_name: localProfile.last_name,
         phone: localProfile.phone,
-        username: localProfile.username
+        username: localProfile.username,
+        chef_emoji_color: localProfile.chef_emoji_color
       });
       
       onOpenChange(false);
@@ -278,6 +281,26 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               onChange={(e) => setLocalProfile(prev => ({ ...prev, phone: e.target.value }))}
               placeholder="+1 (XXX) XXX-XXXX"
             />
+          </div>
+
+          <Separator />
+
+          {/* Emoji de salutation */}
+          <div className="space-y-4">
+            <Label className="text-base font-medium">Emoji de salutation</Label>
+            <div className="flex flex-wrap gap-2">
+              {['👋', '👋🏽', '👋🏾', '👋🏿', '👋🏻', '👋🏼', '🤚', '🤚🏽', '🤚🏾', '🤚🏿', '🤚🏻', '🤚🏼'].map(emoji => (
+                <Button
+                  key={emoji}
+                  variant={localProfile.chef_emoji_color === emoji ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setLocalProfile(prev => ({ ...prev, chef_emoji_color: emoji }))}
+                  className="text-2xl h-12 w-12 p-0"
+                >
+                  {emoji}
+                </Button>
+              ))}
+            </div>
           </div>
 
           <Separator />
