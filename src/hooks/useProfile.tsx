@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 
 export interface UserProfile {
   id?: string;
@@ -19,6 +20,44 @@ export const useProfile = () => {
 
   useEffect(() => {
     loadProfile();
+    
+    // Set up real-time subscription for profile changes
+    let channel: RealtimeChannel | null = null;
+    
+    const setupRealtimeSubscription = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      channel = supabase
+        .channel('profile-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'profiles',
+            filter: `user_id=eq.${session.user.id}`
+          },
+          (payload) => {
+            console.log('Profile change received:', payload);
+            if (payload.eventType === 'UPDATE' && payload.new) {
+              setProfile(payload.new as UserProfile);
+            } else if (payload.eventType === 'INSERT' && payload.new) {
+              setProfile(payload.new as UserProfile);
+            }
+          }
+        )
+        .subscribe();
+    };
+
+    setupRealtimeSubscription();
+
+    // Cleanup subscription on unmount
+    return () => {
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+    };
   }, []);
 
   const loadProfile = async () => {
