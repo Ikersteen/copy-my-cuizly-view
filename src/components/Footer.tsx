@@ -1,6 +1,18 @@
 import { Link } from "react-router-dom";
+import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import cuizlyLogo from "@/assets/cuizly-logo.png";
 
 const Footer = () => {
+  const handleLogoDownload = () => {
+    const link = document.createElement('a');
+    link.href = cuizlyLogo;
+    link.download = 'cuizly-logo.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <footer className="relative bg-gradient-to-br from-cuizly-surface via-background to-cuizly-surface border-t border-border/50 overflow-hidden">
       {/* Subtle background pattern */}
@@ -116,12 +128,24 @@ const Footer = () => {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-cuizly-primary/40 to-transparent"></div>
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="relative w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-cuizly-primary to-cuizly-accent rounded-full flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
-                <span className="text-background font-bold text-sm sm:text-base">C</span>
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cuizly-primary to-cuizly-accent opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 group cursor-pointer">
+                <img 
+                  src={cuizlyLogo} 
+                  alt="Cuizly Logo" 
+                  className="w-6 h-6 sm:w-8 sm:h-8 object-contain transition-all duration-300 group-hover:scale-110"
+                />
+                <span className="font-bold text-foreground text-lg sm:text-xl tracking-tight transition-all duration-300 group-hover:text-cuizly-primary">Cuizly</span>
               </div>
-              <span className="font-bold text-foreground text-lg sm:text-xl tracking-tight transition-all duration-300 group-hover:text-cuizly-primary">Cuizly</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogoDownload}
+                className="p-1 opacity-60 hover:opacity-100 transition-opacity"
+                title="Télécharger le logo"
+              >
+                <Download className="h-4 w-4" />
+              </Button>
             </div>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
