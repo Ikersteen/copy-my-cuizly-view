@@ -84,11 +84,18 @@ export const useProfile = () => {
   };
 
   const updateProfile = async (updates: Partial<UserProfile>) => {
+    console.log('🔄 updateProfile called with:', updates);
     try {
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('👤 Session check:', session ? 'Session found' : 'No session');
+      
       if (!session) {
+        console.error('❌ No active session');
         throw new Error('Aucune session active');
       }
+
+      console.log('📤 Attempting to upsert profile for user:', session.user.id);
+      console.log('📝 Data to upsert:', { user_id: session.user.id, ...updates });
 
       const { data, error } = await supabase
         .from('profiles')
@@ -99,10 +106,17 @@ export const useProfile = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      console.log('📊 Supabase response - data:', data);
+      console.log('📊 Supabase response - error:', error);
+
+      if (error) {
+        console.error('❌ Supabase error:', error);
+        throw error;
+      }
 
       // Update local state immediately
       setProfile(data);
+      console.log('✅ Profile updated successfully:', data);
 
       toast({
         title: "Profil mis à jour",
@@ -111,7 +125,7 @@ export const useProfile = () => {
       
       return { success: true };
     } catch (error) {
-      console.error('Erreur lors de la mise à jour:', error);
+      console.error('❌ updateProfile error:', error);
       toast({
         title: "Erreur",
         description: "Impossible de sauvegarder le profil",

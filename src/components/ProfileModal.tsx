@@ -112,7 +112,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   };
 
   const handleSave = async () => {
+    console.log('💾 handleSave called');
+    console.log('👤 Current user:', user);
+    console.log('📋 Local profile data:', localProfile);
+    
     if (!user) {
+      console.error('❌ No user found in session');
       toast({
         title: "Erreur",
         description: "Session utilisateur introuvable",
@@ -121,7 +126,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       return;
     }
 
+    console.log('✅ User found, validating form...');
     if (!validateForm()) {
+      console.error('❌ Form validation failed');
       toast({
         title: "Erreur de validation",
         description: "Veuillez corriger les erreurs avant de sauvegarder",
@@ -130,6 +137,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       return;
     }
     
+    console.log('✅ Form validation passed');
     setLoading(true);
     try {
       // Sanitize profile data before saving
@@ -141,12 +149,20 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         chef_emoji_color: localProfile.chef_emoji_color
       };
 
+      console.log('🧹 Sanitized profile:', sanitizedProfile);
+      console.log('📤 Calling updateProfile...');
+      
       const result = await updateProfile(sanitizedProfile);
+      console.log('📨 updateProfile result:', result);
+      
       if (result?.success) {
+        console.log('✅ Profile update successful, closing modal');
         onOpenChange(false);
+      } else {
+        console.error('❌ Profile update failed');
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error('❌ handleSave error:', error);
     } finally {
       setLoading(false);
     }
