@@ -19,7 +19,7 @@ interface ProfileModalProps {
 }
 
 export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
-  const { profile, loading: profileLoading, updateProfile } = useProfile();
+  const { profile, loading: profileLoading, updateProfile, loadProfile } = useProfile();
   const [localProfile, setLocalProfile] = useState({
     first_name: "",
     last_name: "",
@@ -141,8 +141,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         chef_emoji_color: localProfile.chef_emoji_color
       };
 
-      await updateProfile(sanitizedProfile);
-      onOpenChange(false);
+      const result = await updateProfile(sanitizedProfile);
+      if (result?.success) {
+        // Force reload the profile to ensure fresh data
+        await loadProfile();
+        onOpenChange(false);
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
     } finally {
