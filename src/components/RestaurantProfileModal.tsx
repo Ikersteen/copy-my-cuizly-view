@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useProfile } from "@/hooks/useProfile";
 
 interface Restaurant {
   id: string;
@@ -42,6 +43,7 @@ export const RestaurantProfileModal = ({
   restaurant, 
   onUpdate 
 }: RestaurantProfileModalProps) => {
+  const { updateProfile } = useProfile();
   const [formData, setFormData] = useState<Partial<Restaurant>>({});
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -137,12 +139,9 @@ export const RestaurantProfileModal = ({
 
       if (error) throw error;
 
-      // Update the profile with chef_emoji_color if it changed
+      // Update the profile with chef_emoji_color if it changed using the hook
       if (formData.chef_emoji_color !== restaurant.chef_emoji_color) {
-        await supabase
-          .from('profiles')
-          .update({ chef_emoji_color: formData.chef_emoji_color })
-          .eq('user_id', (await supabase.auth.getUser()).data.user?.id);
+        await updateProfile({ chef_emoji_color: formData.chef_emoji_color });
       }
 
       toast({
