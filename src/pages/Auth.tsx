@@ -89,7 +89,7 @@ const Auth = () => {
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
       toast({
-        title: "Mot de passe invalide",
+        title: "Mot de passe faible",
         description: passwordValidation.error,
         variant: "destructive"
       });
@@ -97,7 +97,7 @@ const Auth = () => {
       return;
     }
 
-    const nameValidation = validateTextInput(fullName, INPUT_LIMITS.NAME, "Full name");
+    const nameValidation = validateTextInput(fullName, INPUT_LIMITS.NAME, 'Nom complet');
     if (!nameValidation.isValid) {
       toast({
         title: "Nom invalide",
@@ -108,12 +108,12 @@ const Auth = () => {
       return;
     }
 
-    if (userType === 'restaurant_owner') {
-      const restaurantValidation = validateTextInput(restaurantName, INPUT_LIMITS.NAME, "Restaurant name");
-      if (!restaurantValidation.isValid) {
+    if (userType === 'restaurant_owner' && restaurantName) {
+      const restaurantNameValidation = validateTextInput(restaurantName, INPUT_LIMITS.NAME, 'Nom du restaurant');
+      if (!restaurantNameValidation.isValid) {
         toast({
-          title: "Nom de restaurant invalide",
-          description: restaurantValidation.error,
+          title: "Nom du restaurant invalide",
+          description: restaurantNameValidation.error,
           variant: "destructive"
         });
         setIsLoading(false);

@@ -72,10 +72,14 @@ export const validatePhone = (phone: string): { isValid: boolean; error?: string
   return { isValid: true };
 };
 
-// Validate password strength
+// Validate password strength with enhanced security
 export const validatePassword = (password: string): { isValid: boolean; error?: string } => {
-  if (password.length < 8) {
-    return { isValid: false, error: 'Password must be at least 8 characters' };
+  if (password.length < 12) {
+    return { isValid: false, error: 'Password must be at least 12 characters' };
+  }
+  
+  if (password.length > 128) {
+    return { isValid: false, error: 'Password must be less than 128 characters' };
   }
   
   const hasUppercase = /[A-Z]/.test(password);
@@ -90,6 +94,18 @@ export const validatePassword = (password: string): { isValid: boolean; error?: 
     };
   }
   
+  // Check for common weak patterns
+  const weakPatterns = [
+    /(.)\1{2,}/, // repeated characters
+    /123456/, /password/i, /qwerty/i, // common patterns
+  ];
+  
+  for (const pattern of weakPatterns) {
+    if (pattern.test(password)) {
+      return { isValid: false, error: 'Password contains weak patterns' };
+    }
+  }
+  
   return { isValid: true };
 };
 
@@ -97,6 +113,46 @@ export const validatePassword = (password: string): { isValid: boolean; error?: 
 export const sanitizeStringArray = (arr: string[]): string[] => {
   return arr
     .map(item => sanitizeHtml(item.trim()))
-    .filter(item => item.length > 0)
+    .filter(item => item.length > 0 && item.length <= 50) // Individual item length limit
     .slice(0, 10); // Limit array size
+};
+
+// Validate rating comment with enhanced security
+export const validateRatingComment = (comment: string): { isValid: boolean; sanitized: string; error?: string } => {
+  const result = validateTextInput(comment, INPUT_LIMITS.DESCRIPTION, 'Comment');
+  
+  if (!result.isValid) {
+    return result;
+  }
+  
+  // Additional checks for comments
+  if (result.sanitized.length > 0 && result.sanitized.length < 3) {
+    return {
+      isValid: false,
+      sanitized: result.sanitized,
+      error: 'Comment must be at least 3 characters if provided'
+    };
+  }
+  
+  return result;
+};
+
+// Validate restaurant description with enhanced security
+export const validateRestaurantDescription = (description: string): { isValid: boolean; sanitized: string; error?: string } => {
+  const result = validateTextInput(description, INPUT_LIMITS.DESCRIPTION, 'Description');
+  
+  if (!result.isValid) {
+    return result;
+  }
+  
+  // Ensure minimum length for meaningful descriptions
+  if (result.sanitized.length > 0 && result.sanitized.length < 10) {
+    return {
+      isValid: false,
+      sanitized: result.sanitized,
+      error: 'Description must be at least 10 characters if provided'
+    };
+  }
+  
+  return result;
 };

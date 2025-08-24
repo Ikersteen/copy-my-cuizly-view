@@ -5,6 +5,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useRatings } from '@/hooks/useRatings';
 import { supabase } from '@/integrations/supabase/client';
+import { validateRatingComment } from '@/lib/validation';
+import { useToast } from '@/hooks/use-toast';
 
 interface RatingComponentProps {
   restaurantId: string;
@@ -19,6 +21,7 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
   const [submitting, setSubmitting] = useState(false);
   const [userRating, setUserRating] = useState<any>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -37,8 +40,19 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
   const handleSubmitRating = async () => {
     if (selectedRating === 0) return;
 
+    // Validate comment with enhanced security
+    const commentValidation = validateRatingComment(comment);
+    if (!commentValidation.isValid) {
+      toast({
+        title: "Commentaire invalide",
+        description: commentValidation.error,
+        variant: "destructive"
+      });
+      return;
+    }
+
     setSubmitting(true);
-    const success = await addRating(selectedRating, comment);
+    const success = await addRating(selectedRating, commentValidation.sanitized);
     
     if (success) {
       setIsDialogOpen(false);
@@ -47,6 +61,10 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
       // Refresh user rating
       const updatedRating = await getUserRating();
       setUserRating(updatedRating);
+      toast({
+        title: "Évaluation publiée",
+        description: "Merci pour votre avis!"
+      });
     }
     
     setSubmitting(false);

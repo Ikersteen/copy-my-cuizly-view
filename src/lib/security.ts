@@ -21,7 +21,7 @@ export const isRateLimited = (key: string, maxAttempts: number = 5, windowMs: nu
   return false;
 };
 
-// Enhanced session validation
+// Enhanced session validation with timeout handling
 export const validateSession = async (): Promise<boolean> => {
   try {
     const { data: { session }, error } = await supabase.auth.getSession();
@@ -37,9 +37,46 @@ export const validateSession = async (): Promise<boolean> => {
       return false;
     }
     
+    // Check for session timeout (8 hours of inactivity)
+    const lastActivity = localStorage.getItem('last_activity');
+    if (lastActivity) {
+      const timeSinceActivity = now - parseInt(lastActivity);
+      if (timeSinceActivity > 28800) { // 8 hours
+        await supabase.auth.signOut();
+        localStorage.removeItem('last_activity');
+        return false;
+      }
+    }
+    
+    // Update last activity
+    localStorage.setItem('last_activity', now.toString());
+    
     return true;
   } catch {
     return false;
+  }
+};
+
+// Enhanced logout with proper cleanup
+export const secureLogout = async (): Promise<void> => {
+  try {
+    // Clear local storage
+    localStorage.removeItem('last_activity');
+    
+    // Sign out from Supabase
+    await supabase.auth.signOut();
+    
+    // Clear any cached data
+    if ('caches' in window) {
+      const cacheNames = await caches.keys();
+      await Promise.all(
+        cacheNames.map(cacheName => caches.delete(cacheName))
+      );
+    }
+  } catch (error) {
+    console.error('Error during logout:', error);
+    // Force reload to clear state
+    window.location.reload();
   }
 };
 
