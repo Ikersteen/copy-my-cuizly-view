@@ -101,7 +101,14 @@ export const AllMenusSection = () => {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Tous les menus disponibles</h1>
+        <div className="mb-8">
+          <div className="bg-card border rounded-lg p-4 shadow-sm">
+            <h1 className="text-2xl font-bold mb-1">Tous les menus disponibles</h1>
+            <p className="text-sm text-muted-foreground">
+              Découvrez les délicieux menus proposés par nos restaurants partenaires
+            </p>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <Card key={i} className="animate-pulse">
@@ -126,10 +133,12 @@ export const AllMenusSection = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Tous les menus disponibles</h1>
-        <p className="text-muted-foreground">
-          Découvrez les délicieux menus proposés par nos restaurants partenaires
-        </p>
+        <div className="bg-card border rounded-lg p-4 shadow-sm">
+          <h1 className="text-2xl font-bold mb-1">Tous les menus disponibles</h1>
+          <p className="text-sm text-muted-foreground">
+            Découvrez les délicieux menus proposés par nos restaurants partenaires
+          </p>
+        </div>
       </div>
 
       {menus.length === 0 ? (
