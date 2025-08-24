@@ -102,17 +102,20 @@ const ConsumerDashboard = () => {
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-semibold text-lg">
-                  {user?.email?.charAt(0).toUpperCase()}
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                <span className="text-primary-foreground font-semibold text-xl">
+                  {profile?.first_name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
                 </span>
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                  Bonjour {profile?.first_name || user?.email?.split('@')[0]} ! {profile?.chef_emoji_color || '👋'}
+                  {profile?.first_name} {profile?.last_name}
                 </h1>
-                <p className="text-sm sm:text-base text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   @{profile?.username || user?.email?.split('@')[0]}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {user?.email}
                 </p>
                 {preferences?.street && (
                   <p className="text-xs text-muted-foreground mt-1">
