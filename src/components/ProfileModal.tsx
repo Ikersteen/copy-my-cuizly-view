@@ -68,19 +68,6 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     }
   }, [profile]);
 
-  // Empêcher l'auto-sélection du texte quand le modal s'ouvre
-  useEffect(() => {
-    if (open && firstNameRef.current) {
-      // Petit délai pour s'assurer que le focus s'est bien fait avant de désélectionner
-      const timer = setTimeout(() => {
-        if (firstNameRef.current) {
-          firstNameRef.current.blur();
-        }
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [open]);
-
   const loadUserSession = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -342,6 +329,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                         id="first_name"
                         value={localProfile.first_name}
                         onChange={(e) => setLocalProfile(prev => ({ ...prev, first_name: e.target.value }))}
+                        onFocus={(e) => {
+                          // Désélectionner tout le texte quand le champ reçoit le focus
+                          setTimeout(() => {
+                            e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+                          }, 0);
+                        }}
                         placeholder="Votre prénom"
                         className="mt-1"
                         autoFocus={false}
