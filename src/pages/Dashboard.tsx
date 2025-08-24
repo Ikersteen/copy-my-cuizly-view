@@ -38,7 +38,6 @@ const Dashboard = () => {
           setProfile(data);
         } else {
           // No profile found - this shouldn't happen with the trigger but handle it
-          console.log('Aucun profil trouvé, création en cours...');
           setProfile({ user_type: 'consumer' });
         }
       } catch (error) {

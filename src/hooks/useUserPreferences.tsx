@@ -54,7 +54,6 @@ export const useUserPreferences = () => {
               filter: `user_id=eq.${session.user.id}`
             },
             (payload) => {
-              console.log('Preferences updated in real-time:', payload.new);
               setPreferences(payload.new as UserPreferences);
             }
           )
@@ -132,8 +131,6 @@ export const useUserPreferences = () => {
   const updatePreferences = async (updates: Partial<UserPreferences>) => {
     if (!preferences?.id) return;
 
-    console.log('Updating preferences with:', updates);
-    
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
@@ -147,8 +144,6 @@ export const useUserPreferences = () => {
 
       if (error) throw error;
 
-      console.log('Preferences updated successfully:', data);
-      
       // Update local state immediately
       setPreferences({
         ...data,

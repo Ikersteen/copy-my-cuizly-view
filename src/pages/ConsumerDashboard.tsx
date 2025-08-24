@@ -100,7 +100,7 @@ const ConsumerDashboard = () => {
   };
 
   const handleApplyFilters = (filters: FilterOptions) => {
-    console.log('Applying filters:', filters);
+    // Filter logic implementation would go here
   };
 
   const getDisplayOffers = () => {

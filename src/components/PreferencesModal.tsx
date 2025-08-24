@@ -66,7 +66,6 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
   }, [open, preferences]);
 
   const handleSave = async () => {
-    console.log('Saving preferences:', localPrefs);
     await updatePreferences(localPrefs);
     onOpenChange(false);
   };
