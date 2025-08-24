@@ -156,12 +156,11 @@ const ConsumerDashboard = () => {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="recommendations" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="recommendations">Recommandations</TabsTrigger>
             <TabsTrigger value="menus">Menus</TabsTrigger>
             <TabsTrigger value="favorites">Favoris</TabsTrigger>
             <TabsTrigger value="offers">Offres</TabsTrigger>
-            <TabsTrigger value="profile">Profil</TabsTrigger>
           </TabsList>
 
           <TabsContent value="recommendations" className="space-y-6">
@@ -178,55 +177,6 @@ const ConsumerDashboard = () => {
 
           <TabsContent value="offers" className="space-y-6">
             <OffersSection userType="consumer" />
-          </TabsContent>
-
-          <TabsContent value="profile" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Mon Profil</CardTitle>
-                <CardDescription>Gérez vos informations personnelles et préférences</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground font-semibold text-xl">
-                      {user?.email?.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">
-                      {profile?.first_name} {profile?.last_name}
-                    </h3>
-                    <p className="text-muted-foreground">{user?.email}</p>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Button onClick={() => setShowProfile(true)} className="w-full">
-                    <UserIcon className="h-4 w-4 mr-2" />
-                    Modifier le profil
-                  </Button>
-                  <Button onClick={() => setShowPreferences(true)} variant="outline" className="w-full">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Préférences
-                  </Button>
-                </div>
-
-                <div className="pt-4 border-t">
-                  <h4 className="font-semibold mb-2">Statistiques</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-3 bg-muted rounded-lg">
-                      <div className="text-2xl font-bold text-primary">{favorites.length}</div>
-                      <div className="text-sm text-muted-foreground">Favoris</div>
-                    </div>
-                    <div className="text-center p-3 bg-muted rounded-lg">
-                      <div className="text-2xl font-bold text-primary">0</div>
-                      <div className="text-sm text-muted-foreground">Commandes</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </div>
