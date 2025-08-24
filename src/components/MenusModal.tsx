@@ -353,30 +353,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     className="min-h-[80px]"
                   />
                   <Button 
-                    onClick={() => {
-                      console.log('Button clicked!');
-                      console.log('Current form state:', {
-                        image_url: newMenu.image_url,
-                        description: newMenu.description,
-                        cuisine_type: newMenu.cuisine_type,
-                        loading: loading,
-                        menusCount: menus.length
-                      });
-                      handleAddMenu();
-                    }}
+                    onClick={handleAddMenu}
                     disabled={loading || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim() || menus.length >= 5}
                     className="w-full"
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Ajouter ce menu
                   </Button>
-                  {/* Debug info */}
-                  <div className="text-xs text-muted-foreground mt-2">
-                    Debug: Image: {newMenu.image_url ? '✓' : '✗'} | 
-                    Description: {newMenu.description.trim() ? '✓' : '✗'} | 
-                    Type: {newMenu.cuisine_type.trim() ? '✓' : '✗'} | 
-                    Menus: {menus.length}/5
-                  </div>
                 </div>
               </div>
             </CardContent>

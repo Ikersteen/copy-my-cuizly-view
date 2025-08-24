@@ -61,7 +61,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
           popularityScore: 0
         };
 
-        // 1. Analyse des préférences culinaires (pondération: 35%)
+        // 1. Analyse des préférences culinaires (pondération: 40%) - Plus de poids pour le matching
         if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
           const matchedCuisines = restaurant.cuisine_type.filter(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
@@ -69,16 +69,23 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
           const matchPercentage = matchedCuisines.length / preferences.cuisine_preferences.length;
           analysisMetrics.cuisineMatch = matchPercentage * 100;
           
-          if (matchPercentage > 0.5) {
-            score += 60;
-            reasons.push(`${matchedCuisines.length} cuisine(s) favorite(s)`);
+          if (matchPercentage >= 1.0) {
+            // Match parfait - toutes les préférences correspondent
+            score += 80;
+            reasons.push(`Match parfait: ${matchedCuisines.join(', ')}`);
+          } else if (matchPercentage >= 0.7) {
+            score += 65;
+            reasons.push(`Excellent match: ${matchedCuisines.join(', ')}`);
+          } else if (matchPercentage >= 0.5) {
+            score += 50;
+            reasons.push(`Bon match: ${matchedCuisines.join(', ')}`);
           } else if (matchPercentage > 0) {
-            score += 35;
+            score += 30;
             reasons.push(`Cuisine ${matchedCuisines[0]?.toLowerCase()}`);
           }
         }
 
-        // 2. Analyse de compatibilité budgétaire (pondération: 25%)
+        // 2. Analyse de compatibilité budgétaire (pondération: 30%) - Plus de poids
         if (preferences?.price_range && restaurant.price_range) {
           const priceOrder = ["$", "$$", "$$$", "$$$$"];
           const prefIndex = priceOrder.indexOf(preferences.price_range);
@@ -87,49 +94,68 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
           
           if (priceDiff === 0) {
             analysisMetrics.priceCompatibility = 100;
-            score += 40;
+            score += 50;
             reasons.push("Budget parfait");
           } else if (priceDiff === 1) {
             analysisMetrics.priceCompatibility = 70;
-            score += 25;
+            score += 35;
             reasons.push("Budget proche");
           } else if (priceDiff === 2) {
             analysisMetrics.priceCompatibility = 40;
-            score += 10;
+            score += 15;
+          } else {
+            analysisMetrics.priceCompatibility = 10;
+            score += 5;
           }
         }
 
-        // 3. Score de qualité basé sur les données analysées (pondération: 20%)
+        // 3. Analyse de proximité géographique améliorée (pondération: 20%)
+        const maxRadius = preferences?.delivery_radius || 10;
+        let distance;
+        
+        // Calcul de proximité basé sur l'adresse si disponible
+        if (preferences?.street && restaurant.address) {
+          const streetMatches = preferences.street.toLowerCase().includes(restaurant.address.toLowerCase().split(' ')[0]) ||
+                               restaurant.address.toLowerCase().includes(preferences.street.toLowerCase().split(' ')[0]);
+          if (streetMatches) {
+            distance = Math.floor(0.5 + Math.random() * 2); // Très proche si même rue
+            score += 30;
+            reasons.push("Dans votre quartier");
+          } else {
+            distance = Math.floor(1 + Math.random() * maxRadius);
+          }
+        } else {
+          distance = Math.floor(1 + Math.random() * maxRadius);
+        }
+        
+        analysisMetrics.proximityScore = Math.max(0, 100 - (distance / maxRadius) * 100);
+        
+        if (distance <= maxRadius / 4) {
+          score += 25;
+          if (!reasons.includes("Dans votre quartier")) reasons.push("Très proche");
+        } else if (distance <= maxRadius / 2) {
+          score += 15;
+          reasons.push("Proche de vous");
+        }
+
+        // 4. Score de qualité basé sur les données analysées (pondération: 15%)
         let qualityScore = 50; // Base
-        if (restaurant.description) qualityScore += 15; // A une description
+        if (restaurant.description && restaurant.description.length > 50) qualityScore += 20; // Description détaillée
         if (restaurant.address) qualityScore += 15; // Adresse complète
-        if (restaurant.cuisine_type?.length > 1) qualityScore += 20; // Diversité culinaire
+        if (restaurant.cuisine_type?.length > 1) qualityScore += 15; // Diversité culinaire
         
         analysisMetrics.qualityScore = Math.min(qualityScore, 100);
         const rating = 3.2 + (qualityScore / 100) * 1.8; // Rating calculé entre 3.2 et 5.0
         
         if (rating > 4.6) {
-          score += 30;
+          score += 25;
           reasons.push("Excellence confirmée");
         } else if (rating > 4.2) {
-          score += 20;
+          score += 15;
           reasons.push("Très bien noté");
         } else if (rating > 3.8) {
-          score += 10;
+          score += 8;
           reasons.push("Bien évalué");
-        }
-
-        // 4. Analyse de proximité géographique (pondération: 10%)
-        const maxRadius = preferences?.delivery_radius || 10;
-        const distance = Math.floor(1 + Math.random() * maxRadius);
-        analysisMetrics.proximityScore = Math.max(0, 100 - (distance / maxRadius) * 100);
-        
-        if (distance <= maxRadius / 3) {
-          score += 20;
-          reasons.push("Très proche");
-        } else if (distance <= maxRadius / 2) {
-          score += 12;
-          reasons.push("Proche de vous");
         }
 
         // 5. Analyse de rapidité de service (pondération: 10%)
@@ -139,11 +165,30 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
         analysisMetrics.speedScore = Math.max(0, 100 - ((deliveryTime - 15) / 40) * 100);
         
         if (deliveryTime <= 25) {
-          score += 25;
+          score += 20;
           reasons.push("Service express");
         } else if (deliveryTime <= 35) {
-          score += 15;
+          score += 12;
           reasons.push("Livraison rapide");
+        }
+
+        // 6. Bonus pour match parfait des préférences alimentaires (pondération: 5%)
+        if (preferences?.dietary_restrictions?.length) {
+          // Vérifier si le restaurant correspond aux restrictions alimentaires
+          const compatibleRestrictions = preferences.dietary_restrictions.filter(restriction => {
+            return restaurant.cuisine_type?.some(cuisine => {
+              // Logique de matching simple - peut être améliorée
+              if (restriction === "Végétarien" && cuisine.includes("Végét")) return true;
+              if (restriction === "Halal" && cuisine.includes("Halal")) return true;
+              if (restriction === "Sans gluten" && cuisine.includes("Sans gluten")) return true;
+              return false;
+            }) || restaurant.description?.toLowerCase().includes(restriction.toLowerCase());
+          });
+          
+          if (compatibleRestrictions.length > 0) {
+            score += 15;
+            reasons.push(`Compatible: ${compatibleRestrictions[0]}`);
+          }
         }
 
         return {

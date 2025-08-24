@@ -249,13 +249,6 @@ export const RestaurantProfileModal = ({
     }
   };
 
-  const removeCuisine = (cuisine: string) => {
-    setFormData(prev => ({
-      ...prev,
-      cuisine_type: prev.cuisine_type?.filter(c => c !== cuisine) || []
-    }));
-  };
-
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -475,63 +468,42 @@ export const RestaurantProfileModal = ({
 
           {/* Cuisine Types */}
           <div className="space-y-4">
-            <Label>Types de cuisine</Label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {formData.cuisine_type?.map((cuisine, index) => (
-                <Badge key={index} variant="secondary" className="flex items-center gap-1">
+            <Label className="text-base font-medium">Types de cuisine</Label>
+            <p className="text-sm text-muted-foreground">
+              Sélectionnez les types de cuisine que vous proposez
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
+                "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
+                "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine", "Pizza", "Burger"
+              ].map(cuisine => (
+                <Badge
+                  key={cuisine}
+                  variant={(formData.cuisine_type || []).includes(cuisine) ? "default" : "outline"}
+                  className="cursor-pointer transition-all duration-200 hover:scale-105"
+                  onClick={() => {
+                    const currentTypes = formData.cuisine_type || [];
+                    if (currentTypes.includes(cuisine)) {
+                      setFormData(prev => ({
+                        ...prev,
+                        cuisine_type: currentTypes.filter(c => c !== cuisine)
+                      }));
+                    } else {
+                      setFormData(prev => ({
+                        ...prev,
+                        cuisine_type: [...currentTypes, cuisine]
+                      }));
+                    }
+                  }}
+                >
                   {cuisine}
-                  <X
-                    className="h-3 w-3 cursor-pointer hover:text-destructive"
-                    onClick={() => removeCuisine(cuisine)}
-                  />
+                  {(formData.cuisine_type || []).includes(cuisine) && (
+                    <X className="h-3 w-3 ml-1" />
+                  )}
                 </Badge>
               ))}
             </div>
-            <Select
-              value=""
-              onValueChange={(value) => {
-                if (value && !formData.cuisine_type?.includes(value)) {
-                  setFormData(prev => ({
-                    ...prev,
-                    cuisine_type: [...(prev.cuisine_type || []), value]
-                  }));
-                }
-              }}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Sélectionner un type de cuisine" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Italienne">Italienne</SelectItem>
-                <SelectItem value="Française">Française</SelectItem>
-                <SelectItem value="Chinoise">Chinoise</SelectItem>
-                <SelectItem value="Japonaise">Japonaise</SelectItem>
-                <SelectItem value="Mexicaine">Mexicaine</SelectItem>
-                <SelectItem value="Indienne">Indienne</SelectItem>
-                <SelectItem value="Thaïlandaise">Thaïlandaise</SelectItem>
-                <SelectItem value="Méditerranéenne">Méditerranéenne</SelectItem>
-                <SelectItem value="Libanaise">Libanaise</SelectItem>
-                <SelectItem value="Grecque">Grecque</SelectItem>
-                <SelectItem value="Américaine">Américaine</SelectItem>
-                <SelectItem value="Vietnamienne">Vietnamienne</SelectItem>
-                <SelectItem value="Coréenne">Coréenne</SelectItem>
-                <SelectItem value="Marocaine">Marocaine</SelectItem>
-                <SelectItem value="Pizza">Pizza</SelectItem>
-                <SelectItem value="Burger">Burger</SelectItem>
-                <SelectItem value="Sushi">Sushi</SelectItem>
-                <SelectItem value="Végétarienne">Végétarienne</SelectItem>
-                <SelectItem value="Végétalienne">Végétalienne</SelectItem>
-                <SelectItem value="Halal">Halal</SelectItem>
-                <SelectItem value="Casher">Casher</SelectItem>
-                <SelectItem value="Sans gluten">Sans gluten</SelectItem>
-                <SelectItem value="Fast food">Fast food</SelectItem>
-                <SelectItem value="Déjeuner">Déjeuner</SelectItem>
-                <SelectItem value="Brunch">Brunch</SelectItem>
-                <SelectItem value="Café">Café</SelectItem>
-                <SelectItem value="Desserts">Desserts</SelectItem>
-                <SelectItem value="Fruits de mer">Fruits de mer</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
 
           <Separator />
