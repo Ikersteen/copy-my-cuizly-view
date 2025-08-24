@@ -415,6 +415,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_public_restaurants: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          cover_image_url: string
+          created_at: string
+          cuisine_type: string[]
+          delivery_radius: number
+          description: string
+          id: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          opening_hours: Json
+          price_range: string
+          updated_at: string
+        }[]
+      }
       log_security_event: {
         Args: {
           p_event_details?: Json
