@@ -32,6 +32,7 @@ interface Restaurant {
 const RestaurantDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
+  const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
@@ -49,16 +50,29 @@ const RestaurantDashboard = () => {
 
       if (session?.user) {
         // Get user's restaurant
-        const { data, error } = await supabase
+        const { data: restaurantData, error: restaurantError } = await supabase
           .from('restaurants')
           .select('*')
           .eq('owner_id', session.user.id)
           .maybeSingle();
 
-        if (!error && data) {
-          setRestaurant(data);
-        } else if (error) {
-          console.error('Erreur lors du chargement du restaurant:', error);
+        if (!restaurantError && restaurantData) {
+          setRestaurant(restaurantData);
+        } else if (restaurantError) {
+          console.error('Erreur lors du chargement du restaurant:', restaurantError);
+        }
+
+        // Get user's profile for emoji and username
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('chef_emoji_color, username')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+
+        if (!profileError && profileData) {
+          setProfile(profileData);
+        } else if (profileError) {
+          console.error('Erreur lors du chargement du profil:', profileError);
         }
       }
     } catch (error) {
@@ -130,10 +144,10 @@ const RestaurantDashboard = () => {
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                  {restaurant?.name || 'Mon Restaurant'} 👨‍🍳
+                  {restaurant?.name || 'Mon Restaurant'} {profile?.chef_emoji_color || '👨‍🍳'}
                 </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
-                  Gérez votre restaurant efficacement
+                  @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
                 </p>
                 {restaurant?.address && (
                   <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">

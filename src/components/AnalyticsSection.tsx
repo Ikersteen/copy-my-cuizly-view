@@ -31,6 +31,48 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
   useEffect(() => {
     if (restaurantId) {
       loadAnalytics();
+      
+      // Set up real-time subscription for offers and menus
+      const offersChannel = supabase
+        .channel('offers-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'offers',
+            filter: `restaurant_id=eq.${restaurantId}`
+          },
+          () => {
+            loadAnalytics();
+          }
+        )
+        .subscribe();
+
+      const menusChannel = supabase
+        .channel('menus-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'menus',
+            filter: `restaurant_id=eq.${restaurantId}`
+          },
+          () => {
+            loadAnalytics();
+          }
+        )
+        .subscribe();
+
+      // Auto-refresh analytics every 30 seconds
+      const interval = setInterval(loadAnalytics, 30000);
+
+      return () => {
+        supabase.removeChannel(offersChannel);
+        supabase.removeChannel(menusChannel);
+        clearInterval(interval);
+      };
     }
   }, [restaurantId]);
 
