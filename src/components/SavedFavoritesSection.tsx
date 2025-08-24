@@ -22,17 +22,23 @@ export const SavedFavoritesSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!favLoading && favorites.length > 0) {
-      loadFavoriteRestaurants();
-    } else {
-      setLoading(false);
+    if (!favLoading) {
+      if (favorites.length > 0) {
+        loadFavoriteRestaurants();
+      } else {
+        setFavoriteRestaurants([]);
+        setLoading(false);
+      }
     }
   }, [favorites, favLoading]);
 
   const loadFavoriteRestaurants = async () => {
     try {
       const { data, error } = await supabase
-        .rpc('get_public_restaurants');
+        .from('restaurants')
+        .select('id, name, description, cuisine_type, price_range, address, logo_url')
+        .in('id', favorites)
+        .eq('is_active', true);
 
       if (error) throw error;
       setFavoriteRestaurants(data || []);
@@ -61,7 +67,32 @@ export const SavedFavoritesSection = () => {
   }
 
   if (favoriteRestaurants.length === 0) {
-    return null;
+    return (
+      <section className="py-16 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-6">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <Heart className="h-8 w-8 text-muted-foreground" />
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+                Favoris
+              </h2>
+            </div>
+            <p className="text-lg text-muted-foreground">
+              Tes restaurants favoris disponible ici !
+            </p>
+            <div className="bg-muted/30 rounded-lg p-8 max-w-md mx-auto">
+              <Heart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">
+                Votre liste de favoris est vide pour l'instant.
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Ajoutez des restaurants à vos favoris pour être averti dès qu'ils publient leur menu !
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (
