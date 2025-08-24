@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Plus, Edit3, MapPin, ChefHat 
+  Plus, Edit3, MapPin, ChefHat, LogOut 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
@@ -109,23 +109,6 @@ const RestaurantDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation Header */}
-      <div className="bg-background border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <button className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
-              <span className="text-lg font-medium">Dashboard</span>
-            </button>
-            <button 
-              onClick={handleLogout}
-              className="px-4 py-2 bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground rounded-lg transition-colors font-medium"
-            >
-              Déconnexion
-            </button>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* Header minimaliste */}
@@ -159,6 +142,26 @@ const RestaurantDashboard = () => {
                   </p>
                 )}
               </div>
+            </div>
+            
+            <div className="flex gap-2 self-start sm:self-auto">
+              <Button 
+                variant="outline"
+                size="sm"
+                className="flex-1 sm:flex-none"
+              >
+                <span className="hidden sm:inline">Tableau de bord</span>
+                <span className="sm:hidden">Dashboard</span>
+              </Button>
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="flex-1 sm:flex-none"
+              >
+                <LogOut className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Déconnexion</span>
+              </Button>
             </div>
           </div>
         </div>
