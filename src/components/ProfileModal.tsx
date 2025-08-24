@@ -269,12 +269,20 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Mon profil</DialogTitle>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="text-center pb-4">
+          <div className="flex justify-center mb-4">
+            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-4xl">
+              {localProfile.chef_emoji_color}
+            </div>
+          </div>
+          <DialogTitle className="text-2xl">Mon profil</DialogTitle>
+          <p className="text-muted-foreground">
+            @{localProfile.username || user?.email?.split('@')[0]}
+          </p>
         </DialogHeader>
         
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="first_name">Prénom</Label>
@@ -329,16 +337,19 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           <Separator />
 
           {/* Emoji de salutation */}
-          <div className="space-y-4">
+          <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
             <Label className="text-base font-medium">Emoji de salutation</Label>
-            <div className="flex flex-wrap gap-2">
-              {['👋', '👋🏽', '👋🏾', '👋🏿', '👋🏻', '👋🏼', '🤚', '🤚🏽', '🤚🏾', '🤚🏿', '🤚🏻', '🤚🏼'].map(emoji => (
+            <p className="text-sm text-muted-foreground">
+              Choisissez l'emoji qui apparaîtra sur votre profil
+            </p>
+            <div className="grid grid-cols-6 gap-2">
+              {['👋', '👋🏽', '👋🏾', '👋🏿', '👋🏻', '👋🏼', '🤚', '🤚🏽', '🤚🏾', '🤚🏿', '🤚🏻', '🤚🏼', '🙌', '🙌🏽', '🙌🏾', '🙌🏿', '🙌🏻', '🙌🏼', '👨‍🍳', '👩‍🍳', '🧑‍🍳', '😊', '😄', '😎'].map(emoji => (
                 <Button
                   key={emoji}
                   variant={localProfile.chef_emoji_color === emoji ? "default" : "outline"}
                   size="sm"
                   onClick={() => setLocalProfile(prev => ({ ...prev, chef_emoji_color: emoji }))}
-                  className="text-2xl h-12 w-12 p-0"
+                  className="text-2xl h-14 w-14 p-0 hover:scale-110 transition-transform"
                 >
                   {emoji}
                 </Button>

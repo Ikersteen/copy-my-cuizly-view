@@ -11,6 +11,7 @@ import { Upload, X, Camera, User, Trash2, Edit2, Crop } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
+import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
 
 interface Restaurant {
   id: string;
@@ -439,15 +440,12 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="address">Adresse</Label>
-                <Input
-                  id="address"
-                  value={formData.address || ""}
-                  onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                  placeholder="2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4"
-                />
-              </div>
+              <MontrealAddressSelector
+                value={formData.address || ""}
+                onChange={(address) => setFormData(prev => ({ ...prev, address }))}
+                label="Adresse du restaurant"
+                placeholder="Commencez à taper votre adresse à Montréal..."
+              />
             </div>
 
             {/* Contact & Details */}
