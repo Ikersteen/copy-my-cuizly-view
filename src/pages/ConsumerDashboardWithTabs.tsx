@@ -85,8 +85,8 @@ const ConsumerDashboard = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 bg-foreground rounded-full flex items-center justify-center animate-pulse mx-auto">
-            <span className="text-background font-semibold text-xl">C</span>
+          <div className="w-16 h-16 flex items-center justify-center animate-pulse mx-auto">
+            <img src="/cuizly-logo.png" alt="Cuizly" className="w-16 h-16 object-contain" />
           </div>
           <p className="text-muted-foreground animate-pulse">Chargement de votre expérience personnalisée...</p>
         </div>
