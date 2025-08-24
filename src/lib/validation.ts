@@ -74,12 +74,12 @@ export const validatePhone = (phone: string): { isValid: boolean; error?: string
 
 // Validate password strength with enhanced security
 export const validatePassword = (password: string): { isValid: boolean; error?: string } => {
-  if (password.length < 12) {
-    return { isValid: false, error: 'Password must be at least 12 characters' };
+  if (password.length < 8) {
+    return { isValid: false, error: 'Le mot de passe doit contenir au moins 8 caractères' };
   }
   
   if (password.length > 128) {
-    return { isValid: false, error: 'Password must be less than 128 characters' };
+    return { isValid: false, error: 'Le mot de passe doit contenir moins de 128 caractères' };
   }
   
   const hasUppercase = /[A-Z]/.test(password);
@@ -90,7 +90,7 @@ export const validatePassword = (password: string): { isValid: boolean; error?: 
   if (!hasUppercase || !hasLowercase || !hasNumbers || !hasSpecialChar) {
     return { 
       isValid: false, 
-      error: 'Password must contain uppercase, lowercase, numbers, and special characters' 
+      error: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial' 
     };
   }
   

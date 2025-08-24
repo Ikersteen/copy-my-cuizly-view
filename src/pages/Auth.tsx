@@ -395,24 +395,27 @@ const Auth = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
-                  <Button 
-                    variant="outline" 
-                    className="w-full text-sm" 
-                    onClick={handleGoogleAuth}
-                    type="button"
-                  >
-                    Se connecter avec Google
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full text-sm" 
-                    onClick={handleAppleAuth}
-                    type="button"
-                  >
-                    Se connecter avec Apple
-                  </Button>
-                </div>
+                {/* Masquer temporairement les boutons OAuth non configurés */}
+                {false && (
+                  <div className="space-y-2 sm:space-y-3">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-sm" 
+                      onClick={handleGoogleAuth}
+                      type="button"
+                    >
+                      Se connecter avec Google
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-sm" 
+                      onClick={handleAppleAuth}
+                      type="button"
+                    >
+                      Se connecter avec Apple
+                    </Button>
+                  </div>
+                )}
               </TabsContent>
 
               <TabsContent value="signup" className="space-y-3 sm:space-y-4">
@@ -494,9 +497,18 @@ const Auth = () => {
                         type="password"
                         placeholder="••••••••"
                         className="pl-10 text-sm"
-                        minLength={6}
                         required
                       />
+                    </div>
+                    <div className="text-xs text-cuizly-neutral space-y-1">
+                      <p>Le mot de passe doit contenir :</p>
+                      <ul className="space-y-0.5 ml-2">
+                        <li>• Au moins 8 caractères</li>
+                        <li>• Au moins une lettre majuscule</li>
+                        <li>• Au moins une lettre minuscule</li>
+                        <li>• Au moins un chiffre</li>
+                        <li>• Au moins un caractère spécial</li>
+                      </ul>
                     </div>
                   </div>
 
@@ -514,24 +526,27 @@ const Auth = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
-                  <Button 
-                    variant="outline" 
-                    className="w-full text-sm" 
-                    onClick={handleGoogleAuth}
-                    type="button"
-                  >
-                    Continuer avec Google
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full text-sm" 
-                    onClick={handleAppleAuth}
-                    type="button"
-                  >
-                    Continuer avec Apple
-                  </Button>
-                </div>
+                {/* Masquer temporairement les boutons OAuth non configurés */}
+                {false && (
+                  <div className="space-y-2 sm:space-y-3">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-sm" 
+                      onClick={handleGoogleAuth}
+                      type="button"
+                    >
+                      Continuer avec Google
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-sm" 
+                      onClick={handleAppleAuth}
+                      type="button"
+                    >
+                      Continuer avec Apple
+                    </Button>
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
           </CardContent>
