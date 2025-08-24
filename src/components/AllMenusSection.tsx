@@ -28,6 +28,7 @@ export const AllMenusSection = () => {
   const { toast } = useToast();
 
   const fetchMenus = async () => {
+    setLoading(true);
     try {
       const { data, error } = await supabase
         .from('menus')
@@ -96,6 +97,30 @@ export const AllMenusSection = () => {
 
   useEffect(() => {
     fetchMenus();
+
+    // Subscribe to realtime changes in menus table
+    const subscription = supabase
+      .channel('menus-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'menus',
+          filter: 'is_active=eq.true'
+        },
+        (payload) => {
+          console.log('Menu change detected:', payload);
+          // Refetch menus when there's a change
+          fetchMenus();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on component unmount
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   if (loading) {

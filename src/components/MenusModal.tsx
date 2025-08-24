@@ -144,29 +144,39 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
     setLoading(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('menus')
         .insert({
           restaurant_id: restaurantId,
           image_url: newMenu.image_url,
           description: newMenu.description.trim(),
           cuisine_type: newMenu.cuisine_type.trim()
-        });
+        })
+        .select()
+        .single();
 
       if (error) throw error;
 
+      // Reset form
       setNewMenu({ description: "", image_url: "", cuisine_type: "" });
+      
+      // Reload menus to ensure we have the latest data
       await loadMenus();
       
+      // Call parent callback if provided
+      if (onSuccess) {
+        onSuccess();
+      }
+      
       toast({
-        title: "Menu ajouté",
-        description: "Votre menu a été ajouté avec succès"
+        title: "Menu ajouté avec succès !",
+        description: `Votre menu "${data.description}" est maintenant visible dans votre liste`,
       });
     } catch (error) {
       console.error('Erreur lors de l\'ajout du menu:', error);
       toast({
         title: "Erreur",
-        description: "Impossible d'ajouter le menu",
+        description: "Impossible d'ajouter le menu. Veuillez réessayer.",
         variant: "destructive"
       });
     } finally {
