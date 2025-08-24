@@ -36,9 +36,7 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('restaurants')
-        .select('id, name, description, address, cuisine_type, price_range, logo_url, cover_image_url, is_active, delivery_radius, opening_hours, created_at, updated_at')
-        .in('id', favorites);
+        .rpc('get_public_restaurants');
 
       if (error) throw error;
       setFavoriteRestaurants(data || []);

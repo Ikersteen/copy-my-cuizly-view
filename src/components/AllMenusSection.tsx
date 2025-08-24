@@ -41,9 +41,7 @@ export const AllMenusSection = () => {
       if (data && data.length > 0) {
         const restaurantIds = [...new Set(data.map(menu => menu.restaurant_id))];
         const { data: restaurantsData, error: restaurantsError } = await supabase
-          .from('restaurants')
-          .select('id, name, description, cuisine_type, price_range, logo_url')
-          .in('id', restaurantIds);
+          .rpc('get_public_restaurants');
 
         if (restaurantsError) throw restaurantsError;
 

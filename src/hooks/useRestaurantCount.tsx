@@ -7,12 +7,10 @@ export const useRestaurantCount = () => {
   useEffect(() => {
     // Get initial count
     const getRestaurantCount = async () => {
-      const { count } = await supabase
-        .from('restaurants')
-        .select('id', { count: 'exact', head: true })
-        .eq('is_active', true);
+      const { data } = await supabase
+        .rpc('get_public_restaurants');
       
-      setCount(count || 0);
+      setCount(data?.length || 0);
     };
 
     getRestaurantCount();

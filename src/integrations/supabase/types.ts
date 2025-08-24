@@ -433,6 +433,13 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_restaurant_contact_info: {
+        Args: { restaurant_id: string }
+        Returns: {
+          email: string
+          phone: string
+        }[]
+      }
       log_security_event: {
         Args: {
           p_event_details?: Json
