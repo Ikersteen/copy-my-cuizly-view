@@ -290,8 +290,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         {/* Header simplifié sans photo de couverture */}
         <div className="p-8 pb-4">
           <div className="flex items-center gap-6">
-            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-3xl border-4 border-background shadow-lg">
-              {localProfile.chef_emoji_color}
+            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-3xl font-bold text-primary-foreground border-4 border-background shadow-lg">
+              {(localProfile.username || user?.email?.split('@')[0] || 'U').charAt(0).toUpperCase()}
             </div>
             <div>
               <h1 className="text-2xl font-bold text-foreground">
