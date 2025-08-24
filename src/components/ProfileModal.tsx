@@ -290,8 +290,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         {/* Header simplifié sans photo de couverture */}
         <div className="p-8 pb-4">
           <div className="flex items-center gap-6">
-            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-3xl border-4 border-background shadow-lg">
-              {localProfile.chef_emoji_color}
+            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-3xl text-primary-foreground font-semibold border-4 border-background shadow-lg">
+              {localProfile.first_name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
             </div>
             <div>
               <h1 className="text-2xl font-bold text-foreground">
@@ -389,41 +389,6 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                 </div>
               </div>
 
-              {/* Emoji de salutation */}
-              <div className="bg-muted/30 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4">🎭 Personnalisation</h3>
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-sm font-medium">Emoji de salutation</Label>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Choisissez l'emoji qui apparaîtra sur votre profil
-                    </p>
-                    <div className="grid grid-cols-8 gap-2">
-                      {[
-                        // Émojis de mains avec différentes couleurs
-                        '👋', '👋🏻', '👋🏼', '👋🏽', '👋🏾', '👋🏿',
-                        '🤚', '🤚🏻', '🤚🏼', '🤚🏽', '🤚🏾', '🤚🏿',
-                        '🙌', '🙌🏻', '🙌🏼', '🙌🏽', '🙌🏾', '🙌🏿',
-                        '👏', '👏🏻', '👏🏼', '👏🏽', '👏🏾', '👏🏿',
-                        // Têtes jaunes avec différentes réactions
-                        '😊', '😄', '😃', '😁', '😆', '😅', '🤣', '😂',
-                        '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩',
-                        '😋', '😎', '🤓', '🧐', '😏', '😌', '😔', '😪'
-                      ].map(emoji => (
-                        <Button
-                          key={emoji}
-                          variant={localProfile.chef_emoji_color === emoji ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setLocalProfile(prev => ({ ...prev, chef_emoji_color: emoji }))}
-                          className="text-lg h-10 w-10 p-0 hover:scale-110 transition-transform"
-                        >
-                          {emoji}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Colonne droite - Préférences et sécurité */}
