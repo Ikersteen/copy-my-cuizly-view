@@ -51,7 +51,7 @@ export const SavedFavoritesSection = () => {
 
   if (loading || favLoading) {
     return (
-      <section className="py-16 bg-background">
+      <section className="py-8 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-pulse space-y-6">
             <div className="h-8 bg-muted rounded w-64"></div>
@@ -68,12 +68,12 @@ export const SavedFavoritesSection = () => {
 
   if (favoriteRestaurants.length === 0) {
     return (
-      <section className="py-16 bg-background">
+      <section className="py-8 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12">
-            <div className="bg-card border rounded-lg p-6 shadow-sm">
-              <h1 className="text-3xl font-bold mb-2">Vos restaurants favoris</h1>
-              <p className="text-muted-foreground">
+          <div className="mb-8">
+            <div className="bg-card border rounded-lg p-4 shadow-sm">
+              <h1 className="text-2xl font-bold mb-1">Vos restaurants favoris</h1>
+              <p className="text-sm text-muted-foreground">
                 Découvrez et retrouvez facilement vos restaurants préférés
               </p>
             </div>
@@ -95,12 +95,12 @@ export const SavedFavoritesSection = () => {
   }
 
   return (
-    <section className="py-16 bg-gradient-to-br from-background to-muted/20">
+    <section className="py-8 bg-gradient-to-br from-background to-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-12">
-          <div className="bg-card border rounded-lg p-6 shadow-sm">
-            <h1 className="text-3xl font-bold mb-2">Vos restaurants favoris</h1>
-            <p className="text-muted-foreground">
+        <div className="mb-8">
+          <div className="bg-card border rounded-lg p-4 shadow-sm">
+            <h1 className="text-2xl font-bold mb-1">Vos restaurants favoris</h1>
+            <p className="text-sm text-muted-foreground">
               Découvrez et retrouvez facilement vos restaurants préférés
             </p>
           </div>
