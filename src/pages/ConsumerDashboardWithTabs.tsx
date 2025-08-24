@@ -18,7 +18,7 @@ import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
 import { FiltersModal, FilterOptions } from "@/components/FiltersModal";
-import { PersonalizedRecommendations } from "@/components/PersonalizedRecommendations";
+import { EnhancedRecommendationEngine } from "@/components/EnhancedRecommendationEngine";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
 import { AllMenusSection } from "@/components/AllMenusSection";
@@ -165,7 +165,7 @@ const ConsumerDashboard = () => {
           </TabsList>
 
           <TabsContent value="recommendations" className="space-y-6">
-            <PersonalizedRecommendations />
+            <EnhancedRecommendationEngine preferences={preferences} />
           </TabsContent>
 
           <TabsContent value="menus" className="space-y-6">
