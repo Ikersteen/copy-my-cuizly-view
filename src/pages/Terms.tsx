@@ -68,11 +68,19 @@ const Terms = () => {
           </section>
 
           <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">6. Responsabilité</h2>
+            <p className="text-cuizly-neutral">
+              Cuizly Technologies Inc. ne peut être tenue responsable des dommages directs ou indirects résultant de l'utilisation de notre plateforme. Pour exercer ce droit, contactez-nous à cuizlycanada@gmail.com
+            </p>
+          </section>
+
+          <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">7. Contact</h2>
             <p className="text-cuizly-neutral">
               Pour toute question concernant ces conditions d'utilisation, contactez-nous à :
-              <br />Email : legal@cuizly.com
-              <br />Adresse : Montréal, Québec, Canada
+              <br />Courriel : cuizlycanada@gmail.com
+              <br />Adresse : 2900 Bd Édouard-Montpetit
+              <br />Montréal, QC H3T 1J4
             </p>
           </section>
         </div>

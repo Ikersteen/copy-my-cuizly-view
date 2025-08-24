@@ -83,11 +83,30 @@ const Cookies = () => {
           </section>
 
           <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">Éditeur du site</h2>
+            <p className="text-cuizly-neutral">
+              Raison sociale : Cuizly Technologies Inc.
+              <br />Forme juridique : Société par actions
+              <br />Siège social : 2900 Bd Édouard-Montpetit
+              <br />Montréal, QC H3T 1J4
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">Directeur de la publication</h2>
+            <p className="text-cuizly-neutral">
+              Iker Kiomba Landu, Président Directeur Général
+              <br />Courriel : cuizlycanada@gmail.com
+            </p>
+          </section>
+
+          <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Contact</h2>
             <p className="text-cuizly-neutral">
               Pour toute question concernant notre utilisation des cookies, contactez-nous à :
               <br />Courriel : cuizlycanada@gmail.com
-              <br />Adresse : Montréal, Québec, Canada
+              <br />Siège social : 2900 Bd Édouard-Montpetit
+              <br />Montréal, QC H3T 1J4
             </p>
           </section>
         </div>

@@ -144,12 +144,13 @@ export const RestaurantProfileModal = ({
         await updateProfile({ chef_emoji_color: formData.chef_emoji_color });
       }
 
+      // Force update the parent component to reflect changes
+      onUpdate();
+
       toast({
         title: "Profil mis à jour",
         description: "Les informations de votre restaurant ont été sauvegardées"
       });
-      
-      onUpdate();
       onOpenChange(false);
     } catch (error) {
       console.error('Error updating restaurant:', error);
