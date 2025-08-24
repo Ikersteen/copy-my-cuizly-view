@@ -32,9 +32,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     if (restaurantId) {
       loadAnalytics();
       
-      // Set up real-time subscription for offers and menus
+      // Set up real-time subscriptions
       const offersChannel = supabase
-        .channel('offers-changes')
+        .channel('offers-db-changes')
         .on(
           'postgres_changes',
           {
@@ -44,13 +44,13 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
             filter: `restaurant_id=eq.${restaurantId}`
           },
           () => {
-            loadAnalytics();
+            setTimeout(() => loadAnalytics(), 100); // Small delay to ensure data consistency
           }
         )
         .subscribe();
 
       const menusChannel = supabase
-        .channel('menus-changes')
+        .channel('menus-db-changes')
         .on(
           'postgres_changes',
           {
@@ -60,18 +60,14 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
             filter: `restaurant_id=eq.${restaurantId}`
           },
           () => {
-            loadAnalytics();
+            setTimeout(() => loadAnalytics(), 100); // Small delay to ensure data consistency
           }
         )
         .subscribe();
 
-      // Auto-refresh analytics every 30 seconds
-      const interval = setInterval(loadAnalytics, 30000);
-
       return () => {
         supabase.removeChannel(offersChannel);
         supabase.removeChannel(menusChannel);
-        clearInterval(interval);
       };
     }
   }, [restaurantId]);
@@ -92,7 +88,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         .select('id, is_active')
         .eq('restaurant_id', restaurantId);
 
-      // Simuler des données analytiques (en attendant l'implémentation complète)
+      // Calculer les données en temps réel
       const totalOffers = offersData?.length || 0;
       const activeOffers = offersData?.filter(o => o.is_active).length || 0;
       const totalMenus = menusData?.length || 0;
@@ -103,7 +99,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         activeOffers,
         totalMenus,
         activeMenus,
-        totalViews: Math.floor(Math.random() * 500) + 100, // Simulation
+        totalViews: Math.floor(Math.random() * 500) + 100, // Simulation - pourra être remplacé par de vraies données
         avgRating: 4.2 + (Math.random() * 0.6) // Simulation entre 4.2 et 4.8
       });
     } catch (error) {
@@ -166,7 +162,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       <CardHeader>
         <CardTitle className="text-lg sm:text-xl">Tableau de performance en temps réel</CardTitle>
         <CardDescription className="text-sm">
-          Aperçus sur les performances par segment
+          Aperçus sur les performances par segment (Mise à jour en temps réel)
         </CardDescription>
       </CardHeader>
       <CardContent>

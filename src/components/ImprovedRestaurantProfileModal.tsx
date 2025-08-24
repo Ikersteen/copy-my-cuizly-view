@@ -7,9 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Upload, X, Camera, User, Trash2, Edit2 } from "lucide-react";
+import { Upload, X, Camera, User, Trash2, Edit2, Crop } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
 
 interface Restaurant {
   id: string;
@@ -40,6 +41,9 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
   const [loading, setLoading] = useState(false);
   const [newCuisine, setNewCuisine] = useState("");
   const [chefEmojiColor, setChefEmojiColor] = useState("🧑‍🍳");
+  const [showPhotoAdjustment, setShowPhotoAdjustment] = useState(false);
+  const [adjustmentImageUrl, setAdjustmentImageUrl] = useState("");
+  const [adjustmentType, setAdjustmentType] = useState<'logo' | 'cover'>('logo');
   const { toast } = useToast();
 
   const chefEmojis = [
@@ -99,7 +103,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       return;
     }
 
-    if (type === 'cover') {
+    // Create a temporary URL for adjustment
+    const tempUrl = URL.createObjectURL(file);
+    setAdjustmentImageUrl(tempUrl);
+    setAdjustmentType(type);
+    setShowPhotoAdjustment(true);
+  };
+
+  const handleAdjustedPhoto = async (adjustedImageData: string) => {
+    if (adjustmentType === 'cover') {
       setUploadingCover(true);
     } else {
       setUploading(true);
@@ -109,11 +121,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('No session');
 
-      const fileName = `${session.user.id}/${type}-${Date.now()}.${file.type.split('/')[1]}`;
+      // Convert base64 to blob
+      const response = await fetch(adjustedImageData);
+      const blob = await response.blob();
+      
+      const fileName = `${session.user.id}/${adjustmentType}-adjusted-${Date.now()}.jpeg`;
       
       const { error: uploadError } = await supabase.storage
         .from('restaurant-images')
-        .upload(fileName, file);
+        .upload(fileName, blob);
 
       if (uploadError) throw uploadError;
 
@@ -121,14 +137,14 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
-      if (type === 'cover') {
+      if (adjustmentType === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: data.publicUrl }));
       } else {
         setFormData(prev => ({ ...prev, logo_url: data.publicUrl }));
       }
       
       toast({
-        title: type === 'cover' ? "Photo de couverture mise à jour" : "Logo mis à jour",
+        title: adjustmentType === 'cover' ? "Photo de couverture mise à jour" : "Logo mis à jour",
         description: "L'image a été uploadée avec succès"
       });
     } catch (error) {
@@ -139,11 +155,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         variant: "destructive"
       });
     } finally {
-      if (type === 'cover') {
+      if (adjustmentType === 'cover') {
         setUploadingCover(false);
       } else {
         setUploading(false);
       }
+      // Clean up the temporary URL
+      URL.revokeObjectURL(adjustmentImageUrl);
     }
   };
 
@@ -320,8 +338,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                     asChild
                   >
                     <span className="cursor-pointer">
-                      <Edit2 className="h-4 w-4 mr-2" />
-                      {uploadingCover ? "Upload..." : "Modifier"}
+                      <Crop className="h-4 w-4 mr-2" />
+                      {uploadingCover ? "Upload..." : "Ajuster & Modifier"}
                     </span>
                   </Button>
                 </label>
@@ -575,6 +593,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             </Button>
           </div>
         </div>
+
+        {/* Photo Adjustment Modal */}
+        <PhotoAdjustmentModal
+          open={showPhotoAdjustment}
+          onOpenChange={setShowPhotoAdjustment}
+          imageUrl={adjustmentImageUrl}
+          onSave={handleAdjustedPhoto}
+          title={adjustmentType === 'cover' ? "Ajuster la photo de couverture" : "Ajuster le logo"}
+        />
       </DialogContent>
     </Dialog>
   );
