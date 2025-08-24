@@ -87,8 +87,7 @@ const Cookies = () => {
             <p className="text-cuizly-neutral">
               Raison sociale : Cuizly Technologies
               <br />Forme juridique : Startup Indépendante
-              <br />Siège social : 2900 Bd Édouard-Montpetit
-              <br />Montréal, QC H3T 1J4
+              <br />Siège social : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4
             </p>
           </section>
 
@@ -105,8 +104,7 @@ const Cookies = () => {
             <p className="text-cuizly-neutral">
               Pour toute question concernant notre utilisation des cookies, contactez-nous à :
               <br />Courriel : cuizlycanada@gmail.com
-              <br />Siège social : 2900 Bd Édouard-Montpetit
-              <br />Montréal, QC H3T 1J4
+              <br />Siège social : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4
             </p>
           </section>
         </div>

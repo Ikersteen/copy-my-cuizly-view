@@ -79,8 +79,7 @@ const Terms = () => {
             <p className="text-cuizly-neutral">
               Pour toute question concernant ces conditions d'utilisation, contactez-nous à :
               <br />Courriel : cuizlycanada@gmail.com
-              <br />Adresse : 2900 Bd Édouard-Montpetit
-              <br />Montréal, QC H3T 1J4
+              <br />Adresse : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4
             </p>
           </section>
         </div>
