@@ -84,11 +84,11 @@ export const useProfile = () => {
   };
 
   const updateProfile = async (updates: Partial<UserProfile>) => {
-    if (!profile) return;
-
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      if (!session) {
+        throw new Error('Aucune session active');
+      }
 
       const { data, error } = await supabase
         .from('profiles')
@@ -106,6 +106,8 @@ export const useProfile = () => {
         title: "Profil mis à jour",
         description: "Vos informations ont été sauvegardées"
       });
+      
+      return { success: true };
     } catch (error) {
       console.error('Erreur lors de la mise à jour:', error);
       toast({
@@ -113,6 +115,7 @@ export const useProfile = () => {
         description: "Impossible de sauvegarder le profil",
         variant: "destructive"
       });
+      return { success: false, error };
     }
   };
 

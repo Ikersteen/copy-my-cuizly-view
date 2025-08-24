@@ -141,7 +141,10 @@ export const RestaurantProfileModal = ({
 
       // Update the profile with chef_emoji_color if it changed using the hook
       if (formData.chef_emoji_color !== restaurant.chef_emoji_color) {
-        await updateProfile({ chef_emoji_color: formData.chef_emoji_color });
+        const result = await updateProfile({ chef_emoji_color: formData.chef_emoji_color });
+        if (!result?.success) {
+          console.warn('Failed to update chef emoji, but restaurant data was saved');
+        }
       }
 
       // Force update the parent component to reflect changes
