@@ -70,16 +70,13 @@ export const SavedFavoritesSection = () => {
     return (
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-6">
-            <div className="flex items-center justify-center space-x-3 mb-4">
-              <Heart className="h-8 w-8 text-muted-foreground" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
-                Favoris
-              </h2>
-            </div>
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-2">Vos restaurants favoris</h1>
             <p className="text-muted-foreground">
               Découvrez et retrouvez facilement vos restaurants préférés
             </p>
+          </div>
+          <div className="text-center space-y-6">
             <div className="bg-muted/30 rounded-lg p-8 max-w-md mx-auto">
               <Heart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <p className="text-muted-foreground">
