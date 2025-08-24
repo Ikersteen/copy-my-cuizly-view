@@ -13,8 +13,11 @@ interface AnalyticsData {
   activeOffers: number;
   totalMenus: number;
   activeMenus: number;
-  totalViews: number;
+  profileViews: number;
+  menuViews: number;
   avgRating: number;
+  totalRatings: number;
+  offerClicks: number;
 }
 
 export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
@@ -23,87 +26,126 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     activeOffers: 0,
     totalMenus: 0,
     activeMenus: 0,
-    totalViews: 0,
-    avgRating: 0
+    profileViews: 0,
+    menuViews: 0,
+    avgRating: 0,
+    totalRatings: 0,
+    offerClicks: 0,
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (restaurantId) {
-      loadAnalytics();
-      
-      // Set up real-time subscriptions
-      const offersChannel = supabase
-        .channel('offers-db-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'offers',
-            filter: `restaurant_id=eq.${restaurantId}`
-          },
-          () => {
-            setTimeout(() => loadAnalytics(), 100); // Small delay to ensure data consistency
-          }
-        )
-        .subscribe();
+    loadAnalytics();
 
-      const menusChannel = supabase
-        .channel('menus-db-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'menus',
-            filter: `restaurant_id=eq.${restaurantId}`
-          },
-          () => {
-            setTimeout(() => loadAnalytics(), 100); // Small delay to ensure data consistency
-          }
-        )
-        .subscribe();
+    // Set up real-time subscriptions for all relevant tables
+    const analyticsSubscription = supabase
+      .channel('restaurant-analytics')
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'restaurant_analytics',
+        filter: `restaurant_id=eq.${restaurantId}`
+      }, () => {
+        loadAnalytics();
+      })
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'ratings',
+        filter: `restaurant_id=eq.${restaurantId}`
+      }, () => {
+        loadAnalytics();
+      })
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'offers',
+        filter: `restaurant_id=eq.${restaurantId}`
+      }, () => {
+        loadAnalytics();
+      })
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'menus',
+        filter: `restaurant_id=eq.${restaurantId}`
+      }, () => {
+        loadAnalytics();
+      })
+      .subscribe();
 
-      return () => {
-        supabase.removeChannel(offersChannel);
-        supabase.removeChannel(menusChannel);
-      };
-    }
+    return () => {
+      supabase.removeChannel(analyticsSubscription);
+    };
   }, [restaurantId]);
 
   const loadAnalytics = async () => {
     if (!restaurantId) return;
-    
+
     try {
-      // Charger les statistiques des offres
-      const { data: offersData } = await supabase
+      // Get offers data
+      const { data: offersData, error: offersError } = await supabase
         .from('offers')
         .select('id, is_active')
         .eq('restaurant_id', restaurantId);
 
-      // Charger les statistiques des menus
-      const { data: menusData } = await supabase
+      if (offersError) throw offersError;
+
+      // Get menus data
+      const { data: menusData, error: menusError } = await supabase
         .from('menus')
         .select('id, is_active')
         .eq('restaurant_id', restaurantId);
 
-      // Calculer les données en temps réel
+      if (menusError) throw menusError;
+
+      // Get real analytics data
+      const { data: analyticsData, error: analyticsError } = await supabase
+        .from('restaurant_analytics')
+        .select('*')
+        .eq('restaurant_id', restaurantId)
+        .order('date', { ascending: false });
+
+      if (analyticsError) throw analyticsError;
+
+      // Get ratings data
+      const { data: ratingsData, error: ratingsError } = await supabase
+        .from('ratings')
+        .select('rating')
+        .eq('restaurant_id', restaurantId);
+
+      if (ratingsError) throw ratingsError;
+
+      // Calculate real analytics
       const totalOffers = offersData?.length || 0;
-      const activeOffers = offersData?.filter(o => o.is_active).length || 0;
+      const activeOffers = offersData?.filter(offer => offer.is_active).length || 0;
       const totalMenus = menusData?.length || 0;
-      const activeMenus = menusData?.filter(m => m.is_active).length || 0;
-      
+      const activeMenus = menusData?.filter(menu => menu.is_active).length || 0;
+
+      // Sum up all analytics data
+      const profileViews = analyticsData?.reduce((sum, day) => sum + (day.profile_views || 0), 0) || 0;
+      const menuViews = analyticsData?.reduce((sum, day) => sum + (day.menu_views || 0), 0) || 0;
+      const offerClicks = analyticsData?.reduce((sum, day) => sum + (day.offer_clicks || 0), 0) || 0;
+
+      // Calculate average rating
+      const totalRatings = ratingsData?.length || 0;
+      const avgRating = totalRatings > 0 
+        ? ratingsData.reduce((sum, rating) => sum + rating.rating, 0) / totalRatings 
+        : 0;
+
       setAnalytics({
         totalOffers,
         activeOffers,
         totalMenus,
         activeMenus,
-        totalViews: Math.floor(Math.random() * 500) + 100, // Simulation - pourra être remplacé par de vraies données
-        avgRating: 4.2 + (Math.random() * 0.6) // Simulation entre 4.2 et 4.8
+        profileViews,
+        menuViews,
+        avgRating: Math.round(avgRating * 10) / 10,
+        totalRatings,
+        offerClicks,
       });
     } catch (error) {
-      console.error('Erreur lors du chargement des analytics:', error);
+      console.error('Error loading analytics:', error);
     } finally {
       setLoading(false);
     }
@@ -126,10 +168,10 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     },
     {
       title: "Vues du profil",
-      value: analytics.totalViews,
+      value: analytics.profileViews,
       icon: Eye,
       color: "text-purple-500",
-      description: "Ce mois-ci"
+      description: "Vues totales"
     },
     {
       title: "Note moyenne",

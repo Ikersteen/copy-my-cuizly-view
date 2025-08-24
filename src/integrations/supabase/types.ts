@@ -180,6 +180,75 @@ export type Database = {
         }
         Relationships: []
       }
+      ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          restaurant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          restaurant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          restaurant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      restaurant_analytics: {
+        Row: {
+          average_rating: number | null
+          created_at: string
+          date: string
+          id: string
+          menu_views: number | null
+          offer_clicks: number | null
+          profile_views: number | null
+          rating_count: number | null
+          restaurant_id: string
+          updated_at: string
+        }
+        Insert: {
+          average_rating?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          menu_views?: number | null
+          offer_clicks?: number | null
+          profile_views?: number | null
+          rating_count?: number | null
+          restaurant_id: string
+          updated_at?: string
+        }
+        Update: {
+          average_rating?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          menu_views?: number | null
+          offer_clicks?: number | null
+          profile_views?: number | null
+          rating_count?: number | null
+          restaurant_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       restaurants: {
         Row: {
           address: string | null
