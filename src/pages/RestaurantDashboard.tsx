@@ -98,8 +98,34 @@ const RestaurantDashboard = () => {
     );
   }
 
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation Header */}
+      <div className="bg-background border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <button className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+              <span className="text-lg font-medium">Dashboard</span>
+            </button>
+            <button 
+              onClick={handleLogout}
+              className="px-4 py-2 bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground rounded-lg transition-colors font-medium"
+            >
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* Header minimaliste */}
