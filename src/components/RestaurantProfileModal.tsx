@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Camera, X, Upload, LogOut, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 
 interface Restaurant {
   id: string;
@@ -45,6 +46,7 @@ export const RestaurantProfileModal = ({
   const [newCuisine, setNewCuisine] = useState("");
   const [showDeleteSection, setShowDeleteSection] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -66,14 +68,67 @@ export const RestaurantProfileModal = ({
     }
   }, [restaurant, open]);
 
+  // Validate form data
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+
+    if (formData.name) {
+      const nameValidation = validateTextInput(formData.name, INPUT_LIMITS.NAME, "Restaurant name");
+      if (!nameValidation.isValid) errors.name = nameValidation.error!;
+    }
+
+    if (formData.description) {
+      const descValidation = validateTextInput(formData.description, INPUT_LIMITS.DESCRIPTION, "Description");
+      if (!descValidation.isValid) errors.description = descValidation.error!;
+    }
+
+    if (formData.address) {
+      const addressValidation = validateTextInput(formData.address, INPUT_LIMITS.ADDRESS, "Address");
+      if (!addressValidation.isValid) errors.address = addressValidation.error!;
+    }
+
+    if (formData.email) {
+      const emailValidation = validateEmail(formData.email);
+      if (!emailValidation.isValid) errors.email = emailValidation.error!;
+    }
+
+    if (formData.phone) {
+      const phoneValidation = validatePhone(formData.phone);
+      if (!phoneValidation.isValid) errors.phone = phoneValidation.error!;
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSave = async () => {
     if (!restaurant?.id) return;
     
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix the validation errors before saving",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setLoading(true);
     try {
+      // Sanitize form data before saving
+      const sanitizedData = {
+        ...formData,
+        name: formData.name ? validateTextInput(formData.name, INPUT_LIMITS.NAME).sanitized : formData.name,
+        description: formData.description ? validateTextInput(formData.description, INPUT_LIMITS.DESCRIPTION).sanitized : formData.description,
+        address: formData.address ? validateTextInput(formData.address, INPUT_LIMITS.ADDRESS).sanitized : formData.address,
+        phone: formData.phone ? validateTextInput(formData.phone, INPUT_LIMITS.PHONE).sanitized : formData.phone,
+        email: formData.email ? formData.email.trim().toLowerCase() : formData.email,
+        cuisine_type: formData.cuisine_type ? sanitizeStringArray(formData.cuisine_type) : formData.cuisine_type
+      };
+
       const { error } = await supabase
         .from('restaurants')
-        .update(formData)
+        .update(sanitizedData)
         .eq('id', restaurant.id);
 
       if (error) throw error;

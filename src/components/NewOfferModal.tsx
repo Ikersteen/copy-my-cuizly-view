@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { format } from "date-fns";
+import { validateTextInput, INPUT_LIMITS } from "@/lib/validation";
 
 interface NewOfferModalProps {
   open: boolean;
@@ -39,7 +40,22 @@ export const NewOfferModal = ({
   });
   const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
   const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const { toast } = useToast();
+
+  // Validate form data
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+
+    const titleValidation = validateTextInput(formData.title, INPUT_LIMITS.TITLE, "Title");
+    if (!titleValidation.isValid) errors.title = titleValidation.error!;
+
+    const descValidation = validateTextInput(formData.description, INPUT_LIMITS.DESCRIPTION, "Description");
+    if (!descValidation.isValid) errors.description = descValidation.error!;
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSave = async () => {
     if (!restaurantId || !formData.title || !formData.description.trim()) {
@@ -59,13 +75,23 @@ export const NewOfferModal = ({
       });
       return;
     }
+
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix the validation errors before saving",
+        variant: "destructive"
+      });
+      return;
+    }
     
     setLoading(true);
     try {
+      // Sanitize form data before saving
       const offerData = {
         restaurant_id: restaurantId,
-        title: formData.title,
-        description: formData.description || null,
+        title: validateTextInput(formData.title, INPUT_LIMITS.TITLE).sanitized,
+        description: validateTextInput(formData.description, INPUT_LIMITS.DESCRIPTION).sanitized || null,
         discount_percentage: formData.discount_percentage ? parseInt(formData.discount_percentage) : null,
         discount_amount: formData.discount_amount ? parseFloat(formData.discount_amount) : null,
         valid_until: dateRange.to ? dateRange.to.toISOString() : null,

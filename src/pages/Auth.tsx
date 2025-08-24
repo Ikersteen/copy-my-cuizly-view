@@ -10,6 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { validatePassword, validateEmail, validateTextInput, INPUT_LIMITS } from "@/lib/validation";
+import { isRateLimited } from "@/lib/security";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +54,18 @@ const Auth = () => {
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    // Rate limiting check
+    const clientIP = 'signup'; // Use a general key for client-side rate limiting
+    if (isRateLimited(clientIP, 5, 900000)) { // 5 attempts per 15 minutes
+      toast({
+        title: "Trop de tentatives",
+        description: "Veuillez attendre avant de réessayer",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsLoading(true);
 
     const formData = new FormData(event.currentTarget);
@@ -60,16 +74,63 @@ const Auth = () => {
     const fullName = formData.get('fullName') as string;
     const restaurantName = userType === 'restaurant_owner' ? formData.get('restaurantName') as string : '';
 
+    // Enhanced validation
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.isValid) {
+      toast({
+        title: "Email invalide",
+        description: emailValidation.error,
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      toast({
+        title: "Mot de passe invalide",
+        description: passwordValidation.error,
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    const nameValidation = validateTextInput(fullName, INPUT_LIMITS.NAME, "Full name");
+    if (!nameValidation.isValid) {
+      toast({
+        title: "Nom invalide",
+        description: nameValidation.error,
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (userType === 'restaurant_owner') {
+      const restaurantValidation = validateTextInput(restaurantName, INPUT_LIMITS.NAME, "Restaurant name");
+      if (!restaurantValidation.isValid) {
+        toast({
+          title: "Nom de restaurant invalide",
+          description: restaurantValidation.error,
+          variant: "destructive"
+        });
+        setIsLoading(false);
+        return;
+      }
+    }
+
     try {
       const { data, error } = await supabase.auth.signUp({
-        email,
+        email: email.trim().toLowerCase(),
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/`,
           data: {
-            full_name: fullName,
+            full_name: nameValidation.sanitized,
             user_type: userType,
-            restaurant_name: userType === 'restaurant_owner' ? restaurantName : null
+            restaurant_name: userType === 'restaurant_owner' ? validateTextInput(restaurantName, INPUT_LIMITS.NAME).sanitized : null
           }
         }
       });
@@ -143,11 +204,35 @@ const Auth = () => {
 
   const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    // Rate limiting check
+    const clientIP = 'signin'; // Use a general key for client-side rate limiting
+    if (isRateLimited(clientIP, 5, 900000)) { // 5 attempts per 15 minutes
+      toast({
+        title: "Trop de tentatives",
+        description: "Veuillez attendre avant de réessayer",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsLoading(true);
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+
+    // Enhanced validation
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.isValid) {
+      toast({
+        title: "Email invalide",
+        description: emailValidation.error,
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({

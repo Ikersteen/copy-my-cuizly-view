@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { LogOut, Trash2 } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
+import { validateTextInput, validatePhone, validatePassword, INPUT_LIMITS } from "@/lib/validation";
 
 interface ProfileModalProps {
   open: boolean;
@@ -41,6 +42,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const [showPasswordSection, setShowPasswordSection] = useState(false);
   const [showDeleteSection, setShowDeleteSection] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -82,6 +84,34 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     }
   };
 
+  // Validate form data
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+
+    if (localProfile.first_name) {
+      const nameValidation = validateTextInput(localProfile.first_name, INPUT_LIMITS.NAME, "First name");
+      if (!nameValidation.isValid) errors.first_name = nameValidation.error!;
+    }
+
+    if (localProfile.last_name) {
+      const nameValidation = validateTextInput(localProfile.last_name, INPUT_LIMITS.NAME, "Last name");
+      if (!nameValidation.isValid) errors.last_name = nameValidation.error!;
+    }
+
+    if (localProfile.username) {
+      const usernameValidation = validateTextInput(localProfile.username, INPUT_LIMITS.USERNAME, "Username");
+      if (!usernameValidation.isValid) errors.username = usernameValidation.error!;
+    }
+
+    if (localProfile.phone) {
+      const phoneValidation = validatePhone(localProfile.phone);
+      if (!phoneValidation.isValid) errors.phone = phoneValidation.error!;
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSave = async () => {
     if (!user) {
       toast({
@@ -91,17 +121,28 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       });
       return;
     }
+
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix the validation errors before saving",
+        variant: "destructive"
+      });
+      return;
+    }
     
     setLoading(true);
     try {
-      await updateProfile({
-        first_name: localProfile.first_name,
-        last_name: localProfile.last_name,
-        phone: localProfile.phone,
+      // Sanitize profile data before saving
+      const sanitizedProfile = {
+        first_name: localProfile.first_name ? validateTextInput(localProfile.first_name, INPUT_LIMITS.NAME).sanitized : localProfile.first_name,
+        last_name: localProfile.last_name ? validateTextInput(localProfile.last_name, INPUT_LIMITS.NAME).sanitized : localProfile.last_name,
+        phone: localProfile.phone ? validateTextInput(localProfile.phone, INPUT_LIMITS.PHONE).sanitized : localProfile.phone,
         username: localProfile.username,
-        chef_emoji_color: localProfile.chef_emoji_color
-      });
-      
+         chef_emoji_color: localProfile.chef_emoji_color
+       };
+
+      await updateProfile(sanitizedProfile);
       onOpenChange(false);
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -179,20 +220,22 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     }
   };
 
-  const handlePasswordChange = async () => {
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
+    const handlePasswordChange = async () => {
+    // Enhanced password validation
+    const passwordValidation = validatePassword(passwordData.newPassword);
+    if (!passwordValidation.isValid) {
       toast({
-        title: "Erreur",
-        description: "Les mots de passe ne correspondent pas",
+        title: "Password Error",
+        description: passwordValidation.error,
         variant: "destructive"
       });
       return;
     }
 
-    if (passwordData.newPassword.length < 6) {
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
       toast({
-        title: "Erreur", 
-        description: "Le mot de passe doit contenir au moins 6 caractères",
+        title: "Erreur",
+        description: "Les mots de passe ne correspondent pas",
         variant: "destructive"
       });
       return;
