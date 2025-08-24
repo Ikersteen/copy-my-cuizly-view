@@ -30,9 +30,8 @@ const Pricing = () => {
         "Publicité ciblée de vos offres",
         "Promotion dans l'app selon localisation",
         "Ciblage par préférences utilisateur",
-        "Dashboard de performance en temps réel",
-        "Support prioritaire",
-        "Formation à l'utilisation incluse"
+        "Tableau de performance en temps réel",
+        "Support prioritaire"
       ],
       cta: "Essayer gratuitement"
     },
@@ -45,9 +44,8 @@ const Pricing = () => {
         "Toutes les fonctionnalités Pro",
         "Rapports anonymisés détaillés",
         "Analyses des tendances de consommation",
-        "Insights sur les performances par segment",
-        "Recommandations IA pour votre business",
-        "Accès API pour intégrations avancées"
+        "Aperçus sur les performances par segment",
+        "Recommandations IA pour votre business"
       ],
       cta: "Essayer gratuitement"
     }
@@ -72,7 +70,7 @@ const Pricing = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-4">
           {plans.map((plan, index) => (
             <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''}`}>
               {plan.popular && (

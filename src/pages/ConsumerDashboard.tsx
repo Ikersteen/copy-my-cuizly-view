@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
   MapPin, Clock, Star, Heart, Settings, 
-  TrendingUp, Zap, Gift, History, Filter, User as UserIcon
+  TrendingUp, Zap, Gift, History, Filter, User as UserIcon, LogOut
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useOffers } from "@/hooks/useOffers";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useProfile } from "@/hooks/useProfile";
+import { useToast } from "@/hooks/use-toast";
 import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
@@ -36,6 +37,7 @@ const ConsumerDashboard = () => {
   const { offers: fastOffers } = useOffers('fast');
   const { offers: promotionOffers } = useOffers('promotion');
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { toast } = useToast();
 
   useEffect(() => {
     const getUser = async () => {
@@ -67,6 +69,35 @@ const ConsumerDashboard = () => {
       case 'Filtres':
         setShowFilters(true);
         break;
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      toast({
+        title: "Déconnexion réussie",
+        description: "À bientôt sur Cuizly !"
+      });
+      
+      // Close any open modals
+      setShowProfile(false);
+      setShowPreferences(false);
+      setShowFavorites(false);
+      setShowHistory(false);
+      setShowFilters(false);
+      
+      // Redirect to home
+      window.location.href = "/";
+    } catch (error) {
+      console.error('Error logging out:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de se déconnecter",
+        variant: "destructive"
+      });
     }
   };
 
@@ -147,6 +178,15 @@ const ConsumerDashboard = () => {
               >
                 <Settings className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Préférences</span>
+              </Button>
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="flex-1 sm:flex-none"
+              >
+                <LogOut className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Déconnexion</span>
               </Button>
             </div>
           </div>

@@ -78,6 +78,14 @@ export const RestaurantProfileModal = ({
 
       if (error) throw error;
 
+      // Update the profile with chef_emoji_color if it changed
+      if (formData.chef_emoji_color !== restaurant.chef_emoji_color) {
+        await supabase
+          .from('profiles')
+          .update({ chef_emoji_color: formData.chef_emoji_color })
+          .eq('user_id', (await supabase.auth.getUser()).data.user?.id);
+      }
+
       toast({
         title: "Profil mis à jour",
         description: "Les informations de votre restaurant ont été sauvegardées"
@@ -269,7 +277,7 @@ export const RestaurantProfileModal = ({
             <Label className="text-base font-medium">Photo de couverture</Label>
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
-                <div className="w-full aspect-[5/2] max-w-md rounded-xl bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25 sm:aspect-[16/9] lg:aspect-[5/2]">
+                <div className="w-full aspect-[16/9] sm:aspect-[21/9] lg:aspect-[5/2] max-w-full rounded-xl bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
                   {formData.cover_image_url ? (
                     <img 
                       src={formData.cover_image_url} 

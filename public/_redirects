@@ -1,0 +1,5 @@
+# Domain redirect configuration for cuizly.ca
+/*    /index.html   200
+
+# Redirect any old domain to cuizly.ca (if needed)
+# https://old-domain.com/*  https://cuizly.ca/:splat  301!

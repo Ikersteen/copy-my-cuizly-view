@@ -7,13 +7,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { CalendarIcon } from "lucide-react";
+import { DateRangePicker } from "@/components/DateRangePicker";
+import { format } from "date-fns";
 
 interface NewOfferModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   restaurantId: string | null;
   onSuccess: () => void;
+}
+
+interface DateRange {
+  from: Date | undefined;
+  to: Date | undefined;
 }
 
 export const NewOfferModal = ({ 
@@ -27,19 +33,19 @@ export const NewOfferModal = ({
     description: "",
     discount_percentage: "",
     discount_amount: "",
-    valid_until: "",
     category: "general",
     cuisine_type: "",
     is_active: true
   });
+  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleSave = async () => {
-    if (!restaurantId || !formData.title) {
+    if (!restaurantId || !formData.title || !formData.description.trim()) {
       toast({
         title: "Erreur",
-        description: "Veuillez remplir au moins le titre de l'offre",
+        description: "Veuillez remplir le titre et la description de l'offre",
         variant: "destructive"
       });
       return;
@@ -62,7 +68,7 @@ export const NewOfferModal = ({
         description: formData.description || null,
         discount_percentage: formData.discount_percentage ? parseInt(formData.discount_percentage) : null,
         discount_amount: formData.discount_amount ? parseFloat(formData.discount_amount) : null,
-        valid_until: formData.valid_until ? new Date(formData.valid_until).toISOString() : null,
+        valid_until: dateRange.to ? dateRange.to.toISOString() : null,
         category: formData.category,
         cuisine_type: formData.cuisine_type || null,
         is_active: formData.is_active
@@ -85,11 +91,11 @@ export const NewOfferModal = ({
         description: "",
         discount_percentage: "",
         discount_amount: "",
-        valid_until: "",
         category: "general",
         cuisine_type: "",
         is_active: true
       });
+      setDateRange({ from: undefined, to: undefined });
       
       onSuccess();
       onOpenChange(false);
@@ -105,10 +111,6 @@ export const NewOfferModal = ({
     }
   };
 
-  const getMinDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -129,13 +131,14 @@ export const NewOfferModal = ({
           </div>
 
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">Description *</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               placeholder="Décrivez votre offre en détail..."
               rows={3}
+              required
             />
           </div>
 
@@ -213,16 +216,13 @@ export const NewOfferModal = ({
             </select>
           </div>
 
-          <div>
-            <Label htmlFor="valid_until">Valide jusqu'au</Label>
-            <Input
-              id="valid_until"
-              type="date"
-              value={formData.valid_until}
-              onChange={(e) => setFormData(prev => ({ ...prev, valid_until: e.target.value }))}
-              min={getMinDate()}
-            />
-          </div>
+          <DateRangePicker
+            value={dateRange}
+            onChange={setDateRange}
+            maxDays={3}
+            label="Valide du ... au (max 3 jours)"
+            placeholder="Sélectionnez la période de validité"
+          />
 
           <div className="flex items-center justify-between">
             <Label htmlFor="is_active">Activer l'offre immédiatement</Label>
@@ -241,7 +241,7 @@ export const NewOfferModal = ({
             </Button>
             <Button 
               onClick={handleSave} 
-              disabled={loading || !formData.title}
+              disabled={loading || !formData.title || !formData.description.trim()}
               className="flex-1"
             >
               {loading ? "Création..." : "Créer l'offre"}
