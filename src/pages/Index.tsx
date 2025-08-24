@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import HeroSection from "@/components/HeroSection";
+import MissionSection from "@/components/MissionSection";
 import MissionVisionSection from "@/components/MissionVisionSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import CTASection from "@/components/CTASection";
@@ -31,6 +32,7 @@ const Index = () => {
   return (
     <>
       <HeroSection />
+      <MissionSection />
       <MissionVisionSection />
       <HowItWorksSection />
       <CTASection />

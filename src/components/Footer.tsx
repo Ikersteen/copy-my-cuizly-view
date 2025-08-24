@@ -143,7 +143,7 @@ const Footer = () => {
               </a>
               <div className="w-px h-4 bg-border/50"></div>
               <a 
-                href="https://www.linkedin.com/company/cuizly"
+                href="https://linkedin.com/company/cuizly"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"
@@ -155,7 +155,7 @@ const Footer = () => {
             
             <div className="flex items-center space-x-2 text-cuizly-neutral/80 text-xs sm:text-sm">
               <span>© 2025</span>
-              <span className="font-medium">Cuizly Technologie Inc.</span>
+              <span className="font-medium">Cuizly Technologies Inc.</span>
               <span>•</span>
               <span>Tous droits réservés</span>
             </div>

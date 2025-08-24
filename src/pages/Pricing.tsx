@@ -16,9 +16,8 @@ const Pricing = () => {
         "Accès à toutes les offres exclusives",
         "Recommandations IA personnalisées",
         "Alertes prioritaires sur les promos",
-        "Réservations faciles en un clic",
-        "Support client dédié",
-        "Interface sans publicité"
+        "Tableau de bord intuitif et fluide",
+        "Support client dédié"
       ],
       cta: "Commencer gratuitement"
     },
@@ -73,7 +72,7 @@ const Pricing = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8">
           {plans.map((plan, index) => (
             <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''}`}>
               {plan.popular && (

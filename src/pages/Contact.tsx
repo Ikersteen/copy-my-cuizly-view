@@ -10,7 +10,9 @@ import Footer from "@/components/Footer";
 const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = `mailto:cuizlycanada@gmail.com?subject=${encodeURIComponent(formData.get('subject') as string)}&body=${encodeURIComponent(`De: ${formData.get('firstName')} ${formData.get('lastName')} (${formData.get('email')})\n\nMessage:\n${formData.get('message')}`)}`;
+    window.location.href = email;
   };
 
   return (
@@ -44,27 +46,28 @@ const Contact = () => {
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <div className="space-y-2">
+                   <div className="space-y-2">
                       <Label htmlFor="firstName" className="text-sm">Prénom</Label>
-                      <Input id="firstName" placeholder="John" required />
+                      <Input id="firstName" name="firstName" placeholder="John" required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName" className="text-sm">Nom</Label>
-                      <Input id="lastName" placeholder="Doe" required />
+                      <Input id="lastName" name="lastName" placeholder="Doe" required />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm">Email</Label>
-                    <Input id="email" type="email" placeholder="votre@email.com" required />
+                    <Input id="email" name="email" type="email" placeholder="votre@email.com" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="subject" className="text-sm">Sujet</Label>
-                    <Input id="subject" placeholder="Comment pouvons-nous vous aider ?" required />
+                    <Input id="subject" name="subject" placeholder="Comment pouvons-nous vous aider ?" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="message" className="text-sm">Message</Label>
                     <Textarea 
                       id="message" 
+                      name="message"
                       placeholder="Décrivez votre demande..."
                       className="min-h-[100px] sm:min-h-[120px]"
                       required 
@@ -89,8 +92,8 @@ const Contact = () => {
                     <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-foreground text-sm sm:text-base">Email</h3>
-                    <p className="text-cuizly-neutral text-sm sm:text-base">contact@cuizly.com</p>
+                    <h3 className="font-medium text-foreground text-sm sm:text-base">Courriel</h3>
+                    <p className="text-cuizly-neutral text-sm sm:text-base">cuizlycanada@gmail.com</p>
                   </div>
                 </div>
                 

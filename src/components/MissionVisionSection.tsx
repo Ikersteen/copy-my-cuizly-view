@@ -27,20 +27,11 @@ const MissionVisionSection = () => {
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center mb-8 sm:mb-12">
-          <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
+          <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-6 sm:mb-8">
             <Target className="h-6 w-6 sm:h-8 sm:w-8 text-cuizly-accent" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cuizly-primary">
               Les fonctionnalités
             </h2>
-          </div>
-          
-          <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 max-w-3xl mx-auto px-4 sm:px-0">
-            <div className="bg-cuizly-light/10 border border-cuizly-accent/20 rounded-lg p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-semibold text-cuizly-primary mb-2">Notre Mission</h3>
-              <p className="text-base sm:text-lg text-cuizly-neutral leading-relaxed">
-                Connecter les gens aux meilleures offres culinaires à Montréal, tout en aidant les restaurants à attirer plus de clients.
-              </p>
-            </div>
           </div>
         </div>
 
