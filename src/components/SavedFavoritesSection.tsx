@@ -70,19 +70,21 @@ export const SavedFavoritesSection = () => {
     return (
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Vos restaurants favoris</h1>
-            <p className="text-muted-foreground">
-              Découvrez et retrouvez facilement vos restaurants préférés
-            </p>
-          </div>
-          <div className="text-center space-y-6">
-            <div className="bg-muted/30 rounded-lg p-8 max-w-md mx-auto">
-              <Heart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+          <div className="mb-12">
+            <div className="bg-card border rounded-lg p-6 shadow-sm">
+              <h1 className="text-3xl font-bold mb-2">Vos restaurants favoris</h1>
               <p className="text-muted-foreground">
+                Découvrez et retrouvez facilement vos restaurants préférés
+              </p>
+            </div>
+          </div>
+          <div className="text-center space-y-8">
+            <div className="bg-muted/30 rounded-lg p-12 max-w-lg mx-auto">
+              <Heart className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
+              <p className="text-lg text-muted-foreground mb-3">
                 Votre liste de favoris est vide pour l'instant.
               </p>
-              <p className="text-sm text-muted-foreground mt-2">
+              <p className="text-muted-foreground">
                 Ajoutez des restaurants à vos favoris pour être averti dès qu'ils publient leur menu !
               </p>
             </div>
@@ -95,11 +97,13 @@ export const SavedFavoritesSection = () => {
   return (
     <section className="py-16 bg-gradient-to-br from-background to-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Vos restaurants favoris</h1>
-          <p className="text-muted-foreground">
-            Découvrez et retrouvez facilement vos restaurants préférés
-          </p>
+        <div className="mb-12">
+          <div className="bg-card border rounded-lg p-6 shadow-sm">
+            <h1 className="text-3xl font-bold mb-2">Vos restaurants favoris</h1>
+            <p className="text-muted-foreground">
+              Découvrez et retrouvez facilement vos restaurants préférés
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
