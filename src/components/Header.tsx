@@ -2,10 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import type { User } from "@supabase/supabase-js";
-import cuizlyLogo from "@/assets/cuizly-logo.png";
 
 const Header = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -30,39 +29,17 @@ const Header = () => {
     await supabase.auth.signOut();
   };
 
-  const handleLogoDownload = () => {
-    const link = document.createElement('a');
-    link.href = cuizlyLogo;
-    link.download = 'cuizly-logo.png';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <header className="w-full bg-background border-b border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Link to="/" className="flex items-center space-x-2">
-              <img 
-                src={cuizlyLogo} 
-                alt="Cuizly Logo" 
-                className="w-8 h-8 object-contain"
-              />
-              <span className="text-lg font-semibold text-foreground">Cuizly</span>
-            </Link>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleLogoDownload}
-              className="p-1 ml-2 opacity-60 hover:opacity-100 transition-opacity"
-              title="Télécharger le logo"
-            >
-              <Download className="h-4 w-4" />
-            </Button>
-          </div>
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-foreground rounded-full flex items-center justify-center">
+              <span className="text-background font-semibold text-sm">C</span>
+            </div>
+            <span className="text-lg font-semibold text-foreground">Cuizly</span>
+          </Link>
 
           {/* Navigation Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
