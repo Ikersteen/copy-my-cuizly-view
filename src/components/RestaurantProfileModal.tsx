@@ -12,6 +12,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Camera, X, Upload, LogOut, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
+import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Restaurant {
   id: string;
@@ -24,6 +26,7 @@ interface Restaurant {
   logo_url: string;
   cover_image_url?: string;
   chef_emoji_color?: string;
+  delivery_radius?: number;
 }
 
 interface RestaurantProfileModalProps {
@@ -63,7 +66,8 @@ export const RestaurantProfileModal = ({
         cuisine_type: restaurant.cuisine_type || [],
         logo_url: restaurant.logo_url || "",
         cover_image_url: restaurant.cover_image_url || "",
-        chef_emoji_color: restaurant.chef_emoji_color || "🧑‍🍳"
+        chef_emoji_color: restaurant.chef_emoji_color || "🧑‍🍳",
+        delivery_radius: restaurant.delivery_radius || 5
       });
     }
   }, [restaurant, open]);
@@ -433,12 +437,11 @@ export const RestaurantProfileModal = ({
             </div>
 
             <div>
-              <Label htmlFor="address">Adresse complète</Label>
-              <Input
-                id="address"
+              <MontrealAddressSelector
                 value={formData.address || ""}
-                onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                placeholder="123 Rue de la Paix, Montréal, QC"
+                onChange={(address) => setFormData(prev => ({ ...prev, address }))}
+                label="Adresse du restaurant"
+                placeholder="Commencez à taper une adresse à Montréal..."
               />
             </div>
 
@@ -470,7 +473,7 @@ export const RestaurantProfileModal = ({
           {/* Cuisine Types */}
           <div className="space-y-4">
             <Label>Types de cuisine</Label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mb-3">
               {formData.cuisine_type?.map((cuisine, index) => (
                 <Badge key={index} variant="secondary" className="flex items-center gap-1">
                   {cuisine}
@@ -481,40 +484,105 @@ export const RestaurantProfileModal = ({
                 </Badge>
               ))}
             </div>
-            <div className="flex gap-2">
+            <Select
+              value=""
+              onValueChange={(value) => {
+                if (value && !formData.cuisine_type?.includes(value)) {
+                  setFormData(prev => ({
+                    ...prev,
+                    cuisine_type: [...(prev.cuisine_type || []), value]
+                  }));
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Sélectionner un type de cuisine" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Italienne">Italienne</SelectItem>
+                <SelectItem value="Française">Française</SelectItem>
+                <SelectItem value="Chinoise">Chinoise</SelectItem>
+                <SelectItem value="Japonaise">Japonaise</SelectItem>
+                <SelectItem value="Mexicaine">Mexicaine</SelectItem>
+                <SelectItem value="Indienne">Indienne</SelectItem>
+                <SelectItem value="Thaïlandaise">Thaïlandaise</SelectItem>
+                <SelectItem value="Méditerranéenne">Méditerranéenne</SelectItem>
+                <SelectItem value="Libanaise">Libanaise</SelectItem>
+                <SelectItem value="Grecque">Grecque</SelectItem>
+                <SelectItem value="Américaine">Américaine</SelectItem>
+                <SelectItem value="Vietnamienne">Vietnamienne</SelectItem>
+                <SelectItem value="Coréenne">Coréenne</SelectItem>
+                <SelectItem value="Marocaine">Marocaine</SelectItem>
+                <SelectItem value="Pizza">Pizza</SelectItem>
+                <SelectItem value="Burger">Burger</SelectItem>
+                <SelectItem value="Sushi">Sushi</SelectItem>
+                <SelectItem value="Végétarienne">Végétarienne</SelectItem>
+                <SelectItem value="Végétalienne">Végétalienne</SelectItem>
+                <SelectItem value="Halal">Halal</SelectItem>
+                <SelectItem value="Casher">Casher</SelectItem>
+                <SelectItem value="Sans gluten">Sans gluten</SelectItem>
+                <SelectItem value="Fast food">Fast food</SelectItem>
+                <SelectItem value="Déjeuner">Déjeuner</SelectItem>
+                <SelectItem value="Brunch">Brunch</SelectItem>
+                <SelectItem value="Café">Café</SelectItem>
+                <SelectItem value="Desserts">Desserts</SelectItem>
+                <SelectItem value="Fruits de mer">Fruits de mer</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Separator />
+
+          {/* Section Emoji et Livraison */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Emoji cuisinier */}
+            <div className="space-y-4">
+              <Label className="text-base font-medium">Emoji du profil</Label>
+              <p className="text-sm text-muted-foreground">
+                Choisissez l'emoji qui apparaîtra sur votre profil
+              </p>
+              <div className="grid grid-cols-6 gap-2">
+                {[
+                  // Émojis de mains avec différentes couleurs
+                  '👋', '👋🏻', '👋🏼', '👋🏽', '👋🏾', '👋🏿',
+                  '🤚', '🤚🏻', '🤚🏼', '🤚🏽', '🤚🏾', '🤚🏿',
+                  '🙌', '🙌🏻', '🙌🏼', '🙌🏽', '🙌🏾', '🙌🏿',
+                  // Têtes jaunes avec différentes réactions
+                  '😊', '😄', '😃', '😁', '😆', '😅',
+                  '🙂', '🙃', '😉', '😇', '🥰', '😍',
+                  '😋', '😎', '🤓', '🧐', '😏', '😌'
+                ].map(emoji => (
+                  <Button
+                    key={emoji}
+                    variant={formData.chef_emoji_color === emoji ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setFormData(prev => ({ ...prev, chef_emoji_color: emoji }))}
+                    className="text-lg h-10 w-10 p-0 hover:scale-110 transition-transform"
+                  >
+                    {emoji}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Rayon de livraison */}
+            <div className="space-y-4">
+              <Label htmlFor="delivery_radius" className="text-base font-medium">Rayon de livraison (km)</Label>
               <Input
-                value={newCuisine}
-                onChange={(e) => setNewCuisine(e.target.value)}
-                placeholder="Ajouter un type de cuisine"
-                onKeyPress={(e) => e.key === 'Enter' && addCuisine()}
+                id="delivery_radius"
+                type="number"
+                min="1"
+                max="50"
+                value={formData.delivery_radius || 5}
+                onChange={(e) => setFormData(prev => ({ ...prev, delivery_radius: parseInt(e.target.value) || 5 }))}
+                placeholder="5"
               />
-              <Button onClick={addCuisine} variant="outline">
-                Ajouter
-              </Button>
+              <p className="text-sm text-muted-foreground">
+                Distance maximale pour les livraisons (1-50 km)
+              </p>
             </div>
           </div>
 
-          <Separator />
-
-          {/* Emoji cuisinier */}
-          <div className="space-y-4">
-            <Label className="text-base font-medium">Emoji cuisinier</Label>
-            <div className="flex flex-wrap gap-2">
-              {['🧑‍🍳', '👨‍🍳', '👩‍🍳', '🧑🏽‍🍳', '👨🏽‍🍳', '👩🏽‍🍳', '🧑🏾‍🍳', '👨🏾‍🍳', '👩🏾‍🍳'].map(emoji => (
-                <Button
-                  key={emoji}
-                  variant={formData.chef_emoji_color === emoji ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setFormData(prev => ({ ...prev, chef_emoji_color: emoji }))}
-                  className="text-2xl h-12 w-12 p-0"
-                >
-                  {emoji}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <Separator />
 
           {/* Actions */}
           <div className="flex flex-col gap-4">

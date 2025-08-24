@@ -269,30 +269,28 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[95vh] overflow-hidden p-0">
-        {/* Header avec photo de profil style Facebook */}
-        <div className="relative">
-          <div className="h-32 bg-gradient-to-r from-primary/20 to-primary/10 border-b"></div>
-          <div className="absolute -bottom-8 left-8">
-            <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center text-4xl border-4 border-background shadow-lg">
+        {/* Header simplifié sans photo de couverture */}
+        <div className="p-8 pb-4">
+          <div className="flex items-center gap-6">
+            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-3xl border-4 border-background shadow-lg">
               {localProfile.chef_emoji_color}
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">
+                {localProfile.first_name} {localProfile.last_name}
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                @{localProfile.username || user?.email?.split('@')[0]}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {user?.email}
+              </p>
             </div>
           </div>
         </div>
 
         {/* Content area */}
-        <div className="pt-12 pb-6 px-8 overflow-y-auto max-h-[calc(95vh-200px)]">
-          {/* Profile header info */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              {localProfile.first_name} {localProfile.last_name}
-            </h1>
-            <p className="text-lg text-muted-foreground mb-1">
-              @{localProfile.username || user?.email?.split('@')[0]}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {user?.email}
-            </p>
-          </div>
+        <div className="px-8 pb-6 overflow-y-auto max-h-[calc(95vh-200px)]">
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Colonne gauche - Informations personnelles */}
@@ -383,7 +381,17 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                       Choisissez l'emoji qui apparaîtra sur votre profil
                     </p>
                     <div className="grid grid-cols-8 gap-2">
-                      {['👋', '👋🏽', '👋🏾', '👋🏿', '👋🏻', '👋🏼', '🤚', '🤚🏽', '🤚🏾', '🤚🏿', '🤚🏻', '🤚🏼', '🙌', '🙌🏽', '🙌🏾', '🙌🏿', '🙌🏻', '🙌🏼', '👨‍🍳', '👩‍🍳', '🧑‍🍳', '😊', '😄', '😎'].map(emoji => (
+                      {[
+                        // Émojis de mains avec différentes couleurs
+                        '👋', '👋🏻', '👋🏼', '👋🏽', '👋🏾', '👋🏿',
+                        '🤚', '🤚🏻', '🤚🏼', '🤚🏽', '🤚🏾', '🤚🏿',
+                        '🙌', '🙌🏻', '🙌🏼', '🙌🏽', '🙌🏾', '🙌🏿',
+                        '👏', '👏🏻', '👏🏼', '👏🏽', '👏🏾', '👏🏿',
+                        // Têtes jaunes avec différentes réactions
+                        '😊', '😄', '😃', '😁', '😆', '😅', '🤣', '😂',
+                        '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩',
+                        '😋', '😎', '🤓', '🧐', '😏', '😌', '😔', '😪'
+                      ].map(emoji => (
                         <Button
                           key={emoji}
                           variant={localProfile.chef_emoji_color === emoji ? "default" : "outline"}
