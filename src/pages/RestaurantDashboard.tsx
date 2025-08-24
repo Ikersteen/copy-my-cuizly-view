@@ -44,6 +44,56 @@ const RestaurantDashboard = () => {
     loadData();
   }, []);
 
+  // Set up real-time subscriptions for automatic updates
+  useEffect(() => {
+    if (!user?.id) return;
+
+    // Subscribe to restaurant changes
+    const restaurantChannel = supabase
+      .channel('restaurant-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'restaurants',
+          filter: `owner_id=eq.${user.id}`,
+        },
+        (payload) => {
+          console.log('Restaurant updated:', payload);
+          setRestaurant(payload.new as Restaurant);
+        }
+      )
+      .subscribe();
+
+    // Subscribe to profile changes
+    const profileChannel = supabase
+      .channel('profile-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          console.log('Profile updated:', payload);
+          setProfile({ 
+            chef_emoji_color: payload.new.chef_emoji_color,
+            username: payload.new.username
+          });
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscriptions on unmount
+    return () => {
+      restaurantChannel.unsubscribe();
+      profileChannel.unsubscribe();
+    };
+  }, [user?.id]);
+
   const loadData = async () => {
     try {
       // Get user session
@@ -74,7 +124,7 @@ const RestaurantDashboard = () => {
         if (!profileError && profileData) {
           setProfile(profileData);
         } else if (profileError) {
-          console.error('Erreur lors du chargement du profil:', profileError);
+          console.error('Erreur lors du chargement du profil:', profileData);
         }
       }
     } catch (error) {
