@@ -104,7 +104,7 @@ const ConsumerDashboard = () => {
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
                 <span className="text-primary-foreground font-semibold text-xl">
-                  {profile?.first_name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
+                  {(profile?.username || user?.email?.split('@')[0] || 'U').charAt(0).toUpperCase()}
                 </span>
               </div>
               <div>
