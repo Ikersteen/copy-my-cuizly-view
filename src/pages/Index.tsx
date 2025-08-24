@@ -10,15 +10,34 @@ import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { PersonalizedRecommendations } from "@/components/PersonalizedRecommendations";
 
 const Index = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+    };
+
+    getUser();
+
+    // Listen to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-center mb-8">Bienvenue sur Cuizly</h1>
-        <p className="text-xl text-center text-muted-foreground">
-          Votre plateforme foodtech montréalaise
-        </p>
-      </div>
-    </div>
+    <>
+      <HeroSection />
+      <MissionSection />
+      <MissionVisionSection />
+      <HowItWorksSection />
+      <CTASection />
+      <Footer />
+    </>
   );
 };
 
