@@ -77,8 +77,8 @@ export const SavedFavoritesSection = () => {
                 Favoris
               </h2>
             </div>
-            <p className="text-lg text-muted-foreground">
-              Tes restaurants favoris disponible ici !
+            <p className="text-muted-foreground">
+              Découvrez et retrouvez facilement vos restaurants préférés
             </p>
             <div className="bg-muted/30 rounded-lg p-8 max-w-md mx-auto">
               <Heart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
