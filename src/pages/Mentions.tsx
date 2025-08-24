@@ -25,7 +25,7 @@ const Mentions = () => {
               <p><strong>Forme juridique :</strong> Société par actions</p>
               <p><strong>Siège social :</strong> Montréal, Québec, Canada</p>
               <p><strong>Président Directeur Général :</strong> Iker Kiomba Landu</p>
-              <p><strong>Email :</strong> contact@cuizly.com</p>
+              <p><strong>Courriel :</strong> cuizlycanada@gmail.com</p>
             </div>
           </section>
 

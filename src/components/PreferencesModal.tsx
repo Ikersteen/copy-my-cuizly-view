@@ -255,7 +255,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
             <Label className="text-base font-medium">Préférences de notification</Label>
             <div className="space-y-4 mt-3">
               <div className="flex items-center justify-between">
-                <Label htmlFor="email-notifications">Notifications par email</Label>
+                <Label htmlFor="email-notifications">Notifications par courriel</Label>
                 <Switch
                   id="email-notifications"
                   checked={localPrefs.notification_preferences?.email !== false}

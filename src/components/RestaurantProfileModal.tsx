@@ -397,16 +397,16 @@ export const RestaurantProfileModal = ({
                   placeholder="+1 (XXX) XXX-XXXX"
                 />
               </div>
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email || ""}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  placeholder="contact@restaurant.com"
-                />
-              </div>
+                <div>
+                  <Label htmlFor="email">Courriel</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email || ""}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="cuizlycanada@gmail.com"
+                  />
+                </div>
             </div>
           </div>
 

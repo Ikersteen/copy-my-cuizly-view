@@ -56,8 +56,8 @@ const Contact = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm">Email</Label>
-                    <Input id="email" name="email" type="email" placeholder="votre@email.com" required />
+                    <Label htmlFor="email" className="text-sm">Courriel</Label>
+                    <Input id="email" name="email" type="email" placeholder="votre@courriel.com" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="subject" className="text-sm">Sujet</Label>
@@ -103,7 +103,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-medium text-foreground text-sm sm:text-base">Adresse</h3>
-                    <p className="text-cuizly-neutral text-sm sm:text-base">Montréal, Québec<br />Canada</p>
+                    <p className="text-cuizly-neutral text-sm sm:text-base">2900 Bd Édouard-Montpetit<br />Montréal, QC H3T 1J4</p>
                   </div>
                 </div>
                 

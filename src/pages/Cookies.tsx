@@ -86,7 +86,7 @@ const Cookies = () => {
             <h2 className="text-2xl font-semibold text-foreground mb-4">Contact</h2>
             <p className="text-cuizly-neutral">
               Pour toute question concernant notre utilisation des cookies, contactez-nous à :
-              <br />Email : privacy@cuizly.com
+              <br />Courriel : cuizlycanada@gmail.com
               <br />Adresse : Montréal, Québec, Canada
             </p>
           </section>

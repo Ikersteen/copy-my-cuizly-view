@@ -133,7 +133,7 @@ const Footer = () => {
             {/* Enhanced Social Links */}
             <div className="flex items-center space-x-6 sm:space-x-8">
               <a 
-                href="https://www.instagram.com/cuizly?igsh=MXB4MXRuN3hkM2o4dg%3D%3D&utm_source=qr"
+                href="https://www.instagram.com/cuizly"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"

@@ -32,7 +32,7 @@ const Privacy = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">2. Informations que nous collectons</h2>
             <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
-              <li>Informations d'identification personnelle (nom, email)</li>
+              <li>Informations d'identification personnelle (nom, courriel)</li>
               <li>Préférences culinaires et alimentaires</li>
               <li>Données de localisation (avec votre consentement)</li>
               <li>Informations d'utilisation et analytiques</li>
@@ -64,7 +64,7 @@ const Privacy = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">5. Vos droits</h2>
             <p className="text-cuizly-neutral">
-              Vous avez le droit d'accéder, de corriger, de supprimer ou de limiter l'utilisation de vos données personnelles. Pour exercer ces droits, contactez-nous à privacy@cuizly.com.
+              Vous avez le droit d'accéder, de corriger, de supprimer ou de limiter l'utilisation de vos données personnelles. Pour exercer ces droits, contactez-nous à cuizlycanada@gmail.com.
             </p>
           </section>
 
@@ -72,8 +72,8 @@ const Privacy = () => {
             <h2 className="text-2xl font-semibold text-foreground mb-4">6. Contact</h2>
             <p className="text-cuizly-neutral">
               Pour toute question concernant cette politique de confidentialité, contactez-nous à :
-              <br />Email : privacy@cuizly.com
-              <br />Adresse : Montréal, Québec, Canada
+              <br />Courriel : cuizlycanada@gmail.com
+              <br />Adresse : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4
             </p>
           </section>
         </div>

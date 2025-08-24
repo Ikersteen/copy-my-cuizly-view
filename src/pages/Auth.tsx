@@ -267,14 +267,14 @@ const Auth = () => {
               <TabsContent value="signin" className="space-y-3 sm:space-y-4">
                 <form onSubmit={handleSignIn} className="space-y-3 sm:space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signin-email" className="text-sm">Email</Label>
+                    <Label htmlFor="signin-email" className="text-sm">Courriel</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
                         id="signin-email"
                         name="email"
                         type="email"
-                        placeholder="votre@email.com"
+                        placeholder="votre@courriel.com"
                         className="pl-10 text-sm"
                         required
                       />
@@ -385,14 +385,14 @@ const Auth = () => {
                   )}
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-sm">Email</Label>
+                    <Label htmlFor="signup-email" className="text-sm">Courriel</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
                         id="signup-email"
                         name="email"
                         type="email"
-                        placeholder="votre@email.com"
+                        placeholder="votre@courriel.com"
                         className="pl-10 text-sm"
                         required
                       />

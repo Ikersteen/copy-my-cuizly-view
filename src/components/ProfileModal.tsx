@@ -264,8 +264,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           </div>
 
           <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
+            <Label htmlFor="email">Courriel</Label>
+            <Input 
               id="email"
               value={user?.email || ""}
               disabled
@@ -323,13 +323,13 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="email_notif">Notifications email</Label>
+              <Label htmlFor="email_notif">Notifications courriel</Label>
               <Switch
                 id="email_notif"
                 checked={localProfile.notifications.email}
-                onCheckedChange={(checked) => 
-                  setLocalProfile(prev => ({ 
-                    ...prev, 
+                onCheckedChange={(checked) =>
+                  setLocalProfile(prev => ({
+                    ...prev,
                     notifications: { ...prev.notifications, email: checked }
                   }))
                 }

@@ -6,10 +6,11 @@ import {
   Plus, Edit3, MapPin, ChefHat 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { RestaurantProfileModal } from "@/components/RestaurantProfileModal";
+import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { MenusModal } from "@/components/MenusModal";
 import { OffersSection } from "@/components/OffersSection";
+import { AnalyticsSection } from "@/components/AnalyticsSection";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
@@ -174,6 +175,9 @@ const RestaurantDashboard = () => {
 
         {/* Section des offres */}
         <OffersSection userType="restaurant" restaurantId={restaurant?.id} />
+
+        {/* Section analytics */}
+        <AnalyticsSection restaurantId={restaurant?.id} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
 
