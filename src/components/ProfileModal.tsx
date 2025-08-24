@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,7 @@ interface ProfileModalProps {
 }
 
 export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
+  const firstNameRef = useRef<HTMLInputElement>(null);
   const { profile, loading: profileLoading, updateProfile, loadProfile } = useProfile();
   const [localProfile, setLocalProfile] = useState({
     first_name: "",
@@ -66,6 +67,19 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       });
     }
   }, [profile]);
+
+  // Empêcher l'auto-sélection du texte quand le modal s'ouvre
+  useEffect(() => {
+    if (open && firstNameRef.current) {
+      // Petit délai pour s'assurer que le focus s'est bien fait avant de désélectionner
+      const timer = setTimeout(() => {
+        if (firstNameRef.current) {
+          firstNameRef.current.blur();
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
 
   const loadUserSession = async () => {
     try {
@@ -324,6 +338,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                     <div>
                       <Label htmlFor="first_name" className="text-sm font-medium">Prénom</Label>
                       <Input
+                        ref={firstNameRef}
                         id="first_name"
                         value={localProfile.first_name}
                         onChange={(e) => setLocalProfile(prev => ({ ...prev, first_name: e.target.value }))}
