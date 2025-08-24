@@ -23,6 +23,7 @@ const Footer = () => {
                 <Link 
                   to="/features" 
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   Fonctionnalités
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
@@ -32,6 +33,7 @@ const Footer = () => {
                 <Link 
                   to="/pricing" 
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   Tarifs
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
@@ -47,8 +49,9 @@ const Footer = () => {
                 <Link 
                   to="/contact" 
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Contact
+                  Contactez-nous
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -80,7 +83,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Confidentialité
+                  Politique de confidentialité
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -90,7 +93,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Conditions
+                  Conditions d'utilisation
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -100,7 +103,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Cookies
+                  Politique des cookies
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
