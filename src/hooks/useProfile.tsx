@@ -101,13 +101,8 @@ export const useProfile = () => {
 
       if (error) throw error;
 
-      // Immediately update local state
+      // Update local state immediately
       setProfile(data);
-      
-      // Also trigger a fresh load to ensure data consistency
-      setTimeout(() => {
-        loadProfile();
-      }, 100);
 
       toast({
         title: "Profil mis à jour",

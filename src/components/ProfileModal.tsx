@@ -143,8 +143,6 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
       const result = await updateProfile(sanitizedProfile);
       if (result?.success) {
-        // Force reload the profile to ensure fresh data
-        await loadProfile();
         onOpenChange(false);
       }
     } catch (error) {
