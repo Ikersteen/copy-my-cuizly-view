@@ -9,7 +9,7 @@ export const useRestaurantCount = () => {
     const getRestaurantCount = async () => {
       const { count } = await supabase
         .from('restaurants')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
         .eq('is_active', true);
       
       setCount(count || 0);

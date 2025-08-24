@@ -40,7 +40,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
       // Récupérer tous les restaurants actifs
       const { data: restaurants, error } = await supabase
         .from('restaurants')
-        .select('*')
+        .select('id, name, description, address, cuisine_type, price_range, logo_url, cover_image_url, is_active, delivery_radius, opening_hours, created_at, updated_at')
         .eq('is_active', true);
 
       if (error) throw error;
@@ -103,11 +103,9 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
 
         // 3. Score de qualité basé sur les données analysées (pondération: 20%)
         let qualityScore = 50; // Base
-        if (restaurant.description) qualityScore += 10; // A une description
-        if (restaurant.address) qualityScore += 10; // Adresse complète
-        if (restaurant.cuisine_type?.length > 1) qualityScore += 15; // Diversité
-        if (restaurant.phone) qualityScore += 10; // Contact disponible
-        if (restaurant.email) qualityScore += 5; // Email professionnel
+        if (restaurant.description) qualityScore += 15; // A une description
+        if (restaurant.address) qualityScore += 15; // Adresse complète
+        if (restaurant.cuisine_type?.length > 1) qualityScore += 20; // Diversité culinaire
         
         analysisMetrics.qualityScore = Math.min(qualityScore, 100);
         const rating = 3.2 + (qualityScore / 100) * 1.8; // Rating calculé entre 3.2 et 5.0

@@ -33,7 +33,7 @@ export const SavedFavoritesSection = () => {
     try {
       const { data, error } = await supabase
         .from('restaurants')
-        .select('*')
+        .select('id, name, description, address, cuisine_type, price_range, logo_url, cover_image_url, is_active, delivery_radius, opening_hours, created_at, updated_at')
         .in('id', favorites)
         .eq('is_active', true);
 
