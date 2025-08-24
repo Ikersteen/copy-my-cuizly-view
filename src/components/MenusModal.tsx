@@ -263,7 +263,20 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6">
+        {!restaurantId ? (
+          <div className="text-center py-8 space-y-4">
+            <p className="text-muted-foreground">
+              Votre restaurant n'est pas encore configuré. 
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Veuillez d'abord compléter les informations de votre restaurant dans "Profil du restaurant".
+            </p>
+            <Button onClick={() => onOpenChange(false)} variant="outline">
+              Fermer
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-6">
           {/* Ajouter un nouveau menu */}
           <Card>
             <CardContent className="p-4 space-y-4">
@@ -494,6 +507,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
             </Card>
           )}
         </div>
+        )}
       </DialogContent>
     </Dialog>
   );

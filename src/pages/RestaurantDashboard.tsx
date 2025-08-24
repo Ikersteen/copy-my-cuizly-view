@@ -11,6 +11,7 @@ import { NewOfferModal } from "@/components/NewOfferModal";
 import { MenusModal } from "@/components/MenusModal";
 import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
+import { useToast } from "@/hooks/use-toast";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
@@ -37,6 +38,7 @@ const RestaurantDashboard = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showMenusModal, setShowMenusModal] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     loadData();
@@ -84,6 +86,8 @@ const RestaurantDashboard = () => {
 
 
   const handleActionClick = (action: string) => {
+    console.log('Action clicked:', action);
+    console.log('Restaurant ID:', restaurant?.id);
     switch (action) {
       case 'Nouvelle offre':
         setShowOfferModal(true);
@@ -92,6 +96,14 @@ const RestaurantDashboard = () => {
         setShowProfileModal(true);
         break;
       case 'Gérer vos menus':
+        if (!restaurant?.id) {
+          toast({
+            title: "Erreur",
+            description: "Veuillez d'abord compléter votre profil de restaurant",
+            variant: "destructive"
+          });
+          return;
+        }
         setShowMenusModal(true);
         break;
     }
