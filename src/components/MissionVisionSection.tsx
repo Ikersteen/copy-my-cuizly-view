@@ -23,7 +23,7 @@ const MissionVisionSection = () => {
   ];
 
   return (
-    <div className="py-12 sm:py-16 md:py-20">
+    <div className="pt-4 pb-12 sm:pt-6 sm:pb-16 md:pt-8 md:pb-20">
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center mb-8 sm:mb-12">
