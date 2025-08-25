@@ -181,11 +181,18 @@ const RestaurantDashboard = () => {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
-        {/* Header minimaliste */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
+        {/* Cover Image Facebook-style */}
+        {restaurant?.cover_image_url && (
+          <div className="relative w-full mb-8">
+            <div className="w-full h-32 sm:h-48 lg:h-56 rounded-xl overflow-hidden bg-muted">
+              <img 
+                src={restaurant.cover_image_url} 
+                alt="Photo de couverture du restaurant"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-6 left-4 sm:left-6">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-background border-4 border-background rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
                 {restaurant?.logo_url ? (
                   <img 
                     src={restaurant.logo_url} 
@@ -193,11 +200,34 @@ const RestaurantDashboard = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-primary-foreground font-semibold text-lg">
+                  <span className="text-foreground font-semibold text-lg sm:text-xl">
                     {restaurant?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
                   </span>
                 )}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Header */}
+        <div className={`mb-8 ${restaurant?.cover_image_url ? 'mt-8' : ''}`}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className={`flex items-center ${restaurant?.cover_image_url ? 'ml-20 sm:ml-24' : 'space-x-4'}`}>
+              {!restaurant?.cover_image_url && (
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
+                  {restaurant?.logo_url ? (
+                    <img 
+                      src={restaurant.logo_url} 
+                      alt="Logo restaurant"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-primary-foreground font-semibold text-lg">
+                      {restaurant?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                </div>
+              )}
               <div>
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
                   {restaurant?.name || 'Mon Restaurant'} {profile?.chef_emoji_color || '👨‍🍳'}
