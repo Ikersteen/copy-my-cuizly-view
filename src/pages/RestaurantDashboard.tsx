@@ -218,13 +218,6 @@ const RestaurantDashboard = () => {
               <Button 
                 variant="outline"
                 size="sm"
-                className="flex-1 sm:flex-none px-4 py-2"
-              >
-                <span>Tableau de bord</span>
-              </Button>
-              <Button 
-                variant="outline"
-                size="sm"
                 onClick={handleLogout}
                 className="flex-1 sm:flex-none"
               >
