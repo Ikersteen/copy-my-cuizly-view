@@ -253,7 +253,7 @@ const RestaurantDashboard = () => {
           <CardContent className="p-6">
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-2">
-                Bienvenue dans votre espace restaurateur !
+                Bienvenue dans votre espace restaurateur&nbsp;!
               </h3>
               <p className="text-sm text-muted-foreground">
                 Gérez votre restaurant, vos offres et vos menus en toute simplicité.
