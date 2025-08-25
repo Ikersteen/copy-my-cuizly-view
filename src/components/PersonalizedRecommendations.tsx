@@ -6,6 +6,7 @@ import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter 
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface Restaurant {
   id: string;
@@ -18,6 +19,7 @@ interface Restaurant {
   score?: number;
   reasons?: string[];
   rating?: number;
+  totalRatings?: number;
   delivery_time?: string;
 }
 
@@ -44,21 +46,87 @@ export const PersonalizedRecommendations = () => {
   }, [preferences]);
 
   // Fonction pour récupérer la vraie note d'un restaurant
-  const getRealRating = async (restaurantId: string): Promise<number | null> => {
+  const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
       const { data } = await supabase
         .from('ratings')
         .select('rating')
         .eq('restaurant_id', restaurantId);
 
-      if (!data || data.length === 0) return null;
+      if (!data || data.length === 0) return { rating: null, totalRatings: 0 };
       
       const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
-      return Math.round(average * 10) / 10; // Arrondi à 1 décimale
+      return { 
+        rating: Math.round(average * 10) / 10, // Arrondi à 1 décimale
+        totalRatings: data.length
+      };
     } catch (error) {
       console.error('Error fetching rating:', error);
-      return null;
+      return { rating: null, totalRatings: 0 };
     }
+  };
+
+  // State pour les évaluations en temps réel
+  const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
+
+  // Fonction pour mettre à jour les évaluations d'un restaurant spécifique
+  const updateRestaurantRating = async (restaurantId: string) => {
+    const ratingData = await getRealRating(restaurantId);
+    setRestaurantRatings(prev => ({
+      ...prev,
+      [restaurantId]: ratingData
+    }));
+  };
+
+  // Configuration du temps réel pour les évaluations
+  useEffect(() => {
+    console.log('🔄 Setting up real-time ratings subscription for recommendations');
+
+    const ratingsChannel = supabase
+      .channel('all-ratings-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'ratings',
+        },
+        async (payload: any) => {
+          console.log('⭐ Rating updated in real-time:', payload);
+          
+          const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
+          if (restaurantId) {
+            await updateRestaurantRating(restaurantId);
+            
+            // Régénérer les recommandations avec les nouvelles données
+            setTimeout(() => {
+              generateRecommendations();
+            }, 100);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('🔄 Cleaning up ratings subscription');
+      ratingsChannel.unsubscribe();
+    };
+  }, []);
+
+  // Fonction pour mettre à jour les évaluations lors du chargement initial
+  const loadRestaurantRatings = async (restaurants: any[]) => {
+    const ratingsPromises = restaurants.map(async (restaurant) => {
+      const ratingData = await getRealRating(restaurant.id);
+      return { id: restaurant.id, ...ratingData };
+    });
+
+    const allRatings = await Promise.all(ratingsPromises);
+    const ratingsMap = allRatings.reduce((acc, rating) => {
+      acc[rating.id] = { rating: rating.rating, totalRatings: rating.totalRatings };
+      return acc;
+    }, {} as Record<string, { rating: number | null; totalRatings: number }>);
+
+    setRestaurantRatings(ratingsMap);
   };
 
   const generateRecommendations = async () => {
@@ -108,7 +176,8 @@ export const PersonalizedRecommendations = () => {
         return {
           ...restaurant,
           score,
-          rating: realRating,
+          rating: realRating.rating,
+          totalRatings: realRating.totalRatings,
           reasons
         };
       }));
@@ -143,17 +212,13 @@ export const PersonalizedRecommendations = () => {
     return (
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="animate-pulse space-y-12">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="space-y-6">
-                <div className="h-8 bg-muted rounded w-80"></div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {[...Array(6)].map((_, j) => (
-                    <div key={j} className="h-64 bg-muted rounded-lg"></div>
-                  ))}
-                </div>
-              </div>
-            ))}
+          <div className="flex flex-col items-center justify-center py-12">
+            <LoadingSpinner size="lg" />
+            <div className="flex items-center space-x-2 mt-4">
+              <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+              <h2 className="text-xl font-semibold">Génération des recommandations...</h2>
+            </div>
+            <p className="text-muted-foreground mt-2">Analyse de vos préférences en cours</p>
           </div>
         </div>
       </section>
@@ -248,7 +313,14 @@ export const PersonalizedRecommendations = () => {
                       />
                     ))}
                   </div>
-                  <span className="font-medium text-xs">({restaurant.rating})</span>
+                   <span className="font-medium text-xs">
+                     ({restaurant.rating})
+                     {restaurant.totalRatings && restaurant.totalRatings > 0 && (
+                       <span className="text-muted-foreground ml-1">
+                         • {restaurant.totalRatings} avis
+                       </span>
+                     )}
+                   </span>
                 </div>
               ) : (
                 <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>
