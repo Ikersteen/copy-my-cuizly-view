@@ -24,19 +24,7 @@ const PageLoader = ({ isLoading, children, minLoadTime = 500 }: PageLoaderProps)
   if (isLoading || !showContent) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <LoadingSpinner 
-            size="xl" 
-            variant="enhanced" 
-            withText={true}
-            className="mb-8"
-          />
-          <div className="max-w-md mx-auto">
-            <div className="h-4 loading-shimmer rounded mb-3"></div>
-            <div className="h-4 loading-shimmer rounded mb-3 w-3/4 mx-auto"></div>
-            <div className="h-4 loading-shimmer rounded w-1/2 mx-auto"></div>
-          </div>
-        </div>
+        <LoadingSpinner size="xl" />
       </div>
     );
   }
