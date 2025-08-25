@@ -120,7 +120,7 @@ const Footer = () => {
               <img 
                 src="/lovable-uploads/66b403fe-8178-4b2f-9737-0506dd1679dd.png" 
                 alt="Cuizly" 
-                className="h-6 w-auto transition-all duration-300 group-hover:scale-110"
+                className="h-12 w-auto transition-all duration-300 group-hover:scale-110"
               />
             </div>
             
