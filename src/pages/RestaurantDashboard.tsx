@@ -251,16 +251,13 @@ const RestaurantDashboard = () => {
         {/* Message de bienvenue */}
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  Bienvenue dans votre espace restaurateur ! 👨‍🍳
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Gérez votre restaurant, vos offres et vos menus en toute simplicité.
-                </p>
-              </div>
-              <ChefHat className="h-12 w-12 text-primary/40" />
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                Bienvenue dans votre espace restaurateur ! 👨‍🍳
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Gérez votre restaurant, vos offres et vos menus en toute simplicité.
+              </p>
             </div>
           </CardContent>
         </Card>

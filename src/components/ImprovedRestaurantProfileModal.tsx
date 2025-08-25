@@ -339,111 +339,57 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Cover Image Section - Facebook Style */}
-          <div className="relative">
-            <div className="relative w-full h-48 sm:h-64 bg-gradient-to-r from-cuizly-surface to-cuizly-accent/20 rounded-lg overflow-hidden">
-              {formData.cover_image_url ? (
-                <img 
-                  src={formData.cover_image_url} 
-                  alt="Photo de couverture"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10">
-                  <Camera className="h-12 w-12 text-cuizly-neutral/50" />
-                </div>
-              )}
+          {/* Logo Section */}
+          <div className="flex justify-center">
+            <div className="relative">
+              <div className="w-24 h-24 bg-background rounded-full p-2 shadow-lg border">
+                {formData.logo_url ? (
+                  <img 
+                    src={formData.logo_url} 
+                    alt="Logo"
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full rounded-full bg-cuizly-surface flex items-center justify-center">
+                    <User className="h-8 w-8 text-cuizly-neutral" />
+                  </div>
+                )}
+              </div>
               
-              {/* Cover Photo Controls */}
-              <div className="absolute bottom-4 right-4 flex gap-2">
+              {/* Logo Controls */}
+              <div className="absolute -bottom-2 -right-2">
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleFileUpload(e, 'cover')}
+                  onChange={(e) => handleFileUpload(e, 'logo')}
                   className="hidden"
-                  id="cover-upload"
+                  id="logo-upload"
                 />
-                <label htmlFor="cover-upload">
+                <label htmlFor="logo-upload">
                   <Button
-                    variant="secondary"
                     size="sm"
-                    className="bg-background/90 backdrop-blur-sm"
-                    disabled={uploadingCover}
+                    variant="secondary"
+                    className="h-8 w-8 p-0 rounded-full"
+                    disabled={uploading}
                     asChild
                   >
                     <span className="cursor-pointer">
-                      <Crop className="h-4 w-4 mr-2" />
-                      {uploadingCover ? "Upload..." : "Ajuster & Modifier"}
+                      <Camera className="h-4 w-4" />
                     </span>
                   </Button>
                 </label>
-                
-                {formData.cover_image_url && (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="bg-background/90 backdrop-blur-sm"
-                    onClick={() => handleRemovePhoto('cover')}
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Supprimer
-                  </Button>
-                )}
               </div>
-            </div>
-
-            {/* Logo positioned over cover - Facebook style */}
-            <div className="absolute -bottom-6 left-6">
-              <div className="relative">
-                <div className="w-24 h-24 bg-background rounded-full p-2 shadow-lg">
-                  {formData.logo_url ? (
-                    <img 
-                      src={formData.logo_url} 
-                      alt="Logo"
-                      className="w-full h-full rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full rounded-full bg-cuizly-surface flex items-center justify-center">
-                      <User className="h-8 w-8 text-cuizly-neutral" />
-                    </div>
-                  )}
-                </div>
-                
-                {/* Logo Controls */}
-                <div className="absolute -bottom-2 -right-2">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleFileUpload(e, 'logo')}
-                    className="hidden"
-                    id="logo-upload"
-                  />
-                  <label htmlFor="logo-upload">
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      className="h-8 w-8 p-0 rounded-full"
-                      disabled={uploading}
-                      asChild
-                    >
-                      <span className="cursor-pointer">
-                        <Camera className="h-4 w-4" />
-                      </span>
-                    </Button>
-                  </label>
-                </div>
-                
-                {formData.logo_url && (
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
-                    onClick={() => handleRemovePhoto('logo')}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                )}
-              </div>
+              
+              {formData.logo_url && (
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
+                  onClick={() => handleRemovePhoto('logo')}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              )}
             </div>
           </div>
 
