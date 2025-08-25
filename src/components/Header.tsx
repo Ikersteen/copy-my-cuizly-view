@@ -31,10 +31,10 @@ const Header = () => {
 
   return (
     <header className="w-full bg-background border-b border-border">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center pl-0">
+          <Link to="/" className="flex items-center py-2">
             <img 
               src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
               alt="Cuizly" 
@@ -43,20 +43,20 @@ const Header = () => {
           </Link>
 
           {/* Navigation Desktop */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/pricing" className="text-cuizly-neutral hover:text-foreground transition-colors text-sm">
+          <nav className="hidden md:flex items-center space-x-12">
+            <Link to="/pricing" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
               Tarifs
             </Link>
-            <Link to="/features" className="text-cuizly-neutral hover:text-foreground transition-colors text-sm">
+            <Link to="/features" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
               Fonctionnalités
             </Link>
-            <Link to="/contact" className="text-cuizly-neutral hover:text-foreground transition-colors text-sm">
+            <Link to="/contact" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
               Contact
             </Link>
           </nav>
 
           {/* Auth Actions Desktop */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <Link to="/dashboard">
                 <Button variant="ghost" size="sm">
