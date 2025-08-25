@@ -104,28 +104,19 @@ const Header = () => {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex flex-col space-y-4 mt-8">
                   <button 
-                    onClick={() => {
-                      setIsSheetOpen(false);
-                      document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
+                    onClick={() => handleNavigate("/pricing")}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Tarifs
                   </button>
                   <button 
-                    onClick={() => {
-                      setIsSheetOpen(false);
-                      document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
+                    onClick={() => handleNavigate("/features")}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Fonctionnalités
                   </button>
                   <button 
-                    onClick={() => {
-                      setIsSheetOpen(false);
-                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
+                    onClick={() => handleNavigate("/contact")}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Contact
