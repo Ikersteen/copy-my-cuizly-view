@@ -221,7 +221,7 @@ const RestaurantDashboard = () => {
                 className="flex-1 sm:flex-none"
               >
                 <span className="hidden sm:inline">Tableau de bord</span>
-                <span className="sm:hidden">Dashboard</span>
+                <span className="sm:hidden">Tableau de bord</span>
               </Button>
               <Button 
                 variant="outline"
