@@ -40,6 +40,12 @@ const RestaurantDashboard = () => {
   const [showMenusModal, setShowMenusModal] = useState(false);
   const { toast } = useToast();
   const { profile } = useProfile(); // Utiliser le hook useProfile au lieu d'un état local
+  
+  // Debug: Observer les changements du profile
+  useEffect(() => {
+    console.log('🎭 DEBUG: Profile changed in RestaurantDashboard:', profile);
+    console.log('🎭 DEBUG: chef_emoji_color value:', profile?.chef_emoji_color);
+  }, [profile]);
 
   useEffect(() => {
     loadData();
