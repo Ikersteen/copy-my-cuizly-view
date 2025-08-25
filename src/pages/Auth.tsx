@@ -346,8 +346,8 @@ const Auth = () => {
           <CardContent className="p-8 sm:p-10 flex items-center justify-center">
             <Tabs defaultValue="signin" className="w-full max-w-sm">
               <TabsList className="grid w-full grid-cols-2 mb-8 h-12 rounded-lg p-1">
-                <TabsTrigger value="signin" className="text-sm font-medium rounded-md">Connexion</TabsTrigger>
-                <TabsTrigger value="signup" className="text-sm font-medium rounded-md">Inscription</TabsTrigger>
+                <TabsTrigger value="signin" className="text-sm font-medium rounded-md" translate="no">Connexion</TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm font-medium rounded-md" translate="no">Inscription</TabsTrigger>
               </TabsList>
 
               <TabsContent value="signin" className="space-y-3 sm:space-y-4">
