@@ -329,15 +329,12 @@ const Auth = () => {
 
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-4 sm:mb-6">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
-              <img 
-                src="/lovable-uploads/a2dcf041-7862-45d2-b5dd-b0f469cf625f.png" 
-                alt="Cuizly Logo" 
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <span className="text-xl sm:text-2xl font-bold">Cuizly</span>
+          <div className="flex items-center justify-center mb-4 sm:mb-6">
+            <img 
+              src="/lovable-uploads/e8fe9351-fe46-440d-914c-b9b28918fe73.png" 
+              alt="Cuizly Logo" 
+              className="h-12 sm:h-16 object-contain"
+            />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Rejoignez Cuizly</h1>
           <p className="text-cuizly-neutral text-base sm:text-lg px-2 sm:px-0">
