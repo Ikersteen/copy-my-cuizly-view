@@ -32,7 +32,7 @@ const CTASection = () => {
           <Link to="/auth">
             <Button 
               size="lg" 
-              className="bg-white text-cuizly-primary hover:bg-white/90 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-white/25 transition-all duration-500 hover:scale-105"
+              className="bg-white text-cuizly-primary hover:bg-white/90 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-white/25"
             >
               Créer mon compte
               <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />

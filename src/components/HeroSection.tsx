@@ -30,7 +30,7 @@ const HeroSection = () => {
         {/* CTA */}
         <div className="animate-fade-in">
           <Link to="/auth">
-            <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-8 sm:px-10 py-4 text-lg sm:text-xl font-semibold rounded-xl shadow-2xl hover:shadow-primary/25 transition-all duration-500 hover:scale-105 border border-primary/20">
+            <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-8 sm:px-10 py-4 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20">
               Commencer maintenant
               <ArrowRight className="ml-3 h-5 w-5" />
             </Button>
