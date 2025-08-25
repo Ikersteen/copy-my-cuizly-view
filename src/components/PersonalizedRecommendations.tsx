@@ -299,32 +299,35 @@ export const PersonalizedRecommendations = () => {
 
             {/* Métadonnées */}
             <div className="flex items-center justify-between text-sm pt-2">
-              {restaurant.rating ? (
-                <div className="flex items-center space-x-1">
-                  <div className="flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        className={`h-4 w-4 ${
-                          star <= Math.round(restaurant.rating!)
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-300'
-                        }`}
-                      />
-                    ))}
+              {(() => {
+                const currentRating = restaurantRatings[restaurant.id] || { rating: restaurant.rating, totalRatings: restaurant.totalRatings };
+                return currentRating.rating ? (
+                  <div className="flex items-center space-x-1">
+                    <div className="flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`h-4 w-4 ${
+                            star <= Math.round(currentRating.rating!)
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                     <span className="font-medium text-xs">
+                       ({currentRating.rating})
+                       {currentRating.totalRatings && currentRating.totalRatings > 0 && (
+                         <span className="text-muted-foreground ml-1">
+                           • {currentRating.totalRatings} avis
+                         </span>
+                       )}
+                     </span>
                   </div>
-                   <span className="font-medium text-xs">
-                     ({restaurant.rating})
-                     {restaurant.totalRatings && restaurant.totalRatings > 0 && (
-                       <span className="text-muted-foreground ml-1">
-                         • {restaurant.totalRatings} avis
-                       </span>
-                     )}
-                   </span>
-                </div>
-              ) : (
-                <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>
-              )}
+                ) : (
+                  <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>
+                );
+              })()}
               {restaurant.price_range && (
                 <Badge variant="secondary" className="text-xs">
                   {restaurant.price_range}
