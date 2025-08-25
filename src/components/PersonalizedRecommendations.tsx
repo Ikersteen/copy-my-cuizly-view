@@ -251,10 +251,6 @@ export const PersonalizedRecommendations = () => {
                   </div>
                 </div>
                 <div className="hidden md:flex gap-2">
-                  <Button variant="outline" size="sm" className="group">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filtres
-                  </Button>
                   <Button variant="outline" className="group">
                     Voir tout
                     <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -400,10 +396,6 @@ export const PersonalizedRecommendations = () => {
 
             {/* Actions mobile */}
             <div className="md:hidden text-center flex gap-2 justify-center">
-              <Button variant="outline" size="sm" className="group">
-                <Filter className="h-4 w-4 mr-2" />
-                Filtres
-              </Button>
               <Button variant="outline" className="group">
                 Voir tout
                 <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
