@@ -133,7 +133,7 @@ const ConsumerDashboard = () => {
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                  Bonjour {profile?.first_name || user?.email?.split('@')[0]} ! 👋
+                  Bonjour {profile?.first_name || user?.email?.split('@')[0]} ! {profile?.chef_emoji_color || '👋'}
                 </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
                   Découvrez les meilleures offres du jour

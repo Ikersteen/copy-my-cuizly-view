@@ -46,6 +46,17 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Person emojis with different skin tones
+  const personEmojis = [
+    "👋", "👤", "😊", "😄", "🙂", "😉", "🤗", "🥰", "😎", "🤓",
+    "👶", "🧒", "👦", "👧", "🧑", "👨", "👩", "🧓", "👴", "👵",
+    "👶🏻", "🧒🏻", "👦🏻", "👧🏻", "🧑🏻", "👨🏻", "👩🏻", "🧓🏻", "👴🏻", "👵🏻",
+    "👶🏼", "🧒🏼", "👦🏼", "👧🏼", "🧑🏼", "👨🏼", "👩🏼", "🧓🏼", "👴🏼", "👵🏼",
+    "👶🏽", "🧒🏽", "👦🏽", "👧🏽", "🧑🏽", "👨🏽", "👩🏽", "🧓🏽", "👴🏽", "👵🏽",
+    "👶🏾", "🧒🏾", "👦🏾", "👧🏾", "🧑🏾", "👨🏾", "👩🏾", "🧓🏾", "👴🏾", "👵🏾",
+    "👶🏿", "🧒🏿", "👦🏿", "👧🏿", "🧑🏿", "👨🏿", "👩🏿", "🧓🏿", "👴🏿", "👵🏿"
+  ];
+
   useEffect(() => {
     if (open) {
       loadUserSession();
@@ -395,6 +406,31 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                       className="bg-muted mt-1"
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* Emoji Selection */}
+              <div className="bg-muted/30 rounded-lg p-6">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  😊 Avatar Emoji
+                </h3>
+                <div>
+                  <Label className="text-sm font-medium mb-3 block">Choisissez votre emoji</Label>
+                  <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
+                    {personEmojis.map((emoji, index) => (
+                      <Button
+                        key={index}
+                        variant={localProfile.chef_emoji_color === emoji ? "default" : "outline"}
+                        className="h-10 w-10 p-0 text-lg hover:scale-110 transition-transform"
+                        onClick={() => setLocalProfile(prev => ({ ...prev, chef_emoji_color: emoji }))}
+                      >
+                        {emoji}
+                      </Button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Sélectionné : <span className="text-lg">{localProfile.chef_emoji_color}</span>
+                  </p>
                 </div>
               </div>
 
