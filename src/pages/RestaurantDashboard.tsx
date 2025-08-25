@@ -79,10 +79,11 @@ const RestaurantDashboard = () => {
         },
         (payload) => {
           console.log('Profile updated:', payload);
-          setProfile({ 
+          setProfile(prev => ({ 
+            ...prev,
             chef_emoji_color: payload.new.chef_emoji_color,
             username: payload.new.username
-          });
+          }));
         }
       )
       .subscribe();
@@ -342,7 +343,11 @@ const RestaurantDashboard = () => {
         open={showProfileModal}
         onOpenChange={setShowProfileModal}
         restaurant={restaurant}
-        onUpdate={loadData}
+        onUpdate={() => {
+          loadData();
+          // Force immediate profile state update after modal close
+          setTimeout(() => loadData(), 100);
+        }}
       />
       <NewOfferModal 
         open={showOfferModal}
