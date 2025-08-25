@@ -194,19 +194,28 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
+      console.log('🧑‍🍳 Updating chef emoji to:', emoji, 'for user:', session.user.id);
+
       const { error } = await supabase
         .from('profiles')
-        .upsert({
-          user_id: session.user.id,
-          chef_emoji_color: emoji
-        });
+        .update({ chef_emoji_color: emoji })
+        .eq('user_id', session.user.id);
 
-      if (!error) {
+      if (error) {
+        console.error('Error updating chef emoji:', error);
         toast({
-          title: "Emoji mis à jour",
-          description: "Votre emoji cuisinier a été modifié"
+          title: "Erreur",
+          description: "Impossible de mettre à jour l'emoji",
+          variant: "destructive"
         });
+        return;
       }
+
+      console.log('✅ Chef emoji updated successfully');
+      toast({
+        title: "Emoji mis à jour",
+        description: "Votre emoji cuisinier a été modifié"
+      });
     } catch (error) {
       console.error('Error updating emoji:', error);
     }
