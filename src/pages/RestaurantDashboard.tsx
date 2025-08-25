@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, ChefHat, LogOut, Filter } from "lucide-react";
+import { Plus, Edit3, MapPin, ChefHat, LogOut, Filter, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
@@ -218,10 +218,10 @@ const RestaurantDashboard = () => {
               <Button 
                 variant="outline"
                 size="sm"
-                className="flex-1 sm:flex-none"
+                className="flex-1 sm:flex-none border-dashed border-2 border-primary/60 bg-primary/5 hover:bg-primary/10 hover:border-primary text-primary font-medium transition-all duration-200 flex items-center gap-2"
               >
-                <span className="hidden sm:inline">Tableau de bord</span>
-                <span className="sm:hidden">Tableau de bord</span>
+                <span>Tableau de bord</span>
+                <ChevronRight className="h-4 w-4" />
               </Button>
               <Button 
                 variant="outline"
