@@ -16,7 +16,7 @@ const LoadingSpinner = ({
 
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <div className={`${sizeClasses[size]} logo-pulse`}>
+      <div className={`${sizeClasses[size]} animate-[logo-pulse_2s_ease-in-out_infinite]`}>
         <img 
           src="/lovable-uploads/a2dcf041-7862-45d2-b5dd-b0f469cf625f.png" 
           alt="Chargement..." 

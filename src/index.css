@@ -185,11 +185,11 @@ All colors MUST be HSL.
   @keyframes logo-pulse {
     0%, 100% { 
       transform: scale(1);
-      filter: drop-shadow(var(--shadow-soft));
+      opacity: 1;
     }
     50% { 
-      transform: scale(var(--pulse-scale));
-      filter: drop-shadow(var(--shadow-glow));
+      transform: scale(1.05);
+      opacity: 0.8;
     }
   }
 
