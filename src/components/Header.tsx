@@ -34,7 +34,7 @@ const Header = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center pl-0">
             <img 
               src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
               alt="Cuizly" 
