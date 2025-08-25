@@ -52,6 +52,11 @@ All colors MUST be HSL.
     --shadow-soft: 0 2px 8px hsl(0 0% 0% / 0.04);
     --shadow-card: 0 4px 12px hsl(0 0% 0% / 0.08);
     --shadow-elevated: 0 8px 25px hsl(0 0% 0% / 0.12);
+    --shadow-glow: 0 0 30px hsl(var(--cuizly-primary) / 0.15);
+
+    /* Enhanced loading animations */
+    --loading-duration: 1.2s;
+    --pulse-scale: 1.05;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -159,5 +164,72 @@ All colors MUST be HSL.
       outline: 2px solid hsl(var(--primary));
       outline-offset: 2px;
     }
+  }
+
+  /* Enhanced loading animations */
+  @keyframes logo-float {
+    0%, 100% { 
+      transform: translateY(0px) rotate(0deg) scale(1);
+    }
+    25% { 
+      transform: translateY(-8px) rotate(90deg) scale(var(--pulse-scale));
+    }
+    50% { 
+      transform: translateY(0px) rotate(180deg) scale(1);
+    }
+    75% { 
+      transform: translateY(-4px) rotate(270deg) scale(var(--pulse-scale));
+    }
+  }
+
+  @keyframes logo-pulse {
+    0%, 100% { 
+      transform: scale(1);
+      filter: drop-shadow(var(--shadow-soft));
+    }
+    50% { 
+      transform: scale(var(--pulse-scale));
+      filter: drop-shadow(var(--shadow-glow));
+    }
+  }
+
+  @keyframes shimmer {
+    0% { 
+      background-position: -200% 0;
+    }
+    100% { 
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .logo-enhanced {
+    animation: logo-float var(--loading-duration) ease-in-out infinite,
+               logo-pulse calc(var(--loading-duration) * 0.5) ease-in-out infinite;
+  }
+
+  .loading-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 25%,
+      hsl(var(--background)) 50%,
+      hsl(var(--muted)) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .page-transition {
+    animation: fade-in-up 0.6s ease-out;
   }
 }
