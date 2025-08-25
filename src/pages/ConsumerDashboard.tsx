@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   MapPin, Clock, Star, Heart, Settings, 
-  TrendingUp, Zap, Gift, History, Filter, User as UserIcon, LogOut, Map
+  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut, Map
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -17,7 +17,6 @@ import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
-import { FiltersModal, FilterOptions } from "@/components/FiltersModal";
 import { PersonalizedRecommendations } from "@/components/PersonalizedRecommendations";
 import { EnhancedRecommendationEngine } from "@/components/EnhancedRecommendationEngine";
 import { AllMenusSection } from "@/components/AllMenusSection";
@@ -34,7 +33,6 @@ const ConsumerDashboard = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   
   const { preferences, loading: preferencesLoading } = useUserPreferences();
@@ -70,9 +68,6 @@ const ConsumerDashboard = () => {
       case 'Historique':
         setShowHistory(true);
         break;
-      case 'Filtres':
-        setShowFilters(true);
-        break;
     }
   };
 
@@ -91,7 +86,6 @@ const ConsumerDashboard = () => {
       setShowPreferences(false);
       setShowFavorites(false);
       setShowHistory(false);
-      setShowFilters(false);
       
       // Redirect to home
       window.location.href = "/";
@@ -198,13 +192,12 @@ const ConsumerDashboard = () => {
 
           <TabsContent value="recommendations" className="space-y-6">
             {/* Actions rapides */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {[
                 { icon: TrendingUp, label: "Tendances", color: activeFilter === 'trending' },
                 { icon: Gift, label: "Promotions", color: activeFilter === 'promotion' },
                 { icon: Heart, label: "Favoris", count: favorites.length },
-                { icon: History, label: "Historique" },
-                { icon: Filter, label: "Filtres" }
+                { icon: History, label: "Historique" }
               ].map((action, index) => (
                 <Button 
                   key={index}
@@ -265,11 +258,6 @@ const ConsumerDashboard = () => {
       <HistoryModal 
         open={showHistory} 
         onOpenChange={setShowHistory}
-      />
-      <FiltersModal 
-        open={showFilters} 
-        onOpenChange={setShowFilters}
-        onApplyFilters={() => {}}
       />
     </div>
   );
