@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { RatingComponent } from '@/components/RatingComponent';
 import { useToast } from '@/hooks/use-toast';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface Menu {
   id: string;
@@ -134,22 +135,9 @@ export const AllMenusSection = () => {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader>
-                <div className="h-6 bg-muted rounded w-3/4 mb-2"></div>
-                <div className="h-4 bg-muted rounded w-1/2"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-48 bg-muted rounded mb-4"></div>
-                <div className="space-y-2">
-                  <div className="h-4 bg-muted rounded"></div>
-                  <div className="h-4 bg-muted rounded w-2/3"></div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="flex flex-col items-center justify-center py-12">
+          <LoadingSpinner size="lg" />
+          <p className="text-muted-foreground mt-4">Chargement des menus...</p>
         </div>
       </div>
     );

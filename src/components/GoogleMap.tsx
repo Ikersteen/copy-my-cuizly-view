@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 /// <reference types="google.maps" />
 
@@ -156,8 +157,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     <div className="relative w-full h-full">
       {isLoading && (
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+          <div className="text-center space-y-4">
+            <LoadingSpinner size="md" />
             <p className="text-muted-foreground">Chargement des restaurants...</p>
           </div>
         </div>

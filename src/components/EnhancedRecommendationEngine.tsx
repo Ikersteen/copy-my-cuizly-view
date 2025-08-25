@@ -8,6 +8,7 @@ import { Star, Clock, MapPin, Heart, Sparkles, ChefHat, Phone, Mail, Eye, Menu a
 import { UserPreferences } from "@/hooks/useUserPreferences";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useRatings } from "@/hooks/useRatings";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { supabase } from "@/integrations/supabase/client";
 import { RatingComponent } from "@/components/RatingComponent";
 
@@ -273,26 +274,11 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="flex flex-col items-center justify-center py-12 space-y-4">
+        <LoadingSpinner size="lg" />
         <div className="flex items-center space-x-2">
           <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-          <h2 className="text-xl font-semibold">Recommandations intelligentes</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader>
-                <div className="h-4 bg-muted rounded w-3/4"></div>
-                <div className="h-3 bg-muted rounded w-1/2"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="h-3 bg-muted rounded"></div>
-                  <div className="h-3 bg-muted rounded w-2/3"></div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          <h2 className="text-xl font-semibold">Chargement des recommandations...</h2>
         </div>
       </div>
     );
