@@ -84,9 +84,6 @@ export const SavedFavoritesSection = () => {
               <p className="text-lg text-muted-foreground mb-3">
                 Votre liste de favoris est vide pour l'instant.
               </p>
-              <p className="text-muted-foreground">
-                Ajoutez des restaurants à vos favoris pour être averti dès qu'ils publient leur menu !
-              </p>
             </div>
           </div>
         </div>
