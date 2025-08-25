@@ -297,7 +297,7 @@ export const PersonalizedRecommendations = () => {
             <div className="flex items-center justify-between text-sm pt-2">
               {(() => {
                 const currentRating = restaurantRatings[restaurant.id];
-                if (currentRating && currentRating.rating && currentRating.rating > 0) {
+                if (currentRating?.totalRatings > 0 && currentRating?.rating && currentRating.rating > 0) {
                   return (
                     <div className="flex items-center space-x-1">
                       <div className="flex">
@@ -314,11 +314,9 @@ export const PersonalizedRecommendations = () => {
                       </div>
                        <span className="font-medium text-xs">
                          ({currentRating.rating})
-                         {currentRating.totalRatings && currentRating.totalRatings > 0 && (
-                           <span className="text-muted-foreground ml-1">
-                             • {currentRating.totalRatings} avis
-                           </span>
-                         )}
+                         <span className="text-muted-foreground ml-1">
+                           • {currentRating.totalRatings} avis
+                         </span>
                        </span>
                     </div>
                   );
