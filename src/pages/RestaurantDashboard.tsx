@@ -41,11 +41,6 @@ const RestaurantDashboard = () => {
   const { toast } = useToast();
   const { profile } = useProfile(); // Utiliser le hook useProfile au lieu d'un état local
   
-  // Debug: Observer les changements du profile
-  useEffect(() => {
-    console.log('🎭 DEBUG: Profile changed in RestaurantDashboard:', profile);
-    console.log('🎭 DEBUG: chef_emoji_color value:', profile?.chef_emoji_color);
-  }, [profile]);
 
   useEffect(() => {
     loadData();
@@ -140,7 +135,7 @@ const RestaurantDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 flex items-center justify-center animate-pulse mx-auto">
-            <img src="/cuizly-logo.png" alt="Cuizly" className="w-16 h-16 object-contain" />
+            <img src="/src/assets/cuizly-logo-new.png" alt="Cuizly" className="w-16 h-16 object-contain" />
           </div>
           <p className="text-muted-foreground animate-pulse">Chargement de votre tableau de bord...</p>
         </div>

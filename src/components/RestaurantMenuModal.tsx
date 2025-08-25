@@ -8,6 +8,7 @@ import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
+import { RatingComponent } from "@/components/RatingComponent";
 
 interface Menu {
   id: string;
@@ -217,6 +218,13 @@ export const RestaurantMenuModal = ({
                 </div>
               </>
             )}
+          </div>
+
+          <Separator />
+
+          {/* Ratings Section */}
+          <div className="space-y-4">
+            <RatingComponent restaurantId={restaurant.id} showAddRating={true} />
           </div>
 
           <Separator />
