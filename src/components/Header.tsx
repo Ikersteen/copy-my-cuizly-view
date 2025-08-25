@@ -54,15 +54,24 @@ const Header = () => {
           {/* Navigation Desktop - Centre */}
           <nav className="hidden md:flex items-center justify-center flex-1">
             <div className="flex items-center space-x-12">
-              <Link to="/pricing" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
+              <button 
+                onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
+              >
                 Tarifs
-              </Link>
-              <Link to="/features" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
+              </button>
+              <button 
+                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
+              >
                 Fonctionnalités
-              </Link>
-              <Link to="/contact" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
+              </button>
+              <button 
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
+              >
                 Contact
-              </Link>
+              </button>
             </div>
           </nav>
 
@@ -95,19 +104,28 @@ const Header = () => {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex flex-col space-y-4 mt-8">
                   <button 
-                    onClick={() => handleNavigate("/pricing")}
+                    onClick={() => {
+                      setIsSheetOpen(false);
+                      document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Tarifs
                   </button>
                   <button 
-                    onClick={() => handleNavigate("/features")}
+                    onClick={() => {
+                      setIsSheetOpen(false);
+                      document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Fonctionnalités
                   </button>
                   <button 
-                    onClick={() => handleNavigate("/contact")}
+                    onClick={() => {
+                      setIsSheetOpen(false);
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Contact
