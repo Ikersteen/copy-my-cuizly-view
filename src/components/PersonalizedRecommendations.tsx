@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter } from "lucide-react";
+import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter, History } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
@@ -240,6 +240,14 @@ export const PersonalizedRecommendations = () => {
                   </div>
                 </div>
                  <div className="hidden md:flex gap-2">
+                   <Button variant="outline" size="sm" className="group">
+                     <TrendingUp className="h-4 w-4 mr-2" />
+                     Tendance
+                   </Button>
+                   <Button variant="outline" size="sm" className="group">
+                     <History className="h-4 w-4 mr-2" />
+                     Historique
+                   </Button>
                    <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
                      <Filter className="h-4 w-4 mr-2" />
                      Filtres
@@ -385,7 +393,15 @@ export const PersonalizedRecommendations = () => {
               ))}
             </div>
 
-             <div className="md:hidden text-center flex gap-2 justify-center">
+             <div className="md:hidden text-center flex gap-2 justify-center flex-wrap">
+               <Button variant="outline" size="sm" className="group">
+                 <TrendingUp className="h-4 w-4 mr-2" />
+                 Tendance
+               </Button>
+               <Button variant="outline" size="sm" className="group">
+                 <History className="h-4 w-4 mr-2" />
+                 Historique
+               </Button>
                <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
                  <Filter className="h-4 w-4 mr-2" />
                  Filtres

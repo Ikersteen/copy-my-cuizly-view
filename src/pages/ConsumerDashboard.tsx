@@ -192,29 +192,6 @@ const ConsumerDashboard = () => {
 
           <TabsContent value="recommendations" className="space-y-6">
             {/* Actions rapides */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              {[
-                { icon: TrendingUp, label: "Tendances", color: activeFilter === 'trending' },
-                { icon: Gift, label: "Promotions", color: activeFilter === 'promotion' },
-                { icon: Heart, label: "Favoris", count: favorites.length },
-                { icon: History, label: "Historique" }
-              ].map((action, index) => (
-                <Button 
-                  key={index}
-                  variant={action.color ? "default" : "outline"} 
-                  className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 relative text-xs sm:text-sm"
-                  onClick={() => handleActionClick(action.label)}
-                >
-                  <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span>{action.label}</span>
-                  {action.count && action.count > 0 && (
-                    <Badge className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-4 w-4 sm:h-5 sm:w-5 p-0 text-xs">
-                      {action.count}
-                    </Badge>
-                  )}
-                </Button>
-              ))}
-            </div>
 
             {/* Recommandations personnalisées */}
             <PersonalizedRecommendations />
