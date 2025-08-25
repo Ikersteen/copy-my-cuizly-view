@@ -12,6 +12,7 @@ import { MenusModal } from "@/components/MenusModal";
 import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
+import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
@@ -33,12 +34,12 @@ interface Restaurant {
 const RestaurantDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
-  const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showMenusModal, setShowMenusModal] = useState(false);
   const { toast } = useToast();
+  const { profile } = useProfile(); // Utiliser le hook useProfile au lieu d'un état local
 
   useEffect(() => {
     loadData();
@@ -48,7 +49,7 @@ const RestaurantDashboard = () => {
   useEffect(() => {
     if (!user?.id) return;
 
-    // Subscribe to restaurant changes
+    // Subscribe to restaurant changes only
     const restaurantChannel = supabase
       .channel('restaurant-changes')
       .on(
@@ -66,32 +67,9 @@ const RestaurantDashboard = () => {
       )
       .subscribe();
 
-    // Subscribe to profile changes
-    const profileChannel = supabase
-      .channel('profile-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'profiles',
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload) => {
-          console.log('Profile updated:', payload);
-          setProfile(prev => ({ 
-            ...prev,
-            chef_emoji_color: payload.new.chef_emoji_color,
-            username: payload.new.username
-          }));
-        }
-      )
-      .subscribe();
-
     // Cleanup subscriptions on unmount
     return () => {
       restaurantChannel.unsubscribe();
-      profileChannel.unsubscribe();
     };
   }, [user?.id]);
 
@@ -115,18 +93,7 @@ const RestaurantDashboard = () => {
           console.error('Erreur lors du chargement du restaurant:', restaurantError);
         }
 
-        // Get user's profile for emoji and username
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('chef_emoji_color, username')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-
-        if (!profileError && profileData) {
-          setProfile(profileData);
-        } else if (profileError) {
-          console.error('Erreur lors du chargement du profil:', profileData);
-        }
+        // Note: Profile data is now handled by useProfile hook
       }
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error);
