@@ -339,6 +339,64 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         </DialogHeader>
 
         <div className="space-y-6">
+          {/* Cover Photo Section */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground">Photo de couverture</h3>
+            <div className="relative">
+              <div className="w-full h-32 bg-muted rounded-xl overflow-hidden border-2 border-dashed border-border">
+                {formData.cover_image_url ? (
+                  <img 
+                    src={formData.cover_image_url} 
+                    alt="Photo de couverture"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <div className="text-center">
+                      <Camera className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                      <p className="text-sm text-muted-foreground">Ajoutez une photo de couverture</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Cover Photo Controls */}
+              <div className="absolute bottom-2 right-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleFileUpload(e, 'cover')}
+                  className="hidden"
+                  id="cover-upload"
+                />
+                <label htmlFor="cover-upload">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="h-8 w-8 p-0 rounded-full"
+                    disabled={uploadingCover}
+                    asChild
+                  >
+                    <span className="cursor-pointer">
+                      <Camera className="h-4 w-4" />
+                    </span>
+                  </Button>
+                </label>
+              </div>
+              
+              {formData.cover_image_url && (
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  className="absolute top-2 right-2 h-6 w-6 p-0 rounded-full"
+                  onClick={() => handleRemovePhoto('cover')}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+          </div>
+
           {/* Logo Section */}
           <div className="flex justify-center">
             <div className="relative">
