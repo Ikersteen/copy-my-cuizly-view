@@ -445,7 +445,7 @@ const Auth = () => {
                       <Input
                         id="fullName"
                         name="fullName"
-                        placeholder="John Doe"
+                        placeholder="Iker Steen"
                         className="pl-10 text-sm"
                         required
                       />
@@ -460,7 +460,7 @@ const Auth = () => {
                         <Input
                           id="restaurantName"
                           name="restaurantName"
-                          placeholder="Mon Restaurant"
+                          placeholder="Salvatore"
                           className="pl-10 text-sm"
                           required={userType === 'restaurant_owner'}
                         />
