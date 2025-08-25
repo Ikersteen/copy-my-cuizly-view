@@ -4,26 +4,26 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-20 sm:py-24 md:py-32 lg:py-40">
+    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-12 sm:py-16 md:py-20 lg:py-24">
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
         {/* Location Badge */}
-        <div className="inline-flex items-center bg-gradient-to-r from-primary/8 to-primary/12 border border-primary/15 px-5 py-2.5 rounded-full text-sm font-semibold text-primary mb-12 shadow-lg backdrop-blur-md animate-fade-in">
+        <div className="inline-flex items-center bg-gradient-to-r from-primary/8 to-primary/12 border border-primary/15 px-5 py-2.5 rounded-full text-sm font-semibold text-primary mb-6 sm:mb-8 shadow-lg backdrop-blur-md animate-fade-in">
           <span className="mr-2 text-base">🇨🇦</span>
           Montréal • Nouveau
         </div>
 
         {/* Main Title */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground mb-6 sm:mb-8 leading-[1.1] tracking-tight px-2 sm:px-0 animate-fade-in">
-          <span className="block mb-2">Découvrez vos prochains</span>
-          <span className="block bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent font-extrabold mb-2">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground mb-4 sm:mb-6 leading-[1.1] tracking-tight px-2 sm:px-0 animate-fade-in">
+          <span className="block mb-1">Découvrez vos prochains</span>
+          <span className="block bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent font-extrabold mb-1">
             coups de cœur culinaires
           </span>
           <span className="block text-foreground/90">à Montréal</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-4xl mx-auto mb-10 sm:mb-12 md:mb-16 px-4 sm:px-6 leading-relaxed font-normal animate-fade-in">
+        <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-4xl mx-auto mb-8 sm:mb-10 md:mb-12 px-4 sm:px-6 leading-relaxed font-normal animate-fade-in">
           Grâce à notre <span className="font-semibold text-foreground/95">intelligence artificielle</span>, découvrez les meilleurs restaurants de Montréal adaptés à vos goûts et à votre budget.
         </p>
 
