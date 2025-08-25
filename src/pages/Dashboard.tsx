@@ -55,11 +55,25 @@ const Dashboard = () => {
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
         <div className="text-center">
-          <div className="relative w-12 h-12 bg-gradient-to-br from-cuizly-primary to-cuizly-accent rounded-full flex items-center justify-center shadow-lg animate-pulse mx-auto mb-4">
-            <span className="text-background font-bold text-xl">C</span>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cuizly-primary to-cuizly-accent opacity-20 animate-ping"></div>
+          <div className="relative">
+            {/* Logo principal avec animation */}
+            <div className="relative w-16 h-16 bg-gradient-to-br from-cuizly-primary to-cuizly-accent rounded-full flex items-center justify-center shadow-2xl animate-pulse mx-auto mb-6">
+              <span className="text-background font-bold text-2xl">C</span>
+            </div>
+            
+            {/* Cercles d'animation autour du logo */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full border-2 border-cuizly-primary/30 animate-ping"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 -mt-2 -ml-2 rounded-full border border-cuizly-accent/20 animate-ping" style={{ animationDelay: '0.5s' }}></div>
           </div>
-          <p className="text-cuizly-neutral">Chargement...</p>
+          
+          <div className="space-y-2">
+            <p className="text-cuizly-neutral font-medium">Chargement de votre tableau de bord...</p>
+            <div className="flex justify-center space-x-1">
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
+          </div>
         </div>
       </div>
     );
