@@ -16,7 +16,7 @@ const HowItWorksSection = () => {
   ];
 
   return (
-    <section className="pt-4 pb-12 sm:pt-6 sm:pb-16 md:pt-8 md:pb-20 bg-gradient-card">
+    <section className="py-16 sm:py-20 bg-gradient-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Content */}
         <div className="mx-auto">
