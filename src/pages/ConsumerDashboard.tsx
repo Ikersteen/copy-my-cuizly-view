@@ -191,9 +191,6 @@ const ConsumerDashboard = () => {
           </TabsList>
 
           <TabsContent value="recommendations" className="space-y-6">
-            {/* Actions rapides */}
-
-            {/* Recommandations personnalisées */}
             <PersonalizedRecommendations />
           </TabsContent>
 
