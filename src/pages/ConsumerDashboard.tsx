@@ -73,8 +73,15 @@ const ConsumerDashboard = () => {
 
   const handleLogout = async () => {
     try {
+      // Clear local storage and session data first
+      localStorage.clear();
+      sessionStorage.clear();
+      
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        console.error('Logout error:', error);
+        // Even if logout fails, clear local state and redirect
+      }
       
       toast({
         title: "Déconnexion réussie",
@@ -87,15 +94,20 @@ const ConsumerDashboard = () => {
       setShowFavorites(false);
       setShowHistory(false);
       
-      // Redirect to home
-      window.location.href = "/";
+      // Clear user state
+      setUser(null);
+      
+      // Force redirect to home
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 100);
     } catch (error) {
       console.error('Error logging out:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de se déconnecter",
-        variant: "destructive"
-      });
+      // Force logout even on error
+      localStorage.clear();
+      sessionStorage.clear();
+      setUser(null);
+      window.location.href = "/";
     }
   };
 

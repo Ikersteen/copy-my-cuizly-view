@@ -182,8 +182,15 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
   const handleLogout = async () => {
     try {
+      // Clear local storage and session data first
+      localStorage.clear();
+      sessionStorage.clear();
+      
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        console.error('Logout error:', error);
+        // Even if logout fails, clear local state and redirect
+      }
       
       toast({
         title: "Déconnexion réussie",
@@ -192,14 +199,18 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       
       // Fermer le modal et rediriger vers l'accueil
       onOpenChange(false);
-      navigate("/");
+      
+      // Force redirect
+      setTimeout(() => {
+        navigate("/");
+      }, 100);
     } catch (error) {
       console.error('Error logging out:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de se déconnecter",
-        variant: "destructive"
-      });
+      // Force logout even on error
+      localStorage.clear();
+      sessionStorage.clear();
+      onOpenChange(false);
+      navigate("/");
     }
   };
 
@@ -298,18 +309,18 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[95vh] overflow-hidden p-0">
+      <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-hidden p-0 m-4 sm:m-6">
         {/* Header simplifié sans photo de couverture */}
-        <div className="p-8 pb-4">
-          <div className="flex items-center gap-6">
-            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-3xl font-bold text-primary-foreground border-4 border-background shadow-lg">
+        <div className="p-4 sm:p-6 lg:p-8 pb-2 sm:pb-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary rounded-full flex items-center justify-center text-2xl sm:text-3xl font-bold text-primary-foreground border-4 border-background shadow-lg">
               {(localProfile.username || user?.email?.split('@')[0] || 'U').charAt(0).toUpperCase()}
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">
+            <div className="text-center sm:text-left">
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">
                 {localProfile.first_name} {localProfile.last_name}
               </h1>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-base sm:text-lg text-muted-foreground">
                 @{localProfile.username || user?.email?.split('@')[0]}
               </p>
               <p className="text-sm text-muted-foreground">
@@ -320,9 +331,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         </div>
 
         {/* Content area */}
-        <div className="px-8 pb-6 overflow-y-auto max-h-[calc(95vh-200px)]">
+        <div className="px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 overflow-y-auto max-h-[calc(95vh-160px)] sm:max-h-[calc(95vh-200px)]">
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             {/* Colonne gauche - Informations personnelles */}
             <div className="space-y-6">
               <div className="bg-muted/30 rounded-lg p-6">
@@ -332,7 +343,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                 </h3>
                 
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="first_name" className="text-sm font-medium">Prénom</Label>
                       <Input
@@ -416,12 +427,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                 </h3>
                 <div>
                   <Label className="text-sm font-medium mb-3 block">Choisissez votre emoji</Label>
-                  <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
+                  <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-32 overflow-y-auto">
                     {personEmojis.map((emoji, index) => (
                       <Button
                         key={index}
                         variant={localProfile.chef_emoji_color === emoji ? "default" : "outline"}
-                        className="h-10 w-10 p-0 text-lg hover:scale-110 transition-transform"
+                        className="h-8 w-8 sm:h-10 sm:w-10 p-0 text-base sm:text-lg hover:scale-110 transition-transform"
                         onClick={() => setLocalProfile(prev => ({ ...prev, chef_emoji_color: emoji }))}
                       >
                         {emoji}
