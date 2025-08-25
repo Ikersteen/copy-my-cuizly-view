@@ -12,6 +12,7 @@ import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
+import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
@@ -39,7 +40,33 @@ const RestaurantDashboard = () => {
   const [showMenusModal, setShowMenusModal] = useState(false);
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   const { toast } = useToast();
-  const { profile } = useProfile();
+  const { profile, updateProfile } = useProfile();
+
+  // Set up real-time updates for immediate profile changes
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const profileChannel = supabase
+      .channel('profile-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          console.log('🎭 Profile updated in real-time:', payload.new);
+          // The useProfile hook will handle the update automatically
+        }
+      )
+      .subscribe();
+
+    return () => {
+      profileChannel.unsubscribe();
+    };
+  }, [user?.id]);
   
 
   useEffect(() => {
@@ -138,7 +165,7 @@ const RestaurantDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 flex items-center justify-center animate-pulse mx-auto">
-            <img src="/src/assets/cuizly-logo-new.png" alt="Cuizly" className="w-16 h-16 object-contain" />
+            <img src={cuizlyLogo} alt="Cuizly" className="w-16 h-16 object-contain" />
           </div>
           <p className="text-muted-foreground animate-pulse">Chargement de votre tableau de bord...</p>
         </div>
@@ -332,6 +359,7 @@ const RestaurantDashboard = () => {
         onOpenChange={setShowMenusModal}
         restaurantId={restaurant?.id || null}
         onSuccess={loadData}
+      />
       <RestaurantFiltersModal 
         open={showFiltersModal}
         onOpenChange={setShowFiltersModal}

@@ -24,6 +24,7 @@ import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
 import RestaurantMapSection from "@/components/RestaurantMapSection";
+import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 import type { User } from "@supabase/supabase-js";
 
 const ConsumerDashboard = () => {
@@ -109,7 +110,7 @@ const ConsumerDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 flex items-center justify-center animate-pulse mx-auto">
-            <img src="/src/assets/cuizly-logo-new.png" alt="Cuizly" className="w-16 h-16 object-contain" />
+            <img src={cuizlyLogo} alt="Cuizly" className="w-16 h-16 object-contain" />
           </div>
           <p className="text-muted-foreground animate-pulse">Chargement de votre expérience personnalisée...</p>
         </div>
