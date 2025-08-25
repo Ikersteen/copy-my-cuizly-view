@@ -405,6 +405,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                   value={formData.name || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="Nom de votre restaurant"
+                  onFocus={(e) => {
+                    // Move cursor to end instead of selecting all text
+                    setTimeout(() => {
+                      const input = e.target as HTMLInputElement;
+                      input.setSelectionRange(input.value.length, input.value.length);
+                    }, 0);
+                  }}
                 />
               </div>
 
