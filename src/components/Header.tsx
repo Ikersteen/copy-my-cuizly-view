@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";  
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -8,6 +8,8 @@ import type { User } from "@supabase/supabase-js";
 
 const Header = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Get initial session
@@ -27,6 +29,11 @@ const Header = () => {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+  };
+
+  const handleNavigate = (path: string) => {
+    setIsSheetOpen(false);
+    navigate(path);
   };
 
   return (
@@ -78,7 +85,7 @@ const Header = () => {
 
           {/* Mobile Menu */}
           <div className="md:hidden">
-            <Sheet>
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm" className="p-2">
                   <Menu className="h-5 w-5" />
@@ -87,38 +94,41 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <div className="flex flex-col space-y-4 mt-8">
-                  <Link 
-                    to="/pricing" 
-                    className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border"
+                  <button 
+                    onClick={() => handleNavigate("/pricing")}
+                    className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Tarifs
-                  </Link>
-                  <Link 
-                    to="/features" 
-                    className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border"
+                  </button>
+                  <button 
+                    onClick={() => handleNavigate("/features")}
+                    className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Fonctionnalités
-                  </Link>
-                  <Link 
-                    to="/contact" 
-                    className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border"
+                  </button>
+                  <button 
+                    onClick={() => handleNavigate("/contact")}
+                    className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
                     Contact
-                  </Link>
+                  </button>
                   
                   <div className="pt-4">
                     {user ? (
-                      <Link to="/dashboard" className="block">
-                        <Button variant="ghost" className="w-full justify-start text-lg">
-                          Tableau de bord
-                        </Button>
-                      </Link>
+                      <Button 
+                        variant="ghost" 
+                        className="w-full justify-start text-lg"
+                        onClick={() => handleNavigate("/dashboard")}
+                      >
+                        Tableau de bord
+                      </Button>
                     ) : (
-                      <Link to="/auth" className="block">
-                        <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-lg">
-                          Se connecter
-                        </Button>
-                      </Link>
+                      <Button 
+                        className="w-full bg-foreground hover:bg-foreground/90 text-background text-lg"
+                        onClick={() => handleNavigate("/auth")}
+                      >
+                        Se connecter
+                      </Button>
                     )}
                   </div>
                 </div>
