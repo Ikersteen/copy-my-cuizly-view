@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Plus, Edit3, MapPin, ChefHat, LogOut 
-} from "lucide-react";
+import { Plus, Edit3, MapPin, ChefHat, LogOut, Filter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { MenusModal } from "@/components/MenusModal";
+import { RestaurantFiltersModal } from "@/components/RestaurantFiltersModal";
 import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
@@ -38,8 +37,9 @@ const RestaurantDashboard = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showMenusModal, setShowMenusModal] = useState(false);
+  const [showFiltersModal, setShowFiltersModal] = useState(false);
   const { toast } = useToast();
-  const { profile } = useProfile(); // Utiliser le hook useProfile au lieu d'un état local
+  const { profile } = useProfile();
   
 
   useEffect(() => {
@@ -124,6 +124,9 @@ const RestaurantDashboard = () => {
           return;
         }
         setShowMenusModal(true);
+        break;
+      case 'Filtres':
+        setShowFiltersModal(true);
         break;
     }
   };
@@ -212,11 +215,12 @@ const RestaurantDashboard = () => {
         </div>
 
         {/* Actions rapides */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {[
             { icon: Plus, label: "Nouvelle offre", primary: true },
             { icon: Edit3, label: "Profil du restaurant" },
-            { icon: ChefHat, label: "Gérer vos menus" }
+            { icon: ChefHat, label: "Gérer vos menus" },
+            { icon: Filter, label: "Filtres" }
           ].map((action, index) => (
             <Button 
               key={index}
@@ -328,6 +332,13 @@ const RestaurantDashboard = () => {
         onOpenChange={setShowMenusModal}
         restaurantId={restaurant?.id || null}
         onSuccess={loadData}
+      <RestaurantFiltersModal 
+        open={showFiltersModal}
+        onOpenChange={setShowFiltersModal}
+        onApplyFilters={(filters) => {
+          console.log('Filters applied:', filters);
+          // TODO: Implémenter la logique de filtrage
+        }}
       />
     </div>
   );
