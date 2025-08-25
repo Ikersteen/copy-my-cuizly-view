@@ -207,7 +207,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
 
         // Calculs pour affichage avec vraies données
         const distance = Math.floor(1 + Math.random() * (preferences?.delivery_radius || 10));
-        const deliveryTime = 20 + Math.floor(Math.random() * 30);
 
         // Récupérer la vraie note au lieu d'une note fictive
         const realRating = await getRealRating(restaurant.id);
@@ -216,7 +215,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
           ...restaurant,
           score,
           rating: realRating,
-          delivery_time: `${deliveryTime}-${deliveryTime + 10} min`,
           distance,
           reasons,
           analytics: analytics || {
@@ -370,17 +368,27 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
             </CardHeader>
 
             <CardContent className="space-y-4">
-              {/* Stats temps réel */}
+              {/* Stats temps réel avec notation par étoiles */}
               <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 fill-current text-yellow-500" />
-                  <span className="font-medium">{Number(restaurant.rating).toFixed(1)}</span>
-                  <span className="text-muted-foreground">({restaurant.analytics?.rating_count || 0})</span>
-                </div>
-                <div className="flex items-center space-x-1 text-muted-foreground">
-                  <Clock className="h-4 w-4" />
-                  <span>{restaurant.delivery_time}</span>
-                </div>
+                {restaurant.rating ? (
+                  <div className="flex items-center space-x-1">
+                    <div className="flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`h-4 w-4 ${
+                            star <= Math.round(restaurant.rating!)
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="font-medium text-xs">({restaurant.rating})</span>
+                  </div>
+                ) : (
+                  <span className="text-xs text-muted-foreground">Pas d'évaluations</span>
+                )}
                 <div className="flex items-center space-x-1 text-muted-foreground">
                   <Eye className="h-4 w-4" />
                   <span>{restaurant.analytics?.profile_views || 0}</span>

@@ -4,24 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Star, Camera, X, Send } from "lucide-react";
+import { Star, Camera, X, Send, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useComments } from "@/hooks/useComments";
 
 interface Restaurant {
   id: string;
   name: string;
   description?: string;
   logo_url?: string;
-}
-
-interface Comment {
-  id: string;
-  user_id: string;
-  comment_text: string;
-  rating: number;
-  images: string[];
-  created_at: string;
 }
 
 interface CommentModalProps {
@@ -35,35 +27,10 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
   const [hoverRating, setHoverRating] = useState(0);
   const [commentText, setCommentText] = useState("");
   const [images, setImages] = useState<File[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [comments, setComments] = useState<Comment[]>([]);
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
-
-  useEffect(() => {
-    if (open && restaurant) {
-      fetchComments();
-    }
-  }, [open, restaurant]);
-
-  const fetchComments = async () => {
-    if (!restaurant) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('comments')
-        .select('*')
-        .eq('restaurant_id', restaurant.id)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setComments(data || []);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-      setComments([]);
-    }
-  };
+  
+  const { comments, loading, averageRating, totalComments, addComment } = useComments(restaurant?.id);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -121,37 +88,23 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
       return;
     }
 
-    setLoading(true);
     setUploading(images.length > 0);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('Non authentifié');
-
       const imageUrls = await uploadImages();
+      
+      const success = await addComment(
+        commentText.trim() || undefined,
+        rating || undefined,
+        imageUrls
+      );
 
-      const { error } = await supabase
-        .from('comments')
-        .insert({
-          user_id: session.user.id,
-          restaurant_id: restaurant.id,
-          comment_text: commentText.trim() || null,
-          rating: rating || null,
-          images: imageUrls
-        });
-
-      if (error) throw error;
-
-      toast({
-        title: "Commentaire ajouté",
-        description: "Votre commentaire a été publié avec succès"
-      });
-
-      // Reset form
-      setRating(0);
-      setCommentText("");
-      setImages([]);
-      fetchComments();
+      if (success) {
+        // Reset form
+        setRating(0);
+        setCommentText("");
+        setImages([]);
+      }
       
     } catch (error) {
       console.error('Error submitting comment:', error);
@@ -161,14 +114,19 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
         variant: "destructive"
       });
     } finally {
-      setLoading(false);
       setUploading(false);
     }
   };
 
-  const averageRating = comments.length > 0 
-    ? comments.filter(c => c.rating).reduce((sum, c) => sum + c.rating, 0) / comments.filter(c => c.rating).length
-    : 0;
+  const getUserDisplayName = (comment: typeof comments[0]) => {
+    if (comment.profiles?.first_name || comment.profiles?.last_name) {
+      return `${comment.profiles.first_name || ''} ${comment.profiles.last_name || ''}`.trim();
+    }
+    if (comment.profiles?.username) {
+      return comment.profiles.username;
+    }
+    return 'Consommateur';
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -195,7 +153,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
         <div className="space-y-6">
           {/* Statistiques */}
-          {comments.length > 0 && (
+          {totalComments > 0 && (
             <div className="bg-muted/50 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -208,7 +166,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                   </span>
                 </div>
                 <Badge variant="secondary">
-                  {comments.length} commentaire{comments.length > 1 ? 's' : ''}
+                  {totalComments} commentaire{totalComments > 1 ? 's' : ''}
                 </Badge>
               </div>
             </div>
@@ -300,13 +258,11 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
             <Button 
               type="submit" 
-              disabled={loading || (!commentText.trim() && rating === 0)}
+              disabled={uploading || (!commentText.trim() && rating === 0)}
               className="w-full"
             >
               {uploading ? (
                 "Upload des images..."
-              ) : loading ? (
-                "Publication..."
               ) : (
                 <>
                   <Send className="h-4 w-4 mr-2" />
@@ -317,16 +273,34 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
           </form>
 
           {/* Liste des commentaires */}
-          {comments.length > 0 && (
+          {loading ? (
+            <div className="space-y-4">
+              <h3 className="font-medium">Commentaires des clients</h3>
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="animate-pulse border rounded-lg p-4 space-y-2">
+                    <div className="h-4 bg-muted rounded w-1/4"></div>
+                    <div className="h-3 bg-muted rounded w-3/4"></div>
+                    <div className="h-3 bg-muted rounded w-1/2"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : totalComments > 0 && (
             <div className="space-y-4">
               <h3 className="font-medium">Commentaires des clients</h3>
               <div className="space-y-4 max-h-60 overflow-y-auto">
                 {comments.map((comment) => (
-                  <div key={comment.id} className="border rounded-lg p-4 space-y-2">
+                  <div key={comment.id} className="border rounded-lg p-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium">
-                        Utilisateur anonyme
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <User className="h-4 w-4 text-primary" />
+                        </div>
+                        <span className="font-medium text-sm">
+                          {getUserDisplayName(comment)}
+                        </span>
+                      </div>
                       {comment.rating && (
                         <div className="flex items-center gap-1">
                           {[...Array(comment.rating)].map((_, i) => (
@@ -348,15 +322,20 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                           <img
                             key={index}
                             src={imageUrl}
-                            alt={`Comment image ${index + 1}`}
-                            className="w-full h-16 object-cover rounded"
+                            alt={`Commentaire image ${index + 1}`}
+                            className="w-full h-16 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+                            onClick={() => window.open(imageUrl, '_blank')}
                           />
                         ))}
                       </div>
                     )}
 
                     <span className="text-xs text-muted-foreground">
-                      {new Date(comment.created_at).toLocaleDateString('fr-FR')}
+                      {new Date(comment.created_at).toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
                     </span>
                   </div>
                 ))}

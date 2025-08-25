@@ -102,8 +102,6 @@ export const PersonalizedRecommendations = () => {
           reasons.push("Dans votre budget");
         }
 
-        const deliveryTime = Math.floor(15 + Math.random() * 40);
-        
         // Supprimer les évaluations fictives - utiliser les vraies données
         const realRating = await getRealRating(restaurant.id);
         
@@ -111,7 +109,6 @@ export const PersonalizedRecommendations = () => {
           ...restaurant,
           score,
           rating: realRating,
-          delivery_time: `${deliveryTime}-${deliveryTime + 10} min`,
           reasons
         };
       }));
@@ -237,16 +234,25 @@ export const PersonalizedRecommendations = () => {
 
             {/* Métadonnées */}
             <div className="flex items-center justify-between text-sm pt-2">
-              {restaurant.rating && (
+              {restaurant.rating ? (
                 <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 fill-current text-yellow-500" />
-                  <span className="font-medium">{restaurant.rating}</span>
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`h-4 w-4 ${
+                          star <= Math.round(restaurant.rating!)
+                            ? 'fill-yellow-400 text-yellow-400'
+                            : 'text-gray-300'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="font-medium text-xs">({restaurant.rating})</span>
                 </div>
+              ) : (
+                <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>
               )}
-              <div className="flex items-center space-x-1 text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>{restaurant.delivery_time}</span>
-              </div>
               {restaurant.price_range && (
                 <Badge variant="secondary" className="text-xs">
                   {restaurant.price_range}
