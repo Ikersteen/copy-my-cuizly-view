@@ -55,7 +55,10 @@ const Dashboard = () => {
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 bg-cuizly-primary rounded-lg animate-pulse mx-auto mb-4"></div>
+          <div className="relative w-12 h-12 bg-gradient-to-br from-cuizly-primary to-cuizly-accent rounded-full flex items-center justify-center shadow-lg animate-pulse mx-auto mb-4">
+            <span className="text-background font-bold text-xl">C</span>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cuizly-primary to-cuizly-accent opacity-20 animate-ping"></div>
+          </div>
           <p className="text-cuizly-neutral">Chargement...</p>
         </div>
       </div>
