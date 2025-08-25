@@ -92,59 +92,61 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
 
   return (
     <div className="space-y-4">
-      {/* Average Rating Display */}
-      <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
-        <div className="flex items-center gap-2">
-          {renderStars(Math.round(averageRating))}
-          <span className="font-semibold text-lg">{averageRating.toFixed(1)}</span>
+      {/* Average Rating Display - Only show if there are ratings */}
+      {totalRatings > 0 && (
+        <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
+          <div className="flex items-center gap-2">
+            {renderStars(Math.round(averageRating))}
+            <span className="font-semibold text-lg">{averageRating.toFixed(1)}</span>
+          </div>
+          <span className="text-muted-foreground">
+            ({totalRatings} {totalRatings === 1 ? 'évaluation' : 'évaluations'})
+          </span>
+          
+          {showAddRating && isAuthenticated && (
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="ml-auto">
+                  {userRating ? 'Modifier mon avis' : 'Évaluer'}
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>
+                    {userRating ? 'Modifier votre évaluation' : 'Évaluer ce restaurant'}
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Note</label>
+                    {renderStars(selectedRating, 'lg', true)}
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Commentaire (optionnel)</label>
+                    <Textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      placeholder="Partagez votre expérience..."
+                      rows={3}
+                    />
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button 
+                      onClick={handleSubmitRating}
+                      disabled={selectedRating === 0 || submitting}
+                    >
+                      {submitting ? 'En cours...' : 'Publier'}
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
-        <span className="text-muted-foreground">
-          ({totalRatings} {totalRatings === 1 ? 'évaluation' : 'évaluations'})
-        </span>
-        
-        {showAddRating && isAuthenticated && (
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm" className="ml-auto">
-                {userRating ? 'Modifier mon avis' : 'Évaluer'}
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>
-                  {userRating ? 'Modifier votre évaluation' : 'Évaluer ce restaurant'}
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Note</label>
-                  {renderStars(selectedRating, 'lg', true)}
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Commentaire (optionnel)</label>
-                  <Textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Partagez votre expérience..."
-                    rows={3}
-                  />
-                </div>
-                <div className="flex gap-2 justify-end">
-                  <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                    Annuler
-                  </Button>
-                  <Button 
-                    onClick={handleSubmitRating}
-                    disabled={selectedRating === 0 || submitting}
-                  >
-                    {submitting ? 'En cours...' : 'Publier'}
-                  </Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-        )}
-      </div>
+      )}
 
       {/* Existing Ratings */}
       {totalRatings > 0 && (
