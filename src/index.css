@@ -120,4 +120,44 @@ All colors MUST be HSL.
   button, input, select, textarea {
     user-select: auto;
   }
+
+  /* Mobile-first enhancements */
+  @media (max-width: 768px) {
+    /* Improved touch targets */
+    button, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Better mobile spacing */
+    .mobile-friendly-spacing {
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Smooth scrolling for mobile */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Prevent horizontal scroll on mobile */
+    body {
+      overflow-x: hidden;
+    }
+  }
+
+  /* Enhanced mobile interactions */
+  @media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .touch-device {
+      --tw-shadow: none;
+    }
+    
+    /* Better focus states for touch */
+    button:focus-visible, 
+    [role="button"]:focus-visible {
+      outline: 2px solid hsl(var(--primary));
+      outline-offset: 2px;
+    }
+  }
 }

@@ -5,7 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { X } from "lucide-react";
+import { X, Star } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileFiltersDrawer } from "./MobileFiltersDrawer";
 
 interface FiltersModalProps {
   open: boolean;
@@ -29,12 +31,24 @@ const CUISINE_OPTIONS = [
 const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 
 export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModalProps) => {
+  const isMobile = useIsMobile();
   const [filters, setFilters] = useState<FilterOptions>({
     cuisines: [],
     priceRange: [],
     rating: 0,
     distance: 15
   });
+
+  // Use mobile drawer on mobile devices
+  if (isMobile) {
+    return (
+      <MobileFiltersDrawer 
+        open={open} 
+        onOpenChange={onOpenChange} 
+        onApplyFilters={onApplyFilters} 
+      />
+    );
+  }
 
   const handleApply = () => {
     onApplyFilters(filters);
