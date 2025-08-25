@@ -280,7 +280,7 @@ const RestaurantDashboard = () => {
 
         {/* Message de bienvenue */}
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
-          <CardContent className="p-6">
+          <CardContent className="p-6 flex items-center justify-center text-center min-h-[120px]">
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-2">
                 Bienvenue dans votre espace restaurateur&nbsp;!
