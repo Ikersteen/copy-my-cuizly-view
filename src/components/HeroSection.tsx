@@ -14,17 +14,17 @@ const HeroSection = () => {
         </div>
 
         {/* Main Title */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-foreground mb-8 sm:mb-10 leading-[0.95] tracking-tighter px-2 sm:px-0 animate-fade-in">
-          <span className="block">Découvrez vos prochains</span>
-          <span className="block bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent font-extrabold">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground mb-6 sm:mb-8 leading-[1.1] tracking-tight px-2 sm:px-0 animate-fade-in">
+          <span className="block mb-2">Découvrez vos prochains</span>
+          <span className="block bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent font-extrabold mb-2">
             coups de cœur culinaires
           </span>
           <span className="block text-foreground/90">à Montréal</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-xl sm:text-2xl md:text-3xl text-muted-foreground/80 max-w-5xl mx-auto mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6 leading-relaxed font-light tracking-wide animate-fade-in">
-          Grâce à notre <span className="font-medium text-foreground/90">intelligence artificielle</span>, découvrez les meilleurs restaurants de Montréal adaptés à vos goûts et à votre budget.
+        <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-4xl mx-auto mb-10 sm:mb-12 md:mb-16 px-4 sm:px-6 leading-relaxed font-normal animate-fade-in">
+          Grâce à notre <span className="font-semibold text-foreground/95">intelligence artificielle</span>, découvrez les meilleurs restaurants de Montréal adaptés à vos goûts et à votre budget.
         </p>
 
         {/* CTA */}
