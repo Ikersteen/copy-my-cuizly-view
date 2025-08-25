@@ -219,7 +219,7 @@ const RestaurantDashboard = () => {
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
-                className="flex-1 sm:flex-none"
+                className="flex-1 sm:flex-none min-h-[44px] text-destructive hover:text-destructive hover:bg-destructive/10"
               >
                 <LogOut className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Déconnexion</span>
