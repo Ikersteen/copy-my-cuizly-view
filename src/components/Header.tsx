@@ -34,11 +34,12 @@ const Header = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-foreground rounded-full flex items-center justify-center">
-              <span className="text-background font-semibold text-sm">C</span>
-            </div>
-            <span className="text-lg font-semibold text-foreground">Cuizly</span>
+          <Link to="/" className="flex items-center">
+            <img 
+              src="/lovable-uploads/66b403fe-8178-4b2f-9737-0506dd1679dd.png" 
+              alt="Cuizly" 
+              className="h-8 w-auto"
+            />
           </Link>
 
           {/* Navigation Desktop */}

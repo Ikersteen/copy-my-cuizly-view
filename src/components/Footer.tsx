@@ -117,11 +117,11 @@ const Footer = () => {
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
             <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="relative w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-cuizly-primary to-cuizly-accent rounded-full flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
-                <span className="text-background font-bold text-sm sm:text-base">C</span>
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cuizly-primary to-cuizly-accent opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-              </div>
-              <span className="font-bold text-foreground text-lg sm:text-xl tracking-tight transition-all duration-300 group-hover:text-cuizly-primary">Cuizly</span>
+              <img 
+                src="/lovable-uploads/66b403fe-8178-4b2f-9737-0506dd1679dd.png" 
+                alt="Cuizly" 
+                className="h-6 sm:h-8 w-auto transition-all duration-300 group-hover:scale-110"
+              />
             </div>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
