@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat } from "lucide-react";
+import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
 import { RatingComponent } from "@/components/RatingComponent";
+import { CommentModal } from "@/components/CommentModal";
 
 interface Menu {
   id: string;
@@ -46,6 +47,7 @@ export const RestaurantMenuModal = ({
 }: RestaurantMenuModalProps) => {
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
   const { toggleFavorite, isFavorite } = useFavorites();
   const { toast } = useToast();
 
@@ -293,8 +295,12 @@ export const RestaurantMenuModal = ({
 
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
-            <Button className="flex-1">
-              Commander maintenant
+            <Button 
+              className="flex-1"
+              onClick={() => setShowCommentModal(true)}
+            >
+              <MessageSquare className="h-4 w-4 mr-2" />
+              Commentaire
             </Button>
             <Button variant="outline" onClick={handleToggleFavorite}>
               <Heart 
@@ -305,6 +311,13 @@ export const RestaurantMenuModal = ({
           </div>
         </div>
       </DialogContent>
+
+      {/* Comment Modal */}
+      <CommentModal 
+        open={showCommentModal}
+        onOpenChange={setShowCommentModal}
+        restaurant={restaurant}
+      />
     </Dialog>
   );
 };

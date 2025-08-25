@@ -43,6 +43,24 @@ export const PersonalizedRecommendations = () => {
     }
   }, [preferences]);
 
+  // Fonction pour récupérer la vraie note d'un restaurant
+  const getRealRating = async (restaurantId: string): Promise<number | null> => {
+    try {
+      const { data } = await supabase
+        .from('ratings')
+        .select('rating')
+        .eq('restaurant_id', restaurantId);
+
+      if (!data || data.length === 0) return null;
+      
+      const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
+      return Math.round(average * 10) / 10; // Arrondi à 1 décimale
+    } catch (error) {
+      console.error('Error fetching rating:', error);
+      return null;
+    }
+  };
+
   const generateRecommendations = async () => {
     try {
       setLoading(true);
@@ -57,8 +75,8 @@ export const PersonalizedRecommendations = () => {
         return;
       }
 
-      // Score et catégorise les restaurants
-      const scoredRestaurants = restaurants.map(restaurant => {
+      // Score et catégorise les restaurants avec vraies données
+      const scoredRestaurants = await Promise.all(restaurants.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
 
@@ -84,17 +102,19 @@ export const PersonalizedRecommendations = () => {
           reasons.push("Dans votre budget");
         }
 
-        const rating = 3.5 + Math.random() * 1.5;
         const deliveryTime = Math.floor(15 + Math.random() * 40);
-
+        
+        // Supprimer les évaluations fictives - utiliser les vraies données
+        const realRating = await getRealRating(restaurant.id);
+        
         return {
           ...restaurant,
           score,
-          rating: Number(rating.toFixed(1)),
+          rating: realRating,
           delivery_time: `${deliveryTime}-${deliveryTime + 10} min`,
           reasons
         };
-      });
+      }));
 
       // Créer la catégorie recommandée uniquement
       const newCategories: RecommendationCategory[] = [
@@ -215,22 +235,24 @@ export const PersonalizedRecommendations = () => {
                       </div>
                     </div>
 
-                    {/* Métadonnées */}
-                    <div className="flex items-center justify-between text-sm pt-2">
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 fill-current text-yellow-500" />
-                        <span className="font-medium">{restaurant.rating}</span>
-                      </div>
-                      <div className="flex items-center space-x-1 text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        <span>{restaurant.delivery_time}</span>
-                      </div>
-                      {restaurant.price_range && (
-                        <Badge variant="secondary" className="text-xs">
-                          {restaurant.price_range}
-                        </Badge>
-                      )}
-                    </div>
+            {/* Métadonnées */}
+            <div className="flex items-center justify-between text-sm pt-2">
+              {restaurant.rating && (
+                <div className="flex items-center space-x-1">
+                  <Star className="h-4 w-4 fill-current text-yellow-500" />
+                  <span className="font-medium">{restaurant.rating}</span>
+                </div>
+              )}
+              <div className="flex items-center space-x-1 text-muted-foreground">
+                <Clock className="h-4 w-4" />
+                <span>{restaurant.delivery_time}</span>
+              </div>
+              {restaurant.price_range && (
+                <Badge variant="secondary" className="text-xs">
+                  {restaurant.price_range}
+                </Badge>
+              )}
+            </div>
                   </CardHeader>
 
                   <CardContent className="space-y-4">

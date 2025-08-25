@@ -58,6 +58,24 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { ratings, addRating } = useRatings();
 
+  // Fonction pour récupérer la vraie note d'un restaurant
+  const getRealRating = async (restaurantId: string): Promise<number | null> => {
+    try {
+      const { data } = await supabase
+        .from('ratings')
+        .select('rating')
+        .eq('restaurant_id', restaurantId);
+
+      if (!data || data.length === 0) return null;
+      
+      const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
+      return Math.round(average * 10) / 10; // Arrondi à 1 décimale
+    } catch (error) {
+      console.error('Error fetching rating:', error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     if (preferences) {
       generateRecommendations();
@@ -138,7 +156,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
       }
 
       // Système de scoring basé sur interactions réelles et préférences
-      const scoredRestaurants = restaurants.map(restaurant => {
+      const scoredRestaurants = await Promise.all(restaurants.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
         
@@ -187,14 +205,17 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
           }
         }
 
-        // Calculs pour affichage
+        // Calculs pour affichage avec vraies données
         const distance = Math.floor(1 + Math.random() * (preferences?.delivery_radius || 10));
         const deliveryTime = 20 + Math.floor(Math.random() * 30);
+
+        // Récupérer la vraie note au lieu d'une note fictive
+        const realRating = await getRealRating(restaurant.id);
 
         return {
           ...restaurant,
           score,
-          rating: analytics?.average_rating || 3.5 + Math.random() * 1.5,
+          rating: realRating,
           delivery_time: `${deliveryTime}-${deliveryTime + 10} min`,
           distance,
           reasons,
@@ -202,10 +223,10 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
             profile_views: 0,
             menu_views: 0,
             rating_count: 0,
-            average_rating: 0
+            average_rating: realRating || 0
           }
         };
-      });
+      }));
 
       const sortedRestaurants = scoredRestaurants
         .sort((a, b) => b.score - a.score)
