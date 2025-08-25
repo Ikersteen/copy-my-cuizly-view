@@ -155,11 +155,11 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
       <CardContent>
         <Tabs defaultValue="current" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="current" className="flex items-center gap-2">
+            <TabsTrigger value="current" className="flex items-center gap-2" translate="no">
               <Clock className="h-4 w-4" />
               En cours ({currentOffers.length})
             </TabsTrigger>
-            <TabsTrigger value="past" className="flex items-center gap-2">
+            <TabsTrigger value="past" className="flex items-center gap-2" translate="no">
               <CheckCircle className="h-4 w-4" />
               Terminées ({pastOffers.length})
             </TabsTrigger>
