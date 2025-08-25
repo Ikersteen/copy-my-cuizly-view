@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight } from "lucide-react";
+import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 
 interface Restaurant {
   id: string;
@@ -33,6 +34,8 @@ export const PersonalizedRecommendations = () => {
   const { preferences } = useUserPreferences();
   const [categories, setCategories] = useState<RecommendationCategory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
   useEffect(() => {
     if (preferences) {
@@ -93,7 +96,7 @@ export const PersonalizedRecommendations = () => {
         };
       });
 
-      // Créer les catégories
+      // Créer la catégorie recommandée uniquement
       const newCategories: RecommendationCategory[] = [
         {
           id: 'recommended',
@@ -103,29 +106,7 @@ export const PersonalizedRecommendations = () => {
           color: 'bg-gradient-to-r from-primary/10 to-primary/5',
           restaurants: scoredRestaurants
             .sort((a, b) => b.score - a.score)
-            .slice(0, 6)
-        },
-        {
-          id: 'trending',
-          title: 'Tendances du moment',
-          subtitle: 'Les restaurants les plus populaires',
-          icon: TrendingUp,
-          color: 'bg-gradient-to-r from-orange-100 to-orange-50 dark:from-orange-900/20 dark:to-orange-900/10',
-          restaurants: scoredRestaurants
-            .filter(r => r.rating && r.rating > 4.3)
-            .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-            .slice(0, 6)
-        },
-        {
-          id: 'fast',
-          title: 'Livraison express',
-          subtitle: 'Prêt en moins de 30 minutes',
-          icon: Clock,
-          color: 'bg-gradient-to-r from-green-100 to-green-50 dark:from-green-900/20 dark:to-green-900/10',
-          restaurants: scoredRestaurants
-            .filter(r => r.delivery_time && parseInt(r.delivery_time) <= 30)
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 6)
+            .slice(0, 12)
         }
       ];
 
@@ -187,10 +168,16 @@ export const PersonalizedRecommendations = () => {
                     </p>
                   </div>
                 </div>
-                <Button variant="outline" className="hidden md:flex group">
-                  Voir tout
-                  <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="hidden md:flex gap-2">
+                  <Button variant="outline" size="sm" className="group">
+                    <Filter className="h-4 w-4 mr-2" />
+                    Filtres
+                  </Button>
+                  <Button variant="outline" className="group">
+                    Voir tout
+                    <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -296,6 +283,10 @@ export const PersonalizedRecommendations = () => {
                     <Button 
                       className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
                       size="sm"
+                      onClick={() => {
+                        setSelectedRestaurant(restaurant);
+                        setShowRestaurantModal(true);
+                      }}
                     >
                       Voir le menu
                     </Button>
@@ -304,8 +295,12 @@ export const PersonalizedRecommendations = () => {
               ))}
             </div>
 
-            {/* Voir plus mobile */}
-            <div className="md:hidden text-center">
+            {/* Actions mobile */}
+            <div className="md:hidden text-center flex gap-2 justify-center">
+              <Button variant="outline" size="sm" className="group">
+                <Filter className="h-4 w-4 mr-2" />
+                Filtres
+              </Button>
               <Button variant="outline" className="group">
                 Voir tout
                 <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -314,6 +309,13 @@ export const PersonalizedRecommendations = () => {
           </div>
         ))}
       </div>
+
+      {/* Restaurant Menu Modal */}
+      <RestaurantMenuModal 
+        open={showRestaurantModal}
+        onOpenChange={setShowRestaurantModal}
+        restaurant={selectedRestaurant}
+      />
     </section>
   );
 };
