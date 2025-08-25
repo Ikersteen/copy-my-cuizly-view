@@ -56,14 +56,10 @@ const Dashboard = () => {
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
         <div className="text-center">
           <div className="relative">
-            {/* Logo principal avec animation */}
-            <div className="relative w-16 h-16 bg-gradient-to-br from-cuizly-primary to-cuizly-accent rounded-full flex items-center justify-center shadow-2xl animate-pulse mx-auto mb-6">
+            {/* Logo principal sans animation */}
+            <div className="relative w-16 h-16 bg-gradient-to-br from-cuizly-primary to-cuizly-accent rounded-full flex items-center justify-center shadow-2xl mx-auto mb-6">
               <span className="text-background font-bold text-2xl">C</span>
             </div>
-            
-            {/* Cercles d'animation autour du logo */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full border-2 border-cuizly-primary/30 animate-ping"></div>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 -mt-2 -ml-2 rounded-full border border-cuizly-accent/20 animate-ping" style={{ animationDelay: '0.5s' }}></div>
           </div>
           
           <div className="space-y-2">
