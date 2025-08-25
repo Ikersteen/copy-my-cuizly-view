@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Bell, Smartphone } from "lucide-react";
+import { ArrowRight, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroRestaurantImage from "@/assets/hero-restaurant.jpg";
 
@@ -34,7 +34,6 @@ const CTASection = () => {
               size="lg" 
               className="bg-white text-cuizly-primary hover:bg-white/90 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold"
             >
-              <Smartphone className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
               Créer mon compte
               <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Button>

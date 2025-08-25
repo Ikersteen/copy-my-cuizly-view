@@ -1,11 +1,8 @@
-import { Target } from "lucide-react";
-
 const MissionSection = () => {
   return (
     <section className="py-16 sm:py-20 bg-background">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-        <div className="flex items-center justify-center space-x-3 mb-8 sm:mb-10">
-          <Target className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+        <div className="text-center mb-8 sm:mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
             Notre Mission
           </h2>

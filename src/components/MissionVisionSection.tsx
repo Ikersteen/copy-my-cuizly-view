@@ -1,4 +1,4 @@
-import { Target, Brain, Users, Search } from "lucide-react";
+import { Brain, Users, Search } from "lucide-react";
 
 const MissionVisionSection = () => {
   const features = [
@@ -27,8 +27,7 @@ const MissionVisionSection = () => {
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center mb-8 sm:mb-12">
-          <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-6 sm:mb-8">
-            <Target className="h-6 w-6 sm:h-8 sm:w-8 text-cuizly-accent" />
+          <div className="text-center mb-6 sm:mb-8">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cuizly-primary">
               Les fonctionnalités
             </h2>
