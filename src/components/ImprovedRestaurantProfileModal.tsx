@@ -123,8 +123,14 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       if (!session) throw new Error('No session');
 
       // Convert base64 to blob
-      const response = await fetch(adjustedImageData);
-      const blob = await response.blob();
+      const base64Data = adjustedImageData.split(',')[1];
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
       
       const fileName = `${session.user.id}/${adjustmentType}-adjusted-${Date.now()}.jpeg`;
       
@@ -138,10 +144,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
+      const imageUrl = data.publicUrl;
+      console.log('Image uploaded successfully:', imageUrl);
+
       if (adjustmentType === 'cover') {
-        setFormData(prev => ({ ...prev, cover_image_url: data.publicUrl }));
+        setFormData(prev => ({ ...prev, cover_image_url: imageUrl }));
       } else {
-        setFormData(prev => ({ ...prev, logo_url: data.publicUrl }));
+        setFormData(prev => ({ ...prev, logo_url: imageUrl }));
       }
       
       toast({
@@ -168,13 +177,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
   const handleRemovePhoto = (type: 'logo' | 'cover') => {
     if (type === 'cover') {
-      setFormData(prev => ({ ...prev, cover_image_url: "" }));
+      setFormData(prev => ({ ...prev, cover_image_url: null }));
     } else {
-      setFormData(prev => ({ ...prev, logo_url: "" }));
+      setFormData(prev => ({ ...prev, logo_url: null }));
     }
     toast({
       title: type === 'cover' ? "Photo de couverture supprimée" : "Logo supprimé",
-      description: "L'image a été retirée du profil"
+      description: "L'image a été retirée du profil. N'oubliez pas de sauvegarder."
     });
   };
 
@@ -221,27 +230,42 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
   };
 
   const handleSave = async () => {
-    if (!restaurant || !formData.name) return;
+    if (!restaurant || !formData.name?.trim()) {
+      toast({
+        title: "Erreur",
+        description: "Le nom du restaurant est requis",
+        variant: "destructive"
+      });
+      return;
+    }
     
     setLoading(true);
     try {
+      // Prepare update data with null for empty strings
+      const updateData = {
+        name: formData.name.trim(),
+        description: formData.description?.trim() || null,
+        address: formData.address?.trim() || null,
+        phone: formData.phone?.trim() || null,
+        email: formData.email?.trim() || null,
+        cuisine_type: formData.cuisine_type || [],
+        price_range: formData.price_range || null,
+        logo_url: formData.logo_url?.trim() || null,
+        cover_image_url: formData.cover_image_url?.trim() || null,
+        delivery_radius: Number(formData.delivery_radius) || 5
+      };
+
+      console.log('Updating restaurant with data:', updateData);
+
       const { error } = await supabase
         .from('restaurants')
-        .update({
-          name: formData.name,
-          description: formData.description || "",
-          address: formData.address || "",
-          phone: formData.phone || "",
-          email: formData.email || "",
-          cuisine_type: formData.cuisine_type || [],
-          price_range: formData.price_range || "",
-          logo_url: formData.logo_url || "",
-          cover_image_url: formData.cover_image_url || "",
-          delivery_radius: formData.delivery_radius || 5
-        })
+        .update(updateData)
         .eq('id', restaurant.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       toast({
         title: "Profil mis à jour",
