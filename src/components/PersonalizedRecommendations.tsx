@@ -6,6 +6,7 @@ import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter 
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
+import { RestaurantFiltersModal, RestaurantFilterOptions } from "@/components/RestaurantFiltersModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface Restaurant {
@@ -38,14 +39,9 @@ export const PersonalizedRecommendations = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
 
-  useEffect(() => {
-    if (preferences) {
-      generateRecommendations();
-    }
-  }, [preferences]);
-
-  // Fonction pour récupérer la vraie note d'un restaurant
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
       const { data } = await supabase
@@ -57,7 +53,7 @@ export const PersonalizedRecommendations = () => {
       
       const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
       return { 
-        rating: Math.round(average * 10) / 10, // Arrondi à 1 décimale
+        rating: Math.round(average * 10) / 10,
         totalRatings: data.length
       };
     } catch (error) {
@@ -66,10 +62,6 @@ export const PersonalizedRecommendations = () => {
     }
   };
 
-  // State pour les évaluations en temps réel
-  const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
-
-  // Fonction pour mettre à jour les évaluations d'un restaurant spécifique
   const updateRestaurantRating = async (restaurantId: string) => {
     const ratingData = await getRealRating(restaurantId);
     setRestaurantRatings(prev => ({
@@ -78,10 +70,17 @@ export const PersonalizedRecommendations = () => {
     }));
   };
 
-  // Configuration du temps réel pour les évaluations
-  useEffect(() => {
-    console.log('🔄 Setting up real-time ratings subscription for recommendations');
+  const handleApplyFilters = (filters: RestaurantFilterOptions) => {
+    console.log('Filters applied:', filters);
+  };
 
+  useEffect(() => {
+    if (preferences) {
+      generateRecommendations();
+    }
+  }, [preferences]);
+
+  useEffect(() => {
     const ratingsChannel = supabase
       .channel('all-ratings-updates')
       .on(
@@ -92,13 +91,9 @@ export const PersonalizedRecommendations = () => {
           table: 'ratings',
         },
         async (payload: any) => {
-          console.log('⭐ Rating updated in real-time:', payload);
-          
           const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
           if (restaurantId) {
             await updateRestaurantRating(restaurantId);
-            
-            // Régénérer les recommandations avec les nouvelles données
             setTimeout(() => {
               generateRecommendations();
             }, 100);
@@ -108,12 +103,10 @@ export const PersonalizedRecommendations = () => {
       .subscribe();
 
     return () => {
-      console.log('🔄 Cleaning up ratings subscription');
       ratingsChannel.unsubscribe();
     };
   }, []);
 
-  // Fonction pour mettre à jour les évaluations lors du chargement initial
   const loadRestaurantRatings = async (restaurants: any[]) => {
     const ratingsPromises = restaurants.map(async (restaurant) => {
       const ratingData = await getRealRating(restaurant.id);
@@ -143,12 +136,10 @@ export const PersonalizedRecommendations = () => {
         return;
       }
 
-      // Score et catégorise les restaurants avec vraies données
       const scoredRestaurants = await Promise.all(restaurants.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
 
-        // Score basé sur les préférences de cuisine
         if (preferences?.cuisine_preferences?.length) {
           const cuisineMatch = restaurant.cuisine_type?.some(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
@@ -164,13 +155,11 @@ export const PersonalizedRecommendations = () => {
           }
         }
 
-        // Score prix
         if (preferences?.price_range === restaurant.price_range) {
           score += 30;
           reasons.push("Dans votre budget");
         }
 
-        // Supprimer les évaluations fictives - utiliser les vraies données
         const realRating = await getRealRating(restaurant.id);
         
         return {
@@ -182,7 +171,8 @@ export const PersonalizedRecommendations = () => {
         };
       }));
 
-      // Créer la catégorie recommandée uniquement
+      await loadRestaurantRatings(scoredRestaurants);
+
       const newCategories: RecommendationCategory[] = [
         {
           id: 'recommended',
@@ -196,7 +186,6 @@ export const PersonalizedRecommendations = () => {
         }
       ];
 
-      // Filtrer les catégories avec des restaurants
       const filteredCategories = newCategories.filter(cat => cat.restaurants.length > 0);
       setCategories(filteredCategories);
 
@@ -250,16 +239,16 @@ export const PersonalizedRecommendations = () => {
                     </p>
                   </div>
                 </div>
-                <div className="hidden md:flex gap-2">
-                  <Button variant="outline" size="sm" className="group">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filtres
-                  </Button>
-                  <Button variant="outline" className="group">
-                    Voir tout
-                    <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
+                 <div className="hidden md:flex gap-2">
+                   <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
+                     <Filter className="h-4 w-4 mr-2" />
+                     Filtres
+                   </Button>
+                   <Button variant="outline" className="group">
+                     Voir tout
+                     <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                   </Button>
+                 </div>
               </div>
             </div>
 
@@ -297,36 +286,37 @@ export const PersonalizedRecommendations = () => {
                       </div>
                     </div>
 
-            {/* Métadonnées */}
             <div className="flex items-center justify-between text-sm pt-2">
               {(() => {
-                const currentRating = restaurantRatings[restaurant.id] || { rating: restaurant.rating, totalRatings: restaurant.totalRatings };
-                return currentRating.rating ? (
-                  <div className="flex items-center space-x-1">
-                    <div className="flex">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          className={`h-4 w-4 ${
-                            star <= Math.round(currentRating.rating!)
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
+                const currentRating = restaurantRatings[restaurant.id];
+                if (currentRating && currentRating.rating && currentRating.rating > 0) {
+                  return (
+                    <div className="flex items-center space-x-1">
+                      <div className="flex">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            className={`h-4 w-4 ${
+                              star <= Math.round(currentRating.rating!)
+                                ? 'fill-yellow-400 text-yellow-400'
+                                : 'text-gray-300'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                       <span className="font-medium text-xs">
+                         ({currentRating.rating})
+                         {currentRating.totalRatings && currentRating.totalRatings > 0 && (
+                           <span className="text-muted-foreground ml-1">
+                             • {currentRating.totalRatings} avis
+                           </span>
+                         )}
+                       </span>
                     </div>
-                     <span className="font-medium text-xs">
-                       ({currentRating.rating})
-                       {currentRating.totalRatings && currentRating.totalRatings > 0 && (
-                         <span className="text-muted-foreground ml-1">
-                           • {currentRating.totalRatings} avis
-                         </span>
-                       )}
-                     </span>
-                  </div>
-                ) : (
-                  <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>
-                );
+                  );
+                } else {
+                  return <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>;
+                }
               })()}
               {restaurant.price_range && (
                 <Badge variant="secondary" className="text-xs">
@@ -336,52 +326,49 @@ export const PersonalizedRecommendations = () => {
             </div>
                   </CardHeader>
 
-                  <CardContent className="space-y-4">
-                    {/* Types de cuisine */}
-                    <div className="flex flex-wrap gap-2">
-                      {restaurant.cuisine_type?.slice(0, 3).map((cuisine, idx) => (
-                        <Badge 
-                          key={idx} 
-                          variant="outline" 
-                          className={`text-xs ${
-                            preferences?.cuisine_preferences?.includes(cuisine)
-                              ? 'bg-primary/10 text-primary border-primary/30'
-                              : ''
-                          }`}
-                        >
-                          {cuisine}
-                        </Badge>
-                      ))}
-                    </div>
+                   <CardContent className="space-y-4">
+                     <div className="flex flex-wrap gap-2">
+                       {restaurant.cuisine_type?.slice(0, 3).map((cuisine, idx) => (
+                         <Badge 
+                           key={idx} 
+                           variant="outline" 
+                           className={`text-xs ${
+                             preferences?.cuisine_preferences?.includes(cuisine)
+                               ? 'bg-primary/10 text-primary border-primary/30'
+                               : ''
+                           }`}
+                         >
+                           {cuisine}
+                         </Badge>
+                       ))}
+                     </div>
 
-                    {/* Raisons de recommandation */}
-                    {restaurant.reasons && restaurant.reasons.length > 0 && (
-                      <div className="bg-muted/50 rounded-lg p-3">
-                        <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-                          <Sparkles className="h-3 w-3" />
-                          Pourquoi ce choix ?
-                        </p>
-                        <div className="flex flex-wrap gap-1">
-                          {restaurant.reasons.slice(0, 2).map((reason, idx) => (
-                            <Badge 
-                              key={idx} 
-                              variant="secondary" 
-                              className="text-xs bg-background/80"
-                            >
-                              {reason}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                     {restaurant.reasons && restaurant.reasons.length > 0 && (
+                       <div className="bg-muted/50 rounded-lg p-3">
+                         <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+                           <Sparkles className="h-3 w-3" />
+                           Pourquoi ce choix ?
+                         </p>
+                         <div className="flex flex-wrap gap-1">
+                           {restaurant.reasons.slice(0, 2).map((reason, idx) => (
+                             <Badge 
+                               key={idx} 
+                               variant="secondary" 
+                               className="text-xs bg-background/80"
+                             >
+                               {reason}
+                             </Badge>
+                           ))}
+                         </div>
+                       </div>
+                     )}
 
-                    {/* Adresse */}
-                    {restaurant.address && (
-                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                        <MapPin className="h-3 w-3 flex-shrink-0" />
-                        <span className="line-clamp-1">{restaurant.address}</span>
-                      </div>
-                    )}
+                     {restaurant.address && (
+                       <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                         <MapPin className="h-3 w-3 flex-shrink-0" />
+                         <span className="line-clamp-1">{restaurant.address}</span>
+                       </div>
+                     )}
 
                     <Button 
                       className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
@@ -398,27 +385,31 @@ export const PersonalizedRecommendations = () => {
               ))}
             </div>
 
-            {/* Actions mobile */}
-            <div className="md:hidden text-center flex gap-2 justify-center">
-              <Button variant="outline" size="sm" className="group">
-                <Filter className="h-4 w-4 mr-2" />
-                Filtres
-              </Button>
-              <Button variant="outline" className="group">
-                Voir tout
-                <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
+             <div className="md:hidden text-center flex gap-2 justify-center">
+               <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
+                 <Filter className="h-4 w-4 mr-2" />
+                 Filtres
+               </Button>
+               <Button variant="outline" className="group">
+                 Voir tout
+                 <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+               </Button>
+             </div>
           </div>
         ))}
       </div>
 
-      {/* Restaurant Menu Modal */}
-      <RestaurantMenuModal 
-        open={showRestaurantModal}
-        onOpenChange={setShowRestaurantModal}
-        restaurant={selectedRestaurant}
-      />
+       <RestaurantMenuModal 
+         open={showRestaurantModal}
+         onOpenChange={setShowRestaurantModal}
+         restaurant={selectedRestaurant}
+       />
+       
+       <RestaurantFiltersModal 
+         open={showFilters}
+         onOpenChange={setShowFilters}
+         onApplyFilters={handleApplyFilters}
+       />
     </section>
   );
 };
