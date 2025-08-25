@@ -343,11 +343,11 @@ const Auth = () => {
         </div>
 
         <Card className="shadow-card border border-border">
-          <CardContent className="p-4 sm:p-6">
+          <CardContent className="p-6 sm:p-8">
             <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4 sm:mb-6">
-                <TabsTrigger value="signin" className="text-sm">Connexion</TabsTrigger>
-                <TabsTrigger value="signup" className="text-sm">Inscription</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6 sm:mb-8 h-10">
+                <TabsTrigger value="signin" className="text-sm font-medium">Connexion</TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm font-medium">Inscription</TabsTrigger>
               </TabsList>
 
               <TabsContent value="signin" className="space-y-3 sm:space-y-4">
