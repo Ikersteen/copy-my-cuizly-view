@@ -31,32 +31,36 @@ const Header = () => {
 
   return (
     <header className="w-full bg-background border-b border-border">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+      <div className="w-full px-6 sm:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center py-2">
-            <img 
-              src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
-              alt="Cuizly" 
-              className="h-[50px] w-auto"
-            />
-          </Link>
+          {/* Logo - Extrême gauche */}
+          <div className="flex-shrink-0">
+            <Link to="/" className="flex items-center py-2">
+              <img 
+                src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
+                alt="Cuizly" 
+                className="h-[50px] w-auto"
+              />
+            </Link>
+          </div>
 
-          {/* Navigation Desktop */}
-          <nav className="hidden md:flex items-center space-x-12">
-            <Link to="/pricing" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
-              Tarifs
-            </Link>
-            <Link to="/features" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
-              Fonctionnalités
-            </Link>
-            <Link to="/contact" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
-              Contact
-            </Link>
+          {/* Navigation Desktop - Centre */}
+          <nav className="hidden md:flex items-center justify-center flex-1">
+            <div className="flex items-center space-x-12">
+              <Link to="/pricing" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
+                Tarifs
+              </Link>
+              <Link to="/features" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
+                Fonctionnalités
+              </Link>
+              <Link to="/contact" className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2">
+                Contact
+              </Link>
+            </div>
           </nav>
 
-          {/* Auth Actions Desktop */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Auth Actions Desktop - Extrême droite */}
+          <div className="hidden md:flex items-center flex-shrink-0">
             {user ? (
               <Link to="/dashboard">
                 <Button variant="ghost" size="sm">
