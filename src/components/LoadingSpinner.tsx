@@ -15,23 +15,23 @@ const LoadingSpinner = ({
   };
 
   const dotSizeClasses = {
-    sm: "w-2 h-2",
-    md: "w-3 h-3", 
-    lg: "w-4 h-4",
-    xl: "w-6 h-6"
+    sm: "w-3 h-3",
+    md: "w-4 h-4", 
+    lg: "w-5 h-5",
+    xl: "w-7 h-7"
   };
 
   return (
     <div className={`flex items-center justify-center ${className}`}>
       <div className={`flex items-center ${sizeClasses[size]}`}>
         <div 
-          className={`${dotSizeClasses[size]} bg-foreground rounded-full animate-[bounce_1.4s_ease-in-out_infinite] [animation-delay:-0.32s]`}
+          className={`${dotSizeClasses[size]} bg-[hsl(var(--cuizly-primary))] rounded-full animate-[bounce_1.4s_ease-in-out_infinite] [animation-delay:-0.32s]`}
         />
         <div 
-          className={`${dotSizeClasses[size]} bg-foreground rounded-full animate-[bounce_1.4s_ease-in-out_infinite] [animation-delay:-0.16s]`}
+          className={`${dotSizeClasses[size]} bg-[hsl(var(--cuizly-primary))] rounded-full animate-[bounce_1.4s_ease-in-out_infinite] [animation-delay:-0.16s]`}
         />
         <div 
-          className={`${dotSizeClasses[size]} bg-foreground rounded-full animate-[bounce_1.4s_ease-in-out_infinite]`}
+          className={`${dotSizeClasses[size]} bg-[hsl(var(--cuizly-primary))] rounded-full animate-[bounce_1.4s_ease-in-out_infinite]`}
         />
       </div>
     </div>
