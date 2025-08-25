@@ -8,19 +8,30 @@ const LoadingSpinner = ({
   className = ""
 }: LoadingSpinnerProps) => {
   const sizeClasses = {
-    sm: "w-8 h-8",
-    md: "w-12 h-12", 
-    lg: "w-16 h-16",
-    xl: "w-24 h-24"
+    sm: "gap-1",
+    md: "gap-1.5", 
+    lg: "gap-2",
+    xl: "gap-3"
+  };
+
+  const dotSizeClasses = {
+    sm: "w-2 h-2",
+    md: "w-3 h-3", 
+    lg: "w-4 h-4",
+    xl: "w-6 h-6"
   };
 
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <div className={`${sizeClasses[size]} animate-[logo-pulse_2s_ease-in-out_infinite]`}>
-        <img 
-          src="/lovable-uploads/a2dcf041-7862-45d2-b5dd-b0f469cf625f.png" 
-          alt="Chargement..." 
-          className="w-full h-full object-contain"
+      <div className={`flex items-center ${sizeClasses[size]}`}>
+        <div 
+          className={`${dotSizeClasses[size]} bg-foreground rounded-full animate-[bounce_1.4s_ease-in-out_infinite] [animation-delay:-0.32s]`}
+        />
+        <div 
+          className={`${dotSizeClasses[size]} bg-foreground rounded-full animate-[bounce_1.4s_ease-in-out_infinite] [animation-delay:-0.16s]`}
+        />
+        <div 
+          className={`${dotSizeClasses[size]} bg-foreground rounded-full animate-[bounce_1.4s_ease-in-out_infinite]`}
         />
       </div>
     </div>
