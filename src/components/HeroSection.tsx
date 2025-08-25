@@ -21,9 +21,9 @@ const HeroSection = () => {
 
         {/* Subtitle */}
         <p className="text-lg sm:text-xl md:text-2xl text-cuizly-neutral max-w-4xl mx-auto mb-8 sm:mb-10 md:mb-14 px-2 sm:px-4 leading-relaxed">
-          Grâce à notre <span className="font-semibold text-primary">intelligence artificielle</span>,<br className="hidden sm:block" />
+          Grâce à notre <span className="text-primary">intelligence artificielle</span>,<br className="hidden sm:block" />
           découvrez les meilleurs restaurants de Montréal,<br />
-          <span className="text-foreground font-medium">adaptés à vos goûts et à votre budget</span>.
+          <span className="text-foreground">adaptés à vos goûts et à votre budget</span>.
         </p>
 
         {/* CTA */}
