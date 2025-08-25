@@ -54,15 +54,8 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            {/* Logo principal sans animation */}
-            <div className="relative w-16 h-16 bg-gradient-to-br from-cuizly-primary to-cuizly-accent rounded-full flex items-center justify-center shadow-2xl mx-auto mb-6">
-              <span className="text-background font-bold text-2xl">C</span>
-            </div>
-          </div>
-          
-          <div className="space-y-2">
+          <div className="text-center">
+            <div className="space-y-2">
             <p className="text-cuizly-neutral font-medium">Chargement de votre tableau de bord...</p>
             <div className="flex justify-center space-x-1">
               <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce"></div>
