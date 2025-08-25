@@ -181,11 +181,11 @@ const RestaurantDashboard = () => {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
-        {/* Header minimaliste */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
+        {/* Header avec informations restaurant */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center overflow-hidden shadow-sm">
                 {restaurant?.logo_url ? (
                   <img 
                     src={restaurant.logo_url} 
@@ -193,16 +193,16 @@ const RestaurantDashboard = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-primary-foreground font-semibold text-lg">
+                  <span className="text-primary-foreground font-semibold text-xl">
                     {restaurant?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
                   </span>
                 )}
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
+                <h1 className="text-xl font-bold text-foreground">
                   {restaurant?.name || 'Mon Restaurant'} {profile?.chef_emoji_color || '👨‍🍳'}
                 </h1>
-                <p className="text-sm sm:text-base text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
                 </p>
                 {restaurant?.address && (
@@ -214,50 +214,77 @@ const RestaurantDashboard = () => {
               </div>
             </div>
             
-            <div className="flex gap-2 self-start sm:self-auto">
-              <Button 
-                variant="outline"
-                size="sm"
-                className="flex-1 sm:flex-none"
-              >
-                <span className="hidden sm:inline">Tableau de bord</span>
-                <span className="sm:hidden">Tableau de bord</span>
-              </Button>
-              <Button 
-                variant="outline"
-                size="sm"
-                onClick={handleLogout}
-                className="flex-1 sm:flex-none"
-              >
-                <LogOut className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Déconnexion</span>
-              </Button>
-            </div>
+            <Button 
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              className="text-xs"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          {/* Bouton Tableau de bord */}
+          <div className="mt-4">
+            <Button 
+              variant="outline"
+              className="w-full justify-between text-left font-normal border-2 border-dashed border-gray-400 hover:border-gray-600"
+              style={{
+                borderStyle: 'dashed',
+                borderWidth: '3px',
+                borderColor: 'black',
+                borderRadius: '25px'
+              }}
+            >
+              <span>Tableau de bord</span>
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Button>
           </div>
         </div>
 
-        {/* Actions rapides */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-          {[
-            { icon: Plus, label: "Nouvelle offre", primary: true },
-            { icon: Edit3, label: "Profil du restaurant" },
-            { icon: ChefHat, label: "Gérer vos menus" },
-            { icon: Filter, label: "Filtres" }
-          ].map((action, index) => (
-            <Button 
-              key={index}
-              variant={action.primary ? "default" : "outline"} 
-              className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 text-xs sm:text-sm"
-              onClick={() => handleActionClick(action.label)}
-            >
-              <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span>{action.label}</span>
-            </Button>
-          ))}
+        {/* Actions rapides - grille 2x2 */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <Button 
+            variant="default"
+            className="h-20 flex flex-col space-y-2 bg-black text-white hover:bg-gray-800 rounded-3xl"
+            onClick={() => handleActionClick("Nouvelle offre")}
+          >
+            <Plus className="h-5 w-5" />
+            <span className="text-sm">Nouvelle offre</span>
+          </Button>
+          
+          <Button 
+            variant="outline"
+            className="h-20 flex flex-col space-y-2 rounded-3xl"
+            onClick={() => handleActionClick("Profil du restaurant")}
+          >
+            <Edit3 className="h-5 w-5" />
+            <span className="text-sm">Profil du restaurant</span>
+          </Button>
+          
+          <Button 
+            variant="outline"
+            className="h-20 flex flex-col space-y-2 rounded-3xl"
+            onClick={() => handleActionClick("Gérer vos menus")}
+          >
+            <ChefHat className="h-5 w-5" />
+            <span className="text-sm">Gérer vos menus</span>
+          </Button>
+          
+          <Button 
+            variant="outline"
+            className="h-20 flex flex-col space-y-2 rounded-3xl"
+            onClick={() => handleActionClick("Filtres")}
+          >
+            <Filter className="h-5 w-5" />
+            <span className="text-sm">Filtres</span>
+          </Button>
         </div>
 
-        {/* Message de bienvenue */}
-        <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+        {/* Message de bienvenue - style carte grise */}
+        <Card className="bg-gray-100 border-0 mb-6">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -268,7 +295,7 @@ const RestaurantDashboard = () => {
                   Gérez votre restaurant, vos offres et vos menus en toute simplicité.
                 </p>
               </div>
-              <ChefHat className="h-12 w-12 text-primary/40" />
+              <ChefHat className="h-12 w-12 text-gray-400" />
             </div>
           </CardContent>
         </Card>
