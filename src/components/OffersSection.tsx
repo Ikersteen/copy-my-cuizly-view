@@ -152,8 +152,8 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex flex-col items-center">
-        <Tabs defaultValue="current" className="w-full max-w-md">
+      <CardContent className="flex flex-col items-center px-8 py-8">
+        <Tabs defaultValue="current" className="w-full max-w-sm">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="current" className="flex items-center gap-2" translate="no">
               <Clock className="h-4 w-4" />
