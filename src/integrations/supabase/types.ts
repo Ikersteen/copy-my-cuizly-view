@@ -489,6 +489,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_analytics: {
+        Args: {
+          p_increment?: number
+          p_metric: string
+          p_restaurant_id: string
+        }
+        Returns: undefined
+      }
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
@@ -502,6 +510,16 @@ export type Database = {
           p_user_id: string
         }
         Returns: string
+      }
+      update_analytics_data: {
+        Args: {
+          p_date?: string
+          p_menu_views?: number
+          p_offer_clicks?: number
+          p_profile_views?: number
+          p_restaurant_id: string
+        }
+        Returns: undefined
       }
       validate_password_strength: {
         Args: { password: string }
