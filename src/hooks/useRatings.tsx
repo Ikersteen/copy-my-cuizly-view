@@ -138,8 +138,33 @@ export const useRatings = (restaurantId?: string) => {
     }
   };
 
+  // Set up real-time updates for ratings  
   useEffect(() => {
-    fetchRatings();
+    if (!restaurantId) return;
+
+    console.log('🔄 Setting up ratings real-time subscription for:', restaurantId);
+
+    const ratingsChannel = supabase
+      .channel(`ratings-${restaurantId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'ratings',
+          filter: `restaurant_id=eq.${restaurantId}`,
+        },
+        (payload) => {
+          console.log('⭐ Ratings updated in real-time:', payload);
+          fetchRatings(); // Reload ratings when changed
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('🔄 Cleaning up ratings subscription');
+      ratingsChannel.unsubscribe();
+    };
   }, [restaurantId]);
 
   return {

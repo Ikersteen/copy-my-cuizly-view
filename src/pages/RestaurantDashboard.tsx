@@ -42,12 +42,19 @@ const RestaurantDashboard = () => {
   const { toast } = useToast();
   const { profile, updateProfile } = useProfile();
 
-  // Set up real-time updates for immediate profile changes
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  // Set up real-time subscriptions for immediate updates
   useEffect(() => {
     if (!user?.id) return;
 
+    console.log('🔄 Setting up real-time subscriptions for user:', user.id);
+
+    // Profile updates
     const profileChannel = supabase
-      .channel('profile-changes')
+      .channel(`profile-updates-${user.id}`)
       .on(
         'postgres_changes',
         {
@@ -58,28 +65,15 @@ const RestaurantDashboard = () => {
         },
         (payload) => {
           console.log('🎭 Profile updated in real-time:', payload.new);
-          // The useProfile hook will handle the update automatically
+          // Force reload after profile change
+          setTimeout(() => loadData(), 200);
         }
       )
       .subscribe();
 
-    return () => {
-      profileChannel.unsubscribe();
-    };
-  }, [user?.id]);
-  
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  // Set up real-time subscriptions for automatic updates
-  useEffect(() => {
-    if (!user?.id) return;
-
-    // Subscribe to restaurant changes only
+    // Restaurant updates
     const restaurantChannel = supabase
-      .channel('restaurant-changes')
+      .channel(`restaurant-updates-${user.id}`)
       .on(
         'postgres_changes',
         {
@@ -89,14 +83,15 @@ const RestaurantDashboard = () => {
           filter: `owner_id=eq.${user.id}`,
         },
         (payload) => {
-          console.log('Restaurant updated:', payload);
+          console.log('🏪 Restaurant updated in real-time:', payload.new);
           setRestaurant(payload.new as Restaurant);
         }
       )
       .subscribe();
 
-    // Cleanup subscriptions on unmount
     return () => {
+      console.log('🔄 Cleaning up real-time subscriptions');
+      profileChannel.unsubscribe();
       restaurantChannel.unsubscribe();
     };
   }, [user?.id]);
@@ -344,8 +339,10 @@ const RestaurantDashboard = () => {
         restaurant={restaurant}
         onUpdate={() => {
           loadData();
-          // Force immediate profile state update after modal close
-          setTimeout(() => loadData(), 100);
+          // Force refresh after a short delay to ensure data is updated
+          setTimeout(() => {
+            loadData();
+          }, 500);
         }}
       />
       <NewOfferModal 
