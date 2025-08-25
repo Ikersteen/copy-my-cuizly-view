@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   MapPin, Clock, Star, Heart, Settings, 
-  TrendingUp, Zap, Gift, History, Filter, User as UserIcon, LogOut
+  TrendingUp, Zap, Gift, History, Filter, User as UserIcon, LogOut, Map
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -17,8 +18,12 @@ import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
 import { FiltersModal, FilterOptions } from "@/components/FiltersModal";
-import { RecommendationEngine } from "@/components/RecommendationEngine";
+import { PersonalizedRecommendations } from "@/components/PersonalizedRecommendations";
+import { EnhancedRecommendationEngine } from "@/components/EnhancedRecommendationEngine";
+import { AllMenusSection } from "@/components/AllMenusSection";
+import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
+import RestaurantMapSection from "@/components/RestaurantMapSection";
 import type { User } from "@supabase/supabase-js";
 
 const ConsumerDashboard = () => {
@@ -99,24 +104,6 @@ const ConsumerDashboard = () => {
     }
   };
 
-  const handleApplyFilters = (filters: FilterOptions) => {
-    // Filter logic implementation would go here
-  };
-
-  const getDisplayOffers = () => {
-    if (activeFilter === 'trending') return trendingOffers;
-    if (activeFilter === 'promotion') return promotionOffers;
-    return allOffers;
-  };
-
-  const getOffersTitle = () => {
-    switch (activeFilter) {
-      case 'trending': return 'Tendances du moment 📈';
-      case 'promotion': return 'Promotions spéciales 🎉';
-      default: return 'Offres du moment 🔥';
-    }
-  };
-
   if (loading || preferencesLoading || profileLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -134,7 +121,7 @@ const ConsumerDashboard = () => {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
-        {/* Header minimaliste */}
+        {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center space-x-4">
@@ -190,119 +177,75 @@ const ConsumerDashboard = () => {
           </div>
         </div>
 
-        {/* Actions rapides */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-          {[
-            { icon: TrendingUp, label: "Tendances", color: activeFilter === 'trending' },
-            { icon: Gift, label: "Promotions", color: activeFilter === 'promotion' },
-            { icon: Heart, label: "Favoris", count: favorites.length },
-            { icon: History, label: "Historique" },
-            { icon: Filter, label: "Filtres" }
-          ].map((action, index) => (
-            <Button 
-              key={index}
-              variant={action.color ? "default" : "outline"} 
-              className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 relative text-xs sm:text-sm"
-              onClick={() => handleActionClick(action.label)}
-            >
-              <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span>{action.label}</span>
-              {action.count && action.count > 0 && (
-                <Badge className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-4 w-4 sm:h-5 sm:w-5 p-0 text-xs">
-                  {action.count}
-                </Badge>
-              )}
-            </Button>
-          ))}
-        </div>
+        {/* Main Tabs */}
+        <Tabs defaultValue="recommendations" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="recommendations">Recommandations</TabsTrigger>
+            <TabsTrigger value="map">
+              <Map className="h-4 w-4 mr-2" />
+              Carte
+            </TabsTrigger>
+            <TabsTrigger value="favorites">
+              <Heart className="h-4 w-4 mr-2" />
+              Favoris
+            </TabsTrigger>
+            <TabsTrigger value="offers">
+              <Gift className="h-4 w-4 mr-2" />
+              Offres
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Système de recommandations IA */}
-        <RecommendationEngine preferences={preferences} />
-
-        {/* Section des offres */}
-        <OffersSection userType="consumer" />
-
-        {/* Offres filtrées */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-foreground">
-              {getOffersTitle()}
-            </h2>
-            {activeFilter && (
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => setActiveFilter(null)}
-              >
-                Voir toutes
-              </Button>
-            )}
-          </div>
-          
-          {getDisplayOffers().length === 0 ? (
-            <Card className="text-center py-8">
-              <CardContent>
-                <Gift className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                  Aucune offre disponible
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Revenez bientôt pour découvrir de nouvelles offres
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {getDisplayOffers().slice(0, 6).map((offer) => (
-                <Card 
-                  key={offer.id} 
-                  className="hover:shadow-lg transition-all duration-200"
+          <TabsContent value="recommendations" className="space-y-6">
+            {/* Actions rapides */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+              {[
+                { icon: TrendingUp, label: "Tendances", color: activeFilter === 'trending' },
+                { icon: Gift, label: "Promotions", color: activeFilter === 'promotion' },
+                { icon: Heart, label: "Favoris", count: favorites.length },
+                { icon: History, label: "Historique" },
+                { icon: Filter, label: "Filtres" }
+              ].map((action, index) => (
+                <Button 
+                  key={index}
+                  variant={action.color ? "default" : "outline"} 
+                  className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 relative text-xs sm:text-sm"
+                  onClick={() => handleActionClick(action.label)}
                 >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="min-w-0 flex-1">
-                        <CardTitle className="text-base sm:text-lg truncate">
-                          {offer.restaurant?.name || 'Restaurant'}
-                        </CardTitle>
-                        <CardDescription className="text-primary font-medium text-sm truncate">
-                          {offer.title}
-                        </CardDescription>
-                      </div>
-                      <Badge variant="secondary" className="ml-2 text-xs">
-                        {offer.restaurant?.price_range || '$$'}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 fill-current text-yellow-500" />
-                        <span>4.{Math.floor(Math.random() * 5) + 3}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4" />
-                        <span className="text-xs sm:text-sm">{15 + Math.floor(Math.random() * 30)}-{25 + Math.floor(Math.random() * 30)} min</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-1 flex-wrap">
-                        {offer.restaurant?.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
-                          <Badge key={idx} variant="outline" className="text-xs">
-                            {cuisine}
-                          </Badge>
-                        ))}
-                      </div>
-                      <Button size="sm" className="text-xs px-3">
-                        Voir l'offre
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                  <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span>{action.label}</span>
+                  {action.count && action.count > 0 && (
+                    <Badge className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-4 w-4 sm:h-5 sm:w-5 p-0 text-xs">
+                      {action.count}
+                    </Badge>
+                  )}
+                </Button>
               ))}
             </div>
-          )}
-        </div>
+
+            {/* Recommandations personnalisées */}
+            <PersonalizedRecommendations />
+          </TabsContent>
+
+          <TabsContent value="map" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Carte des restaurants
+              </h2>
+              <p className="text-muted-foreground">
+                Explorez les restaurants autour de vous à Montréal
+              </p>
+            </div>
+            <RestaurantMapSection />
+          </TabsContent>
+
+          <TabsContent value="favorites" className="space-y-6">
+            <SavedFavoritesSection />
+          </TabsContent>
+
+          <TabsContent value="offers" className="space-y-6">
+            <OffersSection userType="consumer" />
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Modals */}
@@ -325,7 +268,7 @@ const ConsumerDashboard = () => {
       <FiltersModal 
         open={showFilters} 
         onOpenChange={setShowFilters}
-        onApplyFilters={handleApplyFilters}
+        onApplyFilters={() => {}}
       />
     </div>
   );

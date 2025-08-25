@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import ConsumerDashboard from "./ConsumerDashboardWithTabs";
+import ConsumerDashboard from "./ConsumerDashboard";
 import RestaurantDashboard from "./RestaurantDashboard";
 
 interface Profile {

@@ -4,10 +4,8 @@ import HeroSection from "@/components/HeroSection";
 import MissionSection from "@/components/MissionSection";
 import MissionVisionSection from "@/components/MissionVisionSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
-import RestaurantMapSection from "@/components/RestaurantMapSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
-import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { PersonalizedRecommendations } from "@/components/PersonalizedRecommendations";
 
 const Index = () => {
@@ -35,7 +33,7 @@ const Index = () => {
       <HeroSection />
       <MissionSection />
       <MissionVisionSection />
-      <RestaurantMapSection />
+      {user && <PersonalizedRecommendations />}
       <HowItWorksSection />
       <CTASection />
       <Footer />
