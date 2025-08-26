@@ -63,3 +63,6 @@ verify_jwt = false
 
 [functions.send-offer-alert]
 verify_jwt = false
+
+[functions.test-email-functions]
+verify_jwt = false
