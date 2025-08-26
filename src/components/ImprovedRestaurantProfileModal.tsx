@@ -212,10 +212,6 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       }
 
       console.log('✅ Chef emoji updated successfully');
-      toast({
-        title: "Emoji mis à jour",
-        description: "Votre emoji cuisinier a été modifié"
-      });
     } catch (error) {
       console.error('Error updating emoji:', error);
     }
