@@ -29,7 +29,7 @@ export const PasswordResetEmail = ({
         {/* Logo */}
         <Section style={logoSection}>
           <Img
-            src="https://your-domain.com/cuizly-logo.png"
+            src="https://www.cuizly.ca/cuizly-logo.png"
             width="120"
             height="40"
             alt="Cuizly"
