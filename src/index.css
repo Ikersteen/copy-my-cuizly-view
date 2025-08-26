@@ -167,31 +167,6 @@ All colors MUST be HSL.
   }
 
   /* Enhanced loading animations */
-  @keyframes logo-float {
-    0%, 100% { 
-      transform: translateY(0px) rotate(0deg) scale(1);
-    }
-    25% { 
-      transform: translateY(-8px) rotate(90deg) scale(var(--pulse-scale));
-    }
-    50% { 
-      transform: translateY(0px) rotate(180deg) scale(1);
-    }
-    75% { 
-      transform: translateY(-4px) rotate(270deg) scale(var(--pulse-scale));
-    }
-  }
-
-  @keyframes logo-pulse {
-    0%, 100% { 
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% { 
-      transform: scale(1.05);
-      opacity: 0.8;
-    }
-  }
 
   @keyframes shimmer {
     0% { 
@@ -213,10 +188,6 @@ All colors MUST be HSL.
     }
   }
 
-  .logo-enhanced {
-    animation: logo-float var(--loading-duration) ease-in-out infinite,
-               logo-pulse calc(var(--loading-duration) * 0.5) ease-in-out infinite;
-  }
 
   .loading-shimmer {
     background: linear-gradient(
