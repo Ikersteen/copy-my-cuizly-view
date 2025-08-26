@@ -457,7 +457,7 @@ const Auth = () => {
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-3 h-4 w-4 text-cuizly-neutral hover:text-foreground transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-cuizly-neutral hover:text-foreground transition-colors flex items-center justify-center"
                         onClick={() => setShowSignInPassword(!showSignInPassword)}
                         tabIndex={-1}
                       >
@@ -624,7 +624,7 @@ const Auth = () => {
                       />
                       <button
                         type="button"
-                        className="absolute right-3 top-3 h-4 w-4 text-cuizly-neutral hover:text-foreground transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-cuizly-neutral hover:text-foreground transition-colors flex items-center justify-center"
                         onClick={() => setShowSignUpPassword(!showSignUpPassword)}
                         tabIndex={-1}
                       >
