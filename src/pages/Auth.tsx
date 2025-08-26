@@ -472,7 +472,7 @@ const Auth = () => {
                     <div className="flex justify-center">
                       <HCaptcha
                         ref={hcaptchaRef}
-                        sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - remplacer en production
+                        sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
                         onVerify={(token) => {
                           setHcaptchaToken(token);
                           setCaptchaError(null);
@@ -650,7 +650,7 @@ const Auth = () => {
                     <div className="flex justify-center">
                       <HCaptcha
                         ref={hcaptchaRef}
-                        sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - remplacer en production
+                        sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
                         onVerify={(token) => {
                           setHcaptchaToken(token);
                           setCaptchaError(null);
