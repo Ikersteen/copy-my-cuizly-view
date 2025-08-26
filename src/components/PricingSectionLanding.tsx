@@ -25,6 +25,7 @@ const PricingSectionLanding = () => {
       subtitle: "Pour restaurants",
       price: "59$ CAD/mois",
       priceNote: "ou 499$ CAD/an (économisez 2 mois !)",
+      comingSoon: true,
       features: [
         "Publicité ciblée de vos offres",
         "Promotion dans l'app selon localisation",
@@ -39,6 +40,7 @@ const PricingSectionLanding = () => {
       subtitle: "Pour optimiser avec les données",
       price: "349$ CAD/mois",
       priceNote: "ou 3 490$ CAD/an (soit 2 mois gratuits !)",
+      comingSoon: true,
       features: [
         "Toutes les fonctionnalités Pro",
         "Rapports anonymisés détaillés",
@@ -68,6 +70,11 @@ const PricingSectionLanding = () => {
               {plan.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-foreground text-background">
                   Populaire
+                </Badge>
+              )}
+              {plan.comingSoon && (
+                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white">
+                  Bientôt
                 </Badge>
               )}
               <CardHeader className="text-center pb-4">

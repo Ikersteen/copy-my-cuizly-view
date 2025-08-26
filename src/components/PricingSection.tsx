@@ -27,6 +27,7 @@ const PricingSection = () => {
       subtitle: "Pour restaurants qui veulent attirer plus de clients",
       price: "59$ CAD/mois",
       priceNote: "ou 499$ CAD/an (économisez 2 mois !)",
+      comingSoon: true,
       features: [
         "Publicité ciblée de vos offres",
         "Promotion dans l'app selon localisation",
@@ -43,6 +44,7 @@ const PricingSection = () => {
       subtitle: "Pour optimiser votre stratégie avec les données",
       price: "349$ CAD/mois",
       priceNote: "ou 3 490$ CAD/an (soit 2 mois gratuits !)",
+      comingSoon: true,
       features: [
         "Toutes les fonctionnalités Pro",
         "Rapports anonymisés détaillés",
@@ -100,7 +102,12 @@ const PricingSection = () => {
           <h3 className="text-xl font-semibold text-foreground mb-6">Pour les restaurateurs</h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {plans.slice(1).map((plan, index) => (
-              <Card key={index} className="p-8 bg-background/60 backdrop-blur-sm shadow-card border border-border/50 hover:shadow-elevated transition-all duration-300">
+              <Card key={index} className="p-8 bg-background/60 backdrop-blur-sm shadow-card border border-border/50 hover:shadow-elevated transition-all duration-300 relative">
+                {plan.comingSoon && (
+                  <Badge className="absolute -top-3 left-6 bg-red-500 text-white">
+                    Bientôt
+                  </Badge>
+                )}
                 <h4 className="text-xl font-bold text-foreground mb-2">{plan.title}</h4>
                 <p className="text-cuizly-neutral mb-4">{plan.subtitle}</p>
                 
