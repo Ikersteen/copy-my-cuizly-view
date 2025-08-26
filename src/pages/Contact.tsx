@@ -46,13 +46,13 @@ const Contact = () => {
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                   <div className="space-y-2">
+                    <div className="space-y-2">
                       <Label htmlFor="firstName" className="text-sm">Prénom</Label>
-                      <Input id="firstName" name="firstName" placeholder="John" required />
+                      <Input id="firstName" name="firstName" placeholder="Iker" required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName" className="text-sm">Nom</Label>
-                      <Input id="lastName" name="lastName" placeholder="Doe" required />
+                      <Input id="lastName" name="lastName" placeholder="Steen" required />
                     </div>
                   </div>
                   <div className="space-y-2">
