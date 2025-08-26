@@ -15,8 +15,8 @@ const Index = () => {
       <FeaturesSectionLanding />
       <HowItWorksSection />
       <PricingSectionLanding />
-      <CTASection />
       <ContactSectionLanding />
+      <CTASection />
       <Footer />
     </>
   );
