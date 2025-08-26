@@ -457,7 +457,7 @@ const Auth = () => {
                         onClick={() => setShowSignInPassword(!showSignInPassword)}
                         tabIndex={-1}
                       >
-                        {showSignInPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showSignInPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
@@ -636,7 +636,7 @@ const Auth = () => {
                         onClick={() => setShowSignUpPassword(!showSignUpPassword)}
                         tabIndex={-1}
                       >
-                        {showSignUpPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showSignUpPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
