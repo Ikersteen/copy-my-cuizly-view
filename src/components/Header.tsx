@@ -44,7 +44,7 @@ const Header = () => {
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center py-2">
               <img 
-                src="/lovable-uploads/1c37d7ec-ba09-42c1-9716-0d34595823ff.png" 
+                src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
                 alt="Cuizly" 
                 className="h-[50px] w-auto"
               />
