@@ -38,8 +38,8 @@ const Pricing = () => {
     {
       title: "Cuizly Analytics+",
       subtitle: "Pour optimiser avec les données",
-      price: "349$/mois",
-      priceNote: "ou 3 490$/an (soit 2 mois gratuits !)",
+      price: "349$ CAD/mois",
+      priceNote: "ou 3 490$ CAD/an (soit 2 mois gratuits)",
       features: [
         "Toutes les fonctionnalités Pro",
         "Rapports anonymisés détaillés",
