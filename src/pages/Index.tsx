@@ -12,10 +12,10 @@ const Index = () => {
     <>
       <HeroSection />
       <MissionSection />
-      <HowItWorksSection />
       <FeaturesSectionLanding />
-      <PricingSectionLanding />
+      <HowItWorksSection />
       <ContactSectionLanding />
+      <PricingSectionLanding />
       <CTASection />
       <Footer />
     </>
