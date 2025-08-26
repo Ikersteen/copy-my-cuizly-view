@@ -123,7 +123,7 @@ const Footer = () => {
             </Link>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
-              Ton prochain coup de cœur culinaire en un swipe.
+              Ton prochain coup de cœur culinaire en un swipe
             </p>
             
             {/* Enhanced Social Links */}
