@@ -112,8 +112,8 @@ const Footer = () => {
         </div>
         
         <div className="relative border-t-2 border-border/60 mt-8 sm:mt-12 pt-8 sm:pt-10">
-          {/* Decorative line with gradient */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-transparent via-cuizly-primary/60 to-transparent"></div>
+          {/* Decorative line with solid color */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-0.5 bg-cuizly-primary/60"></div>
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
             <Link to="/" className="flex items-center space-x-3 group cursor-pointer">
