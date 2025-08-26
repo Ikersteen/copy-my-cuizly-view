@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,10 +12,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { validatePassword, validateEmail, validateTextInput, INPUT_LIMITS } from "@/lib/validation";
 import { isRateLimited } from "@/lib/security";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState<'consumer' | 'restaurant_owner'>('consumer');
+  const [hcaptchaToken, setHcaptchaToken] = useState<string | null>(null);
+  const hcaptchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -121,6 +124,17 @@ const Auth = () => {
       }
     }
 
+    // Vérification hCaptcha
+    if (!hcaptchaToken) {
+      toast({
+        title: "Vérification requise",
+        description: "Veuillez compléter la vérification hCaptcha",
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase.auth.signUp({
         email: email.trim().toLowerCase(),
@@ -166,6 +180,9 @@ const Auth = () => {
       });
     } finally {
       setIsLoading(false);
+      // Reset hCaptcha
+      setHcaptchaToken(null);
+      hcaptchaRef.current?.resetCaptcha();
     }
   };
 
@@ -234,6 +251,17 @@ const Auth = () => {
       return;
     }
 
+    // Vérification hCaptcha pour la connexion aussi
+    if (!hcaptchaToken) {
+      toast({
+        title: "Vérification requise",
+        description: "Veuillez compléter la vérification hCaptcha",
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -263,6 +291,9 @@ const Auth = () => {
       });
     } finally {
       setIsLoading(false);
+      // Reset hCaptcha
+      setHcaptchaToken(null);
+      hcaptchaRef.current?.resetCaptcha();
     }
   };
 
@@ -346,8 +377,28 @@ const Auth = () => {
           <CardContent className="p-8 sm:p-10 flex items-center justify-center">
             <Tabs defaultValue="signin" className="w-full max-w-sm">
               <TabsList className="grid w-full grid-cols-2 mb-8 h-12 rounded-lg p-1">
-                <TabsTrigger value="signin" className="text-sm font-medium rounded-md" translate="no">Connexion</TabsTrigger>
-                <TabsTrigger value="signup" className="text-sm font-medium rounded-md" translate="no">Inscription</TabsTrigger>
+                <TabsTrigger 
+                  value="signin" 
+                  className="text-sm font-medium rounded-md" 
+                  translate="no"
+                  onSelect={() => {
+                    setHcaptchaToken(null);
+                    hcaptchaRef.current?.resetCaptcha();
+                  }}
+                >
+                  Connexion
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="signup" 
+                  className="text-sm font-medium rounded-md" 
+                  translate="no"
+                  onSelect={() => {
+                    setHcaptchaToken(null);
+                    hcaptchaRef.current?.resetCaptcha();
+                  }}
+                >
+                  Inscription
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="signin" className="space-y-3 sm:space-y-4">
@@ -382,7 +433,20 @@ const Auth = () => {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full text-sm" disabled={isLoading}>
+                  {/* hCaptcha pour la connexion */}
+                  <div className="flex justify-center">
+                    <HCaptcha
+                      ref={hcaptchaRef}
+                      sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - remplacer en production
+                      onVerify={(token) => setHcaptchaToken(token)}
+                      onExpire={() => setHcaptchaToken(null)}
+                      onError={() => setHcaptchaToken(null)}
+                      theme="light"
+                      size="compact"
+                    />
+                  </div>
+
+                  <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
                     {isLoading ? "Connexion..." : "Se connecter"}
                   </Button>
                 </form>
@@ -496,20 +560,34 @@ const Auth = () => {
                         required
                       />
                     </div>
-                    <div className="text-xs text-cuizly-neutral space-y-1">
-                      <p>Le mot de passe doit contenir :</p>
-                      <ul className="space-y-0.5 ml-2">
-                        <li>• Au moins 8 caractères</li>
-                        <li>• Au moins une lettre majuscule</li>
-                        <li>• Au moins une lettre minuscule</li>
-                        <li>• Au moins un chiffre</li>
-                        <li>• Au moins un caractère spécial</li>
-                      </ul>
-                    </div>
                   </div>
 
-                  <Button type="submit" className="w-full text-sm" disabled={isLoading}>
-                    {isLoading ? "Création..." : "Créer mon compte"}
+                  <div className="text-xs text-cuizly-neutral space-y-1">
+                    <p>Votre mot de passe doit contenir :</p>
+                    <ul className="list-disc list-inside space-y-0.5 ml-2">
+                      <li>Au moins 8 caractères</li>
+                      <li>Une lettre majuscule</li>
+                      <li>Une lettre minuscule</li>
+                      <li>Un chiffre</li>
+                      <li>Un caractère spécial</li>
+                    </ul>
+                  </div>
+
+                  {/* hCaptcha pour l'inscription */}
+                  <div className="flex justify-center">
+                    <HCaptcha
+                      ref={hcaptchaRef}
+                      sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - remplacer en production
+                      onVerify={(token) => setHcaptchaToken(token)}
+                      onExpire={() => setHcaptchaToken(null)}
+                      onError={() => setHcaptchaToken(null)}
+                      theme="light"
+                      size="compact"
+                    />
+                  </div>
+
+                  <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
+                    {isLoading ? "Création du compte..." : "Créer mon compte"}
                   </Button>
                 </form>
 
