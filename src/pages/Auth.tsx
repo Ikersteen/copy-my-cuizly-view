@@ -129,16 +129,16 @@ const Auth = () => {
       }
     }
 
-    // Vérification hCaptcha
-    if (!hcaptchaToken) {
-      toast({
-        title: "Vérification requise",
-        description: "Veuillez compléter la vérification hCaptcha",
-        variant: "destructive"
-      });
-      setIsLoading(false);
-      return;
-    }
+    // Désactivé temporairement pour les tests - hCaptcha nécessite une vraie clé
+    // if (!hcaptchaToken) {
+    //   toast({
+    //     title: "Vérification requise",
+    //     description: "Veuillez compléter la vérification hCaptcha",
+    //     variant: "destructive"
+    //   });
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -146,7 +146,7 @@ const Auth = () => {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
-          captchaToken: hcaptchaToken,
+          // captchaToken: hcaptchaToken,
           data: {
             full_name: nameValidation.sanitized,
             user_type: userType,
@@ -266,24 +266,24 @@ const Auth = () => {
       return;
     }
 
-    // Vérification hCaptcha pour la connexion aussi
-    if (!hcaptchaToken) {
-      toast({
-        title: "Vérification requise",
-        description: "Veuillez compléter la vérification hCaptcha",
-        variant: "destructive"
-      });
-      setIsLoading(false);
-      return;
-    }
+    // Désactivé temporairement pour les tests - hCaptcha nécessite une vraie clé
+    // if (!hcaptchaToken) {
+    //   toast({
+    //     title: "Vérification requise",
+    //     description: "Veuillez compléter la vérification hCaptcha",
+    //     variant: "destructive"
+    //   });
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          captchaToken: hcaptchaToken
-        }
+        // options: {
+        //   captchaToken: hcaptchaToken
+        // }
       });
 
       if (error) throw error;
