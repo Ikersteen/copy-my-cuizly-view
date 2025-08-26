@@ -166,6 +166,36 @@ All colors MUST be HSL.
     }
   }
 
+/* Enhanced hCaptcha styles */
+  .captcha-container {
+    @apply flex justify-center w-full;
+  }
+  
+  .captcha-container > div {
+    @apply rounded-lg shadow-soft;
+    border: 1px solid hsl(var(--border));
+    transition: all 0.3s ease;
+  }
+  
+  .captcha-container > div:hover {
+    box-shadow: var(--shadow-card);
+  }
+  
+  /* Mobile responsive captcha */
+  @media (max-width: 640px) {
+    .captcha-container > div {
+      transform: scale(0.9);
+      transform-origin: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .captcha-container > div {
+      transform: scale(0.8);
+      transform-origin: center;
+    }
+  }
+
   /* Enhanced loading animations */
 
   @keyframes shimmer {

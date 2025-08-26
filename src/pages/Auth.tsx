@@ -19,6 +19,7 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState<'consumer' | 'restaurant_owner'>('consumer');
   const [hcaptchaToken, setHcaptchaToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
   const hcaptchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -192,6 +193,7 @@ const Auth = () => {
       setIsLoading(false);
       // Reset hCaptcha
       setHcaptchaToken(null);
+      setCaptchaError(null);
       hcaptchaRef.current?.resetCaptcha();
     }
   };
@@ -303,6 +305,7 @@ const Auth = () => {
       setIsLoading(false);
       // Reset hCaptcha
       setHcaptchaToken(null);
+      setCaptchaError(null);
       hcaptchaRef.current?.resetCaptcha();
     }
   };
@@ -393,6 +396,7 @@ const Auth = () => {
                   translate="no"
                   onSelect={() => {
                     setHcaptchaToken(null);
+                    setCaptchaError(null);
                     hcaptchaRef.current?.resetCaptcha();
                   }}
                 >
@@ -404,6 +408,7 @@ const Auth = () => {
                   translate="no"
                   onSelect={() => {
                     setHcaptchaToken(null);
+                    setCaptchaError(null);
                     hcaptchaRef.current?.resetCaptcha();
                   }}
                 >
@@ -444,16 +449,51 @@ const Auth = () => {
                   </div>
 
                   {/* hCaptcha pour la connexion */}
-                  <div className="flex justify-center">
-                    <HCaptcha
-                      ref={hcaptchaRef}
-                      sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - remplacer en production
-                      onVerify={(token) => setHcaptchaToken(token)}
-                      onExpire={() => setHcaptchaToken(null)}
-                      onError={() => setHcaptchaToken(null)}
-                      theme="light"
-                      size="compact"
-                    />
+                  <div className="space-y-2">
+                    <Label className="text-sm text-cuizly-neutral">Vérification de sécurité</Label>
+                    <div className="bg-cuizly-surface rounded-lg p-4 border border-border">
+                      <div className="flex flex-col items-center space-y-3">
+                        <div className="text-xs text-cuizly-neutral text-center max-w-xs">
+                          Complétez la vérification pour protéger votre compte
+                        </div>
+                        <div className="captcha-container">
+                          <HCaptcha
+                            ref={hcaptchaRef}
+                            sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - remplacer en production
+                            onVerify={(token) => {
+                              setHcaptchaToken(token);
+                              setCaptchaError(null);
+                            }}
+                            onExpire={() => {
+                              setHcaptchaToken(null);
+                              setCaptchaError("La vérification a expiré, veuillez recommencer");
+                            }}
+                            onError={() => {
+                              setHcaptchaToken(null);
+                              setCaptchaError("Erreur de vérification, veuillez réessayer");
+                            }}
+                            theme="light"
+                            size="normal"
+                          />
+                        </div>
+                        {captchaError && (
+                          <div className="flex items-center text-xs text-destructive">
+                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                            {captchaError}
+                          </div>
+                        )}
+                        {hcaptchaToken && (
+                          <div className="flex items-center text-xs text-green-600">
+                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Vérification réussie
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
                   <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
@@ -584,16 +624,51 @@ const Auth = () => {
                   </div>
 
                   {/* hCaptcha pour l'inscription */}
-                  <div className="flex justify-center">
-                    <HCaptcha
-                      ref={hcaptchaRef}
-                      sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - remplacer en production
-                      onVerify={(token) => setHcaptchaToken(token)}
-                      onExpire={() => setHcaptchaToken(null)}
-                      onError={() => setHcaptchaToken(null)}
-                      theme="light"
-                      size="compact"
-                    />
+                  <div className="space-y-2">
+                    <Label className="text-sm text-cuizly-neutral">Vérification de sécurité</Label>
+                    <div className="bg-cuizly-surface rounded-lg p-4 border border-border">
+                      <div className="flex flex-col items-center space-y-3">
+                        <div className="text-xs text-cuizly-neutral text-center max-w-xs">
+                          Complétez la vérification pour créer votre compte
+                        </div>
+                        <div className="captcha-container">
+                          <HCaptcha
+                            ref={hcaptchaRef}
+                            sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - remplacer en production
+                            onVerify={(token) => {
+                              setHcaptchaToken(token);
+                              setCaptchaError(null);
+                            }}
+                            onExpire={() => {
+                              setHcaptchaToken(null);
+                              setCaptchaError("La vérification a expiré, veuillez recommencer");
+                            }}
+                            onError={() => {
+                              setHcaptchaToken(null);
+                              setCaptchaError("Erreur de vérification, veuillez réessayer");
+                            }}
+                            theme="light"
+                            size="normal"
+                          />
+                        </div>
+                        {captchaError && (
+                          <div className="flex items-center text-xs text-destructive">
+                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                            {captchaError}
+                          </div>
+                        )}
+                        {hcaptchaToken && (
+                          <div className="flex items-center text-xs text-green-600">
+                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Vérification réussie
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
                   <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
