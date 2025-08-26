@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { validatePassword, validateEmail, validateTextInput, INPUT_LIMITS } from "@/lib/validation";
 import { isRateLimited } from "@/lib/security";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useEmailNotifications } from "@/hooks/useEmailNotifications";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +22,7 @@ const Auth = () => {
   const hcaptchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { sendWelcomeEmail } = useEmailNotifications();
 
   useEffect(() => {
     // Set up auth state listener
@@ -160,6 +162,14 @@ const Auth = () => {
       } else if (data.user) {
         // User is auto-confirmed, create profile and redirect
         await createUserProfile(data.user);
+        
+        // Send welcome email
+        await sendWelcomeEmail({
+          email: data.user.email!,
+          userName: nameValidation.sanitized,
+          userType: userType,
+        });
+        
         navigate('/dashboard');
       }
     } catch (error: any) {
