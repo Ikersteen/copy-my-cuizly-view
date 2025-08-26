@@ -37,7 +37,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full bg-background border-b border-border">
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="w-full px-6 sm:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo - Extrême gauche */}
