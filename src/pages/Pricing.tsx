@@ -10,7 +10,7 @@ const Pricing = () => {
     {
       title: "Cuizly Basique",
       subtitle: "Pour les gourmets",
-      price: "Gratuit",
+      price: "Gratuit à vie",
       popular: true,
       features: [
         "Accès à toutes les offres exclusives",

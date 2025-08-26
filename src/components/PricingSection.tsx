@@ -9,7 +9,7 @@ const PricingSection = () => {
       type: "consumer",
       title: "Cuizly Basique",
       subtitle: "Pour les gourmets qui veulent découvrir Montréal",
-      price: "Gratuit",
+      price: "Gratuit à vie",
       popular: true,
       features: [
         "Accès à toutes les offres exclusives",
