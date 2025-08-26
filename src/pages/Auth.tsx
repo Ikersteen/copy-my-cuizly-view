@@ -367,10 +367,10 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-3 sm:p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back to home */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-6">
           <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Retour à l'accueil
@@ -378,22 +378,22 @@ const Auth = () => {
         </div>
 
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="flex items-center justify-center mb-4 sm:mb-6">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-6">
             <img 
               src="/lovable-uploads/e8fe9351-fe46-440d-914c-b9b28918fe73.png" 
               alt="Cuizly Logo" 
-              className="h-12 sm:h-16 object-contain"
+              className="h-16 object-contain"
             />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Rejoignez Cuizly</h1>
-          <p className="text-cuizly-neutral text-base sm:text-lg px-2 sm:px-0">
+          <h1 className="text-3xl font-bold text-foreground mb-2">Rejoignez Cuizly</h1>
+          <p className="text-cuizly-neutral text-lg">
             Ton prochain coup de cœur culinaire en un swipe
           </p>
         </div>
 
         <Card className="shadow-card border border-border">
-          <CardContent className="p-8 sm:p-10 flex items-center justify-center">
+          <CardContent className="p-8 flex items-center justify-center">
             <Tabs defaultValue="signin" className="w-full max-w-sm">
               <TabsList className="grid w-full grid-cols-2 mb-8 h-12 rounded-lg p-1">
                 <TabsTrigger 
@@ -426,8 +426,8 @@ const Auth = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="signin" className="space-y-3 sm:space-y-4">
-                <form onSubmit={handleSignIn} className="space-y-3 sm:space-y-4">
+              <TabsContent value="signin" className="space-y-4">
+                <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="signin-email" className="text-sm">Courriel</Label>
                     <div className="relative">
