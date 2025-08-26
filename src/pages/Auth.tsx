@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowLeft, Mail, Lock, User, Building } from "lucide-react";
+import { ArrowLeft, Mail, Lock, User, Building, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -20,6 +20,8 @@ const Auth = () => {
   const [userType, setUserType] = useState<'consumer' | 'restaurant_owner'>('consumer');
   const [hcaptchaToken, setHcaptchaToken] = useState<string | null>(null);
   const [captchaError, setCaptchaError] = useState<string | null>(null);
+  const [showSignInPassword, setShowSignInPassword] = useState(false);
+  const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const hcaptchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -397,6 +399,8 @@ const Auth = () => {
                   onSelect={() => {
                     setHcaptchaToken(null);
                     setCaptchaError(null);
+                    setShowSignInPassword(false);
+                    setShowSignUpPassword(false);
                     hcaptchaRef.current?.resetCaptcha();
                   }}
                 >
@@ -409,6 +413,8 @@ const Auth = () => {
                   onSelect={() => {
                     setHcaptchaToken(null);
                     setCaptchaError(null);
+                    setShowSignInPassword(false);
+                    setShowSignUpPassword(false);
                     hcaptchaRef.current?.resetCaptcha();
                   }}
                 >
@@ -440,11 +446,19 @@ const Auth = () => {
                       <Input
                         id="signin-password"
                         name="password"
-                        type="password"
+                        type={showSignInPassword ? "text" : "password"}
                         placeholder="••••••••"
-                        className="pl-10 text-sm"
+                        className="pl-10 pr-10 text-sm"
                         required
                       />
+                      <button
+                        type="button"
+                        className="absolute right-3 top-3 h-4 w-4 text-cuizly-neutral hover:text-foreground transition-colors"
+                        onClick={() => setShowSignInPassword(!showSignInPassword)}
+                        tabIndex={-1}
+                      >
+                        {showSignInPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
                     </div>
                   </div>
 
@@ -611,11 +625,19 @@ const Auth = () => {
                       <Input
                         id="signup-password"
                         name="password"
-                        type="password"
+                        type={showSignUpPassword ? "text" : "password"}
                         placeholder="••••••••"
-                        className="pl-10 text-sm"
+                        className="pl-10 pr-10 text-sm"
                         required
                       />
+                      <button
+                        type="button"
+                        className="absolute right-3 top-3 h-4 w-4 text-cuizly-neutral hover:text-foreground transition-colors"
+                        onClick={() => setShowSignUpPassword(!showSignUpPassword)}
+                        tabIndex={-1}
+                      >
+                        {showSignUpPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
                     </div>
                   </div>
 
