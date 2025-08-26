@@ -104,7 +104,7 @@ const PricingSection = () => {
             {plans.slice(1).map((plan, index) => (
               <Card key={index} className="p-8 bg-background/60 backdrop-blur-sm shadow-card border border-border/50 hover:shadow-elevated transition-all duration-300 relative">
                 {plan.comingSoon && (
-                  <Badge className="absolute -top-3 left-6 bg-red-500 text-white">
+                  <Badge className="absolute -top-3 left-6 bg-destructive text-destructive-foreground">
                     Bientôt
                   </Badge>
                 )}

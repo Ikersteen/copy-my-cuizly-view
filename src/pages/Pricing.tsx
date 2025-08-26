@@ -81,7 +81,7 @@ const Pricing = () => {
                 </Badge>
               )}
               {plan.comingSoon && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white">
+                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-destructive text-destructive-foreground">
                   Bientôt
                 </Badge>
               )}
