@@ -468,7 +468,7 @@ const Auth = () => {
 
                   {/* hCaptcha pour la connexion */}
                   <div className="space-y-2">
-                    <Label className="text-sm text-cuizly-neutral">Vérification de sécurité</Label>
+                    <Label className="text-sm text-foreground">Vérification de sécurité</Label>
                     <div className="flex justify-center">
                       <HCaptcha
                         ref={hcaptchaRef}
@@ -646,7 +646,7 @@ const Auth = () => {
 
                   {/* hCaptcha pour l'inscription */}
                   <div className="space-y-2">
-                    <Label className="text-sm text-cuizly-neutral">Vérification de sécurité</Label>
+                    <Label className="text-sm text-foreground">Vérification de sécurité</Label>
                     <div className="flex justify-center">
                       <HCaptcha
                         ref={hcaptchaRef}
