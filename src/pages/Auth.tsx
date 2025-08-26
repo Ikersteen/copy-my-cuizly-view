@@ -14,7 +14,6 @@ import { validatePassword, validateEmail, validateTextInput, INPUT_LIMITS } from
 import { isRateLimited } from "@/lib/security";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useEmailNotifications } from "@/hooks/useEmailNotifications";
-import EmailFunctionTester from "@/components/EmailFunctionTester";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -735,11 +734,6 @@ const Auth = () => {
             </Link>
           </p>
         </div>
-      </div>
-      
-      {/* Test section - temporary for development */}
-      <div className="mt-8">
-        <EmailFunctionTester />
       </div>
     </div>
   );
