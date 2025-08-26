@@ -146,6 +146,7 @@ const Auth = () => {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
+          captchaToken: hcaptchaToken,
           data: {
             full_name: nameValidation.sanitized,
             user_type: userType,
@@ -280,6 +281,9 @@ const Auth = () => {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
+        options: {
+          captchaToken: hcaptchaToken
+        }
       });
 
       if (error) throw error;
