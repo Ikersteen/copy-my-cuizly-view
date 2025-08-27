@@ -81,10 +81,14 @@ export const RestaurantMenuModal = ({
   const handleToggleFavorite = async () => {
     if (!restaurant?.id) return;
     
+    console.log('🔄 Toggling favorite for restaurant:', restaurant.id);
+    console.log('📍 Current favorite status:', isRestaurantFavorite);
+    
     try {
       await toggleFavorite(restaurant.id);
+      console.log('✅ Toggle favorite completed');
     } catch (error) {
-      console.error('Erreur lors de la modification des favoris:', error);
+      console.error('❌ Error toggling favorite:', error);
     }
   };
 
