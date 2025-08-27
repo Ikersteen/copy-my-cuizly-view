@@ -59,6 +59,14 @@ const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; pri
     <div className="flex items-center space-x-1">
       <MapPin className="h-4 w-4 text-muted-foreground" />
       <span className="text-sm text-muted-foreground">Montreal</span>
+      {priceRange && (
+        <>
+          <span className="text-muted-foreground">•</span>
+          <Badge variant="secondary">
+            {priceRange}
+          </Badge>
+        </>
+      )}
       {rating && totalRatings > 0 && (
         <>
           <span className="text-muted-foreground">•</span>
@@ -66,14 +74,6 @@ const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; pri
             <Star className="h-4 w-4 fill-current text-yellow-500" />
             <span className="text-sm font-medium">{rating}</span>
           </div>
-        </>
-      )}
-      {priceRange && (
-        <>
-          <span className="text-muted-foreground">•</span>
-          <Badge variant="secondary">
-            {priceRange}
-          </Badge>
         </>
       )}
     </div>
