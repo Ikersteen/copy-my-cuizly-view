@@ -50,11 +50,11 @@ export const ConfirmationEmail = ({
         </Text>
 
         <Text style={text}>
-          Merci de vous être inscrit sur Cuizly ! Pour finaliser la création de votre compte {userType === 'consumer' ? 'consommateur' : 'restaurateur'}, veuillez confirmer votre adresse courriel.
+          Merci de vous être inscrit sur Cuizly ! Pour finaliser votre inscription, veuillez confirmer votre adresse courriel.
         </Text>
 
         <Text style={text}>
-          Cliquez sur le bouton ci-dessous pour activer votre compte :
+          Sélectionnez le lien ci-dessous pour confirmer votre compte :
         </Text>
 
         {/* CTA Button */}
@@ -63,37 +63,33 @@ export const ConfirmationEmail = ({
             href={confirmationUrl}
             style={button}
           >
-            Confirmer mon courriel
+            Confirmer mon adresse courriel
           </Link>
         </Section>
 
-        {/* Alternative link */}
         <Text style={smallText}>
-          Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :
-        </Text>
-        <Text style={linkText}>
-          {confirmationUrl}
+          Ce lien est valide pendant 24 heures.
         </Text>
 
         {/* What's next */}
         <Section style={nextStepsSection}>
           <Text style={text}>
-            <strong>Après confirmation, vous pourrez :</strong>
+            <strong>Une fois votre compte confirmé :</strong>
           </Text>
           
           {userType === 'consumer' ? (
             <>
-              <Text style={listItem}>• Découvrir les meilleurs restaurants de Montréal</Text>
-              <Text style={listItem}>• Recevoir des recommandations personnalisées</Text>
-              <Text style={listItem}>• Accéder aux offres exclusives</Text>
-              <Text style={listItem}>• Sauvegarder vos favoris</Text>
+              <Text style={listItem}>• Explorez les restaurants de Montréal</Text>
+              <Text style={listItem}>• Consultez les recommandations</Text>
+              <Text style={listItem}>• Gérez vos préférences</Text>
+              <Text style={listItem}>• Enregistrez vos favoris</Text>
             </>
           ) : (
             <>
-              <Text style={listItem}>• Créer et gérer vos offres</Text>
-              <Text style={listItem}>• Accéder à votre tableau de bord</Text>
-              <Text style={listItem}>• Analyser vos performances</Text>
-              <Text style={listItem}>• Connecter avec de nouveaux clients</Text>
+              <Text style={listItem}>• Gérez votre établissement</Text>
+              <Text style={listItem}>• Utilisez votre tableau de bord</Text>
+              <Text style={listItem}>• Consultez les statistiques</Text>
+              <Text style={listItem}>• Rejoignez la communauté</Text>
             </>
           )}
         </Section>
