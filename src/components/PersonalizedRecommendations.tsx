@@ -265,7 +265,7 @@ export const PersonalizedRecommendations = () => {
               {category.restaurants.map((restaurant) => (
                 <Card 
                   key={restaurant.id}
-                  className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-md hover:-translate-y-2 bg-gradient-to-br from-card to-card/80"
+                  className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80"
                 >
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
@@ -300,35 +300,27 @@ export const PersonalizedRecommendations = () => {
                 if (currentRating?.totalRatings > 0 && currentRating?.rating && currentRating.rating > 0) {
                   return (
                     <div className="flex items-center space-x-1">
-                      <div className="flex">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star
-                            key={star}
-                            className={`h-4 w-4 ${
-                              star <= Math.round(currentRating.rating!)
-                                ? 'fill-yellow-400 text-yellow-400'
-                                : 'text-gray-300'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                       <span className="font-medium text-xs">
-                         ({currentRating.rating})
-                         <span className="text-muted-foreground ml-1">
-                           • {currentRating.totalRatings} avis
-                         </span>
-                       </span>
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="font-medium text-xs">
+                        {currentRating.rating} ({currentRating.totalRatings} évaluations)
+                      </span>
                     </div>
                   );
                 } else {
                   return <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>;
                 }
               })()}
-              {restaurant.price_range && (
-                <Badge variant="secondary" className="text-xs">
-                  {restaurant.price_range}
-                </Badge>
-              )}
+              <div className="flex items-center space-x-2">
+                {restaurant.price_range && (
+                  <Badge variant="secondary" className="text-xs">
+                    {restaurant.price_range}
+                  </Badge>
+                )}
+                <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                  <MapPin className="h-3 w-3" />
+                  <span>Montreal</span>
+                </div>
+              </div>
             </div>
                   </CardHeader>
 
