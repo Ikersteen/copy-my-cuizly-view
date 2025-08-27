@@ -29,7 +29,7 @@ export const PasswordResetEmail = ({
         {/* Logo */}
         <Section style={logoSection}>
           <Img
-            src="https://ffgkzvnbsdnfgmcxturx.lovable.app/cuizly-logo.png"
+            src="https://www.cuizly.ca/cuizly-logo.png"
             width="120"
             height="40"
             alt="Cuizly"
@@ -76,7 +76,7 @@ export const PasswordResetEmail = ({
         {/* Security notice */}
         <Section style={securitySection}>
           <Text style={securityText}>
-            <strong>Sécurité :</strong> Si vous n'avez pas demandé cette réinitialisation, vous pouvez ignorer ce courriel en toute sécurité. Votre mot de passe actuel restera inchangé.
+            <strong>Sécurité :</strong> Si vous n'avez pas demandé cette réinitialisation, vous pouvez ignorer cet email en toute sécurité. Votre mot de passe actuel restera inchangé.
           </Text>
         </Section>
 

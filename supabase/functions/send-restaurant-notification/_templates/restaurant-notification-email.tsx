@@ -73,7 +73,7 @@ export const RestaurantNotificationEmail = ({
           {/* Logo */}
           <Section style={logoSection}>
             <Img
-              src="https://ffgkzvnbsdnfgmcxturx.lovable.app/cuizly-logo.png"
+              src="https://www.cuizly.ca/cuizly-logo.png"
               width="120"
               height="40"
               alt="Cuizly"

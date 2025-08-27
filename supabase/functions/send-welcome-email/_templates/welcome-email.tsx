@@ -31,7 +31,7 @@ export const WelcomeEmail = ({
         {/* Logo */}
         <Section style={logoSection}>
           <Img
-            src="https://ffgkzvnbsdnfgmcxturx.lovable.app/cuizly-logo.png"
+            src="https://www.cuizly.ca/cuizly-logo.png"
             width="120"
             height="40"
             alt="Cuizly"
@@ -97,7 +97,7 @@ export const WelcomeEmail = ({
         </Text>
 
         <Text style={disclaimer}>
-          Si vous n'avez pas créé ce compte, vous pouvez ignorer ce courriel en toute sécurité.
+          Si vous n'avez pas créé ce compte, vous pouvez ignorer cet email en toute sécurité.
         </Text>
       </Container>
     </Body>

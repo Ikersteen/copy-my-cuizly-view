@@ -25,13 +25,13 @@ export const ConfirmationEmail = ({
 }: ConfirmationEmailProps) => (
   <Html>
     <Head />
-    <Preview>Confirmez votre adresse courriel pour accéder à Cuizly</Preview>
+    <Preview>Confirmez votre adresse email pour accéder à Cuizly</Preview>
     <Body style={main}>
       <Container style={container}>
         {/* Logo */}
         <Section style={logoSection}>
           <Img
-            src="https://ffgkzvnbsdnfgmcxturx.lovable.app/cuizly-logo.png"
+            src="https://www.cuizly.ca/cuizly-logo.png"
             width="120"
             height="40"
             alt="Cuizly"
@@ -41,7 +41,7 @@ export const ConfirmationEmail = ({
 
         {/* Header */}
         <Heading style={h1}>
-          Confirmez votre courriel
+          Confirmez votre email
         </Heading>
 
         {/* Main content */}
@@ -50,11 +50,11 @@ export const ConfirmationEmail = ({
         </Text>
 
         <Text style={text}>
-          Merci de vous être inscrit sur Cuizly ! Pour finaliser votre inscription, veuillez confirmer votre adresse courriel.
+          Merci de vous être inscrit sur Cuizly ! Pour finaliser la création de votre compte {userType === 'consumer' ? 'consommateur' : 'restaurateur'}, veuillez confirmer votre adresse email.
         </Text>
 
         <Text style={text}>
-          Sélectionnez le lien ci-dessous pour confirmer votre compte :
+          Cliquez sur le bouton ci-dessous pour activer votre compte :
         </Text>
 
         {/* CTA Button */}
@@ -63,33 +63,37 @@ export const ConfirmationEmail = ({
             href={confirmationUrl}
             style={button}
           >
-            Confirmer mon adresse courriel
+            Confirmer mon email
           </Link>
         </Section>
 
+        {/* Alternative link */}
         <Text style={smallText}>
-          Ce lien est valide pendant 24 heures.
+          Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :
+        </Text>
+        <Text style={linkText}>
+          {confirmationUrl}
         </Text>
 
         {/* What's next */}
         <Section style={nextStepsSection}>
           <Text style={text}>
-            <strong>Une fois votre compte confirmé :</strong>
+            <strong>Après confirmation, vous pourrez :</strong>
           </Text>
           
           {userType === 'consumer' ? (
             <>
-              <Text style={listItem}>• Explorez les restaurants de Montréal</Text>
-              <Text style={listItem}>• Consultez les recommandations</Text>
-              <Text style={listItem}>• Gérez vos préférences</Text>
-              <Text style={listItem}>• Enregistrez vos favoris</Text>
+              <Text style={listItem}>• Découvrir les meilleurs restaurants de Montréal</Text>
+              <Text style={listItem}>• Recevoir des recommandations personnalisées</Text>
+              <Text style={listItem}>• Accéder aux offres exclusives</Text>
+              <Text style={listItem}>• Sauvegarder vos favoris</Text>
             </>
           ) : (
             <>
-              <Text style={listItem}>• Gérez votre établissement</Text>
-              <Text style={listItem}>• Utilisez votre tableau de bord</Text>
-              <Text style={listItem}>• Consultez les statistiques</Text>
-              <Text style={listItem}>• Rejoignez la communauté</Text>
+              <Text style={listItem}>• Créer et gérer vos offres</Text>
+              <Text style={listItem}>• Accéder à votre tableau de bord</Text>
+              <Text style={listItem}>• Analyser vos performances</Text>
+              <Text style={listItem}>• Connecter avec de nouveaux clients</Text>
             </>
           )}
         </Section>
@@ -100,19 +104,8 @@ export const ConfirmationEmail = ({
           <em>Ton prochain coup de cœur culinaire en un swipe.</em>
         </Text>
 
-        {/* Social Links */}
-        <Section style={socialSection}>
-          <Link href="https://www.linkedin.com/company/cuizly" style={socialLink}>
-            LinkedIn
-          </Link>
-          <Text style={socialSeparator}>•</Text>
-          <Link href="https://www.instagram.com/cuizly" style={socialLink}>
-            Instagram
-          </Link>
-        </Section>
-
         <Text style={disclaimer}>
-          Si vous n'avez pas créé ce compte, vous pouvez ignorer ce courriel en toute sécurité.
+          Si vous n'avez pas créé ce compte, vous pouvez ignorer cet email en toute sécurité.
         </Text>
       </Container>
     </Body>
@@ -224,22 +217,4 @@ const disclaimer = {
   textAlign: 'center' as const,
   marginTop: '20px',
   fontStyle: 'italic',
-}
-
-const socialSection = {
-  textAlign: 'center' as const,
-  margin: '20px 0',
-}
-
-const socialLink = {
-  color: '#737373',
-  fontSize: '14px',
-  textDecoration: 'underline',
-  margin: '0 8px',
-}
-
-const socialSeparator = {
-  color: '#737373',
-  fontSize: '14px',
-  margin: '0 8px',
 }

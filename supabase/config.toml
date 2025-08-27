@@ -64,17 +64,5 @@ verify_jwt = false
 [functions.send-offer-alert]
 verify_jwt = false
 
-[functions.send-magic-link]
-verify_jwt = false
-
-[functions.send-email-change]
-verify_jwt = false
-
-[functions.send-reauthentication]
-verify_jwt = false
-
-[functions.send-user-invitation]
-verify_jwt = false
-
 [functions.test-email-functions]
 verify_jwt = false
