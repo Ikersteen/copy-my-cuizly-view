@@ -222,7 +222,7 @@ export const PersonalizedRecommendations = () => {
 
   return (
     <section className="py-8 bg-gradient-to-br from-muted/30 via-background to-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {categories.map((category) => (
           <div key={category.id} className="space-y-8">
             {/* En-tête de catégorie */}
