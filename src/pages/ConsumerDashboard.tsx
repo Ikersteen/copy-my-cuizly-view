@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   MapPin, Clock, Star, Heart, Settings, 
-  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut, Map
+  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -22,7 +22,6 @@ import { EnhancedRecommendationEngine } from "@/components/EnhancedRecommendatio
 import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
-import RestaurantMapSection from "@/components/RestaurantMapSection";
 import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 import type { User } from "@supabase/supabase-js";
 
@@ -182,15 +181,11 @@ const ConsumerDashboard = () => {
 
         {/* Main Tabs */}
         <Tabs defaultValue="recommendations" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 h-11">
+          <TabsList className="grid w-full grid-cols-3 h-11">
             <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2">
               <TrendingUp className="h-4 w-4 mr-1" />
               <span className="hidden xs:inline">Recommandations</span>
               <span className="xs:hidden">Reco</span>
-            </TabsTrigger>
-            <TabsTrigger value="map" className="text-xs sm:text-sm px-2 py-2">
-              <Map className="h-4 w-4 mr-1" />
-              Carte
             </TabsTrigger>
             <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2">
               <Heart className="h-4 w-4 mr-1" />
@@ -205,18 +200,6 @@ const ConsumerDashboard = () => {
 
           <TabsContent value="recommendations" className="space-y-6">
             <PersonalizedRecommendations />
-          </TabsContent>
-
-          <TabsContent value="map" className="space-y-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                Carte des restaurants
-              </h2>
-              <p className="text-muted-foreground">
-                Explorez les restaurants autour de vous à Montréal
-              </p>
-            </div>
-            <RestaurantMapSection />
           </TabsContent>
 
           <TabsContent value="favorites" className="space-y-6">
