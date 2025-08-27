@@ -55,7 +55,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
   const [restaurantMenus, setRestaurantMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(true);
   const [menuLoading, setMenuLoading] = useState(false);
-  const [forceUpdate, setForceUpdate] = useState(0);
   
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { ratings, addRating } = useRatings();
@@ -270,10 +269,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
 
   const handleFavoriteToggle = async (restaurantId: string, event: React.MouseEvent) => {
     event.stopPropagation();
-    
-    // Optimistic update pour l'UI
-    setForceUpdate(prev => prev + 1);
-    
     await toggleFavorite(restaurantId);
   };
 

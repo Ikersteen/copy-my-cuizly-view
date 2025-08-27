@@ -51,18 +51,6 @@ export const RestaurantMenuModal = ({
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const { toast } = useToast();
 
-  // State pour les favoris (doit être avant toute condition de retour)
-  const isRestaurantFavorite = restaurant ? isFavorite(restaurant.id) : false;
-  const [localFavoriteState, setLocalFavoriteState] = useState(isRestaurantFavorite);
-  
-  // Update local state when favorites change
-  useEffect(() => {
-    if (restaurant) {
-      const currentFavoriteState = isFavorite(restaurant.id);
-      setLocalFavoriteState(currentFavoriteState);
-    }
-  }, [restaurant, isFavorite, favorites]);
-
   useEffect(() => {
     if (open && restaurant?.id) {
       loadMenus();
@@ -94,18 +82,13 @@ export const RestaurantMenuModal = ({
     if (!restaurant?.id) return;
     
     console.log('🔄 Toggling favorite for restaurant:', restaurant.id);
-    console.log('📍 Current favorite status:', localFavoriteState);
-    
-    // Optimistic update for better UX
-    setLocalFavoriteState(!localFavoriteState);
+    console.log('📍 Current favorite status:', isFavorite(restaurant.id));
     
     try {
       await toggleFavorite(restaurant.id);
       console.log('✅ Toggle favorite completed');
     } catch (error) {
       console.error('❌ Error toggling favorite:', error);
-      // Revert optimistic update on error
-      setLocalFavoriteState(localFavoriteState);
     }
   };
 
@@ -299,9 +282,9 @@ export const RestaurantMenuModal = ({
             </Button>
             <Button className="w-full" variant="outline" onClick={handleToggleFavorite}>
               <Heart 
-                className={`h-4 w-4 mr-2 ${localFavoriteState ? 'fill-current text-red-500' : ''}`} 
+                className={`h-4 w-4 mr-2 ${isFavorite(restaurant.id) ? 'fill-current text-red-500' : ''}`} 
               />
-              {localFavoriteState ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+              {isFavorite(restaurant.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}
             </Button>
           </div>
         </div>

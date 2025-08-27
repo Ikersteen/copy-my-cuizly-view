@@ -68,6 +68,13 @@ export const useFavorites = () => {
 
       const isFavorite = favorites.includes(restaurantId);
 
+      // ✅ Mise à jour optimiste AVANT la requête
+      if (isFavorite) {
+        setFavorites(prev => prev.filter(id => id !== restaurantId));
+      } else {
+        setFavorites(prev => [...prev, restaurantId]);
+      }
+
       if (isFavorite) {
         const { error } = await supabase
           .from('user_favorites')
@@ -90,6 +97,8 @@ export const useFavorites = () => {
       }
     } catch (error) {
       console.error('Error toggling favorite:', error);
+      // ❌ En cas d'erreur, revenir à l'état précédent
+      loadFavorites();
       toast({
         title: "Erreur",
         description: "Impossible de modifier les favoris",
