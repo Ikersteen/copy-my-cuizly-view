@@ -11,6 +11,75 @@ import { useToast } from "@/hooks/use-toast";
 import { RatingComponent } from "@/components/RatingComponent";
 import { CommentModal } from "@/components/CommentModal";
 
+// Composant pour afficher l'évaluation avec le prix
+const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
+  const [rating, setRating] = useState<number | null>(null);
+  const [totalRatings, setTotalRatings] = useState(0);
+
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const { data } = await supabase
+          .from('comments')
+          .select('rating')
+          .eq('restaurant_id', restaurantId)
+          .not('rating', 'is', null);
+
+        if (data && data.length > 0) {
+          const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
+          setRating(Math.round(average * 10) / 10);
+          setTotalRatings(data.length);
+        }
+      } catch (error) {
+        console.error('Error fetching rating:', error);
+      }
+    };
+
+    fetchRating();
+
+    // Real-time updates
+    const channel = supabase
+      .channel(`rating-${restaurantId}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'comments',
+        filter: `restaurant_id=eq.${restaurantId}`
+      }, () => {
+        fetchRating();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [restaurantId]);
+
+  return (
+    <div className="flex items-center space-x-1">
+      <MapPin className="h-4 w-4 text-muted-foreground" />
+      <span className="text-sm text-muted-foreground">Montreal</span>
+      {rating && totalRatings > 0 && (
+        <>
+          <span className="text-muted-foreground">•</span>
+          <div className="flex items-center space-x-1">
+            <Star className="h-4 w-4 fill-current text-yellow-500" />
+            <span className="text-sm font-medium">{rating}</span>
+          </div>
+        </>
+      )}
+      {priceRange && (
+        <>
+          <span className="text-muted-foreground">•</span>
+          <Badge variant="secondary">
+            {priceRange}
+          </Badge>
+        </>
+      )}
+    </div>
+  );
+};
+
 interface Menu {
   id: string;
   image_url: string;
@@ -135,31 +204,16 @@ export const RestaurantMenuModal = ({
           <div className="space-y-4">
             {/* Metadata */}
             <div className="flex flex-wrap items-center gap-4 text-sm">
-              {restaurant.rating && (
-                <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 fill-current text-yellow-500" />
-                  <span className="font-medium">{restaurant.rating}</span>
-                </div>
-              )}
               {restaurant.delivery_time && (
                 <div className="flex items-center space-x-1 text-muted-foreground">
                   <Clock className="h-4 w-4" />
                   <span>{restaurant.delivery_time}</span>
                 </div>
               )}
-              {restaurant.price_range && (
-                <div className="space-y-1">
-                  <span className="text-lg font-bold text-foreground block">{restaurant.name}</span>
-                  <div className="flex items-center space-x-1">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">Montreal</span>
-                    <span className="text-muted-foreground">•</span>
-                    <Badge variant="secondary">
-                      {restaurant.price_range}
-                    </Badge>
-                  </div>
-                </div>
-              )}
+              <div className="space-y-1">
+                <span className="text-lg font-bold text-foreground block">{restaurant.name}</span>
+                <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
+              </div>
             </div>
 
             {/* Description */}
