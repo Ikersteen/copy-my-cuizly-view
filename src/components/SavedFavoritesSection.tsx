@@ -20,6 +20,42 @@ export const SavedFavoritesSection = () => {
   const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
+  const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
+
+  const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
+    try {
+      const { data } = await supabase
+        .from('ratings')
+        .select('rating')
+        .eq('restaurant_id', restaurantId);
+
+      if (!data || data.length === 0) return { rating: null, totalRatings: 0 };
+      
+      const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
+      return { 
+        rating: Math.round(average * 10) / 10,
+        totalRatings: data.length
+      };
+    } catch (error) {
+      console.error('Error fetching rating:', error);
+      return { rating: null, totalRatings: 0 };
+    }
+  };
+
+  const loadRestaurantRatings = async (restaurants: Restaurant[]) => {
+    const ratingsPromises = restaurants.map(async (restaurant) => {
+      const ratingData = await getRealRating(restaurant.id);
+      return { id: restaurant.id, ...ratingData };
+    });
+
+    const allRatings = await Promise.all(ratingsPromises);
+    const ratingsMap = allRatings.reduce((acc, rating) => {
+      acc[rating.id] = { rating: rating.rating, totalRatings: rating.totalRatings };
+      return acc;
+    }, {} as Record<string, { rating: number | null; totalRatings: number }>);
+
+    setRestaurantRatings(ratingsMap);
+  };
 
   useEffect(() => {
     console.log('🔄 Favorites changed:', favorites);
@@ -35,11 +71,11 @@ export const SavedFavoritesSection = () => {
     }
   }, [favorites, favLoading]);
 
-  // Set up real-time subscription for restaurant updates only
+  // Set up real-time subscription for restaurant updates and ratings
   useEffect(() => {
     if (favorites.length === 0) return;
 
-    const subscription = supabase
+    const restaurantSubscription = supabase
       .channel('favorites-restaurants')
       .on('postgres_changes', {
         event: '*',
@@ -52,8 +88,29 @@ export const SavedFavoritesSection = () => {
       })
       .subscribe();
 
+    const ratingsSubscription = supabase
+      .channel('favorites-ratings')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'ratings',
+        filter: `restaurant_id=in.(${favorites.join(',')})`
+      }, async (payload: any) => {
+        console.log('Rating updated for favorite restaurant:', payload);
+        const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
+        if (restaurantId) {
+          const ratingData = await getRealRating(restaurantId);
+          setRestaurantRatings(prev => ({
+            ...prev,
+            [restaurantId]: ratingData
+          }));
+        }
+      })
+      .subscribe();
+
     return () => {
-      supabase.removeChannel(subscription);
+      supabase.removeChannel(restaurantSubscription);
+      supabase.removeChannel(ratingsSubscription);
     };
   }, [favorites]);
 
@@ -73,6 +130,11 @@ export const SavedFavoritesSection = () => {
       
       console.log('✅ Loaded favorite restaurants:', favoriteRestaurantsData);
       setFavoriteRestaurants(favoriteRestaurantsData);
+      
+      // Charger les évaluations pour ces restaurants
+      if (favoriteRestaurantsData.length > 0) {
+        await loadRestaurantRatings(favoriteRestaurantsData);
+      }
     } catch (error) {
       console.error('❌ Erreur lors du chargement des favoris:', error);
     } finally {
@@ -181,13 +243,25 @@ export const SavedFavoritesSection = () => {
 
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-current text-yellow-500" />
-                    <span>4.{Math.floor(Math.random() * 5) + 3}</span>
-                  </div>
+                  {(() => {
+                    const currentRating = restaurantRatings[restaurant.id];
+                    const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
+                    
+                    return (
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-4 w-4 fill-current text-yellow-500" />
+                        <span className="text-xs">
+                          {hasRating 
+                            ? `${currentRating.rating} (${currentRating.totalRatings} évaluation${currentRating.totalRatings > 1 ? 's' : ''})`
+                            : 'Pas encore d\'évaluations'
+                          }
+                        </span>
+                      </div>
+                    );
+                  })()}
                   <div className="flex items-center space-x-1">
                     <MapPin className="h-3 w-3" />
-                    <span className="text-xs">Montréal • $$</span>
+                    <span className="text-xs">Montréal • {restaurant.price_range || '$$'}</span>
                   </div>
                 </div>
 
