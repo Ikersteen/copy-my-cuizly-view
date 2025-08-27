@@ -45,9 +45,10 @@ export const PersonalizedRecommendations = () => {
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
       const { data } = await supabase
-        .from('ratings')
+        .from('comments')
         .select('rating')
-        .eq('restaurant_id', restaurantId);
+        .eq('restaurant_id', restaurantId)
+        .not('rating', 'is', null);
 
       if (!data || data.length === 0) return { rating: null, totalRatings: 0 };
       
@@ -88,7 +89,7 @@ export const PersonalizedRecommendations = () => {
         {
           event: '*',
           schema: 'public',
-          table: 'ratings',
+          table: 'comments',
         },
         async (payload: any) => {
           const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;

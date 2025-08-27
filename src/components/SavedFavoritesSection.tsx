@@ -25,9 +25,10 @@ export const SavedFavoritesSection = () => {
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
       const { data } = await supabase
-        .from('ratings')
+        .from('comments')
         .select('rating')
-        .eq('restaurant_id', restaurantId);
+        .eq('restaurant_id', restaurantId)
+        .not('rating', 'is', null);
 
       if (!data || data.length === 0) return { rating: null, totalRatings: 0 };
       
@@ -93,7 +94,7 @@ export const SavedFavoritesSection = () => {
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
-        table: 'ratings',
+        table: 'comments',
         filter: `restaurant_id=in.(${favorites.join(',')})`
       }, async (payload: any) => {
         console.log('Rating updated for favorite restaurant:', payload);
