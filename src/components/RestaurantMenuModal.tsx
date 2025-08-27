@@ -160,6 +160,9 @@ export const RestaurantMenuModal = ({
                   <Badge variant="secondary">
                     {restaurant.price_range}
                   </Badge>
+                  <span className="text-muted-foreground">•</span>
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Montreal</span>
                 </div>
               )}
             </div>
