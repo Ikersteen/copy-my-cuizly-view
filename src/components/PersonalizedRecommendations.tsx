@@ -361,12 +361,6 @@ export const PersonalizedRecommendations = () => {
                        </div>
                      )}
 
-                     {restaurant.address && (
-                       <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                         <MapPin className="h-3 w-3 flex-shrink-0" />
-                         <span className="line-clamp-1">{restaurant.address}</span>
-                       </div>
-                     )}
 
                     <Button 
                       className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
