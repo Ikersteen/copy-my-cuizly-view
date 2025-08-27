@@ -97,19 +97,17 @@ export const RestaurantMenuModal = ({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="space-y-4">
           {/* Restaurant Cover */}
-          <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
-            {restaurant.cover_image_url ? (
+           <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
+            {restaurant.cover_image_url && (
               <img 
                 src={restaurant.cover_image_url} 
                 alt={restaurant.name}
                 className="w-full h-full object-cover"
               />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-r from-primary/20 to-primary/10 flex items-center justify-center">
-                <ChefHat className="h-16 w-16 text-primary/40" />
-              </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            {restaurant.cover_image_url && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            )}
             
             {/* Restaurant Logo & Info Overlay */}
             <div className="absolute bottom-4 left-4 right-4">
@@ -270,13 +268,15 @@ export const RestaurantMenuModal = ({
                 {menus.map((menu) => (
                   <Card key={menu.id} className="hover:shadow-lg transition-shadow">
                     <CardContent className="p-4">
-                      <div className="aspect-video mb-3 rounded-lg overflow-hidden">
-                        <img
-                          src={menu.image_url}
-                          alt="Menu"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
+                      {menu.image_url && (
+                        <div className="aspect-video mb-3 rounded-lg overflow-hidden">
+                          <img
+                            src={menu.image_url}
+                            alt="Menu"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
                       
                       <div className="space-y-2">
                         <Badge variant="outline" className="text-xs">

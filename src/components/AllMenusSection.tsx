@@ -193,16 +193,18 @@ export const AllMenusSection = () => {
               
               <CardContent className="space-y-4">
                 {/* Menu Image */}
-                <div 
-                  className="relative aspect-video rounded-lg overflow-hidden bg-muted cursor-pointer"
-                  onClick={() => trackMenuView(menu.restaurant_id)}
-                >
-                  <img
-                    src={menu.image_url}
-                    alt="Menu"
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                {menu.image_url && (
+                  <div 
+                    className="relative aspect-video rounded-lg overflow-hidden bg-muted cursor-pointer"
+                    onClick={() => trackMenuView(menu.restaurant_id)}
+                  >
+                    <img
+                      src={menu.image_url}
+                      alt="Menu"
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
 
                 {/* Menu Description */}
                 <div className="space-y-2">
