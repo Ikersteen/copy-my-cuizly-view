@@ -245,17 +245,22 @@ export const SavedFavoritesSection = () => {
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
                   <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-current text-yellow-500" />
-                    <span>
-                      {(() => {
-                        const currentRating = restaurantRatings[restaurant.id];
-                        const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
-                        
-                        return hasRating 
-                          ? `${currentRating.rating}`
-                          : '4.' + (Math.floor(Math.random() * 5) + 3);
-                      })()}
-                    </span>
+                    {(() => {
+                      const currentRating = restaurantRatings[restaurant.id];
+                      const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
+                      
+                      return hasRating ? (
+                        <>
+                          <Star className="h-4 w-4 fill-current text-yellow-500" />
+                          <span>{currentRating.rating}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Star className="h-4 w-4 text-muted-foreground" />
+                          <span>Pas encore d'évaluations</span>
+                        </>
+                      );
+                    })()}
                   </div>
                   <div className="flex items-center space-x-1">
                     <MapPin className="h-3 w-3" />
