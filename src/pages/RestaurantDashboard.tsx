@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, ChefHat, LogOut, Filter } from "lucide-react";
+import { Plus, Edit3, MapPin, LogOut, Filter } from "lucide-react";
+import { CuizlyIcon } from "@/components/CuizlyIcon";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
@@ -263,7 +264,7 @@ const RestaurantDashboard = () => {
           {[
             { icon: Plus, label: "Nouvelle offre", primary: true },
             { icon: Edit3, label: "Profil du restaurant" },
-            { icon: ChefHat, label: "Gérer vos menus" },
+            { icon: CuizlyIcon, label: "Gérer vos menus" },
             { icon: Filter, label: "Filtres" }
           ].map((action, index) => (
             <Button 

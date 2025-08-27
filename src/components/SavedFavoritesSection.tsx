@@ -32,6 +32,27 @@ export const SavedFavoritesSection = () => {
     }
   }, [favorites, favLoading]);
 
+  // Real-time subscription for restaurant updates
+  useEffect(() => {
+    if (favorites.length === 0) return;
+
+    const channel = supabase
+      .channel('saved-favorites-updates')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'restaurants',
+        filter: `id=in.(${favorites.join(',')})`
+      }, () => {
+        loadFavoriteRestaurants();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [favorites]);
+
   const loadFavoriteRestaurants = async () => {
     try {
       const { data, error } = await supabase

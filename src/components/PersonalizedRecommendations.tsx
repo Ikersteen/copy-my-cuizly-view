@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter, History } from "lucide-react";
+import { Sparkles, TrendingUp, Clock, Star, MapPin, ArrowRight, Filter, History } from "lucide-react";
+import { CuizlyIcon } from "@/components/CuizlyIcon";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
@@ -280,7 +281,7 @@ export const PersonalizedRecommendations = () => {
                           </div>
                         ) : (
                           <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 border-2 border-primary/20">
-                            <ChefHat className="h-6 w-6 text-primary" />
+                            <CuizlyIcon className="h-6 w-6 text-primary" />
                           </div>
                         )}
                         <div className="flex-1 min-w-0">

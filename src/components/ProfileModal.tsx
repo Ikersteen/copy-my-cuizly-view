@@ -359,7 +359,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                         }}
                         placeholder="Votre prénom"
                         className="mt-1"
-                        autoFocus={false}
+                        
                       />
                       {validationErrors.first_name && (
                         <p className="text-xs text-destructive mt-1">{validationErrors.first_name}</p>

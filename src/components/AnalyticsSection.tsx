@@ -228,8 +228,8 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         </div>
 
         <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex flex-col items-center space-y-2 md:flex-row md:items-center md:justify-between md:space-y-0">
+            <div className="text-center md:text-left">
               <h4 className="text-sm font-semibold text-foreground mb-1">
                 Tendances cette semaine 📈
               </h4>

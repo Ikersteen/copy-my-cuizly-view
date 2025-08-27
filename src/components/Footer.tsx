@@ -116,9 +116,11 @@ const Footer = () => {
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
             <Link to="/" className="flex items-center space-x-3 group cursor-pointer">
               <img 
-                src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
+                src="https://www.cuizly.ca/cuizly-logo.png" 
                 alt="Cuizly" 
                 className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110"
+                loading="lazy"
+                style={{ imageRendering: "crisp-edges" }}
               />
             </Link>
             

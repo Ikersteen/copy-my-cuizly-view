@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare } from "lucide-react";
+import { Star, Clock, MapPin, Heart, Phone, Mail, MessageSquare } from "lucide-react";
+import { CuizlyIcon } from "@/components/CuizlyIcon";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -106,7 +107,7 @@ export const RestaurantMenuModal = ({
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-r from-primary/20 to-primary/10 flex items-center justify-center">
-                <ChefHat className="h-16 w-16 text-primary/40" />
+                <CuizlyIcon className="h-16 w-16 text-primary/40" style={{ filter: 'grayscale(100%) opacity(0.3)' }} />
               </div>
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
@@ -124,7 +125,7 @@ export const RestaurantMenuModal = ({
                   </div>
                 ) : (
                   <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
-                    <ChefHat className="h-8 w-8 text-primary" />
+                    <CuizlyIcon className="h-8 w-8 text-primary" />
                   </div>
                 )}
                 
@@ -132,6 +133,22 @@ export const RestaurantMenuModal = ({
                   <DialogTitle className="text-2xl font-bold text-white mb-2 line-clamp-2">
                     {restaurant.name}
                   </DialogTitle>
+                  {restaurant.price_range && (
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Badge variant="secondary" className="bg-white/90 text-primary">
+                        {restaurant.price_range}
+                      </Badge>
+                      {restaurant.address && (
+                        <>
+                          <span className="text-white/70">•</span>
+                          <div className="flex items-center space-x-1 text-white/90">
+                            <MapPin className="h-3 w-3" />
+                            <span className="text-sm">Montreal</span>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
                 
                 {/* Favorite Button */}
@@ -157,7 +174,7 @@ export const RestaurantMenuModal = ({
         <div className="space-y-6">
           {/* Restaurant Info */}
           <div className="space-y-4">
-            {/* Metadata */}
+            {/* Metadata - Remove price_range from here since it's now in header */}
             <div className="flex flex-wrap items-center gap-4 text-sm">
               {restaurant.rating && (
                 <div className="flex items-center space-x-1">
@@ -170,11 +187,6 @@ export const RestaurantMenuModal = ({
                   <Clock className="h-4 w-4" />
                   <span>{restaurant.delivery_time}</span>
                 </div>
-              )}
-              {restaurant.price_range && (
-                <Badge variant="secondary">
-                  {restaurant.price_range}
-                </Badge>
               )}
             </div>
 
@@ -256,7 +268,7 @@ export const RestaurantMenuModal = ({
             ) : menus.length === 0 ? (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <ChefHat className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                  <CuizlyIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
                   <h4 className="text-lg font-medium text-muted-foreground mb-2">
                     Aucun menu disponible
                   </h4>
