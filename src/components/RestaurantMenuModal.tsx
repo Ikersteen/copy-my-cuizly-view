@@ -254,7 +254,6 @@ export const RestaurantMenuModal = ({
             ) : menus.length === 0 ? (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <ChefHat className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
                   <h4 className="text-lg font-medium text-muted-foreground mb-2">
                     Aucun menu disponible
                   </h4>
