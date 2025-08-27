@@ -71,15 +71,17 @@ export const RestaurantNotificationEmail = ({
       <Body style={main}>
         <Container style={container}>
           {/* Logo */}
-          <Section style={logoSection}>
+        <Section style={logoSection}>
+          <Link href="https://www.cuizly.ca" style={{ textDecoration: 'none' }}>
             <Img
-              src="https://www.cuizly.ca/cuizly-logo.png"
+              src="https://www.cuizly.ca/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png"
               width="120"
               height="40"
               alt="Cuizly"
               style={logo}
             />
-          </Section>
+          </Link>
+        </Section>
 
           {/* Header */}
           <Heading style={h1}>
