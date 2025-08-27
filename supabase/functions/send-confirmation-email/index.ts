@@ -92,11 +92,20 @@ const getConfirmationEmailHTML = (userName: string, confirmationUrl: string): st
 </html>`;
 };
 
-interface ConfirmationEmailRequest {
-  email: string;
-  confirmationUrl: string;
-  userName: string;
-  userType: 'consumer' | 'restaurant_owner';
+interface SupabaseAuthWebhookRequest {
+  user: {
+    id: string;
+    email: string;
+    user_metadata?: {
+      full_name?: string;
+    };
+  };
+  email_data: {
+    token: string;
+    token_hash: string;
+    redirect_to?: string;
+    email_action_type: string;
+  };
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -106,7 +115,12 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { email, confirmationUrl, userName, userType }: ConfirmationEmailRequest = await req.json();
+    const webhookData: SupabaseAuthWebhookRequest = await req.json();
+    
+    // Extract data from Supabase webhook format
+    const email = webhookData.user.email;
+    const userName = webhookData.user.user_metadata?.full_name || 'Utilisateur';
+    const confirmationUrl = `https://ffgkzvnbsdnfgmcxturx.supabase.co/auth/v1/verify?token=${webhookData.email_data.token_hash}&type=${webhookData.email_data.email_action_type}&redirect_to=${webhookData.email_data.redirect_to || 'https://www.cuizly.ca'}`;
 
     // Use the new HTML template
     const html = getConfirmationEmailHTML(userName, confirmationUrl);
