@@ -97,68 +97,43 @@ export const RestaurantMenuModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="space-y-4">
-          {/* Restaurant Cover */}
-          <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
-            {restaurant.cover_image_url ? (
-              <img 
-                src={restaurant.cover_image_url} 
-                alt={restaurant.name}
-                className="w-full h-full object-cover"
-              />
+          {/* Restaurant Header */}
+          <div className="flex items-center space-x-4">
+            {/* Logo */}
+            {restaurant.logo_url ? (
+              <div className="w-16 h-16 rounded-xl overflow-hidden border-2 border-border shadow-md flex-shrink-0">
+                <img 
+                  src={restaurant.logo_url} 
+                  alt={restaurant.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
             ) : (
-              <div className="w-full h-full bg-gradient-to-r from-primary/20 to-primary/10 flex items-center justify-center">
-                <CuizlyIcon className="h-16 w-16 text-primary/40" style={{ filter: 'grayscale(100%) opacity(0.3)' }} />
+              <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center border-2 border-border shadow-md flex-shrink-0">
+                <CuizlyIcon className="h-6 w-6 text-primary" />
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             
-            {/* Restaurant Info Overlay - Reorganized */}
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="flex items-end space-x-4">
-                {/* Logo */}
-                {restaurant.logo_url ? (
-                  <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
-                    <img 
-                      src={restaurant.logo_url} 
-                      alt={restaurant.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
-                    <CuizlyIcon className="h-8 w-8 text-primary" />
+            {/* Restaurant Info */}
+            <div className="flex-1 min-w-0">
+              <DialogTitle className="text-2xl font-bold mb-2">
+                {restaurant.name}
+              </DialogTitle>
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                {restaurant.price_range && (
+                  <>
+                    <Badge variant="outline" className="text-xs">
+                      {restaurant.price_range}
+                    </Badge>
+                    <span>•</span>
+                  </>
+                )}
+                {restaurant.address && (
+                  <div className="flex items-center space-x-1">
+                    <MapPin className="h-3 w-3" />
+                    <span className="truncate">{restaurant.address}</span>
                   </div>
                 )}
-                
-                {/* Restaurant Name & Info */}
-                <div className="flex-1 min-w-0">
-                  <DialogTitle className="text-2xl font-bold text-white mb-2 line-clamp-2 text-center">
-                    {restaurant.name}
-                  </DialogTitle>
-                  <div className="flex items-center justify-center space-x-2 mb-2">
-                    {restaurant.price_range && (
-                      <Badge variant="secondary" className="bg-white/90 text-primary">
-                        Gamme de prix : {restaurant.price_range}
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Favorite Button */}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleToggleFavorite}
-                  className={`bg-white/90 backdrop-blur-sm ${
-                    isRestaurantFavorite 
-                      ? 'text-red-500 border-red-200 hover:bg-red-50' 
-                      : 'text-muted-foreground hover:text-red-500'
-                  }`}
-                >
-                  <Heart 
-                    className={`h-4 w-4 ${isRestaurantFavorite ? 'fill-current' : ''}`} 
-                  />
-                </Button>
               </div>
             </div>
           </div>
@@ -226,13 +201,6 @@ export const RestaurantMenuModal = ({
             </>
           )}
 
-          {/* Ratings Section */}
-          <div className="space-y-4">
-            <h3 className="font-medium text-lg">Évaluations & Avis</h3>
-            <RatingComponent restaurantId={restaurant.id} showAddRating={true} />
-          </div>
-
-          <Separator />
 
           {/* Menus Section */}
           <div className="space-y-4">
