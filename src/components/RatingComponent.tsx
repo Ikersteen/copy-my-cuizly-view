@@ -92,24 +92,29 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
 
   return (
     <div className="space-y-4">
-      {/* Average Rating Display - Only show if there are ratings */}
-      {totalRatings > 0 && (
-        <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
-          <div className="flex items-center gap-2">
-            {renderStars(Math.round(averageRating))}
-            <span className="font-semibold text-lg">{averageRating.toFixed(1)}</span>
-          </div>
-          <span className="text-muted-foreground">
-            ({totalRatings} {totalRatings === 1 ? 'évaluation' : 'évaluations'})
-          </span>
-          
-          {showAddRating && isAuthenticated && (
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="ml-auto">
-                  {userRating ? 'Modifier mon avis' : 'Évaluer'}
-                </Button>
-              </DialogTrigger>
+      {/* Average Rating Display */}
+      <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
+        {totalRatings > 0 ? (
+          <>
+            <div className="flex items-center gap-2">
+              {renderStars(Math.round(averageRating))}
+              <span className="font-semibold text-lg">{averageRating.toFixed(1)}</span>
+            </div>
+            <span className="text-muted-foreground">
+              ({totalRatings} {totalRatings === 1 ? 'évaluation' : 'évaluations'})
+            </span>
+          </>
+        ) : (
+          <span className="text-muted-foreground">Pas encore d'évaluations</span>
+        )}
+        
+        {showAddRating && isAuthenticated && (
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="ml-auto">
+                {userRating ? 'Modifier mon avis' : 'Évaluer'}
+              </Button>
+            </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>
@@ -143,10 +148,9 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
                   </div>
                 </div>
               </DialogContent>
-            </Dialog>
-          )}
-        </div>
-      )}
+          </Dialog>
+        )}
+      </div>
 
       {/* Existing Ratings */}
       {totalRatings > 0 && (

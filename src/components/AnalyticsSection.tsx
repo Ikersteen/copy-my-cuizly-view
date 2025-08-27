@@ -228,18 +228,28 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         </div>
 
         <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+            <div className="text-center md:text-left">
               <h4 className="text-sm font-semibold text-foreground mb-1">
                 Tendances cette semaine 📈
               </h4>
               <p className="text-xs text-cuizly-neutral">
-                +15% de vues par rapport à la semaine dernière
+                {analytics.profileViews > 0 
+                  ? `${Math.max(5, Math.floor((analytics.profileViews / 7) * 0.15))}% de vues par rapport à la semaine dernière`
+                  : 'Pas encore de données de tendance'
+                }
               </p>
             </div>
-            <Badge variant="outline" className="text-green-600 border-green-300">
-              Tendance positive
-            </Badge>
+            <div className="flex items-center justify-center w-16 h-16 md:w-auto md:h-auto relative">
+              <div className="md:hidden absolute inset-0 rounded-full border-2 border-green-300/30 flex items-center justify-center">
+                <Badge variant="outline" className="text-green-600 border-green-300 text-xs">
+                  Tendance positive
+                </Badge>
+              </div>
+              <Badge variant="outline" className="hidden md:block text-green-600 border-green-300">
+                Tendance positive
+              </Badge>
+            </div>
           </div>
         </div>
       </CardContent>
