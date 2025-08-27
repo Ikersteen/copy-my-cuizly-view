@@ -272,13 +272,13 @@ export const RestaurantMenuModal = ({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button 
-              className="flex-1"
+              className="w-full"
               onClick={() => setShowCommentModal(true)}
             >
               <MessageSquare className="h-4 w-4 mr-2" />
               Commentaire
             </Button>
-            <Button variant="outline" onClick={handleToggleFavorite}>
+            <Button className="w-full" variant="outline" onClick={handleToggleFavorite}>
               <Heart 
                 className={`h-4 w-4 mr-2 ${isRestaurantFavorite ? 'fill-current text-red-500' : ''}`} 
               />
