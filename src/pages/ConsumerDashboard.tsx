@@ -182,17 +182,17 @@ const ConsumerDashboard = () => {
         {/* Main Tabs */}
         <Tabs defaultValue="recommendations" className="space-y-6">
           <TabsList className="grid w-full grid-cols-3 h-11">
-            <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2">
-              <Star className="h-4 w-4 mr-1" />
-              Recommandations
+            <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2 gap-1">
+              <Star className="h-4 w-4 flex-shrink-0" />
+              <span className="truncate">Recommandations</span>
             </TabsTrigger>
-            <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2">
-              <Heart className="h-4 w-4 mr-1" />
-              Favoris
+            <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2 gap-1">
+              <Heart className="h-4 w-4 flex-shrink-0" />
+              <span className="truncate">Favoris</span>
             </TabsTrigger>
-            <TabsTrigger value="offers" className="text-xs sm:text-sm px-2 py-2">
-              <Gift className="h-4 w-4 mr-1" />
-              Offres
+            <TabsTrigger value="offers" className="text-xs sm:text-sm px-2 py-2 gap-1">
+              <Gift className="h-4 w-4 flex-shrink-0" />
+              <span className="truncate">Offres</span>
             </TabsTrigger>
           </TabsList>
 
