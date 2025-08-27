@@ -32,7 +32,7 @@ export const SavedFavoritesSection = () => {
     }
   }, [favorites, favLoading]);
 
-  // Set up real-time subscription for restaurant updates
+  // Set up real-time subscription for restaurant updates only
   useEffect(() => {
     if (favorites.length === 0) return;
 
@@ -44,19 +44,8 @@ export const SavedFavoritesSection = () => {
         table: 'restaurants',
         filter: `id=in.(${favorites.join(',')})`
       }, () => {
-        if (favorites.length > 0) {
-          loadFavoriteRestaurants();
-        }
-      })
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'user_favorites'
-      }, () => {
-        // Reload when favorites change
-        if (favorites.length > 0) {
-          loadFavoriteRestaurants();
-        }
+        console.log('Restaurant data updated, reloading...');
+        loadFavoriteRestaurants();
       })
       .subscribe();
 
