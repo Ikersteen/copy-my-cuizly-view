@@ -204,10 +204,12 @@ export const PersonalizedRecommendations = () => {
           <div className="flex flex-col items-center justify-center py-12">
             <LoadingSpinner size="lg" />
             <div className="flex items-center space-x-2 mt-4">
-              <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-              <h2 className="text-xl font-semibold">Génération des recommandations...</h2>
+              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse" />
+              <div>
+                <h2 className="text-lg sm:text-xl font-semibold">Génération des recommandations...</h2>
+                <p className="text-xs sm:text-base text-muted-foreground">Analyse de vos préférences en cours</p>
+              </div>
             </div>
-            <p className="text-muted-foreground mt-2">Analyse de vos préférences en cours</p>
           </div>
         </div>
       </section>
