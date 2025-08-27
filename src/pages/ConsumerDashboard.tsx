@@ -180,7 +180,7 @@ const ConsumerDashboard = () => {
         </div>
 
         {/* Main Tabs */}
-        <div className="bg-muted/30 rounded-lg p-4">
+        <div className="bg-gradient-to-br from-muted/30 via-background to-muted/30 rounded-lg p-4">
           <Tabs defaultValue="recommendations" className="space-y-2">
             <TabsList className="grid w-full grid-cols-3 h-11">
               <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2 gap-1">
@@ -197,17 +197,17 @@ const ConsumerDashboard = () => {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="recommendations" className="space-y-2 mt-2">
-              <PersonalizedRecommendations />
-            </TabsContent>
+          <TabsContent value="recommendations" className="space-y-2 mt-2">
+            <PersonalizedRecommendations />
+          </TabsContent>
 
-            <TabsContent value="favorites" className="space-y-2 mt-2">
-              <SavedFavoritesSection />
-            </TabsContent>
+          <TabsContent value="favorites" className="space-y-2 mt-2">
+            <SavedFavoritesSection />
+          </TabsContent>
 
-            <TabsContent value="offers" className="space-y-2 mt-2">
-              <OffersSection userType="consumer" />
-            </TabsContent>
+          <TabsContent value="offers" className="space-y-2 mt-2">
+            <OffersSection userType="consumer" />
+          </TabsContent>
           </Tabs>
         </div>
       </div>
