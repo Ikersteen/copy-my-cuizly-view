@@ -48,7 +48,7 @@ export const RestaurantMenuModal = ({
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const { toggleFavorite, isFavorite } = useFavorites();
+  const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -82,19 +82,32 @@ export const RestaurantMenuModal = ({
     if (!restaurant?.id) return;
     
     console.log('🔄 Toggling favorite for restaurant:', restaurant.id);
-    console.log('📍 Current favorite status:', isRestaurantFavorite);
+    console.log('📍 Current favorite status:', localFavoriteState);
+    
+    // Optimistic update for better UX
+    setLocalFavoriteState(!localFavoriteState);
     
     try {
       await toggleFavorite(restaurant.id);
       console.log('✅ Toggle favorite completed');
     } catch (error) {
       console.error('❌ Error toggling favorite:', error);
+      // Revert optimistic update on error
+      setLocalFavoriteState(localFavoriteState);
     }
   };
 
   if (!restaurant) return null;
 
   const isRestaurantFavorite = isFavorite(restaurant.id);
+  
+  // Force re-render when favorites change
+  const [localFavoriteState, setLocalFavoriteState] = useState(isRestaurantFavorite);
+  
+  // Update local state when favorites change
+  useEffect(() => {
+    setLocalFavoriteState(isRestaurantFavorite);
+  }, [isRestaurantFavorite, favorites]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -284,9 +297,9 @@ export const RestaurantMenuModal = ({
             </Button>
             <Button className="w-full" variant="outline" onClick={handleToggleFavorite}>
               <Heart 
-                className={`h-4 w-4 mr-2 ${isRestaurantFavorite ? 'fill-current text-red-500' : ''}`} 
+                className={`h-4 w-4 mr-2 ${localFavoriteState ? 'fill-current text-red-500' : ''}`} 
               />
-              {isRestaurantFavorite ? 'Favoris' : 'Ajouter aux favoris'}
+              {localFavoriteState ? 'Retirer des favoris' : 'Ajouter aux favoris'}
             </Button>
           </div>
         </div>

@@ -267,8 +267,14 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
     }
   };
 
+  const [forceUpdate, setForceUpdate] = useState(0);
+
   const handleFavoriteToggle = async (restaurantId: string, event: React.MouseEvent) => {
     event.stopPropagation();
+    
+    // Optimistic update pour l'UI
+    setForceUpdate(prev => prev + 1);
+    
     await toggleFavorite(restaurantId);
   };
 
