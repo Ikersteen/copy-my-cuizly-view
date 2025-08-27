@@ -138,7 +138,7 @@ export const SavedFavoritesSection = () => {
           {favoriteRestaurants.slice(0, 4).map((restaurant) => (
             <Card 
               key={restaurant.id}
-              className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm hover:shadow-xl hover:-translate-y-1"
+              className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm hover:shadow-xl"
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
