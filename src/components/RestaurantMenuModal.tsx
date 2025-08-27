@@ -96,40 +96,59 @@ export const RestaurantMenuModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="space-y-4">
-          {/* Restaurant Header */}
-          <div className="text-center space-y-4">
-            <div className="flex items-center justify-center space-x-4">
-              {restaurant.logo_url ? (
-                <div className="w-16 h-16 rounded-xl overflow-hidden border-2 border-border shadow-sm flex-shrink-0">
-                  <img 
-                    src={restaurant.logo_url} 
-                    alt={restaurant.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center border-2 border-border shadow-sm flex-shrink-0">
-                  <ChefHat className="h-8 w-8 text-primary" />
-                </div>
-              )}
-            </div>
+          {/* Restaurant Cover */}
+          <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
+            {restaurant.cover_image_url ? (
+              <img 
+                src={restaurant.cover_image_url} 
+                alt={restaurant.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-r from-primary/20 to-primary/10 flex items-center justify-center">
+                <ChefHat className="h-16 w-16 text-primary/40" />
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             
-            <div className="space-y-2">
-              <DialogTitle className="text-2xl font-bold text-center">
-                {restaurant.name}
-              </DialogTitle>
-              
-              <div className="flex items-center justify-center gap-4 text-sm">
-                {restaurant.price_range && (
-                  <Badge variant="secondary">
-                    {restaurant.price_range}
-                  </Badge>
+            {/* Restaurant Logo & Info Overlay */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="flex items-end space-x-4">
+                {restaurant.logo_url ? (
+                  <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
+                    <img 
+                      src={restaurant.logo_url} 
+                      alt={restaurant.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
+                    <ChefHat className="h-8 w-8 text-primary" />
+                  </div>
                 )}
-                {restaurant.address && (
-                  <span className="text-muted-foreground">
-                    {restaurant.address.split(',')[0]}
-                  </span>
-                )}
+                
+                <div className="flex-1 min-w-0">
+                  <DialogTitle className="text-2xl font-bold text-white mb-2 line-clamp-2">
+                    {restaurant.name}
+                  </DialogTitle>
+                </div>
+                
+                {/* Favorite Button */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleToggleFavorite}
+                  className={`bg-white/90 backdrop-blur-sm ${
+                    isRestaurantFavorite 
+                      ? 'text-red-500 border-red-200 hover:bg-red-50' 
+                      : 'text-muted-foreground hover:text-red-500'
+                  }`}
+                >
+                  <Heart 
+                    className={`h-4 w-4 ${isRestaurantFavorite ? 'fill-current' : ''}`} 
+                  />
+                </Button>
               </div>
             </div>
           </div>
