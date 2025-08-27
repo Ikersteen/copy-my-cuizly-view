@@ -31,7 +31,7 @@ export const WelcomeEmail = ({
         {/* Logo */}
         <Section style={logoSection}>
           <Img
-            src="https://www.cuizly.ca/cuizly-logo.png"
+            src="https://ffgkzvnbsdnfgmcxturx.lovable.app/cuizly-logo.png"
             width="120"
             height="40"
             alt="Cuizly"
