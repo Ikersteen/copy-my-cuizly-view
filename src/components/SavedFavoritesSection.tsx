@@ -48,6 +48,16 @@ export const SavedFavoritesSection = () => {
           loadFavoriteRestaurants();
         }
       })
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'user_favorites'
+      }, () => {
+        // Reload when favorites change
+        if (favorites.length > 0) {
+          loadFavoriteRestaurants();
+        }
+      })
       .subscribe();
 
     return () => {

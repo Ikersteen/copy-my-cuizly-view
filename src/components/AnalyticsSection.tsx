@@ -247,8 +247,8 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         </div>
 
         <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="text-center sm:text-left">
+          <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:justify-between">
+            <div className="text-center md:text-left order-2 md:order-1">
               <h4 className="text-sm font-semibold text-foreground mb-1">
                 Tendances cette semaine 📈
               </h4>
@@ -262,7 +262,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                 )}
               </p>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center order-1 md:order-2">
               <Badge 
                 variant="outline" 
                 className={`${
