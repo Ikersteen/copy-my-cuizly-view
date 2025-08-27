@@ -293,9 +293,7 @@ export const PersonalizedRecommendations = () => {
                                 <span>Montreal</span>
                               </div>
                               {restaurant.price_range && (
-                                <Badge variant="secondary" className="text-xs">
-                                  {restaurant.price_range}
-                                </Badge>
+                                <span className="text-xs text-muted-foreground">{restaurant.price_range}</span>
                               )}
                             </div>
                             <CardDescription className="line-clamp-2 text-sm mt-1">
