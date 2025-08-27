@@ -213,13 +213,8 @@ export const RestaurantMenuModal = ({
 
           <Separator />
 
-           {/* Location and Menus Section */}
+           {/* Menus Section */}
            <div className="space-y-4">
-             <div className="flex items-center space-x-1 mb-2">
-               <MapPin className="h-4 w-4 text-muted-foreground" />
-               <span className="text-sm text-muted-foreground">Montreal</span>
-             </div>
-             
              <div className="flex items-center justify-between">
                <h3 className="text-xl font-semibold">Nos menus</h3>
                {menus.length > 0 && (
