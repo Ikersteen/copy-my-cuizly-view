@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Star, MapPin } from "lucide-react";
+import { Star, MapPin } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
@@ -22,7 +22,7 @@ interface Restaurant {
 }
 
 export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
-  const { favorites, toggleFavorite } = useFavorites();
+  const { favorites } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -58,9 +58,9 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
           <div className="flex items-center justify-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
-        ) : favoriteRestaurants.length === 0 ? (
+        ) : favorites.length === 0 ? (
           <div className="text-center py-8">
-            <Heart className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+            <Star className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-lg font-semibold mb-2">Aucun favori pour le moment</h3>
             <p className="text-muted-foreground">Ajoutez des restaurants à vos favoris pour les retrouver ici</p>
           </div>
@@ -69,16 +69,7 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
             {favoriteRestaurants.map((restaurant) => (
               <Card key={restaurant.id}>
                 <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg">{restaurant.name}</CardTitle>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleFavorite(restaurant.id)}
-                    >
-                      <Heart className="h-4 w-4 fill-current text-red-500" />
-                    </Button>
-                  </div>
+                  <CardTitle className="text-lg">{restaurant.name}</CardTitle>
                   <p className="text-sm text-muted-foreground">{restaurant.description}</p>
                 </CardHeader>
                 <CardContent>

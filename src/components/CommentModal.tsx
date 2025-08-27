@@ -32,27 +32,15 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
   
   const { comments, loading, averageRating, totalComments, addComment } = useComments(restaurant?.id);
 
-  // Set up real-time updates for comments
+  // The useComments hook already handles real-time updates, no need for additional subscription
   useEffect(() => {
-    if (!restaurant?.id) return;
-
-    const channel = supabase
-      .channel('comment-updates')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'comments',
-        filter: `restaurant_id=eq.${restaurant.id}`
-      }, () => {
-        // Force refresh comments
-        window.location.reload();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [restaurant?.id]);
+    if (open && !restaurant?.id) {
+      // Reset form when modal opens without restaurant
+      setRating(0);
+      setCommentText("");
+      setImages([]);
+    }
+  }, [open, restaurant?.id]);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);

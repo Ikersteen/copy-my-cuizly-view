@@ -4,10 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, MapPin, Heart, Sparkles, Phone, Mail, Eye, Menu as MenuIcon } from "lucide-react";
+import { Star, Clock, MapPin, Sparkles, Phone, Mail, Eye, Menu as MenuIcon } from "lucide-react";
 import { CuizlyIcon } from "@/components/CuizlyIcon";
 import { UserPreferences } from "@/hooks/useUserPreferences";
-import { useFavorites } from "@/hooks/useFavorites";
 import { useRatings } from "@/hooks/useRatings";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { supabase } from "@/integrations/supabase/client";
@@ -57,7 +56,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
   const [loading, setLoading] = useState(true);
   const [menuLoading, setMenuLoading] = useState(false);
   
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { ratings, addRating } = useRatings();
 
   // Fonction pour récupérer la vraie note d'un restaurant
@@ -268,11 +266,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
     }
   };
 
-  const handleFavoriteToggle = async (restaurantId: string, event: React.MouseEvent) => {
-    event.stopPropagation();
-    await toggleFavorite(restaurantId);
-  };
-
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-12 space-y-4">
@@ -337,20 +330,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
                     </p>
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => handleFavoriteToggle(restaurant.id, e)}
-                >
-                  <Heart 
-                    className={`h-4 w-4 ${
-                      isFavorite(restaurant.id) 
-                        ? 'fill-red-500 text-red-500' 
-                        : 'text-muted-foreground hover:text-red-500'
-                    }`} 
-                  />
-                </Button>
               </div>
             </CardHeader>
 
@@ -458,19 +437,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
                       </div>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => handleFavoriteToggle(selectedRestaurant.id, e)}
-                  >
-                    <Heart 
-                      className={`h-5 w-5 ${
-                        isFavorite(selectedRestaurant.id) 
-                          ? 'fill-red-500 text-red-500' 
-                          : 'text-muted-foreground'
-                      }`} 
-                    />
-                  </Button>
                 </div>
               </DialogHeader>
 

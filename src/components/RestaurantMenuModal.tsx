@@ -4,10 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, Clock, MapPin, Heart, Phone, Mail, MessageSquare } from "lucide-react";
+import { Star, Clock, Phone, Mail, MessageSquare } from "lucide-react";
 import { CuizlyIcon } from "@/components/CuizlyIcon";
 import { supabase } from "@/integrations/supabase/client";
-import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
 import { RatingComponent } from "@/components/RatingComponent";
 import { CommentModal } from "@/components/CommentModal";
@@ -49,7 +48,6 @@ export const RestaurantMenuModal = ({
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const { toggleFavorite, isFavorite } = useFavorites();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -79,19 +77,7 @@ export const RestaurantMenuModal = ({
     }
   };
 
-  const handleToggleFavorite = async () => {
-    if (!restaurant?.id) return;
-    
-    try {
-      await toggleFavorite(restaurant.id);
-    } catch (error) {
-      console.error('Erreur lors de la modification des favoris:', error);
-    }
-  };
-
   if (!restaurant) return null;
-
-  const isRestaurantFavorite = isFavorite(restaurant.id);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -112,9 +98,9 @@ export const RestaurantMenuModal = ({
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             
-            {/* Restaurant Logo & Info Overlay */}
+            {/* Restaurant Logo & Info Overlay - Centered */}
             <div className="absolute bottom-4 left-4 right-4">
-              <div className="flex items-end space-x-4">
+              <div className="flex flex-col items-center space-y-4">
                 {restaurant.logo_url ? (
                   <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
                     <img 
@@ -129,43 +115,16 @@ export const RestaurantMenuModal = ({
                   </div>
                 )}
                 
-                <div className="flex-1 min-w-0">
+                <div className="text-center">
                   <DialogTitle className="text-2xl font-bold text-white mb-2 line-clamp-2">
                     {restaurant.name}
                   </DialogTitle>
                   {restaurant.price_range && (
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Badge variant="secondary" className="bg-white/90 text-primary">
-                        {restaurant.price_range}
-                      </Badge>
-                      {restaurant.address && (
-                        <>
-                          <span className="text-white/70">•</span>
-                          <div className="flex items-center space-x-1 text-white/90">
-                            <MapPin className="h-3 w-3" />
-                            <span className="text-sm">Montreal</span>
-                          </div>
-                        </>
-                      )}
-                    </div>
+                    <Badge variant="secondary" className="bg-white/90 text-primary">
+                      {restaurant.price_range}
+                    </Badge>
                   )}
                 </div>
-                
-                {/* Favorite Button */}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleToggleFavorite}
-                  className={`bg-white/90 backdrop-blur-sm ${
-                    isRestaurantFavorite 
-                      ? 'text-red-500 border-red-200 hover:bg-red-50' 
-                      : 'text-muted-foreground hover:text-red-500'
-                  }`}
-                >
-                  <Heart 
-                    className={`h-4 w-4 ${isRestaurantFavorite ? 'fill-current' : ''}`} 
-                  />
-                </Button>
               </div>
             </div>
           </div>
@@ -206,17 +165,11 @@ export const RestaurantMenuModal = ({
               ))}
             </div>
 
-            {/* Contact Info */}
-            {(restaurant.address || restaurant.phone || restaurant.email) && (
+            {/* Contact Info - Remove address with location icon */}
+            {(restaurant.phone || restaurant.email) && (
               <>
                 <Separator />
                 <div className="space-y-2">
-                  {restaurant.address && (
-                    <div className="flex items-center space-x-2 text-sm">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span>{restaurant.address}</span>
-                    </div>
-                  )}
                   {restaurant.phone && (
                     <div className="flex items-center space-x-2 text-sm">
                       <Phone className="h-4 w-4 text-muted-foreground" />
@@ -305,7 +258,7 @@ export const RestaurantMenuModal = ({
             )}
           </div>
 
-          {/* Action Buttons */}
+          {/* Action Buttons - Remove favorite button */}
           <div className="flex gap-3 pt-4">
             <Button 
               className="flex-1"
@@ -313,12 +266,6 @@ export const RestaurantMenuModal = ({
             >
               <MessageSquare className="h-4 w-4 mr-2" />
               Commentaire
-            </Button>
-            <Button variant="outline" onClick={handleToggleFavorite}>
-              <Heart 
-                className={`h-4 w-4 mr-2 ${isRestaurantFavorite ? 'fill-current text-red-500' : ''}`} 
-              />
-              {isRestaurantFavorite ? 'Retiré des favoris' : 'Ajouter aux favoris'}
             </Button>
           </div>
         </div>
