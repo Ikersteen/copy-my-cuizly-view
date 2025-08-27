@@ -192,7 +192,7 @@ export const SavedFavoritesSection = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-1">
-                  {restaurant.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
+                  {restaurant.cuisine_type?.map((cuisine, idx) => (
                     <Badge key={idx} variant="outline" className="text-xs">
                       {cuisine}
                     </Badge>
