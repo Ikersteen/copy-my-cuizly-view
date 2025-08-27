@@ -163,24 +163,28 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
         <div className="space-y-6">
           {/* Statistiques */}
-          {totalComments > 0 && (
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Star className="h-5 w-5 fill-current text-yellow-500" />
-                  <span className="font-medium">
-                    {averageRating.toFixed(1)}
-                  </span>
-                  <span className="text-muted-foreground">
-                    ({comments.filter(c => c.rating).length} évaluations)
-                  </span>
-                </div>
-                <Badge variant="secondary">
-                  {totalComments} commentaire{totalComments > 1 ? 's' : ''}
-                </Badge>
+          <div className="bg-muted/50 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {averageRating > 0 ? (
+                  <>
+                    <Star className="h-5 w-5 fill-current text-yellow-500" />
+                    <span className="font-medium">
+                      {averageRating.toFixed(1)}
+                    </span>
+                    <span className="text-muted-foreground">
+                      ({comments.filter(c => c.rating).length} évaluations)
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-muted-foreground">Pas encore d'évaluations</span>
+                )}
               </div>
+              <Badge variant="secondary">
+                {totalComments} commentaire{totalComments > 1 ? 's' : ''}
+              </Badge>
             </div>
-          )}
+          </div>
 
           {/* Formulaire de commentaire */}
           <form onSubmit={handleSubmit} className="space-y-4">
