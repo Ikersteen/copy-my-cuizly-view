@@ -187,7 +187,7 @@ export const SavedFavoritesSection = () => {
                   </div>
                   <div className="flex items-center space-x-1">
                     <MapPin className="h-3 w-3" />
-                    <span className="text-xs">Montréal</span>
+                    <span className="text-xs">Montréal • $$</span>
                   </div>
                 </div>
 
@@ -197,11 +197,6 @@ export const SavedFavoritesSection = () => {
                       {cuisine}
                     </Badge>
                   ))}
-                  {restaurant.price_range && (
-                    <Badge variant="secondary" className="text-xs">
-                      {restaurant.price_range}
-                    </Badge>
-                  )}
                 </div>
 
                 <Button 
