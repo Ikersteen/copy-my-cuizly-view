@@ -56,6 +56,13 @@ export const useFavorites = () => {
 
       const isFavorite = favorites.includes(restaurantId);
 
+      // Optimistic update - update UI immediately
+      if (isFavorite) {
+        setFavorites(prev => prev.filter(id => id !== restaurantId));
+      } else {
+        setFavorites(prev => [...prev, restaurantId]);
+      }
+
       if (isFavorite) {
         const { error } = await supabase
           .from('user_favorites')
@@ -63,8 +70,11 @@ export const useFavorites = () => {
           .eq('user_id', session.user.id)
           .eq('restaurant_id', restaurantId);
 
-        if (error) throw error;
-        setFavorites(prev => prev.filter(id => id !== restaurantId));
+        if (error) {
+          // Revert optimistic update on error
+          setFavorites(prev => [...prev, restaurantId]);
+          throw error;
+        }
         toast({ title: "Retiré des favoris" });
       } else {
         const { error } = await supabase
@@ -74,8 +84,11 @@ export const useFavorites = () => {
             restaurant_id: restaurantId
           });
 
-        if (error) throw error;
-        setFavorites(prev => [...prev, restaurantId]);
+        if (error) {
+          // Revert optimistic update on error
+          setFavorites(prev => prev.filter(id => id !== restaurantId));
+          throw error;
+        }
         toast({ title: "Ajouté aux favoris" });
       }
     } catch (error) {
