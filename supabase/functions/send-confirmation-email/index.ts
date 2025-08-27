@@ -1,7 +1,12 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@4.0.0";
+import { Webhook } from 'https://esm.sh/standardwebhooks@1.0.0';
+import { renderAsync } from 'npm:@react-email/components@0.0.22';
+import React from 'npm:react@18.3.1';
+import { ConfirmationEmail } from './_templates/confirmation-email.tsx';
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const hookSecret = Deno.env.get('SEND_EMAIL_HOOK_SECRET') as string;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,148 +14,79 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const getConfirmationEmailHTML = (userName: string, confirmationUrl: string): string => {
-  return `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmez votre courriel - Cuizly</title>
-</head>
-<body style="background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;">
-    <div style="margin: 0 auto; padding: 40px 20px; max-width: 600px;">
-        
-        <!-- Logo -->
-        <div style="text-align: center; margin-bottom: 40px;">
-            <img src="https://www.cuizly.ca/cuizly-logo.png" 
-                 width="120" 
-                 height="40" 
-                 alt="Cuizly" 
-                 style="margin: 0 auto;" />
-        </div>
-
-        <!-- Header -->
-        <h1 style="color: #171717; font-size: 28px; font-weight: 700; text-align: center; margin: 0 0 30px 0; line-height: 1.3;">
-            Confirmez votre courriel
-        </h1>
-
-        <!-- Main content -->
-        <p style="color: #171717; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-            Bonjour ${userName},
-        </p>
-
-        <p style="color: #171717; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-            Merci de vous être inscrit sur Cuizly ! Pour finaliser votre inscription, veuillez confirmer votre adresse courriel.
-        </p>
-
-        <!-- CTA Button -->
-        <div style="text-align: center; margin: 40px 0;">
-            <a href="${confirmationUrl}" 
-               style="background-color: #171717; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; text-align: center; display: inline-block; padding: 14px 32px; border-radius: 50px; border: none; cursor: pointer;">
-                Confirmer mon adresse courriel
-            </a>
-        </div>
-
-        <p style="color: #737373; font-size: 14px; line-height: 1.6; margin: 20px 0 10px 0;">
-            Ce lien est valide pendant 5 minutes.
-        </p>
-
-        <!-- What's next -->
-        <div style="background-color: #fafafa; padding: 20px; border-radius: 12px; margin: 30px 0; border: 1px solid #e5e5e5;">
-            <p style="color: #171717; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                <strong>Une fois votre compte confirmé :</strong>
-            </p>
-            
-            <!-- Consumer benefits -->
-            <p style="color: #737373; font-size: 14px; line-height: 1.6; margin: 0 0 8px 0;">• Explorez les restaurants de Montréal</p>
-            <p style="color: #737373; font-size: 14px; line-height: 1.6; margin: 0 0 8px 0;">• Consultez les recommandations</p>
-            <p style="color: #737373; font-size: 14px; line-height: 1.6; margin: 0 0 8px 0;">• Gérez vos préférences</p>
-            <p style="color: #737373; font-size: 14px; line-height: 1.6; margin: 0 0 8px 0;">• Enregistrez vos favoris</p>
-        </div>
-
-        <!-- Footer -->
-        <p style="color:#171717;font-weight:700;text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #e5e5e5">
-            L'équipe Cuizly<br>
-        </p>
-
-        <!-- Social links -->
-        <p style="color:#737373; font-size: 12px; text-align: center; margin-top: 10px; margin-bottom: 0;">
-            <a href="https://www.linkedin.com/company/cuizly" target="_blank" style="color:#171717; text-decoration:none; font-weight:600;">
-                LinkedIn
-            </a>
-            &nbsp;|&nbsp;
-            <a href="https://www.instagram.com/cuizly" target="_blank" style="color:#171717; text-decoration:none; font-weight:600;">
-                Instagram
-            </a>
-        </p>
-
-        <p style="color: #a3a3a3; font-size: 12px; text-align: center; margin-top: 20px; font-style: italic;">
-            Si vous n'avez pas créé ce compte, vous pouvez simplement ignorer ce courriel.
-        </p>
-    </div>
-</body>
-</html>`;
-};
-
-interface SupabaseAuthWebhookRequest {
-  user: {
-    id: string;
-    email: string;
-    user_metadata?: {
-      full_name?: string;
-    };
-  };
-  email_data: {
-    token: string;
-    token_hash: string;
-    redirect_to?: string;
-    email_action_type: string;
-  };
-}
-
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+  if (req.method !== 'POST') {
+    return new Response('not allowed', { status: 400 })
   }
 
+  const payload = await req.text()
+  const headers = Object.fromEntries(req.headers)
+  const wh = new Webhook(hookSecret)
+  
   try {
-    const webhookData: SupabaseAuthWebhookRequest = await req.json();
-    
-    // Extract data from Supabase webhook format
-    const email = webhookData.user.email;
-    const userName = webhookData.user.user_metadata?.full_name || 'Utilisateur';
-    const confirmationUrl = `https://ffgkzvnbsdnfgmcxturx.supabase.co/auth/v1/verify?token=${webhookData.email_data.token_hash}&type=${webhookData.email_data.email_action_type}&redirect_to=${webhookData.email_data.redirect_to || 'https://www.cuizly.ca'}`;
-
-    // Use the new HTML template
-    const html = getConfirmationEmailHTML(userName, confirmationUrl);
-
-    const emailResponse = await resend.emails.send({
-      from: "Cuizly <verification@cuizly.com>",
-      to: [email],
-      subject: "Confirmez votre adresse email - Cuizly",
-      html,
-    });
-
-    console.log("Confirmation email sent successfully:", emailResponse);
-
-    return new Response(JSON.stringify(emailResponse), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
-    });
-  } catch (error: any) {
-    console.error("Error in send-confirmation-email function:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
+    const {
+      user,
+      email_data: { token, token_hash, redirect_to, email_action_type },
+    } = wh.verify(payload, headers) as {
+      user: {
+        email: string
+        user_metadata?: {
+          full_name?: string
+        }
       }
+      email_data: {
+        token: string
+        token_hash: string
+        redirect_to: string
+        email_action_type: string
+      }
+    }
+
+    // Only handle signup confirmations
+    if (email_action_type !== 'signup') {
+      return new Response('Email type not handled', { status: 200 })
+    }
+
+    const userName = user.user_metadata?.full_name || 'Utilisateur';
+    
+    const html = await renderAsync(
+      React.createElement(ConfirmationEmail, {
+        confirmationUrl: `${Deno.env.get('SUPABASE_URL')}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${redirect_to}`,
+        userName,
+        userType: 'consumer',
+      })
     );
+
+    const { error } = await resend.emails.send({
+      from: 'Cuizly <verification@cuizly.com>',
+      to: [user.email],
+      subject: 'Confirmez votre adresse email - Cuizly',
+      html,
+    })
+    
+    if (error) {
+      throw error
+    }
+  } catch (error) {
+    console.log(error)
+    return new Response(
+      JSON.stringify({
+        error: {
+          http_code: error.code,
+          message: error.message,
+        },
+      }),
+      {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
   }
+
+  return new Response(JSON.stringify({}), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  })
 };
 
 serve(handler);
