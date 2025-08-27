@@ -40,11 +40,7 @@ enable_signup = true
 enable_anonymous_sign_ins = false
 
 [auth.email]
-enable_confirmations = true
-
-[auth.email.template.confirmation]
-subject = "Confirmez votre adresse email - Cuizly"
-content_path = "./supabase/templates/confirmation.html"
+enable_confirmations = false
 
 [auth.external]
 apple_enabled = false

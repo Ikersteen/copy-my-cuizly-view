@@ -159,6 +159,24 @@ const Auth = () => {
 
       // If user is created and confirmed, create profile
       if (data.user && !data.user.email_confirmed_at) {
+        // Send custom confirmation email via our edge function
+        try {
+          const { data: confirmationData, error: confirmationError } = await supabase.functions.invoke('send-confirmation-email', {
+            body: {
+              email: data.user.email!,
+              confirmationUrl: `${window.location.origin}/dashboard?token_hash=${data.session?.access_token}&type=signup`,
+              userName: nameValidation.sanitized,
+              userType: userType,
+            },
+          });
+
+          if (confirmationError) {
+            console.error('Error sending confirmation email:', confirmationError);
+          }
+        } catch (error) {
+          console.error('Error invoking confirmation email function:', error);
+        }
+
         toast({
           title: "Compte créé !",
           description: "Vérifiez votre email pour confirmer votre compte.",
