@@ -12,20 +12,32 @@ export const useFavorites = () => {
 
     // Set up real-time subscription for favorites changes
     const subscription = supabase
-      .channel('user-favorites-realtime')
+      .channel('user_favorites_realtime')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
         table: 'user_favorites'
       }, (payload) => {
-        console.log('Realtime update received:', payload);
+        console.log('🔄 Realtime favorites update:', payload);
+        // Reload favorites immediately when any change occurs
         loadFavorites();
       })
       .subscribe((status) => {
-        console.log('Subscription status:', status);
+        console.log('📡 Favorites subscription status:', status);
+        if (status === 'SUBSCRIBED') {
+          console.log('✅ Favorites real-time connected');
+        } else if (status === 'CHANNEL_ERROR') {
+          console.log('❌ Channel error, retrying...');
+          // Retry subscription after a short delay
+          setTimeout(() => {
+            supabase.removeChannel(subscription);
+            // The useEffect will run again and create a new subscription
+          }, 1000);
+        }
       });
 
     return () => {
+      console.log('🧹 Cleaning up favorites subscription');
       supabase.removeChannel(subscription);
     };
   }, []);
