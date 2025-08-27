@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Star, Clock, ArrowRight, MapPin } from "lucide-react";
+import { Heart, Star, ArrowRight, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 
@@ -172,22 +172,18 @@ export const SavedFavoritesSection = () => {
                       e.stopPropagation();
                       toggleFavorite(restaurant.id);
                     }}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="transition-colors hover:bg-red-50"
                   >
-                    <Heart className="h-4 w-4 text-primary fill-current" />
+                    <Heart className="h-4 w-4 text-red-500 fill-current" />
                   </Button>
                 </div>
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <div className="flex items-center text-sm text-muted-foreground">
                   <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 fill-current text-yellow-500" />
                     <span>4.{Math.floor(Math.random() * 5) + 3}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{15 + Math.floor(Math.random() * 30)} min</span>
                   </div>
                 </div>
 
