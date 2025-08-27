@@ -114,7 +114,12 @@ const Footer = () => {
         <div className="relative border-t-2 border-border/60 mt-8 sm:mt-12 pt-8 sm:pt-10">
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
-            <a href="https://www.cuizly.ca" className="flex items-center space-x-3 group cursor-pointer">
+            <a 
+              href="https://www.cuizly.ca" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center space-x-3 group cursor-pointer"
+            >
               <img 
                 src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
                 alt="Cuizly" 
