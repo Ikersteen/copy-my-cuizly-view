@@ -243,7 +243,7 @@ export const SavedFavoritesSection = () => {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
                   <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 fill-current text-yellow-500" />
                     <span>
