@@ -42,13 +42,13 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo - Extrême gauche */}
           <div className="flex-shrink-0">
-            <Link to="/" className="flex items-center py-2">
+            <a href="https://www.cuizly.ca" className="flex items-center py-2">
               <img 
                 src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
                 alt="Cuizly" 
                 className="h-[50px] w-auto"
               />
-            </Link>
+            </a>
           </div>
 
           {/* Navigation Desktop - Centre */}
