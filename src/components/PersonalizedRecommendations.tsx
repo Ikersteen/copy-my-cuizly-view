@@ -243,7 +243,7 @@ export const PersonalizedRecommendations = () => {
                 </div>
                  <div className="hidden md:flex gap-2">
                    <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
-                     <Filter className="h-4 w-4 mr-1" />
+                     <Filter className="h-4 w-4 mr-0.5" />
                      Filtres
                    </Button>
                  </div>
@@ -368,7 +368,7 @@ export const PersonalizedRecommendations = () => {
 
              <div className="md:hidden text-center flex gap-2 justify-center flex-wrap">
                <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
-                 <Filter className="h-4 w-4 mr-1" />
+                 <Filter className="h-4 w-4 mr-0.5" />
                  Filtres
                </Button>
              </div>
