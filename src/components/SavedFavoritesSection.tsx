@@ -98,7 +98,7 @@ export const SavedFavoritesSection = () => {
           <div className="mb-8">
             <div className="bg-card border rounded-lg p-4 shadow-sm">
               <h1 className="text-2xl font-bold mb-1">Vos restaurants favoris</h1>
-               <p className="text-sm text-muted-foreground whitespace-nowrap">
+               <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
                  Découvrez et retrouvez facilement vos restaurants préférés
                </p>
             </div>
@@ -122,7 +122,7 @@ export const SavedFavoritesSection = () => {
         <div className="mb-8">
           <div className="bg-card border rounded-lg p-4 shadow-sm">
             <h1 className="text-2xl font-bold mb-1">Vos restaurants favoris</h1>
-             <p className="text-sm text-muted-foreground whitespace-nowrap">
+             <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
                Découvrez et retrouvez facilement vos restaurants préférés
              </p>
           </div>
