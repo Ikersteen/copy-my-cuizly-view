@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Star, ArrowRight, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useRatings } from "@/hooks/useRatings";
 
 interface Restaurant {
   id: string;
@@ -20,43 +21,7 @@ export const SavedFavoritesSection = () => {
   const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
-  const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
-
-  const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
-    try {
-      const { data } = await supabase
-        .from('comments')
-        .select('rating')
-        .eq('restaurant_id', restaurantId)
-        .not('rating', 'is', null);
-
-      if (!data || data.length === 0) return { rating: null, totalRatings: 0 };
-      
-      const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
-      return { 
-        rating: Math.round(average * 10) / 10,
-        totalRatings: data.length
-      };
-    } catch (error) {
-      console.error('Error fetching rating:', error);
-      return { rating: null, totalRatings: 0 };
-    }
-  };
-
-  const loadRestaurantRatings = async (restaurants: Restaurant[]) => {
-    const ratingsPromises = restaurants.map(async (restaurant) => {
-      const ratingData = await getRealRating(restaurant.id);
-      return { id: restaurant.id, ...ratingData };
-    });
-
-    const allRatings = await Promise.all(ratingsPromises);
-    const ratingsMap = allRatings.reduce((acc, rating) => {
-      acc[rating.id] = { rating: rating.rating, totalRatings: rating.totalRatings };
-      return acc;
-    }, {} as Record<string, { rating: number | null; totalRatings: number }>);
-
-    setRestaurantRatings(ratingsMap);
-  };
+  const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { averageRating: number; totalRatings: number }>>({});
 
   useEffect(() => {
     console.log('🔄 Favorites changed:', favorites);
@@ -71,6 +36,47 @@ export const SavedFavoritesSection = () => {
       }
     }
   }, [favorites, favLoading]);
+
+  // Load ratings for favorite restaurants
+  useEffect(() => {
+    const loadRatings = async () => {
+      if (favoriteRestaurants.length === 0) return;
+      
+      const ratingsData: Record<string, { averageRating: number; totalRatings: number }> = {};
+      
+      for (const restaurant of favoriteRestaurants) {
+        try {
+          const { data } = await supabase
+            .from('ratings')
+            .select('rating')
+            .eq('restaurant_id', restaurant.id);
+
+          if (data && data.length > 0) {
+            const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
+            ratingsData[restaurant.id] = {
+              averageRating: Math.round(average * 10) / 10,
+              totalRatings: data.length
+            };
+          } else {
+            ratingsData[restaurant.id] = {
+              averageRating: 0,
+              totalRatings: 0
+            };
+          }
+        } catch (error) {
+          console.error('Error fetching ratings for', restaurant.id, error);
+          ratingsData[restaurant.id] = {
+            averageRating: 0,
+            totalRatings: 0
+          };
+        }
+      }
+      
+      setRestaurantRatings(ratingsData);
+    };
+
+    loadRatings();
+  }, [favoriteRestaurants]);
 
   // Set up real-time subscription for restaurant updates and ratings
   useEffect(() => {
@@ -94,18 +100,38 @@ export const SavedFavoritesSection = () => {
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
-        table: 'comments',
+        table: 'ratings',
         filter: `restaurant_id=in.(${favorites.join(',')})`
-      }, async (payload: any) => {
-        console.log('Rating updated for favorite restaurant:', payload);
-        const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
-        if (restaurantId) {
-          const ratingData = await getRealRating(restaurantId);
-          setRestaurantRatings(prev => ({
-            ...prev,
-            [restaurantId]: ratingData
-          }));
+      }, async () => {
+        console.log('Rating updated for favorite restaurant');
+        // Reload all ratings when any rating changes
+        const ratingsData: Record<string, { averageRating: number; totalRatings: number }> = {};
+        
+        for (const restaurant of favoriteRestaurants) {
+          try {
+            const { data } = await supabase
+              .from('ratings')
+              .select('rating')
+              .eq('restaurant_id', restaurant.id);
+
+            if (data && data.length > 0) {
+              const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
+              ratingsData[restaurant.id] = {
+                averageRating: Math.round(average * 10) / 10,
+                totalRatings: data.length
+              };
+            } else {
+              ratingsData[restaurant.id] = {
+                averageRating: 0,
+                totalRatings: 0
+              };
+            }
+          } catch (error) {
+            console.error('Error fetching ratings for', restaurant.id, error);
+          }
         }
+        
+        setRestaurantRatings(ratingsData);
       })
       .subscribe();
 
@@ -113,7 +139,7 @@ export const SavedFavoritesSection = () => {
       supabase.removeChannel(restaurantSubscription);
       supabase.removeChannel(ratingsSubscription);
     };
-  }, [favorites]);
+  }, [favorites, favoriteRestaurants]);
 
   const loadFavoriteRestaurants = async () => {
     try {
@@ -131,11 +157,6 @@ export const SavedFavoritesSection = () => {
       
       console.log('✅ Loaded favorite restaurants:', favoriteRestaurantsData);
       setFavoriteRestaurants(favoriteRestaurantsData);
-      
-      // Charger les évaluations pour ces restaurants
-      if (favoriteRestaurantsData.length > 0) {
-        await loadRestaurantRatings(favoriteRestaurantsData);
-      }
     } catch (error) {
       console.error('❌ Erreur lors du chargement des favoris:', error);
     } finally {
@@ -245,17 +266,26 @@ export const SavedFavoritesSection = () => {
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                   <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-current text-yellow-500" />
-                    <span>
-                      {(() => {
-                        const currentRating = restaurantRatings[restaurant.id];
-                        const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
-                        
-                        return hasRating 
-                          ? `${currentRating.rating}`
-                          : '4.' + (Math.floor(Math.random() * 5) + 3);
-                      })()}
-                    </span>
+                    {(() => {
+                      const currentRating = restaurantRatings[restaurant.id];
+                      const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.averageRating > 0;
+                      
+                      if (hasRating) {
+                        return (
+                          <>
+                            <Star className="h-4 w-4 fill-current text-yellow-500" />
+                            <span>{currentRating.averageRating}</span>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <Star className="h-4 w-4 text-gray-300" />
+                            <span>Pas encore d'évaluations</span>
+                          </>
+                        );
+                      }
+                    })()}
                   </div>
                   <div className="flex items-center space-x-1">
                     <MapPin className="h-3 w-3" />
