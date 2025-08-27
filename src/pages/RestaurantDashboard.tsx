@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, LogOut, Filter } from "lucide-react";
-import { CuizlyIcon } from "@/components/CuizlyIcon";
+import { Plus, Edit3, MapPin, ChefHat, LogOut, Filter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
@@ -13,7 +12,7 @@ import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
-const cuizlyLogo = "/lovable-uploads/e8fe9351-fe46-440d-914c-b9b28918fe73.png";
+import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
@@ -264,7 +263,7 @@ const RestaurantDashboard = () => {
           {[
             { icon: Plus, label: "Nouvelle offre", primary: true },
             { icon: Edit3, label: "Profil du restaurant" },
-            { icon: CuizlyIcon, label: "Gérer vos menus" },
+            { icon: ChefHat, label: "Gérer vos menus" },
             { icon: Filter, label: "Filtres" }
           ].map((action, index) => (
             <Button 

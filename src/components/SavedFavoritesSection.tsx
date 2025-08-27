@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, Clock, ArrowRight, MapPin, Heart } from "lucide-react";
+import { Heart, Star, Clock, ArrowRight, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 
@@ -17,7 +17,7 @@ interface Restaurant {
 }
 
 export const SavedFavoritesSection = () => {
-  const { favorites, loading: favLoading } = useFavorites();
+  const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,27 +31,6 @@ export const SavedFavoritesSection = () => {
       }
     }
   }, [favorites, favLoading]);
-
-  // Real-time subscription for restaurant updates
-  useEffect(() => {
-    if (favorites.length === 0) return;
-
-    const channel = supabase
-      .channel('saved-favorites-updates')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'restaurants',
-        filter: `id=in.(${favorites.join(',')})`
-      }, () => {
-        loadFavoriteRestaurants();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [favorites]);
 
   const loadFavoriteRestaurants = async () => {
     try {
@@ -155,6 +134,17 @@ export const SavedFavoritesSection = () => {
                       {restaurant.description || "Restaurant de qualité"}
                     </CardDescription>
                   </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(restaurant.id);
+                    }}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <Heart className="h-4 w-4 text-primary fill-current" />
+                  </Button>
                 </div>
               </CardHeader>
 

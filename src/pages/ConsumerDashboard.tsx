@@ -23,7 +23,7 @@ import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
 import RestaurantMapSection from "@/components/RestaurantMapSection";
-const cuizlyLogo = "/lovable-uploads/e8fe9351-fe46-440d-914c-b9b28918fe73.png";
+import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 import type { User } from "@supabase/supabase-js";
 
 const ConsumerDashboard = () => {

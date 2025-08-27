@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, Clock, MapPin, Heart, Phone, Mail, MessageSquare } from "lucide-react";
-import { CuizlyIcon } from "@/components/CuizlyIcon";
+import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -97,50 +96,66 @@ export const RestaurantMenuModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="space-y-4">
-          {/* Restaurant Header */}
-          <div className="flex items-center space-x-4">
-            {/* Logo */}
-            {restaurant.logo_url ? (
-              <div className="w-16 h-16 rounded-xl overflow-hidden border-2 border-border shadow-md flex-shrink-0">
-                <img 
-                  src={restaurant.logo_url} 
-                  alt={restaurant.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+          {/* Restaurant Cover */}
+          <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
+            {restaurant.cover_image_url ? (
+              <img 
+                src={restaurant.cover_image_url} 
+                alt={restaurant.name}
+                className="w-full h-full object-cover"
+              />
             ) : (
-              <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center border-2 border-border shadow-md flex-shrink-0">
-                <CuizlyIcon className="h-6 w-6 text-primary" />
+              <div className="w-full h-full bg-gradient-to-r from-primary/20 to-primary/10 flex items-center justify-center">
+                <ChefHat className="h-16 w-16 text-primary/40" />
               </div>
             )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             
-            {/* Restaurant Info */}
-            <div className="flex-1 min-w-0">
-              <DialogTitle className="text-2xl font-bold mb-2">
-                {restaurant.name}
-              </DialogTitle>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                {restaurant.price_range && (
-                  <>
-                    <Badge variant="outline" className="text-xs">
-                      {restaurant.price_range}
-                    </Badge>
-                    <span>•</span>
-                  </>
-                )}
-                {restaurant.address && (
-                  <div className="flex items-center space-x-1">
-                    <MapPin className="h-3 w-3" />
-                    <span className="truncate">{restaurant.address}</span>
+            {/* Restaurant Logo & Info Overlay */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="flex items-end space-x-4">
+                {restaurant.logo_url ? (
+                  <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
+                    <img 
+                      src={restaurant.logo_url} 
+                      alt={restaurant.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
+                    <ChefHat className="h-8 w-8 text-primary" />
                   </div>
                 )}
+                
+                <div className="flex-1 min-w-0">
+                  <DialogTitle className="text-2xl font-bold text-white mb-2 line-clamp-2">
+                    {restaurant.name}
+                  </DialogTitle>
+                </div>
+                
+                {/* Favorite Button */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleToggleFavorite}
+                  className={`bg-white/90 backdrop-blur-sm ${
+                    isRestaurantFavorite 
+                      ? 'text-red-500 border-red-200 hover:bg-red-50' 
+                      : 'text-muted-foreground hover:text-red-500'
+                  }`}
+                >
+                  <Heart 
+                    className={`h-4 w-4 ${isRestaurantFavorite ? 'fill-current' : ''}`} 
+                  />
+                </Button>
               </div>
             </div>
           </div>
         </DialogHeader>
         
         <div className="space-y-6">
-          {/* Restaurant Info Section */}
+          {/* Restaurant Info */}
           <div className="space-y-4">
             {/* Metadata */}
             <div className="flex flex-wrap items-center gap-4 text-sm">
@@ -155,6 +170,11 @@ export const RestaurantMenuModal = ({
                   <Clock className="h-4 w-4" />
                   <span>{restaurant.delivery_time}</span>
                 </div>
+              )}
+              {restaurant.price_range && (
+                <Badge variant="secondary">
+                  {restaurant.price_range}
+                </Badge>
               )}
             </div>
 
@@ -173,16 +193,18 @@ export const RestaurantMenuModal = ({
                 </Badge>
               ))}
             </div>
-          </div>
 
-          <Separator />
-
-          {/* Contact Info */}
-          {(restaurant.phone || restaurant.email) && (
-            <>
-              <div className="space-y-3">
-                <h3 className="font-medium text-lg">Informations de contact</h3>
+            {/* Contact Info */}
+            {(restaurant.address || restaurant.phone || restaurant.email) && (
+              <>
+                <Separator />
                 <div className="space-y-2">
+                  {restaurant.address && (
+                    <div className="flex items-center space-x-2 text-sm">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <span>{restaurant.address}</span>
+                    </div>
+                  )}
                   {restaurant.phone && (
                     <div className="flex items-center space-x-2 text-sm">
                       <Phone className="h-4 w-4 text-muted-foreground" />
@@ -196,11 +218,18 @@ export const RestaurantMenuModal = ({
                     </div>
                   )}
                 </div>
-              </div>
-              <Separator />
-            </>
-          )}
+              </>
+            )}
+          </div>
 
+          <Separator />
+
+          {/* Ratings Section */}
+          <div className="space-y-4">
+            <RatingComponent restaurantId={restaurant.id} showAddRating={true} />
+          </div>
+
+          <Separator />
 
           {/* Menus Section */}
           <div className="space-y-4">
@@ -227,7 +256,7 @@ export const RestaurantMenuModal = ({
             ) : menus.length === 0 ? (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <CuizlyIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                  <ChefHat className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
                   <h4 className="text-lg font-medium text-muted-foreground mb-2">
                     Aucun menu disponible
                   </h4>
@@ -273,15 +302,11 @@ export const RestaurantMenuModal = ({
               <MessageSquare className="h-4 w-4 mr-2" />
               Commentaire
             </Button>
-            <Button 
-              variant="outline" 
-              onClick={handleToggleFavorite}
-              className={isRestaurantFavorite ? 'border-red-200 text-red-600' : ''}
-            >
+            <Button variant="outline" onClick={handleToggleFavorite}>
               <Heart 
                 className={`h-4 w-4 mr-2 ${isRestaurantFavorite ? 'fill-current text-red-500' : ''}`} 
               />
-              {isRestaurantFavorite ? 'Retirer' : 'Favoris'}
+              {isRestaurantFavorite ? 'Retiré des favoris' : 'Ajouter aux favoris'}
             </Button>
           </div>
         </div>
