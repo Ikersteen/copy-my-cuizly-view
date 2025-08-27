@@ -486,7 +486,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     >
                       <option value="">Sélectionner un type</option>
                       <option value="Italienne">Italienne</option>
-                      <option value="Française">Française</option>
+                       <option value="Française">Française</option>
                       <option value="Chinoise">Chinoise</option>
                       <option value="Japonaise">Japonaise</option>
                       <option value="Mexicaine">Mexicaine</option>
