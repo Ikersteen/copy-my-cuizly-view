@@ -22,10 +22,13 @@ export const SavedFavoritesSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('🔄 Favorites changed:', favorites);
     if (!favLoading) {
       if (favorites.length > 0) {
+        console.log('📊 Loading favorite restaurants for:', favorites);
         loadFavoriteRestaurants();
       } else {
+        console.log('❌ No favorites, clearing list');
         setFavoriteRestaurants([]);
         setLoading(false);
       }
