@@ -134,17 +134,18 @@ export const SavedFavoritesSection = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {favoriteRestaurants.slice(0, 4).map((restaurant) => (
             <Card 
               key={restaurant.id}
-              className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm hover:shadow-xl hover:-translate-y-1"
+              className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm hover:shadow-xl hover:-translate-y-1 overflow-hidden"
             >
-              <CardHeader className="pb-3">
+              <CardContent className="p-4 space-y-3">
+                {/* Header avec logo et bouton favori */}
                 <div className="flex items-start justify-between">
-                  <div className="flex-1">
+                  <div className="flex items-center space-x-3">
                     {restaurant.logo_url ? (
-                      <div className="w-12 h-12 rounded-lg overflow-hidden mb-3">
+                      <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
                         <img 
                           src={restaurant.logo_url} 
                           alt={restaurant.name}
@@ -152,70 +153,78 @@ export const SavedFavoritesSection = () => {
                         />
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <span className="text-primary font-semibold text-lg">
                           {restaurant.name.charAt(0)}
                         </span>
                       </div>
                     )}
-                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
-                      {restaurant.name}
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2 text-sm">
-                      {restaurant.description}
-                    </CardDescription>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-base leading-tight group-hover:text-primary transition-colors truncate">
+                        {restaurant.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground line-clamp-1">
+                        {restaurant.description}
+                      </p>
+                    </div>
                   </div>
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="icon"
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleFavorite(restaurant.id);
                     }}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 h-8 w-8"
                   >
-                    <Heart className="h-4 w-4 text-primary fill-current" />
+                    <Heart className="h-4 w-4 text-red-500 fill-current" />
                   </Button>
                 </div>
-              </CardHeader>
 
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                {/* Rating et temps de livraison */}
+                <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 fill-current text-yellow-500" />
-                    <span>4.{Math.floor(Math.random() * 5) + 3}</span>
+                    <span className="font-medium">4.{Math.floor(Math.random() * 5) + 3}</span>
                   </div>
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center space-x-1 text-muted-foreground">
                     <Clock className="h-4 w-4" />
                     <span>{15 + Math.floor(Math.random() * 30)} min</span>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1">
+                {/* Badges cuisine et prix */}
+                <div className="flex flex-wrap gap-2">
                   {restaurant.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
-                    <Badge key={idx} variant="outline" className="text-xs">
+                    <Badge key={idx} variant="outline" className="text-xs py-1">
                       {cuisine}
                     </Badge>
                   ))}
                   {restaurant.price_range && (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-xs py-1">
                       {restaurant.price_range}
                     </Badge>
                   )}
                 </div>
 
+                {/* Adresse */}
                 {restaurant.address && (
-                  <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                    <MapPin className="h-3 w-3" />
+                  <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                    <MapPin className="h-3 w-3 flex-shrink-0" />
                     <span className="line-clamp-1">{restaurant.address}</span>
                   </div>
                 )}
 
+                {/* Bouton d'action */}
                 <Button 
-                  className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                  className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors mt-4"
                   size="sm"
+                  onClick={() => {
+                    // TODO: Redirect to restaurant profile
+                    console.log('Voir le profil de:', restaurant.name);
+                  }}
                 >
-                  Commander
+                  Voir le profil
                 </Button>
               </CardContent>
             </Card>
