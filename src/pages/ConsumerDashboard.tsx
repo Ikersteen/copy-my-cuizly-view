@@ -56,17 +56,13 @@ const ConsumerDashboard = () => {
 
   const handleActionClick = (action: string) => {
     switch (action) {
-      case 'Tendances':
-        setActiveFilter('trending');
-        break;
       case 'Promotions':
         setActiveFilter('promotion');
         break;
       case 'Favoris':
         setShowFavorites(true);
         break;
-      case 'Historique':
-        setShowHistory(true);
+      default:
         break;
     }
   };

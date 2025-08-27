@@ -38,7 +38,7 @@ export const HistoryModal = ({ open, onOpenChange }: HistoryModalProps) => {
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle>Historique des recherches</DialogTitle>
+            <DialogTitle>Recherches</DialogTitle>
             {searchHistory.length > 0 && (
               <Button 
                 variant="outline" 

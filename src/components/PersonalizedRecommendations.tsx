@@ -240,21 +240,9 @@ export const PersonalizedRecommendations = () => {
                   </div>
                 </div>
                  <div className="hidden md:flex gap-2">
-                   <Button variant="outline" size="sm" className="group">
-                     <TrendingUp className="h-4 w-4 mr-2" />
-                     Tendance
-                   </Button>
-                   <Button variant="outline" size="sm" className="group">
-                     <History className="h-4 w-4 mr-2" />
-                     Historique
-                   </Button>
                    <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
                      <Filter className="h-4 w-4 mr-2" />
                      Filtres
-                   </Button>
-                   <Button variant="outline" className="group">
-                     Voir tout
-                     <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                    </Button>
                  </div>
               </div>
@@ -377,21 +365,9 @@ export const PersonalizedRecommendations = () => {
             </div>
 
              <div className="md:hidden text-center flex gap-2 justify-center flex-wrap">
-               <Button variant="outline" size="sm" className="group">
-                 <TrendingUp className="h-4 w-4 mr-2" />
-                 Tendance
-               </Button>
-               <Button variant="outline" size="sm" className="group">
-                 <History className="h-4 w-4 mr-2" />
-                 Historique
-               </Button>
                <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
                  <Filter className="h-4 w-4 mr-2" />
                  Filtres
-               </Button>
-               <Button variant="outline" className="group">
-                 Voir tout
-                 <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                </Button>
              </div>
           </div>
