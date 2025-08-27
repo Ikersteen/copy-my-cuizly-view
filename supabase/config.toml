@@ -40,10 +40,11 @@ enable_signup = true
 enable_anonymous_sign_ins = false
 
 [auth.email]
-template = {}
+enable_confirmations = true
 
-[auth.email.confirm]
+[auth.email.template.confirmation]
 subject = "Confirmez votre adresse email - Cuizly"
+content_path = "./supabase/templates/confirmation.html"
 
 [auth.external]
 apple_enabled = false
@@ -63,10 +64,6 @@ twitch_enabled = false
 twitter_enabled = false
 workos_enabled = false
 zoom_enabled = false
-
-[auth.hook.send_email]
-enabled = true
-uri = "https://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/send-confirmation-email"
 
 [edge_runtime]
 enabled = true
