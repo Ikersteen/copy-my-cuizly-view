@@ -12,20 +12,24 @@ import {
 } from 'npm:@react-email/components@0.0.22'
 import * as React from 'npm:react@18.3.1'
 
-interface ConfirmationEmailProps {
-  confirmationUrl: string
-  userName: string
+interface UserInvitationEmailProps {
+  invitationUrl: string
+  inviterName: string
+  inviteeName: string
   userType: 'consumer' | 'restaurant_owner'
+  customMessage?: string
 }
 
-export const ConfirmationEmail = ({
-  confirmationUrl,
-  userName,
+export const UserInvitationEmail = ({
+  invitationUrl,
+  inviterName,
+  inviteeName,
   userType,
-}: ConfirmationEmailProps) => (
+  customMessage,
+}: UserInvitationEmailProps) => (
   <Html>
     <Head />
-    <Preview>Confirmez votre adresse courriel pour accéder à Cuizly</Preview>
+    <Preview>Invitation à rejoindre Cuizly</Preview>
     <Body style={main}>
       <Container style={container}>
         {/* Logo */}
@@ -41,62 +45,75 @@ export const ConfirmationEmail = ({
 
         {/* Header */}
         <Heading style={h1}>
-          Confirmez votre courriel
+          Vous êtes invité à rejoindre Cuizly !
         </Heading>
 
         {/* Main content */}
         <Text style={text}>
-          Bonjour {userName},
+          Bonjour {inviteeName},
         </Text>
 
         <Text style={text}>
-          Merci de vous être inscrit sur Cuizly ! Pour finaliser la création de votre compte {userType === 'consumer' ? 'consommateur' : 'restaurateur'}, veuillez confirmer votre adresse courriel.
+          <strong>{inviterName}</strong> vous invite à découvrir Cuizly, la plateforme qui révolutionne la découverte culinaire à Montréal !
         </Text>
 
+        {customMessage && (
+          <Section style={messageSection}>
+            <Text style={messageText}>
+              <em>"{customMessage}"</em>
+            </Text>
+            <Text style={messageAuthor}>
+              - {inviterName}
+            </Text>
+          </Section>
+        )}
+
+        {/* What is Cuizly */}
         <Text style={text}>
-          Cliquez sur le bouton ci-dessous pour activer votre compte :
+          {userType === 'consumer' 
+            ? "Cuizly utilise l'intelligence artificielle pour vous recommander les meilleurs restaurants et offres culinaires de Montréal. Swipez, découvrez, savourez !"
+            : "Cuizly vous permet de connecter votre restaurant avec de nouveaux clients grâce à notre plateforme alimentée par l'IA."
+          }
         </Text>
 
         {/* CTA Button */}
         <Section style={buttonSection}>
           <Link
-            href={confirmationUrl}
+            href={invitationUrl}
             style={button}
           >
-            Confirmer mon courriel
+            {userType === 'consumer' ? 'Découvrir Cuizly' : 'Rejoindre en tant que restaurateur'}
           </Link>
         </Section>
+
+        {/* Features */}
+        <Text style={text}>
+          <strong>Ce qui vous attend :</strong>
+        </Text>
+
+        {userType === 'consumer' ? (
+          <>
+            <Text style={listItem}>• Recommandations personnalisées par IA</Text>
+            <Text style={listItem}>• Offres exclusives des meilleurs restaurants</Text>
+            <Text style={listItem}>• Interface intuitive de swipe</Text>
+            <Text style={listItem}>• Découverte de nouveaux coups de cœur culinaires</Text>
+          </>
+        ) : (
+          <>
+            <Text style={listItem}>• Tableau de bord complet pour gérer vos offres</Text>
+            <Text style={listItem}>• Analytics détaillées sur vos performances</Text>
+            <Text style={listItem}>• Système de gestion des menus</Text>
+            <Text style={listItem}>• Accès direct à une clientèle ciblée</Text>
+          </>
+        )}
 
         {/* Alternative link */}
         <Text style={smallText}>
           Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :
         </Text>
         <Text style={linkText}>
-          {confirmationUrl}
+          {invitationUrl}
         </Text>
-
-        {/* What's next */}
-        <Section style={nextStepsSection}>
-          <Text style={text}>
-            <strong>Après confirmation, vous pourrez :</strong>
-          </Text>
-          
-          {userType === 'consumer' ? (
-            <>
-              <Text style={listItem}>• Découvrir les meilleurs restaurants de Montréal</Text>
-              <Text style={listItem}>• Recevoir des recommandations personnalisées</Text>
-              <Text style={listItem}>• Accéder aux offres exclusives</Text>
-              <Text style={listItem}>• Sauvegarder vos favoris</Text>
-            </>
-          ) : (
-            <>
-              <Text style={listItem}>• Créer et gérer vos offres</Text>
-              <Text style={listItem}>• Accéder à votre tableau de bord</Text>
-              <Text style={listItem}>• Analyser vos performances</Text>
-              <Text style={listItem}>• Connecter avec de nouveaux clients</Text>
-            </>
-          )}
-        </Section>
 
         {/* Footer */}
         <Text style={footer}>
@@ -105,14 +122,14 @@ export const ConfirmationEmail = ({
         </Text>
 
         <Text style={disclaimer}>
-          Si vous n'avez pas créé ce compte, vous pouvez ignorer ce courriel en toute sécurité.
+          Cette invitation a été envoyée par {inviterName}. Si vous ne souhaitez pas recevoir ce type de courriel, vous pouvez ignorer ce message.
         </Text>
       </Container>
     </Body>
   </Html>
 )
 
-export default ConfirmationEmail
+export default UserInvitationEmail
 
 // Styles inspired by Cuizly's minimal design
 const main = {
@@ -168,6 +185,30 @@ const linkText = {
   fontFamily: 'monospace',
 }
 
+const messageSection = {
+  backgroundColor: '#f0f9ff',
+  padding: '20px',
+  borderRadius: '12px',
+  margin: '20px 0',
+  border: '1px solid #bae6fd',
+  borderLeft: '4px solid #0ea5e9',
+}
+
+const messageText = {
+  color: '#0c4a6e',
+  fontSize: '16px',
+  lineHeight: '1.6',
+  margin: '0 0 10px 0',
+  fontStyle: 'italic',
+}
+
+const messageAuthor = {
+  color: '#0ea5e9',
+  fontSize: '14px',
+  margin: '0',
+  textAlign: 'right' as const,
+}
+
 const listItem = {
   color: '#737373', // --cuizly-neutral
   fontSize: '14px',
@@ -192,14 +233,6 @@ const button = {
   borderRadius: '50px',
   border: 'none',
   cursor: 'pointer',
-}
-
-const nextStepsSection = {
-  backgroundColor: '#fafafa', // --cuizly-surface
-  padding: '20px',
-  borderRadius: '12px',
-  margin: '30px 0',
-  border: '1px solid #e5e5e5',
 }
 
 const footer = {

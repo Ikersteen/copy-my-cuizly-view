@@ -12,20 +12,22 @@ import {
 } from 'npm:@react-email/components@0.0.22'
 import * as React from 'npm:react@18.3.1'
 
-interface ConfirmationEmailProps {
+interface EmailChangeEmailProps {
   confirmationUrl: string
   userName: string
-  userType: 'consumer' | 'restaurant_owner'
+  newEmail: string
+  oldEmail: string
 }
 
-export const ConfirmationEmail = ({
+export const EmailChangeEmail = ({
   confirmationUrl,
   userName,
-  userType,
-}: ConfirmationEmailProps) => (
+  newEmail,
+  oldEmail,
+}: EmailChangeEmailProps) => (
   <Html>
     <Head />
-    <Preview>Confirmez votre adresse courriel pour accéder à Cuizly</Preview>
+    <Preview>Confirmez le changement de votre adresse courriel Cuizly</Preview>
     <Body style={main}>
       <Container style={container}>
         {/* Logo */}
@@ -41,7 +43,7 @@ export const ConfirmationEmail = ({
 
         {/* Header */}
         <Heading style={h1}>
-          Confirmez votre courriel
+          Changement d'adresse courriel
         </Heading>
 
         {/* Main content */}
@@ -50,11 +52,21 @@ export const ConfirmationEmail = ({
         </Text>
 
         <Text style={text}>
-          Merci de vous être inscrit sur Cuizly ! Pour finaliser la création de votre compte {userType === 'consumer' ? 'consommateur' : 'restaurateur'}, veuillez confirmer votre adresse courriel.
+          Vous avez demandé de changer votre adresse courriel associée à votre compte Cuizly.
         </Text>
 
+        {/* Email change details */}
+        <Section style={changeSection}>
+          <Text style={changeText}>
+            <strong>Ancienne adresse :</strong> {oldEmail}
+          </Text>
+          <Text style={changeText}>
+            <strong>Nouvelle adresse :</strong> {newEmail}
+          </Text>
+        </Section>
+
         <Text style={text}>
-          Cliquez sur le bouton ci-dessous pour activer votre compte :
+          Pour confirmer ce changement, cliquez sur le bouton ci-dessous. Cette confirmation est nécessaire pour sécuriser votre compte.
         </Text>
 
         {/* CTA Button */}
@@ -63,7 +75,7 @@ export const ConfirmationEmail = ({
             href={confirmationUrl}
             style={button}
           >
-            Confirmer mon courriel
+            Confirmer le changement
           </Link>
         </Section>
 
@@ -75,27 +87,11 @@ export const ConfirmationEmail = ({
           {confirmationUrl}
         </Text>
 
-        {/* What's next */}
-        <Section style={nextStepsSection}>
-          <Text style={text}>
-            <strong>Après confirmation, vous pourrez :</strong>
+        {/* Security notice */}
+        <Section style={securitySection}>
+          <Text style={securityText}>
+            <strong>Sécurité :</strong> Si vous n'avez pas demandé ce changement, contactez-nous immédiatement à support@cuizly.com. Votre adresse courriel actuelle restera inchangée jusqu'à confirmation.
           </Text>
-          
-          {userType === 'consumer' ? (
-            <>
-              <Text style={listItem}>• Découvrir les meilleurs restaurants de Montréal</Text>
-              <Text style={listItem}>• Recevoir des recommandations personnalisées</Text>
-              <Text style={listItem}>• Accéder aux offres exclusives</Text>
-              <Text style={listItem}>• Sauvegarder vos favoris</Text>
-            </>
-          ) : (
-            <>
-              <Text style={listItem}>• Créer et gérer vos offres</Text>
-              <Text style={listItem}>• Accéder à votre tableau de bord</Text>
-              <Text style={listItem}>• Analyser vos performances</Text>
-              <Text style={listItem}>• Connecter avec de nouveaux clients</Text>
-            </>
-          )}
         </Section>
 
         {/* Footer */}
@@ -103,16 +99,12 @@ export const ConfirmationEmail = ({
           L'équipe Cuizly<br />
           <em>Ton prochain coup de cœur culinaire en un swipe.</em>
         </Text>
-
-        <Text style={disclaimer}>
-          Si vous n'avez pas créé ce compte, vous pouvez ignorer ce courriel en toute sécurité.
-        </Text>
       </Container>
     </Body>
   </Html>
 )
 
-export default ConfirmationEmail
+export default EmailChangeEmail
 
 // Styles inspired by Cuizly's minimal design
 const main = {
@@ -168,11 +160,19 @@ const linkText = {
   fontFamily: 'monospace',
 }
 
-const listItem = {
-  color: '#737373', // --cuizly-neutral
+const changeSection = {
+  backgroundColor: '#f8fafc',
+  padding: '20px',
+  borderRadius: '12px',
+  margin: '20px 0',
+  border: '1px solid #e2e8f0',
+}
+
+const changeText = {
+  color: '#171717',
   fontSize: '14px',
   lineHeight: '1.6',
-  margin: '0 0 8px 0',
+  margin: '0 0 10px 0',
 }
 
 const buttonSection = {
@@ -194,12 +194,19 @@ const button = {
   cursor: 'pointer',
 }
 
-const nextStepsSection = {
-  backgroundColor: '#fafafa', // --cuizly-surface
+const securitySection = {
+  backgroundColor: '#fef2f2', // Light red background
   padding: '20px',
   borderRadius: '12px',
   margin: '30px 0',
-  border: '1px solid #e5e5e5',
+  border: '1px solid #fecaca',
+}
+
+const securityText = {
+  color: '#dc2626', // Red text
+  fontSize: '14px',
+  lineHeight: '1.6',
+  margin: '0',
 }
 
 const footer = {
@@ -209,12 +216,4 @@ const footer = {
   marginTop: '40px',
   paddingTop: '20px',
   borderTop: '1px solid #e5e5e5',
-}
-
-const disclaimer = {
-  color: '#a3a3a3',
-  fontSize: '12px',
-  textAlign: 'center' as const,
-  marginTop: '20px',
-  fontStyle: 'italic',
 }

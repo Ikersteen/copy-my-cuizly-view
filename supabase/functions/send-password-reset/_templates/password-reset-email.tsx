@@ -76,7 +76,7 @@ export const PasswordResetEmail = ({
         {/* Security notice */}
         <Section style={securitySection}>
           <Text style={securityText}>
-            <strong>Sécurité :</strong> Si vous n'avez pas demandé cette réinitialisation, vous pouvez ignorer cet email en toute sécurité. Votre mot de passe actuel restera inchangé.
+            <strong>Sécurité :</strong> Si vous n'avez pas demandé cette réinitialisation, vous pouvez ignorer ce courriel en toute sécurité. Votre mot de passe actuel restera inchangé.
           </Text>
         </Section>
 

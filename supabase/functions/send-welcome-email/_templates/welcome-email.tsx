@@ -97,7 +97,7 @@ export const WelcomeEmail = ({
         </Text>
 
         <Text style={disclaimer}>
-          Si vous n'avez pas créé ce compte, vous pouvez ignorer cet email en toute sécurité.
+          Si vous n'avez pas créé ce compte, vous pouvez ignorer ce courriel en toute sécurité.
         </Text>
       </Container>
     </Body>
