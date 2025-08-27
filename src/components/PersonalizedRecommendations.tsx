@@ -231,12 +231,15 @@ export const PersonalizedRecommendations = () => {
                     <category.icon className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground">
-                      {category.title}
-                    </h2>
-                    <p className="text-muted-foreground">
-                      {category.subtitle}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                        {category.title}
+                      </h2>
+                      <span className="text-muted-foreground">•</span>
+                      <p className="text-sm sm:text-base text-muted-foreground">
+                        {category.subtitle}
+                      </p>
+                    </div>
                   </div>
                 </div>
                  <div className="hidden md:flex gap-2">
