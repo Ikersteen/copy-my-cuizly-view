@@ -155,7 +155,7 @@ export const RestaurantMenuModal = ({
                 </div>
               )}
               {restaurant.price_range && (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
                   <span className="text-lg font-bold text-foreground">{restaurant.name}</span>
                   <Badge variant="secondary">
                     {restaurant.price_range}
