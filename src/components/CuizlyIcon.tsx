@@ -8,7 +8,7 @@ interface CuizlyIconProps {
 export const CuizlyIcon: React.FC<CuizlyIconProps> = ({ className = "h-6 w-6", style }) => {
   return (
     <img 
-      src="https://www.cuizly.ca/cuizly-logo.png" 
+      src="/cuizly-logo.png" 
       alt="Cuizly" 
       className={className}
       style={{

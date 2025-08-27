@@ -43,7 +43,7 @@ const AvatarFallback = React.forwardRef<
     {...props}
   >
     <img 
-      src="https://www.cuizly.ca/cuizly-logo.png" 
+      src="/cuizly-logo.png" 
       alt="Cuizly Logo" 
       className="w-1/2 h-1/2 object-contain opacity-60"
       style={{ filter: 'grayscale(50%)' }}
