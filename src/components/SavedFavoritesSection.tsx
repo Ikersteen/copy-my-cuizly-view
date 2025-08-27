@@ -275,7 +275,7 @@ export const SavedFavoritesSection = () => {
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
                   size="sm"
                 >
-                  Commander
+                  Voir le menu
                 </Button>
               </CardContent>
             </Card>
