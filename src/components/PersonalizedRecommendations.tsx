@@ -284,16 +284,17 @@ export const PersonalizedRecommendations = () => {
                           </div>
                         )}
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between mt-1">
-                              <div className="flex items-center space-x-1">
-                                <MapPin className="h-3 w-3 text-muted-foreground" />
-                                <span className="text-xs text-muted-foreground">Montreal</span>
-                              </div>
-                              <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1 text-center flex-1 mx-2">
-                                {restaurant.name}
-                              </CardTitle>
+                            <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
+                              {restaurant.name}
+                            </CardTitle>
+                            <div className="flex items-center space-x-1 mt-1">
+                              <MapPin className="h-3 w-3 text-muted-foreground" />
+                              <span className="text-xs text-muted-foreground">Montreal</span>
                               {restaurant.price_range && (
-                                <span className="text-xs font-bold text-muted-foreground">{restaurant.price_range}</span>
+                                <>
+                                  <span className="text-xs text-muted-foreground">•</span>
+                                  <span className="text-xs font-bold text-muted-foreground">{restaurant.price_range}</span>
+                                </>
                               )}
                             </div>
                             <CardDescription className="line-clamp-2 text-sm mt-1">
