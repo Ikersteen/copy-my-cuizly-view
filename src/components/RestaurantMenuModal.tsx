@@ -159,6 +159,12 @@ export const RestaurantMenuModal = ({
           <div className="space-y-4">
             {/* Metadata */}
             <div className="flex flex-wrap items-center gap-4 text-sm">
+              {restaurant.rating && (
+                <div className="flex items-center space-x-1">
+                  <Star className="h-4 w-4 fill-current text-yellow-500" />
+                  <span className="font-medium">{restaurant.rating}</span>
+                </div>
+              )}
               {restaurant.delivery_time && (
                 <div className="flex items-center space-x-1 text-muted-foreground">
                   <Clock className="h-4 w-4" />
@@ -178,6 +184,15 @@ export const RestaurantMenuModal = ({
                 {restaurant.description}
               </p>
             )}
+
+            {/* Cuisine Types */}
+            <div className="flex flex-wrap gap-2">
+              {restaurant.cuisine_type?.map((cuisine, idx) => (
+                <Badge key={idx} variant="outline">
+                  {cuisine}
+                </Badge>
+              ))}
+            </div>
 
             {/* Contact Info */}
             {(restaurant.address || restaurant.phone || restaurant.email) && (
@@ -205,6 +220,13 @@ export const RestaurantMenuModal = ({
                 </div>
               </>
             )}
+          </div>
+
+          <Separator />
+
+          {/* Ratings Section */}
+          <div className="space-y-4">
+            <RatingComponent restaurantId={restaurant.id} showAddRating={true} />
           </div>
 
           <Separator />
@@ -257,6 +279,9 @@ export const RestaurantMenuModal = ({
                       </div>
                       
                       <div className="space-y-2">
+                        <Badge variant="outline" className="text-xs">
+                          {menu.cuisine_type}
+                        </Badge>
                         <p className="text-sm text-foreground line-clamp-3">
                           {menu.description}
                         </p>
