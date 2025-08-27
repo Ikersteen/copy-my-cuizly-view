@@ -288,12 +288,12 @@ export const PersonalizedRecommendations = () => {
                               {restaurant.name}
                             </CardTitle>
                             <div className="flex items-center space-x-1 mt-1">
-                              <MapPin className="h-3 w-3 text-muted-foreground" />
-                              <span className="text-xs text-muted-foreground">Montreal</span>
+                              <MapPin className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">Montreal</span>
                               {restaurant.price_range && (
                                 <>
-                                  <span className="text-xs text-muted-foreground">•</span>
-                                  <span className="text-xs font-bold text-muted-foreground">{restaurant.price_range}</span>
+                                  <span className="text-sm text-muted-foreground">•</span>
+                                  <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
                                 </>
                               )}
                             </div>
