@@ -180,7 +180,7 @@ const ConsumerDashboard = () => {
         </div>
 
         {/* Main Tabs */}
-        <Tabs defaultValue="recommendations" className="space-y-0">
+        <Tabs defaultValue="recommendations" className="space-y-2">
           <TabsList className="grid w-full grid-cols-3 h-11">
             <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2 gap-1">
               <Star className="h-4 w-4 flex-shrink-0" />
@@ -195,13 +195,16 @@ const ConsumerDashboard = () => {
               <span className="truncate">Offres</span>
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="recommendations" className="mt-0">
+
+          <TabsContent value="recommendations" className="space-y-2 mt-2">
             <PersonalizedRecommendations />
           </TabsContent>
-          <TabsContent value="favorites" className="mt-0">
+
+          <TabsContent value="favorites" className="space-y-2 mt-2">
             <SavedFavoritesSection />
           </TabsContent>
-          <TabsContent value="offers" className="mt-0">
+
+          <TabsContent value="offers" className="space-y-2 mt-2">
             <OffersSection userType="consumer" />
           </TabsContent>
         </Tabs>
