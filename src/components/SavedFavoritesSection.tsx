@@ -180,10 +180,14 @@ export const SavedFavoritesSection = () => {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="flex items-center text-sm text-muted-foreground">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 fill-current text-yellow-500" />
                     <span>4.{Math.floor(Math.random() * 5) + 3}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <MapPin className="h-3 w-3" />
+                    <span className="text-xs">Montréal • $$</span>
                   </div>
                 </div>
 
@@ -199,13 +203,6 @@ export const SavedFavoritesSection = () => {
                     </Badge>
                   )}
                 </div>
-
-                {restaurant.address && (
-                  <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                    <MapPin className="h-3 w-3" />
-                    <span className="line-clamp-1">{restaurant.address}</span>
-                  </div>
-                )}
 
                 <Button 
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
