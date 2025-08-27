@@ -389,26 +389,27 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 {menus.map((menu) => (
                   <Card key={menu.id} className="relative">
                     <CardContent className="p-4">
-                      <div className="relative mb-3">
-                        <img
-                          src={menu.image_url}
-                          alt="Menu"
-                          className="w-full h-32 object-cover rounded-lg"
-                        />
+                      {menu.image_url && (
+                        <div className="relative mb-3">
+                          <img
+                            src={menu.image_url}
+                            alt="Menu"
+                            className="w-full h-32 object-cover rounded-lg"
+                          />
+                        </div>
+                      )}
+                      
+                      <div className="mb-3 flex items-center justify-between">
+                        <Badge variant="outline">{menu.cuisine_type}</Badge>
                         <Badge 
                           variant={menu.is_active ? "default" : "secondary"}
-                          className="absolute top-2 right-2"
                         >
                           {menu.is_active ? "Actif" : "Inactif"}
                         </Badge>
                       </div>
-                      
-                      <div className="mb-3">
-                        <Badge variant="outline" className="mb-2">{menu.cuisine_type}</Badge>
-                        <p className="text-sm text-foreground">
-                          {menu.description}
-                        </p>
-                      </div>
+                      <p className="text-sm text-foreground mb-3">
+                        {menu.description}
+                      </p>
 
                       <div className="flex gap-2">
                         <Button
