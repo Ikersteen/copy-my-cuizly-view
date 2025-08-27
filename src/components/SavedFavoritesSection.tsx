@@ -59,16 +59,22 @@ export const SavedFavoritesSection = () => {
 
   const loadFavoriteRestaurants = async () => {
     try {
-      const { data, error } = await supabase
-        .from('restaurants')
-        .select('id, name, description, cuisine_type, price_range, address, logo_url')
-        .in('id', favorites)
-        .eq('is_active', true);
-
+      console.log('🔍 Loading restaurants for favorites:', favorites);
+      
+      // Utiliser la fonction RPC get_public_restaurants pour respecter les politiques RLS
+      const { data, error } = await supabase.rpc('get_public_restaurants');
+      
       if (error) throw error;
-      setFavoriteRestaurants(data || []);
+      
+      // Filtrer les restaurants qui sont dans les favoris
+      const favoriteRestaurantsData = data?.filter(restaurant => 
+        favorites.includes(restaurant.id)
+      ) || [];
+      
+      console.log('✅ Loaded favorite restaurants:', favoriteRestaurantsData);
+      setFavoriteRestaurants(favoriteRestaurantsData);
     } catch (error) {
-      console.error('Erreur lors du chargement des favoris:', error);
+      console.error('❌ Erreur lors du chargement des favoris:', error);
     } finally {
       setLoading(false);
     }
