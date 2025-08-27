@@ -13,7 +13,7 @@ import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
-import cuizlyLogo from "@/assets/cuizly-logo-new.png";
+const cuizlyLogo = "/lovable-uploads/e8fe9351-fe46-440d-914c-b9b28918fe73.png";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
