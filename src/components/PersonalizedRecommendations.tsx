@@ -226,17 +226,17 @@ export const PersonalizedRecommendations = () => {
             {/* En-tête de catégorie */}
             <div className={`rounded-2xl p-6 ${category.color}`}>
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="p-3 rounded-xl bg-white/80 dark:bg-gray-800/80">
-                    <category.icon className="h-6 w-6 text-primary" />
+                <div className="flex items-center space-x-3 sm:space-x-4">
+                  <div className="p-2 sm:p-3 rounded-xl bg-white/80 dark:bg-gray-800/80">
+                    <category.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <h2 className="text-lg sm:text-2xl font-bold text-foreground">
                         {category.title}
                       </h2>
-                      <span className="text-muted-foreground">•</span>
-                      <p className="text-sm sm:text-base text-muted-foreground">
+                      <span className="text-sm sm:text-base text-muted-foreground">•</span>
+                      <p className="text-xs sm:text-base text-muted-foreground">
                         {category.subtitle}
                       </p>
                     </div>
