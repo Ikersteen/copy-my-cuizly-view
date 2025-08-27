@@ -183,7 +183,7 @@ const ConsumerDashboard = () => {
         <Tabs defaultValue="recommendations" className="space-y-6">
           <TabsList className="grid w-full grid-cols-3 h-11">
             <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2">
-              <TrendingUp className="h-4 w-4 mr-1" />
+              <Star className="h-4 w-4 mr-1" />
               Recommandations
             </TabsTrigger>
             <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2">
