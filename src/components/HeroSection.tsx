@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const HeroSection = () => {
@@ -9,8 +9,8 @@ const HeroSection = () => {
       <div className="relative max-w-6xl mx-auto px-6 sm:px-8 text-center mobile-friendly-spacing">
         {/* Location Badge */}
         <div className="inline-flex items-center bg-gradient-to-r from-primary/8 to-primary/12 border border-primary/15 px-5 py-2.5 rounded-full text-sm font-semibold text-primary mb-4 shadow-lg backdrop-blur-md animate-fade-in">
-          <span className="mr-2 text-base">🇨🇦</span>
-          Montréal • Nouveau
+          <Sparkles className="mr-2 h-4 w-4" />
+          Cuizly • Bêta 3
         </div>
 
         {/* Main Title */}
