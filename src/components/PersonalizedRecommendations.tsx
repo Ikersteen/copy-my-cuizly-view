@@ -297,12 +297,14 @@ export const PersonalizedRecommendations = () => {
             <div className="flex items-center text-sm pt-2">
               {(() => {
                 const currentRating = restaurantRatings[restaurant.id];
-                if (currentRating?.totalRatings > 0 && currentRating?.rating && currentRating.rating > 0) {
+                const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
+                
+                if (hasRating) {
                   return (
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                       <span className="font-medium text-xs">
-                        {currentRating.rating} ({currentRating.totalRatings} évaluations)
+                        {currentRating.rating} ({currentRating.totalRatings} évaluation{currentRating.totalRatings > 1 ? 's' : ''})
                       </span>
                     </div>
                   );
@@ -315,7 +317,7 @@ export const PersonalizedRecommendations = () => {
 
                    <CardContent className="space-y-4">
                      <div className="flex flex-wrap gap-2">
-                       {restaurant.cuisine_type?.slice(0, 3).map((cuisine, idx) => (
+                       {restaurant.cuisine_type?.map((cuisine, idx) => (
                          <Badge 
                            key={idx} 
                            variant="outline" 
