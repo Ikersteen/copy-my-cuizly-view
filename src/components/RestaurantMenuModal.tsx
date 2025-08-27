@@ -51,6 +51,18 @@ export const RestaurantMenuModal = ({
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const { toast } = useToast();
 
+  // State pour les favoris (doit être avant toute condition de retour)
+  const isRestaurantFavorite = restaurant ? isFavorite(restaurant.id) : false;
+  const [localFavoriteState, setLocalFavoriteState] = useState(isRestaurantFavorite);
+  
+  // Update local state when favorites change
+  useEffect(() => {
+    if (restaurant) {
+      const currentFavoriteState = isFavorite(restaurant.id);
+      setLocalFavoriteState(currentFavoriteState);
+    }
+  }, [restaurant, isFavorite, favorites]);
+
   useEffect(() => {
     if (open && restaurant?.id) {
       loadMenus();
@@ -98,16 +110,6 @@ export const RestaurantMenuModal = ({
   };
 
   if (!restaurant) return null;
-
-  const isRestaurantFavorite = isFavorite(restaurant.id);
-  
-  // Force re-render when favorites change
-  const [localFavoriteState, setLocalFavoriteState] = useState(isRestaurantFavorite);
-  
-  // Update local state when favorites change
-  useEffect(() => {
-    setLocalFavoriteState(isRestaurantFavorite);
-  }, [isRestaurantFavorite, favorites]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
