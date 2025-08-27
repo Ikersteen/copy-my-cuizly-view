@@ -180,21 +180,22 @@ const ConsumerDashboard = () => {
         </div>
 
         {/* Main Tabs */}
-        <Tabs defaultValue="recommendations" className="space-y-2">
-          <TabsList className="grid w-full grid-cols-3 h-11">
-            <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2 gap-1">
-              <Star className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">Recommandations</span>
-            </TabsTrigger>
-            <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2 gap-1">
-              <Heart className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">Favoris</span>
-            </TabsTrigger>
-            <TabsTrigger value="offers" className="text-xs sm:text-sm px-2 py-2 gap-1">
-              <Gift className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">Offres</span>
-            </TabsTrigger>
-          </TabsList>
+        <div className="bg-gradient-to-br from-muted/30 via-background to-muted/30 rounded-lg p-4">
+          <Tabs defaultValue="recommendations" className="space-y-2">
+            <TabsList className="grid w-full grid-cols-3 h-11">
+              <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2 gap-1">
+                <Star className="h-4 w-4 flex-shrink-0" />
+                <span className="truncate">Recommandations</span>
+              </TabsTrigger>
+              <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2 gap-1">
+                <Heart className="h-4 w-4 flex-shrink-0" />
+                <span className="truncate">Favoris</span>
+              </TabsTrigger>
+              <TabsTrigger value="offers" className="text-xs sm:text-sm px-2 py-2 gap-1">
+                <Gift className="h-4 w-4 flex-shrink-0" />
+                <span className="truncate">Offres</span>
+              </TabsTrigger>
+            </TabsList>
 
           <TabsContent value="recommendations" className="space-y-2 mt-2">
             <PersonalizedRecommendations />
@@ -207,7 +208,8 @@ const ConsumerDashboard = () => {
           <TabsContent value="offers" className="space-y-2 mt-2">
             <OffersSection userType="consumer" />
           </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </div>
 
       {/* Modals */}
