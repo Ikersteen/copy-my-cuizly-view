@@ -153,28 +153,28 @@ const ConsumerDashboard = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowProfile(true)}
-                className="flex-1 sm:flex-none min-h-[44px]"
+                className="px-3 py-2 h-10"
               >
-                <UserIcon className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Profil</span>
+                <UserIcon className="h-4 w-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Profil</span>
               </Button>
               <Button 
                 variant="outline"
                 size="sm"
                 onClick={() => setShowPreferences(true)}
-                className="flex-1 sm:flex-none min-h-[44px]"
+                className="px-3 py-2 h-10"
               >
-                <Settings className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Préférences</span>
+                <Settings className="h-4 w-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Préférences</span>
               </Button>
               <Button 
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
-                className="flex-1 sm:flex-none min-h-[44px] text-destructive hover:text-destructive hover:bg-destructive/10"
+                className="px-3 py-2 h-10 text-destructive hover:text-destructive hover:bg-destructive/10"
               >
-                <LogOut className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Déconnexion</span>
+                <LogOut className="h-4 w-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Déconnexion</span>
               </Button>
             </div>
           </div>
@@ -182,23 +182,23 @@ const ConsumerDashboard = () => {
 
         {/* Main Tabs */}
         <Tabs defaultValue="recommendations" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-12 sm:h-10">
-            <TabsTrigger value="recommendations" className="text-xs sm:text-sm min-h-[44px] sm:min-h-[auto]">
-              <TrendingUp className="h-4 w-4 mr-1 sm:mr-2" />
+          <TabsList className="grid w-full grid-cols-4 h-11">
+            <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2">
+              <TrendingUp className="h-4 w-4 mr-1" />
               <span className="hidden xs:inline">Recommandations</span>
               <span className="xs:hidden">Reco</span>
             </TabsTrigger>
-            <TabsTrigger value="map" className="text-xs sm:text-sm min-h-[44px] sm:min-h-[auto]">
-              <Map className="h-4 w-4 mr-1 sm:mr-2" />
+            <TabsTrigger value="map" className="text-xs sm:text-sm px-2 py-2">
+              <Map className="h-4 w-4 mr-1" />
               Carte
             </TabsTrigger>
-            <TabsTrigger value="favorites" className="text-xs sm:text-sm min-h-[44px] sm:min-h-[auto]">
-              <Heart className="h-4 w-4 mr-1 sm:mr-2" />
+            <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2">
+              <Heart className="h-4 w-4 mr-1" />
               <span className="hidden xs:inline">Favoris</span>
               <span className="xs:hidden">♥</span>
             </TabsTrigger>
-            <TabsTrigger value="offers" className="text-xs sm:text-sm min-h-[44px] sm:min-h-[auto]">
-              <Gift className="h-4 w-4 mr-1 sm:mr-2" />
+            <TabsTrigger value="offers" className="text-xs sm:text-sm px-2 py-2">
+              <Gift className="h-4 w-4 mr-1" />
               Offres
             </TabsTrigger>
           </TabsList>
