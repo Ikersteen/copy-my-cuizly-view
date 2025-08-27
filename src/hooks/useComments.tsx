@@ -127,14 +127,14 @@ export const useComments = (restaurantId?: string) => {
     }
   };
 
-  // Set up real-time updates for comments
+  // Set up hyper-reactive real-time updates for comments and ratings
   useEffect(() => {
     if (!restaurantId) return;
 
-    console.log('🔄 Setting up comments real-time subscription for:', restaurantId);
+    console.log('🔄 Setting up hyper-reactive subscription for:', restaurantId);
 
-    const commentsChannel = supabase
-      .channel(`comments-${restaurantId}`)
+    const realtimeChannel = supabase
+      .channel(`restaurant-activity-${restaurantId}`)
       .on(
         'postgres_changes',
         {
@@ -145,14 +145,27 @@ export const useComments = (restaurantId?: string) => {
         },
         (payload) => {
           console.log('💬 Comments updated in real-time:', payload);
-          fetchComments(); // Reload comments when changed
+          fetchComments(); // Immediate reload on any comment change
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'ratings',
+          filter: `restaurant_id=eq.${restaurantId}`,
+        },
+        (payload) => {
+          console.log('⭐ Ratings updated in real-time:', payload);
+          fetchComments(); // Reload to update average rating
         }
       )
       .subscribe();
 
     return () => {
-      console.log('🔄 Cleaning up comments subscription');
-      commentsChannel.unsubscribe();
+      console.log('🔄 Cleaning up hyper-reactive subscription');
+      realtimeChannel.unsubscribe();
     };
   }, [restaurantId]);
 

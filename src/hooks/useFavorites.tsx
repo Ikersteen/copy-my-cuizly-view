@@ -9,6 +9,22 @@ export const useFavorites = () => {
 
   useEffect(() => {
     loadFavorites();
+
+    // Set up real-time subscription for favorites changes
+    const subscription = supabase
+      .channel('user-favorites')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'user_favorites'
+      }, () => {
+        loadFavorites();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
   }, []);
 
   const loadFavorites = async () => {

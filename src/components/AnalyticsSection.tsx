@@ -18,6 +18,7 @@ interface AnalyticsData {
   avgRating: number;
   totalRatings: number;
   offerClicks: number;
+  weeklyGrowth?: number;
 }
 
 export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
@@ -83,54 +84,71 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     if (!restaurantId) return;
 
     try {
-      // Get offers data
-      const { data: offersData, error: offersError } = await supabase
-        .from('offers')
-        .select('id, is_active')
-        .eq('restaurant_id', restaurantId);
+      // Get current week date range for trends calculation
+      const now = new Date();
+      const currentWeekStart = new Date(now);
+      currentWeekStart.setDate(now.getDate() - now.getDay());
+      const lastWeekStart = new Date(currentWeekStart);
+      lastWeekStart.setDate(currentWeekStart.getDate() - 7);
+      const lastWeekEnd = new Date(currentWeekStart);
+      lastWeekEnd.setDate(currentWeekStart.getDate() - 1);
 
-      if (offersError) throw offersError;
+      // Get all data in parallel for better performance
+      const [offersData, menusData, analyticsData, ratingsData, lastWeekData] = await Promise.all([
+        supabase
+          .from('offers')
+          .select('id, is_active')
+          .eq('restaurant_id', restaurantId),
+        supabase
+          .from('menus')
+          .select('id, is_active')
+          .eq('restaurant_id', restaurantId),
+        supabase
+          .from('restaurant_analytics')
+          .select('*')
+          .eq('restaurant_id', restaurantId)
+          .order('date', { ascending: false }),
+        supabase
+          .from('ratings')
+          .select('rating')
+          .eq('restaurant_id', restaurantId),
+        supabase
+          .from('restaurant_analytics')
+          .select('profile_views, menu_views, offer_clicks')
+          .eq('restaurant_id', restaurantId)
+          .gte('date', lastWeekStart.toISOString().split('T')[0])
+          .lte('date', lastWeekEnd.toISOString().split('T')[0])
+      ]);
 
-      // Get menus data
-      const { data: menusData, error: menusError } = await supabase
-        .from('menus')
-        .select('id, is_active')
-        .eq('restaurant_id', restaurantId);
+      if (offersData.error) throw offersData.error;
+      if (menusData.error) throw menusData.error;
+      if (analyticsData.error) throw analyticsData.error;
+      if (ratingsData.error) throw ratingsData.error;
+      if (lastWeekData.error) throw lastWeekData.error;
 
-      if (menusError) throw menusError;
+      // Calculate current analytics
+      const totalOffers = offersData.data?.length || 0;
+      const activeOffers = offersData.data?.filter(offer => offer.is_active).length || 0;
+      const totalMenus = menusData.data?.length || 0;
+      const activeMenus = menusData.data?.filter(menu => menu.is_active).length || 0;
 
-      // Get real analytics data
-      const { data: analyticsData, error: analyticsError } = await supabase
-        .from('restaurant_analytics')
-        .select('*')
-        .eq('restaurant_id', restaurantId)
-        .order('date', { ascending: false });
+      // Calculate current week analytics
+      const currentWeekData = analyticsData.data?.filter(day => 
+        new Date(day.date) >= currentWeekStart
+      ) || [];
+      
+      const profileViews = currentWeekData.reduce((sum, day) => sum + (day.profile_views || 0), 0);
+      const menuViews = currentWeekData.reduce((sum, day) => sum + (day.menu_views || 0), 0);
+      const offerClicks = currentWeekData.reduce((sum, day) => sum + (day.offer_clicks || 0), 0);
 
-      if (analyticsError) throw analyticsError;
-
-      // Get ratings data
-      const { data: ratingsData, error: ratingsError } = await supabase
-        .from('ratings')
-        .select('rating')
-        .eq('restaurant_id', restaurantId);
-
-      if (ratingsError) throw ratingsError;
-
-      // Calculate real analytics
-      const totalOffers = offersData?.length || 0;
-      const activeOffers = offersData?.filter(offer => offer.is_active).length || 0;
-      const totalMenus = menusData?.length || 0;
-      const activeMenus = menusData?.filter(menu => menu.is_active).length || 0;
-
-      // Sum up all analytics data
-      const profileViews = analyticsData?.reduce((sum, day) => sum + (day.profile_views || 0), 0) || 0;
-      const menuViews = analyticsData?.reduce((sum, day) => sum + (day.menu_views || 0), 0) || 0;
-      const offerClicks = analyticsData?.reduce((sum, day) => sum + (day.offer_clicks || 0), 0) || 0;
+      // Calculate last week analytics for trends
+      const lastWeekViews = lastWeekData.data?.reduce((sum, day) => sum + (day.profile_views || 0), 0) || 0;
+      const weeklyGrowth = lastWeekViews > 0 ? ((profileViews - lastWeekViews) / lastWeekViews * 100) : 0;
 
       // Calculate average rating
-      const totalRatings = ratingsData?.length || 0;
+      const totalRatings = ratingsData.data?.length || 0;
       const avgRating = totalRatings > 0 
-        ? ratingsData.reduce((sum, rating) => sum + rating.rating, 0) / totalRatings 
+        ? ratingsData.data.reduce((sum, rating) => sum + rating.rating, 0) / totalRatings 
         : 0;
 
       setAnalytics({
@@ -143,6 +161,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         avgRating: Math.round(avgRating * 10) / 10,
         totalRatings,
         offerClicks,
+        weeklyGrowth: Math.round(weeklyGrowth * 10) / 10
       });
     } catch (error) {
       console.error('Error loading analytics:', error);
@@ -228,18 +247,39 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         </div>
 
         <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="text-center sm:text-left">
               <h4 className="text-sm font-semibold text-foreground mb-1">
                 Tendances cette semaine 📈
               </h4>
               <p className="text-xs text-cuizly-neutral">
-                +15% de vues par rapport à la semaine dernière
+                {analytics.weeklyGrowth !== undefined ? (
+                  analytics.weeklyGrowth >= 0 ? 
+                    `+${analytics.weeklyGrowth}% de vues par rapport à la semaine dernière` :
+                    `${analytics.weeklyGrowth}% de vues par rapport à la semaine dernière`
+                ) : (
+                  "Données en cours de collecte..."
+                )}
               </p>
             </div>
-            <Badge variant="outline" className="text-green-600 border-green-300">
-              Tendance positive
-            </Badge>
+            <div className="flex justify-center">
+              <Badge 
+                variant="outline" 
+                className={`${
+                  analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0
+                    ? 'text-green-600 border-green-300'
+                    : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth < 0
+                    ? 'text-orange-600 border-orange-300'
+                    : 'text-blue-600 border-blue-300'
+                }`}
+              >
+                {analytics.weeklyGrowth !== undefined ? (
+                  analytics.weeklyGrowth >= 0 ? 'Tendance positive' : 'En cours d\'amélioration'
+                ) : (
+                  'Collecte de données'
+                )}
+              </Badge>
+            </div>
           </div>
         </div>
       </CardContent>
