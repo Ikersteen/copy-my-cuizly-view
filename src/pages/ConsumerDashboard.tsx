@@ -184,13 +184,11 @@ const ConsumerDashboard = () => {
           <TabsList className="grid w-full grid-cols-3 h-11">
             <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2">
               <TrendingUp className="h-4 w-4 mr-1" />
-              <span className="hidden xs:inline">Recommandations</span>
-              <span className="xs:hidden">Reco</span>
+              Recommandations
             </TabsTrigger>
             <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2">
               <Heart className="h-4 w-4 mr-1" />
-              <span className="hidden xs:inline">Favoris</span>
-              <span className="xs:hidden">♥</span>
+              Favoris
             </TabsTrigger>
             <TabsTrigger value="offers" className="text-xs sm:text-sm px-2 py-2">
               <Gift className="h-4 w-4 mr-1" />
