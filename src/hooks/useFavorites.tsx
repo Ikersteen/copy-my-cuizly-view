@@ -12,15 +12,18 @@ export const useFavorites = () => {
 
     // Set up real-time subscription for favorites changes
     const subscription = supabase
-      .channel('user-favorites')
+      .channel('user-favorites-realtime')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
         table: 'user_favorites'
-      }, () => {
+      }, (payload) => {
+        console.log('Realtime update received:', payload);
         loadFavorites();
       })
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Subscription status:', status);
+      });
 
     return () => {
       supabase.removeChannel(subscription);
