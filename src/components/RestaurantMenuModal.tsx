@@ -205,7 +205,6 @@ export const RestaurantMenuModal = ({
             <RatingComponent restaurantId={restaurant.id} showAddRating={true} />
           </div>
 
-          <Separator />
 
            {/* Menus Section */}
            <div className="space-y-4">
