@@ -154,14 +154,26 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
 
       <CardContent>
         <Tabs defaultValue="current" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="current" className="flex items-center gap-2">
-              <Clock className="h-4 w-4" />
-              En cours ({currentOffers.length})
+          <TabsList className="grid w-full grid-cols-2 h-auto p-1 bg-muted/50 rounded-xl">
+            <TabsTrigger 
+              value="current" 
+              className="flex flex-col items-center gap-1 py-3 px-4 data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-lg transition-all duration-200"
+            >
+              <Clock className="h-5 w-5 text-primary" />
+              <div className="text-center">
+                <div className="text-xs font-medium">En cours</div>
+                <div className="text-xs font-bold text-primary">({currentOffers.length})</div>
+              </div>
             </TabsTrigger>
-            <TabsTrigger value="past" className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
-              Terminées ({pastOffers.length})
+            <TabsTrigger 
+              value="past" 
+              className="flex flex-col items-center gap-1 py-3 px-4 data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-lg transition-all duration-200"
+            >
+              <CheckCircle className="h-5 w-5 text-muted-foreground" />
+              <div className="text-center">
+                <div className="text-xs font-medium">Terminées</div>
+                <div className="text-xs font-bold text-muted-foreground">({pastOffers.length})</div>
+              </div>
             </TabsTrigger>
           </TabsList>
 
