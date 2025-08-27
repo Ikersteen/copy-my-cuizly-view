@@ -287,7 +287,7 @@ export const PersonalizedRecommendations = () => {
                             <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
                               {restaurant.name}
                             </CardTitle>
-                            <div className="flex items-center justify-between mt-1">
+                            <div className="flex items-center space-x-2 mt-1">
                               <div className="flex items-center space-x-1 text-xs text-muted-foreground">
                                 <MapPin className="h-3 w-3" />
                                 <span>Montreal</span>
