@@ -282,7 +282,7 @@ export const RestaurantMenuModal = ({
               <Heart 
                 className={`h-4 w-4 mr-2 ${isRestaurantFavorite ? 'fill-current text-red-500' : ''}`} 
               />
-              {isRestaurantFavorite ? 'Retiré des favoris' : 'Ajouter aux favoris'}
+              {isRestaurantFavorite ? 'Favoris' : 'Ajouter aux favoris'}
             </Button>
           </div>
         </div>
