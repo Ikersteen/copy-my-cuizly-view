@@ -206,7 +206,7 @@ export const PersonalizedRecommendations = () => {
             <div className="flex items-center space-x-2 mt-4">
               <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse" />
               <div>
-                <h2 className="text-lg sm:text-xl font-semibold">Génération des recommandations...</h2>
+                <h2 className="text-lg sm:text-xl font-semibold whitespace-nowrap">Génération des recommandations...</h2>
                 <p className="text-xs sm:text-base text-muted-foreground">Analyse de vos préférences en cours</p>
               </div>
             </div>
