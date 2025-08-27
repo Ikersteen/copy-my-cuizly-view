@@ -288,7 +288,7 @@ export const PersonalizedRecommendations = () => {
                             {restaurant.name}
                           </CardTitle>
                           <CardDescription className="line-clamp-2 text-sm mt-1">
-                            {restaurant.description || "Restaurant de qualité"}
+                            {restaurant.description}
                           </CardDescription>
                         </div>
                       </div>

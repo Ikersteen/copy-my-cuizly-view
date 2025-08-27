@@ -132,21 +132,6 @@ export const RestaurantMenuModal = ({
                   </DialogTitle>
                 </div>
                 
-                {/* Favorite Button */}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleToggleFavorite}
-                  className={`bg-white/90 backdrop-blur-sm ${
-                    isRestaurantFavorite 
-                      ? 'text-red-500 border-red-200 hover:bg-red-50' 
-                      : 'text-muted-foreground hover:text-red-500'
-                  }`}
-                >
-                  <Heart 
-                    className={`h-4 w-4 ${isRestaurantFavorite ? 'fill-current' : ''}`} 
-                  />
-                </Button>
               </div>
             </div>
           </div>

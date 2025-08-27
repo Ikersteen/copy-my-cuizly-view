@@ -164,7 +164,7 @@ export const SavedFavoritesSection = () => {
                       {restaurant.name}
                     </CardTitle>
                     <CardDescription className="line-clamp-2 text-sm">
-                      {restaurant.description || "Restaurant de qualité"}
+                      {restaurant.description}
                     </CardDescription>
                   </div>
                   <Button
