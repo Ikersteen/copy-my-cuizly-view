@@ -283,14 +283,18 @@ export const PersonalizedRecommendations = () => {
                             <ChefHat className="h-6 w-6 text-primary" />
                           </div>
                         )}
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
-                            {restaurant.name}
-                          </CardTitle>
-                          <CardDescription className="line-clamp-2 text-sm mt-1">
-                            {restaurant.description}
-                          </CardDescription>
-                        </div>
+                         <div className="flex-1 min-w-0">
+                           <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
+                             {restaurant.name}
+                           </CardTitle>
+                           <div className="flex items-center space-x-1 text-xs text-muted-foreground mt-1">
+                             <MapPin className="h-3 w-3" />
+                             <span>Montreal</span>
+                           </div>
+                           <CardDescription className="line-clamp-2 text-sm mt-1">
+                             {restaurant.description}
+                           </CardDescription>
+                         </div>
                       </div>
                     </div>
 
@@ -310,17 +314,11 @@ export const PersonalizedRecommendations = () => {
                   return <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>;
                 }
               })()}
-              <div className="flex items-center space-x-2">
-                {restaurant.price_range && (
-                  <Badge variant="secondary" className="text-xs">
-                    {restaurant.price_range}
-                  </Badge>
-                )}
-                <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                  <MapPin className="h-3 w-3" />
-                  <span>Montreal</span>
-                </div>
-              </div>
+              {restaurant.price_range && (
+                <Badge variant="secondary" className="text-xs">
+                  {restaurant.price_range}
+                </Badge>
+              )}
             </div>
                   </CardHeader>
 
