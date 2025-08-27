@@ -94,7 +94,7 @@ export const RestaurantMenuModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8">
         <DialogHeader className="space-y-4">
           {/* Restaurant Cover */}
            <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
@@ -109,31 +109,22 @@ export const RestaurantMenuModal = ({
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             )}
             
-            {/* Restaurant Logo & Info Overlay */}
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="flex items-end space-x-4">
-                {restaurant.logo_url ? (
-                  <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
-                    <img 
-                      src={restaurant.logo_url} 
-                      alt={restaurant.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
-                    <ChefHat className="h-8 w-8 text-primary" />
-                  </div>
-                )}
-                
-                <div className="flex-1 min-w-0">
-                  <DialogTitle className="text-2xl font-bold text-white mb-2 line-clamp-2">
-                    {restaurant.name}
-                  </DialogTitle>
-                </div>
-                
-              </div>
-            </div>
+             {/* Restaurant Logo Only */}
+             <div className="absolute bottom-4 left-4">
+               {restaurant.logo_url ? (
+                 <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
+                   <img 
+                     src={restaurant.logo_url} 
+                     alt={restaurant.name}
+                     className="w-full h-full object-cover"
+                   />
+                 </div>
+               ) : (
+                 <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
+                   <ChefHat className="h-8 w-8 text-primary" />
+                 </div>
+               )}
+             </div>
           </div>
         </DialogHeader>
         
@@ -222,14 +213,19 @@ export const RestaurantMenuModal = ({
 
           <Separator />
 
-          {/* Menus Section */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-semibold">Nos menus</h3>
-              {menus.length > 0 && (
-                <Badge variant="outline">{menus.length} menu{menus.length > 1 ? 's' : ''}</Badge>
-              )}
-            </div>
+           {/* Location and Menus Section */}
+           <div className="space-y-4">
+             <div className="flex items-center space-x-1 mb-2">
+               <MapPin className="h-4 w-4 text-muted-foreground" />
+               <span className="text-sm text-muted-foreground">Montreal</span>
+             </div>
+             
+             <div className="flex items-center justify-between">
+               <h3 className="text-xl font-semibold">Nos menus</h3>
+               {menus.length > 0 && (
+                 <Badge variant="outline">{menus.length} menu{menus.length > 1 ? 's' : ''}</Badge>
+               )}
+             </div>
 
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
