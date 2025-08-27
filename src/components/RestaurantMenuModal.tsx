@@ -177,16 +177,10 @@ export const RestaurantMenuModal = ({
             </div>
 
             {/* Contact Info */}
-            {(restaurant.address || restaurant.phone || restaurant.email) && (
+            {(restaurant.phone || restaurant.email) && (
               <>
                 <Separator />
                 <div className="space-y-2">
-                  {restaurant.address && (
-                    <div className="flex items-center space-x-2 text-sm">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span>{restaurant.address}</span>
-                    </div>
-                  )}
                   {restaurant.phone && (
                     <div className="flex items-center space-x-2 text-sm">
                       <Phone className="h-4 w-4 text-muted-foreground" />
