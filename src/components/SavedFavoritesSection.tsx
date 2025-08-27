@@ -20,50 +20,6 @@ export const SavedFavoritesSection = () => {
   const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
-  const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
-
-  const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
-    try {
-      const { data } = await supabase
-        .from('ratings')
-        .select('rating')
-        .eq('restaurant_id', restaurantId);
-
-      if (!data || data.length === 0) return { rating: null, totalRatings: 0 };
-      
-      const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
-      return { 
-        rating: Math.round(average * 10) / 10,
-        totalRatings: data.length
-      };
-    } catch (error) {
-      console.error('Error fetching rating:', error);
-      return { rating: null, totalRatings: 0 };
-    }
-  };
-
-  const updateRestaurantRating = async (restaurantId: string) => {
-    const ratingData = await getRealRating(restaurantId);
-    setRestaurantRatings(prev => ({
-      ...prev,
-      [restaurantId]: ratingData
-    }));
-  };
-
-  const loadRestaurantRatings = async (restaurants: Restaurant[]) => {
-    const ratingsPromises = restaurants.map(async (restaurant) => {
-      const ratingData = await getRealRating(restaurant.id);
-      return { id: restaurant.id, ...ratingData };
-    });
-
-    const allRatings = await Promise.all(ratingsPromises);
-    const ratingsMap = allRatings.reduce((acc, rating) => {
-      acc[rating.id] = { rating: rating.rating, totalRatings: rating.totalRatings };
-      return acc;
-    }, {} as Record<string, { rating: number | null; totalRatings: number }>);
-
-    setRestaurantRatings(ratingsMap);
-  };
 
   useEffect(() => {
     console.log('🔄 Favorites changed:', favorites);
@@ -79,7 +35,7 @@ export const SavedFavoritesSection = () => {
     }
   }, [favorites, favLoading]);
 
-  // Set up real-time subscription for restaurant updates
+  // Set up real-time subscription for restaurant updates only
   useEffect(() => {
     if (favorites.length === 0) return;
 
@@ -101,34 +57,6 @@ export const SavedFavoritesSection = () => {
     };
   }, [favorites]);
 
-  // Set up real-time subscription for ratings updates
-  useEffect(() => {
-    if (favorites.length === 0) return;
-
-    const ratingsChannel = supabase
-      .channel('favorites-ratings-updates')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'ratings',
-          filter: `restaurant_id=in.(${favorites.join(',')})`
-        },
-        async (payload: any) => {
-          const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
-          if (restaurantId && favorites.includes(restaurantId)) {
-            await updateRestaurantRating(restaurantId);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      ratingsChannel.unsubscribe();
-    };
-  }, [favorites]);
-
   const loadFavoriteRestaurants = async () => {
     try {
       console.log('🔍 Loading restaurants for favorites:', favorites);
@@ -145,9 +73,6 @@ export const SavedFavoritesSection = () => {
       
       console.log('✅ Loaded favorite restaurants:', favoriteRestaurantsData);
       setFavoriteRestaurants(favoriteRestaurantsData);
-      
-      // Load ratings for these restaurants
-      await loadRestaurantRatings(favoriteRestaurantsData);
     } catch (error) {
       console.error('❌ Erreur lors du chargement des favoris:', error);
     } finally {
@@ -256,31 +181,13 @@ export const SavedFavoritesSection = () => {
 
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  {(() => {
-                    const currentRating = restaurantRatings[restaurant.id];
-                    const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
-                    
-                    if (hasRating) {
-                      return (
-                        <div className="flex items-center space-x-1">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-medium text-xs">
-                            {currentRating.rating} ({currentRating.totalRatings} évaluation{currentRating.totalRatings > 1 ? 's' : ''})
-                          </span>
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <div className="flex items-center space-x-1">
-                          <Star className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>
-                        </div>
-                      );
-                    }
-                  })()}
+                  <div className="flex items-center space-x-1">
+                    <Star className="h-4 w-4 fill-current text-yellow-500" />
+                    <span>4.{Math.floor(Math.random() * 5) + 3}</span>
+                  </div>
                   <div className="flex items-center space-x-1">
                     <MapPin className="h-3 w-3" />
-                    <span className="text-xs">Montréal • {restaurant.price_range}</span>
+                    <span className="text-xs">Montréal • $$</span>
                   </div>
                 </div>
 
