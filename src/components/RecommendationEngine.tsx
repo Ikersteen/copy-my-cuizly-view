@@ -47,7 +47,8 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
 
   const trackProfileView = async (restaurantId: string) => {
     try {
-      console.log(`Tracking profile view for restaurant ${restaurantId}`);
+      console.log(`🔍 TRACKING: Profile view for restaurant ${restaurantId}`);
+      console.log('📅 Date:', new Date().toISOString().split('T')[0]);
       
       const today = new Date().toISOString().split('T')[0];
       
@@ -412,6 +413,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
                 className="w-full" 
                 size="sm"
                 onClick={() => {
+                  console.log('🎯 BUTTON CLICKED: Voir le profil clicked!');
                   // Track profile view
                   trackProfileView(restaurant.id);
                   setSelectedRestaurant(restaurant);
