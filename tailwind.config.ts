@@ -62,6 +62,10 @@ export default {
 					neutral: 'hsl(var(--cuizly-neutral))',
 					surface: 'hsl(var(--cuizly-surface))'
 				},
+				active: {
+					DEFAULT: 'hsl(var(--active))',
+					foreground: 'hsl(var(--active-foreground))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

@@ -60,7 +60,8 @@ const CookieBanner = () => {
               <Button
                 onClick={acceptCookies}
                 size="sm"
-                className="text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4 bg-primary hover:bg-primary/90 order-2 sm:order-none"
+                variant="active"
+                className="text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4 order-2 sm:order-none"
               >
                 Accepter tout
               </Button>
