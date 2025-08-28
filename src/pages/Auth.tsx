@@ -689,7 +689,7 @@ const Auth = () => {
                         <Input
                           id="restaurantName"
                           name="restaurantName"
-                          placeholder="Salvatore"
+                          placeholder="Mon restaurant"
                           className="pl-10 text-sm"
                           required={userType === 'restaurant_owner'}
                         />
