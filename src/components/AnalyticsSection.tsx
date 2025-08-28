@@ -315,7 +315,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
               <div 
                 key={index} 
                 className={`
-                  text-center p-4 rounded-lg border transition-all duration-300 hover:shadow-lg hover:-translate-y-1
+                  text-center p-4 rounded-lg border
                   ${card.bgColor} ${card.borderColor}
                 `}
               >
@@ -341,7 +341,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
           })}
         </div>
 
-        <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20 hover:shadow-md transition-all duration-300">
+        <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20">
           <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:justify-between">
             <div className="text-center md:text-left order-2 md:order-1">
               <div className="flex items-center gap-2 mb-1">
@@ -349,11 +349,11 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                   Tendances cette semaine
                 </h4>
                 {analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0 ? (
-                  <TrendingUp className="h-4 w-4 text-green-500 animate-bounce" />
+                  <TrendingUp className="h-4 w-4 text-green-500" />
                 ) : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth < 0 ? (
-                  <ArrowDown className="h-4 w-4 text-red-500 animate-bounce" />
+                  <ArrowDown className="h-4 w-4 text-red-500" />
                 ) : (
-                  <div className="h-4 w-4 bg-gray-300 rounded-full animate-pulse" />
+                  <div className="h-4 w-4 bg-gray-300 rounded-full" />
                 )}
               </div>
               <p className="text-xs text-cuizly-neutral">
@@ -370,12 +370,11 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
               <Badge 
                 variant="outline" 
                 className={`
-                  transition-all duration-300 hover:scale-105
                   ${analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0
-                    ? 'text-green-600 border-green-300 bg-green-50 hover:bg-green-100'
+                    ? 'text-green-600 border-green-300 bg-green-50'
                     : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth < 0
-                    ? 'text-red-600 border-red-300 bg-red-50 hover:bg-red-100'
-                    : 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100'
+                    ? 'text-red-600 border-red-300 bg-red-50'
+                    : 'text-blue-600 border-blue-300 bg-blue-50'
                   }
                 `}
               >
