@@ -222,7 +222,18 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
 
       // Calculate last week analytics for trends
       const lastWeekViews = lastWeekData.data?.reduce((sum, day) => sum + (day.profile_views || 0), 0) || 0;
-      const weeklyGrowth = lastWeekViews > 0 ? ((currentWeekViews - lastWeekViews) / lastWeekViews * 100) : 0;
+      
+      // Fix weekly growth calculation - handle case when no previous data exists
+      let weeklyGrowth = 0;
+      if (lastWeekViews > 0) {
+        weeklyGrowth = ((currentWeekViews - lastWeekViews) / lastWeekViews * 100);
+      } else if (currentWeekViews > 0) {
+        // If there's data this week but not last week, show as positive growth
+        weeklyGrowth = 100;
+      }
+      
+      // Round to 1 decimal place
+      weeklyGrowth = Math.round(weeklyGrowth * 10) / 10;
 
       // Calculate average rating
       const totalRatings = ratingsData.data?.length || 0;
@@ -250,7 +261,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         avgRating: Math.round(avgRating * 10) / 10,
         totalRatings,
         offerClicks: totalOfferClicks,   // Use total instead of current week
-        weeklyGrowth: Math.round(weeklyGrowth * 10) / 10
+        weeklyGrowth: weeklyGrowth
       };
 
       // Detect changes and animate
