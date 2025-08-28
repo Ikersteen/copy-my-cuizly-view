@@ -143,18 +143,18 @@ export const PersonalizedRecommendations = () => {
         let hasAnyMatch = false;
 
         // Vérifier les préférences de cuisine
-        if (preferences?.cuisine_preferences?.length) {
-          const cuisineMatch = restaurant.cuisine_type?.some(cuisine =>
+        if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
+          const matchedCuisines = restaurant.cuisine_type.filter(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
           );
-          if (cuisineMatch) {
+          if (matchedCuisines.length > 0) {
             hasAnyMatch = true;
-            score += 50;
-            const matchedCuisine = restaurant.cuisine_type?.find(cuisine =>
-              preferences.cuisine_preferences.includes(cuisine)
-            );
-            if (matchedCuisine) {
-              reasons.push(`Cuisine ${matchedCuisine.toLowerCase()}`);
+            // Score basé sur le nombre de cuisines qui matchent
+            score += 40 * (matchedCuisines.length / preferences.cuisine_preferences.length);
+            if (matchedCuisines.length === 1) {
+              reasons.push(`Cuisine ${matchedCuisines[0].toLowerCase()}`);
+            } else {
+              reasons.push(`${matchedCuisines.length} cuisines favorites`);
             }
           }
         }
@@ -162,8 +162,18 @@ export const PersonalizedRecommendations = () => {
         // Vérifier la gamme de prix
         if (preferences?.price_range === restaurant.price_range) {
           hasAnyMatch = true;
-          score += 30;
+          score += 25;
           reasons.push("Dans votre budget");
+        }
+
+        // Vérifier le rayon de livraison
+        if (preferences?.delivery_radius && restaurant.delivery_radius) {
+          // Si le rayon du restaurant est inférieur ou égal au rayon souhaité par l'utilisateur
+          if (restaurant.delivery_radius <= preferences.delivery_radius) {
+            hasAnyMatch = true;
+            score += 15;
+            reasons.push(`Livraison dans ${restaurant.delivery_radius}km`);
+          }
         }
 
         // Vérifier les restrictions alimentaires
@@ -173,6 +183,8 @@ export const PersonalizedRecommendations = () => {
           // on peut le recommander. Ici, on assume que tous les restaurants peuvent accommoder
           // mais dans une vraie implementation, il faudrait une table de compatibilité.
           hasAnyMatch = true;
+          score += 10;
+          reasons.push("Options adaptées disponibles");
         }
 
         // Si le restaurant ne correspond à aucune préférence utilisateur, on l'exclut
