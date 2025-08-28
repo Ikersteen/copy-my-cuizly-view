@@ -805,9 +805,28 @@ const Auth = () => {
                     )}
                   </div>
 
-                  <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
-                    {isLoading ? "Création du compte..." : "Créer mon compte"}
-                  </Button>
+                  {userType === 'restaurant_owner' ? (
+                    <div className="space-y-3">
+                      <Button 
+                        type="button" 
+                        className="w-full text-sm bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+                        onClick={() => window.open('https://calendly.com/cuizly-demo', '_blank')}
+                      >
+                        Réserver une démo
+                      </Button>
+                      <Button 
+                        type="submit" 
+                        className="w-full text-sm opacity-50 cursor-not-allowed" 
+                        disabled={true}
+                      >
+                        Créer mon compte (Invitation requise)
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
+                      {isLoading ? "Création du compte..." : "Créer mon compte"}
+                    </Button>
+                  )}
                 </form>
 
                 <div className="relative">
