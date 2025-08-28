@@ -177,7 +177,7 @@ const ConsumerDashboard = () => {
                   Bonjour {profile?.first_name || ""} ! {profile?.chef_emoji_color || '👋'}
                 </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
-                  {user?.email}
+                  {profile?.username || ""}
                 </p>
                 {preferences?.street && (
                   <p className="text-xs text-muted-foreground mt-1">
