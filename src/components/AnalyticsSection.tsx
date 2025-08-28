@@ -287,9 +287,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       value: analytics.totalOffers,
       subtitle: `${analytics.activeOffers} actives`,
       icon: TrendingUp,
-      color: "text-blue-500",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200",
+      color: "text-blue-600",
+      bgColor: "bg-blue-100 dark:bg-blue-100",
+      borderColor: "border-blue-300 dark:border-blue-300",
       trendKey: 'totalOffers'
     },
     {
@@ -297,9 +297,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       value: analytics.totalMenus,
       subtitle: `${analytics.activeMenus} actifs`,
       icon: Calendar,
-      color: "text-green-500",
-      bgColor: "bg-green-50",
-      borderColor: "border-green-200",
+      color: "text-green-600",
+      bgColor: "bg-green-100 dark:bg-green-100",
+      borderColor: "border-green-300 dark:border-green-300",
       trendKey: 'totalMenus'
     },
     {
@@ -307,9 +307,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       value: analytics.profileViews,
       subtitle: "Vues totales",
       icon: Eye,
-      color: "text-purple-500",
-      bgColor: "bg-purple-50",
-      borderColor: "border-purple-200",
+      color: "text-purple-600",
+      bgColor: "bg-purple-100 dark:bg-purple-100",
+      borderColor: "border-purple-300 dark:border-purple-300",
       trendKey: 'profileViews'
     },
     {
@@ -317,9 +317,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       value: analytics.avgRating.toFixed(1),
       subtitle: "Sur 5 étoiles",
       icon: Star,
-      color: "text-yellow-500",
-      bgColor: "bg-yellow-50",
-      borderColor: "border-yellow-200",
+      color: "text-orange-600",
+      bgColor: "bg-orange-100 dark:bg-orange-100",
+      borderColor: "border-orange-300 dark:border-orange-300",
       trendKey: 'avgRating'
     }
   ];
@@ -366,15 +366,15 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                   </div>
                 </div>
                 
-                <div className="text-2xl font-bold mb-2 text-foreground">
+                <div className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-900">
                   {card.value}
                 </div>
                 
-                <div className="text-xs font-medium text-cuizly-neutral mb-1">
+                <div className="text-xs font-medium text-gray-700 dark:text-gray-700 mb-1">
                   {card.title}
                 </div>
                 
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-gray-600 dark:text-gray-600">
                   {card.subtitle}
                 </div>
               </div>
@@ -382,11 +382,11 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
           })}
         </div>
 
-        <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20">
+        <div className="mt-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-50 dark:to-gray-100 rounded-lg border border-gray-200 dark:border-gray-200">
           <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:justify-between">
             <div className="text-center md:text-left order-2 md:order-1">
               <div className="flex items-center gap-2 mb-1">
-                <h4 className="text-sm font-semibold text-foreground">
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-900">
                   Tendances cette semaine
                 </h4>
                 {analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0 ? (
@@ -397,7 +397,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                   <div className="h-4 w-4 bg-gray-300 rounded-full" />
                 )}
               </div>
-              <p className="text-xs text-cuizly-neutral">
+              <p className="text-xs text-gray-700 dark:text-gray-700">
                 {analytics.weeklyGrowth !== undefined ? (
                   analytics.weeklyGrowth >= 0 ? 
                     `+${analytics.weeklyGrowth}% de vues par rapport à la semaine dernière` :
