@@ -28,33 +28,75 @@ const Auth = () => {
   const { sendWelcomeEmail } = useEmailNotifications();
 
   useEffect(() => {
+    console.log("🔵 [Auth Effect] Initialisation du listener d'authentification");
+    
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("🔵 [Auth State Change] Event:", event);
+        console.log("🔵 [Auth State Change] Session présente:", !!session);
+        
+        if (session?.user) {
+          console.log("🔵 [Auth State Change] User ID:", session.user.id);
+          console.log("🔵 [Auth State Change] Email:", session.user.email);
+          console.log("🔵 [Auth State Change] Provider:", session.user.app_metadata?.provider);
+          console.log("🔵 [Auth State Change] User metadata:", session.user.user_metadata);
+        }
+        
         if (event === 'SIGNED_IN' && session) {
-          // Check if user has profile, create if needed
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .single();
+          console.log("🟢 [Auth State Change] Utilisateur connecté, vérification du profil...");
+          
+          try {
+            // Check if user has profile, create if needed
+            const { data: profile, error: profileError } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('user_id', session.user.id)
+              .single();
 
-          if (!profile && session.user.user_metadata) {
-            await createUserProfile(session.user);
+            console.log("🔵 [Auth State Change] Profil existant:", !!profile);
+            
+            if (profileError && profileError.code !== 'PGRST116') {
+              console.error("🔴 [Auth State Change] Erreur lors de la récupération du profil:", profileError);
+            }
+
+            if (!profile && session.user.user_metadata) {
+              console.log("🔵 [Auth State Change] Création du profil utilisateur...");
+              await createUserProfile(session.user);
+            }
+
+            console.log("🟢 [Auth State Change] Redirection vers /dashboard");
+            navigate('/dashboard');
+          } catch (error) {
+            console.error("🔴 [Auth State Change] Erreur dans la gestion de la connexion:", error);
           }
-
-          navigate('/dashboard');
         }
       }
     );
 
     // Check for existing session
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        navigate('/dashboard');
+      console.log("🔵 [Auth Effect] Vérification de la session existante");
+      
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error("🔴 [Auth Effect] Erreur lors de la vérification de session:", error);
+          return;
+        }
+        
+        console.log("🔵 [Auth Effect] Session existante:", !!session);
+        
+        if (session) {
+          console.log("🟢 [Auth Effect] Session trouvée, redirection vers /dashboard");
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.error("🔴 [Auth Effect] Erreur dans checkAuth:", error);
       }
     };
+    
     checkAuth();
 
     return () => subscription.unsubscribe();
@@ -335,27 +377,69 @@ const Auth = () => {
   };
 
   const handleGoogleAuth = async () => {
+    console.log("🔵 [Google Auth] Début de la connexion Google");
+    
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      setIsLoading(true);
+      
+      // Log de l'URL de redirection
+      const redirectUrl = `${window.location.origin}/dashboard`;
+      console.log("🔵 [Google Auth] URL de redirection configurée:", redirectUrl);
+      console.log("🔵 [Google Auth] Origin actuel:", window.location.origin);
+      
+      // Vérification préliminaire de la session actuelle
+      const { data: currentSession } = await supabase.auth.getSession();
+      console.log("🔵 [Google Auth] Session actuelle avant OAuth:", currentSession?.session ? "Connecté" : "Déconnecté");
+      
+      console.log("🔵 [Google Auth] Lancement de signInWithOAuth...");
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: redirectUrl,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
         }
       });
       
-      if (error) throw error;
+      console.log("🔵 [Google Auth] Réponse OAuth reçue");
+      console.log("🔵 [Google Auth] Data:", data);
+      
+      if (error) {
+        console.error("🔴 [Google Auth] Erreur OAuth:", error);
+        console.error("🔴 [Google Auth] Message d'erreur:", error.message);
+        console.error("🔴 [Google Auth] Status:", error.status);
+        throw error;
+      }
+      
+      console.log("🟢 [Google Auth] OAuth initié avec succès, redirection en cours...");
+      console.log("🟢 [Google Auth] URL générée:", data?.url);
+      
     } catch (error: any) {
+      console.error("🔴 [Google Auth] Erreur dans handleGoogleAuth:", error);
+      
       let errorMessage = "Impossible de se connecter avec Google";
       
       if (error.message?.includes("provider is not enabled")) {
         errorMessage = "Google OAuth n'est pas configuré pour cette application";
+        console.error("🔴 [Google Auth] Provider Google non activé");
+      } else if (error.message?.includes("invalid_request")) {
+        errorMessage = "Configuration OAuth invalide";
+        console.error("🔴 [Google Auth] Configuration OAuth invalide");
+      } else if (error.message?.includes("redirect_uri")) {
+        errorMessage = "URL de redirection non autorisée";
+        console.error("🔴 [Google Auth] Problème avec l'URL de redirection");
       }
 
       toast({
         title: "Erreur OAuth",
-        description: errorMessage,
+        description: `${errorMessage} - Consultez la console pour plus de détails`,
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
