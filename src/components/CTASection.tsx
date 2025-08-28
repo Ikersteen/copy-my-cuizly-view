@@ -48,9 +48,6 @@ const CTASection = () => {
               </div>
             </div>
 
-            {/* Floating elements */}
-            <div className="absolute top-6 sm:top-10 left-6 sm:left-10 w-20 h-20 sm:w-24 sm:h-24 bg-primary/10 rounded-full blur-xl"></div>
-            <div className="absolute bottom-6 sm:bottom-10 right-6 sm:right-10 w-24 h-24 sm:w-28 sm:h-28 bg-primary/20 rounded-full blur-xl"></div>
           </div>
         </div>
       </div>
