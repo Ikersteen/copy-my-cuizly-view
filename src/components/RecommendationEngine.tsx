@@ -49,20 +49,10 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
     try {
       console.log(`🔍 TRACKING: Profile view for restaurant ${restaurantId}`);
       
-      const today = new Date().toISOString().split('T')[0];
-      
-      // Utiliser upsert pour éviter les conflits de contrainte unique
-      const { error } = await supabase
-        .from('restaurant_analytics')
-        .upsert({
-          restaurant_id: restaurantId,
-          date: today,
-          profile_views: 1
-        }, {
-          onConflict: 'restaurant_id,date',
-          ignoreDuplicates: false
-        })
-        .select();
+      // Utiliser la fonction database sécurisée
+      const { error } = await supabase.rpc('track_profile_view', {
+        p_restaurant_id: restaurantId
+      });
 
       if (error) {
         console.error('Error tracking profile view:', error);

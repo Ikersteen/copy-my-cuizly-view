@@ -573,6 +573,10 @@ export type Database = {
         }
         Returns: string
       }
+      track_profile_view: {
+        Args: { p_restaurant_id: string }
+        Returns: undefined
+      }
       update_analytics_data: {
         Args: {
           p_date?: string
