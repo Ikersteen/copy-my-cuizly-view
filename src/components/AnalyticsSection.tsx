@@ -55,93 +55,16 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
   });
 
   useEffect(() => {
+    if (!restaurantId) return;
+    
     loadAnalytics();
-
-    // Set up real-time subscriptions with error handling
-    let analyticsSubscription: any = null;
-    let intervalId: NodeJS.Timeout | null = null;
-
-    const setupRealtimeSubscriptions = async () => {
-      try {
-        console.log('🔄 Setting up analytics realtime subscriptions');
-        
-        analyticsSubscription = supabase
-          .channel('restaurant-analytics-realtime')
-          .on('postgres_changes', { 
-            event: '*', 
-            schema: 'public', 
-            table: 'restaurant_analytics',
-            filter: `restaurant_id=eq.${restaurantId}`
-          }, (payload) => {
-            console.log('Analytics updated:', payload);
-            loadAnalytics();
-          })
-          .on('postgres_changes', { 
-            event: '*', 
-            schema: 'public', 
-            table: 'ratings',
-            filter: `restaurant_id=eq.${restaurantId}`
-          }, (payload) => {
-            console.log('Ratings updated:', payload);
-            loadAnalytics();
-          })
-          .on('postgres_changes', { 
-            event: '*', 
-            schema: 'public', 
-            table: 'offers',
-            filter: `restaurant_id=eq.${restaurantId}`
-          }, (payload) => {
-            console.log('Offers updated:', payload);
-            loadAnalytics();
-          })
-          .on('postgres_changes', { 
-            event: '*', 
-            schema: 'public', 
-            table: 'menus',
-            filter: `restaurant_id=eq.${restaurantId}`
-          }, (payload) => {
-            console.log('Menus updated:', payload);
-            loadAnalytics();
-          })
-          .on('postgres_changes', { 
-            event: '*', 
-            schema: 'public', 
-            table: 'comments',
-            filter: `restaurant_id=eq.${restaurantId}`
-          }, (payload) => {
-            console.log('Comments updated:', payload);
-            loadAnalytics();
-          })
-          .subscribe((status) => {
-            if (status === 'SUBSCRIBED') {
-              console.log('✅ Analytics subscriptions established');
-            } else if (status === 'CHANNEL_ERROR') {
-              console.warn('⚠️ Analytics subscriptions failed, using polling fallback');
-            }
-          });
-
-      } catch (error) {
-        console.warn('⚠️ Real-time analytics subscriptions not available:', error);
-        console.log('📊 Falling back to polling method');
-      }
-    };
-
-    setupRealtimeSubscriptions();
-
-    // Auto-refresh every 30 seconds as backup
-    intervalId = setInterval(loadAnalytics, 30000);
+    
+    // Use polling method directly instead of trying WebSocket first
+    console.log('📊 Setting up polling method for analytics');
+    const intervalId = setInterval(loadAnalytics, 30000);
 
     return () => {
-      try {
-        if (analyticsSubscription) {
-          supabase.removeChannel(analyticsSubscription);
-        }
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-      } catch (error) {
-        console.warn('⚠️ Error cleaning up analytics subscriptions:', error);
-      }
+      clearInterval(intervalId);
     };
   }, [restaurantId]);
 

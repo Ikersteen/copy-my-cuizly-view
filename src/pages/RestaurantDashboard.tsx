@@ -44,124 +44,87 @@ const RestaurantDashboard = () => {
 
   useEffect(() => {
     loadData();
-  }, []);
-
-  // Set up real-time subscriptions with error handling
-  useEffect(() => {
-    if (!user?.id) return;
-
-    console.log('🔄 Setting up real-time subscriptions for user:', user.id);
-
-    let profileChannel: any = null;
-    let restaurantChannel: any = null;
-
-    const setupRealtimeSubscriptions = async () => {
-      try {
-        // Profile updates
-        profileChannel = supabase
-          .channel(`profile-updates-${user.id}`)
-          .on(
-            'postgres_changes',
-            {
-              event: 'UPDATE',
-              schema: 'public',
-              table: 'profiles',
-              filter: `user_id=eq.${user.id}`,
-            },
-            (payload) => {
-              console.log('🎭 Profile updated in real-time:', payload.new);
-              // Force reload after profile change
-              setTimeout(() => loadData(), 200);
-            }
-          )
-          .subscribe((status) => {
-            if (status === 'SUBSCRIBED') {
-              console.log('✅ Profile subscription established');
-            } else if (status === 'CHANNEL_ERROR') {
-              console.warn('⚠️ Profile subscription failed, using polling fallback');
-            }
-          });
-
-        // Restaurant updates
-        restaurantChannel = supabase
-          .channel(`restaurant-updates-${user.id}`)
-          .on(
-            'postgres_changes',
-            {
-              event: 'UPDATE',
-              schema: 'public',
-              table: 'restaurants',
-              filter: `owner_id=eq.${user.id}`,
-            },
-            (payload) => {
-              console.log('🏪 Restaurant updated in real-time:', payload.new);
-              setRestaurant(payload.new as Restaurant);
-            }
-          )
-          .subscribe((status) => {
-            if (status === 'SUBSCRIBED') {
-              console.log('✅ Restaurant subscription established');
-            } else if (status === 'CHANNEL_ERROR') {
-              console.warn('⚠️ Restaurant subscription failed, using polling fallback');
-            }
-          });
-
-      } catch (error) {
-        console.warn('⚠️ Real-time subscriptions not available:', error);
-        console.log('📊 Falling back to polling method');
-        
-        // Fallback: Set up polling every 30 seconds
-        const pollInterval = setInterval(() => {
-          loadData();
-        }, 30000);
-
-        return () => {
-          clearInterval(pollInterval);
-        };
-      }
-    };
-
-    setupRealtimeSubscriptions();
+    
+    // Set up polling fallback immediately instead of relying on WebSocket
+    const pollInterval = setInterval(() => {
+      loadData();
+    }, 30000); // Refresh every 30 seconds
 
     return () => {
-      console.log('🔄 Cleaning up real-time subscriptions');
-      try {
-        if (profileChannel) {
-          supabase.removeChannel(profileChannel);
-        }
-        if (restaurantChannel) {
-          supabase.removeChannel(restaurantChannel);
-        }
-      } catch (error) {
-        console.warn('⚠️ Error cleaning up subscriptions:', error);
-      }
+      clearInterval(pollInterval);
     };
-  }, [user?.id]);
+  }, []);
 
   const loadData = async () => {
     try {
-      // Get user session
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
+      // Check if we have a valid session with proper error handling
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        // Redirect to auth if session is invalid
+        window.location.href = '/auth';
+        return;
+      }
 
-      if (session?.user) {
-        // Get user's restaurant
-        const { data: restaurantData, error: restaurantError } = await supabase
-          .from('restaurants')
-          .select('*')
-          .eq('owner_id', session.user.id)
-          .maybeSingle();
+      if (!session?.user) {
+        console.warn('No valid session found');
+        window.location.href = '/auth';
+        return;
+      }
 
-        if (!restaurantError && restaurantData) {
-          setRestaurant(restaurantData);
-        } else if (restaurantError) {
-          console.error('Erreur lors du chargement du restaurant:', restaurantError);
+      setUser(session.user);
+
+      // Get user's restaurant with retry logic
+      let retryCount = 0;
+      const maxRetries = 3;
+      
+      while (retryCount < maxRetries) {
+        try {
+          const { data: restaurantData, error: restaurantError } = await supabase
+            .from('restaurants')
+            .select('*')
+            .eq('owner_id', session.user.id)
+            .maybeSingle();
+
+          if (!restaurantError && restaurantData) {
+            setRestaurant(restaurantData);
+            break;
+          } else if (restaurantError) {
+            console.error(`Erreur lors du chargement du restaurant (tentative ${retryCount + 1}):`, restaurantError);
+            if (retryCount === maxRetries - 1) {
+              // Show user-friendly error after all retries
+              toast({
+                title: "Problème de connexion",
+                description: "Impossible de charger les données du restaurant. Veuillez rafraîchir la page.",
+                variant: "destructive"
+              });
+            }
+          }
+        } catch (error) {
+          console.error(`Network error (tentative ${retryCount + 1}):`, error);
+          if (retryCount === maxRetries - 1) {
+            toast({
+              title: "Erreur de connexion",
+              description: "Vérifiez votre connexion internet et rechargez la page.",
+              variant: "destructive"
+            });
+          }
         }
-
-        // Note: Profile data is now handled by useProfile hook
+        
+        retryCount++;
+        if (retryCount < maxRetries) {
+          // Wait before retry (exponential backoff)
+          await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+        }
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des données:', error);
+      console.error('Erreur critique lors du chargement des données:', error);
+      toast({
+        title: "Erreur système",
+        description: "Une erreur inattendue s'est produite. Veuillez recharger la page.",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }

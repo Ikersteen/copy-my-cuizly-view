@@ -15,33 +15,59 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getProfile = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        navigate('/auth');
-        return;
-      }
-
       try {
-        // Get user profile to determine dashboard type
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('user_type')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
+        // Check session with proper error handling
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('Session error, redirecting to auth:', sessionError);
+          navigate('/auth');
+          return;
+        }
+        
+        if (!session) {
+          console.log('No session found, redirecting to auth');
+          navigate('/auth');
+          return;
+        }
 
-        if (error) {
-          console.error('Erreur lors du chargement du profil:', error);
-          // Default to consumer if profile fetch fails
-          setProfile({ user_type: 'consumer' });
-        } else if (data) {
-          setProfile(data);
-        } else {
-          // No profile found - this shouldn't happen with the trigger but handle it
-          setProfile({ user_type: 'consumer' });
+        // Get user profile with retry logic
+        let retryCount = 0;
+        const maxRetries = 2;
+        
+        while (retryCount < maxRetries) {
+          try {
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('user_type')
+              .eq('user_id', session.user.id)
+              .maybeSingle();
+
+            if (!error) {
+              setProfile(data || { user_type: 'consumer' });
+              break;
+            } else {
+              console.error(`Profile fetch error (attempt ${retryCount + 1}):`, error);
+              if (retryCount === maxRetries - 1) {
+                // Default to consumer after all retries
+                console.log('Defaulting to consumer profile after retry failures');
+                setProfile({ user_type: 'consumer' });
+              }
+            }
+          } catch (fetchError) {
+            console.error(`Network error (attempt ${retryCount + 1}):`, fetchError);
+            if (retryCount === maxRetries - 1) {
+              setProfile({ user_type: 'consumer' });
+            }
+          }
+          
+          retryCount++;
+          if (retryCount < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
         }
       } catch (error) {
-        console.error('Erreur inattendue:', error);
+        console.error('Critical error in getProfile:', error);
         setProfile({ user_type: 'consumer' });
       } finally {
         setLoading(false);
