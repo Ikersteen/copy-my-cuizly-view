@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 interface FavoritesModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onRestaurantClick?: (restaurant: Restaurant) => void;
 }
 
 interface Restaurant {
@@ -21,7 +22,7 @@ interface Restaurant {
   address: string;
 }
 
-export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
+export const FavoritesModal = ({ open, onOpenChange, onRestaurantClick }: FavoritesModalProps) => {
   const { favorites, toggleFavorite } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
@@ -44,6 +45,59 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
       console.error('Error loading favorite restaurants:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const trackProfileView = async (restaurantId: string) => {
+    try {
+      console.log(`Tracking profile view for restaurant ${restaurantId}`);
+      
+      const today = new Date().toISOString().split('T')[0];
+      
+      const { data: existingAnalytics, error: fetchError } = await supabase
+        .from('restaurant_analytics')
+        .select('*')
+        .eq('restaurant_id', restaurantId)
+        .eq('date', today)
+        .maybeSingle();
+
+      if (fetchError) {
+        console.error('Error fetching analytics:', fetchError);
+        return;
+      }
+
+      const updates = {
+        profile_views: (existingAnalytics?.profile_views || 0) + 1
+      };
+
+      if (existingAnalytics) {
+        const { error: updateError } = await supabase
+          .from('restaurant_analytics')
+          .update(updates)
+          .eq('id', existingAnalytics.id);
+        
+        if (updateError) {
+          console.error('Error updating analytics:', updateError);
+        } else {
+          console.log('Analytics updated successfully');
+        }
+      } else {
+        const { error: insertError } = await supabase
+          .from('restaurant_analytics')
+          .insert({
+            restaurant_id: restaurantId,
+            date: today,
+            ...updates
+          });
+        
+        if (insertError) {
+          console.error('Error inserting analytics:', insertError);
+        } else {
+          console.log('Analytics inserted successfully');
+        }
+      }
+    } catch (error) {
+      console.error('Error tracking profile view:', error);
     }
   };
 
@@ -96,8 +150,16 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                     </div>
                     <Badge variant="secondary">{restaurant.price_range}</Badge>
                   </div>
-                  <Button className="w-full mt-3" size="sm">
-                    Voir le menu
+                  <Button 
+                    className="w-full mt-3" 
+                    size="sm"
+                    onClick={() => {
+                      // Track profile view
+                      trackProfileView(restaurant.id);
+                      onRestaurantClick?.(restaurant);
+                    }}
+                  >
+                    Voir le profil
                   </Button>
                 </CardContent>
               </Card>
