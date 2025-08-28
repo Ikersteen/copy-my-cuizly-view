@@ -64,9 +64,9 @@ const PricingSectionLanding = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-start">
           {plans.map((plan, index) => (
-            <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''}`}>
+            <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''} ${index < 2 ? 'h-fit' : ''}`}>
               {plan.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-foreground text-background">
                   Populaire
@@ -86,7 +86,7 @@ const PricingSectionLanding = () => {
                 )}
               </CardHeader>
               <CardContent className="pt-0">
-                <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                <ul className="space-y-2 sm:space-y-3 mb-6">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start space-x-2 sm:space-x-3">
                       <Check className="h-4 w-4 text-foreground mt-0.5 sm:mt-1 flex-shrink-0" />
