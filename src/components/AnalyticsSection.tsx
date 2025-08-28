@@ -311,40 +311,21 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {analyticsCards.map((card, index) => {
-            const isChanged = changedCards.has(index);
-            const trend = trends[card.trendKey];
-            const trendColor = trend === 'up' ? 'text-green-500' : trend === 'down' ? 'text-red-500' : '';
-            
             return (
               <div 
                 key={index} 
                 className={`
-                  relative text-center p-4 rounded-lg border transition-all duration-300 hover:shadow-lg hover:-translate-y-1
+                  text-center p-4 rounded-lg border transition-all duration-300 hover:shadow-lg hover:-translate-y-1
                   ${card.bgColor} ${card.borderColor}
-                  ${isChanged ? 'animate-pulse ring-2 ring-primary/50 ring-offset-2' : ''}
                 `}
               >
-                {/* Trend indicator */}
-                {trend && trend !== 'stable' && (
-                  <div className={`absolute top-2 right-2 ${trendColor}`}>
-                    {trend === 'up' ? (
-                      <ArrowUp className="h-3 w-3 animate-bounce" />
-                    ) : (
-                      <ArrowDown className="h-3 w-3 animate-bounce" />
-                    )}
-                  </div>
-                )}
-                
                 <div className="flex items-center justify-center mb-3">
                   <div className={`p-2 rounded-full ${card.bgColor} border ${card.borderColor}`}>
                     <card.icon className={`h-5 w-5 ${card.color}`} />
                   </div>
                 </div>
                 
-                <div className={`
-                  text-2xl font-bold mb-2 transition-all duration-300
-                  ${isChanged ? 'scale-110 text-primary' : 'text-foreground'}
-                `}>
+                <div className="text-2xl font-bold mb-2 text-foreground">
                   {card.value}
                 </div>
                 
@@ -355,11 +336,6 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                 <div className="text-xs text-muted-foreground">
                   {card.subtitle}
                 </div>
-                
-                {/* Pulse animation overlay for changes */}
-                {isChanged && (
-                  <div className="absolute inset-0 rounded-lg border-2 border-primary animate-ping opacity-75" />
-                )}
               </div>
             );
           })}
