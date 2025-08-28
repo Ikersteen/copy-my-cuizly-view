@@ -12,22 +12,28 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
 import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
+import { Separator } from "@/components/ui/separator";
 
-import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, DIETARY_OPTIONS, ALLERGEN_OPTIONS } from "@/constants/cuisineTypes";
 
 interface Restaurant {
   id: string;
   name: string;
   description: string;
   address: string;
-  cuisine_type: string[];
+  phone?: string;
+  email?: string;
+  cuisine_type?: string[];
+  dietary_restrictions?: string[];
+  allergens?: string[];
+  price_range?: string;
+  opening_hours?: any;
+  delivery_radius?: number;
   is_active: boolean;
-  logo_url: string;
+  created_at: string;
+  updated_at: string;
+  logo_url?: string;
   cover_image_url?: string;
-  phone: string;
-  email: string;
-  price_range: string;
-  delivery_radius: number;
 }
 
 interface RestaurantProfileModalProps {
@@ -43,6 +49,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
   const [uploadingCover, setUploadingCover] = useState(false);
   const [loading, setLoading] = useState(false);
   const [availableCuisines] = useState(CUISINE_OPTIONS);
+  const [availableDietaryOptions] = useState(DIETARY_OPTIONS);
+  const [availableAllergens] = useState(ALLERGEN_OPTIONS);
   const [chefEmojiColor, setChefEmojiColor] = useState("🧑‍🍳");
   const [showPhotoAdjustment, setShowPhotoAdjustment] = useState(false);
   const [adjustmentImageUrl, setAdjustmentImageUrl] = useState("");
@@ -235,6 +243,38 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     }));
   };
 
+  const addDietaryRestriction = (dietary: string) => {
+    if (dietary.trim() && !formData.dietary_restrictions?.includes(dietary.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        dietary_restrictions: [...(prev.dietary_restrictions || []), dietary.trim()]
+      }));
+    }
+  };
+
+  const removeDietaryRestriction = (dietary: string) => {
+    setFormData(prev => ({
+      ...prev,
+      dietary_restrictions: prev.dietary_restrictions?.filter(d => d !== dietary) || []
+    }));
+  };
+
+  const addAllergen = (allergen: string) => {
+    if (allergen.trim() && !formData.allergens?.includes(allergen.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        allergens: [...(prev.allergens || []), allergen.trim()]
+      }));
+    }
+  };
+
+  const removeAllergen = (allergen: string) => {
+    setFormData(prev => ({
+      ...prev,
+      allergens: prev.allergens?.filter(a => a !== allergen) || []
+    }));
+  };
+
   const handleSave = async () => {
     if (!restaurant || !formData.name?.trim()) {
       toast({
@@ -248,18 +288,20 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     setLoading(true);
     try {
       // Prepare update data with null for empty strings
-      const updateData = {
-        name: formData.name.trim(),
-        description: formData.description?.trim() || null,
-        address: formData.address?.trim() || null,
-        phone: formData.phone?.trim() || null,
-        email: formData.email?.trim() || null,
-        cuisine_type: formData.cuisine_type || [],
-        price_range: formData.price_range || null,
-        logo_url: formData.logo_url?.trim() || null,
-        cover_image_url: formData.cover_image_url?.trim() || null,
-        delivery_radius: Number(formData.delivery_radius) || 5
-      };
+        const updateData = {
+          name: formData.name.trim(),
+          description: formData.description?.trim() || null,
+          address: formData.address?.trim() || null,
+          phone: formData.phone?.trim() || null,
+          email: formData.email?.trim() || null,
+          cuisine_type: formData.cuisine_type || [],
+          dietary_restrictions: formData.dietary_restrictions || [],
+          allergens: formData.allergens || [],
+          price_range: formData.price_range || null,
+          logo_url: formData.logo_url?.trim() || null,
+          cover_image_url: formData.cover_image_url?.trim() || null,
+          delivery_radius: Number(formData.delivery_radius) || 5
+        };
 
       console.log('Updating restaurant with data:', updateData);
 
@@ -587,6 +629,92 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               </div>
             </div>
           </div>
+
+          <Separator />
+
+          {/* Restrictions alimentaires */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground">Restrictions alimentaires accommodées</h3>
+            <p className="text-sm text-muted-foreground">
+              Indiquez les restrictions alimentaires que votre restaurant peut accommoder
+            </p>
+            
+            <div className="flex flex-wrap gap-2 mb-4">
+              {formData.dietary_restrictions?.map((dietary, index) => (
+                <Badge key={index} variant="default" className="pr-1">
+                  {dietary}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
+                    onClick={() => removeDietaryRestriction(dietary)}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </Badge>
+              )) || []}
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium mb-3 block">Restrictions disponibles</Label>
+              <div className="flex flex-wrap gap-2">
+                {availableDietaryOptions.map(dietary => (
+                  <Badge
+                    key={dietary}
+                    variant={formData.dietary_restrictions?.includes(dietary) ? "default" : "outline"}
+                    className="cursor-pointer transition-all duration-200 hover:scale-105"
+                    onClick={() => addDietaryRestriction(dietary)}
+                  >
+                    {dietary}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Allergènes à éviter */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground">Allergènes pris en charge</h3>
+            <p className="text-sm text-muted-foreground">
+              Indiquez les allergènes que votre restaurant peut éviter dans ses plats
+            </p>
+            
+            <div className="flex flex-wrap gap-2 mb-4">
+              {formData.allergens?.map((allergen, index) => (
+                <Badge key={index} variant="destructive" className="pr-1">
+                  {allergen}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-4 w-4 p-0 ml-2 hover:bg-background hover:text-foreground"
+                    onClick={() => removeAllergen(allergen)}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </Badge>
+              )) || []}
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium mb-3 block">Allergènes évitables</Label>
+              <div className="flex flex-wrap gap-2">
+                {availableAllergens.map(allergen => (
+                  <Badge
+                    key={allergen}
+                    variant={formData.allergens?.includes(allergen) ? "destructive" : "outline"}
+                    className="cursor-pointer transition-all duration-200 hover:scale-105"
+                    onClick={() => addAllergen(allergen)}
+                  >
+                    {allergen}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <Separator />
 
           {/* Chef Emoji Selection */}
           <div className="space-y-4">

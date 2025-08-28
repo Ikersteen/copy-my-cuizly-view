@@ -288,11 +288,13 @@ export type Database = {
       restaurants: {
         Row: {
           address: string | null
+          allergens: string[] | null
           cover_image_url: string | null
           created_at: string
           cuisine_type: string[] | null
           delivery_radius: number | null
           description: string | null
+          dietary_restrictions: string[] | null
           email: string | null
           id: string
           is_active: boolean | null
@@ -306,11 +308,13 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          allergens?: string[] | null
           cover_image_url?: string | null
           created_at?: string
           cuisine_type?: string[] | null
           delivery_radius?: number | null
           description?: string | null
+          dietary_restrictions?: string[] | null
           email?: string | null
           id?: string
           is_active?: boolean | null
@@ -324,11 +328,13 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          allergens?: string[] | null
           cover_image_url?: string | null
           created_at?: string
           cuisine_type?: string[] | null
           delivery_radius?: number | null
           description?: string | null
+          dietary_restrictions?: string[] | null
           email?: string | null
           id?: string
           is_active?: boolean | null

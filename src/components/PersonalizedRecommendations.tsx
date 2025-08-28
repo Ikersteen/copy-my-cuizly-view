@@ -14,8 +14,11 @@ interface Restaurant {
   name: string;
   description: string;
   cuisine_type: string[];
+  dietary_restrictions?: string[];
+  allergens?: string[];
   price_range: string;
   address: string;
+  delivery_radius?: number;
   logo_url?: string;
   score?: number;
   reasons?: string[];
@@ -210,14 +213,27 @@ export const PersonalizedRecommendations = () => {
         }
 
         // Vérifier les restrictions alimentaires
-        if (preferences?.dietary_restrictions?.length) {
-          // Pour l'instant, on considère que si l'utilisateur a des restrictions alimentaires
-          // et qu'un restaurant a des options compatibles (ce qui devrait être dans la BD),
-          // on peut le recommander. Ici, on assume que tous les restaurants peuvent accommoder
-          // mais dans une vraie implementation, il faudrait une table de compatibilité.
-          hasAnyMatch = true;
-          score += 10;
-          reasons.push("Options adaptées disponibles");
+        if (preferences?.dietary_restrictions?.length && (restaurant as any).dietary_restrictions?.length) {
+          const matchedRestrictions = preferences.dietary_restrictions.filter(restriction =>
+            (restaurant as any).dietary_restrictions?.includes(restriction)
+          );
+          if (matchedRestrictions.length > 0) {
+            hasAnyMatch = true;
+            score += 30 * (matchedRestrictions.length / preferences.dietary_restrictions.length);
+            reasons.push(`${matchedRestrictions.length} restriction(s) accommodée(s)`);
+          }
+        }
+
+        // Vérifier les allergènes
+        if (preferences?.allergens?.length && (restaurant as any).allergens?.length) {
+          const matchedAllergens = preferences.allergens.filter(allergen =>
+            (restaurant as any).allergens?.includes(allergen)
+          );
+          if (matchedAllergens.length > 0) {
+            hasAnyMatch = true;
+            score += 25 * (matchedAllergens.length / preferences.allergens.length);
+            reasons.push(`${matchedAllergens.length} allergène(s) évité(s)`);
+          }
         }
 
         // Si l'utilisateur n'a configuré aucune préférence, on n'affiche rien

@@ -18,16 +18,21 @@ import type { User } from "@supabase/supabase-js";
 interface Restaurant {
   id: string;
   name: string;
-  description: string;
-  address: string;
-  cuisine_type: string[];
+  description?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  cuisine_type?: string[];
+  dietary_restrictions?: string[];
+  allergens?: string[];
+  price_range?: string;
+  opening_hours?: any;
+  delivery_radius?: number;
   is_active: boolean;
-  logo_url: string;
+  logo_url?: string;
   cover_image_url?: string;
-  phone: string;
-  email: string;
-  price_range: string;
-  delivery_radius: number;
+  created_at?: string;
+  updated_at?: string;
 }
 
 
@@ -360,10 +365,9 @@ const RestaurantDashboard = () => {
       <RestaurantProfileModal 
         open={showProfileModal}
         onOpenChange={setShowProfileModal}
-        restaurant={restaurant}
+        restaurant={restaurant as any}
         onUpdate={() => {
           loadData();
-          // Force refresh after a short delay to ensure data is updated
           setTimeout(() => {
             loadData();
           }, 500);
