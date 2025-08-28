@@ -20,12 +20,12 @@ const CTASection = () => {
 
           {/* Content */}
           <div className="relative text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 leading-tight text-foreground">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 leading-tight text-white">
               Prêt à révolutionner votre<br />
               expérience culinaire ?
             </h2>
 
-            <p className="text-xl sm:text-2xl text-foreground/70 mb-12 sm:mb-16 leading-relaxed max-w-4xl mx-auto">
+            <p className="text-xl sm:text-2xl text-white/90 mb-12 sm:mb-16 leading-relaxed max-w-4xl mx-auto">
               Rejoignez dès maintenant la communauté Cuizly et soyez parmi les premiers 
               à découvrir les meilleures offres de Montréal.
             </p>
@@ -34,7 +34,7 @@ const CTASection = () => {
               <Link to="/auth">
                 <Button 
                   size="lg" 
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 sm:px-12 py-4 text-lg sm:text-xl font-semibold shadow-xl hover:shadow-2xl rounded-2xl transition-all duration-300"
+                  className="bg-white hover:bg-white/90 text-black px-8 sm:px-12 py-4 text-lg sm:text-xl font-semibold shadow-xl hover:shadow-2xl rounded-2xl transition-all duration-300"
                 >
                   Créer mon compte
                   <ArrowRight className="ml-3 h-5 w-5 sm:h-6 sm:w-6" />
@@ -42,7 +42,7 @@ const CTASection = () => {
               </Link>
 
               <div className="text-center">
-                <div className="text-sm text-foreground/60 bg-background/20 px-4 py-2 rounded-full backdrop-blur-sm border border-border/30">
+                <div className="text-sm text-white/80 bg-black/20 px-4 py-2 rounded-full backdrop-blur-sm border border-white/20">
                   Inscription gratuite • Sans engagement
                 </div>
               </div>
