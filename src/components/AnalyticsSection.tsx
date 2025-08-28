@@ -418,19 +418,25 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                 <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-900">
                   Tendances cette semaine
                 </h4>
-                {analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0 ? (
+                {analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth > 0 ? (
                   <TrendingUp className="h-4 w-4 text-green-500" />
                 ) : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth < 0 ? (
                   <ArrowDown className="h-4 w-4 text-red-500" />
+                ) : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth === 0 ? (
+                  <div className="h-4 w-4 bg-gray-400 rounded-full flex items-center justify-center">
+                    <div className="h-2 w-2 bg-gray-600 rounded-full" />
+                  </div>
                 ) : (
                   <div className="h-4 w-4 bg-gray-300 rounded-full" />
                 )}
               </div>
               <p className="text-xs text-gray-700 dark:text-gray-700">
                 {analytics.weeklyGrowth !== undefined ? (
-                  analytics.weeklyGrowth >= 0 ? 
+                  analytics.weeklyGrowth > 0 ? 
                     `+${analytics.weeklyGrowth}% de vues par rapport à la semaine dernière` :
-                    `${analytics.weeklyGrowth}% de vues par rapport à la semaine dernière`
+                  analytics.weeklyGrowth < 0 ?
+                    `${analytics.weeklyGrowth}% de vues par rapport à la semaine dernière` :
+                    "Aucune évolution par rapport à la semaine dernière"
                 ) : (
                   "Données en cours de collecte..."
                 )}
@@ -440,16 +446,20 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
               <Badge 
                 variant="outline" 
                 className={`
-                  ${analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0
+                  ${analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth > 0
                     ? 'text-green-600 border-green-300 bg-green-50'
                     : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth < 0
                     ? 'text-red-600 border-red-300 bg-red-50'
+                    : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth === 0
+                    ? 'text-orange-600 border-orange-300 bg-orange-50'
                     : 'text-blue-600 border-blue-300 bg-blue-50'
                   }
                 `}
               >
                 {analytics.weeklyGrowth !== undefined ? (
-                  analytics.weeklyGrowth >= 0 ? 'Tendance positive' : 'En cours d\'amélioration'
+                  analytics.weeklyGrowth > 0 ? 'Tendance positive' : 
+                  analytics.weeklyGrowth < 0 ? 'Tendance négative' :
+                  'Stable'
                 ) : (
                   'Collecte de données'
                 )}
