@@ -518,6 +518,24 @@ export type Database = {
           phone: string
         }[]
       }
+      get_safe_restaurant_data: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          cover_image_url: string
+          created_at: string
+          cuisine_type: string[]
+          delivery_radius: number
+          description: string
+          id: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          opening_hours: Json
+          price_range: string
+          updated_at: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
