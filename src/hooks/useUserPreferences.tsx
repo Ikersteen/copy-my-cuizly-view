@@ -22,13 +22,13 @@ const defaultPreferences: Omit<UserPreferences, 'user_id'> = {
   cuisine_preferences: [],
   dietary_restrictions: [],
   allergens: [],
-  price_range: "$$",
+  price_range: "",
   street: "",
-  delivery_radius: 10,
+  delivery_radius: 0,
   favorite_meal_times: [],
   notification_preferences: {
-    push: true,
-    email: true
+    push: false,
+    email: false
   }
 };
 
@@ -84,8 +84,8 @@ export const useUserPreferences = () => {
             setPreferences({
               ...data,
               notification_preferences: data.notification_preferences as any || {
-                push: true,
-                email: true
+                push: false,
+                email: false
               }
             });
           } else {
@@ -105,8 +105,8 @@ export const useUserPreferences = () => {
             setPreferences({
               ...created,
               notification_preferences: created.notification_preferences as any || {
-                push: true,
-                email: true
+                push: false,
+                email: false
               }
             });
           }
@@ -153,8 +153,8 @@ export const useUserPreferences = () => {
       setPreferences({
         ...data,
         notification_preferences: data.notification_preferences as any || {
-          push: true,
-          email: true
+          push: false,
+          email: false
         }
       });
       
