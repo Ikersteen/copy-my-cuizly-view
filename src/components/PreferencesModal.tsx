@@ -253,8 +253,11 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           <div>
             <Label className="text-base font-medium">Préférences de notification</Label>
             <div className="space-y-4 mt-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="push-notifications">Notifications push</Label>
+              <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
+                <div>
+                  <Label htmlFor="push-notifications" className="font-medium">Notifications push</Label>
+                  <p className="text-sm text-muted-foreground">Recevez des notifications sur votre appareil</p>
+                </div>
                 <Switch
                   id="push-notifications"
                   checked={localPrefs.notification_preferences?.push !== false}
@@ -269,8 +272,11 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   }
                 />
               </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="email-notifications">Notifications courriel</Label>
+              <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
+                <div>
+                  <Label htmlFor="email-notifications" className="font-medium">Notifications courriel</Label>
+                  <p className="text-sm text-muted-foreground">Recevez des notifications par e-mail</p>
+                </div>
                 <Switch
                   id="email-notifications"
                   checked={localPrefs.notification_preferences?.email !== false}
