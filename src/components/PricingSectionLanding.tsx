@@ -94,17 +94,11 @@ const PricingSectionLanding = () => {
                     </li>
                   ))}
                 </ul>
-                {(index === 1 || index === 2) ? (
-                  <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base" disabled>
-                    <span className="line-through">{plan.cta}</span>
+                <Link to={index === 0 ? "/auth" : "/auth?type=restaurant"}>
+                  <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
+                    {plan.cta}
                   </Button>
-                ) : (
-                  <Link to="/auth">
-                    <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
-                      {plan.cta}
-                    </Button>
-                  </Link>
-                )}
+                </Link>
               </CardContent>
             </Card>
           ))}

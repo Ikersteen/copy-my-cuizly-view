@@ -27,6 +27,15 @@ const Auth = () => {
   const { toast } = useToast();
   const { sendWelcomeEmail } = useEmailNotifications();
 
+  // Check URL parameters to set user type
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get('type');
+    if (typeParam === 'restaurant') {
+      setUserType('restaurant_owner');
+    }
+  }, []);
+
   useEffect(() => {
     console.log("🔵 [Auth Effect] Initialisation du listener d'authentification");
     
