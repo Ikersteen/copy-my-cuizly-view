@@ -72,9 +72,9 @@ const Pricing = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-start mb-4">
           {plans.map((plan, index) => (
-            <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''}`}>
+            <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''} ${index < 2 ? 'h-fit' : ''} ${index === 2 ? 'md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto' : ''}`}>
               {plan.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-foreground text-background">
                   Populaire
