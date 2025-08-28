@@ -79,13 +79,13 @@ export const useUserPreferences = () => {
             .from('user_preferences')
             .select('*')
             .eq('user_id', session.user.id)
-            .maybeSingle();
+            .single(); // Utiliser .single() maintenant qu'on a une contrainte unique
 
-          if (error && error.code !== 'PGRST116') {
+          if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
             throw error;
           }
 
-           if (data) {
+          if (data) {
             console.log('Preferences loaded from database:', data);
             setPreferences({
               ...data,
@@ -96,7 +96,7 @@ export const useUserPreferences = () => {
             });
           } else {
             console.log('No preferences found, creating default preferences...');
-            // Create default preferences
+            // Create default preferences with upsert to avoid conflicts
             const newPreferences = {
               ...defaultPreferences,
               user_id: session.user.id
@@ -104,7 +104,7 @@ export const useUserPreferences = () => {
             
             const { data: created, error: createError } = await supabase
               .from('user_preferences')
-              .insert(newPreferences)
+              .upsert(newPreferences, { onConflict: 'user_id' })
               .select()
               .single();
 
