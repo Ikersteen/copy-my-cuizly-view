@@ -152,31 +152,9 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
     try {
       setLoading(true);
       
-      // Récupérer restaurants avec analytics (excluant les informations de contact sensibles)
+      // SÉCURITÉ: Utiliser UNIQUEMENT la fonction sécurisée pour éviter l'exposition des emails/téléphones
       const { data: restaurants, error } = await supabase
-        .from('restaurants')
-        .select(`
-          id,
-          name,
-          description,
-          address,
-          cuisine_type,
-          price_range,
-          opening_hours,
-          logo_url,
-          cover_image_url,
-          delivery_radius,
-          is_active,
-          created_at,
-          updated_at,
-          restaurant_analytics(
-            profile_views,
-            menu_views, 
-            rating_count,
-            average_rating
-          )
-        `)
-        .eq('is_active', true);
+        .rpc('get_public_restaurants');
 
       if (error) throw error;
 
@@ -185,25 +163,36 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
         return;
       }
 
-      // Préparation des données pour l'IA
-      const restaurantsForAI = restaurants.map(restaurant => {
-        const analytics = Array.isArray(restaurant.restaurant_analytics) 
-          ? restaurant.restaurant_analytics[0] 
-          : {
-              profile_views: 0,
-              menu_views: 0,
-              rating_count: 0,
-              average_rating: 0
-            };
+      // Récupérer les analytics séparément pour chaque restaurant
+      const restaurantsWithAnalytics = await Promise.all(
+        restaurants.map(async (restaurant) => {
+          const { data: analytics } = await supabase
+            .from('restaurant_analytics')
+            .select('profile_views, menu_views, rating_count, average_rating')
+            .eq('restaurant_id', restaurant.id)
+            .order('date', { ascending: false })
+            .limit(1);
 
-        return {
-          ...restaurant,
-          profile_views: analytics.profile_views,
-          menu_views: analytics.menu_views,
-          rating_count: analytics.rating_count,
-          average_rating: analytics.average_rating
-        };
-      });
+          const analyticsData = analytics?.[0] || {
+            profile_views: 0,
+            menu_views: 0,
+            rating_count: 0,
+            average_rating: 0
+          };
+
+          return {
+            ...restaurant,
+            analytics: analyticsData,
+            profile_views: analyticsData.profile_views,
+            menu_views: analyticsData.menu_views,
+            rating_count: analyticsData.rating_count,
+            average_rating: analyticsData.average_rating
+          };
+        })
+      );
+
+      // Préparation des données pour l'IA
+      const restaurantsForAI = restaurantsWithAnalytics;
 
       // Appel au système de recommandation IA
       try {
@@ -230,19 +219,12 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
       }
 
       // Fallback au système de scoring traditionnel
-      const scoredRestaurants = await Promise.all(restaurants.map(async (restaurant) => {
+      const scoredRestaurants = await Promise.all(restaurantsWithAnalytics.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
         
-        // Analytics réelles
-        const analytics = Array.isArray(restaurant.restaurant_analytics) 
-          ? restaurant.restaurant_analytics[0] 
-          : {
-              profile_views: 0,
-              menu_views: 0,
-              rating_count: 0,
-              average_rating: 0
-            };
+        // Analytics déjà récupérées
+        const analytics = restaurant.analytics;
 
         // 1. Score basé sur préférences utilisateur (40%)
         let hasAnyMatch = false;
