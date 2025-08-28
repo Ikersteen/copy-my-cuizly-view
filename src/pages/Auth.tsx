@@ -57,9 +57,10 @@ const Auth = () => {
           console.log("🔵 [Auth State Change] Email:", session.user.email);
           console.log("🔵 [Auth State Change] Provider:", session.user.app_metadata?.provider);
           console.log("🔵 [Auth State Change] User metadata:", session.user.user_metadata);
+          console.log("🔵 [Auth State Change] Email confirmé:", !!session.user.email_confirmed_at);
         }
         
-        if (event === 'SIGNED_IN' && session) {
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
           console.log("🟢 [Auth State Change] Utilisateur connecté, vérification du profil...");
           
           try {
@@ -76,15 +77,37 @@ const Auth = () => {
               console.error("🔴 [Auth State Change] Erreur lors de la récupération du profil:", profileError);
             }
 
-            if (!profile && session.user.user_metadata) {
+            // Si pas de profil, le créer automatiquement
+            if (!profile) {
               console.log("🔵 [Auth State Change] Création du profil utilisateur...");
-              await createUserProfile(session.user);
+              
+              // Si les métadonnées sont présentes, les utiliser
+              if (session.user.user_metadata && Object.keys(session.user.user_metadata).length > 0) {
+                await createUserProfile(session.user);
+              } else {
+                // Sinon, créer un profil basique pour utilisateur OAuth
+                const { error: createError } = await supabase.from('profiles').insert({
+                  user_id: session.user.id,
+                  first_name: session.user.user_metadata?.full_name?.split(' ')[0] || 
+                             session.user.user_metadata?.name?.split(' ')[0] || 
+                             session.user.email?.split('@')[0] || '',
+                  last_name: session.user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || 
+                            session.user.user_metadata?.name?.split(' ').slice(1).join(' ') || '',
+                  user_type: 'consumer' // Par défaut pour OAuth
+                });
+
+                if (createError) {
+                  console.error("🔴 [Auth State Change] Erreur création profil basique:", createError);
+                }
+              }
             }
 
             console.log("🟢 [Auth State Change] Redirection vers /dashboard");
             navigate('/dashboard');
           } catch (error) {
             console.error("🔴 [Auth State Change] Erreur dans la gestion de la connexion:", error);
+            // Même en cas d'erreur, rediriger vers le dashboard
+            navigate('/dashboard');
           }
         }
       }
