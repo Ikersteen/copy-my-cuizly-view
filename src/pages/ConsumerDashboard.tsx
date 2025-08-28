@@ -33,6 +33,7 @@ const ConsumerDashboard = () => {
   const [showFavorites, setShowFavorites] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [forceLoaded, setForceLoaded] = useState(false);
   
   const { preferences, loading: preferencesLoading } = useUserPreferences();
   const { profile, loading: profileLoading } = useProfile();
@@ -42,6 +43,16 @@ const ConsumerDashboard = () => {
   const { offers: promotionOffers } = useOffers('promotion');
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { toast } = useToast();
+
+  // Timeout to prevent infinite loading
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      console.log('Loading timeout reached, forcing content display');
+      setForceLoaded(true);
+    }, 8000); // 8 seconds timeout
+
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   useEffect(() => {
     loadData();
@@ -137,7 +148,7 @@ const ConsumerDashboard = () => {
     }
   };
 
-  if (loading || preferencesLoading || profileLoading) {
+  if ((loading || preferencesLoading || profileLoading) && !forceLoaded) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">

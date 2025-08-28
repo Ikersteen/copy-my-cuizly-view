@@ -15,18 +15,27 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getProfile = async () => {
+      // Set a maximum timeout for the entire operation
+      const timeoutId = setTimeout(() => {
+        console.log('Profile loading timeout, defaulting to consumer');
+        setProfile({ user_type: 'consumer' });
+        setLoading(false);
+      }, 10000); // 10 seconds timeout
+
       try {
         // Check session with proper error handling
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
           console.error('Session error, redirecting to auth:', sessionError);
+          clearTimeout(timeoutId);
           navigate('/auth');
           return;
         }
         
         if (!session) {
           console.log('No session found, redirecting to auth');
+          clearTimeout(timeoutId);
           navigate('/auth');
           return;
         }
@@ -44,6 +53,7 @@ const Dashboard = () => {
               .maybeSingle();
 
             if (!error) {
+              clearTimeout(timeoutId);
               setProfile(data || { user_type: 'consumer' });
               break;
             } else {
@@ -51,12 +61,14 @@ const Dashboard = () => {
               if (retryCount === maxRetries - 1) {
                 // Default to consumer after all retries
                 console.log('Defaulting to consumer profile after retry failures');
+                clearTimeout(timeoutId);
                 setProfile({ user_type: 'consumer' });
               }
             }
           } catch (fetchError) {
             console.error(`Network error (attempt ${retryCount + 1}):`, fetchError);
             if (retryCount === maxRetries - 1) {
+              clearTimeout(timeoutId);
               setProfile({ user_type: 'consumer' });
             }
           }
@@ -68,6 +80,7 @@ const Dashboard = () => {
         }
       } catch (error) {
         console.error('Critical error in getProfile:', error);
+        clearTimeout(timeoutId);
         setProfile({ user_type: 'consumer' });
       } finally {
         setLoading(false);
