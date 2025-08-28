@@ -305,7 +305,7 @@ const RestaurantDashboard = () => {
             {restaurant && (
               <Card className="hover:shadow-lg transition-all duration-200">
                 <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Informations restaurant</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">Informations du restaurant</CardTitle>
                   <CardDescription className="text-sm">
                     Détails de votre établissement
                   </CardDescription>
