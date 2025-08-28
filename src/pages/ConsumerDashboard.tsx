@@ -22,7 +22,7 @@ import { EnhancedRecommendationEngine } from "@/components/EnhancedRecommendatio
 import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
-import cuizlyIcon from "@/assets/cuizly-icon-hd.png";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import type { User } from "@supabase/supabase-js";
 
 const ConsumerDashboard = () => {
@@ -152,9 +152,7 @@ const ConsumerDashboard = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center animate-pulse mx-auto shadow-lg">
-            <img src={cuizlyIcon} alt="Cuizly" className="w-12 h-12 object-contain" />
-          </div>
+          <LoadingSpinner size="xl" />
           <p className="text-muted-foreground animate-pulse">Chargement de votre expérience personnalisée...</p>
         </div>
       </div>
