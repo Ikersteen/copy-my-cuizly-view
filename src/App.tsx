@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Header from "@/components/Header";
 import CookieBanner from "@/components/CookieBanner";
-import CookieSettings from "@/components/CookieSettings";
+
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
@@ -94,7 +94,6 @@ const AppContent = () => {
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
       <CookieBanner />
-      <CookieSettings />
     </div>
   );
 };
