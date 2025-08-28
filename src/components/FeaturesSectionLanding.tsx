@@ -36,38 +36,40 @@ const FeaturesSectionLanding = () => {
   ];
 
   return (
-    <section id="features" className="py-16 sm:py-20 bg-muted/30">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Fonctionnalités
-          </h2>
-          <p className="text-lg sm:text-xl text-cuizly-neutral max-w-3xl mx-auto px-2 sm:px-4">
-            Découvrez toutes les fonctionnalités qui font de Cuizly la plateforme de référence pour les offres culinaires à Montréal.
-          </p>
-        </div>
+    <section id="features" className="py-20 sm:py-32 bg-muted/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-br from-background to-muted/30 border border-border/50 rounded-3xl p-12 sm:p-16 lg:p-20 shadow-2xl backdrop-blur-sm">
+          <div className="text-center mb-16 sm:mb-20">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+              Fonctionnalités
+            </h2>
+            <p className="text-xl sm:text-2xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
+              Découvrez toutes les fonctionnalités qui font de Cuizly la plateforme de référence pour les offres culinaires à Montréal.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <Card key={index} className="shadow-card border border-border">
-                <CardHeader className="pb-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-cuizly-surface rounded-lg flex items-center justify-center mb-3 sm:mb-4">
-                    <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-cuizly-primary" />
-                  </div>
-                  <CardTitle className="text-lg font-semibold text-foreground">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <CardDescription className="text-cuizly-neutral text-sm sm:text-base">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            );
-          })}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <Card key={index} className="bg-background/80 backdrop-blur-sm border border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-2xl">
+                  <CardHeader className="pb-6">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl flex items-center justify-center mb-4">
+                      <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl sm:text-2xl font-semibold text-foreground">
+                      {feature.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <CardDescription className="text-foreground/70 text-base sm:text-lg leading-relaxed">
+                      {feature.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
