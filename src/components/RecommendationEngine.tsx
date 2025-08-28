@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Clock, MapPin, Heart, Sparkles } from "lucide-react";
 import { UserPreferences } from "@/hooks/useUserPreferences";
 import { supabase } from "@/integrations/supabase/client";
+import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 
 interface Restaurant {
   id: string;
@@ -13,6 +14,15 @@ interface Restaurant {
   address: string;
   cuisine_type: string[];
   price_range: string;
+  phone?: string;
+  email?: string;
+  logo_url?: string;
+  cover_image_url?: string;
+  opening_hours?: any;
+  delivery_radius?: number;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
   rating?: number;
   delivery_time?: string;
   distance?: number;
@@ -26,6 +36,8 @@ interface RecommendationEngineProps {
 export const RecommendationEngine = ({ preferences }: RecommendationEngineProps) => {
   const [recommendations, setRecommendations] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
   useEffect(() => {
     if (preferences) {
@@ -402,6 +414,8 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
                 onClick={() => {
                   // Track profile view
                   trackProfileView(restaurant.id);
+                  setSelectedRestaurant(restaurant);
+                  setShowRestaurantModal(true);
                 }}
               >
                 Voir le profil
@@ -424,6 +438,17 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
           </CardContent>
         </Card>
       )}
+
+      {/* Restaurant Profile Modal */}
+      <RestaurantProfileModal
+        restaurant={selectedRestaurant as any}
+        open={showRestaurantModal}
+        onOpenChange={setShowRestaurantModal}
+        onUpdate={() => {
+          // Handle restaurant update if needed
+          console.log('Restaurant updated');
+        }}
+      />
     </div>
   );
 };
