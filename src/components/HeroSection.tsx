@@ -4,7 +4,16 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-12 sm:py-16 md:py-20">
+    <section className="relative overflow-hidden py-12 sm:py-16 md:py-20">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: 'url(/lovable-uploads/f67dbf7a-f502-4b04-a26d-1df46dbdcb4f.png)'
+        }}
+      />
+      {/* Dark Overlay for Text Readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/50"></div>
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="relative max-w-6xl mx-auto px-6 sm:px-8 text-center mobile-friendly-spacing">
         {/* Location Badge */}
