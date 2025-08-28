@@ -8,7 +8,7 @@ const PricingSectionLanding = () => {
   const plans = [
     {
       title: "Cuizly Basique",
-      subtitle: "Pour les gourmets",
+      subtitle: "Pour les consommateurs",
       price: "Gratuit à vie",
       popular: true,
       features: [
@@ -60,7 +60,7 @@ const PricingSectionLanding = () => {
             Des tarifs pensés pour tous
           </h2>
           <p className="text-lg sm:text-xl text-cuizly-neutral max-w-3xl mx-auto px-2 sm:px-4">
-            Une offre gratuite pour les gourmets, des solutions professionnelles abordables pour les restaurateurs.
+            Une offre gratuite pour les consommateurs, des solutions professionnelles abordables pour les restaurateurs.
           </p>
         </div>
 
