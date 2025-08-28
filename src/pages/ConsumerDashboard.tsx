@@ -44,14 +44,45 @@ const ConsumerDashboard = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-      setLoading(false);
-    };
+    loadData();
+    
+    // Set up polling for better reliability
+    const pollInterval = setInterval(() => {
+      loadData();
+    }, 300000); // Refresh every 5 minutes
 
-    getUser();
+    return () => {
+      clearInterval(pollInterval);
+    };
   }, []);
+
+  const loadData = async () => {
+    try {
+      // Check session with proper error handling
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        return;
+      }
+      
+      if (!session) {
+        console.log('No session found');
+        return;
+      }
+      
+      setUser(session.user);
+    } catch (error) {
+      console.error('Error loading consumer dashboard data:', error);
+      toast({
+        title: "Erreur de connexion",
+        description: "Vérifiez votre connexion internet et rechargez la page.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleActionClick = (action: string) => {
     switch (action) {

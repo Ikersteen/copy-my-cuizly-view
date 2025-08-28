@@ -21,81 +21,65 @@ export const useProfile = () => {
   useEffect(() => {
     loadProfile();
     
-    // Set up real-time subscription for profile changes with error handling
-    let channel: RealtimeChannel | null = null;
-    
-    const setupRealtimeSubscription = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return;
+    // Use polling instead of WebSocket for better compatibility
+    const pollInterval = setInterval(() => {
+      loadProfile();
+    }, 60000); // Refresh every minute
 
-        console.log('🔄 Setting up profile realtime subscription');
-
-        channel = supabase
-          .channel('profile-changes')
-          .on(
-            'postgres_changes',
-            {
-              event: '*',
-              schema: 'public',
-              table: 'profiles',
-              filter: `user_id=eq.${session.user.id}`
-            },
-            (payload) => {
-              console.log('Profile change received:', payload);
-              if (payload.eventType === 'UPDATE' && payload.new) {
-                setProfile(payload.new as UserProfile);
-              } else if (payload.eventType === 'INSERT' && payload.new) {
-                setProfile(payload.new as UserProfile);
-              }
-            }
-          )
-          .subscribe((status) => {
-            if (status === 'SUBSCRIBED') {
-              console.log('✅ Profile subscription established');
-            } else if (status === 'CHANNEL_ERROR') {
-              console.warn('⚠️ Profile subscription failed - WebSockets may be blocked');
-            }
-          });
-
-      } catch (error) {
-        console.warn('⚠️ Real-time profile subscription not available:', error);
-        console.log('📊 Profile will update on manual refresh');
-      }
-    };
-
-    setupRealtimeSubscription();
-
-    // Cleanup subscription on unmount
     return () => {
-      try {
-        if (channel) {
-          supabase.removeChannel(channel);
-        }
-      } catch (error) {
-        console.warn('⚠️ Error cleaning up profile subscription:', error);
-      }
+      clearInterval(pollInterval);
     };
   }, []);
 
   const loadProfile = async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
-
-      if (error && error.code !== 'PGRST116') {
-        throw error;
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        return;
+      }
+      
+      if (!session) {
+        console.log('No session found');
+        return;
       }
 
-      setProfile(data);
+      // Retry logic for better connection handling
+      let retryCount = 0;
+      const maxRetries = 2;
+      
+      while (retryCount < maxRetries) {
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+
+          if (error && error.code !== 'PGRST116') {
+            throw error;
+          }
+
+          setProfile(data);
+          break;
+        } catch (error) {
+          console.error(`Profile load error (attempt ${retryCount + 1}):`, error);
+          if (retryCount === maxRetries - 1) {
+            toast({
+              title: "Problème de connexion",
+              description: "Impossible de charger le profil. Veuillez rafraîchir la page.",
+              variant: "destructive"
+            });
+          }
+          retryCount++;
+          if (retryCount < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
+      }
     } catch (error) {
-      console.error('Erreur lors du chargement du profil:', error);
+      console.error('Critical error loading profile:', error);
     } finally {
       setLoading(false);
     }

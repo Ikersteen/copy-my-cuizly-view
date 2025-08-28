@@ -10,52 +10,59 @@ export const useFavorites = () => {
   useEffect(() => {
     loadFavorites();
 
-    // Set up real-time subscription for favorites changes
-    const subscription = supabase
-      .channel('user_favorites_realtime')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'user_favorites'
-      }, (payload) => {
-        console.log('🔄 Realtime favorites update:', payload);
-        // Reload favorites immediately when any change occurs
-        loadFavorites();
-      })
-      .subscribe((status) => {
-        console.log('📡 Favorites subscription status:', status);
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Favorites real-time connected');
-        } else if (status === 'CHANNEL_ERROR') {
-          console.log('❌ Channel error, retrying...');
-          // Retry subscription after a short delay
-          setTimeout(() => {
-            supabase.removeChannel(subscription);
-            // The useEffect will run again and create a new subscription
-          }, 1000);
-        }
-      });
+    // Use polling instead of WebSocket for better compatibility
+    const pollInterval = setInterval(() => {
+      loadFavorites();
+    }, 30000); // Refresh every 30 seconds
 
     return () => {
-      console.log('🧹 Cleaning up favorites subscription');
-      supabase.removeChannel(subscription);
+      clearInterval(pollInterval);
     };
   }, []);
 
   const loadFavorites = async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        return;
+      }
+      
+      if (!session) {
+        console.log('No session found');
+        return;
+      }
 
-      const { data, error } = await supabase
-        .from('user_favorites')
-        .select('restaurant_id')
-        .eq('user_id', session.user.id);
+      // Retry logic for better connection handling
+      let retryCount = 0;
+      const maxRetries = 2;
+      
+      while (retryCount < maxRetries) {
+        try {
+          const { data, error } = await supabase
+            .from('user_favorites')
+            .select('restaurant_id')
+            .eq('user_id', session.user.id);
 
-      if (error) throw error;
-      setFavorites(data?.map(f => f.restaurant_id) || []);
+          if (error) throw error;
+          setFavorites(data?.map(f => f.restaurant_id) || []);
+          break;
+        } catch (error) {
+          console.error(`Favorites load error (attempt ${retryCount + 1}):`, error);
+          if (retryCount === maxRetries - 1) {
+            // Silent failure for favorites as it's not critical
+            setFavorites([]);
+          }
+          retryCount++;
+          if (retryCount < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
+      }
     } catch (error) {
-      console.error('Error loading favorites:', error);
+      console.error('Critical error loading favorites:', error);
+      setFavorites([]);
     } finally {
       setLoading(false);
     }

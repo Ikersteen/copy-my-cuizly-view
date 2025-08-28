@@ -38,91 +38,96 @@ export const useUserPreferences = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    let realtimeChannel: any;
-    
-    const setupRealtime = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        realtimeChannel = supabase
-          .channel('user-preferences-changes')
-          .on(
-            'postgres_changes',
-            {
-              event: 'UPDATE',
-              schema: 'public',
-              table: 'user_preferences',
-              filter: `user_id=eq.${session.user.id}`
-            },
-            (payload) => {
-              setPreferences(payload.new as UserPreferences);
-            }
-          )
-          .subscribe();
-      }
-    };
-
     loadPreferences();
-    setupRealtime();
+    
+    // Use polling instead of WebSocket for better compatibility
+    const pollInterval = setInterval(() => {
+      loadPreferences();
+    }, 60000); // Refresh every minute
 
     return () => {
-      if (realtimeChannel) {
-        supabase.removeChannel(realtimeChannel);
-      }
+      clearInterval(pollInterval);
     };
   }, []);
 
   const loadPreferences = async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      const { data, error } = await supabase
-        .from('user_preferences')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
-
-      if (error && error.code !== 'PGRST116') {
-        throw error;
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        return;
+      }
+      
+      if (!session) {
+        console.log('No session found');
+        return;
       }
 
-      if (data) {
-        setPreferences({
-          ...data,
-          notification_preferences: data.notification_preferences as any || {
-            push: true,
-            email: true
-          }
-        });
-      } else {
-        // Create default preferences
-        const newPreferences = {
-          ...defaultPreferences,
-          user_id: session.user.id
-        };
-        
-        const { data: created, error: createError } = await supabase
-          .from('user_preferences')
-          .insert(newPreferences)
-          .select()
-          .single();
+      // Retry logic for better connection handling
+      let retryCount = 0;
+      const maxRetries = 2;
+      
+      while (retryCount < maxRetries) {
+        try {
+          const { data, error } = await supabase
+            .from('user_preferences')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
 
-        if (createError) throw createError;
-        setPreferences({
-          ...created,
-          notification_preferences: created.notification_preferences as any || {
-            push: true,
-            email: true
+          if (error && error.code !== 'PGRST116') {
+            throw error;
           }
-        });
+
+          if (data) {
+            setPreferences({
+              ...data,
+              notification_preferences: data.notification_preferences as any || {
+                push: true,
+                email: true
+              }
+            });
+          } else {
+            // Create default preferences
+            const newPreferences = {
+              ...defaultPreferences,
+              user_id: session.user.id
+            };
+            
+            const { data: created, error: createError } = await supabase
+              .from('user_preferences')
+              .insert(newPreferences)
+              .select()
+              .single();
+
+            if (createError) throw createError;
+            setPreferences({
+              ...created,
+              notification_preferences: created.notification_preferences as any || {
+                push: true,
+                email: true
+              }
+            });
+          }
+          break;
+        } catch (error) {
+          console.error(`Preferences load error (attempt ${retryCount + 1}):`, error);
+          if (retryCount === maxRetries - 1) {
+            toast({
+              title: "Problème de connexion",
+              description: "Impossible de charger les préférences. Veuillez rafraîchir la page.",
+              variant: "destructive"
+            });
+          }
+          retryCount++;
+          if (retryCount < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des préférences:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de charger vos préférences",
-        variant: "destructive"
-      });
+      console.error('Critical error loading preferences:', error);
     } finally {
       setLoading(false);
     }
