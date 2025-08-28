@@ -32,7 +32,7 @@ const CTASection = () => {
           <Link to="/auth">
             <Button 
               size="lg" 
-              className="bg-white text-cuizly-primary hover:bg-white/90 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-white/25"
+              className="bg-white text-gray-900 hover:bg-gray-100 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-white/25"
             >
               Créer mon compte
               <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -47,8 +47,8 @@ const CTASection = () => {
         </div>
 
         {/* Floating elements */}
-        <div className="absolute top-6 sm:top-10 left-6 sm:left-10 w-16 h-16 sm:w-20 sm:h-20 bg-cuizly-accent/20 rounded-full blur-xl"></div>
-        <div className="absolute bottom-6 sm:bottom-10 right-6 sm:right-10 w-20 h-20 sm:w-24 sm:h-24 bg-cuizly-primary/20 rounded-full blur-xl"></div>
+        <div className="absolute top-6 sm:top-10 left-6 sm:left-10 w-16 h-16 sm:w-20 sm:h-20 bg-blue-500/20 rounded-full blur-xl"></div>
+        <div className="absolute bottom-6 sm:bottom-10 right-6 sm:right-10 w-20 h-20 sm:w-24 sm:h-24 bg-purple-500/20 rounded-full blur-xl"></div>
       </div>
     </section>
   );
