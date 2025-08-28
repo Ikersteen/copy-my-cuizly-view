@@ -39,7 +39,7 @@ const handler = async (req: Request): Promise<Response> => {
     );
 
     const emailResponse = await resend.emails.send({
-      from: "Cuizly <bienvenue@cuizly.com>",
+      from: "Cuizly <Cuizlycanada@gmail.com>",
       to: [email],
       subject: userType === 'consumer' 
         ? "Bienvenue chez Cuizly - Découvrez Montréal autrement !" 

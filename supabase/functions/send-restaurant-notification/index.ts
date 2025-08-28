@@ -67,7 +67,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const emailResponse = await resend.emails.send({
-      from: "Cuizly <notifications@cuizly.ca>",
+      from: "Cuizly <Cuizlycanada@gmail.com>",
       to: [restaurantEmail],
       subject: getSubject(),
       html,

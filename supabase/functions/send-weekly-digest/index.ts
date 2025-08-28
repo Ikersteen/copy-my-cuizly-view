@@ -61,7 +61,7 @@ const handler = async (req: Request): Promise<Response> => {
     )
 
     const emailResponse = await resend.emails.send({
-      from: "Cuizly <digest@cuizly.ca>",
+      from: "Cuizly <Cuizlycanada@gmail.com>",
       to: [email],
       subject: userType === 'consumer' 
         ? "🍽️ Votre digest gourmand hebdomadaire"

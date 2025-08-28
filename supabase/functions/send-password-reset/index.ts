@@ -36,7 +36,7 @@ const handler = async (req: Request): Promise<Response> => {
     );
 
     const emailResponse = await resend.emails.send({
-      from: "Cuizly <support@cuizly.com>",
+      from: "Cuizly <Cuizlycanada@gmail.com>",
       to: [email],
       subject: "Réinitialisation de votre mot de passe Cuizly",
       html,
