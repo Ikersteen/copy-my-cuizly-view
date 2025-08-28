@@ -36,8 +36,8 @@ const HowItWorksSection = () => {
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex items-start space-x-3 sm:space-x-4">
                       <div className="flex-shrink-0">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-900 dark:bg-white rounded-lg flex items-center justify-center">
-                          <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white dark:text-gray-900" />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-cuizly-surface rounded-lg flex items-center justify-center">
+                          <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-cuizly-primary" />
                         </div>
                       </div>
                       <div>
