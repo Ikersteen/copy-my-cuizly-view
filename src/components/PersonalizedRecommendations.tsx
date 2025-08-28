@@ -134,6 +134,20 @@ export const PersonalizedRecommendations = () => {
     }
   }, [preferences]);
 
+  // Écouter les mises à jour des préférences
+  useEffect(() => {
+    const handlePreferencesUpdate = () => {
+      console.log('Preferences updated, regenerating recommendations...');
+      generateRecommendations();
+    };
+
+    window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
+    
+    return () => {
+      window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
+    };
+  }, []);
+
   useEffect(() => {
     const ratingsChannel = supabase
       .channel('all-ratings-updates')

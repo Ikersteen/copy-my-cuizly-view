@@ -67,6 +67,10 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
   const handleSave = async () => {
     await updatePreferences(localPrefs);
+    
+    // Forcer la régénération des recommandations
+    window.dispatchEvent(new CustomEvent('preferencesUpdated'));
+    
     onOpenChange(false);
   };
 
