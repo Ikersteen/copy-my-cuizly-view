@@ -40,14 +40,15 @@ export const useUserPreferences = () => {
   useEffect(() => {
     loadPreferences();
     
-    // Use polling instead of WebSocket for better compatibility
-    const pollInterval = setInterval(() => {
-      loadPreferences();
-    }, 60000); // Refresh every minute
+    // Remove polling to avoid multiple calls
+    // Use polling only if absolutely necessary
+    // const pollInterval = setInterval(() => {
+    //   loadPreferences();
+    // }, 60000); // Refresh every minute
 
-    return () => {
-      clearInterval(pollInterval);
-    };
+    // return () => {
+    //   clearInterval(pollInterval);
+    // };
   }, []);
 
   const loadPreferences = async () => {

@@ -8,19 +8,19 @@ export const useFavorites = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Wait a moment for authentication to stabilize
+    // Wait a moment for authentication to stabilize then load once
     const timer = setTimeout(() => {
       loadFavorites();
     }, 500);
 
-    // Use polling instead of WebSocket for better compatibility
-    const pollInterval = setInterval(() => {
-      loadFavorites();
-    }, 30000); // Refresh every 30 seconds
+    // Remove polling to avoid multiple calls
+    // const pollInterval = setInterval(() => {
+    //   loadFavorites();
+    // }, 30000);
 
     return () => {
       clearTimeout(timer);
-      clearInterval(pollInterval);
+      // clearInterval(pollInterval);
     };
   }, []);
 
