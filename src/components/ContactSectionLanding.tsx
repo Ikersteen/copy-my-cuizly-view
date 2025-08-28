@@ -80,7 +80,7 @@ const ContactSectionLanding = () => {
               <div className="space-y-4 sm:space-y-6">
                 <div className="flex items-start space-x-3 sm:space-x-4">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
+                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-cuizly-primary" />
                   </div>
                   <div>
                     <h4 className="font-medium text-foreground text-sm sm:text-base">Courriel</h4>
@@ -90,7 +90,7 @@ const ContactSectionLanding = () => {
                 
                 <div className="flex items-start space-x-3 sm:space-x-4">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
+                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-cuizly-primary" />
                   </div>
                   <div>
                     <h4 className="font-medium text-foreground text-sm sm:text-base">Adresse</h4>
@@ -100,7 +100,7 @@ const ContactSectionLanding = () => {
                 
                 <div className="flex items-start space-x-3 sm:space-x-4">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
+                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-cuizly-primary" />
                   </div>
                   <div>
                     <h4 className="font-medium text-foreground text-sm sm:text-base">Téléphone</h4>

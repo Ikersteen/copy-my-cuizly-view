@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-50 dark:via-white dark:to-gray-50 border-t border-border/50 overflow-hidden">
+    <footer className="relative bg-gradient-to-br from-cuizly-surface via-background to-cuizly-surface border-t border-border/50 overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="absolute inset-0" style={{

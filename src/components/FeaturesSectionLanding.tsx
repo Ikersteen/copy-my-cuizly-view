@@ -54,7 +54,7 @@ const FeaturesSectionLanding = () => {
               <Card key={index} className="shadow-card border border-border">
                 <CardHeader className="pb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-cuizly-surface rounded-lg flex items-center justify-center mb-3 sm:mb-4">
-                    <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-foreground" />
+                    <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-cuizly-primary" />
                   </div>
                   <CardTitle className="text-lg font-semibold text-foreground">
                     {feature.title}
