@@ -140,12 +140,15 @@ export const PersonalizedRecommendations = () => {
       const scoredRestaurants = await Promise.all(restaurants.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
+        let hasAnyMatch = false;
 
+        // Vérifier les préférences de cuisine
         if (preferences?.cuisine_preferences?.length) {
           const cuisineMatch = restaurant.cuisine_type?.some(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
           );
           if (cuisineMatch) {
+            hasAnyMatch = true;
             score += 50;
             const matchedCuisine = restaurant.cuisine_type?.find(cuisine =>
               preferences.cuisine_preferences.includes(cuisine)
@@ -156,9 +159,27 @@ export const PersonalizedRecommendations = () => {
           }
         }
 
+        // Vérifier la gamme de prix
         if (preferences?.price_range === restaurant.price_range) {
+          hasAnyMatch = true;
           score += 30;
           reasons.push("Dans votre budget");
+        }
+
+        // Vérifier les restrictions alimentaires
+        if (preferences?.dietary_restrictions?.length) {
+          // Pour l'instant, on considère que si l'utilisateur a des restrictions alimentaires
+          // et qu'un restaurant a des options compatibles (ce qui devrait être dans la BD),
+          // on peut le recommander. Ici, on assume que tous les restaurants peuvent accommoder
+          // mais dans une vraie implementation, il faudrait une table de compatibilité.
+          hasAnyMatch = true;
+        }
+
+        // Si le restaurant ne correspond à aucune préférence utilisateur, on l'exclut
+        if (preferences && (preferences.cuisine_preferences?.length || preferences.price_range || preferences.dietary_restrictions?.length)) {
+          if (!hasAnyMatch) {
+            return null; // Exclure ce restaurant des recommandations
+          }
         }
 
         const realRating = await getRealRating(restaurant.id);
@@ -172,7 +193,10 @@ export const PersonalizedRecommendations = () => {
         };
       }));
 
-      await loadRestaurantRatings(scoredRestaurants);
+      // Filtrer les restaurants nuls (exclus)
+      const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
+
+      await loadRestaurantRatings(validRestaurants);
 
       const newCategories: RecommendationCategory[] = [
         {
@@ -181,7 +205,7 @@ export const PersonalizedRecommendations = () => {
           subtitle: 'Basé sur vos préférences culinaires',
           icon: Sparkles,
           color: 'bg-gradient-to-r from-primary/10 to-primary/5',
-          restaurants: scoredRestaurants
+          restaurants: validRestaurants
             .sort((a, b) => b.score - a.score)
             .slice(0, 12)
         }

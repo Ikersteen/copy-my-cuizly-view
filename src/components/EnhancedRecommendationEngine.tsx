@@ -172,11 +172,13 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
             };
 
         // 1. Score basé sur préférences utilisateur (40%)
+        let hasAnyMatch = false;
         if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
           const matchedCuisines = restaurant.cuisine_type.filter(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
           );
           if (matchedCuisines.length > 0) {
+            hasAnyMatch = true;
             score += 40 * (matchedCuisines.length / preferences.cuisine_preferences.length);
             reasons.push(`${matchedCuisines.length} cuisine(s) favorite(s)`);
           }
@@ -184,8 +186,21 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
 
         // 2. Score prix (20%)
         if (preferences?.price_range === restaurant.price_range) {
+          hasAnyMatch = true;
           score += 20;
           reasons.push("Dans votre budget");
+        }
+
+        // Vérifier les restrictions alimentaires (ajout d'un match potentiel)
+        if (preferences?.dietary_restrictions?.length) {
+          hasAnyMatch = true; // Assumption que le restaurant peut accommoder
+        }
+
+        // Si le restaurant ne correspond à aucune préférence utilisateur, on l'exclut
+        if (preferences && (preferences.cuisine_preferences?.length || preferences.price_range || preferences.dietary_restrictions?.length)) {
+          if (!hasAnyMatch) {
+            return null; // Exclure ce restaurant des recommandations
+          }
         }
 
         // 3. Score popularité basé sur vues réelles (25%)
@@ -227,7 +242,9 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
         };
       }));
 
-      const sortedRestaurants = scoredRestaurants
+      // Filtrer les restaurants nuls (exclus) puis trier par score
+      const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
+      const sortedRestaurants = validRestaurants
         .sort((a, b) => b.score - a.score)
         .slice(0, 6);
 
