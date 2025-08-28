@@ -8,7 +8,10 @@ export const useFavorites = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    loadFavorites();
+    // Wait a moment for authentication to stabilize
+    const timer = setTimeout(() => {
+      loadFavorites();
+    }, 500);
 
     // Use polling instead of WebSocket for better compatibility
     const pollInterval = setInterval(() => {
@@ -16,23 +19,30 @@ export const useFavorites = () => {
     }, 30000); // Refresh every 30 seconds
 
     return () => {
+      clearTimeout(timer);
       clearInterval(pollInterval);
     };
   }, []);
 
   const loadFavorites = async () => {
     try {
+      console.log('Loading favorites...');
+      
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
       if (sessionError) {
         console.error('Session error:', sessionError);
+        setFavorites([]);
         return;
       }
       
       if (!session) {
-        console.log('No session found');
+        console.log('No session found, skipping favorites load');
+        setFavorites([]);
         return;
       }
+
+      console.log('Session found, loading favorites for user:', session.user.id);
 
       // Retry logic for better connection handling
       let retryCount = 0;
@@ -45,13 +55,19 @@ export const useFavorites = () => {
             .select('restaurant_id')
             .eq('user_id', session.user.id);
 
-          if (error) throw error;
+          if (error) {
+            console.error('Supabase error loading favorites:', error);
+            throw error;
+          }
+          
+          console.log('Favorites loaded successfully:', data);
           setFavorites(data?.map(f => f.restaurant_id) || []);
           break;
         } catch (error) {
           console.error(`Favorites load error (attempt ${retryCount + 1}):`, error);
           if (retryCount === maxRetries - 1) {
             // Silent failure for favorites as it's not critical
+            console.log('Max retries reached, setting empty favorites');
             setFavorites([]);
           }
           retryCount++;
