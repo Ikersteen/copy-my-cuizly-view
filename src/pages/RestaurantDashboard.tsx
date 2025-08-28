@@ -46,53 +46,95 @@ const RestaurantDashboard = () => {
     loadData();
   }, []);
 
-  // Set up real-time subscriptions for immediate updates
+  // Set up real-time subscriptions with error handling
   useEffect(() => {
     if (!user?.id) return;
 
     console.log('🔄 Setting up real-time subscriptions for user:', user.id);
 
-    // Profile updates
-    const profileChannel = supabase
-      .channel(`profile-updates-${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'profiles',
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload) => {
-          console.log('🎭 Profile updated in real-time:', payload.new);
-          // Force reload after profile change
-          setTimeout(() => loadData(), 200);
-        }
-      )
-      .subscribe();
+    let profileChannel: any = null;
+    let restaurantChannel: any = null;
 
-    // Restaurant updates
-    const restaurantChannel = supabase
-      .channel(`restaurant-updates-${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'restaurants',
-          filter: `owner_id=eq.${user.id}`,
-        },
-        (payload) => {
-          console.log('🏪 Restaurant updated in real-time:', payload.new);
-          setRestaurant(payload.new as Restaurant);
-        }
-      )
-      .subscribe();
+    const setupRealtimeSubscriptions = async () => {
+      try {
+        // Profile updates
+        profileChannel = supabase
+          .channel(`profile-updates-${user.id}`)
+          .on(
+            'postgres_changes',
+            {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'profiles',
+              filter: `user_id=eq.${user.id}`,
+            },
+            (payload) => {
+              console.log('🎭 Profile updated in real-time:', payload.new);
+              // Force reload after profile change
+              setTimeout(() => loadData(), 200);
+            }
+          )
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+              console.log('✅ Profile subscription established');
+            } else if (status === 'CHANNEL_ERROR') {
+              console.warn('⚠️ Profile subscription failed, using polling fallback');
+            }
+          });
+
+        // Restaurant updates
+        restaurantChannel = supabase
+          .channel(`restaurant-updates-${user.id}`)
+          .on(
+            'postgres_changes',
+            {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'restaurants',
+              filter: `owner_id=eq.${user.id}`,
+            },
+            (payload) => {
+              console.log('🏪 Restaurant updated in real-time:', payload.new);
+              setRestaurant(payload.new as Restaurant);
+            }
+          )
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+              console.log('✅ Restaurant subscription established');
+            } else if (status === 'CHANNEL_ERROR') {
+              console.warn('⚠️ Restaurant subscription failed, using polling fallback');
+            }
+          });
+
+      } catch (error) {
+        console.warn('⚠️ Real-time subscriptions not available:', error);
+        console.log('📊 Falling back to polling method');
+        
+        // Fallback: Set up polling every 30 seconds
+        const pollInterval = setInterval(() => {
+          loadData();
+        }, 30000);
+
+        return () => {
+          clearInterval(pollInterval);
+        };
+      }
+    };
+
+    setupRealtimeSubscriptions();
 
     return () => {
       console.log('🔄 Cleaning up real-time subscriptions');
-      profileChannel.unsubscribe();
-      restaurantChannel.unsubscribe();
+      try {
+        if (profileChannel) {
+          supabase.removeChannel(profileChannel);
+        }
+        if (restaurantChannel) {
+          supabase.removeChannel(restaurantChannel);
+        }
+      } catch (error) {
+        console.warn('⚠️ Error cleaning up subscriptions:', error);
+      }
     };
   }, [user?.id]);
 

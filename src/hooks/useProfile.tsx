@@ -21,41 +21,59 @@ export const useProfile = () => {
   useEffect(() => {
     loadProfile();
     
-    // Set up real-time subscription for profile changes
+    // Set up real-time subscription for profile changes with error handling
     let channel: RealtimeChannel | null = null;
     
     const setupRealtimeSubscription = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
 
-      channel = supabase
-        .channel('profile-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'profiles',
-            filter: `user_id=eq.${session.user.id}`
-          },
-          (payload) => {
-            console.log('Profile change received:', payload);
-            if (payload.eventType === 'UPDATE' && payload.new) {
-              setProfile(payload.new as UserProfile);
-            } else if (payload.eventType === 'INSERT' && payload.new) {
-              setProfile(payload.new as UserProfile);
+        console.log('🔄 Setting up profile realtime subscription');
+
+        channel = supabase
+          .channel('profile-changes')
+          .on(
+            'postgres_changes',
+            {
+              event: '*',
+              schema: 'public',
+              table: 'profiles',
+              filter: `user_id=eq.${session.user.id}`
+            },
+            (payload) => {
+              console.log('Profile change received:', payload);
+              if (payload.eventType === 'UPDATE' && payload.new) {
+                setProfile(payload.new as UserProfile);
+              } else if (payload.eventType === 'INSERT' && payload.new) {
+                setProfile(payload.new as UserProfile);
+              }
             }
-          }
-        )
-        .subscribe();
+          )
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+              console.log('✅ Profile subscription established');
+            } else if (status === 'CHANNEL_ERROR') {
+              console.warn('⚠️ Profile subscription failed - WebSockets may be blocked');
+            }
+          });
+
+      } catch (error) {
+        console.warn('⚠️ Real-time profile subscription not available:', error);
+        console.log('📊 Profile will update on manual refresh');
+      }
     };
 
     setupRealtimeSubscription();
 
     // Cleanup subscription on unmount
     return () => {
-      if (channel) {
-        supabase.removeChannel(channel);
+      try {
+        if (channel) {
+          supabase.removeChannel(channel);
+        }
+      } catch (error) {
+        console.warn('⚠️ Error cleaning up profile subscription:', error);
       }
     };
   }, []);
