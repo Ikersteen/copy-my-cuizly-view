@@ -57,15 +57,16 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
   useEffect(() => {
     loadAnalytics();
 
-    // Set up real-time subscriptions for all relevant tables
+    // Set up real-time subscriptions for all relevant tables with comprehensive sync
     const analyticsSubscription = supabase
-      .channel('restaurant-analytics')
+      .channel('restaurant-analytics-realtime')
       .on('postgres_changes', { 
         event: '*', 
         schema: 'public', 
         table: 'restaurant_analytics',
         filter: `restaurant_id=eq.${restaurantId}`
-      }, () => {
+      }, (payload) => {
+        console.log('Analytics updated:', payload);
         loadAnalytics();
       })
       .on('postgres_changes', { 
@@ -73,7 +74,8 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         schema: 'public', 
         table: 'ratings',
         filter: `restaurant_id=eq.${restaurantId}`
-      }, () => {
+      }, (payload) => {
+        console.log('Ratings updated:', payload);
         loadAnalytics();
       })
       .on('postgres_changes', { 
@@ -81,7 +83,8 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         schema: 'public', 
         table: 'offers',
         filter: `restaurant_id=eq.${restaurantId}`
-      }, () => {
+      }, (payload) => {
+        console.log('Offers updated:', payload);
         loadAnalytics();
       })
       .on('postgres_changes', { 
@@ -89,13 +92,27 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         schema: 'public', 
         table: 'menus',
         filter: `restaurant_id=eq.${restaurantId}`
-      }, () => {
+      }, (payload) => {
+        console.log('Menus updated:', payload);
+        loadAnalytics();
+      })
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'comments',
+        filter: `restaurant_id=eq.${restaurantId}`
+      }, (payload) => {
+        console.log('Comments updated:', payload);
         loadAnalytics();
       })
       .subscribe();
 
+    // Auto-refresh every 30 seconds as backup
+    const intervalId = setInterval(loadAnalytics, 30000);
+
     return () => {
       supabase.removeChannel(analyticsSubscription);
+      clearInterval(intervalId);
     };
   }, [restaurantId]);
 
