@@ -81,47 +81,23 @@ export const PersonalizedRecommendations = () => {
       
       const today = new Date().toISOString().split('T')[0];
       
-      const { data: existingAnalytics, error: fetchError } = await supabase
+      // Utiliser upsert pour éviter les conflits de contrainte unique
+      const { error } = await supabase
         .from('restaurant_analytics')
-        .select('*')
-        .eq('restaurant_id', restaurantId)
-        .eq('date', today)
-        .maybeSingle();
+        .upsert({
+          restaurant_id: restaurantId,
+          date: today,
+          profile_views: 1
+        }, {
+          onConflict: 'restaurant_id,date',
+          ignoreDuplicates: false
+        })
+        .select();
 
-      if (fetchError) {
-        console.error('Error fetching analytics:', fetchError);
-        return;
-      }
-
-      const updates = {
-        profile_views: (existingAnalytics?.profile_views || 0) + 1
-      };
-
-      if (existingAnalytics) {
-        const { error: updateError } = await supabase
-          .from('restaurant_analytics')
-          .update(updates)
-          .eq('id', existingAnalytics.id);
-        
-        if (updateError) {
-          console.error('Error updating analytics:', updateError);
-        } else {
-          console.log('Analytics updated successfully');
-        }
+      if (error) {
+        console.error('Error tracking profile view:', error);
       } else {
-        const { error: insertError } = await supabase
-          .from('restaurant_analytics')
-          .insert({
-            restaurant_id: restaurantId,
-            date: today,
-            ...updates
-          });
-        
-        if (insertError) {
-          console.error('Error inserting analytics:', insertError);
-        } else {
-          console.log('Analytics inserted successfully');
-        }
+        console.log('Profile view tracked successfully');
       }
     } catch (error) {
       console.error('Error tracking profile view:', error);
