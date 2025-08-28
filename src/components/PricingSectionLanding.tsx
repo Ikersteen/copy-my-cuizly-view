@@ -33,7 +33,7 @@ const PricingSectionLanding = () => {
         "Tableau de performance en temps réel",
         "Support prioritaire"
       ],
-      cta: "Essayer gratuitement"
+      cta: "Demander une démo"
     },
     {
       title: "Cuizly Analytics+",
@@ -48,7 +48,7 @@ const PricingSectionLanding = () => {
         "Aperçus sur les performances par segment",
         "Recommandations IA pour votre business"
       ],
-      cta: "Essayer gratuitement"
+      cta: "Demander une démo"
     }
   ];
 
