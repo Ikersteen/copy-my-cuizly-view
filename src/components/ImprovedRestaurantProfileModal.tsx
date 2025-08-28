@@ -534,10 +534,14 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                 <Input
                   id="delivery_radius"
                   type="number"
-                  value={formData.delivery_radius || 5}
-                  onChange={(e) => setFormData(prev => ({ ...prev, delivery_radius: parseInt(e.target.value) }))}
+                  value={formData.delivery_radius || ""}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    delivery_radius: e.target.value ? parseInt(e.target.value) : undefined 
+                  }))}
                   min="1"
                   max="50"
+                  placeholder="5"
                 />
               </div>
             </div>
