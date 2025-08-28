@@ -11,8 +11,8 @@ export interface CommentWithProfile {
   images?: string[];
   created_at: string;
   profiles?: {
-    first_name?: string;
-    last_name?: string;
+    user_id?: string;
+    display_name?: string;
     username?: string;
   };
 }
@@ -39,23 +39,24 @@ export const useComments = (restaurantId?: string) => {
 
       if (commentsError) throw commentsError;
 
-      // Then get profiles for the comment authors
+      // SÉCURITÉ: Utiliser la fonction sécurisée pour obtenir UNIQUEMENT les noms d'affichage
       if (commentsData && commentsData.length > 0) {
         const userIds = [...new Set(commentsData.map(comment => comment.user_id))];
-        const { data: profilesData, error: profilesError } = await supabase
-          .from('profiles')
-          .select('user_id, first_name, last_name, username')
-          .in('user_id', userIds);
+        const { data: publicNames, error: namesError } = await supabase
+          .rpc('get_public_user_names', { user_ids: userIds });
 
-        if (profilesError) throw profilesError;
+        if (namesError) {
+          console.error('Error fetching public names:', namesError);
+          // Continuer sans les noms en cas d'erreur
+        }
 
-        // Combine the data
+        // Combine the data with only public display names
         const commentsWithProfiles = commentsData.map(comment => ({
           ...comment,
-          profiles: profilesData?.find(p => p.user_id === comment.user_id) || {
-            first_name: 'Consommateur',
-            last_name: '',
-            username: ''
+          profiles: publicNames?.find(p => p.user_id === comment.user_id) || {
+            user_id: comment.user_id,
+            display_name: 'Utilisateur anonyme',
+            username: 'anonyme'
           }
         }));
 

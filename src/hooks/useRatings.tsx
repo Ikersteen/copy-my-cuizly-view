@@ -10,8 +10,9 @@ export interface Rating {
   comment?: string;
   created_at: string;
   profiles?: {
-    first_name?: string;
-    last_name?: string;
+    user_id?: string;
+    display_name?: string;
+    username?: string;
   };
 }
 
@@ -35,22 +36,24 @@ export const useRatings = (restaurantId?: string) => {
 
       if (error) throw error;
 
-      // Fetch profile data separately
+      // SÉCURITÉ: Utiliser la fonction sécurisée pour obtenir UNIQUEMENT les noms d'affichage
       if (data && data.length > 0) {
         const userIds = [...new Set(data.map(rating => rating.user_id))];
-        const { data: profilesData, error: profilesError } = await supabase
-          .from('profiles')
-          .select('user_id, first_name, last_name')
-          .in('user_id', userIds);
+        const { data: publicNames, error: namesError } = await supabase
+          .rpc('get_public_user_names', { user_ids: userIds });
 
-        if (profilesError) throw profilesError;
+        if (namesError) {
+          console.error('Error fetching public names:', namesError);
+          // Continuer sans les noms en cas d'erreur
+        }
 
-        // Combine the data
+        // Combine the data with only public display names
         const ratingsWithProfiles = data.map(rating => ({
           ...rating,
-          profiles: profilesData?.find(p => p.user_id === rating.user_id) || {
-            first_name: 'Utilisateur',
-            last_name: 'Anonyme'
+          profiles: publicNames?.find(p => p.user_id === rating.user_id) || {
+            user_id: rating.user_id,
+            display_name: 'Utilisateur anonyme',
+            username: 'anonyme'
           }
         }));
 

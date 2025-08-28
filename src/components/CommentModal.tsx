@@ -119,8 +119,8 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
   };
 
   const getUserDisplayName = (comment: typeof comments[0]) => {
-    if (comment.profiles?.first_name || comment.profiles?.last_name) {
-      return `${comment.profiles.first_name || ''} ${comment.profiles.last_name || ''}`.trim();
+    if (comment.profiles?.display_name) {
+      return comment.profiles.display_name;
     }
     if (comment.profiles?.username) {
       return comment.profiles.username;

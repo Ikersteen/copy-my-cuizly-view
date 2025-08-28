@@ -511,6 +511,14 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_public_user_names: {
+        Args: { user_ids: string[] }
+        Returns: {
+          display_name: string
+          user_id: string
+          username: string
+        }[]
+      }
       get_restaurant_contact_info: {
         Args: { restaurant_id: string }
         Returns: {

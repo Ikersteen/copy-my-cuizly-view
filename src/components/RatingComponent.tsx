@@ -168,9 +168,9 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
                       {renderStars(rating.rating)}
-                      <span className="text-sm text-muted-foreground">
-                        {rating.profiles?.first_name} {rating.profiles?.last_name}
-                      </span>
+                       <span className="text-sm text-muted-foreground">
+                         {rating.profiles?.display_name || 'Utilisateur anonyme'}
+                       </span>
                     </div>
                     <span className="text-xs text-muted-foreground">
                       {new Date(rating.created_at).toLocaleDateString('fr-CA')}
