@@ -58,7 +58,7 @@ const handler = async (req: Request): Promise<Response> => {
     );
 
     const { error } = await resend.emails.send({
-      from: 'Cuizly <verification@cuizly.com>',
+      from: 'Cuizly <Cuizlycanada@gmail.com>',
       to: [user.email],
       subject: 'Confirmez votre adresse email - Cuizly',
       html,
