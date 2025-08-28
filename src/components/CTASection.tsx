@@ -13,8 +13,9 @@ const CTASection = () => {
             <img 
               src={heroRestaurantImage} 
               alt="Restaurant moderne à Montréal"
-              className="w-full h-full object-cover opacity-30"
+              className="w-full h-full object-cover opacity-80"
             />
+            <div className="absolute inset-0 bg-black/30"></div>
           </div>
 
           {/* Content */}
