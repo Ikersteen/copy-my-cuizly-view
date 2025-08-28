@@ -120,6 +120,8 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     if (!restaurantId) return;
 
     try {
+      console.log('Loading analytics for restaurant:', restaurantId);
+      
       // Get current week date range for trends calculation
       const now = new Date();
       const currentWeekStart = new Date(now);
@@ -156,6 +158,14 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
           .lte('date', lastWeekEnd.toISOString().split('T')[0])
       ]);
 
+      console.log('Raw data retrieved:', {
+        offers: offersData.data,
+        menus: menusData.data,
+        analytics: analyticsData.data,
+        ratings: ratingsData.data,
+        lastWeek: lastWeekData.data
+      });
+
       if (offersData.error) throw offersData.error;
       if (menusData.error) throw menusData.error;
       if (analyticsData.error) throw analyticsData.error;
@@ -168,18 +178,21 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       const totalMenus = menusData.data?.length || 0;
       const activeMenus = menusData.data?.filter(menu => menu.is_active).length || 0;
 
-      // Calculate current week analytics
+      // Calculate TOTAL analytics (not just current week)
+      const totalProfileViews = analyticsData.data?.reduce((sum, day) => sum + (day.profile_views || 0), 0) || 0;
+      const totalMenuViews = analyticsData.data?.reduce((sum, day) => sum + (day.menu_views || 0), 0) || 0;
+      const totalOfferClicks = analyticsData.data?.reduce((sum, day) => sum + (day.offer_clicks || 0), 0) || 0;
+
+      // Calculate current week analytics for trends
       const currentWeekData = analyticsData.data?.filter(day => 
         new Date(day.date) >= currentWeekStart
       ) || [];
       
-      const profileViews = currentWeekData.reduce((sum, day) => sum + (day.profile_views || 0), 0);
-      const menuViews = currentWeekData.reduce((sum, day) => sum + (day.menu_views || 0), 0);
-      const offerClicks = currentWeekData.reduce((sum, day) => sum + (day.offer_clicks || 0), 0);
+      const currentWeekViews = currentWeekData.reduce((sum, day) => sum + (day.profile_views || 0), 0);
 
       // Calculate last week analytics for trends
       const lastWeekViews = lastWeekData.data?.reduce((sum, day) => sum + (day.profile_views || 0), 0) || 0;
-      const weeklyGrowth = lastWeekViews > 0 ? ((profileViews - lastWeekViews) / lastWeekViews * 100) : 0;
+      const weeklyGrowth = lastWeekViews > 0 ? ((currentWeekViews - lastWeekViews) / lastWeekViews * 100) : 0;
 
       // Calculate average rating
       const totalRatings = ratingsData.data?.length || 0;
@@ -187,16 +200,26 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         ? ratingsData.data.reduce((sum, rating) => sum + rating.rating, 0) / totalRatings 
         : 0;
 
+      console.log('Calculated metrics:', {
+        totalProfileViews,
+        totalMenuViews,
+        avgRating,
+        totalRatings,
+        currentWeekViews,
+        lastWeekViews,
+        weeklyGrowth
+      });
+
       const newAnalytics = {
         totalOffers,
         activeOffers,
         totalMenus,
         activeMenus,
-        profileViews,
-        menuViews,
+        profileViews: totalProfileViews, // Use total instead of current week
+        menuViews: totalMenuViews,       // Use total instead of current week
         avgRating: Math.round(avgRating * 10) / 10,
         totalRatings,
-        offerClicks,
+        offerClicks: totalOfferClicks,   // Use total instead of current week
         weeklyGrowth: Math.round(weeklyGrowth * 10) / 10
       };
 
@@ -211,7 +234,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
           { key: 'activeOffers', value: activeOffers, prev: previousData.current.activeOffers },
           { key: 'totalMenus', value: totalMenus, prev: previousData.current.totalMenus },
           { key: 'activeMenus', value: activeMenus, prev: previousData.current.activeMenus },
-          { key: 'profileViews', value: profileViews, prev: previousData.current.profileViews },
+          { key: 'profileViews', value: totalProfileViews, prev: previousData.current.profileViews },
           { key: 'avgRating', value: newAnalytics.avgRating, prev: previousData.current.avgRating },
         ];
 
@@ -245,7 +268,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         activeOffers,
         totalMenus,
         activeMenus,
-        profileViews,
+        profileViews: totalProfileViews,
         avgRating: newAnalytics.avgRating,
       };
 
