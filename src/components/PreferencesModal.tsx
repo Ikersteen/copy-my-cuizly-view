@@ -56,7 +56,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         cuisine_preferences: preferences.cuisine_preferences || [],
         dietary_restrictions: preferences.dietary_restrictions || [],
         allergens: preferences.allergens || [],
-        price_range: preferences.price_range || "$$",
+        price_range: preferences.price_range || "",
         street: preferences.street || "",
         delivery_radius: preferences.delivery_radius || 10,
         favorite_meal_times: preferences.favorite_meal_times || [],
