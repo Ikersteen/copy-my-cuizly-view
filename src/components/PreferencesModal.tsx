@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { UserPreferences, useUserPreferences } from "@/hooks/useUserPreferences";
 import { X, Plus } from "lucide-react";
+import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
 
 interface PreferencesModalProps {
   open: boolean;
@@ -21,12 +22,6 @@ const montrealStreets = [
   "Rue Saint-Jacques", "Avenue du Parc", "Rue Rachel", "Boulevard de Maisonneuve",
   "Rue Crescent", "Rue Peel", "Boulevard Décarie", "Rue Fleury",
   "Avenue Christophe-Colomb", "Rue Ontario", "Boulevard Pie-IX"
-];
-
-const CUISINE_OPTIONS = [
-  "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
-  "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
-  "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine"
 ];
 
 const DIETARY_OPTIONS = [

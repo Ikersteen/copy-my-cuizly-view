@@ -11,6 +11,8 @@ import { DateRangePicker } from "@/components/DateRangePicker";
 import { format } from "date-fns";
 import { validateTextInput, INPUT_LIMITS } from "@/lib/validation";
 
+import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
+
 interface NewOfferModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -228,17 +230,9 @@ export const NewOfferModal = ({
               className="w-full px-3 py-2 border border-input bg-background rounded-md"
             >
               <option value="">Tous types</option>
-              <option value="Italienne">Italienne</option>
-              <option value="Française">Française</option>
-              <option value="Chinoise">Chinoise</option>
-              <option value="Japonaise">Japonaise</option>
-              <option value="Mexicaine">Mexicaine</option>
-              <option value="Indienne">Indienne</option>
-              <option value="Libanaise">Libanaise</option>
-              <option value="Thaïlandaise">Thaïlandaise</option>
-              <option value="Grecque">Grecque</option>
-              <option value="Américaine">Américaine</option>
-              <option value="Africaine">Africaine</option>
+              {CUISINE_OPTIONS.map(cuisine => (
+                <option key={cuisine} value={cuisine}>{cuisine}</option>
+              ))}
             </select>
           </div>
 

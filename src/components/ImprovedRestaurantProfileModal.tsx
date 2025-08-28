@@ -13,6 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
 import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
 
+import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
+
 interface Restaurant {
   id: string;
   name: string;
@@ -40,7 +42,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
   const [uploading, setUploading] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [newCuisine, setNewCuisine] = useState("");
+  const [availableCuisines] = useState(CUISINE_OPTIONS);
   const [chefEmojiColor, setChefEmojiColor] = useState("🧑‍🍳");
   const [showPhotoAdjustment, setShowPhotoAdjustment] = useState(false);
   const [adjustmentImageUrl, setAdjustmentImageUrl] = useState("");
@@ -217,13 +219,12 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     }
   };
 
-  const addCuisine = () => {
-    if (newCuisine.trim() && !formData.cuisine_type?.includes(newCuisine.trim())) {
+  const addCuisine = (cuisine: string) => {
+    if (cuisine.trim() && !formData.cuisine_type?.includes(cuisine.trim())) {
       setFormData(prev => ({
         ...prev,
-        cuisine_type: [...(prev.cuisine_type || []), newCuisine.trim()]
+        cuisine_type: [...(prev.cuisine_type || []), cuisine.trim()]
       }));
-      setNewCuisine("");
     }
   };
 
@@ -550,10 +551,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           {/* Cuisine Types */}
           <div className="space-y-4">
             <h3 className="font-semibold text-foreground">Cuisines proposées</h3>
+            <p className="text-sm text-muted-foreground">
+              Sélectionnez les types de cuisine que vous proposez
+            </p>
             
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mb-4">
               {formData.cuisine_type?.map((cuisine, index) => (
-                <Badge key={index} variant="outline" className="pr-1">
+                <Badge key={index} variant="default" className="pr-1">
                   {cuisine}
                   <Button
                     variant="ghost"
@@ -567,16 +571,20 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               )) || []}
             </div>
 
-            <div className="flex gap-2">
-              <Input
-                value={newCuisine}
-                onChange={(e) => setNewCuisine(e.target.value)}
-                placeholder="Ajouter un type de cuisine..."
-                onKeyPress={(e) => e.key === 'Enter' && addCuisine()}
-              />
-              <Button onClick={addCuisine} disabled={!newCuisine.trim()}>
-                Ajouter
-              </Button>
+            <div>
+              <Label className="text-sm font-medium mb-3 block">Cuisines disponibles</Label>
+              <div className="flex flex-wrap gap-2">
+                {availableCuisines.map(cuisine => (
+                  <Badge
+                    key={cuisine}
+                    variant={formData.cuisine_type?.includes(cuisine) ? "default" : "outline"}
+                    className="cursor-pointer transition-all duration-200 hover:scale-105"
+                    onClick={() => addCuisine(cuisine)}
+                  >
+                    {cuisine}
+                  </Badge>
+                ))}
+              </div>
             </div>
           </div>
 

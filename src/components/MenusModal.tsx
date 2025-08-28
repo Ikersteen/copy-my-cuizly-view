@@ -10,6 +10,8 @@ import { Upload, X, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
+import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
+
 interface Menu {
   id: string;
   image_url: string;
@@ -332,17 +334,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     className="w-full px-3 py-2 border border-input bg-background rounded-md"
                   >
                     <option value="">Sélectionner un type</option>
-                    <option value="Italienne">Italienne</option>
-                    <option value="Française">Française</option>
-                    <option value="Chinoise">Chinoise</option>
-                    <option value="Japonaise">Japonaise</option>
-                    <option value="Mexicaine">Mexicaine</option>
-                    <option value="Indienne">Indienne</option>
-                    <option value="Libanaise">Libanaise</option>
-                    <option value="Thaïlandaise">Thaïlandaise</option>
-                    <option value="Grecque">Grecque</option>
-                    <option value="Américaine">Américaine</option>
-                    <option value="Africaine">Africaine</option>
+                    {CUISINE_OPTIONS.map(cuisine => (
+                      <option key={cuisine} value={cuisine}>{cuisine}</option>
+                    ))}
                   </select>
 
                   <Label>Description</Label>
@@ -485,17 +479,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       className="w-full px-3 py-2 border border-input bg-background rounded-md"
                     >
                       <option value="">Sélectionner un type</option>
-                      <option value="Italienne">Italienne</option>
-                       <option value="Française">Française</option>
-                      <option value="Chinoise">Chinoise</option>
-                      <option value="Japonaise">Japonaise</option>
-                      <option value="Mexicaine">Mexicaine</option>
-                      <option value="Indienne">Indienne</option>
-                      <option value="Libanaise">Libanaise</option>
-                      <option value="Thaïlandaise">Thaïlandaise</option>
-                      <option value="Grecque">Grecque</option>
-                      <option value="Américaine">Américaine</option>
-                      <option value="Africaine">Africaine</option>
+                      {CUISINE_OPTIONS.map(cuisine => (
+                        <option key={cuisine} value={cuisine}>{cuisine}</option>
+                      ))}
                     </select>
 
                     <Label>Description</Label>
