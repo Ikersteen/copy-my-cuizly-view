@@ -91,34 +91,57 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
 
   const trackInteraction = async (restaurantId: string, action: 'profile_view' | 'menu_view' | 'offer_click') => {
     try {
+      console.log(`Tracking ${action} for restaurant ${restaurantId}`);
+      
       // Mettre à jour les analytics en temps réel
       const today = new Date().toISOString().split('T')[0];
       
-      const { data: existingAnalytics } = await supabase
+      const { data: existingAnalytics, error: fetchError } = await supabase
         .from('restaurant_analytics')
         .select('*')
         .eq('restaurant_id', restaurantId)
         .eq('date', today)
-        .single();
+        .maybeSingle();
+
+      if (fetchError) {
+        console.error('Error fetching analytics:', fetchError);
+        return;
+      }
+
+      console.log('Existing analytics:', existingAnalytics);
 
       const updates: any = {};
       if (action === 'profile_view') updates.profile_views = (existingAnalytics?.profile_views || 0) + 1;
       if (action === 'menu_view') updates.menu_views = (existingAnalytics?.menu_views || 0) + 1;
       if (action === 'offer_click') updates.offer_clicks = (existingAnalytics?.offer_clicks || 0) + 1;
 
+      console.log('Updates to apply:', updates);
+
       if (existingAnalytics) {
-        await supabase
+        const { error: updateError } = await supabase
           .from('restaurant_analytics')
           .update(updates)
           .eq('id', existingAnalytics.id);
+        
+        if (updateError) {
+          console.error('Error updating analytics:', updateError);
+        } else {
+          console.log('Analytics updated successfully');
+        }
       } else {
-        await supabase
+        const { error: insertError } = await supabase
           .from('restaurant_analytics')
           .insert({
             restaurant_id: restaurantId,
             date: today,
             ...updates
           });
+        
+        if (insertError) {
+          console.error('Error inserting analytics:', insertError);
+        } else {
+          console.log('Analytics inserted successfully');
+        }
       }
     } catch (error) {
       console.error('Erreur tracking:', error);
