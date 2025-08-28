@@ -22,17 +22,24 @@ const Auth = () => {
   const [captchaError, setCaptchaError] = useState<string | null>(null);
   const [showSignInPassword, setShowSignInPassword] = useState(false);
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>('signin');
   const hcaptchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { sendWelcomeEmail } = useEmailNotifications();
 
-  // Check URL parameters to set user type
+  // Check URL parameters to set user type and active tab
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const typeParam = urlParams.get('type');
+    const tabParam = urlParams.get('tab');
+    
     if (typeParam === 'restaurant') {
       setUserType('restaurant_owner');
+    }
+    
+    if (tabParam === 'signup') {
+      setActiveTab('signup');
     }
   }, []);
 
@@ -505,7 +512,7 @@ const Auth = () => {
 
         <Card className="shadow-card border border-border">
           <CardContent className="p-8 flex items-center justify-center">
-            <Tabs defaultValue="signin" className="w-full max-w-sm">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-sm">
               <TabsList className="grid w-full grid-cols-2 mb-8 h-12 rounded-lg p-1">
                 <TabsTrigger 
                   value="signin" 
