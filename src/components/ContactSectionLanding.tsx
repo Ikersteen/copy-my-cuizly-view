@@ -14,112 +14,110 @@ const ContactSectionLanding = () => {
   };
 
   return (
-    <section id="contact" className="py-20 sm:py-32 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-br from-background to-muted/30 border border-border/50 rounded-3xl p-12 sm:p-16 lg:p-20 shadow-2xl backdrop-blur-sm">
-          <div className="text-center mb-16 sm:mb-20">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              Contactez-nous
-            </h2>
-            <p className="text-xl sm:text-2xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
-              Une question ? Une suggestion ? Nous sommes là pour vous aider.
-            </p>
+    <section id="contact" className="py-16 sm:py-20 bg-background">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+            Contactez-nous
+          </h2>
+          <p className="text-lg sm:text-xl text-cuizly-neutral px-2 sm:px-0">
+            Une question ? Une suggestion ? Nous sommes là pour vous aider.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
+          <div>
+            <Card className="shadow-card border border-border">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg sm:text-xl">Envoyez-nous un message</CardTitle>
+                <CardDescription className="text-sm sm:text-base">
+                  Remplissez le formulaire et nous vous répondrons dans les plus brefs délais.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName" className="text-sm">Prénom</Label>
+                      <Input id="firstName" name="firstName" placeholder="Iker" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName" className="text-sm">Nom</Label>
+                      <Input id="lastName" name="lastName" placeholder="Steen" required />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm">Courriel</Label>
+                    <Input id="email" name="email" type="email" placeholder="votre@courriel.com" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="subject" className="text-sm">Sujet</Label>
+                    <Input id="subject" name="subject" placeholder="Comment pouvons-nous vous aider ?" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-sm">Message</Label>
+                    <Textarea 
+                      id="message" 
+                      name="message"
+                      placeholder="Décrivez votre demande..."
+                      className="min-h-[100px] sm:min-h-[120px]"
+                      required 
+                    />
+                  </div>
+                  <Button type="submit" className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
+                    Envoyer le message
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <Card className="bg-background/80 backdrop-blur-sm border border-border/50 shadow-xl rounded-2xl">
-                <CardHeader className="pb-6">
-                  <CardTitle className="text-2xl sm:text-3xl">Envoyez-nous un message</CardTitle>
-                  <CardDescription className="text-base sm:text-lg text-foreground/70">
-                    Remplissez le formulaire et nous vous répondrons dans les plus brefs délais.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="firstName" className="text-base">Prénom</Label>
-                        <Input id="firstName" name="firstName" placeholder="Iker" required className="h-12 rounded-xl" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="lastName" className="text-base">Nom</Label>
-                        <Input id="lastName" name="lastName" placeholder="Steen" required className="h-12 rounded-xl" />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-base">Courriel</Label>
-                      <Input id="email" name="email" type="email" placeholder="votre@courriel.com" required className="h-12 rounded-xl" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="subject" className="text-base">Sujet</Label>
-                      <Input id="subject" name="subject" placeholder="Comment pouvons-nous vous aider ?" required className="h-12 rounded-xl" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="message" className="text-base">Message</Label>
-                      <Textarea 
-                        id="message" 
-                        name="message"
-                        placeholder="Décrivez votre demande..."
-                        className="min-h-[120px] sm:min-h-[140px] rounded-xl"
-                        required 
-                      />
-                    </div>
-                    <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base sm:text-lg py-3 rounded-xl shadow-lg">
-                      Envoyer le message
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="space-y-8 sm:space-y-12">
-              <div>
-                <h3 className="text-2xl sm:text-3xl font-semibold text-foreground mb-6 sm:mb-8">
-                  Informations de contact
-                </h3>
-                <div className="space-y-6 sm:space-y-8">
-                  <div className="flex items-start space-x-4 sm:space-x-6">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl flex items-center justify-center">
-                      <Mail className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-foreground text-lg sm:text-xl mb-1">Courriel</h4>
-                      <p className="text-foreground/70 text-base sm:text-lg">cuizlycanada@gmail.com</p>
-                    </div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-4 sm:mb-6">
+                Informations de contact
+              </h3>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
+                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-cuizly-primary" />
                   </div>
-                  
-                  <div className="flex items-start space-x-4 sm:space-x-6">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl flex items-center justify-center">
-                      <MapPin className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-foreground text-lg sm:text-xl mb-1">Adresse</h4>
-                      <p className="text-foreground/70 text-base sm:text-lg">2900 Bd Édouard-Montpetit<br />Montréal, QC H3T 1J4</p>
-                    </div>
+                  <div>
+                    <h4 className="font-medium text-foreground text-sm sm:text-base">Courriel</h4>
+                    <p className="text-cuizly-neutral text-sm sm:text-base">cuizlycanada@gmail.com</p>
                   </div>
-                  
-                  <div className="flex items-start space-x-4 sm:space-x-6">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl flex items-center justify-center">
-                      <Phone className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-foreground text-lg sm:text-xl mb-1">Téléphone</h4>
-                      <p className="text-foreground/70 text-base sm:text-lg">+1 (514) 465-4783</p>
-                    </div>
+                </div>
+                
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
+                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-cuizly-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-foreground text-sm sm:text-base">Adresse</h4>
+                    <p className="text-cuizly-neutral text-sm sm:text-base">2900 Bd Édouard-Montpetit<br />Montréal, QC H3T 1J4</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
+                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-cuizly-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-foreground text-sm sm:text-base">Téléphone</h4>
+                    <p className="text-cuizly-neutral text-sm sm:text-base">+1 (514) 465-4783</p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div>
-                <h3 className="text-2xl sm:text-3xl font-semibold text-foreground mb-4 sm:mb-6">
-                  Heures d'ouverture
-                </h3>
-                <div className="space-y-2 sm:space-y-3 text-foreground/70 text-base sm:text-lg">
-                  <p>Lundi - Vendredi: 9h00 - 18h00</p>
-                  <p>Samedi: 10h00 - 16h00</p>
-                  <p>Dimanche: Fermé</p>
-                </div>
+            <div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4">
+                Heures d'ouverture
+              </h3>
+              <div className="space-y-1 sm:space-y-2 text-cuizly-neutral text-sm sm:text-base">
+                <p>Lundi - Vendredi: 9h00 - 18h00</p>
+                <p>Samedi: 10h00 - 16h00</p>
+                <p>Dimanche: Fermé</p>
               </div>
             </div>
           </div>
