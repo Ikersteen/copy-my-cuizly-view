@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Users, Eye, Star, Calendar, MapPin } from "lucide-react";
+import { TrendingUp, Users, Eye, Star, Calendar, MapPin, ArrowUp, ArrowDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface AnalyticsSectionProps {
@@ -21,6 +21,15 @@ interface AnalyticsData {
   weeklyGrowth?: number;
 }
 
+interface PreviousData {
+  totalOffers: number;
+  activeOffers: number;
+  totalMenus: number;
+  activeMenus: number;
+  profileViews: number;
+  avgRating: number;
+}
+
 export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
   const [analytics, setAnalytics] = useState<AnalyticsData>({
     totalOffers: 0,
@@ -34,6 +43,16 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     offerClicks: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [changedCards, setChangedCards] = useState<Set<number>>(new Set());
+  const [trends, setTrends] = useState<{[key: string]: 'up' | 'down' | 'stable'}>({});
+  const previousData = useRef<PreviousData>({
+    totalOffers: 0,
+    activeOffers: 0,
+    totalMenus: 0,
+    activeMenus: 0,
+    profileViews: 0,
+    avgRating: 0,
+  });
 
   useEffect(() => {
     loadAnalytics();
@@ -151,7 +170,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         ? ratingsData.data.reduce((sum, rating) => sum + rating.rating, 0) / totalRatings 
         : 0;
 
-      setAnalytics({
+      const newAnalytics = {
         totalOffers,
         activeOffers,
         totalMenus,
@@ -162,7 +181,58 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         totalRatings,
         offerClicks,
         weeklyGrowth: Math.round(weeklyGrowth * 10) / 10
-      });
+      };
+
+      // Detect changes and animate
+      const newChangedCards = new Set<number>();
+      const newTrends: {[key: string]: 'up' | 'down' | 'stable'} = {};
+
+      if (!loading) {
+        // Check for changes in key metrics
+        const metricsToCheck = [
+          { key: 'totalOffers', value: totalOffers, prev: previousData.current.totalOffers },
+          { key: 'activeOffers', value: activeOffers, prev: previousData.current.activeOffers },
+          { key: 'totalMenus', value: totalMenus, prev: previousData.current.totalMenus },
+          { key: 'activeMenus', value: activeMenus, prev: previousData.current.activeMenus },
+          { key: 'profileViews', value: profileViews, prev: previousData.current.profileViews },
+          { key: 'avgRating', value: newAnalytics.avgRating, prev: previousData.current.avgRating },
+        ];
+
+        metricsToCheck.forEach((metric, index) => {
+          if (metric.value !== metric.prev) {
+            newChangedCards.add(index);
+            if (metric.value > metric.prev) {
+              newTrends[metric.key] = 'up';
+            } else if (metric.value < metric.prev) {
+              newTrends[metric.key] = 'down';
+            } else {
+              newTrends[metric.key] = 'stable';
+            }
+          }
+        });
+
+        setChangedCards(newChangedCards);
+        setTrends(newTrends);
+
+        // Clear animation after delay
+        if (newChangedCards.size > 0) {
+          setTimeout(() => {
+            setChangedCards(new Set());
+          }, 2000);
+        }
+      }
+
+      // Update previous data for next comparison
+      previousData.current = {
+        totalOffers,
+        activeOffers,
+        totalMenus,
+        activeMenus,
+        profileViews,
+        avgRating: newAnalytics.avgRating,
+      };
+
+      setAnalytics(newAnalytics);
     } catch (error) {
       console.error('Error loading analytics:', error);
     } finally {
@@ -174,30 +244,42 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     {
       title: "Offres totales",
       value: analytics.totalOffers,
+      subtitle: `${analytics.activeOffers} actives`,
       icon: TrendingUp,
       color: "text-blue-500",
-      description: `${analytics.activeOffers} actives`
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-200",
+      trendKey: 'totalOffers'
     },
     {
       title: "Menus ajoutés",
       value: analytics.totalMenus,
+      subtitle: `${analytics.activeMenus} actifs`,
       icon: Calendar,
       color: "text-green-500",
-      description: `${analytics.activeMenus} actifs`
+      bgColor: "bg-green-50",
+      borderColor: "border-green-200",
+      trendKey: 'totalMenus'
     },
     {
       title: "Vues du profil",
       value: analytics.profileViews,
+      subtitle: "Vues totales",
       icon: Eye,
       color: "text-purple-500",
-      description: "Vues totales"
+      bgColor: "bg-purple-50",
+      borderColor: "border-purple-200",
+      trendKey: 'profileViews'
     },
     {
       title: "Note moyenne",
       value: analytics.avgRating.toFixed(1),
+      subtitle: "Sur 5 étoiles",
       icon: Star,
       color: "text-yellow-500",
-      description: "Sur 5 étoiles"
+      bgColor: "bg-yellow-50",
+      borderColor: "border-yellow-200",
+      trendKey: 'avgRating'
     }
   ];
 
@@ -228,30 +310,76 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {analyticsCards.map((card, index) => (
-            <div key={index} className="text-center p-4 bg-cuizly-surface rounded-lg border border-border/50">
-              <div className="flex items-center justify-center mb-2">
-                <card.icon className={`h-5 w-5 ${card.color}`} />
+          {analyticsCards.map((card, index) => {
+            const isChanged = changedCards.has(index);
+            const trend = trends[card.trendKey];
+            const trendColor = trend === 'up' ? 'text-green-500' : trend === 'down' ? 'text-red-500' : '';
+            
+            return (
+              <div 
+                key={index} 
+                className={`
+                  relative text-center p-4 rounded-lg border transition-all duration-300 hover:shadow-lg hover:-translate-y-1
+                  ${card.bgColor} ${card.borderColor}
+                  ${isChanged ? 'animate-pulse ring-2 ring-primary/50 ring-offset-2' : ''}
+                `}
+              >
+                {/* Trend indicator */}
+                {trend && trend !== 'stable' && (
+                  <div className={`absolute top-2 right-2 ${trendColor}`}>
+                    {trend === 'up' ? (
+                      <ArrowUp className="h-3 w-3 animate-bounce" />
+                    ) : (
+                      <ArrowDown className="h-3 w-3 animate-bounce" />
+                    )}
+                  </div>
+                )}
+                
+                <div className="flex items-center justify-center mb-3">
+                  <div className={`p-2 rounded-full ${card.bgColor} border ${card.borderColor}`}>
+                    <card.icon className={`h-5 w-5 ${card.color}`} />
+                  </div>
+                </div>
+                
+                <div className={`
+                  text-2xl font-bold mb-2 transition-all duration-300
+                  ${isChanged ? 'scale-110 text-primary' : 'text-foreground'}
+                `}>
+                  {card.value}
+                </div>
+                
+                <div className="text-xs font-medium text-cuizly-neutral mb-1">
+                  {card.title}
+                </div>
+                
+                <div className="text-xs text-muted-foreground">
+                  {card.subtitle}
+                </div>
+                
+                {/* Pulse animation overlay for changes */}
+                {isChanged && (
+                  <div className="absolute inset-0 rounded-lg border-2 border-primary animate-ping opacity-75" />
+                )}
               </div>
-              <div className="text-2xl font-bold text-foreground mb-1">
-                {card.value}
-              </div>
-              <div className="text-xs font-medium text-cuizly-neutral mb-1">
-                {card.title}
-              </div>
-              <div className="text-xs text-muted-foreground">
-                {card.description}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20">
+        <div className="mt-6 p-4 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg border border-cuizly-primary/20 hover:shadow-md transition-all duration-300">
           <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:justify-between">
             <div className="text-center md:text-left order-2 md:order-1">
-              <h4 className="text-sm font-semibold text-foreground mb-1">
-                Tendances cette semaine 📈
-              </h4>
+              <div className="flex items-center gap-2 mb-1">
+                <h4 className="text-sm font-semibold text-foreground">
+                  Tendances cette semaine
+                </h4>
+                {analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0 ? (
+                  <TrendingUp className="h-4 w-4 text-green-500 animate-bounce" />
+                ) : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth < 0 ? (
+                  <ArrowDown className="h-4 w-4 text-red-500 animate-bounce" />
+                ) : (
+                  <div className="h-4 w-4 bg-gray-300 rounded-full animate-pulse" />
+                )}
+              </div>
               <p className="text-xs text-cuizly-neutral">
                 {analytics.weeklyGrowth !== undefined ? (
                   analytics.weeklyGrowth >= 0 ? 
@@ -265,13 +393,15 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
             <div className="flex justify-center order-1 md:order-2">
               <Badge 
                 variant="outline" 
-                className={`${
-                  analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0
-                    ? 'text-green-600 border-green-300'
+                className={`
+                  transition-all duration-300 hover:scale-105
+                  ${analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth >= 0
+                    ? 'text-green-600 border-green-300 bg-green-50 hover:bg-green-100'
                     : analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth < 0
-                    ? 'text-orange-600 border-orange-300'
-                    : 'text-blue-600 border-blue-300'
-                }`}
+                    ? 'text-red-600 border-red-300 bg-red-50 hover:bg-red-100'
+                    : 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100'
+                  }
+                `}
               >
                 {analytics.weeklyGrowth !== undefined ? (
                   analytics.weeklyGrowth >= 0 ? 'Tendance positive' : 'En cours d\'amélioration'
