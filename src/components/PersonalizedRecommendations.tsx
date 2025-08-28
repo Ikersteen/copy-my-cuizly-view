@@ -240,11 +240,17 @@ export const PersonalizedRecommendations = () => {
           reasons.push("Options adaptées disponibles");
         }
 
+        // Si l'utilisateur n'a configuré aucune préférence, on n'affiche rien
+        if (!preferences || 
+            (!preferences.cuisine_preferences?.length && 
+             (!preferences.price_range || preferences.price_range === "") && 
+             !preferences.dietary_restrictions?.length)) {
+          return null; // Pas de préférences configurées = pas de recommandations
+        }
+
         // Si le restaurant ne correspond à aucune préférence utilisateur, on l'exclut
-        if (preferences && (preferences.cuisine_preferences?.length || preferences.price_range || preferences.dietary_restrictions?.length)) {
-          if (!hasAnyMatch) {
-            return null; // Exclure ce restaurant des recommandations
-          }
+        if (!hasAnyMatch) {
+          return null; // Exclure ce restaurant des recommandations
         }
 
         const realRating = await getRealRating(restaurant.id);
