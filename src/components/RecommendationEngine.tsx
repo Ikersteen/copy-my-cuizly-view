@@ -33,6 +33,59 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
     }
   }, [preferences]);
 
+  const trackProfileView = async (restaurantId: string) => {
+    try {
+      console.log(`Tracking profile view for restaurant ${restaurantId}`);
+      
+      const today = new Date().toISOString().split('T')[0];
+      
+      const { data: existingAnalytics, error: fetchError } = await supabase
+        .from('restaurant_analytics')
+        .select('*')
+        .eq('restaurant_id', restaurantId)
+        .eq('date', today)
+        .maybeSingle();
+
+      if (fetchError) {
+        console.error('Error fetching analytics:', fetchError);
+        return;
+      }
+
+      const updates = {
+        profile_views: (existingAnalytics?.profile_views || 0) + 1
+      };
+
+      if (existingAnalytics) {
+        const { error: updateError } = await supabase
+          .from('restaurant_analytics')
+          .update(updates)
+          .eq('id', existingAnalytics.id);
+        
+        if (updateError) {
+          console.error('Error updating analytics:', updateError);
+        } else {
+          console.log('Analytics updated successfully');
+        }
+      } else {
+        const { error: insertError } = await supabase
+          .from('restaurant_analytics')
+          .insert({
+            restaurant_id: restaurantId,
+            date: today,
+            ...updates
+          });
+        
+        if (insertError) {
+          console.error('Error inserting analytics:', insertError);
+        } else {
+          console.log('Analytics inserted successfully');
+        }
+      }
+    } catch (error) {
+      console.error('Error tracking profile view:', error);
+    }
+  };
+
   const generateRecommendations = async () => {
     try {
       setLoading(true);
@@ -346,8 +399,12 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
               <Button 
                 className="w-full" 
                 size="sm"
+                onClick={() => {
+                  // Track profile view
+                  trackProfileView(restaurant.id);
+                }}
               >
-                Voir le menu
+                Voir le profil
               </Button>
             </CardContent>
           </Card>
