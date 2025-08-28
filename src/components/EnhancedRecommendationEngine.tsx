@@ -35,6 +35,12 @@ interface Restaurant {
     rating_count: number;
     average_rating: number;
   };
+  // Propriétés IA
+  ai_score?: number;
+  ai_reasons?: string[];
+  sentiment_analysis?: string;
+  preference_match?: number;
+  quality_prediction?: number;
 }
 
 interface Menu {
@@ -156,7 +162,51 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
         return;
       }
 
-      // Système de scoring basé sur interactions réelles et préférences
+      // Préparation des données pour l'IA
+      const restaurantsForAI = restaurants.map(restaurant => {
+        const analytics = Array.isArray(restaurant.restaurant_analytics) 
+          ? restaurant.restaurant_analytics[0] 
+          : {
+              profile_views: 0,
+              menu_views: 0,
+              rating_count: 0,
+              average_rating: 0
+            };
+
+        return {
+          ...restaurant,
+          profile_views: analytics.profile_views,
+          menu_views: analytics.menu_views,
+          rating_count: analytics.rating_count,
+          average_rating: analytics.average_rating
+        };
+      });
+
+      // Appel au système de recommandation IA
+      try {
+        const { data: aiRecommendations, error: aiError } = await supabase.functions.invoke('ai-recommendations', {
+          body: {
+            restaurants: restaurantsForAI,
+            preferences: preferences,
+            userId: (await supabase.auth.getUser()).data.user?.id
+          }
+        });
+
+        if (aiError) {
+          console.error('Erreur IA:', aiError);
+          throw new Error('Fallback au système traditionnel');
+        }
+
+        if (aiRecommendations?.recommendations) {
+          console.log('Recommandations IA générées:', aiRecommendations.recommendations.length);
+          setRecommendations(aiRecommendations.recommendations);
+          return;
+        }
+      } catch (aiError) {
+        console.error('Système IA indisponible, utilisation du système traditionnel:', aiError);
+      }
+
+      // Fallback au système de scoring traditionnel
       const scoredRestaurants = await Promise.all(restaurants.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
@@ -238,14 +288,19 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
             menu_views: 0,
             rating_count: 0,
             average_rating: realRating || 0
-          }
+          },
+          ai_score: score, // Compatibilité avec le format IA
+          ai_reasons: reasons,
+          sentiment_analysis: 'neutral',
+          preference_match: hasAnyMatch ? 0.8 : 0.3,
+          quality_prediction: realRating ? realRating / 5 : 0.5
         };
       }));
 
       // Filtrer les restaurants nuls (exclus) puis trier par score
       const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
       const sortedRestaurants = validRestaurants
-        .sort((a, b) => b.score - a.score)
+        .sort((a, b) => (b.ai_score || b.score) - (a.ai_score || a.score))
         .slice(0, 6);
 
       setRecommendations(sortedRestaurants);
@@ -416,14 +471,14 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
               </div>
 
               {/* Raisons basées sur données réelles */}
-              {restaurant.reasons && restaurant.reasons.length > 0 && (
+              {(restaurant.ai_reasons || restaurant.reasons) && (restaurant.ai_reasons || restaurant.reasons).length > 0 && (
                 <div className="bg-muted/50 rounded-lg p-3">
                   <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
                     <Sparkles className="h-3 w-3" />
-                    Recommandé car
+                    {restaurant.ai_score ? 'IA recommande' : 'Recommandé car'}
                   </p>
                   <div className="flex flex-wrap gap-1">
-                    {restaurant.reasons.slice(0, 2).map((reason, idx) => (
+                    {(restaurant.ai_reasons || restaurant.reasons).slice(0, 2).map((reason, idx) => (
                       <Badge 
                         key={idx} 
                         variant="outline" 
@@ -432,6 +487,11 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
                         {reason}
                       </Badge>
                     ))}
+                    {restaurant.ai_score && (
+                      <Badge variant="outline" className="text-xs bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-200">
+                        🤖 IA: {Math.round(restaurant.preference_match * 100)}% match
+                      </Badge>
+                    )}
                   </div>
                 </div>
               )}
