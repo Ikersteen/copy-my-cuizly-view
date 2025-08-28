@@ -809,7 +809,7 @@ const Auth = () => {
                     <div className="space-y-3">
                       <Button 
                         type="button" 
-                        className="w-full text-sm bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+                        className="w-full text-sm bg-sky-500 hover:bg-sky-600 text-white"
                         onClick={() => window.open('https://calendly.com/cuizly-demo', '_blank')}
                       >
                         Réserver une démo
