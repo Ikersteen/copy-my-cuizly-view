@@ -96,7 +96,7 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
         <div className="px-4 pb-4 space-y-6 overflow-y-auto flex-1">
           {/* Cuisines */}
           <div className="space-y-3">
-            <Label className="text-base font-medium">Types de cuisine</Label>
+            <Label className="text-base font-medium">Cuisines préférées</Label>
             <div className="flex flex-wrap gap-2">
               {CUISINE_OPTIONS.map((cuisine) => (
                 <Badge

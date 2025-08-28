@@ -545,7 +545,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
           {/* Cuisine Types */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Types de cuisine</h3>
+            <h3 className="font-semibold text-foreground">Cuisines proposées</h3>
             
             <div className="flex flex-wrap gap-2">
               {formData.cuisine_type?.map((cuisine, index) => (

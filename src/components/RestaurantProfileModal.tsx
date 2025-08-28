@@ -468,9 +468,9 @@ export const RestaurantProfileModal = ({
 
           {/* Cuisine Types */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Types de cuisine</Label>
+            <Label className="text-base font-medium">Cuisines proposées</Label>
             <p className="text-sm text-muted-foreground">
-              Sélectionnez les types de cuisine que vous proposez
+              Sélectionnez les cuisines que vous proposez (synchronisées avec les préférences consommateurs)
             </p>
             <div className="flex flex-wrap gap-2">
               {[

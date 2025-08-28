@@ -92,7 +92,7 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
         <div className="space-y-6">
           {/* Types de cuisine */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Types de cuisine</Label>
+            <Label className="text-base font-medium mb-3 block">Cuisines préférées</Label>
             <div className="flex flex-wrap gap-2">
               {CUISINE_OPTIONS.map(cuisine => (
                 <Badge
