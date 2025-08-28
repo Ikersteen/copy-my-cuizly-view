@@ -810,7 +810,7 @@ const Auth = () => {
                       <Button 
                         type="button" 
                         className="w-full text-sm bg-sky-500 hover:bg-sky-600 text-white"
-                        onClick={() => window.open('https://calendly.com/cuizly-demo', '_blank')}
+                        onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
                       >
                         Réserver une démo
                       </Button>
