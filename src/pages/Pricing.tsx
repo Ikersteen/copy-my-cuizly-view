@@ -102,11 +102,17 @@ const Pricing = () => {
                     </li>
                   ))}
                 </ul>
-                <Link to="/auth">
-                  <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
-                    {plan.cta}
+                {(index === 1 || index === 2) ? (
+                  <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base" disabled>
+                    <span className="line-through">{plan.cta}</span>
                   </Button>
-                </Link>
+                ) : (
+                  <Link to="/auth">
+                    <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
+                      {plan.cta}
+                    </Button>
+                  </Link>
+                )}
               </CardContent>
             </Card>
           ))}
