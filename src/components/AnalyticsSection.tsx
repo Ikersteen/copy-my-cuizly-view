@@ -147,9 +147,10 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
           .eq('restaurant_id', restaurantId)
           .order('date', { ascending: false }),
         supabase
-          .from('ratings')
+          .from('comments')
           .select('rating')
-          .eq('restaurant_id', restaurantId),
+          .eq('restaurant_id', restaurantId)
+          .not('rating', 'is', null),
         supabase
           .from('restaurant_analytics')
           .select('profile_views, menu_views, offer_clicks')
