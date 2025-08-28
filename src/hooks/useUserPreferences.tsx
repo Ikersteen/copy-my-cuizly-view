@@ -52,6 +52,8 @@ export const useUserPreferences = () => {
 
   const loadPreferences = async () => {
     try {
+      console.log('Loading preferences...');
+      
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
       if (sessionError) {
@@ -63,6 +65,8 @@ export const useUserPreferences = () => {
         console.log('No session found');
         return;
       }
+
+      console.log('Session found, loading preferences for user:', session.user.id);
 
       // Retry logic for better connection handling
       let retryCount = 0;
@@ -80,7 +84,8 @@ export const useUserPreferences = () => {
             throw error;
           }
 
-          if (data) {
+           if (data) {
+            console.log('Preferences loaded from database:', data);
             setPreferences({
               ...data,
               notification_preferences: data.notification_preferences as any || {
@@ -89,6 +94,7 @@ export const useUserPreferences = () => {
               }
             });
           } else {
+            console.log('No preferences found, creating default preferences...');
             // Create default preferences
             const newPreferences = {
               ...defaultPreferences,
@@ -102,6 +108,7 @@ export const useUserPreferences = () => {
               .single();
 
             if (createError) throw createError;
+            console.log('Default preferences created:', created);
             setPreferences({
               ...created,
               notification_preferences: created.notification_preferences as any || {
@@ -140,6 +147,8 @@ export const useUserPreferences = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
+      console.log('Updating preferences with:', updates);
+
       const { data, error } = await supabase
         .from('user_preferences')
         .update(updates)
@@ -148,6 +157,8 @@ export const useUserPreferences = () => {
         .single();
 
       if (error) throw error;
+
+      console.log('Preferences updated successfully:', data);
 
       // Update local state immediately
       setPreferences({
