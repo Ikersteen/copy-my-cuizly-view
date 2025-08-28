@@ -58,9 +58,9 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         allergens: preferences.allergens || [],
         price_range: preferences.price_range || "",
         street: preferences.street || "",
-        delivery_radius: preferences.delivery_radius || 10,
+        delivery_radius: preferences.delivery_radius || 1,
         favorite_meal_times: preferences.favorite_meal_times || [],
-        notification_preferences: preferences.notification_preferences || { push: true, email: true }
+        notification_preferences: preferences.notification_preferences || { push: false, email: false }
       });
     }
   }, [open, preferences]);
@@ -210,10 +210,10 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Rayon de livraison */}
           <div>
             <Label className="text-base font-medium">
-              Rayon de livraison: {localPrefs.delivery_radius || 10} km
+              Rayon de livraison: {localPrefs.delivery_radius || 1} km
             </Label>
             <Slider
-              value={[localPrefs.delivery_radius || 10]}
+              value={[localPrefs.delivery_radius || 1]}
               onValueChange={([value]) => setLocalPrefs(prev => ({ ...prev, delivery_radius: value }))}
               max={25}
               min={1}
@@ -260,7 +260,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                 </div>
                 <Switch
                   id="push-notifications"
-                  checked={localPrefs.notification_preferences?.push !== false}
+                  checked={localPrefs.notification_preferences?.push === true}
                   onCheckedChange={(checked) =>
                     setLocalPrefs(prev => ({
                       ...prev,
@@ -279,7 +279,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                 </div>
                 <Switch
                   id="email-notifications"
-                  checked={localPrefs.notification_preferences?.email !== false}
+                  checked={localPrefs.notification_preferences?.email === true}
                   onCheckedChange={(checked) =>
                     setLocalPrefs(prev => ({
                       ...prev,

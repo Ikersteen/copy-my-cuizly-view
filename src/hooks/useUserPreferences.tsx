@@ -24,7 +24,7 @@ const defaultPreferences: Omit<UserPreferences, 'user_id'> = {
   allergens: [],
   price_range: "",
   street: "",
-  delivery_radius: 0,
+  delivery_radius: 1,
   favorite_meal_times: [],
   notification_preferences: {
     push: false,

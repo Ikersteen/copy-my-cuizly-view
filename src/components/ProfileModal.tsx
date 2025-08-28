@@ -28,8 +28,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     username: "",
     chef_emoji_color: "👋",
     notifications: {
-      push: true,
-      email: true
+      push: false,
+      email: false
     }
   });
   const [passwordData, setPasswordData] = useState({
@@ -72,8 +72,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         username: profile.username || "",
         chef_emoji_color: profile.chef_emoji_color || "👋",
         notifications: {
-          push: true,
-          email: true
+          push: false,
+          email: false
         }
       });
     }
