@@ -62,7 +62,7 @@ const CookieBanner = () => {
                 size="sm"
                 className="text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4 bg-primary hover:bg-primary/90 order-2 sm:order-none"
               >
-                Accepter tout
+                Accepter
               </Button>
             </div>
           </div>
