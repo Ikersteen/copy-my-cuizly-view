@@ -22,7 +22,7 @@ const PricingSectionLanding = () => {
     },
     {
       title: "Cuizly Pro",
-      subtitle: "Pour restaurants",
+      subtitle: "Pour les restaurants",
       price: "59$ CAD/mois",
       priceNote: "ou 499$ CAD/an (économisez 2 mois !)",
       comingSoon: true,
@@ -37,7 +37,7 @@ const PricingSectionLanding = () => {
     },
     {
       title: "Cuizly Analytics+",
-      subtitle: "Pour optimiser avec les données",
+      subtitle: "Pour optimiser avec les données des restaurants",
       price: "349$ CAD/mois",
       priceNote: "ou 3 490$ CAD/an (soit 2 mois gratuits !)",
       comingSoon: true,
