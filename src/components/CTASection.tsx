@@ -13,7 +13,7 @@ const CTASection = () => {
           alt="Restaurant moderne à Montréal"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-amber-100/20"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* Content */}
