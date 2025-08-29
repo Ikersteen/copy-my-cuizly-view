@@ -307,71 +307,83 @@ export const PersonalizedRecommendations = () => {
         // 3. STRICT Dietary restrictions compatibility - OBLIGATOIRE si défini
         if (preferences.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
           if (restaurantMenus.length === 0) {
-            console.log(`No menus to check dietary restrictions for ${restaurant.name}, excluding`);
-            return null; // STRICT: Pas de menus pour vérifier = exclusion
-          }
-          
-          let compatibleMenusCount = 0;
-          
-          console.log(`Checking dietary restrictions for ${restaurant.name}:`, preferences.dietary_restrictions);
-          
-          restaurantMenus.forEach(menu => {
-            console.log(`Menu "${menu.description}" dietary restrictions:`, menu.dietary_restrictions);
-            const accommodatedRestrictions = preferences.dietary_restrictions.filter((restriction: string) =>
-              menu.dietary_restrictions?.includes(restriction)
-            );
-            if (accommodatedRestrictions.length === preferences.dietary_restrictions.length) {
-              compatibleMenusCount++;
-              score += accommodatedRestrictions.length * 8;
-              console.log(`Menu fully compatible! All restrictions accommodated:`, accommodatedRestrictions);
-            }
-          });
-          
-          if (compatibleMenusCount > 0) {
+            console.log(`No menus to check dietary restrictions for ${restaurant.name}, but allowing anyway`);
+            // Allow restaurants without menus - they might have suitable options
             hasStrictMatch = true;
-            const percentage = Math.round((compatibleMenusCount / restaurantMenus.length) * 100);
-            reasons.push(`${percentage}% des plats adaptés à vos restrictions`);
-            console.log(`${compatibleMenusCount}/${restaurantMenus.length} menus compatible for ALL dietary restrictions`);
+            score += 5; // Small bonus for being available
+            reasons.push("Menu à explorer");
           } else {
-            console.log(`No menus accommodate ALL dietary restrictions for ${restaurant.name}, excluding`);
-            return null; // STRICT: Aucun menu compatible = exclusion
+            let compatibleMenusCount = 0;
+            
+            console.log(`Checking dietary restrictions for ${restaurant.name}:`, preferences.dietary_restrictions);
+            
+            restaurantMenus.forEach(menu => {
+              console.log(`Menu "${menu.description}" dietary restrictions:`, menu.dietary_restrictions);
+              const accommodatedRestrictions = preferences.dietary_restrictions.filter((restriction: string) =>
+                menu.dietary_restrictions?.includes(restriction)
+              );
+              if (accommodatedRestrictions.length === preferences.dietary_restrictions.length) {
+                compatibleMenusCount++;
+                score += accommodatedRestrictions.length * 8;
+                console.log(`Menu fully compatible! All restrictions accommodated:`, accommodatedRestrictions);
+              }
+            });
+            
+            if (compatibleMenusCount > 0) {
+              hasStrictMatch = true;
+              const percentage = Math.round((compatibleMenusCount / restaurantMenus.length) * 100);
+              reasons.push(`${percentage}% des plats adaptés à vos restrictions`);
+              console.log(`${compatibleMenusCount}/${restaurantMenus.length} menus compatible for ALL dietary restrictions`);
+            } else {
+              console.log(`No menus accommodate ALL dietary restrictions for ${restaurant.name}, but allowing anyway`);
+              // Allow restaurants even if menus don't match perfectly
+              hasStrictMatch = true;
+              score += 2; // Small score for availability
+              reasons.push("Vérifier les options disponibles");
+            }
           }
         }
         
         // 4. STRICT Allergen safety - OBLIGATOIRE si défini
         if (preferences.allergens && preferences.allergens.length > 0) {
           if (restaurantMenus.length === 0) {
-            console.log(`No menus to check allergens for ${restaurant.name}, excluding`);
-            return null; // STRICT: Pas de menus pour vérifier = exclusion
-          }
-          
-          let hasUnsafeMenus = false;
-          let safeMenusCount = 0;
-          
-          console.log(`Checking allergens for ${restaurant.name}:`, preferences.allergens);
-          
-          restaurantMenus.forEach(menu => {
-            console.log(`Menu "${menu.description}" allergens:`, menu.allergens);
-            const dangerousAllergens = preferences.allergens.filter((allergen: string) =>
-              menu.allergens?.includes(allergen)
-            );
-            if (dangerousAllergens.length > 0) {
-              hasUnsafeMenus = true;
-              console.log(`Unsafe menu found! Dangerous allergens:`, dangerousAllergens);
-            } else {
-              safeMenusCount++;
-            }
-          });
-          
-          // STRICT: TOUS les menus doivent être sûrs
-          if (!hasUnsafeMenus && restaurantMenus.length > 0) {
+            console.log(`No menus to check allergens for ${restaurant.name}, but allowing with caution`);
+            // Allow restaurants without menus but add caution
             hasStrictMatch = true;
-            score += 20;
-            reasons.push("Tous les plats sont sûrs pour vos allergies");
-            console.log(`All ${restaurantMenus.length} menus are safe for allergens`);
+            score += 1; // Very small score due to uncertainty
+            reasons.push("Vérifier les allergènes sur place");
           } else {
-            console.log(`Some menus contain allergens for ${restaurant.name}, excluding`);
-            return null; // STRICT: Certains menus dangereux = exclusion
+            let hasUnsafeMenus = false;
+            let safeMenusCount = 0;
+            
+            console.log(`Checking allergens for ${restaurant.name}:`, preferences.allergens);
+            
+            restaurantMenus.forEach(menu => {
+              console.log(`Menu "${menu.description}" allergens:`, menu.allergens);
+              const dangerousAllergens = preferences.allergens.filter((allergen: string) =>
+                menu.allergens?.includes(allergen)
+              );
+              if (dangerousAllergens.length > 0) {
+                hasUnsafeMenus = true;
+                console.log(`Unsafe menu found! Dangerous allergens:`, dangerousAllergens);
+              } else {
+                safeMenusCount++;
+              }
+            });
+            
+            // If all menus are safe, give full points
+            if (!hasUnsafeMenus && restaurantMenus.length > 0) {
+              hasStrictMatch = true;
+              score += 20;
+              reasons.push("Tous les plats sont sûrs pour vos allergies");
+              console.log(`All ${restaurantMenus.length} menus are safe for allergens`);
+            } else if (hasUnsafeMenus) {
+              // Some menus have allergens, but still allow with warning
+              hasStrictMatch = true;
+              score += 1; // Very low score due to risk
+              reasons.push("Attention: certains plats peuvent contenir des allergènes");
+              console.log(`Some menus contain allergens for ${restaurant.name}, but allowing with warning`);
+            }
           }
         }
 
