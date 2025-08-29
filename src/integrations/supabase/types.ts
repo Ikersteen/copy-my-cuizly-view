@@ -310,6 +310,7 @@ export type Database = {
           owner_id: string
           phone: string | null
           price_range: string | null
+          restaurant_specialties: string[] | null
           updated_at: string
         }
         Insert: {
@@ -330,6 +331,7 @@ export type Database = {
           owner_id: string
           phone?: string | null
           price_range?: string | null
+          restaurant_specialties?: string[] | null
           updated_at?: string
         }
         Update: {
@@ -350,6 +352,7 @@ export type Database = {
           owner_id?: string
           phone?: string | null
           price_range?: string | null
+          restaurant_specialties?: string[] | null
           updated_at?: string
         }
         Relationships: []
