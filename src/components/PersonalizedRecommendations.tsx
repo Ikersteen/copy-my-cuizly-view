@@ -607,13 +607,14 @@ export const PersonalizedRecommendations = () => {
                              <Badge 
                                key={idx} 
                                variant={isPreferred ? "default" : "outline"}
-                               className={`text-xs text-center justify-center ${
+                               className={`text-xs text-center justify-center flex items-center gap-1 ${
                                  isPreferred
                                    ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
                                    : 'bg-muted/50 text-muted-foreground border-muted'
                                }`}
                              >
-                               {isPreferred && "★ "}{cuisine}
+                               {isPreferred && <span className="text-xs">★</span>}
+                               <span>{cuisine}</span>
                              </Badge>
                            );
                          })}
