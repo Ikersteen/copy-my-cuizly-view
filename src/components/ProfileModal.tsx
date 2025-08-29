@@ -217,10 +217,10 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   };
 
   const handleDeleteAccount = async () => {
-    if (deleteConfirmation !== "Supprimer mon compte") {
+    if (deleteConfirmation !== t('profile.deleteConfirmationPhrase')) {
       toast({
         title: "Erreur",
-        description: "Veuillez taper exactement 'Supprimer mon compte' pour confirmer",
+        description: `Veuillez taper exactement '${t('profile.deleteConfirmationPhrase')}' pour confirmer`,
         variant: "destructive"
       });
       return;
@@ -462,8 +462,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
                     <div>
-                      <Label htmlFor="push" className="font-medium">Notifications push</Label>
-                      <p className="text-sm text-muted-foreground">Recevez des notifications sur votre appareil</p>
+                      <Label htmlFor="push" className="font-medium">{t('profile.pushNotifications')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('profile.pushNotificationsDescription')}</p>
                     </div>
                     <Switch
                       id="push"
@@ -479,8 +479,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
                   <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
                     <div>
-                      <Label htmlFor="email_notif" className="font-medium">Notifications courriel</Label>
-                      <p className="text-sm text-muted-foreground">Recevez des notifications par e-mail</p>
+                      <Label htmlFor="email_notif" className="font-medium">{t('profile.emailNotifications')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('profile.emailNotificationsDescription')}</p>
                     </div>
                     <Switch
                       id="email_notif"
@@ -499,41 +499,41 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               {/* Sécurité */}
               <div className="bg-muted/30 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  🔒 Sécurité et confidentialité
+                  🔒 {t('profile.security')}
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label>Changer le mot de passe</Label>
+                    <Label>{t('profile.changePassword')}</Label>
                     <Button 
                       variant="outline" 
                       size="sm"
                       onClick={() => setShowPasswordSection(!showPasswordSection)}
                     >
-                      {showPasswordSection ? "Annuler" : "Modifier"}
+                      {showPasswordSection ? t('profile.cancel') : t('profile.modify')}
                     </Button>
                   </div>
 
                   {showPasswordSection && (
                     <div className="space-y-4 p-4 bg-background rounded-lg border">
                       <div>
-                        <Label htmlFor="newPassword" className="text-sm font-medium">Nouveau mot de passe</Label>
+                        <Label htmlFor="newPassword" className="text-sm font-medium">{t('profile.newPassword')}</Label>
                         <Input
                           id="newPassword"
                           type="password"
                           value={passwordData.newPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
-                          placeholder="Nouveau mot de passe"
+                          placeholder={t('profile.newPasswordPlaceholder')}
                           className="mt-1"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirmer le mot de passe</Label>
+                        <Label htmlFor="confirmPassword" className="text-sm font-medium">{t('profile.confirmPassword')}</Label>
                         <Input
                           id="confirmPassword"
                           type="password"
                           value={passwordData.confirmPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                          placeholder="Confirmer le mot de passe"
+                          placeholder={t('profile.confirmPasswordPlaceholder')}
                           className="mt-1"
                         />
                       </div>
@@ -542,7 +542,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                         disabled={loading || !passwordData.newPassword || !passwordData.confirmPassword}
                         className="w-full"
                       >
-                        Changer le mot de passe
+                        {t('profile.changePasswordButton')}
                       </Button>
                     </div>
                   )}
@@ -552,7 +552,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               {/* Actions du compte */}
               <div className="bg-muted/30 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  ⚙️ Actions du compte
+                  ⚙️ {t('profile.accountActions')}
                 </h3>
                 <div className="space-y-3">
                   <Button 
@@ -561,7 +561,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                     className="w-full justify-start"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
-                    Se déconnecter
+                    {t('profile.logout')}
                   </Button>
                   
                   <Button 
@@ -570,21 +570,21 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                     className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Supprimer mon compte
+                    {t('profile.deleteAccountAction')}
                   </Button>
                 </div>
 
                 {showDeleteSection && (
                   <div className="mt-4 space-y-3 p-4 border rounded-lg bg-destructive/5">
                     <div className="space-y-2">
-                      <Label className="text-destructive font-medium">Confirmation de suppression</Label>
+                      <Label className="text-destructive font-medium">{t('profile.deleteConfirmation')}</Label>
                       <p className="text-sm text-muted-foreground">
-                        Cette action est irréversible. Pour confirmer, tapez exactement : <strong>"Supprimer mon compte"</strong>
+                        {t('profile.deleteConfirmationText')} <strong>"{t('profile.deleteConfirmationPhrase')}"</strong>
                       </p>
                       <Input
                         value={deleteConfirmation}
                         onChange={(e) => setDeleteConfirmation(e.target.value)}
-                        placeholder="Tapez: Supprimer mon compte"
+                        placeholder={t('profile.deleteConfirmationPlaceholder')}
                       />
                     </div>
                     
@@ -592,28 +592,26 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                       <AlertDialogTrigger asChild>
                         <Button 
                           variant="destructive"
-                          disabled={deleteConfirmation !== "Supprimer mon compte"}
+                          disabled={deleteConfirmation !== t('profile.deleteConfirmationPhrase')}
                           className="w-full"
                         >
-                          Confirmer la suppression
+                          {t('profile.confirmDeletion')}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Supprimer définitivement le compte ?</AlertDialogTitle>
+                          <AlertDialogTitle>{t('profile.deleteAccountTitle')}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, 
-                            vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, 
-                            toutes vos données seront définitivement supprimées.
+                            {t('profile.deleteAccountDescription')}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Annuler</AlertDialogCancel>
+                          <AlertDialogCancel>{t('profile.cancel')}</AlertDialogCancel>
                           <AlertDialogAction 
                             onClick={handleDeleteAccount}
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           >
-                            Supprimer le compte
+                            {t('profile.deleteAccount')}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -631,14 +629,14 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               onClick={() => onOpenChange(false)}
               disabled={loading}
             >
-              Annuler
+              {t('profile.cancel')}
             </Button>
             <Button 
               onClick={handleSave} 
               disabled={loading}
               className="min-w-[120px]"
             >
-              {loading ? "Sauvegarde..." : "Sauvegarder"}
+              {loading ? t('profile.saving') : t('profile.save')}
             </Button>
           </div>
         </div>
