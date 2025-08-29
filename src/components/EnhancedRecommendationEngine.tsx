@@ -539,6 +539,9 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
           {selectedRestaurant && (
             <>
               <DialogHeader>
+                <DialogTitle className="sr-only">
+                  Profil du restaurant {selectedRestaurant.name}
+                </DialogTitle>
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4">
                     {selectedRestaurant.logo_url ? (
