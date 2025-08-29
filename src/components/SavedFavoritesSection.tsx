@@ -338,6 +338,22 @@ export const SavedFavoritesSection = () => {
                   ))}
                 </div>
 
+                {/* Pourquoi ce choix ? section */}
+                <div className="bg-muted/50 rounded-lg p-3">
+                  <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+                    <Sparkles className="h-3 w-3" />
+                    Pourquoi ce choix ?
+                  </p>
+                  <div className="flex flex-wrap gap-1">
+                    <Badge variant="secondary" className="text-xs bg-background/80">
+                      Dans vos favoris
+                    </Badge>
+                    <Badge variant="secondary" className="text-xs bg-background/80">
+                      Accès rapide
+                    </Badge>
+                  </div>
+                </div>
+
                 <Button 
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
                   size="sm"
@@ -363,42 +379,6 @@ export const SavedFavoritesSection = () => {
             </Button>
           </div>
         )}
-      </div>
-
-      {/* Pourquoi ce choix ? Section - Always displayed like on Recommendations */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        <div className="bg-card border rounded-xl p-8 max-w-4xl mx-auto">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-2 rounded-lg">
-              <Sparkles className="h-5 w-5 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold">Pourquoi ce choix ?</h3>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h4 className="font-semibold text-primary flex items-center space-x-2">
-                <Heart className="h-4 w-4" />
-                <span>Liste personnalisée</span>
-              </h4>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Vos favoris vous permettent de retrouver rapidement les restaurants que vous aimez. 
-                Une fois ajoutés, ils apparaîtront ici pour un accès facile.
-              </p>
-            </div>
-            
-            <div className="space-y-4">
-              <h4 className="font-semibold text-primary flex items-center space-x-2">
-                <Star className="h-4 w-4" />
-                <span>Suivi personnalisé</span>
-              </h4>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Nous gardons en mémoire vos restaurants favoris et vous notifions 
-                des nouvelles offres et des nouveaux plats disponibles.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
       
       <RestaurantMenuModal 
