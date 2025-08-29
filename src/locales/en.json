@@ -893,6 +893,7 @@
     "generationError": "Error generating recommendations"
   },
   "dashboard": {
+    "hello": "Hello",
     "logoutSuccess": "Log out successful",
     "seeYouSoon": "See you soon on Cuizly!",
     "logoutError": "Unable to log out",

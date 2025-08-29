@@ -803,6 +803,7 @@
     "generationError": "Erreur génération recommandations"
   },
   "dashboard": {
+    "hello": "Bonjour",
     "logoutSuccess": "Déconnexion réussie",
     "seeYouSoon": "À bientôt sur Cuizly !",
     "logoutError": "Impossible de se déconnecter",
