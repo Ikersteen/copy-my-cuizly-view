@@ -868,7 +868,9 @@
     "startAdding": "Commencez par ajouter des photos de vos menus",
     "edit": "Modifier",
     "editMenu": "Modifier le menu",
-    "saveChanges": "Sauvegarder les modifications"
+    "saveChanges": "Sauvegarder les modifications",
+    "manageMenus": "Gérer vos menus",
+    "addUpToFive": "Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions"
   },
   "profile": {
     "errorUpload": "Erreur",

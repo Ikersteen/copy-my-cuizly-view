@@ -958,7 +958,9 @@
     "startAdding": "Start by adding photos of your menus",
     "edit": "Edit",
     "editMenu": "Edit menu",
-    "saveChanges": "Save changes"
+    "saveChanges": "Save changes",
+    "manageMenus": "Manage your menus",
+    "addUpToFive": "Add up to 5 photos of your menus with their descriptions"
   },
   "profile": {
     "errorUpload": "Error",

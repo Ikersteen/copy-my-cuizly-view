@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Upload, X, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 
 import { CUISINE_OPTIONS, DIETARY_RESTRICTIONS, ALLERGENS } from "@/constants/cuisineTypes";
 
@@ -30,6 +31,7 @@ interface MenusModalProps {
 }
 
 export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: MenusModalProps) => {
+  const { t } = useTranslation();
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -64,8 +66,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     } catch (error) {
       console.error('Erreur lors du chargement des menus:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les menus",
+        title: t('common.error'),
+        description: t('menus.cannotLoad'),
         variant: "destructive"
       });
     }
@@ -78,8 +80,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     // Validate file type
     if (!file.type.startsWith('image/')) {
       toast({
-        title: "Erreur",
-        description: "Veuillez sélectionner une image valide",
+        title: t('common.error'),
+        description: t('menus.selectValidImage'),
         variant: "destructive"
       });
       return;
@@ -88,8 +90,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({
-        title: "Erreur", 
-        description: "L'image doit faire moins de 5MB",
+        title: t('common.error'), 
+        description: t('menus.imageTooLarge'),
         variant: "destructive"
       });
       return;
@@ -117,15 +119,15 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       }
       
       toast({
-        title: "Image téléchargée avec succès",
-        description: "Votre image a été uploadée (Limite: 5MB maximum)",
+        title: t('menus.imageUploaded'),
+        description: t('menus.imageSizeLimit'),
         duration: 3000
       });
     } catch (error) {
       console.error('Erreur lors du téléchargement:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de télécharger l'image",
+        title: t('common.error'),
+        description: t('menus.cannotUpload'),
         variant: "destructive"
       });
     } finally {
@@ -136,8 +138,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
   const handleAddMenu = async () => {
     if (!restaurantId || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim()) {
       toast({
-        title: "Erreur",
-        description: "Veuillez ajouter une image, une description et un type de cuisine",
+        title: t('common.error'),
+        description: t('menus.fillRequired'),
         variant: "destructive"
       });
       return;
@@ -145,8 +147,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
     if (menus.length >= 5) {
       toast({
-        title: "Limite atteinte",
-        description: "Vous ne pouvez ajouter que 5 menus maximum",
+        title: t('common.error'),
+        description: t('menus.maxMenus'),
         variant: "destructive"
       });
       return;
@@ -187,14 +189,14 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       }
       
       toast({
-        title: "Menu ajouté avec succès !",
-        description: `Votre menu "${data.description}" est maintenant visible dans votre liste`,
+        title: t('menus.menuAdded'),
+        description: "Votre menu est maintenant visible dans votre liste",
       });
     } catch (error) {
       console.error('Erreur lors de l\'ajout du menu:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'ajouter le menu. Veuillez réessayer.",
+        title: t('common.error'),
+        description: t('menus.cannotAdd'),
         variant: "destructive"
       });
     } finally {
@@ -213,14 +215,14 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
       await loadMenus();
       toast({
-        title: "Menu supprimé",
-        description: "Le menu a été supprimé avec succès"
+        title: t('menus.menuDeleted'),
+        description: t('menus.deletedSuccessfully')
       });
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de supprimer le menu",
+        title: t('common.error'),
+        description: t('menus.cannotDelete'),
         variant: "destructive"
       });
     }
@@ -237,14 +239,14 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
       await loadMenus();
       toast({
-        title: "Statut modifié",
-        description: `Menu ${!isActive ? 'activé' : 'désactivé'} avec succès`
+        title: t('menus.statusChanged'),
+        description: `Menu ${!isActive ? t('menus.menuActivated') : t('menus.menuDeactivated')} ${t('menus.statusChangedSuccessfully')}`
       });
     } catch (error) {
       console.error('Erreur lors de la modification:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de modifier le statut",
+        title: t('common.error'),
+        description: t('menus.cannotChangeStatus'),
         variant: "destructive"
       });
     }
@@ -270,14 +272,14 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       await loadMenus();
       setEditingMenu(null);
       toast({
-        title: "Menu modifié",
+        title: t('menus.menuModified'),
         description: "Les modifications ont été sauvegardées"
       });
     } catch (error) {
       console.error('Erreur lors de la modification:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de modifier le menu",
+        title: t('common.error'),
+        description: t('menus.cannotModify'),
         variant: "destructive"
       });
     }
@@ -287,9 +289,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Gérer vos menus</DialogTitle>
+          <DialogTitle>{t('menus.manageMenus')}</DialogTitle>
           <DialogDescription>
-            Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions
+            {t('menus.addUpToFive')}
           </DialogDescription>
         </DialogHeader>
 
@@ -298,11 +300,11 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
             <p className="text-muted-foreground">
               Votre restaurant n'est pas encore configuré. 
             </p>
-            <p className="text-sm text-muted-foreground">
-              Veuillez d'abord compléter les informations de votre restaurant dans "Profil du restaurant".
+            <p className="text-sm text-muted-foreground mb-4">
+              {t('menus.completeProfile')}
             </p>
             <Button onClick={() => onOpenChange(false)} variant="outline">
-              Fermer
+              {t('menus.close')}
             </Button>
           </div>
         ) : (
@@ -310,7 +312,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           {/* Ajouter un nouveau menu */}
           <Card>
             <CardContent className="p-4 space-y-4">
-              <h3 className="font-medium">Ajouter un nouveau menu</h3>
+              <h3 className="font-medium">{t('menus.addNew')}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -322,8 +324,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       onChange={(e) => handleImageUpload(e, false)}
                       disabled={uploading}
                     />
-                    <p className="text-xs text-muted-foreground">Taille maximum: 5MB</p>
-                    {uploading && <p className="text-sm text-muted-foreground">Téléchargement en cours...</p>}
+                     <p className="text-xs text-muted-foreground">{t('menus.maxSize')}</p>
+                     {uploading && <p className="text-sm text-muted-foreground">{t('menus.uploading')}</p>}
                     {newMenu.image_url && (
                       <div className="relative w-32 h-32">
                         <img
@@ -361,7 +363,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           <Textarea
             value={newMenu.description}
             onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
-            placeholder="Décrivez ce menu... (obligatoire)"
+            placeholder={t('menus.describeMenu')}
             className="min-h-[80px]"
             required
           />
@@ -414,7 +416,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     className="w-full"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Ajouter ce menu
+                    {t('menus.addThisMenu')}
                   </Button>
                 </div>
               </div>
@@ -432,12 +434,12 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
               <Card>
                 <CardContent className="p-8 text-center">
                   <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                    Aucun menu ajouté
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Commencez par ajouter des photos de vos menus
-                  </p>
+                   <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                     {t('menus.noMenusAdded')}
+                   </h3>
+                   <p className="text-sm text-muted-foreground">
+                     {t('menus.startAdding')}
+                   </p>
                 </CardContent>
               </Card>
             ) : (
@@ -502,9 +504,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           size="sm"
                           onClick={() => setEditingMenu(menu)}
                           className="flex-1"
-                        >
-                          Modifier
-                        </Button>
+                         >
+                           {t('menus.edit')}
+                         </Button>
                         <Button
                           variant="outline"
                           size="sm"
@@ -532,7 +534,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
             <Card className="mt-6">
               <CardContent className="p-4 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-medium">Modifier le menu</h3>
+                  <h3 className="font-medium">{t('menus.editMenu')}</h3>
                   <Button variant="ghost" size="sm" onClick={() => setEditingMenu(null)}>
                     <X className="h-4 w-4" />
                   </Button>
@@ -548,8 +550,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         onChange={(e) => handleImageUpload(e, true)}
                         disabled={uploading}
                       />
-                      <p className="text-xs text-muted-foreground">Taille maximum: 5MB</p>
-                      {uploading && <p className="text-sm text-muted-foreground">Téléchargement en cours...</p>}
+                       <p className="text-xs text-muted-foreground">{t('menus.maxSize')}</p>
+                       {uploading && <p className="text-sm text-muted-foreground">{t('menus.uploading')}</p>}
                       {editingMenu.image_url && (
                         <div className="relative w-32 h-32">
                           <img
@@ -579,7 +581,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     <Textarea
                       value={editingMenu.description}
                       onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, description: e.target.value }) : null)}
-                      placeholder="Décrivez ce menu... (obligatoire)"
+                      placeholder={t('menus.describeMenu')}
                       className="min-h-[80px]"
                       required
                     />
@@ -631,7 +633,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       disabled={loading || !editingMenu?.description?.trim()}
                       className="w-full"
                     >
-                      Sauvegarder les modifications
+                      {t('menus.saveChanges')}
                     </Button>
                   </div>
                 </div>

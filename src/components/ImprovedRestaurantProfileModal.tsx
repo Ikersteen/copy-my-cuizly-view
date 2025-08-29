@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
 import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
 import { Separator } from "@/components/ui/separator";
+import { useTranslation } from 'react-i18next';
 
 import { CUISINE_OPTIONS, DIETARY_OPTIONS, ALLERGEN_OPTIONS } from "@/constants/cuisineTypes";
 
@@ -46,6 +47,7 @@ interface RestaurantProfileModalProps {
 }
 
 export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdate }: RestaurantProfileModalProps) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<Partial<Restaurant>>({});
   const [uploading, setUploading] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
@@ -169,13 +171,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       
       toast({
         title: adjustmentType === 'cover' ? "Photo de couverture mise à jour" : "Logo mis à jour",
-        description: "L'image a été uploadée avec succès"
+        description: t('profile.imageUploaded')
       });
     } catch (error) {
       console.error('Error uploading file:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'uploader l'image",
+        title: t('profile.errorUpload'),
+        description: t('profile.cannotUpload'),
         variant: "destructive"
       });
     } finally {
@@ -194,8 +196,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       setFormData(prev => ({ ...prev, logo_url: null }));
     }
     toast({
-      title: type === 'cover' ? "Photo de couverture supprimée" : "Logo supprimé",
-      description: "L'image a été retirée du profil. N'oubliez pas de sauvegarder."
+      title: type === 'cover' ? t('profile.imageRemoved') : t('profile.logoRemoved'),
+      description: t('profile.imageRemovedDescription')
     });
   };
 
@@ -216,8 +218,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       if (error) {
         console.error('Error updating chef emoji:', error);
         toast({
-          title: "Erreur",
-          description: "Impossible de mettre à jour l'emoji",
+          title: t('profile.errorUpload'),
+          description: t('profile.cannotUpdateEmoji'),
           variant: "destructive"
         });
         return;
@@ -248,8 +250,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
   const handleSave = async () => {
     if (!restaurant || !formData.name?.trim()) {
       toast({
-        title: "Erreur",
-        description: "Le nom du restaurant est requis",
+        title: t('profile.errorUpload'),
+        description: t('profile.nameRequired'),
         variant: "destructive"
       });
       return;
@@ -294,8 +296,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     } catch (error) {
       console.error('Error updating restaurant:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de sauvegarder les modifications",
+        title: t('profile.errorUpload'),
+        description: t('profile.cannotSave'),
         variant: "destructive"
       });
     } finally {
@@ -370,7 +372,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                     <div className="w-full h-full bg-muted flex items-center justify-center">
                       <div className="text-center">
                         <Camera className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm text-muted-foreground">Cliquez pour ajouter une photo de couverture</p>
+                        <p className="text-sm text-muted-foreground">{t('profile.clickToAddCover')}</p>
                       </div>
                     </div>
                   )}
@@ -689,7 +691,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive">Supprimer le compte</Button>
+                <Button variant="destructive">{t('profile.deleteAccount')}</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -699,9 +701,9 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogCancel>{t('profile.cancel')}</AlertDialogCancel>
                   <AlertDialogAction onClick={handleDeleteAccount}>
-                    Supprimer
+                    {t('profile.delete')}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -710,10 +712,10 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Annuler
+              {t('profile.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={loading || !formData.name}>
-              {loading ? "Sauvegarde..." : "Sauvegarder"}
+              {loading ? t('profile.saving') : t('profile.save')}
             </Button>
           </div>
         </div>
