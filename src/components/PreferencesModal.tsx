@@ -70,14 +70,8 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
       console.log('Saving preferences:', localPrefs);
       await updatePreferences(localPrefs);
       
-      // Attendre un peu pour que la base de données soit mise à jour
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Forcer la régénération des recommandations
-      console.log('Dispatching preferencesUpdated event');
-      window.dispatchEvent(new CustomEvent('preferencesUpdated', { 
-        detail: { preferences: localPrefs } 
-      }));
+      // L'événement preferencesUpdated est déjà émis par updatePreferences()
+      // Pas besoin de le réémettre ici pour éviter les doublons
       
       onOpenChange(false);
     } catch (error) {

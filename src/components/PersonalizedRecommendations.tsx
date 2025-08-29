@@ -101,24 +101,27 @@ export const PersonalizedRecommendations = () => {
     }
   };
 
-  // Charger les recommandations une seule fois au montage ou quand les préférences changent significativement
+  // Charger les recommandations une seule fois au montage
   useEffect(() => {
     if (preferences && !loading) {
       generateRecommendations();
     }
   }, [preferences?.id]); // Ne se déclencher que si l'ID des préférences change
 
-  // Écouter les mises à jour des préférences - optimisé pour éviter les boucles
+  // Écouter les mises à jour des préférences - une seule source de vérité
   useEffect(() => {
     let debounceTimer: NodeJS.Timeout;
     
     const handlePreferencesUpdate = () => {
+      // Éviter les appels multiples en vérifiant si on n'est pas déjà en train de charger
+      if (loading) return;
+      
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        if (preferences) {
+        if (preferences && !loading) {
           generateRecommendations();
         }
-      }, 1000); // Debounce plus long pour éviter les appels multiples
+      }, 500); // Debounce réduit car un seul événement maintenant
     };
 
     window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
@@ -127,7 +130,7 @@ export const PersonalizedRecommendations = () => {
       clearTimeout(debounceTimer);
       window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
     };
-  }, []); // Pas de dépendances pour éviter les re-créations
+  }, [loading]); // Dépendre de loading pour éviter les appels en parallèle
 
   // Synchronisation en temps réel des données avec debouncing
   useEffect(() => {
