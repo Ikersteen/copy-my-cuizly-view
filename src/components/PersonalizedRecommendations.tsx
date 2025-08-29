@@ -117,6 +117,54 @@ export const PersonalizedRecommendations = () => {
     };
   }, []);
 
+  // Synchronisation en temps réel des données restaurants et menus
+  useEffect(() => {
+    const restaurantSubscription = supabase
+      .channel('recommendations-restaurants')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'restaurants'
+      }, () => {
+        console.log('Restaurant data updated, regenerating recommendations...');
+        generateRecommendations();
+      })
+      .subscribe();
+
+    const menuSubscription = supabase
+      .channel('recommendations-menus')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'menus'
+      }, () => {
+        console.log('Menu data updated, regenerating recommendations...');
+        generateRecommendations();
+      })
+      .subscribe();
+
+    const ratingsSubscription = supabase
+      .channel('recommendations-ratings')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'comments'
+      }, async (payload: any) => {
+        console.log('Rating updated, updating specific restaurant rating...');
+        const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
+        if (restaurantId) {
+          await updateRestaurantRating(restaurantId);
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(restaurantSubscription);
+      supabase.removeChannel(menuSubscription);
+      supabase.removeChannel(ratingsSubscription);
+    };
+  }, []);
+
   useEffect(() => {
     const ratingsChannel = supabase
       .channel('all-ratings-updates')
@@ -379,7 +427,57 @@ export const PersonalizedRecommendations = () => {
   }
 
   if (categories.length === 0) {
-    return null;
+    return (
+      <section className="py-16 bg-gradient-to-br from-muted/30 via-background to-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-8">
+            <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="p-4 rounded-full bg-muted/50">
+                  <ChefHat className="h-12 w-12 text-muted-foreground" />
+                </div>
+                <div className="space-y-3">
+                  <h2 className="text-2xl font-bold">Aucune recommandation disponible</h2>
+                  <p className="text-muted-foreground max-w-lg">
+                    Nous n'avons pas encore trouvé de restaurants qui correspondent parfaitement à vos préférences. 
+                    Essayez de modifier vos critères ou explorez nos restaurants disponibles.
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <Button 
+                    onClick={() => setShowFilters(true)}
+                    className="flex items-center gap-2"
+                  >
+                    <Filter className="h-4 w-4" />
+                    Modifier mes préférences
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => generateRecommendations()}
+                    className="flex items-center gap-2"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Actualiser les recommandations
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <RestaurantMenuModal 
+          open={showRestaurantModal}
+          onOpenChange={setShowRestaurantModal}
+          restaurant={selectedRestaurant}
+        />
+        
+        <RestaurantFiltersModal 
+          open={showFilters}
+          onOpenChange={setShowFilters}
+          onApplyFilters={handleApplyFilters}
+        />
+      </section>
+    );
   }
 
   return (
