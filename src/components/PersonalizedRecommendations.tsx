@@ -438,11 +438,15 @@ export const PersonalizedRecommendations = () => {
                   </Button>
                   <Button 
                     variant="outline"
-                    onClick={() => generateRecommendations()}
+                    onClick={async () => {
+                      setLoading(true);
+                      await generateRecommendations();
+                    }}
+                    disabled={loading}
                     className="flex items-center gap-2"
                   >
                     <Sparkles className="h-4 w-4" />
-                    Actualiser les recommandations
+                    {loading ? "Actualisation..." : "Actualiser les recommandations"}
                   </Button>
                 </div>
               </div>
