@@ -346,6 +346,22 @@ const RestaurantDashboard = () => {
                         )}
                       </div>
                     </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Spécialité du restaurant</p>
+                      <div className="flex flex-wrap gap-1">
+                        {(restaurant as any).restaurant_specialties?.length > 0 ? (
+                          (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => (
+                            <Badge key={index} variant="secondary" className="text-xs rounded-full">
+                              {specialty}
+                            </Badge>
+                          ))
+                        ) : (
+                          <Badge variant="outline" className="text-xs text-muted-foreground">
+                            Non défini
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
                   </div>
                   
                   {restaurant.description && (
