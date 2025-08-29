@@ -291,9 +291,18 @@ export const PersonalizedRecommendations = () => {
         }
 
         // STRICT: Si aucun match strict n'a été trouvé, exclure le restaurant
-        if (!hasStrictMatch) {
+        // En mode flexible (une seule préférence), on est plus permissif
+        if (!hasStrictMatch && !isFlexibleMode) {
           console.log(`No strict matches found for ${restaurant.name}, excluding`);
           return null;
+        }
+        
+        // Si on est en mode flexible et qu'on n'a pas encore de match, donner une chance
+        if (!hasStrictMatch && isFlexibleMode) {
+          console.log(`Flexible mode: giving ${restaurant.name} a base score`);
+          hasStrictMatch = true;
+          score += 2;
+          reasons.push("Restaurant suggéré");
         }
 
         const realRating = await getRealRating(restaurant.id);
