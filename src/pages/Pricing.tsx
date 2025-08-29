@@ -9,7 +9,7 @@ const Pricing = () => {
   const plans = [
     {
       title: "Cuizly Basique",
-      subtitle: "Pour les gourmets",
+      subtitle: "Pour les consommateurs",
       price: "Gratuit à vie",
       popular: true,
       features: [
@@ -23,7 +23,7 @@ const Pricing = () => {
     },
     {
       title: "Cuizly Pro",
-      subtitle: "Pour restaurants",
+      subtitle: "Pour les restaurants",
       price: "59$ CAD/mois",
       priceNote: "ou 499$ CAD/an (économisez 2 mois !)",
       comingSoon: true,
@@ -34,11 +34,11 @@ const Pricing = () => {
         "Tableau de performance en temps réel",
         "Support prioritaire"
       ],
-      cta: "Essayer gratuitement"
+      cta: "Réserver une démo"
     },
     {
       title: "Cuizly Analytics+",
-      subtitle: "Pour optimiser avec les données",
+      subtitle: "Pour optimiser avec les données des restaurants",
       price: "349$ CAD/mois",
       priceNote: "ou 3 490$ CAD/an (soit 2 mois gratuits !)",
       comingSoon: true,
@@ -49,7 +49,7 @@ const Pricing = () => {
         "Aperçus sur les performances par segment",
         "Recommandations IA pour votre business"
       ],
-      cta: "Essayer gratuitement"
+      cta: "Réserver une démo"
     }
   ];
 
@@ -68,7 +68,7 @@ const Pricing = () => {
             Des tarifs pensés pour tous
           </h1>
           <p className="text-lg sm:text-xl text-cuizly-neutral max-w-3xl mx-auto px-2 sm:px-4">
-            Une offre gratuite pour les gourmets, des solutions professionnelles abordables pour les restaurateurs.
+            Une offre gratuite pour les consommateurs, des solutions professionnelles abordables pour les restaurateurs.
           </p>
         </div>
 
@@ -94,7 +94,7 @@ const Pricing = () => {
                 )}
               </CardHeader>
               <CardContent className="pt-0">
-                <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                <ul className="space-y-2 sm:space-y-3 mb-6">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start space-x-2 sm:space-x-3">
                       <Check className="h-4 w-4 text-foreground mt-0.5 sm:mt-1 flex-shrink-0" />
@@ -102,17 +102,11 @@ const Pricing = () => {
                     </li>
                   ))}
                 </ul>
-                {(index === 1 || index === 2) ? (
-                  <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base" disabled>
-                    <span className="line-through">{plan.cta}</span>
+                <Link to={index === 0 ? "/auth" : "/auth?type=restaurant&tab=signup"}>
+                  <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
+                    {plan.cta}
                   </Button>
-                ) : (
-                  <Link to="/auth">
-                    <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
-                      {plan.cta}
-                    </Button>
-                  </Link>
-                )}
+                </Link>
               </CardContent>
             </Card>
           ))}
