@@ -368,7 +368,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   
                   <Label>Restrictions alimentaires</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                    {DIETARY_RESTRICTIONS.map(restriction => (
+                    {DIETARY_RESTRICTIONS.sort().map(restriction => (
                       <Badge
                         key={restriction}
                         variant={newMenu.dietary_restrictions.includes(restriction) ? "default" : "outline"}
@@ -389,7 +389,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
                   <Label>Allergènes à éviter</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                    {ALLERGENS.map(allergen => (
+                    {ALLERGENS.sort().map(allergen => (
                       <Badge
                         key={allergen}
                         variant={newMenu.allergens.includes(allergen) ? "default" : "outline"}
@@ -586,7 +586,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
                     <Label>Restrictions alimentaires</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                      {DIETARY_RESTRICTIONS.map(restriction => (
+                      {DIETARY_RESTRICTIONS.sort().map(restriction => (
                         <Badge
                           key={restriction}
                           variant={editingMenu.dietary_restrictions?.includes(restriction) ? "default" : "outline"}
@@ -607,7 +607,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
                     <Label>Allergènes à éviter</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                      {ALLERGENS.map(allergen => (
+                      {ALLERGENS.sort().map(allergen => (
                         <Badge
                           key={allergen}
                           variant={editingMenu.allergens?.includes(allergen) ? "default" : "outline"}
