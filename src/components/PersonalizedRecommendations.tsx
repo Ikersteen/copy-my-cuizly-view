@@ -600,24 +600,24 @@ export const PersonalizedRecommendations = () => {
                   </CardHeader>
 
                    <CardContent className="space-y-4">
-                      <div className="flex flex-wrap gap-2">
-                        {restaurant.cuisine_type?.map((cuisine, idx) => {
-                          const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
-                          return (
-                            <Badge 
-                              key={idx} 
-                              variant={isPreferred ? "default" : "outline"}
-                              className={`text-xs ${
-                                isPreferred
-                                  ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
-                                  : 'bg-muted/50 text-muted-foreground border-muted'
-                              }`}
-                            >
-                              {isPreferred && "★ "}{cuisine}
-                            </Badge>
-                          );
-                        })}
-                      </div>
+                       <div className="grid grid-cols-3 gap-2">
+                         {restaurant.cuisine_type?.map((cuisine, idx) => {
+                           const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
+                           return (
+                             <Badge 
+                               key={idx} 
+                               variant={isPreferred ? "default" : "outline"}
+                               className={`text-xs text-center justify-center ${
+                                 isPreferred
+                                   ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
+                                   : 'bg-muted/50 text-muted-foreground border-muted'
+                               }`}
+                             >
+                               {isPreferred && "★ "}{cuisine}
+                             </Badge>
+                           );
+                         })}
+                       </div>
 
                      {restaurant.reasons && restaurant.reasons.length > 0 && (
                        <div className="bg-muted/50 rounded-lg p-3">
