@@ -38,17 +38,42 @@ export const useUserPreferences = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    loadPreferences();
-    
-    // Remove polling to avoid multiple calls
-    // Use polling only if absolutely necessary
-    // const pollInterval = setInterval(() => {
-    //   loadPreferences();
-    // }, 60000); // Refresh every minute
+    const initPreferences = async () => {
+      await loadPreferences();
+      
+      // Synchronisation en temps réél des préférences utilisateur
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.id) {
+        const preferencesSubscription = supabase
+          .channel('user-preferences-sync')
+          .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'user_preferences',
+            filter: `user_id=eq.${session.user.id}`
+          }, (payload) => {
+            console.log('User preferences updated in real-time:', payload);
+            if (payload.eventType === 'UPDATE' && payload.new) {
+              setPreferences({
+                ...payload.new as any,
+                notification_preferences: payload.new.notification_preferences as any || {
+                  push: false,
+                  email: false
+                }
+              });
+              // Notifier les composants que les préférences ont changé
+              window.dispatchEvent(new CustomEvent('preferencesUpdated'));
+            }
+          })
+          .subscribe();
 
-    // return () => {
-    //   clearInterval(pollInterval);
-    // };
+        return () => {
+          supabase.removeChannel(preferencesSubscription);
+        };
+      }
+    };
+
+    initPreferences();
   }, []);
 
   const loadPreferences = async () => {

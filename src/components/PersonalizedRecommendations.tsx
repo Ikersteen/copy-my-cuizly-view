@@ -117,8 +117,18 @@ export const PersonalizedRecommendations = () => {
     };
   }, []);
 
-  // Synchronisation en temps réel des données restaurants et menus
+  // Synchronisation en temps réel des données avec debouncing
   useEffect(() => {
+    let debounceTimer: NodeJS.Timeout;
+
+    const debouncedRegenerate = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        console.log('Debounced regeneration triggered...');
+        generateRecommendations();
+      }, 500); // 500ms de débounce
+    };
+
     const restaurantSubscription = supabase
       .channel('recommendations-restaurants')
       .on('postgres_changes', {
@@ -126,8 +136,8 @@ export const PersonalizedRecommendations = () => {
         schema: 'public',
         table: 'restaurants'
       }, () => {
-        console.log('Restaurant data updated, regenerating recommendations...');
-        generateRecommendations();
+        console.log('Restaurant data updated, scheduling regeneration...');
+        debouncedRegenerate();
       })
       .subscribe();
 
@@ -138,8 +148,8 @@ export const PersonalizedRecommendations = () => {
         schema: 'public',
         table: 'menus'
       }, () => {
-        console.log('Menu data updated, regenerating recommendations...');
-        generateRecommendations();
+        console.log('Menu data updated, scheduling regeneration...');
+        debouncedRegenerate();
       })
       .subscribe();
 
@@ -154,41 +164,16 @@ export const PersonalizedRecommendations = () => {
         const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
         if (restaurantId) {
           await updateRestaurantRating(restaurantId);
+          debouncedRegenerate();
         }
       })
       .subscribe();
 
     return () => {
+      clearTimeout(debounceTimer);
       supabase.removeChannel(restaurantSubscription);
       supabase.removeChannel(menuSubscription);
       supabase.removeChannel(ratingsSubscription);
-    };
-  }, []);
-
-  useEffect(() => {
-    const ratingsChannel = supabase
-      .channel('all-ratings-updates')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'comments',
-        },
-        async (payload: any) => {
-          const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
-          if (restaurantId) {
-            await updateRestaurantRating(restaurantId);
-            setTimeout(() => {
-              generateRecommendations();
-            }, 100);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      ratingsChannel.unsubscribe();
     };
   }, []);
 
