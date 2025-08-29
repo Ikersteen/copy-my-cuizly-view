@@ -367,7 +367,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           />
                   
                   <Label>Restrictions alimentaires</Label>
-                  <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                  <div className="grid grid-cols-4 gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {DIETARY_RESTRICTIONS.sort().map(restriction => (
                       <Badge
                         key={restriction}
@@ -388,7 +388,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   </div>
 
                   <Label>Allergènes à éviter</Label>
-                  <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                  <div className="grid grid-cols-4 gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {ALLERGENS.sort().map(allergen => (
                       <Badge
                         key={allergen}
@@ -585,7 +585,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     />
 
                     <Label>Restrictions alimentaires</Label>
-                    <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                    <div className="grid grid-cols-4 gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                       {DIETARY_RESTRICTIONS.sort().map(restriction => (
                         <Badge
                           key={restriction}
@@ -606,7 +606,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     </div>
 
                     <Label>Allergènes à éviter</Label>
-                    <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                    <div className="grid grid-cols-4 gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                       {ALLERGENS.sort().map(allergen => (
                         <Badge
                           key={allergen}

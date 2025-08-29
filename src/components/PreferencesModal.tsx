@@ -160,7 +160,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
             <p className="text-sm text-muted-foreground mb-3">
               Indiquez vos préférences et restrictions alimentaires
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {DIETARY_OPTIONS.sort().map(diet => (
                 <Badge
                   key={diet}
@@ -185,7 +185,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
             <p className="text-sm text-muted-foreground mb-3">
               Sélectionnez vos allergies alimentaires
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {ALLERGEN_OPTIONS.sort().map(allergen => (
                 <Badge
                   key={allergen}
