@@ -24,6 +24,7 @@ export const PhotoAdjustmentModal = ({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [imageLoaded, setImageLoaded] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -52,25 +53,25 @@ export const PhotoAdjustmentModal = ({
     setScale([100]);
     setRotation(0);
     setPosition({ x: 0, y: 0 });
+    setImageLoaded(false);
   };
 
   const handleSave = () => {
-    if (!canvasRef.current || !imageRef.current) return;
+    if (!canvasRef.current || !imageRef.current || !imageLoaded) {
+      console.error('Canvas, image, or image not loaded');
+      return;
+    }
     
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Wait for image to load if not loaded yet
-    if (!imageRef.current.complete || imageRef.current.naturalHeight === 0) {
-      console.error('Image not loaded yet');
-      return;
-    }
-
-    // Set canvas size to match the image dimensions or a reasonable size
+    // Set canvas size to match the image natural dimensions or reasonable size
+    const img = imageRef.current;
     const maxWidth = 800;
     const maxHeight = 600;
-    let { width, height } = imageRef.current;
+    
+    let { naturalWidth: width, naturalHeight: height } = img;
     
     if (width > maxWidth || height > maxHeight) {
       const ratio = Math.min(maxWidth / width, maxHeight / height);
@@ -92,7 +93,7 @@ export const PhotoAdjustmentModal = ({
     ctx.translate(-canvas.width / 2 + position.x, -canvas.height / 2 + position.y);
     
     // Draw image
-    ctx.drawImage(imageRef.current, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
     // Get the adjusted image data
@@ -128,8 +129,14 @@ export const PhotoAdjustmentModal = ({
                   transform: `translate(${position.x}px, ${position.y}px) scale(${scale[0] / 100}) rotate(${rotation}deg)`,
                   transformOrigin: 'center'
                 }}
-                onLoad={() => console.log('Image loaded successfully')}
-                onError={(e) => console.error('Image failed to load:', e)}
+                onLoad={() => {
+                  console.log('Image loaded successfully');
+                  setImageLoaded(true);
+                }}
+                onError={(e) => {
+                  console.error('Image failed to load:', e);
+                  setImageLoaded(false);
+                }}
               />
             </div>
           </div>
@@ -182,7 +189,7 @@ export const PhotoAdjustmentModal = ({
               <Button variant="outline" onClick={() => onOpenChange(false)}>
                 Annuler
               </Button>
-              <Button onClick={handleSave}>
+              <Button onClick={handleSave} disabled={!imageLoaded}>
                 Appliquer
               </Button>
             </div>
