@@ -593,7 +593,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                 }}
               >
                 <SelectTrigger className="w-full bg-background border z-50">
-                  <span className="text-foreground">Sélectionner une cuisine</span>
+                  <SelectValue placeholder="Sélectionner une cuisine" />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
                   {availableCuisines.filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (

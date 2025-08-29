@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
 import { useProfile } from "@/hooks/useProfile";
-import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
 
 interface Restaurant {
   id: string;
@@ -514,10 +513,14 @@ export const RestaurantProfileModal = ({
                 }}
               >
                 <SelectTrigger className="w-full bg-background border z-50">
-                  <span className="text-foreground">Sélectionner une cuisine</span>
+                  <SelectValue placeholder="Sélectionner une cuisine" />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
-                  {CUISINE_OPTIONS.filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
+                  {[
+                    "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
+                    "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
+                    "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine", "Pizza", "Burger"
+                  ].filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
                     <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
                       {cuisine}
                     </SelectItem>
