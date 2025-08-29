@@ -227,11 +227,8 @@ export const SavedFavoritesSection = () => {
           <div className="text-center space-y-8">
             <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-xl"></div>
-                  <div className="relative bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-full">
-                    <Heart className="h-16 w-16 text-primary" />
-                  </div>
+                <div className="bg-primary/10 p-6 rounded-full">
+                  <Heart className="h-16 w-16 text-primary" />
                 </div>
                 
                 <div className="space-y-4 text-center">
