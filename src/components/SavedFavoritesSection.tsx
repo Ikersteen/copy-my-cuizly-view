@@ -227,7 +227,7 @@ export const SavedFavoritesSection = () => {
           <div className="text-center space-y-8">
             <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
-                <Heart className="h-16 w-16 text-primary" />
+                <span className="text-6xl">❤️</span>
                 
                 <div className="space-y-4 text-center">
                   <h3 className="text-2xl font-bold">Aucun favori pour l'instant</h3>
