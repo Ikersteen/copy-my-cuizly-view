@@ -583,7 +583,6 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
             {/* Dropdown selector */}
             <div>
-              <Label className="text-sm font-medium mb-3 block">Cuisines disponibles</Label>
               <Select
                 value=""
                 onValueChange={(cuisine) => {
