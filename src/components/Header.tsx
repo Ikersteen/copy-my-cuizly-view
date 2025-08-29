@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import type { User } from "@supabase/supabase-js";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "@/components/LanguageSelector";
 
 const Header = () => {
+  const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const navigate = useNavigate();
@@ -63,35 +66,36 @@ const Header = () => {
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
               >
-                Tarifs
+                {t('navigation.pricing')}
               </button>
               <button 
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
               >
-                Fonctionnalités
+                {t('navigation.features')}
               </button>
               <button 
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
               >
-                Contact
+                {t('navigation.contact')}
               </button>
             </div>
           </nav>
 
           {/* Auth Actions Desktop - Extrême droite */}
-          <div className="hidden md:flex items-center flex-shrink-0">
+          <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+            <LanguageSelector />
             {user ? (
               <Link to="/dashboard">
                 <Button variant="ghost" size="sm">
-                  Tableau de bord
+                  {t('navigation.dashboard')}
                 </Button>
               </Link>
             ) : (
               <Link to="/auth">
                 <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
-                  Se connecter
+                  {t('navigation.login')}
                 </Button>
               </Link>
             )}
@@ -112,20 +116,24 @@ const Header = () => {
                     onClick={() => handleNavigate("/pricing")}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
-                    Tarifs
+                    {t('navigation.pricing')}
                   </button>
                   <button 
                     onClick={() => handleNavigate("/features")}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
-                    Fonctionnalités
+                    {t('navigation.features')}
                   </button>
                   <button 
                     onClick={() => handleNavigate("/contact")}
                     className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                   >
-                    Contact
+                    {t('navigation.contact')}
                   </button>
+                  
+                  <div className="flex justify-center py-2 border-b border-border">
+                    <LanguageSelector />
+                  </div>
                   
                   <div className="pt-4">
                     {user ? (
@@ -134,14 +142,14 @@ const Header = () => {
                         className="w-full justify-start text-lg"
                         onClick={() => handleNavigate("/dashboard")}
                       >
-                        Tableau de bord
+                        {t('navigation.dashboard')}
                       </Button>
                     ) : (
                       <Button 
                         className="w-full bg-foreground hover:bg-foreground/90 text-background text-lg"
                         onClick={() => handleNavigate("/auth")}
                       >
-                        Se connecter
+                        {t('navigation.login')}
                       </Button>
                     )}
                   </div>

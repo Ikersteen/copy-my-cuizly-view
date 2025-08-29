@@ -1,0 +1,89 @@
+{
+  "navigation": {
+    "pricing": "Tarifs",
+    "features": "Fonctionnalités", 
+    "contact": "Contact",
+    "dashboard": "Tableau de bord",
+    "login": "Se connecter"
+  },
+  "hero": {
+    "badge": "Cuizly • Bêta 3",
+    "title": {
+      "discover": "Découvrez vos prochains",
+      "favorites": "coups de cœur culinaires",
+      "location": "à Montréal"
+    },
+    "subtitle": "Grâce à notre <strong>intelligence artificielle</strong>, découvrez les meilleurs restaurants de Montréal adaptés à vos goûts et à votre budget.",
+    "cta": "Commencer maintenant"
+  },
+  "mission": {
+    "title": "Notre Mission",
+    "subtitle": "Connecter les gourmets aux meilleures expériences culinaires de Montréal",
+    "description": "Cuizly révolutionne la découverte gastronomique en utilisant l'intelligence artificielle pour recommander des restaurants parfaitement adaptés à vos préférences, votre budget et vos envies du moment."
+  },
+  "features": {
+    "title": "Fonctionnalités",
+    "ai_recommendations": {
+      "title": "Recommandations IA",
+      "description": "Notre intelligence artificielle analyse vos préférences pour vous proposer des restaurants parfaitement adaptés"
+    },
+    "real_time_offers": {
+      "title": "Offres en temps réel",
+      "description": "Découvrez les meilleures promotions et offres spéciales des restaurants partenaires"
+    },
+    "personalized_experience": {
+      "title": "Expérience personnalisée",
+      "description": "Créez votre profil gustatif et recevez des suggestions sur mesure"
+    }
+  },
+  "pricing": {
+    "title": "Nos Tarifs",
+    "consumer": {
+      "title": "Consommateur",
+      "price": "Gratuit",
+      "features": [
+        "Accès aux recommandations IA",
+        "Découverte de restaurants",
+        "Offres exclusives",
+        "Profil personnalisé"
+      ]
+    },
+    "restaurant": {
+      "title": "Restaurant",
+      "price": "29€/mois",
+      "features": [
+        "Profil restaurant complet",
+        "Gestion des offres",
+        "Analytics détaillés",
+        "Support prioritaire"
+      ]
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Une question ? Une suggestion ? N'hésitez pas à nous écrire",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "message": "Message",
+      "send": "Envoyer"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "close": "Fermer",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "view": "Voir"
+  },
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "select": "Choisir la langue"
+  }
+}

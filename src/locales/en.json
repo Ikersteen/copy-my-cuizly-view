@@ -1,0 +1,89 @@
+{
+  "navigation": {
+    "pricing": "Pricing",
+    "features": "Features",
+    "contact": "Contact", 
+    "dashboard": "Dashboard",
+    "login": "Sign In"
+  },
+  "hero": {
+    "badge": "Cuizly • Beta 3",
+    "title": {
+      "discover": "Discover your next",
+      "favorites": "culinary favorites",
+      "location": "in Montreal"
+    },
+    "subtitle": "Thanks to our <strong>artificial intelligence</strong>, discover the best restaurants in Montreal tailored to your tastes and budget.",
+    "cta": "Get Started Now"
+  },
+  "mission": {
+    "title": "Our Mission",
+    "subtitle": "Connecting food lovers to the finest culinary experiences in Montreal",
+    "description": "Cuizly revolutionizes gastronomic discovery by using artificial intelligence to recommend restaurants perfectly suited to your preferences, budget, and current cravings."
+  },
+  "features": {
+    "title": "Features",
+    "ai_recommendations": {
+      "title": "AI Recommendations",
+      "description": "Our artificial intelligence analyzes your preferences to suggest perfectly matched restaurants"
+    },
+    "real_time_offers": {
+      "title": "Real-time Offers",
+      "description": "Discover the best promotions and special deals from partner restaurants"
+    },
+    "personalized_experience": {
+      "title": "Personalized Experience", 
+      "description": "Create your taste profile and receive tailored suggestions"
+    }
+  },
+  "pricing": {
+    "title": "Our Pricing",
+    "consumer": {
+      "title": "Consumer",
+      "price": "Free",
+      "features": [
+        "Access to AI recommendations",
+        "Restaurant discovery",
+        "Exclusive offers",
+        "Personalized profile"
+      ]
+    },
+    "restaurant": {
+      "title": "Restaurant",
+      "price": "$29/month",
+      "features": [
+        "Complete restaurant profile",
+        "Offer management",
+        "Detailed analytics",
+        "Priority support"
+      ]
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have a question? A suggestion? Feel free to reach out",
+    "form": {
+      "name": "Name",
+      "email": "Email", 
+      "message": "Message",
+      "send": "Send"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View"
+  },
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "select": "Select Language"
+  }
+}
