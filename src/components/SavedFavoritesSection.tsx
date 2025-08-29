@@ -338,12 +338,12 @@ export const SavedFavoritesSection = () => {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   {restaurant.cuisine_type?.map((cuisine, idx) => (
                     <Badge 
                       key={idx} 
                       variant="outline"
-                      className="text-xs bg-muted/50 text-muted-foreground border-muted"
+                      className="text-xs bg-muted/50 text-muted-foreground border-muted text-center justify-center"
                     >
                       {cuisine}
                     </Badge>
