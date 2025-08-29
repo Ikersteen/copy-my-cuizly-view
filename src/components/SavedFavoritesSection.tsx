@@ -230,7 +230,7 @@ export const SavedFavoritesSection = () => {
                 <div className="space-y-4 text-center">
                   <h3 className="text-2xl font-bold">Aucun favori pour l'instant</h3>
                   <p className="text-muted-foreground max-w-md">
-                    Explorez nos restaurants et ajoutez vos préférés en cliquant sur le cœur pour les retrouver facilement ici.
+                    Retrouvez vos restaurants favoris ici.
                   </p>
                 </div>
               </div>
