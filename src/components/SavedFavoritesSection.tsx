@@ -264,17 +264,17 @@ export const SavedFavoritesSection = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {favoriteRestaurants.slice(0, 4).map((restaurant) => (
             <Card 
               key={restaurant.id}
-              className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm hover:shadow-xl"
+              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80"
             >
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
-                  <div className="flex-1">
+                  <div className="flex items-start space-x-3 flex-1">
                     {restaurant.logo_url ? (
-                      <div className="w-12 h-12 rounded-lg overflow-hidden mb-3">
+                      <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">
                         <img 
                           src={restaurant.logo_url} 
                           alt={restaurant.name}
@@ -282,18 +282,26 @@ export const SavedFavoritesSection = () => {
                         />
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                      <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 border-2 border-primary/20">
                         <span className="text-primary font-semibold text-lg">
                           {restaurant.name.charAt(0)}
                         </span>
                       </div>
                     )}
-                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
-                      {restaurant.name}
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2 text-sm">
-                      {restaurant.description}
-                    </CardDescription>
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
+                        {restaurant.name}
+                      </CardTitle>
+                      <div className="flex items-center space-x-1 mt-1">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">Montreal</span>
+                        <span className="text-sm text-muted-foreground">•</span>
+                        <span className="text-sm font-bold text-muted-foreground">$$</span>
+                      </div>
+                      <CardDescription className="line-clamp-2 text-sm mt-1">
+                        {restaurant.description}
+                      </CardDescription>
+                    </div>
                   </div>
                   <Button
                     variant="ghost"
@@ -307,55 +315,64 @@ export const SavedFavoritesSection = () => {
                     <Heart className="h-4 w-4 text-red-500 fill-current" />
                   </Button>
                 </div>
+
+                <div className="flex items-center text-sm pt-2">
+                  {(() => {
+                    const currentRating = restaurantRatings[restaurant.id];
+                    const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
+                    
+                    if (hasRating) {
+                      return (
+                        <div className="flex items-center space-x-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="font-medium text-xs">
+                            {currentRating.rating} ({currentRating.totalRatings} évaluation{currentRating.totalRatings > 1 ? 's' : ''})
+                          </span>
+                        </div>
+                      );
+                    } else {
+                      return <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>;
+                    }
+                  })()}
+                </div>
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-current text-yellow-500" />
-                    <span>
-                      {(() => {
-                        const currentRating = restaurantRatings[restaurant.id];
-                        const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
-                        
-                        return hasRating 
-                          ? `${currentRating.rating}`
-                          : '4.' + (Math.floor(Math.random() * 5) + 3);
-                      })()}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <MapPin className="h-3 w-3" />
-                    <span className="text-xs font-bold">Montréal • $$</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-2">
                   {restaurant.cuisine_type?.map((cuisine, idx) => (
-                    <Badge key={idx} variant="outline" className="text-xs">
+                    <Badge 
+                      key={idx} 
+                      variant="outline"
+                      className="text-xs bg-muted/50 text-muted-foreground border-muted"
+                    >
                       {cuisine}
                     </Badge>
                   ))}
                 </div>
 
-                {/* Pourquoi ce choix ? section */}
                 <div className="bg-muted/50 rounded-lg p-3">
                   <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
                     <Sparkles className="h-3 w-3" />
                     Pourquoi ce choix ?
                   </p>
                   <div className="flex flex-wrap gap-1">
-                    <Badge variant="secondary" className="text-xs bg-background/80">
+                    <Badge 
+                      variant="secondary" 
+                      className="text-xs bg-background/80"
+                    >
                       Dans vos favoris
                     </Badge>
-                    <Badge variant="secondary" className="text-xs bg-background/80">
+                    <Badge 
+                      variant="secondary" 
+                      className="text-xs bg-background/80"
+                    >
                       Accès rapide
                     </Badge>
                   </div>
                 </div>
 
                 <Button 
-                  className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                  className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
                   size="sm"
                   onClick={() => {
                     // Track profile view
