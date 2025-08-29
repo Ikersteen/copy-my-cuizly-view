@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Cookie, Shield, BarChart3, Target } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 import { useCookieConsent } from "@/hooks/useCookieConsent";
 
 interface CookiePreferencesModalProps {
@@ -15,6 +16,7 @@ interface CookiePreferencesModalProps {
 const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalProps) => {
   const { preferences, saveCustomPreferences } = useCookieConsent();
   const [localPreferences, setLocalPreferences] = useState(preferences);
+  const { t } = useTranslation();
 
   const handleSave = () => {
     saveCustomPreferences(localPreferences);
@@ -49,10 +51,10 @@ const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalPr
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Cookie className="h-5 w-5 text-primary" />
-            Préférences des cookies
+            {t('cookiePreferences.title')}
           </DialogTitle>
           <DialogDescription>
-            Gérez vos préférences de cookies. Ces paramètres seront conservés pendant 6 mois.
+            {t('cookiePreferences.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -62,16 +64,16 @@ const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalPr
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Shield className="h-4 w-4 text-green-600" />
-                Cookies nécessaires
+                {t('cookiePreferences.necessary.title')}
               </CardTitle>
               <CardDescription>
-                Ces cookies sont essentiels au fonctionnement du site et ne peuvent pas être désactivés.
+                {t('cookiePreferences.necessary.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <Label htmlFor="necessary" className="text-sm font-medium">
-                  Cookies techniques
+                  {t('cookiePreferences.necessary.label')}
                 </Label>
                 <Switch
                   id="necessary"
@@ -88,16 +90,16 @@ const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalPr
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <BarChart3 className="h-4 w-4 text-blue-600" />
-                Cookies analytiques
+                {t('cookiePreferences.analytics.title')}
               </CardTitle>
               <CardDescription>
-                Ces cookies nous aident à comprendre comment vous utilisez notre site pour l'améliorer.
+                {t('cookiePreferences.analytics.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <Label htmlFor="analytics" className="text-sm font-medium">
-                  Analyses et statistiques
+                  {t('cookiePreferences.analytics.label')}
                 </Label>
                 <Switch
                   id="analytics"
@@ -115,16 +117,16 @@ const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalPr
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Target className="h-4 w-4 text-purple-600" />
-                Cookies marketing
+                {t('cookiePreferences.marketing.title')}
               </CardTitle>
               <CardDescription>
-                Ces cookies sont utilisés pour vous proposer des publicités personnalisées et pertinentes.
+                {t('cookiePreferences.marketing.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <Label htmlFor="marketing" className="text-sm font-medium">
-                  Publicité personnalisée
+                  {t('cookiePreferences.marketing.label')}
                 </Label>
                 <Switch
                   id="marketing"
@@ -144,20 +146,20 @@ const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalPr
             onClick={handleRejectAll}
             className="w-full sm:w-auto"
           >
-            Refuser tout
+            {t('cookiePreferences.declineAll')}
           </Button>
           <Button
             variant="outline"
             onClick={handleAcceptAll}
             className="w-full sm:w-auto"
           >
-            Accepter tout
+            {t('cookiePreferences.acceptAll')}
           </Button>
           <Button
             onClick={handleSave}
             className="w-full sm:w-auto bg-primary hover:bg-primary/90"
           >
-            Enregistrer mes choix
+            {t('cookiePreferences.saveChoices')}
           </Button>
         </DialogFooter>
       </DialogContent>

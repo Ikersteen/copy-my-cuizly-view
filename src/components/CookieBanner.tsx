@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Cookie, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { useCookieConsent } from "@/hooks/useCookieConsent";
 import CookiePreferencesModal from "./CookiePreferencesModal";
 
 const CookieBanner = () => {
   const { showBanner, acceptCookies, declineCookies } = useCookieConsent();
   const [showPreferences, setShowPreferences] = useState(false);
+  const { t } = useTranslation();
 
   if (!showBanner) return null;
 
@@ -25,16 +27,15 @@ const CookieBanner = () => {
             
             <div className="flex-1 space-y-3">
               <h3 className="font-semibold text-foreground text-sm sm:text-base">
-                Nous utilisons des cookies
+                {t('cookieBanner.title')}
               </h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Nous utilisons des cookies pour améliorer votre expérience sur Cuizly, analyser le trafic et personnaliser le contenu. 
-                Choisissez vos préférences ou acceptez tous les cookies.{" "}
+                {t('cookieBanner.description')}{" "}
                 <Link 
                   to="/cookies" 
                   className="text-primary hover:text-primary/80 underline font-medium"
                 >
-                  En savoir plus
+                  {t('cookieBanner.learnMore')}
                 </Link>
               </p>
             </div>
@@ -46,7 +47,7 @@ const CookieBanner = () => {
                 onClick={declineCookies}
                 className="text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4 order-1 sm:order-none"
               >
-                Refuser
+                {t('cookieBanner.decline')}
               </Button>
               <Button
                 variant="outline"
@@ -55,14 +56,14 @@ const CookieBanner = () => {
                 className="text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4 order-3 sm:order-none"
               >
                 <Settings className="h-3 w-3 mr-1" />
-                Personnaliser
+                {t('cookieBanner.configure')}
               </Button>
               <Button
                 onClick={acceptCookies}
                 size="sm"
                 className="text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4 bg-primary hover:bg-primary/90 order-2 sm:order-none"
               >
-                Accepter
+                {t('cookieBanner.accept')}
               </Button>
             </div>
           </div>

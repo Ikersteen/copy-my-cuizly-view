@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useTranslation } from 'react-i18next';
 import { Mail, MapPin, Phone } from "lucide-react";
 
 const ContactSectionLanding = () => {
+  const { t } = useTranslation();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -18,10 +20,10 @@ const ContactSectionLanding = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
       <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Contactez-nous
+            {t('contactForm.title')}
           </h2>
           <p className="text-lg sm:text-xl text-cuizly-neutral px-2 sm:px-0">
-            Une question ? Une suggestion ? Nous sommes là pour vous aider.
+            {t('contactForm.subtitle')}
           </p>
         </div>
 
@@ -29,25 +31,25 @@ const ContactSectionLanding = () => {
           <div>
             <Card className="shadow-card border border-border">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg sm:text-xl">Envoyez-nous un message</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">{t('contact.form.send')}</CardTitle>
                 <CardDescription className="text-sm sm:text-base">
-                  Remplissez le formulaire et nous vous répondrons dans les plus brefs délais.
+                  {t('contactForm.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName" className="text-sm">Prénom</Label>
+                      <Label htmlFor="firstName" className="text-sm">{t('contactForm.firstName')}</Label>
                       <Input id="firstName" name="firstName" placeholder="Iker" required />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName" className="text-sm">Nom</Label>
+                      <Label htmlFor="lastName" className="text-sm">{t('contact.form.name')}</Label>
                       <Input id="lastName" name="lastName" placeholder="Steen" required />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm">Courriel</Label>
+                    <Label htmlFor="email" className="text-sm">{t('contact.form.email')}</Label>
                     <Input id="email" name="email" type="email" placeholder="votre@courriel.com" required />
                   </div>
                   <div className="space-y-2">
@@ -55,17 +57,17 @@ const ContactSectionLanding = () => {
                     <Input id="subject" name="subject" placeholder="Comment pouvons-nous vous aider ?" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-sm">Message</Label>
+                    <Label htmlFor="message" className="text-sm">{t('contactForm.message')}</Label>
                     <Textarea 
                       id="message" 
                       name="message"
-                      placeholder="Décrivez votre demande..."
+                      placeholder={t('contactForm.messagePlaceholder')}
                       className="min-h-[100px] sm:min-h-[120px]"
                       required 
                     />
                   </div>
                   <Button type="submit" className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
-                    Envoyer le message
+                    {t('contact.form.send')}
                   </Button>
                 </form>
               </CardContent>
@@ -83,7 +85,7 @@ const ContactSectionLanding = () => {
                     <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-cuizly-primary" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-foreground text-sm sm:text-base">Courriel</h4>
+                    <h4 className="font-medium text-foreground text-sm sm:text-base">{t('contact.form.email')}</h4>
                     <p className="text-cuizly-neutral text-sm sm:text-base">cuizlycanada@gmail.com</p>
                   </div>
                 </div>
@@ -94,7 +96,10 @@ const ContactSectionLanding = () => {
                   </div>
                   <div>
                     <h4 className="font-medium text-foreground text-sm sm:text-base">Adresse</h4>
-                    <p className="text-cuizly-neutral text-sm sm:text-base">2900 Bd Édouard-Montpetit<br />Montréal, QC H3T 1J4</p>
+                    <p 
+                      className="text-cuizly-neutral text-sm sm:text-base"
+                      dangerouslySetInnerHTML={{ __html: t('contactForm.address') }}
+                    />
                   </div>
                 </div>
                 
@@ -103,7 +108,7 @@ const ContactSectionLanding = () => {
                     <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-cuizly-primary" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-foreground text-sm sm:text-base">Téléphone</h4>
+                    <h4 className="font-medium text-foreground text-sm sm:text-base">{t('contactForm.phone')}</h4>
                     <p className="text-cuizly-neutral text-sm sm:text-base">+1 (514) 465-4783</p>
                   </div>
                 </div>
@@ -112,12 +117,12 @@ const ContactSectionLanding = () => {
 
             <div>
               <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4">
-                Heures d'ouverture
+                {t('contactForm.hours.title')}
               </h3>
               <div className="space-y-1 sm:space-y-2 text-cuizly-neutral text-sm sm:text-base">
-                <p>Lundi - Vendredi: 9h00 - 18h00</p>
-                <p>Samedi: 10h00 - 16h00</p>
-                <p>Dimanche: Fermé</p>
+                <p>{t('contactForm.hours.monday')}</p>
+                <p>{t('contactForm.hours.weekend')}</p>
+                <p>{t('contactForm.hours.sunday')}</p>
               </div>
             </div>
           </div>

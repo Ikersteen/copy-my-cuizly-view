@@ -351,8 +351,68 @@
     "hidePassword": "Masquer le mot de passe",
     "welcomeRestaurant": "Bienvenue chez"
   },
-  "errors": {
-    "title": "Erreur",
-    "loadMenus": "Impossible de charger les menus"
+  "cookieBanner": {
+    "title": "Nous utilisons des cookies",
+    "description": "Nous utilisons des cookies pour améliorer votre expérience sur Cuizly, analyser le trafic et personnaliser le contenu. Choisissez vos préférences ou acceptez tous les cookies.",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "configure": "Configurer",
+    "learnMore": "En savoir plus"
+  },
+  "cookiePreferences": {
+    "title": "Préférences des cookies",
+    "description": "Gérez vos préférences de cookies. Ces paramètres seront conservés pendant 6 mois.",
+    "necessary": {
+      "title": "Cookies nécessaires",
+      "description": "Ces cookies sont essentiels au fonctionnement du site et ne peuvent pas être désactivés.",
+      "label": "Cookies techniques"
+    },
+    "analytics": {
+      "title": "Cookies analytiques", 
+      "description": "Ces cookies nous aident à comprendre comment vous utilisez notre site pour l'améliorer.",
+      "label": "Analyses et statistiques"
+    },
+    "marketing": {
+      "title": "Cookies marketing",
+      "description": "Ces cookies sont utilisés pour vous proposer des publicités personnalisées et pertinentes.",
+      "label": "Publicité personnalisée"
+    },
+    "acceptAll": "Accepter tout",
+    "declineAll": "Refuser tout",
+    "saveChoices": "Enregistrer mes choix"
+  },
+  "cta": {
+    "title": "Prêt à révolutionner votre expérience culinaire ?",
+    "description": "Rejoignez dès maintenant la communauté Cuizly et soyez parmi les premiers à découvrir les meilleures offres de Montréal.",
+    "button": "Créer mon compte",
+    "imageAlt": "Restaurant moderne à Montréal"
+  },
+  "contactForm": {
+    "title": "Contactez-nous",
+    "subtitle": "Une question ? Une suggestion ? Nous sommes là pour vous aider.",
+    "description": "Remplissez le formulaire et nous vous répondrons dans les plus brefs délais.",
+    "firstName": "Prénom",
+    "message": "Message",
+    "messagePlaceholder": "Décrivez votre demande...",
+    "address": "2900 Bd Édouard-Montpetit<br />Montréal, QC H3T 1J4",
+    "phone": "Téléphone",
+    "hours": {
+      "title": "Heures d'ouverture",
+      "monday": "Lundi-Vendredi: 9h-17h",
+      "weekend": "Samedi: 10h-14h", 
+      "sunday": "Dimanche: Fermé"
+    }
+  },
+  "comments": {
+    "title": "Partagez votre expérience avec d'autres gourmets",
+    "ratingCount": "évaluations",
+    "placeholder": "Partagez votre expérience...",
+    "notAuthenticated": "Non authentifié"
+  },
+  "dateRange": {
+    "label": "Période de validité",
+    "placeholder": "Sélectionner les dates",
+    "selectEnd": "Sélectionnez la date de fin (max {{maxDays}} jours)",
+    "fromTo": "Du {{from}} - Sélectionnez la fin"
   }
 }
