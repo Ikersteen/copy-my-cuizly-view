@@ -325,8 +325,12 @@ export const SavedFavoritesSection = () => {
                       <div className="flex items-center space-x-1 mt-1">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm text-muted-foreground">Montreal</span>
-                        <span className="text-sm text-muted-foreground">•</span>
-                        <span className="text-sm font-bold text-muted-foreground">$$</span>
+                        {restaurant.price_range && (
+                          <>
+                            <span className="text-sm text-muted-foreground">•</span>
+                            <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
+                          </>
+                        )}
                       </div>
                       <CardDescription className="line-clamp-2 text-sm mt-1">
                         {restaurant.description}
