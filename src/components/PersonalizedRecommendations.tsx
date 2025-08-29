@@ -84,10 +84,6 @@ export const PersonalizedRecommendations = () => {
 
   const generateRecommendations = useCallback(async () => {
     console.log('🔄 generateRecommendations called - loading:', loading);
-    if (loading) {
-      console.log('⏸️ Already loading, skipping generateRecommendations');
-      return;
-    }
     
     setLoading(true);
     console.log('🔄 Setting loading to true');
