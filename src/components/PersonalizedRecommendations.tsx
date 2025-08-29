@@ -213,42 +213,71 @@ export const PersonalizedRecommendations = () => {
         
         // Dietary restrictions compatibility - check menus
         if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
-          let hasCompatibleMenus = false;
+          let compatibleMenusCount = 0;
+          let totalMenusChecked = 0;
+          
           restaurantMenus.forEach(menu => {
+            totalMenusChecked++;
             const accommodatedRestrictions = preferences.dietary_restrictions.filter((restriction: string) =>
               menu.dietary_restrictions?.includes(restriction)
             );
             if (accommodatedRestrictions.length > 0) {
-              hasCompatibleMenus = true;
+              compatibleMenusCount++;
               score += accommodatedRestrictions.length * 8;
             }
           });
-          if (hasCompatibleMenus) {
+          
+          if (compatibleMenusCount > 0) {
             hasAnyMatch = true;
-            reasons.push("Restrictions accommodées");
+            const percentage = Math.round((compatibleMenusCount / totalMenusChecked) * 100);
+            reasons.push(`${percentage}% des plats compatibles`);
           }
         }
         
-        // Allergen safety - check menus avoid user's allergens
+        // Allergen safety - exclude restaurants with menus containing user's allergens
         if (preferences?.allergens && preferences.allergens.length > 0) {
-          let hasAllergenFreeMenus = false;
+          let hasUnsafeMenus = false;
+          let safeMenusCount = 0;
+          
           restaurantMenus.forEach(menu => {
-            const safeAllergens = preferences.allergens.filter((allergen: string) =>
+            const dangerousAllergens = preferences.allergens.filter((allergen: string) =>
               menu.allergens?.includes(allergen)
             );
-            if (safeAllergens.length > 0) {
-              hasAllergenFreeMenus = true;
-              score += safeAllergens.length * 12;
+            if (dangerousAllergens.length > 0) {
+              hasUnsafeMenus = true;
+              // Pénalité pour avoir des allergènes dangereux
+              score -= dangerousAllergens.length * 20;
+            } else {
+              safeMenusCount++;
             }
           });
-          if (hasAllergenFreeMenus) {
+          
+          // Bonus seulement si TOUS les menus sont sûrs
+          if (!hasUnsafeMenus && restaurantMenus.length > 0) {
             hasAnyMatch = true;
-            reasons.push("Allergènes évités");
+            score += 15; // Bonus pour sécurité complète
+            reasons.push("Tous les plats sont sûrs");
+          } else if (safeMenusCount > 0) {
+            // Partiel sûr mais pas complètement
+            const percentage = Math.round((safeMenusCount / restaurantMenus.length) * 100);
+            if (percentage >= 50) { // Au moins 50% des plats sont sûrs
+              hasAnyMatch = true;
+              reasons.push(`${percentage}% des plats sans allergènes`);
+            }
           }
         }
 
-        // If no preferences or no match, exclude restaurant
-        if (!preferences || !hasAnyMatch) {
+        // If no preferences configured, don't show recommendations
+        if (!preferences || 
+            (!preferences.cuisine_preferences?.length && 
+             (!preferences.price_range || preferences.price_range === "") && 
+             !preferences.dietary_restrictions?.length &&
+             !preferences.allergens?.length)) {
+          return null;
+        }
+
+        // If restaurant has no matching criteria, exclude it
+        if (!hasAnyMatch || score <= 0) {
           return null;
         }
 
