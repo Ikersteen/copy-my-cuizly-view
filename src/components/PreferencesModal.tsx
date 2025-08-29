@@ -6,8 +6,9 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserPreferences, useUserPreferences } from "@/hooks/useUserPreferences";
-import { X, Plus } from "lucide-react";
+import { X, Plus, ChevronDown } from "lucide-react";
 import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
 
 interface PreferencesModalProps {
@@ -107,20 +108,49 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
             <p className="text-sm text-muted-foreground mb-3">
               Sélectionnez vos types de cuisine favoris
             </p>
-            <div className="flex flex-wrap gap-2">
-              {CUISINE_OPTIONS.map(cuisine => (
-                <Badge
-                  key={cuisine}
-                  variant={(localPrefs.cuisine_preferences || []).includes(cuisine) ? "default" : "outline"}
-                  className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleArrayItem(localPrefs.cuisine_preferences || [], cuisine, 'cuisine_preferences')}
-                >
-                  {cuisine}
-                  {(localPrefs.cuisine_preferences || []).includes(cuisine) && (
-                    <X className="h-3 w-3 ml-1" />
-                  )}
-                </Badge>
-              ))}
+            
+            {/* Selected cuisines display */}
+            {localPrefs.cuisine_preferences && localPrefs.cuisine_preferences.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {localPrefs.cuisine_preferences.map((cuisine, index) => (
+                  <Badge key={index} variant="default" className="pr-1">
+                    {cuisine}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
+                      onClick={() => toggleArrayItem(localPrefs.cuisine_preferences || [], cuisine, 'cuisine_preferences')}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+            )}
+
+            {/* Dropdown selector */}
+            <div>
+              <Label className="text-sm font-medium mb-3 block">Cuisines disponibles</Label>
+              <Select
+                value=""
+                onValueChange={(cuisine) => {
+                  if (cuisine && !localPrefs.cuisine_preferences?.includes(cuisine)) {
+                    toggleArrayItem(localPrefs.cuisine_preferences || [], cuisine, 'cuisine_preferences');
+                  }
+                }}
+              >
+                <SelectTrigger className="w-full bg-background border z-50">
+                  <SelectValue placeholder="Sélectionner une cuisine..." />
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border z-50">
+                  {CUISINE_OPTIONS.filter(cuisine => !localPrefs.cuisine_preferences?.includes(cuisine)).map(cuisine => (
+                    <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
+                      {cuisine}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -182,18 +212,22 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
             <p className="text-sm text-muted-foreground mb-3">
               Choisissez votre budget habituel
             </p>
-            <div className="flex gap-2">
-              {PRICE_RANGES.map(range => (
-                <Badge
-                  key={range}
-                  variant={localPrefs.price_range === range ? "default" : "outline"}
-                  className="cursor-pointer transition-all duration-200 hover:scale-105 text-lg px-4 py-2"
-                  onClick={() => setLocalPrefs(prev => ({ ...prev, price_range: range }))}
-                >
-                  {range}
-                </Badge>
-              ))}
-            </div>
+            
+            <Select
+              value={localPrefs.price_range || ""}
+              onValueChange={(range) => setLocalPrefs(prev => ({ ...prev, price_range: range }))}
+            >
+              <SelectTrigger className="w-full bg-background border z-50">
+                <SelectValue placeholder="Sélectionner une gamme de prix..." />
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border z-50">
+                <SelectItem value="$" className="hover:bg-muted">$ - Économique</SelectItem>
+                <SelectItem value="$$" className="hover:bg-muted">$$ - Modéré</SelectItem>
+                <SelectItem value="$$$" className="hover:bg-muted">$$$ - Élevé</SelectItem>
+                <SelectItem value="$$$$" className="hover:bg-muted">$$$$ - Luxueux</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <Separator />
