@@ -1,85 +1,80 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import { useTranslation } from "react-i18next";
 
 const Terms = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-6 py-16">
         <div className="mb-6">
           <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour à l'accueil
+            {t('navigation.back_home')}
           </Link>
         </div>
         
         <h1 className="text-4xl font-bold text-foreground mb-8">
-          Conditions d'utilisation
+          {t('terms.title')}
         </h1>
         
         <div className="prose prose-gray max-w-none">
           <p className="text-cuizly-neutral mb-6">
-            Dernière mise à jour : {new Date().toLocaleDateString('fr-CA')}
+            {t('terms.lastUpdated')}{new Date().toLocaleDateString('fr-CA')}
           </p>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">1. Acceptation des conditions</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('terms.sections.acceptance.title')}</h2>
             <p className="text-cuizly-neutral">
-              En accédant et en utilisant Cuizly, vous acceptez d'être lié par ces conditions d'utilisation et toutes les lois et réglementations applicables.
+              {t('terms.sections.acceptance.content')}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">2. Description du service</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('terms.sections.service.title')}</h2>
             <p className="text-cuizly-neutral">
-              Cuizly est une plateforme qui connecte les consommateurs aux restaurants à Montréal en proposant des offres culinaires personnalisées grâce à l'intelligence artificielle.
+              {t('terms.sections.service.content')}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">3. Responsabilités de l'utilisateur</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('terms.sections.responsibilities.title')}</h2>
             <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
-              <li>Fournir des informations exactes lors de l'inscription</li>
-              <li>Maintenir la sécurité de votre compte</li>
-              <li>Utiliser le service de manière légale et respectueuse</li>
-              <li>Ne pas perturber le fonctionnement de la plateforme</li>
+              {(t('terms.sections.responsibilities.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">4. Propriété intellectuelle</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('terms.sections.intellectual.title')}</h2>
             <p className="text-cuizly-neutral">
-              Tout le contenu de Cuizly, y compris les textes, graphiques, logos et logiciels, est la propriété de Cuizly Technologies et est protégé par les lois sur la propriété intellectuelle.
+              {t('terms.sections.intellectual.content')}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibent text-foreground mb-4">5. Limitation de responsabilité</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('terms.sections.liability.title')}</h2>
             <p className="text-cuizly-neutral">
-              Cuizly ne peut être tenu responsable des dommages indirects, incidents ou consécutifs résultant de l'utilisation ou de l'impossibilité d'utiliser notre service.
+              {t('terms.sections.liability.content')}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">6. Modifications</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('terms.sections.modifications.title')}</h2>
             <p className="text-cuizly-neutral">
-              Nous nous réservons le droit de modifier ces conditions d'utilisation à tout moment. Les modifications entreront en vigueur immédiatement après leur publication sur cette page.
+              {t('terms.sections.modifications.content')}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">6. Responsabilité</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('terms.sections.contact.title')}</h2>
             <p className="text-cuizly-neutral">
-              Cuizly Technologies ne peut être tenue responsable des dommages directs ou indirects résultant de l'utilisation de notre plateforme. Pour exercer ce droit, contactez-nous à cuizlycanada@gmail.com
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">7. Contact</h2>
-            <p className="text-cuizly-neutral">
-              Pour toute question concernant ces conditions d'utilisation, contactez-nous à :
-              <br />Courriel : cuizlycanada@gmail.com
-              <br />Adresse : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4
+              {t('terms.sections.contact.content')}
+              <br />{t('terms.sections.contact.email')}
+              <br />{t('terms.sections.contact.address')}
             </p>
           </section>
         </div>

@@ -4,7 +4,8 @@
     "features": "Features",
     "contact": "Contact", 
     "dashboard": "Dashboard",
-    "login": "Sign In"
+    "login": "Sign In",
+    "back_home": "Back to Home"
   },
   "hero": {
     "badge": "Cuizly • Beta 3",
@@ -67,6 +68,196 @@
       "email": "Email", 
       "message": "Message",
       "send": "Send"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "returnHome": "Return to Home"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "content": "Cuizly Technologies (\"we\", \"our\" or \"Cuizly\") respects your privacy and is committed to protecting your personal data. This privacy policy informs you about how we collect, use and protect your information when you use our service."
+      },
+      "collection": {
+        "title": "2. Information we collect",
+        "items": [
+          "Personal identification information (name, email)",
+          "Culinary and food preferences",
+          "Location data (with your consent)",
+          "Usage and analytics information"
+        ]
+      },
+      "usage": {
+        "title": "3. How we use your information",
+        "items": [
+          "Provide and improve our services",
+          "Personalize your experience",
+          "Send you relevant notifications",
+          "Analyze platform usage"
+        ]
+      },
+      "sharing": {
+        "title": "4. Information sharing",
+        "content": "We do not sell, trade or rent your personal information to third parties. We may share your information in the following cases:",
+        "items": [
+          "With your explicit consent",
+          "To comply with legal obligations",
+          "To protect our rights and security"
+        ]
+      },
+      "rights": {
+        "title": "5. Your rights",
+        "content": "You have the right to access, correct, delete or limit the use of your personal data. To exercise these rights, contact us at cuizlycanada@gmail.com."
+      },
+      "contact": {
+        "title": "6. Contact",
+        "content": "For any questions regarding this privacy policy, contact us at:",
+        "email": "Email: cuizlycanada@gmail.com",
+        "address": "Address: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
+      }
+    }
+  },
+  "mentions": {
+    "title": "Legal Notice",
+    "sections": {
+      "editor": {
+        "title": "Site Editor",
+        "companyName": "Company Name: Cuizly Technologies",
+        "legalForm": "Legal Form: Independent Startup",
+        "address": "Head Office: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4",
+        "email": "Email: cuizlycanada@gmail.com"
+      },
+      "hosting": {
+        "title": "Hosting",
+        "host": "Host: Supabase Inc.",
+        "address": "Address: San Francisco, CA, United States",
+        "website": "Website: https://supabase.com"
+      },
+      "director": {
+        "title": "Publication Director",
+        "name": "Iker Kiomba Landu, Chief Executive Officer",
+        "email": "Email: cuizlycanada@gmail.com"
+      },
+      "intellectual": {
+        "title": "Intellectual Property",
+        "content": "This entire site is subject to Canadian and international copyright and intellectual property legislation. All reproduction rights are reserved, including for downloadable documents and iconographic and photographic representations."
+      },
+      "personal": {
+        "title": "Personal Data",
+        "content": "In accordance with Canadian privacy law, you have the right to access, correct and delete data concerning you. To exercise this right, contact us at cuizlycanada@gmail.com"
+      },
+      "liability": {
+        "title": "Liability",
+        "content": "Cuizly Technologies cannot be held responsible for direct and indirect damages caused to the user's equipment when accessing the site, resulting either from the use of equipment that does not meet the specified requirements, or from the appearance of a bug or incompatibility."
+      },
+      "law": {
+        "title": "Applicable Law",
+        "content": "Any dispute in relation to the use of the Cuizly site is subject to Canadian and Quebec law. Exclusive jurisdiction is attributed to the competent courts of Montreal."
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of terms",
+        "content": "By accessing and using Cuizly, you agree to be bound by these terms of service and all applicable laws and regulations."
+      },
+      "service": {
+        "title": "2. Service description",
+        "content": "Cuizly is a platform that connects consumers to restaurants in Montreal by offering personalized culinary offers through artificial intelligence."
+      },
+      "responsibilities": {
+        "title": "3. User responsibilities",
+        "items": [
+          "Provide accurate information during registration",
+          "Maintain the security of your account",
+          "Use the service in a legal and respectful manner",
+          "Do not disrupt the functioning of the platform"
+        ]
+      },
+      "intellectual": {
+        "title": "4. Intellectual property",
+        "content": "All content of Cuizly, including texts, graphics, logos and software, is the property of Cuizly Technologies and is protected by intellectual property laws."
+      },
+      "liability": {
+        "title": "5. Limitation of liability",
+        "content": "Cuizly cannot be held responsible for indirect, incidental or consequential damages resulting from the use or inability to use our service."
+      },
+      "modifications": {
+        "title": "6. Modifications",
+        "content": "We reserve the right to modify these terms of service at any time. Changes will take effect immediately after posting on this page."
+      },
+      "contact": {
+        "title": "7. Contact",
+        "content": "For any questions regarding these terms of service, contact us at:",
+        "email": "Email: cuizlycanada@gmail.com",
+        "address": "Address: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
+      }
+    }
+  },
+  "cookies": {
+    "title": "Cookie Policy",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "what": {
+        "title": "What is a cookie?",
+        "content": "A cookie is a small text file placed on your computer when you visit a website. It allows your browser to be recognized and retains certain information about your preferences or past actions."
+      },
+      "types": {
+        "title": "Types of cookies used",
+        "essential": {
+          "title": "Essential cookies",
+          "content": "These cookies are necessary for the site to function. They allow you to navigate the site and use its essential features such as authentication and security."
+        },
+        "performance": {
+          "title": "Performance cookies",
+          "content": "These cookies collect information about how you use our site, such as the most visited pages. This data helps us improve the site's operation."
+        },
+        "functionality": {
+          "title": "Functionality cookies",
+          "content": "These cookies allow the site to remember your choices (such as your username or language) and provide enhanced and more personalized features."
+        }
+      },
+      "management": {
+        "title": "Cookie management",
+        "content1": "You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can configure most browsers to prevent their placement.",
+        "content2": "However, if you do this, you may need to manually adjust certain preferences each time you visit a site and some services and features may not work."
+      },
+      "disable": {
+        "title": "How to disable cookies",
+        "chrome": "Chrome: Settings → Privacy and security → Cookies and other site data",
+        "firefox": "Firefox: Options → Privacy & Security → Cookies and Site Data",
+        "safari": "Safari: Preferences → Privacy → Manage Website Data",
+        "edge": "Edge: Settings → Cookies and site permissions → Manage and delete cookies"
+      },
+      "third": {
+        "title": "Third-party cookies",
+        "content": "Some cookies may be placed by third-party services we use, such as Google Analytics to measure site audience. These third-party services have their own privacy policies."
+      },
+      "editor": {
+        "title": "Site editor",
+        "company": "Company Name: Cuizly Technologies",
+        "form": "Legal Form: Independent Startup",
+        "address": "Head Office: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
+      },
+      "director": {
+        "title": "Publication director",
+        "name": "Iker Kiomba Landu, Chief Executive Officer",
+        "email": "Email: cuizlycanada@gmail.com"
+      },
+      "contact": {
+        "title": "Contact",
+        "content": "For any questions regarding our use of cookies, contact us at:",
+        "email": "Email: cuizlycanada@gmail.com",
+        "address": "Head Office: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
+      }
     }
   },
   "common": {

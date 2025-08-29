@@ -1,79 +1,80 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import { useTranslation } from "react-i18next";
 
 const Privacy = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-6 py-16">
         <div className="mb-6">
           <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour à l'accueil
+            {t('navigation.back_home')}
           </Link>
         </div>
         
         <h1 className="text-4xl font-bold text-foreground mb-8">
-          Politique de confidentialité
+          {t('privacy.title')}
         </h1>
         
         <div className="prose prose-gray max-w-none">
           <p className="text-cuizly-neutral mb-6">
-            Dernière mise à jour : {new Date().toLocaleDateString('fr-CA')}
+            {t('privacy.lastUpdated')}{new Date().toLocaleDateString('fr-CA')}
           </p>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">1. Introduction</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.introduction.title')}</h2>
             <p className="text-cuizly-neutral">
-              Cuizly Technologies ("nous", "notre" ou "Cuizly") respecte votre vie privée et s'engage à protéger vos données personnelles. Cette politique de confidentialité vous informe sur la façon dont nous collectons, utilisons et protégeons vos informations lorsque vous utilisez notre service.
+              {t('privacy.sections.introduction.content')}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">2. Informations que nous collectons</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.collection.title')}</h2>
             <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
-              <li>Informations d'identification personnelle (nom, courriel)</li>
-              <li>Préférences culinaires et alimentaires</li>
-              <li>Données de localisation (avec votre consentement)</li>
-              <li>Informations d'utilisation et analytiques</li>
+              {(t('privacy.sections.collection.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">3. Comment nous utilisons vos informations</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.usage.title')}</h2>
             <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
-              <li>Fournir et améliorer nos services</li>
-              <li>Personnaliser votre expérience</li>
-              <li>Vous envoyer des notifications pertinentes</li>
-              <li>Analyser l'utilisation de notre plateforme</li>
+              {(t('privacy.sections.usage.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">4. Partage d'informations</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.sharing.title')}</h2>
             <p className="text-cuizly-neutral mb-4">
-              Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Nous pouvons partager vos informations dans les cas suivants :
+              {t('privacy.sections.sharing.content')}
             </p>
             <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
-              <li>Avec votre consentement explicite</li>
-              <li>Pour se conformer aux obligations légales</li>
-              <li>Pour protéger nos droits et notre sécurité</li>
+              {(t('privacy.sections.sharing.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">5. Vos droits</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.rights.title')}</h2>
             <p className="text-cuizly-neutral">
-              Vous avez le droit d'accéder, de corriger, de supprimer ou de limiter l'utilisation de vos données personnelles. Pour exercer ces droits, contactez-nous à cuizlycanada@gmail.com.
+              {t('privacy.sections.rights.content')}
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">6. Contact</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.contact.title')}</h2>
             <p className="text-cuizly-neutral">
-              Pour toute question concernant cette politique de confidentialité, contactez-nous à :
-              <br />Courriel : cuizlycanada@gmail.com
-              <br />Adresse : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4
+              {t('privacy.sections.contact.content')}
+              <br />{t('privacy.sections.contact.email')}
+              <br />{t('privacy.sections.contact.address')}
             </p>
           </section>
         </div>

@@ -4,7 +4,8 @@
     "features": "Fonctionnalités", 
     "contact": "Contact",
     "dashboard": "Tableau de bord",
-    "login": "Se connecter"
+    "login": "Se connecter",
+    "back_home": "Retour à l'accueil"
   },
   "hero": {
     "badge": "Cuizly • Bêta 3",
@@ -67,6 +68,196 @@
       "email": "Email",
       "message": "Message",
       "send": "Envoyer"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page non trouvée",
+    "returnHome": "Retourner à l'accueil"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour : ",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "content": "Cuizly Technologies (\"nous\", \"notre\" ou \"Cuizly\") respecte votre vie privée et s'engage à protéger vos données personnelles. Cette politique de confidentialité vous informe sur la façon dont nous collectons, utilisons et protégeons vos informations lorsque vous utilisez notre service."
+      },
+      "collection": {
+        "title": "2. Informations que nous collectons",
+        "items": [
+          "Informations d'identification personnelle (nom, courriel)",
+          "Préférences culinaires et alimentaires",
+          "Données de localisation (avec votre consentement)",
+          "Informations d'utilisation et analytiques"
+        ]
+      },
+      "usage": {
+        "title": "3. Comment nous utilisons vos informations",
+        "items": [
+          "Fournir et améliorer nos services",
+          "Personnaliser votre expérience",
+          "Vous envoyer des notifications pertinentes",
+          "Analyser l'utilisation de notre plateforme"
+        ]
+      },
+      "sharing": {
+        "title": "4. Partage d'informations",
+        "content": "Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Nous pouvons partager vos informations dans les cas suivants :",
+        "items": [
+          "Avec votre consentement explicite",
+          "Pour se conformer aux obligations légales",
+          "Pour protéger nos droits et notre sécurité"
+        ]
+      },
+      "rights": {
+        "title": "5. Vos droits",
+        "content": "Vous avez le droit d'accéder, de corriger, de supprimer ou de limiter l'utilisation de vos données personnelles. Pour exercer ces droits, contactez-nous à cuizlycanada@gmail.com."
+      },
+      "contact": {
+        "title": "6. Contact",
+        "content": "Pour toute question concernant cette politique de confidentialité, contactez-nous à :",
+        "email": "Courriel : cuizlycanada@gmail.com",
+        "address": "Adresse : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4"
+      }
+    }
+  },
+  "mentions": {
+    "title": "Mentions légales",
+    "sections": {
+      "editor": {
+        "title": "Éditeur du site",
+        "companyName": "Raison sociale : Cuizly Technologies",
+        "legalForm": "Forme juridique : Startup Indépendante",
+        "address": "Siège social : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4",
+        "email": "Courriel : cuizlycanada@gmail.com"
+      },
+      "hosting": {
+        "title": "Hébergement",
+        "host": "Hébergeur : Supabase Inc.",
+        "address": "Adresse : San Francisco, CA, États-Unis",
+        "website": "Site web : https://supabase.com"
+      },
+      "director": {
+        "title": "Directeur de la publication",
+        "name": "Iker Kiomba Landu, Président Directeur Général",
+        "email": "Courriel : cuizlycanada@gmail.com"
+      },
+      "intellectual": {
+        "title": "Propriété intellectuelle",
+        "content": "L'ensemble de ce site relève de la législation canadienne et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques."
+      },
+      "personal": {
+        "title": "Données personnelles",
+        "content": "Conformément à la loi canadienne sur la protection des renseignements personnels, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit, contactez-nous à cuizlycanada@gmail.com"
+      },
+      "liability": {
+        "title": "Responsabilité",
+        "content": "Cuizly Technologies ne pourra être tenue responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications indiquées, soit de l'apparition d'un bug ou d'une incompatibilité."
+      },
+      "law": {
+        "title": "Droit applicable",
+        "content": "Tout litige en relation avec l'utilisation du site Cuizly est soumis au droit canadien et québécois. Il est fait attribution exclusive de juridiction aux tribunaux compétents de Montréal."
+      }
+    }
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "lastUpdated": "Dernière mise à jour : ",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptation des conditions",
+        "content": "En accédant et en utilisant Cuizly, vous acceptez d'être lié par ces conditions d'utilisation et toutes les lois et réglementations applicables."
+      },
+      "service": {
+        "title": "2. Description du service",
+        "content": "Cuizly est une plateforme qui connecte les consommateurs aux restaurants à Montréal en proposant des offres culinaires personnalisées grâce à l'intelligence artificielle."
+      },
+      "responsibilities": {
+        "title": "3. Responsabilités de l'utilisateur",
+        "items": [
+          "Fournir des informations exactes lors de l'inscription",
+          "Maintenir la sécurité de votre compte",
+          "Utiliser le service de manière légale et respectueuse",
+          "Ne pas perturber le fonctionnement de la plateforme"
+        ]
+      },
+      "intellectual": {
+        "title": "4. Propriété intellectuelle",
+        "content": "Tout le contenu de Cuizly, y compris les textes, graphiques, logos et logiciels, est la propriété de Cuizly Technologies et est protégé par les lois sur la propriété intellectuelle."
+      },
+      "liability": {
+        "title": "5. Limitation de responsabilité",
+        "content": "Cuizly ne peut être tenu responsable des dommages indirects, incidents ou consécutifs résultant de l'utilisation ou de l'impossibilité d'utiliser notre service."
+      },
+      "modifications": {
+        "title": "6. Modifications",
+        "content": "Nous nous réservons le droit de modifier ces conditions d'utilisation à tout moment. Les modifications entreront en vigueur immédiatement après leur publication sur cette page."
+      },
+      "contact": {
+        "title": "7. Contact",
+        "content": "Pour toute question concernant ces conditions d'utilisation, contactez-nous à :",
+        "email": "Courriel : cuizlycanada@gmail.com",
+        "address": "Adresse : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4"
+      }
+    }
+  },
+  "cookies": {
+    "title": "Politique des cookies",
+    "lastUpdated": "Dernière mise à jour : ",
+    "sections": {
+      "what": {
+        "title": "Qu'est-ce qu'un cookie ?",
+        "content": "Un cookie est un petit fichier texte déposé sur votre ordinateur lors de la visite d'un site web. Il permet de reconnaître votre navigateur et de conserver certaines informations sur vos préférences ou actions passées."
+      },
+      "types": {
+        "title": "Types de cookies utilisés",
+        "essential": {
+          "title": "Cookies essentiels",
+          "content": "Ces cookies sont nécessaires au fonctionnement du site. Ils vous permettent de naviguer sur le site et d'utiliser ses fonctionnalités essentielles comme l'authentification et la sécurité."
+        },
+        "performance": {
+          "title": "Cookies de performance",
+          "content": "Ces cookies collectent des informations sur la façon dont vous utilisez notre site, comme les pages les plus visitées. Ces données nous aident à améliorer le fonctionnement du site."
+        },
+        "functionality": {
+          "title": "Cookies de fonctionnalité",
+          "content": "Ces cookies permettent au site de se souvenir de vos choix (comme votre nom d'utilisateur ou votre langue) et de fournir des fonctionnalités améliorées et plus personnalisées."
+        }
+      },
+      "management": {
+        "title": "Gestion des cookies",
+        "content1": "Vous pouvez contrôler et/ou supprimer les cookies comme vous le souhaitez. Vous pouvez supprimer tous les cookies qui sont déjà sur votre ordinateur et vous pouvez configurer la plupart des navigateurs pour empêcher leur placement.",
+        "content2": "Cependant, si vous faites cela, vous devrez peut-être ajuster manuellement certaines préférences à chaque fois que vous visitez un site et certains services et fonctionnalités peuvent ne pas fonctionner."
+      },
+      "disable": {
+        "title": "Comment désactiver les cookies",
+        "chrome": "Chrome : Paramètres → Confidentialité et sécurité → Cookies et autres données de site",
+        "firefox": "Firefox : Options → Vie privée et sécurité → Cookies et données de site",
+        "safari": "Safari : Préférences → Confidentialité → Gérer les données de site web",
+        "edge": "Edge : Paramètres → Cookies et autorisations de site → Gérer et supprimer les cookies"
+      },
+      "third": {
+        "title": "Cookies tiers",
+        "content": "Certains cookies peuvent être placés par des services tiers que nous utilisons, comme Google Analytics pour mesurer l'audience du site. Ces services tiers ont leurs propres politiques de confidentialité."
+      },
+      "editor": {
+        "title": "Éditeur du site",
+        "company": "Raison sociale : Cuizly Technologies",
+        "form": "Forme juridique : Startup Indépendante",
+        "address": "Siège social : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4"
+      },
+      "director": {
+        "title": "Directeur de la publication",
+        "name": "Iker Kiomba Landu, Président Directeur Général",
+        "email": "Courriel : cuizlycanada@gmail.com"
+      },
+      "contact": {
+        "title": "Contact",
+        "content": "Pour toute question concernant notre utilisation des cookies, contactez-nous à :",
+        "email": "Courriel : cuizlycanada@gmail.com",
+        "address": "Siège social : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4"
+      }
     }
   },
   "common": {
