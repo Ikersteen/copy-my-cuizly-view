@@ -425,6 +425,22 @@
     "dataCollection": "Data collection"
   },
   "auth": {
+    "errors": {
+      "tooManyAttempts": "Too many attempts",
+      "pleaseWait": "Please wait before trying again",
+      "verificationRequired": "Verification required", 
+      "completeCaptcha": "Please complete the hCaptcha verification",
+      "userAlreadyRegistered": "An account already exists with this email",
+      "invalidEmail": "Invalid email address",
+      "verificationExpired": "Verification expired",
+      "verificationError": "Verification error",
+      "redirectUriUnauthorized": "Redirect URI unauthorized",
+      "oauthConfigInvalid": "Invalid OAuth configuration",
+      "oauthError": "OAuth Error",
+      "checkConsole": "Check console for more details"
+    },
+    "creatingAccount": "Creating account...",
+    "createAccount": "Create my account",
     "title": "Join Cuizly",
     "subtitle": "Discover and share the best restaurants",
     "signin": "Sign In",
@@ -851,6 +867,19 @@
     "generationError": "Error generating recommendations"
   },
   "dashboard": {
+    "logoutSuccess": "Log out successful",
+    "seeYouSoon": "See you soon on Cuizly!",
+    "logoutError": "Unable to log out",
+    "newOffer": "New offer",
+    "restaurantProfile": "Restaurant profile", 
+    "manageMenus": "Manage your menus",
+    "welcomeMessage": "Welcome to your restaurant space!",
+    "welcomeDesc": "Manage your restaurant, offers and menus with ease.",
+    "logout": "Log out",
+    "loadingDashboard": "Loading your dashboard...",
+    "restaurantInfo": "Restaurant information", 
+    "restaurantDetails": "Details of your establishment",
+    "completeProfile": "Please first complete your restaurant profile",
     "filters": "Filters",
     "offers": "Offers", 
     "noMoreEndlessSearches": "No more endless searches :"
@@ -983,5 +1012,13 @@
     "delete": "Delete",
     "saving": "Saving...",
     "save": "Save"
+  },
+  "errors": {
+    "connectionProblem": "Connection problem",
+    "unableToLoadRestaurantData": "Unable to load restaurant data. Please refresh the page.",
+    "connectionError": "Connection error",
+    "checkInternetConnection": "Check your internet connection and reload the page.",
+    "systemError": "System error",
+    "unexpectedError": "An unexpected error occurred. Please reload the page."
   }
 }

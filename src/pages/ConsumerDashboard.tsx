@@ -13,6 +13,7 @@ import { useOffers } from "@/hooks/useOffers";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useProfile } from "@/hooks/useProfile";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
@@ -43,6 +44,7 @@ const ConsumerDashboard = () => {
   const { offers: promotionOffers } = useOffers('promotion');
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   // Timeout to prevent infinite loading
   useEffect(() => {
@@ -121,8 +123,8 @@ const ConsumerDashboard = () => {
       }
       
       toast({
-        title: "Déconnexion réussie",
-        description: "À bientôt sur Cuizly !"
+        title: t('dashboard.logoutSuccess'),
+        description: t('dashboard.seeYouSoon')
       });
       
       // Close any open modals

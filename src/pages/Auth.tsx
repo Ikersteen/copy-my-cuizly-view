@@ -150,8 +150,8 @@ const Auth = () => {
     const clientIP = 'signup'; // Use a general key for client-side rate limiting
     if (isRateLimited(clientIP, 5, 900000)) { // 5 attempts per 15 minutes
       toast({
-        title: "Trop de tentatives",
-        description: "Veuillez attendre avant de réessayer",
+        title: t('auth.errors.tooManyAttempts'),
+        description: t('auth.errors.pleaseWait'),
         variant: "destructive"
       });
       return;
@@ -215,8 +215,8 @@ const Auth = () => {
     // Vérification hCaptcha
     if (!hcaptchaToken) {
       toast({
-        title: "Vérification requise",
-        description: "Veuillez compléter la vérification hCaptcha",
+        title: t('auth.errors.verificationRequired'),
+        description: t('auth.errors.completeCaptcha'),
         variant: "destructive"
       });
       setIsLoading(false);
@@ -281,9 +281,9 @@ const Auth = () => {
       let errorMessage = "Une erreur est survenue";
       
       if (error.message?.includes("User already registered")) {
-        errorMessage = "Un compte existe déjà avec cet email";
+        errorMessage = t('auth.errors.userAlreadyRegistered');
       } else if (error.message?.includes("Invalid email")) {
-        errorMessage = "Adresse email invalide";
+        errorMessage = t('auth.errors.invalidEmail');
       } else if (error.message?.includes("Password should be at least")) {
         errorMessage = "Le mot de passe doit contenir au moins 6 caractères";
       }
@@ -342,8 +342,8 @@ const Auth = () => {
     const clientIP = 'signin'; // Use a general key for client-side rate limiting
     if (isRateLimited(clientIP, 5, 900000)) { // 5 attempts per 15 minutes
       toast({
-        title: "Trop de tentatives",
-        description: "Veuillez attendre avant de réessayer",
+        title: t('auth.errors.tooManyAttempts'),
+        description: t('auth.errors.pleaseWait'),
         variant: "destructive"
       });
       return;
@@ -370,8 +370,8 @@ const Auth = () => {
     // Vérification hCaptcha pour la connexion aussi
     if (!hcaptchaToken) {
       toast({
-        title: "Vérification requise",
-        description: "Veuillez compléter la vérification hCaptcha",
+        title: t('auth.errors.verificationRequired'),
+        description: t('auth.errors.completeCaptcha'),
         variant: "destructive"
       });
       setIsLoading(false);
@@ -467,16 +467,16 @@ const Auth = () => {
         errorMessage = "Google OAuth n'est pas configuré pour cette application";
         console.error("🔴 [Google Auth] Provider Google non activé");
       } else if (error.message?.includes("invalid_request")) {
-        errorMessage = "Configuration OAuth invalide";
+        errorMessage = t('auth.errors.oauthConfigInvalid');
         console.error("🔴 [Google Auth] Configuration OAuth invalide");
       } else if (error.message?.includes("redirect_uri")) {
-        errorMessage = "URL de redirection non autorisée";
+        errorMessage = t('auth.errors.redirectUriUnauthorized');
         console.error("🔴 [Google Auth] Problème avec l'URL de redirection");
       }
 
       toast({
-        title: "Erreur OAuth",
-        description: `${errorMessage} - Consultez la console pour plus de détails`,
+        title: t('auth.errors.oauthError'),
+        description: `${errorMessage} - ${t('auth.errors.checkConsole')}`,
         variant: "destructive",
       });
     } finally {
@@ -622,11 +622,11 @@ const Auth = () => {
                         }}
                         onExpire={() => {
                           setHcaptchaToken(null);
-                          setCaptchaError("Vérification expirée");
+                          setCaptchaError(t('auth.errors.verificationExpired'));
                         }}
                         onError={() => {
                           setHcaptchaToken(null);
-                          setCaptchaError("Erreur de vérification");
+                          setCaptchaError(t('auth.errors.verificationError'));
                         }}
                         theme="light"
                         size="normal"
@@ -800,11 +800,11 @@ const Auth = () => {
                         }}
                         onExpire={() => {
                           setHcaptchaToken(null);
-                          setCaptchaError("Vérification expirée");
+                          setCaptchaError(t('auth.errors.verificationExpired'));
                         }}
                         onError={() => {
                           setHcaptchaToken(null);
-                          setCaptchaError("Erreur de vérification");
+                          setCaptchaError(t('auth.errors.verificationError'));
                         }}
                         theme="light"
                         size="normal"
@@ -849,7 +849,7 @@ const Auth = () => {
                     </div>
                   ) : (
                     <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
-                      {isLoading ? "Création du compte..." : "Créer mon compte"}
+                      {isLoading ? t('auth.creatingAccount') : t('auth.createAccount')}
                     </Button>
                   )}
                 </form>

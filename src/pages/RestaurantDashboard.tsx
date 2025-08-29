@@ -12,6 +12,7 @@ import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
+import { useTranslation } from 'react-i18next';
 import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 import type { User } from "@supabase/supabase-js";
 
@@ -46,6 +47,7 @@ const RestaurantDashboard = () => {
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   const { toast } = useToast();
   const { profile, updateProfile } = useProfile();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadData();
@@ -99,21 +101,21 @@ const RestaurantDashboard = () => {
             console.error(`Erreur lors du chargement du restaurant (tentative ${retryCount + 1}):`, restaurantError);
             if (retryCount === maxRetries - 1) {
               // Show user-friendly error after all retries
-              toast({
-                title: "Problème de connexion",
-                description: "Impossible de charger les données du restaurant. Veuillez rafraîchir la page.",
-                variant: "destructive"
-              });
+        toast({
+          title: t('errors.connectionProblem'),
+          description: t('errors.unableToLoadRestaurantData'),
+          variant: "destructive"
+        });
             }
           }
         } catch (error) {
           console.error(`Network error (tentative ${retryCount + 1}):`, error);
           if (retryCount === maxRetries - 1) {
-            toast({
-              title: "Erreur de connexion",
-              description: "Vérifiez votre connexion internet et rechargez la page.",
-              variant: "destructive"
-            });
+          toast({
+            title: t('errors.connectionError'),
+            description: t('errors.checkInternetConnection'),
+            variant: "destructive"
+          });
           }
         }
         
@@ -126,8 +128,8 @@ const RestaurantDashboard = () => {
     } catch (error) {
       console.error('Erreur critique lors du chargement des données:', error);
       toast({
-        title: "Erreur système",
-        description: "Une erreur inattendue s'est produite. Veuillez recharger la page.",
+        title: t('errors.systemError'),
+        description: t('errors.unexpectedError'),
         variant: "destructive"
       });
     } finally {
@@ -140,24 +142,24 @@ const RestaurantDashboard = () => {
     console.log('Action clicked:', action);
     console.log('Restaurant ID:', restaurant?.id);
     switch (action) {
-      case 'Nouvelle offre':
+      case t('dashboard.newOffer'):
         setShowOfferModal(true);
         break;
-      case 'Profil du restaurant':
+      case t('dashboard.restaurantProfile'):
         setShowProfileModal(true);
         break;
-      case 'Gérer vos menus':
+      case t('dashboard.manageMenus'):
         if (!restaurant?.id) {
           toast({
-            title: "Erreur",
-            description: "Veuillez d'abord compléter votre profil de restaurant",
+            title: t('common.error'),
+            description: t('dashboard.completeProfile'),
             variant: "destructive"
           });
           return;
         }
         setShowMenusModal(true);
         break;
-      case 'Filtres':
+      case t('dashboard.filters'):
         setShowFiltersModal(true);
         break;
     }
@@ -172,7 +174,7 @@ const RestaurantDashboard = () => {
           <div className="w-16 h-16 flex items-center justify-center animate-pulse mx-auto">
             <img src={cuizlyLogo} alt="Cuizly" className="w-16 h-16 object-contain" />
           </div>
-          <p className="text-muted-foreground animate-pulse">Chargement de votre tableau de bord...</p>
+          <p className="text-muted-foreground animate-pulse">{t('dashboard.loadingDashboard')}</p>
         </div>
       </div>
     );
@@ -262,7 +264,7 @@ const RestaurantDashboard = () => {
                 className="flex-1 sm:flex-none min-h-[44px] text-destructive hover:text-destructive hover:bg-destructive/10"
               >
                 <LogOut className="h-4 w-4 mr-2" />
-                <span>Déconnexion</span>
+                <span>{t('dashboard.logout')}</span>
               </Button>
             </div>
           </div>
@@ -271,10 +273,10 @@ const RestaurantDashboard = () => {
         {/* Actions rapides */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {[
-            { icon: Plus, label: "Nouvelle offre", primary: true },
-            { icon: Edit3, label: "Profil du restaurant" },
-            { icon: ChefHat, label: "Gérer vos menus" },
-            { icon: Filter, label: "Filtres" }
+          { icon: Plus, label: t('dashboard.newOffer'), primary: true },
+          { icon: Edit3, label: t('dashboard.restaurantProfile') },
+          { icon: ChefHat, label: t('dashboard.manageMenus') },
+          { icon: Filter, label: t('dashboard.filters') }
           ].map((action, index) => (
             <Button 
               key={index}
@@ -293,10 +295,10 @@ const RestaurantDashboard = () => {
           <CardContent className="p-6">
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-2">
-                Bienvenue dans votre espace restaurateur&nbsp;!
+                {t('dashboard.welcomeMessage')}
               </h3>
               <p className="text-sm text-muted-foreground">
-                Gérez votre restaurant, vos offres et vos menus en toute simplicité.
+                {t('dashboard.welcomeDesc')}
               </p>
             </div>
           </CardContent>
@@ -315,9 +317,9 @@ const RestaurantDashboard = () => {
             {restaurant && (
               <Card className="hover:shadow-lg transition-all duration-200">
                 <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Informations du restaurant</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">{t('dashboard.restaurantInfo')}</CardTitle>
                   <CardDescription className="text-sm">
-                    Détails de votre établissement
+                    {t('dashboard.restaurantDetails')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">

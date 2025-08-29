@@ -361,6 +361,21 @@
     "dataCollection": "Collecte de données"
   },
   "auth": {
+    "errors": {
+      "tooManyAttempts": "Trop de tentatives",
+      "pleaseWait": "Veuillez attendre avant de réessayer",
+      "verificationRequired": "Vérification requise",
+      "completeCaptcha": "Veuillez compléter la vérification hCaptcha",
+      "userAlreadyRegistered": "Un compte existe déjà avec cet email",
+      "invalidEmail": "Adresse email invalide",
+      "verificationExpired": "Vérification expirée",
+      "redirectUriUnauthorized": "URL de redirection non autorisée",
+      "oauthConfigInvalid": "Configuration OAuth invalide",
+      "oauthError": "Erreur OAuth",
+      "checkConsole": "Consultez la console pour plus de détails"
+    },
+    "creatingAccount": "Création du compte...",
+    "createAccount": "Créer mon compte",
     "title": "Rejoignez Cuizly",
     "subtitle": "Découvrez et partagez les meilleurs restaurants",
     "signin": "Connexion",
@@ -761,7 +776,9 @@
     "generationError": "Erreur génération recommandations"
   },
   "dashboard": {
-    "filters": "Filtres",
+    "logoutSuccess": "Déconnexion réussie",
+    "seeYouSoon": "À bientôt sur Cuizly !",
+    "logoutError": "Impossible de se déconnecter",
     "offers": "Offres",
     "noMoreEndlesssearches": "Fini les recherches interminables :"
   },
@@ -820,6 +837,16 @@
     "cannotCreate": "Impossible de créer l'offre"
   },
   "filters": {
+    "newOffer": "Nouvelle offre",
+    "restaurantProfile": "Profil du restaurant",
+    "manageMenus": "Gérer vos menus",
+    "welcomeMessage": "Bienvenue dans votre espace restaurateur !",
+    "welcomeDesc": "Gérez votre restaurant, vos offres et vos menus en toute simplicité.",
+    "logout": "Déconnexion",
+    "loadingDashboard": "Chargement de votre tableau de bord...",
+    "restaurantInfo": "Informations du restaurant",
+    "restaurantDetails": "Détails de votre établissement",
+    "completeProfile": "Veuillez d'abord compléter votre profil de restaurant",
     "filters": "Filtres",
     "close": "Fermer",
     "preferredCuisines": "Cuisines préférées",
@@ -871,6 +898,14 @@
     "saveChanges": "Sauvegarder les modifications",
     "manageMenus": "Gérer vos menus",
     "addUpToFive": "Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions"
+  },
+  "errors": {
+    "connectionProblem": "Problème de connexion",
+    "unableToLoadRestaurantData": "Impossible de charger les données du restaurant. Veuillez rafraîchir la page.",
+    "connectionError": "Erreur de connexion",
+    "checkInternetConnection": "Vérifiez votre connexion internet et rechargez la page.",
+    "systemError": "Erreur système",
+    "unexpectedError": "Une erreur inattendue s'est produite. Veuillez recharger la page."
   },
   "profile": {
     "errorUpload": "Erreur",
