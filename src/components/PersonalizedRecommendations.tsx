@@ -147,14 +147,17 @@ export const PersonalizedRecommendations = () => {
         
         console.log(`Restaurant ${restaurant.name} has ${restaurantMenus.length} menus`);
         
-        // STRICT MATCHING ONLY - Si pas de préférences définies, pas de recommandations
+        // Analyse de scoring - afficher des recommandations même sans préférences strictes
         if (!preferences || 
             (!preferences.cuisine_preferences?.length && 
              !preferences.price_range && 
              !preferences.dietary_restrictions?.length &&
              !preferences.allergens?.length)) {
-          console.log(`No user preferences set, excluding ${restaurant.name}`);
-          return null;
+          console.log(`No specific preferences set, providing general recommendations for ${restaurant.name}`);
+          // Attribuer un score de base pour les restaurants sans matching strict
+          score += 5;
+          reasons.push("Restaurant populaire");
+          hasStrictMatch = true; // Permettre l'affichage
         }
         
         // 1. STRICT Cuisine preferences match - OBLIGATOIRE si défini
@@ -360,7 +363,7 @@ export const PersonalizedRecommendations = () => {
       console.log('🚀 Initial recommendations generation triggered for preferences:', preferences.id);
       generateRecommendations();
     }
-  }, [preferences?.id, generateRecommendations]); // Ajouter generateRecommendations aux dépendances
+  }, [preferences?.id]); // Supprimer generateRecommendations des dépendances
 
   // Écouter les mises à jour des préférences - une seule source de vérité
   useEffect(() => {
