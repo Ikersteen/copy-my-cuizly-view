@@ -195,15 +195,39 @@ export const PersonalizedRecommendations = () => {
           }
         }
         
-        // 2. STRICT Price range match - OBLIGATOIRE si défini
+        // 2. Price range match - Plus flexible
         if (preferences.price_range && preferences.price_range !== "") {
           if (restaurant.price_range === preferences.price_range) {
             hasStrictMatch = true;
             score += 15;
             reasons.push("Dans votre budget");
           } else {
-            console.log(`Price range mismatch for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), excluding`);
-            return null; // STRICT: Pas de match prix = exclusion
+            // Plus flexible: accepter des restaurants proches du budget
+            const priceOrder = ['$', '$$', '$$$', '$$$$'];
+            const userPriceIndex = priceOrder.indexOf(preferences.price_range);
+            const restaurantPriceIndex = priceOrder.indexOf(restaurant.price_range);
+            
+            if (Math.abs(userPriceIndex - restaurantPriceIndex) <= 1) {
+              hasStrictMatch = true;
+              score += 8; // Score réduit mais accepté
+              if (restaurantPriceIndex < userPriceIndex) {
+                reasons.push("Option plus économique");
+              } else {
+                reasons.push("Option un peu plus chère");
+              }
+              console.log(`Price range close match for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), including`);
+            } else {
+              // En mode flexible, accepter quand même avec score très bas
+              if (isFlexibleMode) {
+                hasStrictMatch = true;
+                score += 2;
+                reasons.push("Budget différent mais disponible");
+                console.log(`Price range different but allowing in flexible mode for ${restaurant.name}`);
+              } else {
+                console.log(`Price range too different for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), excluding`);
+                return null;
+              }
+            }
           }
         }
         
@@ -338,6 +362,39 @@ export const PersonalizedRecommendations = () => {
           color: 'bg-gradient-to-r from-primary/10 to-primary/5',
           restaurants: sortedRestaurants.slice(0, 12)
         });
+      }
+
+      // Si aucun restaurant trouvé avec les critères stricts, essayer un fallback
+      if (validRestaurants.length === 0) {
+        console.log('No restaurants found with strict criteria, trying fallback...');
+        
+        // Fallback: prendre tous les restaurants disponibles avec scores minimaux
+        const fallbackRestaurants = await Promise.all(restaurantsData.map(async (restaurant: any) => {
+          const realRating = await getRealRating(restaurant.id);
+          
+          return {
+            ...restaurant,
+            score: 5, // Score minimal pour tous
+            rating: realRating.rating,
+            totalRatings: realRating.totalRatings,
+            reasons: ['Restaurant disponible', 'Explorez de nouveaux goûts']
+          };
+        }));
+        
+        await loadRestaurantRatings(fallbackRestaurants);
+        
+        if (fallbackRestaurants.length > 0) {
+          newCategories.push({
+            id: 'available',
+            title: 'Restaurants disponibles',
+            subtitle: 'Découvrez ce que Montréal a à offrir',
+            icon: MapPin,
+            color: 'bg-gradient-to-r from-blue-50 to-blue-100',
+            restaurants: fallbackRestaurants.slice(0, 12)
+          });
+          
+          console.log(`Added fallback category with ${fallbackRestaurants.length} restaurants`);
+        }
       }
 
       setCategories(newCategories);
