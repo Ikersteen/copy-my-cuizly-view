@@ -26,7 +26,7 @@ export const useFavorites = () => {
 
   const loadFavorites = async () => {
     try {
-      console.log('Loading favorites...');
+      // console.log('Loading favorites...'); // Réduire les logs
       
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
@@ -42,7 +42,7 @@ export const useFavorites = () => {
         return;
       }
 
-      console.log('Session found, loading favorites for user:', session.user.id);
+      // console.log('Session found, loading favorites for user:', session.user.id);
 
       // Retry logic for better connection handling
       let retryCount = 0;

@@ -45,8 +45,9 @@ export const PersonalizedRecommendations = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
 
-  console.log('PersonalizedRecommendations component loaded');
-  console.log('Initial state - loading:', loading, 'categories:', categories.length, 'preferences:', preferences);
+  // Réduire les logs excessifs
+  // console.log('PersonalizedRecommendations component loaded');
+  // console.log('Initial state - loading:', loading, 'categories:', categories.length, 'preferences:', preferences);
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
@@ -100,37 +101,33 @@ export const PersonalizedRecommendations = () => {
     }
   };
 
+  // Charger les recommandations une seule fois au montage ou quand les préférences changent significativement
   useEffect(() => {
-    console.log('useEffect triggered - preferences changed:', preferences);
-    if (preferences) {
-      console.log('Preferences found, calling generateRecommendations');
+    if (preferences && !loading) {
       generateRecommendations();
-    } else {
-      console.log('No preferences yet, waiting...');
     }
-  }, [preferences]);
+  }, [preferences?.id]); // Ne se déclencher que si l'ID des préférences change
 
-  // Écouter les mises à jour des préférences avec plus de robustesse
+  // Écouter les mises à jour des préférences - optimisé pour éviter les boucles
   useEffect(() => {
-    const handlePreferencesUpdate = (event?: CustomEvent) => {
-      console.log('Preferences update event received:', event?.detail);
-      console.log('Current preferences state:', preferences);
-      
-      // Forcer le rechargement des préférences depuis la base de données
-      setTimeout(async () => {
-        console.log('Regenerating recommendations after preferences update...');
+    let debounceTimer: NodeJS.Timeout;
+    
+    const handlePreferencesUpdate = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
         if (preferences) {
-          await generateRecommendations();
+          generateRecommendations();
         }
-      }, 200);
+      }, 1000); // Debounce plus long pour éviter les appels multiples
     };
 
-    window.addEventListener('preferencesUpdated', handlePreferencesUpdate as EventListener);
+    window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
     
     return () => {
-      window.removeEventListener('preferencesUpdated', handlePreferencesUpdate as EventListener);
+      clearTimeout(debounceTimer);
+      window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
     };
-  }, [preferences]);
+  }, []); // Pas de dépendances pour éviter les re-créations
 
   // Synchronisation en temps réel des données avec debouncing
   useEffect(() => {
