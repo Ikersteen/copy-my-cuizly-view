@@ -513,7 +513,7 @@ export const RestaurantProfileModal = ({
                 }}
               >
                 <SelectTrigger className="w-full bg-background border z-50">
-                  <SelectValue placeholder="Sélectionner une cuisine" />
+                  <span className="text-foreground">Sélectionner une cuisine</span>
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
                   {[
