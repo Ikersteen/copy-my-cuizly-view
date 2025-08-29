@@ -2,9 +2,10 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter, History } from "lucide-react";
+import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter, History, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useFavorites } from "@/hooks/useFavorites";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 import { RestaurantFiltersModal, RestaurantFilterOptions } from "@/components/RestaurantFiltersModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -38,6 +39,7 @@ interface RecommendationCategory {
 
 export const PersonalizedRecommendations = () => {
   const { preferences } = useUserPreferences();
+  const { favorites, toggleFavorite } = useFavorites();
   const [categories, setCategories] = useState<RecommendationCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
@@ -600,24 +602,41 @@ export const PersonalizedRecommendations = () => {
                             <ChefHat className="h-6 w-6 text-primary" />
                           </div>
                         )}
-                          <div className="flex-1 min-w-0">
-                            <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
-                              {restaurant.name}
-                            </CardTitle>
-                            <div className="flex items-center space-x-1 mt-1">
-                              <MapPin className="h-4 w-4 text-muted-foreground" />
-                              <span className="text-sm text-muted-foreground">Montreal</span>
-                              {restaurant.price_range && (
-                                <>
-                                  <span className="text-sm text-muted-foreground">•</span>
-                                  <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
-                                </>
-                              )}
-                            </div>
-                            <CardDescription className="line-clamp-2 text-sm mt-1">
-                              {restaurant.description}
-                            </CardDescription>
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
+                            {restaurant.name}
+                          </CardTitle>
+                          <div className="flex items-center space-x-1 mt-1">
+                            <MapPin className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm text-muted-foreground">Montreal</span>
+                            {restaurant.price_range && (
+                              <>
+                                <span className="text-sm text-muted-foreground">•</span>
+                                <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
+                              </>
+                            )}
                           </div>
+                          <CardDescription className="line-clamp-2 text-sm mt-1">
+                            {restaurant.description}
+                          </CardDescription>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-2 shrink-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(restaurant.id);
+                          }}
+                        >
+                          <Heart 
+                            className={`h-5 w-5 transition-colors ${
+                              favorites.includes(restaurant.id) 
+                                ? 'fill-red-500 text-red-500' 
+                                : 'text-muted-foreground hover:text-red-500'
+                            }`} 
+                          />
+                        </Button>
                       </div>
                     </div>
 
