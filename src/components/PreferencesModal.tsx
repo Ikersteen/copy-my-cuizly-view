@@ -9,8 +9,9 @@ import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserPreferences, useUserPreferences } from "@/hooks/useUserPreferences";
 import { X, Plus, ChevronDown } from "lucide-react";
-import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface PreferencesModalProps {
   open: boolean;
@@ -30,8 +31,22 @@ const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 
 export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const { preferences, updatePreferences } = useUserPreferences();
   const [localPrefs, setLocalPrefs] = useState<Partial<UserPreferences>>({});
+
+  // Function to get translated cuisine name
+  const getCuisineTranslation = (cuisineKey: string) => {
+    return CUISINE_TRANSLATIONS[cuisineKey as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisineKey;
+  };
+
+  // Function to get cuisine key from translated name
+  const getCuisineKey = (translatedName: string) => {
+    const entry = Object.entries(CUISINE_TRANSLATIONS).find(([_, translations]) => 
+      translations.fr === translatedName || translations.en === translatedName
+    );
+    return entry ? entry[0] : translatedName;
+  };
 
   const DIETARY_OPTIONS = [
     { key: "vegetarian", value: t('preferences.dietaryOptions.vegetarian') },
@@ -146,7 +161,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               <div className="flex flex-wrap gap-2 mb-4">
                 {localPrefs.cuisine_preferences.map((cuisine, index) => (
                   <Badge key={index} variant="default" className="pr-1">
-                    {cuisine}
+                    {getCuisineTranslation(cuisine)}
                     <Button
                       variant="ghost"
                       size="sm"
@@ -176,7 +191,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                 <SelectContent className="bg-background border z-50">
                   {CUISINE_OPTIONS.filter(cuisine => !localPrefs.cuisine_preferences?.includes(cuisine)).map(cuisine => (
                     <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
-                      {cuisine}
+                      {getCuisineTranslation(cuisine)}
                     </SelectItem>
                   ))}
                 </SelectContent>

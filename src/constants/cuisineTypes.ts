@@ -1,8 +1,28 @@
 export const CUISINE_OPTIONS = [
-  "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
-  "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
-  "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine"
+  "french", "italian", "japanese", "chinese", "mexican", "indian",
+  "thai", "lebanese", "greek", "american", "quebecois", "korean",
+  "vietnamese", "spanish", "moroccan", "turkish", "african"
 ];
+
+export const CUISINE_TRANSLATIONS = {
+  french: { fr: "Française", en: "French" },
+  italian: { fr: "Italienne", en: "Italian" },
+  japanese: { fr: "Japonaise", en: "Japanese" },
+  chinese: { fr: "Chinoise", en: "Chinese" },
+  mexican: { fr: "Mexicaine", en: "Mexican" },
+  indian: { fr: "Indienne", en: "Indian" },
+  thai: { fr: "Thaïlandaise", en: "Thai" },
+  lebanese: { fr: "Libanaise", en: "Lebanese" },
+  greek: { fr: "Grecque", en: "Greek" },
+  american: { fr: "Américaine", en: "American" },
+  quebecois: { fr: "Québécoise", en: "Quebecois" },
+  korean: { fr: "Coréenne", en: "Korean" },
+  vietnamese: { fr: "Vietnamienne", en: "Vietnamese" },
+  spanish: { fr: "Espagnole", en: "Spanish" },
+  moroccan: { fr: "Marocaine", en: "Moroccan" },
+  turkish: { fr: "Turque", en: "Turkish" },
+  african: { fr: "Africaine", en: "African" }
+};
 
 export const DIETARY_RESTRICTIONS = [
   "Végétarien", "Végan", "Sans gluten", "Halal", "Casher", "Paléo",
