@@ -227,25 +227,11 @@ export const SavedFavoritesSection = () => {
           <div className="text-center space-y-8">
             <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                  <span className="text-4xl">❤️</span>
-                </div>
-                
                 <div className="space-y-4 text-center">
                   <h3 className="text-2xl font-bold">Aucun favori pour l'instant</h3>
                   <p className="text-muted-foreground max-w-md">
                     Explorez nos restaurants et ajoutez vos préférés en cliquant sur le cœur pour les retrouver facilement ici.
                   </p>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button 
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className="flex items-center space-x-2"
-                  >
-                    <Sparkles className="h-4 w-4" />
-                    <span>Découvrir les restaurants</span>
-                  </Button>
                 </div>
               </div>
             </div>
