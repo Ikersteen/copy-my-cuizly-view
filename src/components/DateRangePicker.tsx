@@ -7,6 +7,7 @@ import { CalendarIcon, X } from "lucide-react";
 import { format, addDays, differenceInDays } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { useTranslation } from 'react-i18next';
 
 interface DateRange {
   from: Date | undefined;
@@ -30,13 +31,14 @@ export const DateRangePicker = ({
   label = "Période de validité",
   placeholder = "Sélectionner les dates"
 }: DateRangePickerProps) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [hoverDate, setHoverDate] = useState<Date | undefined>();
 
   const formatDateRange = (range: DateRange) => {
     if (!range.from) return placeholder;
-    if (!range.to) return `Du ${format(range.from, "dd MMM", { locale: fr })} - Sélectionnez la fin`;
-    return `Du ${format(range.from, "dd MMM", { locale: fr })} au ${format(range.to, "dd MMM", { locale: fr })}`;
+    if (!range.to) return `${t('dateRangePicker.from')} ${format(range.from, "dd MMM", { locale: fr })} - ${t('dateRangePicker.selectEnd')}`;
+    return `${t('dateRangePicker.from')} ${format(range.from, "dd MMM", { locale: fr })} ${t('dateRangePicker.to')} ${format(range.to, "dd MMM", { locale: fr })}`;
   };
 
   const handleDateSelect = (date: Date | undefined) => {
@@ -146,7 +148,7 @@ export const DateRangePicker = ({
           />
           {value?.from && !value?.to && (
             <div className="p-3 border-t text-xs text-muted-foreground">
-              Sélectionnez la date de fin (max {maxDays} jours)
+              {t('dateRangePicker.selectEndDate', { maxDays })}
             </div>
           )}
         </PopoverContent>

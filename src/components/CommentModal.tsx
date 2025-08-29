@@ -24,6 +24,7 @@ interface CommentModalProps {
 }
 
 export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalProps) => {
+  const { t } = useTranslation();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [commentText, setCommentText] = useState("");
@@ -37,8 +38,8 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     const files = Array.from(e.target.files || []);
     if (images.length + files.length > 3) {
       toast({
-        title: "Limite atteinte",
-        description: "Vous ne pouvez ajouter que 3 images maximum",
+        title: t('commentModal.limitReached'),
+        description: t('commentModal.maxImages'),
         variant: "destructive"
       });
       return;
@@ -54,7 +55,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     if (images.length === 0) return [];
 
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw new Error('Non authentifié');
+    if (!session) throw new Error(t('commentModal.notAuthenticated'));
 
     const imageUrls: string[] = [];
 
@@ -82,8 +83,8 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     e.preventDefault();
     if (!restaurant || (!commentText.trim() && rating === 0)) {
       toast({
-        title: "Erreur",
-        description: "Veuillez ajouter un commentaire ou une note",
+        title: t('commentModal.error'),
+        description: t('commentModal.commentOrRating'),
         variant: "destructive"
       });
       return;
@@ -110,8 +111,8 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     } catch (error) {
       console.error('Error submitting comment:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de publier le commentaire",
+        title: t('commentModal.error'),
+        description: t('commentModal.cannotPublish'),
         variant: "destructive"
       });
     } finally {
@@ -126,7 +127,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     if (comment.profiles?.username) {
       return comment.profiles.username;
     }
-    return 'Consommateur';
+    return t('commentModal.consumer');
   };
 
   return (
@@ -148,7 +149,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
             {restaurant?.name}
           </DialogTitle>
           <DialogDescription>
-            Partagez votre expérience avec d'autres gourmets
+            {t('commentModal.shareExperience')}
           </DialogDescription>
         </DialogHeader>
 
@@ -163,11 +164,11 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                     {averageRating.toFixed(1)}
                   </span>
                   <span className="text-muted-foreground">
-                    ({comments.filter(c => c.rating).length} évaluations)
+                    ({comments.filter(c => c.rating).length} {t('commentModal.ratings')})
                   </span>
                 </div>
                 <Badge variant="secondary">
-                  {totalComments} commentaire{totalComments > 1 ? 's' : ''}
+                  {totalComments} {totalComments > 1 ? t('commentModal.comments') : t('commentModal.comment')}
                 </Badge>
               </div>
             </div>
@@ -177,7 +178,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Note */}
             <div className="space-y-2">
-              <Label>Votre note (optionnel)</Label>
+              <Label>{t('commentModal.yourRating')}</Label>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -202,10 +203,10 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
             {/* Commentaire */}
             <div className="space-y-2">
-              <Label htmlFor="comment">Votre commentaire</Label>
+              <Label htmlFor="comment">{t('commentModal.yourComment')}</Label>
               <Textarea
                 id="comment"
-                placeholder="Partagez votre expérience..."
+                placeholder={t('commentModal.shareExperiencePlaceholder')}
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
                 rows={3}
@@ -214,7 +215,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
             {/* Images */}
             <div className="space-y-2">
-              <Label>Photos (max 3)</Label>
+              <Label>{t('commentModal.photos')}</Label>
               <div className="space-y-3">
                 {images.length > 0 && (
                   <div className="grid grid-cols-3 gap-2">
@@ -249,7 +250,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                     <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center cursor-pointer hover:border-primary/50 transition-colors">
                       <Camera className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
                       <span className="text-sm text-muted-foreground">
-                        Cliquez pour ajouter des photos
+                        {t('commentModal.clickToAddPhotos')}
                       </span>
                     </div>
                   </label>
@@ -263,11 +264,11 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
               className="w-full"
             >
               {uploading ? (
-                "Upload des images..."
+                t('commentModal.uploadingImages')
               ) : (
                 <>
                   <Send className="h-4 w-4 mr-2" />
-                  Publier le commentaire
+                  {t('commentModal.publishComment')}
                 </>
               )}
             </Button>
@@ -276,7 +277,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
           {/* Liste des commentaires */}
           {loading ? (
             <div className="space-y-4">
-              <h3 className="font-medium">Commentaires des clients</h3>
+              <h3 className="font-medium">{t('commentModal.clientComments')}</h3>
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="animate-pulse border rounded-lg p-4 space-y-2">
@@ -289,7 +290,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
             </div>
           ) : totalComments > 0 && (
             <div className="space-y-4">
-              <h3 className="font-medium">Commentaires des clients</h3>
+              <h3 className="font-medium">{t('commentModal.clientComments')}</h3>
               <div className="space-y-4 max-h-60 overflow-y-auto">
                 {comments.map((comment) => (
                   <div key={comment.id} className="border rounded-lg p-4 space-y-3">
@@ -323,7 +324,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                           <img
                             key={index}
                             src={imageUrl}
-                            alt={`Commentaire image ${index + 1}`}
+                            alt={`${t('commentModal.commentImage')} ${index + 1}`}
                             className="w-full h-16 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
                             onClick={() => window.open(imageUrl, '_blank')}
                           />

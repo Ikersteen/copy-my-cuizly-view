@@ -494,9 +494,41 @@
       "cancel": "Annuler"
     }
   },
+  "commentModal": {
+    "title": "Partager votre expérience",
+    "description": "Partagez votre expérience avec d'autres gourmets",
+    "shareExperience": "Partagez votre expérience avec d'autres gourmets",
+    "limitReached": "Limite atteinte",
+    "maxImages": "Vous ne pouvez ajouter que 3 images maximum",
+    "notAuthenticated": "Non authentifié",
+    "error": "Erreur",
+    "commentOrRating": "Veuillez ajouter un commentaire ou une note",
+    "cannotPublish": "Impossible de publier le commentaire",
+    "ratings": "évaluations",
+    "comment": "commentaire",
+    "comments": "commentaires",
+    "yourRating": "Votre note (optionnel)",
+    "yourComment": "Votre commentaire",
+    "shareExperiencePlaceholder": "Partagez votre expérience...",
+    "photos": "Photos (max 3)",
+    "clickToAddPhotos": "Cliquez pour ajouter des photos",
+    "uploadingImages": "Upload des images...",
+    "publishComment": "Publier le commentaire",
+    "clientComments": "Commentaires des clients",
+    "consumer": "Consommateur",
+    "commentImage": "Commentaire image"
+  },
+  "dateRangePicker": {
+    "validityPeriod": "Période de validité",
+    "selectDates": "Sélectionner les dates",
+    "from": "Du",
+    "to": "au",
+    "selectEnd": "Sélectionnez la fin",
+    "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
+  },
   "dashboard": {
     "filters": "Filtres",
     "offers": "Offres",
-    "noMoreEndlessSearches": "Fini les recherches sans fin :"
+    "noMoreEndlessSearches": "Fini les recherches interminables :"
   }
 }
