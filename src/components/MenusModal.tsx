@@ -357,13 +357,14 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     ))}
                   </select>
 
-                  <Label>Description</Label>
-                  <Textarea
-                    value={newMenu.description}
-                    onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
-                    placeholder="Décrivez ce menu..."
-                    className="min-h-[80px]"
-                  />
+          <Label>Description *</Label>
+          <Textarea
+            value={newMenu.description}
+            onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
+            placeholder="Décrivez ce menu... (obligatoire)"
+            className="min-h-[80px]"
+            required
+          />
                   
                   <Label>Restrictions alimentaires</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
@@ -574,12 +575,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       ))}
                     </select>
 
-                    <Label>Description</Label>
+                    <Label>Description *</Label>
                     <Textarea
                       value={editingMenu.description}
                       onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, description: e.target.value }) : null)}
-                      placeholder="Décrivez ce menu..."
+                      placeholder="Décrivez ce menu... (obligatoire)"
                       className="min-h-[80px]"
+                      required
                     />
 
                     <Label>Restrictions alimentaires</Label>
@@ -626,7 +628,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
                     <Button 
                       onClick={handleEditMenu}
-                      disabled={loading}
+                      disabled={loading || !editingMenu?.description?.trim()}
                       className="w-full"
                     >
                       Sauvegarder les modifications
