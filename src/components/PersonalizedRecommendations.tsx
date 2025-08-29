@@ -45,6 +45,9 @@ export const PersonalizedRecommendations = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
 
+  console.log('PersonalizedRecommendations component loaded');
+  console.log('Initial state - loading:', loading, 'categories:', categories.length, 'preferences:', preferences);
+
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
       const { data } = await supabase
@@ -98,8 +101,12 @@ export const PersonalizedRecommendations = () => {
   };
 
   useEffect(() => {
+    console.log('useEffect triggered - preferences changed:', preferences);
     if (preferences) {
+      console.log('Preferences found, calling generateRecommendations');
       generateRecommendations();
+    } else {
+      console.log('No preferences yet, waiting...');
     }
   }, [preferences]);
 
@@ -202,9 +209,12 @@ export const PersonalizedRecommendations = () => {
 
   const generateRecommendations = async () => {
     try {
+      console.log('=== GENERATING RECOMMENDATIONS ===');
+      console.log('Current preferences:', preferences);
       setLoading(true);
 
       // Fetch restaurants and menus data separately for better error handling
+      console.log('Fetching restaurants and menus...');
       const [restaurantsResponse, menusResponse] = await Promise.all([
         supabase.rpc('get_public_restaurants'),
         supabase
@@ -212,6 +222,9 @@ export const PersonalizedRecommendations = () => {
           .select('*')
           .eq('is_active', true)
       ]);
+
+      console.log('Restaurants response:', restaurantsResponse);
+      console.log('Menus response:', menusResponse);
 
       if (restaurantsResponse.error) {
         console.error('Error fetching restaurants:', restaurantsResponse.error);
@@ -228,11 +241,13 @@ export const PersonalizedRecommendations = () => {
 
       console.log('Loaded restaurants:', restaurantsData.length);
       console.log('Loaded menus:', menusData.length);
+      console.log('Sample restaurant data:', restaurantsData[0]);
       console.log('Sample menu data:', menusData[0]);
 
       if (restaurantsData.length === 0) {
         console.log('No restaurants found');
         setCategories([]);
+        setLoading(false);
         return;
       }
 
@@ -400,7 +415,10 @@ export const PersonalizedRecommendations = () => {
     }
   };
 
+  console.log('Rendering PersonalizedRecommendations - loading:', loading, 'categories:', categories.length);
+
   if (loading) {
+    console.log('Rendering loading state');
     return (
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -420,6 +438,7 @@ export const PersonalizedRecommendations = () => {
   }
 
   if (categories.length === 0) {
+    console.log('Rendering no recommendations state');
     return (
       <section className="py-16 bg-gradient-to-br from-muted/30 via-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -477,6 +496,7 @@ export const PersonalizedRecommendations = () => {
     );
   }
 
+  console.log('Rendering recommendations with', categories.length, 'categories');
   return (
     <section className="py-8 bg-gradient-to-br from-muted/30 via-background to-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
