@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -82,139 +82,7 @@ export const PersonalizedRecommendations = () => {
     console.log('Filters applied:', filters);
   };
 
-  const trackProfileView = async (restaurantId: string) => {
-    try {
-      console.log(`Tracking profile view for restaurant ${restaurantId}`);
-      
-      // Utiliser la fonction database sécurisée
-      const { error } = await supabase.rpc('track_profile_view', {
-        p_restaurant_id: restaurantId
-      });
-
-      if (error) {
-        console.error('Error tracking profile view:', error);
-      } else {
-        console.log('Profile view tracked successfully');
-      }
-    } catch (error) {
-      console.error('Error tracking profile view:', error);
-    }
-  };
-
-  // Charger les recommandations une seule fois au montage
-  useEffect(() => {
-    if (preferences?.id) {
-      console.log('🚀 Initial recommendations generation triggered for preferences:', preferences.id);
-      generateRecommendations();
-    }
-  }, [preferences?.id]); // Ne se déclencher que si l'ID des préférences change
-
-  // Écouter les mises à jour des préférences - une seule source de vérité
-  useEffect(() => {
-    let debounceTimer: NodeJS.Timeout;
-    
-    const handlePreferencesUpdate = () => {
-      console.log('🔔 preferencesUpdated event received - loading:', loading);
-      
-      // Éviter les appels multiples en vérifiant si on n'est pas déjà en train de charger
-      if (loading) {
-        console.log('⏸️ Already loading, ignoring preferences update');
-        return;
-      }
-      
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        console.log('⏰ Debounced preferences update executing');
-        if (preferences && !loading) {
-          generateRecommendations();
-        }
-      }, 500); // Debounce réduit car un seul événement maintenant
-    };
-
-    window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
-    
-    return () => {
-      clearTimeout(debounceTimer);
-      window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
-    };
-  }, [loading]); // Dépendre de loading pour éviter les appels en parallèle
-
-  // Synchronisation en temps réel des données avec debouncing
-  useEffect(() => {
-    let debounceTimer: NodeJS.Timeout;
-
-    const debouncedRegenerate = () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        console.log('Debounced regeneration triggered...');
-        generateRecommendations();
-      }, 500); // 500ms de débounce
-    };
-
-    const restaurantSubscription = supabase
-      .channel('recommendations-restaurants')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'restaurants'
-      }, () => {
-        console.log('Restaurant data updated, scheduling regeneration...');
-        debouncedRegenerate();
-      })
-      .subscribe();
-
-    const menuSubscription = supabase
-      .channel('recommendations-menus')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'menus'
-      }, () => {
-        console.log('Menu data updated, scheduling regeneration...');
-        debouncedRegenerate();
-      })
-      .subscribe();
-
-    const ratingsSubscription = supabase
-      .channel('recommendations-ratings')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'comments'
-      }, async (payload: any) => {
-        console.log('Rating updated, updating specific restaurant rating...');
-        const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
-        if (restaurantId) {
-          await updateRestaurantRating(restaurantId);
-          debouncedRegenerate();
-        }
-      })
-      .subscribe();
-
-    return () => {
-      clearTimeout(debounceTimer);
-      supabase.removeChannel(restaurantSubscription);
-      supabase.removeChannel(menuSubscription);
-      supabase.removeChannel(ratingsSubscription);
-    };
-  }, []);
-
-  const loadRestaurantRatings = async (restaurants: any[]) => {
-    const ratingsPromises = restaurants.map(async (restaurant) => {
-      const ratingData = await getRealRating(restaurant.id);
-      return { id: restaurant.id, ...ratingData };
-    });
-
-    const allRatings = await Promise.all(ratingsPromises);
-    const ratingsMap = allRatings.reduce((acc, rating) => {
-      acc[rating.id] = { rating: rating.rating, totalRatings: rating.totalRatings };
-      return acc;
-    }, {} as Record<string, { rating: number | null; totalRatings: number }>);
-
-    setRestaurantRatings(ratingsMap);
-  };
-
-  const generateRecommendations = async () => {
+  const generateRecommendations = useCallback(async () => {
     console.log('🔄 generateRecommendations called - loading:', loading);
     if (loading) {
       console.log('⏸️ Already loading, skipping generateRecommendations');
@@ -467,6 +335,138 @@ export const PersonalizedRecommendations = () => {
       setLoading(false);
       console.log('✅ Loading set to false in finally block');
     }
+  }, [preferences, loading]); // Dépendances pour useCallback
+
+  const trackProfileView = async (restaurantId: string) => {
+    try {
+      console.log(`Tracking profile view for restaurant ${restaurantId}`);
+      
+      // Utiliser la fonction database sécurisée
+      const { error } = await supabase.rpc('track_profile_view', {
+        p_restaurant_id: restaurantId
+      });
+
+      if (error) {
+        console.error('Error tracking profile view:', error);
+      } else {
+        console.log('Profile view tracked successfully');
+      }
+    } catch (error) {
+      console.error('Error tracking profile view:', error);
+    }
+  };
+
+  // Charger les recommandations une seule fois au montage
+  useEffect(() => {
+    if (preferences?.id) {
+      console.log('🚀 Initial recommendations generation triggered for preferences:', preferences.id);
+      generateRecommendations();
+    }
+  }, [preferences?.id, generateRecommendations]); // Ajouter generateRecommendations aux dépendances
+
+  // Écouter les mises à jour des préférences - une seule source de vérité
+  useEffect(() => {
+    let debounceTimer: NodeJS.Timeout;
+    
+    const handlePreferencesUpdate = () => {
+      console.log('🔔 preferencesUpdated event received - loading:', loading);
+      
+      // Éviter les appels multiples en vérifiant si on n'est pas déjà en train de charger
+      if (loading) {
+        console.log('⏸️ Already loading, ignoring preferences update');
+        return;
+      }
+      
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        console.log('⏰ Debounced preferences update executing');
+        if (preferences && !loading) {
+          generateRecommendations();
+        }
+      }, 500); // Debounce réduit car un seul événement maintenant
+    };
+
+    window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
+    
+    return () => {
+      clearTimeout(debounceTimer);
+      window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
+    };
+  }, [loading]); // Dépendre de loading pour éviter les appels en parallèle
+
+  // Synchronisation en temps réel des données avec debouncing
+  useEffect(() => {
+    let debounceTimer: NodeJS.Timeout;
+
+    const debouncedRegenerate = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        console.log('Debounced regeneration triggered...');
+        generateRecommendations();
+      }, 500); // 500ms de débounce
+    };
+
+    const restaurantSubscription = supabase
+      .channel('recommendations-restaurants')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'restaurants'
+      }, () => {
+        console.log('Restaurant data updated, scheduling regeneration...');
+        debouncedRegenerate();
+      })
+      .subscribe();
+
+    const menuSubscription = supabase
+      .channel('recommendations-menus')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'menus'
+      }, () => {
+        console.log('Menu data updated, scheduling regeneration...');
+        debouncedRegenerate();
+      })
+      .subscribe();
+
+    const ratingsSubscription = supabase
+      .channel('recommendations-ratings')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'comments'
+      }, async (payload: any) => {
+        console.log('Rating updated, updating specific restaurant rating...');
+        const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
+        if (restaurantId) {
+          await updateRestaurantRating(restaurantId);
+          debouncedRegenerate();
+        }
+      })
+      .subscribe();
+
+    return () => {
+      clearTimeout(debounceTimer);
+      supabase.removeChannel(restaurantSubscription);
+      supabase.removeChannel(menuSubscription);
+      supabase.removeChannel(ratingsSubscription);
+    };
+  }, []);
+
+  const loadRestaurantRatings = async (restaurants: any[]) => {
+    const ratingsPromises = restaurants.map(async (restaurant) => {
+      const ratingData = await getRealRating(restaurant.id);
+      return { id: restaurant.id, ...ratingData };
+    });
+
+    const allRatings = await Promise.all(ratingsPromises);
+    const ratingsMap = allRatings.reduce((acc, rating) => {
+      acc[rating.id] = { rating: rating.rating, totalRatings: rating.totalRatings };
+      return acc;
+    }, {} as Record<string, { rating: number | null; totalRatings: number }>);
+
+    setRestaurantRatings(ratingsMap);
   };
 
   console.log('Rendering PersonalizedRecommendations - loading:', loading, 'categories:', categories.length);
