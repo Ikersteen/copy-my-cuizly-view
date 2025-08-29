@@ -103,7 +103,8 @@ export const PersonalizedRecommendations = () => {
 
   // Charger les recommandations une seule fois au montage
   useEffect(() => {
-    if (preferences && !loading) {
+    if (preferences?.id) {
+      console.log('🚀 Initial recommendations generation triggered for preferences:', preferences.id);
       generateRecommendations();
     }
   }, [preferences?.id]); // Ne se déclencher que si l'ID des préférences change
@@ -226,6 +227,11 @@ export const PersonalizedRecommendations = () => {
     try {
       console.log('=== GENERATING RECOMMENDATIONS ===');
       console.log('Current preferences:', preferences);
+
+      // Vérifier la connectivité réseau
+      if (!navigator.onLine) {
+        throw new Error('Pas de connexion Internet');
+      }
 
       // Fetch restaurants and menus data separately for better error handling
       console.log('Fetching restaurants and menus...');
@@ -448,9 +454,18 @@ export const PersonalizedRecommendations = () => {
 
     } catch (error) {
       console.error('❌ Error generating recommendations:', error);
+      
+      // Vérifier le type d'erreur et afficher un message approprié
+      if (!navigator.onLine) {
+        console.error('🌐 Network offline');
+      } else if (error?.message?.includes('Load failed') || error?.message?.includes('TypeError')) {
+        console.error('🔌 Connection issue detected');
+      }
+      
       setCategories([]);
     } finally {
       setLoading(false);
+      console.log('✅ Loading set to false in finally block');
     }
   };
 
