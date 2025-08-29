@@ -6,7 +6,6 @@ import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
-import LanguageSelector from "@/components/LanguageSelector";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -85,7 +84,6 @@ const Header = () => {
 
           {/* Auth Actions Desktop - Extrême droite */}
           <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-            <LanguageSelector />
             {user ? (
               <Link to="/dashboard">
                 <Button variant="ghost" size="sm">
@@ -130,10 +128,6 @@ const Header = () => {
                   >
                     {t('navigation.contact')}
                   </button>
-                  
-                  <div className="flex justify-center py-2 border-b border-border">
-                    <LanguageSelector />
-                  </div>
                   
                   <div className="pt-4">
                     {user ? (
