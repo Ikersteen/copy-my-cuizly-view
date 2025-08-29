@@ -10,13 +10,15 @@ import { Upload, X, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, DIETARY_RESTRICTIONS, ALLERGENS } from "@/constants/cuisineTypes";
 
 interface Menu {
   id: string;
   image_url: string;
   description: string;
   cuisine_type: string;
+  dietary_restrictions: string[];
+  allergens: string[];
   is_active: boolean;
 }
 
@@ -31,7 +33,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [newMenu, setNewMenu] = useState({ description: "", image_url: "", cuisine_type: "" });
+  const [newMenu, setNewMenu] = useState({ 
+    description: "", 
+    image_url: "", 
+    cuisine_type: "",
+    dietary_restrictions: [] as string[],
+    allergens: [] as string[]
+  });
   const [editingMenu, setEditingMenu] = useState<Menu | null>(null);
   const { toast } = useToast();
 
@@ -152,7 +160,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           restaurant_id: restaurantId,
           image_url: newMenu.image_url,
           description: newMenu.description.trim(),
-          cuisine_type: newMenu.cuisine_type.trim()
+          cuisine_type: newMenu.cuisine_type.trim(),
+          dietary_restrictions: newMenu.dietary_restrictions,
+          allergens: newMenu.allergens
         })
         .select()
         .single();
@@ -160,7 +170,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       if (error) throw error;
 
       // Reset form
-      setNewMenu({ description: "", image_url: "", cuisine_type: "" });
+      setNewMenu({ 
+        description: "", 
+        image_url: "", 
+        cuisine_type: "",
+        dietary_restrictions: [],
+        allergens: []
+      });
       
       // Reload menus to ensure we have the latest data
       await loadMenus();
@@ -243,7 +259,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
         .update({
           description: editingMenu.description,
           cuisine_type: editingMenu.cuisine_type,
-          image_url: editingMenu.image_url
+          image_url: editingMenu.image_url,
+          dietary_restrictions: editingMenu.dietary_restrictions,
+          allergens: editingMenu.allergens
         })
         .eq('id', editingMenu.id);
 
@@ -346,6 +364,49 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     placeholder="Décrivez ce menu..."
                     className="min-h-[80px]"
                   />
+                  
+                  <Label>Restrictions alimentaires</Label>
+                  <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                    {DIETARY_RESTRICTIONS.map(restriction => (
+                      <Badge
+                        key={restriction}
+                        variant={newMenu.dietary_restrictions.includes(restriction) ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setNewMenu(prev => ({
+                            ...prev,
+                            dietary_restrictions: prev.dietary_restrictions.includes(restriction)
+                              ? prev.dietary_restrictions.filter(r => r !== restriction)
+                              : [...prev.dietary_restrictions, restriction]
+                          }));
+                        }}
+                      >
+                        {restriction}
+                      </Badge>
+                    ))}
+                  </div>
+
+                  <Label>Allergènes à éviter</Label>
+                  <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                    {ALLERGENS.map(allergen => (
+                      <Badge
+                        key={allergen}
+                        variant={newMenu.allergens.includes(allergen) ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setNewMenu(prev => ({
+                            ...prev,
+                            allergens: prev.allergens.includes(allergen)
+                              ? prev.allergens.filter(a => a !== allergen)
+                              : [...prev.allergens, allergen]
+                          }));
+                        }}
+                      >
+                        {allergen}
+                      </Badge>
+                    ))}
+                  </div>
+
                   <Button 
                     onClick={handleAddMenu}
                     disabled={loading || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim() || menus.length >= 5}
@@ -404,6 +465,35 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       <p className="text-sm text-foreground mb-3">
                         {menu.description}
                       </p>
+                      
+                      {(menu.dietary_restrictions?.length > 0 || menu.allergens?.length > 0) && (
+                        <div className="mb-3 space-y-2">
+                          {menu.dietary_restrictions?.length > 0 && (
+                            <div>
+                              <p className="text-xs font-medium text-muted-foreground mb-1">Restrictions:</p>
+                              <div className="flex flex-wrap gap-1">
+                                {menu.dietary_restrictions.map(restriction => (
+                                  <Badge key={restriction} variant="secondary" className="text-xs">
+                                    {restriction}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {menu.allergens?.length > 0 && (
+                            <div>
+                              <p className="text-xs font-medium text-muted-foreground mb-1">Allergènes:</p>
+                              <div className="flex flex-wrap gap-1">
+                                {menu.allergens.map(allergen => (
+                                  <Badge key={allergen} variant="destructive" className="text-xs">
+                                    {allergen}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
 
                       <div className="flex gap-2">
                         <Button
@@ -491,9 +581,52 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       placeholder="Décrivez ce menu..."
                       className="min-h-[80px]"
                     />
+
+                    <Label>Restrictions alimentaires</Label>
+                    <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                      {DIETARY_RESTRICTIONS.map(restriction => (
+                        <Badge
+                          key={restriction}
+                          variant={editingMenu.dietary_restrictions?.includes(restriction) ? "default" : "outline"}
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setEditingMenu(prev => prev ? ({
+                              ...prev,
+                              dietary_restrictions: prev.dietary_restrictions?.includes(restriction)
+                                ? prev.dietary_restrictions.filter(r => r !== restriction)
+                                : [...(prev.dietary_restrictions || []), restriction]
+                            }) : null);
+                          }}
+                        >
+                          {restriction}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <Label>Allergènes à éviter</Label>
+                    <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                      {ALLERGENS.map(allergen => (
+                        <Badge
+                          key={allergen}
+                          variant={editingMenu.allergens?.includes(allergen) ? "default" : "outline"}
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setEditingMenu(prev => prev ? ({
+                              ...prev,
+                              allergens: prev.allergens?.includes(allergen)
+                                ? prev.allergens.filter(a => a !== allergen)
+                                : [...(prev.allergens || []), allergen]
+                            }) : null);
+                          }}
+                        >
+                          {allergen}
+                        </Badge>
+                      ))}
+                    </div>
+
                     <Button 
                       onClick={handleEditMenu}
-                      disabled={loading || !editingMenu.description.trim() || !editingMenu.cuisine_type.trim()}
+                      disabled={loading}
                       className="w-full"
                     >
                       Sauvegarder les modifications

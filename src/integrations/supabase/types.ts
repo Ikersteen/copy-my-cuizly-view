@@ -52,9 +52,11 @@ export type Database = {
       }
       menus: {
         Row: {
+          allergens: string[] | null
           created_at: string
           cuisine_type: string | null
           description: string
+          dietary_restrictions: string[] | null
           id: string
           image_url: string
           is_active: boolean
@@ -62,9 +64,11 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          allergens?: string[] | null
           created_at?: string
           cuisine_type?: string | null
           description: string
+          dietary_restrictions?: string[] | null
           id?: string
           image_url: string
           is_active?: boolean
@@ -72,9 +76,11 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          allergens?: string[] | null
           created_at?: string
           cuisine_type?: string | null
           description?: string
+          dietary_restrictions?: string[] | null
           id?: string
           image_url?: string
           is_active?: boolean

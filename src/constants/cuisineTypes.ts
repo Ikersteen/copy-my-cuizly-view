@@ -4,12 +4,16 @@ export const CUISINE_OPTIONS = [
   "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine"
 ];
 
-export const DIETARY_OPTIONS = [
+export const DIETARY_RESTRICTIONS = [
   "Végétarien", "Végan", "Sans gluten", "Halal", "Casher", "Paléo",
   "Cétogène", "Sans lactose", "Pescétarien", "Faible en sodium"
 ];
 
-export const ALLERGEN_OPTIONS = [
+export const ALLERGENS = [
   "Arachides", "Noix", "Lait", "Œufs", "Blé", "Soja", "Poisson", 
   "Fruits de mer", "Graines de sésame", "Sulfites"
 ];
+
+// Legacy exports for compatibility
+export const DIETARY_OPTIONS = DIETARY_RESTRICTIONS;
+export const ALLERGEN_OPTIONS = ALLERGENS;

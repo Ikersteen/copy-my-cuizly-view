@@ -163,90 +163,93 @@ export const PersonalizedRecommendations = () => {
     try {
       setLoading(true);
 
-      const { data: restaurants, error } = await supabase
-        .rpc('get_public_restaurants');
+      // Fetch restaurants
+      const { data: restaurantsData, error: restaurantsError } = await supabase
+        .from('restaurants')
+        .select('*')
+        .eq('is_active', true);
 
-      if (error) throw error;
+      if (restaurantsError) throw restaurantsError;
 
-      if (!restaurants) {
+      // Fetch menus with dietary restrictions and allergens
+      const { data: menusData, error: menusError } = await supabase
+        .from('menus')
+        .select('*, restaurant_id')
+        .eq('is_active', true);
+
+      if (menusError) throw menusError;
+
+      if (!restaurantsData) {
         setCategories([]);
         return;
       }
 
-      const scoredRestaurants = await Promise.all(restaurants.map(async (restaurant) => {
+      const scoredRestaurants = await Promise.all(restaurantsData.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
         let hasAnyMatch = false;
 
-        // Vérifier les préférences de cuisine
-        if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
-          const matchedCuisines = restaurant.cuisine_type.filter(cuisine =>
+        // Get restaurant's menus for dietary analysis
+        const restaurantMenus = menusData?.filter(menu => menu.restaurant_id === restaurant.id) || [];
+        
+        // Cuisine preferences match
+        if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
+          const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
             preferences.cuisine_preferences.includes(cuisine)
-          );
-          if (matchedCuisines.length > 0) {
+          ) || [];
+          if (matchingCuisines.length > 0) {
             hasAnyMatch = true;
-            // Score basé sur le nombre de cuisines qui matchent
-            score += 40 * (matchedCuisines.length / preferences.cuisine_preferences.length);
-            if (matchedCuisines.length === 1) {
-              reasons.push(`Cuisine ${matchedCuisines[0].toLowerCase()}`);
-            } else {
-              reasons.push(`${matchedCuisines.length} cuisines favorites`);
-            }
+            score += matchingCuisines.length * 10;
+            reasons.push(`${matchingCuisines.length} cuisine(s) favorite(s)`);
           }
         }
-
-        // Vérifier la gamme de prix
-        if (preferences?.price_range === restaurant.price_range) {
+        
+        // Price range match
+        if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
           hasAnyMatch = true;
-          score += 25;
+          score += 15;
           reasons.push("Dans votre budget");
         }
-
-        // Vérifier le rayon de livraison
-        if (preferences?.delivery_radius && restaurant.delivery_radius) {
-          // Si le rayon du restaurant est inférieur ou égal au rayon souhaité par l'utilisateur
-          if (restaurant.delivery_radius <= preferences.delivery_radius) {
+        
+        // Dietary restrictions compatibility - check menus
+        if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
+          let hasCompatibleMenus = false;
+          restaurantMenus.forEach(menu => {
+            const accommodatedRestrictions = preferences.dietary_restrictions.filter((restriction: string) =>
+              menu.dietary_restrictions?.includes(restriction)
+            );
+            if (accommodatedRestrictions.length > 0) {
+              hasCompatibleMenus = true;
+              score += accommodatedRestrictions.length * 8;
+            }
+          });
+          if (hasCompatibleMenus) {
             hasAnyMatch = true;
-            score += 15;
-            reasons.push(`Livraison dans ${restaurant.delivery_radius}km`);
+            reasons.push("Restrictions accommodées");
+          }
+        }
+        
+        // Allergen safety - check menus avoid user's allergens
+        if (preferences?.allergens && preferences.allergens.length > 0) {
+          let hasAllergenFreeMenus = false;
+          restaurantMenus.forEach(menu => {
+            const safeAllergens = preferences.allergens.filter((allergen: string) =>
+              menu.allergens?.includes(allergen)
+            );
+            if (safeAllergens.length > 0) {
+              hasAllergenFreeMenus = true;
+              score += safeAllergens.length * 12;
+            }
+          });
+          if (hasAllergenFreeMenus) {
+            hasAnyMatch = true;
+            reasons.push("Allergènes évités");
           }
         }
 
-        // Vérifier les restrictions alimentaires
-        if (preferences?.dietary_restrictions?.length && (restaurant as any).dietary_restrictions?.length) {
-          const matchedRestrictions = preferences.dietary_restrictions.filter(restriction =>
-            (restaurant as any).dietary_restrictions?.includes(restriction)
-          );
-          if (matchedRestrictions.length > 0) {
-            hasAnyMatch = true;
-            score += 30 * (matchedRestrictions.length / preferences.dietary_restrictions.length);
-            reasons.push(`${matchedRestrictions.length} restriction(s) accommodée(s)`);
-          }
-        }
-
-        // Vérifier les allergènes
-        if (preferences?.allergens?.length && (restaurant as any).allergens?.length) {
-          const matchedAllergens = preferences.allergens.filter(allergen =>
-            (restaurant as any).allergens?.includes(allergen)
-          );
-          if (matchedAllergens.length > 0) {
-            hasAnyMatch = true;
-            score += 25 * (matchedAllergens.length / preferences.allergens.length);
-            reasons.push(`${matchedAllergens.length} allergène(s) évité(s)`);
-          }
-        }
-
-        // Si l'utilisateur n'a configuré aucune préférence, on n'affiche rien
-        if (!preferences || 
-            (!preferences.cuisine_preferences?.length && 
-             (!preferences.price_range || preferences.price_range === "") && 
-             !preferences.dietary_restrictions?.length)) {
-          return null; // Pas de préférences configurées = pas de recommandations
-        }
-
-        // Si le restaurant ne correspond à aucune préférence utilisateur, on l'exclut
-        if (!hasAnyMatch) {
-          return null; // Exclure ce restaurant des recommandations
+        // If no preferences or no match, exclude restaurant
+        if (!preferences || !hasAnyMatch) {
+          return null;
         }
 
         const realRating = await getRealRating(restaurant.id);
@@ -260,7 +263,6 @@ export const PersonalizedRecommendations = () => {
         };
       }));
 
-      // Filtrer les restaurants nuls (exclus)
       const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
 
       await loadRestaurantRatings(validRestaurants);
