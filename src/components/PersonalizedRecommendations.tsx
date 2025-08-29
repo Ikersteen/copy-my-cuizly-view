@@ -331,7 +331,7 @@ export const PersonalizedRecommendations = () => {
       setLoading(false);
       console.log('✅ Loading set to false in finally block');
     }
-  }, [preferences, loading]); // Dépendances pour useCallback
+  }, [preferences]); // Dépendances pour useCallback
 
   const trackProfileView = async (restaurantId: string) => {
     try {
