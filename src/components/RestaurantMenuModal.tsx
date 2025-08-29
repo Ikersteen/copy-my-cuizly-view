@@ -86,6 +86,8 @@ interface Menu {
   description: string;
   cuisine_type: string;
   is_active: boolean;
+  dietary_restrictions?: string[];
+  allergens?: string[];
 }
 
 interface Restaurant {
@@ -133,7 +135,7 @@ export const RestaurantMenuModal = ({
     try {
       const { data, error } = await supabase
         .from('menus')
-        .select('*')
+        .select('id, image_url, description, cuisine_type, is_active, dietary_restrictions, allergens')
         .eq('restaurant_id', restaurant.id)
         .eq('is_active', true)
         .order('created_at', { ascending: false });
@@ -311,9 +313,23 @@ export const RestaurantMenuModal = ({
                       )}
                       
                       <div className="space-y-2">
-                        <Badge variant="outline" className="text-xs">
-                          {menu.cuisine_type}
-                        </Badge>
+                        <div className="flex flex-wrap gap-2 items-start">
+                          <Badge variant="outline" className="text-xs">
+                            {menu.cuisine_type}
+                          </Badge>
+                          <div className="flex flex-col gap-1 flex-1 min-w-0">
+                            {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
+                              <div className="text-xs text-muted-foreground">
+                                <span className="font-medium">Restrictions alimentaires :</span> {menu.dietary_restrictions.join(', ')}
+                              </div>
+                            )}
+                            {menu.allergens && menu.allergens.length > 0 && (
+                              <div className="text-xs text-muted-foreground">
+                                <span className="font-medium">Allergènes :</span> {menu.allergens.join(', ')}
+                              </div>
+                            )}
+                          </div>
+                        </div>
                         <p className="text-sm text-foreground line-clamp-3">
                           {menu.description}
                         </p>
