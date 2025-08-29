@@ -61,9 +61,25 @@ export const PhotoAdjustmentModal = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size
-    canvas.width = 400;
-    canvas.height = 300;
+    // Wait for image to load if not loaded yet
+    if (!imageRef.current.complete || imageRef.current.naturalHeight === 0) {
+      console.error('Image not loaded yet');
+      return;
+    }
+
+    // Set canvas size to match the image dimensions or a reasonable size
+    const maxWidth = 800;
+    const maxHeight = 600;
+    let { width, height } = imageRef.current;
+    
+    if (width > maxWidth || height > maxHeight) {
+      const ratio = Math.min(maxWidth / width, maxHeight / height);
+      width *= ratio;
+      height *= ratio;
+    }
+    
+    canvas.width = width;
+    canvas.height = height;
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -112,7 +128,8 @@ export const PhotoAdjustmentModal = ({
                   transform: `translate(${position.x}px, ${position.y}px) scale(${scale[0] / 100}) rotate(${rotation}deg)`,
                   transformOrigin: 'center'
                 }}
-                crossOrigin="anonymous"
+                onLoad={() => console.log('Image loaded successfully')}
+                onError={(e) => console.error('Image failed to load:', e)}
               />
             </div>
           </div>
