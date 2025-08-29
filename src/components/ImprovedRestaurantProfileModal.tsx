@@ -347,46 +347,31 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           <div className="space-y-4">
             <h3 className="font-semibold text-foreground">Photo de couverture</h3>
             <div className="relative">
-              <div className="w-full h-32 bg-muted rounded-xl overflow-hidden border-2 border-dashed border-border">
-                {formData.cover_image_url ? (
-                  <img 
-                    src={formData.cover_image_url} 
-                    alt="Photo de couverture"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <div className="text-center">
-                      <Camera className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-sm text-muted-foreground">Ajoutez une photo de couverture</p>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileUpload(e, 'cover')}
+                className="hidden"
+                id="cover-upload"
+              />
+              <label htmlFor="cover-upload" className="cursor-pointer block">
+                <div className="w-full h-32 bg-muted rounded-xl overflow-hidden border-2 border-dashed border-border hover:border-primary/50 transition-colors">
+                  {formData.cover_image_url ? (
+                    <img 
+                      src={formData.cover_image_url} 
+                      alt="Photo de couverture"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-muted flex items-center justify-center">
+                      <div className="text-center">
+                        <Camera className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                        <p className="text-sm text-muted-foreground">Cliquez pour ajouter une photo de couverture</p>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-              
-              {/* Cover Photo Controls */}
-              <div className="absolute bottom-2 right-2">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleFileUpload(e, 'cover')}
-                  className="hidden"
-                  id="cover-upload"
-                />
-                <label htmlFor="cover-upload">
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    className="h-8 w-8 p-0 rounded-full"
-                    disabled={uploadingCover}
-                    asChild
-                  >
-                    <span className="cursor-pointer">
-                      <Camera className="h-4 w-4" />
-                    </span>
-                  </Button>
-                </label>
-              </div>
+                  )}
+                </div>
+              </label>
               
               {formData.cover_image_url && (
                 <Button
