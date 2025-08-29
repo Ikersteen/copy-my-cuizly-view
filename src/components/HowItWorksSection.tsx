@@ -1,17 +1,20 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Smartphone, MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const HowItWorksSection = () => {
+  const { t } = useTranslation();
+  
   const steps = [
     {
       icon: Smartphone,
-      title: "Rejoignez Cuizly dès aujourd'hui",
-      description: "L'inscription est rapide et gratuite : indiquez vos préférences culinaires, et notre IA vous proposera instantanément les meilleures adresses à Montréal."
+      title: t('howItWorks.step1.title'),
+      description: t('howItWorks.step1.description')
     },
     {
       icon: MapPin,
-      title: "Repérez. Découvrez. Régalez-vous.",
-      description: "Découvrez en temps réel les meilleures adresses culinaires de Montréal autour de vous."
+      title: t('howItWorks.step2.title'),
+      description: t('howItWorks.step2.description')
     }
   ];
 
@@ -21,11 +24,10 @@ const HowItWorksSection = () => {
         {/* Content */}
         <div className="mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 sm:mb-6 text-center">
-            Comment ça fonctionne ?
+            {t('howItWorks.title')}
           </h2>
           <p className="text-base sm:text-lg text-cuizly-neutral mb-8 sm:mb-12 leading-relaxed text-center px-2 sm:px-4 max-w-4xl mx-auto">
-            Fini les recherches interminables : notre IA vous guide vers les meilleures adresses de Montréal, 
-            simples, personnalisées et selon vos préférences culinaires.
+            {t('howItWorks.subtitle')}
           </p>
 
           <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">

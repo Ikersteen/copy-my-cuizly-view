@@ -2,58 +2,40 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const PricingSection = () => {
+  const { t } = useTranslation();
+  
   const plans = [
     {
       type: "consumer",
-      title: "Cuizly Basique",
-      subtitle: "Pour les gourmets qui veulent découvrir Montréal",
-      price: "Gratuit à vie",
+      title: t('pricing.consumer.title'),
+      subtitle: t('pricing.consumer.subtitle'),
+      price: t('pricing.consumer.price'),
       popular: true,
-      features: [
-        "Accès à toutes les offres exclusives",
-        "Recommandations IA personnalisées",
-        "Alertes prioritaires sur les promos",
-        "Réservations faciles en un clic",
-        "Support client dédié",
-        "Interface sans publicité"
-      ],
-      cta: "Commencer gratuitement"
+      features: t('pricing.consumer.features', { returnObjects: true }) as string[],
+      cta: t('pricing.consumer.cta')
     },
     {
       type: "pro",
-      title: "Cuizly Pro",
-      subtitle: "Pour restaurants qui veulent attirer plus de clients",
-      price: "59$ CAD/mois",
-      priceNote: "ou 499$ CAD/an (économisez 2 mois !)",
+      title: t('pricing.pro.title'),
+      subtitle: t('pricing.pro.subtitle'),
+      price: t('pricing.pro.price'),
+      priceNote: t('pricing.pro.priceNote'),
       comingSoon: true,
-      features: [
-        "Publicité ciblée de vos offres",
-        "Promotion dans l'app selon localisation",
-        "Ciblage par préférences utilisateur",
-        "Dashboard de performance en temps réel",
-        "Support prioritaire",
-        "Formation à l'utilisation incluse"
-      ],
-      cta: "Essayer gratuitement"
+      features: t('pricing.pro.features', { returnObjects: true }) as string[],
+      cta: t('pricing.pro.cta')
     },
     {
       type: "analytics",
-      title: "Cuizly Analytics+",
-      subtitle: "Pour optimiser votre stratégie avec les données",
-      price: "349$ CAD/mois",
-      priceNote: "ou 3 490$ CAD/an (soit 2 mois gratuits !)",
+      title: t('pricing.analytics.title'),
+      subtitle: t('pricing.analytics.subtitle'),
+      price: t('pricing.analytics.price'),
+      priceNote: t('pricing.analytics.priceNote'),
       comingSoon: true,
-      features: [
-        "Toutes les fonctionnalités Pro",
-        "Rapports anonymisés détaillés",
-        "Analyses des tendances de consommation",
-        "Insights sur les performances par segment",
-        "Recommandations IA pour votre business",
-        "Accès API pour intégrations avancées"
-      ],
-      cta: "Essayer gratuitement"
+      features: t('pricing.analytics.features', { returnObjects: true }) as string[],
+      cta: t('pricing.analytics.cta')
     }
   ];
 
@@ -62,19 +44,19 @@ const PricingSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Des tarifs pensés pour tous
+            {t('pricing.title')}
           </h2>
           <p className="text-lg text-cuizly-neutral max-w-3xl mx-auto">
-            Une offre gratuite pour les gourmets, des solutions professionnelles abordables pour les restaurateurs. Commencez dès aujourd'hui !
+            {t('pricing.subtitle')}
           </p>
         </div>
 
         {/* Consumer Section */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold text-foreground mb-6">Pour les consommateurs</h3>
+          <h3 className="text-xl font-semibold text-foreground mb-6">{t('pricing.consumerSection')}</h3>
           <Card className="max-w-md bg-background/60 backdrop-blur-sm shadow-card border border-border/50 relative">
             <Badge className="absolute -top-3 left-6 bg-cuizly-accent text-white">
-              Populaire
+              {t('pricing.popular')}
             </Badge>
             <div className="p-8">
               <h4 className="text-xl font-bold text-foreground mb-2">{plans[0].title}</h4>
@@ -99,13 +81,13 @@ const PricingSection = () => {
 
         {/* Restaurant Section */}
         <div>
-          <h3 className="text-xl font-semibold text-foreground mb-6">Pour les restaurateurs</h3>
+          <h3 className="text-xl font-semibold text-foreground mb-6">{t('pricing.restaurantSection')}</h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {plans.slice(1).map((plan, index) => (
               <Card key={index} className="p-8 bg-background/60 backdrop-blur-sm shadow-card border border-border/50 hover:shadow-elevated transition-all duration-300 relative">
                 {plan.comingSoon && (
                   <Badge className="absolute -top-3 left-6 bg-destructive text-destructive-foreground animate-none pointer-events-none">
-                    Bientôt
+                    {t('pricing.comingSoon')}
                   </Badge>
                 )}
                 <h4 className="text-xl font-bold text-foreground mb-2">{plan.title}</h4>

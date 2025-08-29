@@ -24,40 +24,82 @@
   },
   "features": {
     "title": "Fonctionnalités",
+    "subtitle": "Découvrez toutes les fonctionnalités qui font de Cuizly la plateforme de référence pour les offres culinaires à Montréal.",
     "ai_recommendations": {
-      "title": "Recommandations IA",
-      "description": "Notre intelligence artificielle analyse vos préférences pour vous proposer des restaurants parfaitement adaptés"
+      "title": "Intelligence Artificielle",
+      "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
     },
-    "real_time_offers": {
-      "title": "Offres en temps réel",
-      "description": "Découvrez les meilleures promotions et offres spéciales des restaurants partenaires"
+    "geolocation": {
+      "title": "Géolocalisation",
+      "description": "Trouvez les meilleures offres près de chez vous à Montréal."
     },
-    "personalized_experience": {
-      "title": "Expérience personnalisée",
-      "description": "Créez votre profil gustatif et recevez des suggestions sur mesure"
+    "real_time_alerts": {
+      "title": "Alertes en temps réel",
+      "description": "Soyez informé instantanément des nouvelles offres qui vous intéressent."
+    },
+    "reviews_ratings": {
+      "title": "Avis et notations",
+      "description": "Consultez les avis authentiques des autres utilisateurs."
+    },
+    "restaurant_analytics": {
+      "title": "Analytics pour restaurants",
+      "description": "Analysez les performances de vos offres avec des données détaillées."
+    },
+    "smart_targeting": {
+      "title": "Ciblage intelligent",
+      "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
     }
   },
   "pricing": {
-    "title": "Nos Tarifs",
+    "title": "Des tarifs pensés pour tous",
+    "subtitle": "Une offre gratuite pour les gourmets, des solutions professionnelles abordables pour les restaurateurs. Commencez dès aujourd'hui !",
+    "popular": "Populaire",
+    "comingSoon": "Bientôt",
+    "consumerSection": "Pour les consommateurs",
+    "restaurantSection": "Pour les restaurateurs",
     "consumer": {
-      "title": "Consommateur",
-      "price": "Gratuit",
+      "title": "Cuizly Basique",
+      "subtitle": "Pour les gourmets qui veulent découvrir Montréal",
+      "price": "Gratuit à vie",
       "features": [
-        "Accès aux recommandations IA",
-        "Découverte de restaurants",
-        "Offres exclusives",
-        "Profil personnalisé"
-      ]
+        "Accès à toutes les offres exclusives",
+        "Recommandations IA personnalisées",
+        "Alertes prioritaires sur les promos",
+        "Réservations faciles en un clic",
+        "Support client dédié",
+        "Interface sans publicité"
+      ],
+      "cta": "Commencer gratuitement"
     },
-    "restaurant": {
-      "title": "Restaurant",
-      "price": "29€/mois",
+    "pro": {
+      "title": "Cuizly Pro",
+      "subtitle": "Pour restaurants qui veulent attirer plus de clients",
+      "price": "59$ CAD/mois",
+      "priceNote": "ou 499$ CAD/an (économisez 2 mois !)",
       "features": [
-        "Profil restaurant complet",
-        "Gestion des offres",
-        "Analytics détaillés",
-        "Support prioritaire"
-      ]
+        "Publicité ciblée de vos offres",
+        "Promotion dans l'app selon localisation",
+        "Ciblage par préférences utilisateur",
+        "Dashboard de performance en temps réel",
+        "Support prioritaire",
+        "Formation à l'utilisation incluse"
+      ],
+      "cta": "Essayer gratuitement"
+    },
+    "analytics": {
+      "title": "Cuizly Analytics+",
+      "subtitle": "Pour optimiser votre stratégie avec les données",
+      "price": "349$ CAD/mois",
+      "priceNote": "ou 3 490$ CAD/an (soit 2 mois gratuits !)",
+      "features": [
+        "Toutes les fonctionnalités Pro",
+        "Rapports anonymisés détaillés",
+        "Analyses des tendances de consommation",
+        "Insights sur les performances par segment",
+        "Recommandations IA pour votre business",
+        "Accès API pour intégrations avancées"
+      ],
+      "cta": "Essayer gratuitement"
     }
   },
   "contact": {
@@ -120,6 +162,18 @@
         "email": "Courriel : cuizlycanada@gmail.com",
         "address": "Adresse : 2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4"
       }
+    }
+  },
+  "howItWorks": {
+    "title": "Comment ça fonctionne ?",
+    "subtitle": "Fini les recherches interminables : notre IA vous guide vers les meilleures adresses de Montréal, simples, personnalisées et selon vos préférences culinaires.",
+    "step1": {
+      "title": "Rejoignez Cuizly dès aujourd'hui",
+      "description": "L'inscription est rapide et gratuite : indiquez vos préférences culinaires, et notre IA vous proposera instantanément les meilleures adresses à Montréal."
+    },
+    "step2": {
+      "title": "Repérez. Découvrez. Régalez-vous.",
+      "description": "Découvrez en temps réel les meilleures adresses culinaires de Montréal autour de vous."
     }
   },
   "mentions": {
@@ -414,5 +468,35 @@
     "placeholder": "Sélectionner les dates",
     "selectEnd": "Sélectionnez la date de fin (max {{maxDays}} jours)",
     "fromTo": "Du {{from}} - Sélectionnez la fin"
+  },
+  "errors": {
+    "title": "Erreur",
+    "loadMenus": "Impossible de charger les menus"
+  },
+  "footer": {
+    "product": "Produit",
+    "rates": "Tarifs",
+    "company": "Entreprise",
+    "legalNotices": "Mentions légales",
+    "instagram": "Instagram"
+  },
+  "profile": {
+    "cancel": "Annuler",
+    "modify": "Modifier",
+    "emojiAvatar": "😊 Emoji avatar",
+    "culinaryPreferences": {
+      "cancel": "Annuler"
+    },
+    "createOffer": {
+      "cancel": "Annuler"
+    },
+    "restaurantProfile": {
+      "cancel": "Annuler"
+    }
+  },
+  "dashboard": {
+    "filters": "Filtres",
+    "offers": "Offres",
+    "noMoreEndlessSearches": "Fini les recherches sans fin :"
   }
 }

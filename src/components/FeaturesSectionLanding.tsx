@@ -1,37 +1,40 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bot, MapPin, Bell, Star, BarChart3, Users } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const FeaturesSectionLanding = () => {
+  const { t } = useTranslation();
+  
   const features = [
     {
       icon: Bot,
-      title: "Intelligence Artificielle",
-      description: "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
+      title: t('features.ai_recommendations.title'),
+      description: t('features.ai_recommendations.description')
     },
     {
       icon: MapPin,
-      title: "Géolocalisation",
-      description: "Trouvez les meilleures offres près de chez vous à Montréal."
+      title: t('features.geolocation.title'),
+      description: t('features.geolocation.description')
     },
     {
       icon: Bell,
-      title: "Alertes en temps réel",
-      description: "Soyez informé instantanément des nouvelles offres qui vous intéressent."
+      title: t('features.real_time_alerts.title'),
+      description: t('features.real_time_alerts.description')
     },
     {
       icon: Star,
-      title: "Avis et notations",
-      description: "Consultez les avis authentiques des autres utilisateurs."
+      title: t('features.reviews_ratings.title'),
+      description: t('features.reviews_ratings.description')
     },
     {
       icon: BarChart3,
-      title: "Analytics pour restaurants",
-      description: "Analysez les performances de vos offres avec des données détaillées."
+      title: t('features.restaurant_analytics.title'),
+      description: t('features.restaurant_analytics.description')
     },
     {
       icon: Users,
-      title: "Ciblage intelligent",
-      description: "Atteignez la bonne clientèle au bon moment avec notre IA."
+      title: t('features.smart_targeting.title'),
+      description: t('features.smart_targeting.description')
     }
   ];
 
@@ -40,10 +43,10 @@ const FeaturesSectionLanding = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Fonctionnalités
+            {t('features.title')}
           </h2>
           <p className="text-lg sm:text-xl text-cuizly-neutral max-w-3xl mx-auto px-2 sm:px-4">
-            Découvrez toutes les fonctionnalités qui font de Cuizly la plateforme de référence pour les offres culinaires à Montréal.
+            {t('features.subtitle')}
           </p>
         </div>
 

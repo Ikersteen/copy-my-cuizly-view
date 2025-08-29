@@ -24,40 +24,94 @@
   },
   "features": {
     "title": "Features",
+    "subtitle": "Discover all the features that make Cuizly the reference platform for culinary offers in Montreal.",
     "ai_recommendations": {
-      "title": "AI Recommendations",
-      "description": "Our artificial intelligence analyzes your preferences to suggest perfectly matched restaurants"
+      "title": "Artificial Intelligence",
+      "description": "Personalized recommendations based on your tastes and culinary preferences."
     },
-    "real_time_offers": {
-      "title": "Real-time Offers",
-      "description": "Discover the best promotions and special deals from partner restaurants"
+    "geolocation": {
+      "title": "Geolocation",
+      "description": "Find the best deals near you in Montreal."
     },
-    "personalized_experience": {
-      "title": "Personalized Experience", 
-      "description": "Create your taste profile and receive tailored suggestions"
+    "real_time_alerts": {
+      "title": "Real-time alerts",
+      "description": "Be instantly informed of new offers that interest you."
+    },
+    "reviews_ratings": {
+      "title": "Reviews and ratings",
+      "description": "Check out authentic reviews from other users."
+    },
+    "restaurant_analytics": {
+      "title": "Restaurant analytics",
+      "description": "Analyze the performance of your offers with detailed data."
+    },
+    "smart_targeting": {
+      "title": "Smart targeting",
+      "description": "Reach the right customers at the right time with our AI."
     }
   },
   "pricing": {
-    "title": "Our Pricing",
+    "title": "Pricing designed for everyone",
+    "subtitle": "A free offer for food lovers, affordable professional solutions for restaurateurs. Start today!",
+    "popular": "Popular",
+    "comingSoon": "Coming Soon",
+    "consumerSection": "For consumers",
+    "restaurantSection": "For restaurateurs",
     "consumer": {
-      "title": "Consumer",
-      "price": "Free",
+      "title": "Cuizly Basic",
+      "subtitle": "For food lovers who want to discover Montreal",
+      "price": "Free for life",
       "features": [
-        "Access to AI recommendations",
-        "Restaurant discovery",
-        "Exclusive offers",
-        "Personalized profile"
-      ]
+        "Access to all exclusive offers",
+        "Personalized AI recommendations",
+        "Priority alerts on promos",
+        "Easy one-click reservations",
+        "Dedicated customer support",
+        "Ad-free interface"
+      ],
+      "cta": "Start for free"
     },
-    "restaurant": {
-      "title": "Restaurant",
-      "price": "$29/month",
+    "pro": {
+      "title": "Cuizly Pro",
+      "subtitle": "For restaurants that want to attract more customers",
+      "price": "$59 CAD/month",
+      "priceNote": "or $499 CAD/year (save 2 months!)",
       "features": [
-        "Complete restaurant profile",
-        "Offer management",
-        "Detailed analytics",
-        "Priority support"
-      ]
+        "Targeted advertising of your offers",
+        "In-app promotion by location",
+        "Targeting by user preferences",
+        "Real-time performance dashboard",
+        "Priority support",
+        "Usage training included"
+      ],
+      "cta": "Try for free"
+    },
+    "analytics": {
+      "title": "Cuizly Analytics+",
+      "subtitle": "To optimize your strategy with data",
+      "price": "$349 CAD/month",
+      "priceNote": "or $3,490 CAD/year (2 months free!)",
+      "features": [
+        "All Pro features",
+        "Detailed anonymized reports",
+        "Consumer trend analysis",
+        "Performance insights by segment",
+        "AI recommendations for your business",
+        "API access for advanced integrations"
+      ],
+      "cta": "Try for free"
+    }
+  },
+  "howItWorks": {
+    "title": "How does it work?",
+    "subtitle": "No more endless searches: our AI guides you to the best addresses in Montreal, simple, personalized and according to your culinary preferences.",
+    "step1": {
+      "title": "Join Cuizly today",
+      "description": "Registration is quick and free: indicate your culinary preferences, and our AI will instantly suggest the best addresses in Montreal."
+    },
+    "step2": {
+      "title": "Locate. Discover. Enjoy.",
+      "description": "Discover the best culinary addresses in Montreal around you in real time."
     }
   },
   "contact": {
