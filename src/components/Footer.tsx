@@ -114,10 +114,8 @@ const Footer = () => {
         <div className="relative border-t-2 border-border/60 mt-8 sm:mt-12 pt-8 sm:pt-10">
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
-            <a 
-              href="https://www.cuizly.ca" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <button 
+              onClick={() => window.location.reload()}
               className="flex items-center space-x-3 group cursor-pointer"
             >
               <img 
@@ -125,7 +123,7 @@ const Footer = () => {
                 alt="Cuizly" 
                 className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110"
               />
-            </a>
+            </button>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
               Ton prochain coup de cœur culinaire en un swipe.

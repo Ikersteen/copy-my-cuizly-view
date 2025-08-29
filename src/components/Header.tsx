@@ -44,18 +44,16 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo - Extrême gauche */}
           <div className="flex-shrink-0">
-            <a 
-              href="https://www.cuizly.ca" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center py-2"
+            <button 
+              onClick={() => window.location.reload()}
+              className="flex items-center py-2 cursor-pointer"
             >
               <img 
                 src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
                 alt="Cuizly" 
                 className="h-[50px] w-auto"
               />
-            </a>
+            </button>
           </div>
 
           {/* Navigation Desktop - Centre */}
