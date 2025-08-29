@@ -339,7 +339,7 @@ export const SavedFavoritesSection = () => {
 
               <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  {restaurant.cuisine_type?.slice(0, 9).map((cuisine, idx) => (
+                  {restaurant.cuisine_type?.map((cuisine, idx) => (
                     <Badge 
                       key={idx} 
                       variant="outline"
@@ -348,14 +348,6 @@ export const SavedFavoritesSection = () => {
                       {cuisine}
                     </Badge>
                   ))}
-                  {restaurant.cuisine_type && restaurant.cuisine_type.length > 9 && (
-                    <Badge 
-                      variant="outline"
-                      className="text-xs bg-muted/30 text-muted-foreground border-muted/50"
-                    >
-                      +{restaurant.cuisine_type.length - 9}
-                    </Badge>
-                  )}
                 </div>
 
                 <div className="bg-muted/50 rounded-lg p-3">
