@@ -363,6 +363,44 @@ export const SavedFavoritesSection = () => {
             </Button>
           </div>
         )}
+
+        {/* Pourquoi ce choix ? Section - Always show when user has favorites */}
+        {favoriteRestaurants.length > 0 && (
+          <div className="mt-12">
+            <div className="bg-card border rounded-xl p-8 max-w-4xl mx-auto">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-2 rounded-lg">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold">Pourquoi ce choix ?</h3>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-primary flex items-center space-x-2">
+                    <Heart className="h-4 w-4" />
+                    <span>Liste personnalisée</span>
+                  </h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    Vos favoris vous permettent de retrouver rapidement les restaurants que vous aimez. 
+                    Une fois ajoutés, ils apparaîtront ici pour un accès facile.
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-primary flex items-center space-x-2">
+                    <Star className="h-4 w-4" />
+                    <span>Suivi personnalisé</span>
+                  </h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    Nous gardons en mémoire vos restaurants favoris et vous notifions 
+                    des nouvelles offres et des nouveaux plats disponibles.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       
       <RestaurantMenuModal 
