@@ -113,11 +113,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       return;
     }
 
-    // Create a temporary URL for adjustment
-    const tempUrl = URL.createObjectURL(file);
-    setAdjustmentImageUrl(tempUrl);
-    setAdjustmentType(type);
-    setShowPhotoAdjustment(true);
+    // Convert file to base64 for preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64Image = e.target?.result as string;
+      setAdjustmentImageUrl(base64Image);
+      setAdjustmentType(type);
+      setShowPhotoAdjustment(true);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleAdjustedPhoto = async (adjustedImageData: string) => {
@@ -179,8 +183,6 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       } else {
         setUploading(false);
       }
-      // Clean up the temporary URL
-      URL.revokeObjectURL(adjustmentImageUrl);
     }
   };
 
