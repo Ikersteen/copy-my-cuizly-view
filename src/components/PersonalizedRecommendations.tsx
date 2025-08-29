@@ -8,6 +8,7 @@ import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useFavorites } from "@/hooks/useFavorites";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 import { RestaurantFiltersModal, RestaurantFilterOptions } from "@/components/RestaurantFiltersModal";
+import { useTranslation } from "react-i18next";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface Restaurant {
@@ -38,6 +39,7 @@ interface RecommendationCategory {
 }
 
 export const PersonalizedRecommendations = () => {
+  const { t } = useTranslation();
   const { preferences } = useUserPreferences();
   const { favorites, toggleFavorite } = useFavorites();
   const [categories, setCategories] = useState<RecommendationCategory[]>([]);
@@ -156,7 +158,7 @@ export const PersonalizedRecommendations = () => {
           console.log(`No specific preferences set, providing general recommendations for ${restaurant.name}`);
           // Attribuer un score de base pour les restaurants sans matching strict
           score += 5;
-          reasons.push("Restaurant populaire");
+          reasons.push(t('recommendations.popularRestaurant'));
           hasStrictMatch = true; // Permettre l'affichage
         }
         
@@ -182,13 +184,13 @@ export const PersonalizedRecommendations = () => {
           if (matchingCuisines.length > 0 || menuCuisineMatches.length > 0) {
             hasStrictMatch = true;
             score += (matchingCuisines.length + menuCuisineMatches.length) * 10;
-            reasons.push(`${matchingCuisines.length + menuCuisineMatches.length} cuisine(s) correspondante(s)`);
+            reasons.push(`${matchingCuisines.length + menuCuisineMatches.length} ${t('recommendations.cuisineMatches')}`);
           } else if (isFlexibleMode) {
             // En mode flexible, donner des points même sans correspondance exacte
             console.log(`No exact cuisine match for ${restaurant.name}, but showing in flexible mode`);
             hasStrictMatch = true;
             score += 3; // Score plus faible mais permet l'affichage
-            reasons.push("Restaurant à découvrir");
+            reasons.push(t('recommendations.discoverRestaurant'));
           } else {
             console.log(`No cuisine match for ${restaurant.name}, excluding in strict mode`);
             return null; // STRICT: Pas de match cuisine = exclusion
@@ -200,7 +202,7 @@ export const PersonalizedRecommendations = () => {
           if (restaurant.price_range === preferences.price_range) {
             hasStrictMatch = true;
             score += 15;
-            reasons.push("Dans votre budget");
+            reasons.push(t('recommendations.inYourBudget'));
           } else {
             // Plus flexible: accepter des restaurants proches du budget
             const priceOrder = ['$', '$$', '$$$', '$$$$'];
@@ -211,9 +213,9 @@ export const PersonalizedRecommendations = () => {
               hasStrictMatch = true;
               score += 8; // Score réduit mais accepté
               if (restaurantPriceIndex < userPriceIndex) {
-                reasons.push("Option plus économique");
+                reasons.push(t('recommendations.economicOption'));
               } else {
-                reasons.push("Option un peu plus chère");
+                reasons.push(t('recommendations.moreExpensive'));
               }
               console.log(`Price range close match for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), including`);
             } else {
@@ -221,7 +223,7 @@ export const PersonalizedRecommendations = () => {
               if (isFlexibleMode) {
                 hasStrictMatch = true;
                 score += 2;
-                reasons.push("Budget différent mais disponible");
+                reasons.push(t('recommendations.differentBudget'));
                 console.log(`Price range different but allowing in flexible mode for ${restaurant.name}`);
               } else {
                 console.log(`Price range too different for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), excluding`);
@@ -238,7 +240,7 @@ export const PersonalizedRecommendations = () => {
             // Allow restaurants without menus - they might have suitable options
             hasStrictMatch = true;
             score += 5; // Small bonus for being available
-            reasons.push("Menu à explorer");
+            reasons.push(t('recommendations.exploreMenu'));
           } else {
             let compatibleMenusCount = 0;
             
@@ -259,14 +261,14 @@ export const PersonalizedRecommendations = () => {
             if (compatibleMenusCount > 0) {
               hasStrictMatch = true;
               const percentage = Math.round((compatibleMenusCount / restaurantMenus.length) * 100);
-              reasons.push(`${percentage}% des plats adaptés à vos restrictions`);
+              reasons.push(`${percentage}% ${t('recommendations.dishesAdapted')}`);
               console.log(`${compatibleMenusCount}/${restaurantMenus.length} menus compatible for ALL dietary restrictions`);
             } else {
               console.log(`No menus accommodate ALL dietary restrictions for ${restaurant.name}, but allowing anyway`);
               // Allow restaurants even if menus don't match perfectly
               hasStrictMatch = true;
               score += 2; // Small score for availability
-              reasons.push("Vérifier les options disponibles");
+              reasons.push(t('recommendations.checkOptions'));
             }
           }
         }
@@ -278,7 +280,7 @@ export const PersonalizedRecommendations = () => {
             // Allow restaurants without menus but add caution
             hasStrictMatch = true;
             score += 1; // Very small score due to uncertainty
-            reasons.push("Vérifier les allergènes sur place");
+            reasons.push(t('recommendations.checkAllergensOnSite'));
           } else {
             let hasUnsafeMenus = false;
             let safeMenusCount = 0;
@@ -302,13 +304,13 @@ export const PersonalizedRecommendations = () => {
             if (!hasUnsafeMenus && restaurantMenus.length > 0) {
               hasStrictMatch = true;
               score += 20;
-              reasons.push("Tous les plats sont sûrs pour vos allergies");
+              reasons.push(t('recommendations.allDishesSafe'));
               console.log(`All ${restaurantMenus.length} menus are safe for allergens`);
             } else if (hasUnsafeMenus) {
               // Some menus have allergens, but still allow with warning
               hasStrictMatch = true;
               score += 1; // Very low score due to risk
-              reasons.push("Attention: certains plats peuvent contenir des allergènes");
+              reasons.push(t('recommendations.cautionAllergens'));
               console.log(`Some menus contain allergens for ${restaurant.name}, but allowing with warning`);
             }
           }
@@ -326,7 +328,7 @@ export const PersonalizedRecommendations = () => {
           console.log(`Flexible mode: giving ${restaurant.name} a base score`);
           hasStrictMatch = true;
           score += 2;
-          reasons.push("Restaurant suggéré");
+          reasons.push(t('recommendations.suggestedRestaurant'));
         }
 
         const realRating = await getRealRating(restaurant.id);
@@ -356,8 +358,8 @@ export const PersonalizedRecommendations = () => {
         
         newCategories.push({
           id: 'recommended',
-          title: 'Recommandé pour vous',
-          subtitle: 'Basé sur vos préférences culinaires',
+          title: t('recommendations.recommendedForYou'),
+          subtitle: t('recommendations.basedOnPreferences'),
           icon: Sparkles,
           color: 'bg-gradient-to-r from-primary/10 to-primary/5',
           restaurants: sortedRestaurants.slice(0, 12)
@@ -377,7 +379,7 @@ export const PersonalizedRecommendations = () => {
             score: 5, // Score minimal pour tous
             rating: realRating.rating,
             totalRatings: realRating.totalRatings,
-            reasons: ['Restaurant disponible', 'Explorez de nouveaux goûts']
+            reasons: [t('recommendations.restaurantAvailable'), t('recommendations.exploreNewTastes')]
           };
         }));
         
@@ -386,8 +388,8 @@ export const PersonalizedRecommendations = () => {
         if (fallbackRestaurants.length > 0) {
           newCategories.push({
             id: 'available',
-            title: 'Restaurants disponibles',
-            subtitle: 'Découvrez ce que Montréal a à offrir',
+            title: t('recommendations.availableRestaurants'),
+            subtitle: t('recommendations.discoverMontreal'),
             icon: MapPin,
             color: 'bg-gradient-to-r from-blue-50 to-blue-100',
             restaurants: fallbackRestaurants.slice(0, 12)
@@ -571,8 +573,8 @@ export const PersonalizedRecommendations = () => {
             <div className="flex items-center space-x-2 mt-4">
               <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse" />
               <div>
-                <h2 className="text-lg sm:text-xl font-semibold whitespace-nowrap">Génération des recommandations...</h2>
-                <p className="text-xs sm:text-base text-muted-foreground">Analyse de vos préférences en cours</p>
+                <h2 className="text-lg sm:text-xl font-semibold whitespace-nowrap">{t('recommendations.generatingRecommendations')}</h2>
+                <p className="text-xs sm:text-base text-muted-foreground">{t('recommendations.analyzingPreferences')}</p>
               </div>
             </div>
           </div>
@@ -593,10 +595,9 @@ export const PersonalizedRecommendations = () => {
                   <ChefHat className="h-12 w-12 text-muted-foreground" />
                 </div>
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-bold">Aucune recommandation disponible</h2>
+                  <h2 className="text-2xl font-bold">{t('recommendations.noRecommendationsTitle')}</h2>
                   <p className="text-muted-foreground max-w-lg">
-                    Nous n'avons pas encore trouvé de restaurants qui correspondent parfaitement à vos préférences. 
-                    Essayez de modifier vos critères ou explorez nos restaurants disponibles.
+                    {t('recommendations.noRecommendationsDesc')}
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -605,7 +606,7 @@ export const PersonalizedRecommendations = () => {
                     className="flex items-center gap-2"
                   >
                     <Filter className="h-4 w-4" />
-                    Modifier mes préférences
+                    {t('recommendations.modifyPreferences')}
                   </Button>
                   <Button
                     variant="outline"
@@ -617,7 +618,7 @@ export const PersonalizedRecommendations = () => {
                     className="flex items-center gap-2"
                   >
                     <Sparkles className="h-4 w-4" />
-                    {loading ? "Actualisation..." : "Actualiser les recommandations"}
+                    {loading ? t('recommendations.refreshing') : t('recommendations.refreshRecommendations')}
                   </Button>
                 </div>
               </div>
@@ -665,7 +666,7 @@ export const PersonalizedRecommendations = () => {
                  <div className="hidden md:flex gap-2">
                    <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
                      <Filter className="h-4 w-4 mr-0.5" />
-                     Filtres
+            <h3 className="text-lg font-semibold mb-1">{t('recommendations.filters')}</h3>
                    </Button>
                  </div>
               </div>
@@ -742,12 +743,12 @@ export const PersonalizedRecommendations = () => {
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                       <span className="font-medium text-xs">
-                        {currentRating.rating} ({currentRating.totalRatings} évaluation{currentRating.totalRatings > 1 ? 's' : ''})
+                        {currentRating.rating} ({currentRating.totalRatings} {currentRating.totalRatings > 1 ? t('recommendations.evaluations') : t('recommendations.evaluation')})
                       </span>
                     </div>
                   );
                 } else {
-                  return <span className="text-xs text-muted-foreground">Pas encore d'évaluations</span>;
+                  return <span className="text-xs text-muted-foreground">{t('recommendations.noRatingsYet')}</span>;
                 }
               })()}
             </div>
@@ -776,10 +777,10 @@ export const PersonalizedRecommendations = () => {
 
                      {restaurant.reasons && restaurant.reasons.length > 0 && (
                        <div className="bg-muted/50 rounded-lg p-3">
-                         <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-                           <Sparkles className="h-3 w-3" />
-                           Pourquoi ce choix ?
-                         </p>
+          <h4 className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+            <Sparkles className="h-3 w-3" />
+            {t('recommendations.whyChoice')}
+          </h4>
                          <div className="flex flex-wrap gap-1">
                            {restaurant.reasons.slice(0, 2).map((reason, idx) => (
                              <Badge 
@@ -805,7 +806,7 @@ export const PersonalizedRecommendations = () => {
                         setShowRestaurantModal(true);
                       }}
                     >
-                      Voir le profil
+                      {t('recommendations.viewProfile')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -815,7 +816,7 @@ export const PersonalizedRecommendations = () => {
              <div className="md:hidden text-center flex gap-2 justify-center flex-wrap">
                <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
                  <Filter className="h-4 w-4 mr-0.5" />
-                 Filtres
+                 {t('recommendations.filters')}
                </Button>
              </div>
           </div>
