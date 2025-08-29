@@ -160,7 +160,15 @@ export const PersonalizedRecommendations = () => {
           hasStrictMatch = true; // Permettre l'affichage
         }
         
-        // 1. STRICT Cuisine preferences match - OBLIGATOIRE si défini
+        // Compter le nombre total de préférences définies pour déterminer le niveau de strictness
+        const totalPreferences = (preferences.cuisine_preferences?.length || 0) +
+                                (preferences.price_range ? 1 : 0) +
+                                (preferences.dietary_restrictions?.length || 0) +
+                                (preferences.allergens?.length || 0);
+        
+        const isFlexibleMode = totalPreferences === 1; // Mode flexible si une seule préférence
+        
+        // 1. Cuisine preferences match - Flexible si une seule préférence
         if (preferences.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
           const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
             preferences.cuisine_preferences.includes(cuisine)
@@ -175,8 +183,14 @@ export const PersonalizedRecommendations = () => {
             hasStrictMatch = true;
             score += (matchingCuisines.length + menuCuisineMatches.length) * 10;
             reasons.push(`${matchingCuisines.length + menuCuisineMatches.length} cuisine(s) correspondante(s)`);
+          } else if (isFlexibleMode) {
+            // En mode flexible, donner des points même sans correspondance exacte
+            console.log(`No exact cuisine match for ${restaurant.name}, but showing in flexible mode`);
+            hasStrictMatch = true;
+            score += 3; // Score plus faible mais permet l'affichage
+            reasons.push("Restaurant à découvrir");
           } else {
-            console.log(`No cuisine match for ${restaurant.name}, excluding`);
+            console.log(`No cuisine match for ${restaurant.name}, excluding in strict mode`);
             return null; // STRICT: Pas de match cuisine = exclusion
           }
         }
