@@ -58,18 +58,18 @@
     "consumerSection": "For consumers",
     "restaurantSection": "For restaurateurs",
     "consumer": {
-      "title": "Cuizly Free",
-      "subtitle": "For food enthusiasts discovering Montreal's cuisine",
-      "price": "100% Free",
+      "title": "Cuizly Basic",
+      "subtitle": "For food lovers who want to discover Montreal",
+      "price": "Free for life",
       "features": [
-        "Discover exclusive personalized offers",
-        "Intelligent culinary recommendations based on your tastes", 
-        "Priority notifications for the best promotions",
-        "Simplified one-click reservation system",
-        "Responsive and personalized customer support",
-        "Premium experience with no advertisements"
+        "Access to all exclusive offers",
+        "Personalized AI recommendations",
+        "Priority alerts on promos",
+        "Easy one-click reservations",
+        "Dedicated customer support",
+        "Ad-free interface"
       ],
-      "cta": "Join for free"
+      "cta": "Start for free"
     },
     "pro": {
       "title": "Cuizly Pro",

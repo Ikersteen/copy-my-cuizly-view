@@ -58,18 +58,18 @@
     "consumerSection": "Pour les consommateurs",
     "restaurantSection": "Pour les restaurateurs",
     "consumer": {
-      "title": "Cuizly Gratuit",
-      "subtitle": "Pour les amateurs de bonne cuisine à Montréal",
-      "price": "100% Gratuit",
+      "title": "Cuizly Basique",
+      "subtitle": "Pour les gourmets qui veulent découvrir Montréal",
+      "price": "Gratuit à vie",
       "features": [
-        "Découvrez des offres exclusives personnalisées",
-        "Recommandations culinaires intelligentes basées sur vos goûts",
-        "Notifications prioritaires pour les meilleures promotions",
-        "Système de réservation simplifié en un clic",
-        "Support client réactif et personnalisé",
-        "Expérience premium sans aucune publicité"
+        "Accès à toutes les offres exclusives",
+        "Recommandations IA personnalisées",
+        "Alertes prioritaires sur les promos",
+        "Réservations faciles en un clic",
+        "Support client dédié",
+        "Interface sans publicité"
       ],
-      "cta": "Rejoindre gratuitement"
+      "cta": "Commencer gratuitement"
     },
     "pro": {
       "title": "Cuizly Pro",
