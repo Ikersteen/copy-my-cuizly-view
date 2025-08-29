@@ -6,6 +6,7 @@ import { History, Clock, Search, Trash2 } from "lucide-react";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useTranslation } from 'react-i18next';
 
 interface HistoryModalProps {
   open: boolean;
@@ -13,13 +14,14 @@ interface HistoryModalProps {
 }
 
 export const HistoryModal = ({ open, onOpenChange }: HistoryModalProps) => {
+  const { t } = useTranslation();
   const { searchHistory, clearHistory, removeSearchItem } = useSearchHistory();
 
   const getSearchTypeText = (type: string) => {
     switch (type) {
-      case 'restaurant': return 'Restaurant';
-      case 'cuisine': return 'Cuisine';
-      case 'location': return 'Localisation';
+      case 'restaurant': return t('history.searchTypes.restaurant');
+      case 'cuisine': return t('history.searchTypes.cuisine');
+      case 'location': return t('history.searchTypes.location');
       default: return type;
     }
   };
@@ -38,7 +40,7 @@ export const HistoryModal = ({ open, onOpenChange }: HistoryModalProps) => {
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle>Recherches</DialogTitle>
+            <DialogTitle>{t('history.title')}</DialogTitle>
             {searchHistory.length > 0 && (
               <Button 
                 variant="outline" 
@@ -46,7 +48,7 @@ export const HistoryModal = ({ open, onOpenChange }: HistoryModalProps) => {
                 onClick={clearHistory}
               >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Effacer tout
+                {t('history.clearAll')}
               </Button>
             )}
           </div>
@@ -55,8 +57,8 @@ export const HistoryModal = ({ open, onOpenChange }: HistoryModalProps) => {
         {searchHistory.length === 0 ? (
           <div className="text-center py-8">
             <Search className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Aucune recherche pour le moment</h3>
-            <p className="text-muted-foreground">Vos recherches de restaurants apparaîtront ici</p>
+            <h3 className="text-lg font-semibold mb-2">{t('history.noSearches')}</h3>
+            <p className="text-muted-foreground">{t('history.searchesAppear')}</p>
           </div>
         ) : (
           <div className="space-y-4">

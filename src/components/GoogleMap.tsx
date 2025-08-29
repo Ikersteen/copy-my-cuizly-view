@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 /// <reference types="google.maps" />
 
@@ -33,6 +34,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   apiKey,
   onRestaurantsLoaded
 }) => {
+  const { t } = useTranslation();
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -125,20 +127,20 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
 
               setIsLoading(false);
             } else {
-              setError('Erreur lors du chargement des restaurants');
+              setError(t('googleMap.loadingError'));
               setIsLoading(false);
             }
           });
         }
       } catch (err) {
-        setError('Erreur lors du chargement de la carte');
+        setError(t('googleMap.mapError'));
         setIsLoading(false);
         console.error('Map loading error:', err);
       }
     };
 
     initMap();
-  }, [center.lat, center.lng, zoom, onRestaurantsLoaded]);
+  }, [center.lat, center.lng, zoom, onRestaurantsLoaded, t]);
 
   if (error) {
     return (
@@ -146,7 +148,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
         <div className="text-center p-6">
           <p className="text-destructive mb-2">{error}</p>
           <p className="text-muted-foreground text-sm">
-            Vérifiez que votre clé API Google Maps est correctement configurée
+            {t('googleMap.apiKeyError')}
           </p>
         </div>
       </div>
@@ -159,7 +161,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
           <div className="text-center space-y-4">
             <LoadingSpinner size="md" />
-            <p className="text-muted-foreground">Chargement des restaurants...</p>
+            <p className="text-muted-foreground">{t('googleMap.loadingRestaurants')}</p>
           </div>
         </div>
       )}
@@ -167,7 +169,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       {restaurants.length > 0 && (
         <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur-sm rounded-lg p-3 shadow-lg">
           <p className="text-sm font-medium">
-            {restaurants.length} restaurants trouvés
+            {restaurants.length} {t('googleMap.restaurantsFound')}
           </p>
         </div>
       )}

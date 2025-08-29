@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { UserPreferences, useUserPreferences } from "@/hooks/useUserPreferences";
 import { X, Plus, ChevronDown } from "lucide-react";
 import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
+import { useTranslation } from 'react-i18next';
 
 interface PreferencesModalProps {
   open: boolean;
@@ -25,29 +26,62 @@ const montrealStreets = [
   "Avenue Christophe-Colomb", "Rue Ontario", "Boulevard Pie-IX"
 ];
 
-const DIETARY_OPTIONS = [
-  "Végétarien", "Végan", "Sans gluten", "Halal", "Casher", "Paléo",
-  "Cétogène", "Sans lactose", "Pescétarien", "Faible en sodium",
-  "Frugivore", "Carnivore", "Détox", "Épicé", "Non épicé", "Faible en sucre"
-];
-
-const ALLERGEN_OPTIONS = [
-  "Arachides", "Noix", "Lait", "Œufs", "Blé", "Soja", "Poisson", 
-  "Fruits de mer", "Graines de sésame", "Sulfites", "Moutarde",
-  "Lupin", "Céleri", "Gluten", "Maïs", "Pois / légumineuses",
-  "Kiwi", "Banane", "Fruits à noyau"
-];
-
-const MEAL_TIMES = [
-  "Déjeuner / Brunch", "Déjeuner rapide", "Dîner / Souper", 
-  "Café & Snack", "Spécialisés Détox / Santé", "Tard le soir"
-];
-
 const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 
 export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) => {
+  const { t } = useTranslation();
   const { preferences, updatePreferences } = useUserPreferences();
   const [localPrefs, setLocalPrefs] = useState<Partial<UserPreferences>>({});
+
+  const DIETARY_OPTIONS = [
+    { key: "vegetarian", value: t('preferences.dietaryOptions.vegetarian') },
+    { key: "vegan", value: t('preferences.dietaryOptions.vegan') },
+    { key: "glutenFree", value: t('preferences.dietaryOptions.glutenFree') },
+    { key: "halal", value: t('preferences.dietaryOptions.halal') },
+    { key: "kosher", value: t('preferences.dietaryOptions.kosher') },
+    { key: "paleo", value: t('preferences.dietaryOptions.paleo') },
+    { key: "keto", value: t('preferences.dietaryOptions.keto') },
+    { key: "lactoseFree", value: t('preferences.dietaryOptions.lactoseFree') },
+    { key: "pescatarian", value: t('preferences.dietaryOptions.pescatarian') },
+    { key: "lowSodium", value: t('preferences.dietaryOptions.lowSodium') },
+    { key: "fruitarian", value: t('preferences.dietaryOptions.fruitarian') },
+    { key: "carnivore", value: t('preferences.dietaryOptions.carnivore') },
+    { key: "detox", value: t('preferences.dietaryOptions.detox') },
+    { key: "spicy", value: t('preferences.dietaryOptions.spicy') },
+    { key: "notSpicy", value: t('preferences.dietaryOptions.notSpicy') },
+    { key: "lowSugar", value: t('preferences.dietaryOptions.lowSugar') }
+  ];
+
+  const ALLERGEN_OPTIONS = [
+    { key: "peanuts", value: t('preferences.allergenOptions.peanuts') },
+    { key: "nuts", value: t('preferences.allergenOptions.nuts') },
+    { key: "milk", value: t('preferences.allergenOptions.milk') },
+    { key: "eggs", value: t('preferences.allergenOptions.eggs') },
+    { key: "wheat", value: t('preferences.allergenOptions.wheat') },
+    { key: "soy", value: t('preferences.allergenOptions.soy') },
+    { key: "fish", value: t('preferences.allergenOptions.fish') },
+    { key: "seafood", value: t('preferences.allergenOptions.seafood') },
+    { key: "sesame", value: t('preferences.allergenOptions.sesame') },
+    { key: "sulfites", value: t('preferences.allergenOptions.sulfites') },
+    { key: "mustard", value: t('preferences.allergenOptions.mustard') },
+    { key: "lupin", value: t('preferences.allergenOptions.lupin') },
+    { key: "celery", value: t('preferences.allergenOptions.celery') },
+    { key: "gluten", value: t('preferences.allergenOptions.gluten') },
+    { key: "corn", value: t('preferences.allergenOptions.corn') },
+    { key: "legumes", value: t('preferences.allergenOptions.legumes') },
+    { key: "kiwi", value: t('preferences.allergenOptions.kiwi') },
+    { key: "banana", value: t('preferences.allergenOptions.banana') },
+    { key: "stoneFruits", value: t('preferences.allergenOptions.stoneFruits') }
+  ];
+
+  const MEAL_TIMES = [
+    { key: "breakfast", value: t('preferences.mealTimeOptions.breakfast') },
+    { key: "quickLunch", value: t('preferences.mealTimeOptions.quickLunch') },
+    { key: "dinner", value: t('preferences.mealTimeOptions.dinner') },
+    { key: "snack", value: t('preferences.mealTimeOptions.snack') },
+    { key: "detox", value: t('preferences.mealTimeOptions.detox') },
+    { key: "lateNight", value: t('preferences.mealTimeOptions.lateNight') }
+  ];
 
   // Réinitialiser les préférences locales à chaque ouverture du modal
   useEffect(() => {
@@ -95,16 +129,16 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">
-            Mes préférences culinaires
+            {t('preferences.title')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Cuisines préférées */}
           <div>
-            <Label className="text-base font-medium">Cuisines préférées</Label>
+            <Label className="text-base font-medium">{t('preferences.cuisines')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Sélectionnez vos types de cuisine favoris
+              {t('preferences.selectCuisines')}
             </p>
             
             {/* Selected cuisines display */}
@@ -137,7 +171,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                 }}
               >
                 <SelectTrigger className="w-full bg-background border z-50">
-                  <SelectValue placeholder="Sélectionner une cuisine" />
+                  <SelectValue placeholder={t('preferences.selectCuisine')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
                   {CUISINE_OPTIONS.filter(cuisine => !localPrefs.cuisine_preferences?.includes(cuisine)).map(cuisine => (
@@ -154,20 +188,20 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           {/* Restrictions alimentaires */}
           <div>
-            <Label className="text-base font-medium">Restrictions alimentaires</Label>
+            <Label className="text-base font-medium">{t('preferences.dietaryRestrictions')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Indiquez vos restrictions alimentaires
+              {t('preferences.dietaryRestrictionsDesc')}
             </p>
             <div className="flex flex-wrap gap-2">
-              {DIETARY_OPTIONS.sort().map(diet => (
+              {DIETARY_OPTIONS.sort((a, b) => a.value.localeCompare(b.value)).map(diet => (
                 <Badge
-                  key={diet}
-                  variant={(localPrefs.dietary_restrictions || []).includes(diet) ? "default" : "outline"}
+                  key={diet.key}
+                  variant={(localPrefs.dietary_restrictions || []).includes(diet.value) ? "default" : "outline"}
                   className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleArrayItem(localPrefs.dietary_restrictions || [], diet, 'dietary_restrictions')}
+                  onClick={() => toggleArrayItem(localPrefs.dietary_restrictions || [], diet.value, 'dietary_restrictions')}
                 >
-                  {diet}
-                  {(localPrefs.dietary_restrictions || []).includes(diet) && (
+                  {diet.value}
+                  {(localPrefs.dietary_restrictions || []).includes(diet.value) && (
                     <X className="h-3 w-3 ml-1" />
                   )}
                 </Badge>
@@ -179,20 +213,20 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           {/* Allergènes */}
           <div>
-            <Label className="text-base font-medium">Allergènes à éviter</Label>
+            <Label className="text-base font-medium">{t('preferences.allergens')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Sélectionnez vos allergènes à éviter
+              {t('preferences.allergensDesc')}
             </p>
             <div className="flex flex-wrap gap-2">
-              {ALLERGEN_OPTIONS.sort().map(allergen => (
+              {ALLERGEN_OPTIONS.sort((a, b) => a.value.localeCompare(b.value)).map(allergen => (
                 <Badge
-                  key={allergen}
-                  variant={(localPrefs.allergens || []).includes(allergen) ? "destructive" : "outline"}
+                  key={allergen.key}
+                  variant={(localPrefs.allergens || []).includes(allergen.value) ? "destructive" : "outline"}
                   className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleArrayItem(localPrefs.allergens || [], allergen, 'allergens')}
+                  onClick={() => toggleArrayItem(localPrefs.allergens || [], allergen.value, 'allergens')}
                 >
-                  {allergen}
-                  {(localPrefs.allergens || []).includes(allergen) && (
+                  {allergen.value}
+                  {(localPrefs.allergens || []).includes(allergen.value) && (
                     <X className="h-3 w-3 ml-1" />
                   )}
                 </Badge>
@@ -204,9 +238,9 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           {/* Gamme de prix */}
           <div>
-            <Label className="text-base font-medium">Gamme de prix préférée</Label>
+            <Label className="text-base font-medium">{t('preferences.priceRange')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Choisissez votre budget habituel
+              {t('preferences.priceRangeDesc')}
             </p>
             
             <Select
@@ -214,13 +248,13 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               onValueChange={(range) => setLocalPrefs(prev => ({ ...prev, price_range: range }))}
             >
               <SelectTrigger className="w-full bg-background border z-50">
-                <SelectValue placeholder="Sélectionner une gamme de prix" />
+                <SelectValue placeholder={t('preferences.selectPriceRange')} />
               </SelectTrigger>
               <SelectContent className="bg-background border z-50">
-                <SelectItem value="$" className="hover:bg-muted">$ - Économique</SelectItem>
-                <SelectItem value="$$" className="hover:bg-muted">$$ - Modéré</SelectItem>
-                <SelectItem value="$$$" className="hover:bg-muted">$$$ - Élevé</SelectItem>
-                <SelectItem value="$$$$" className="hover:bg-muted">$$$$ - Luxueux</SelectItem>
+                <SelectItem value="$" className="hover:bg-muted">{t('preferences.priceRanges.economic')}</SelectItem>
+                <SelectItem value="$$" className="hover:bg-muted">{t('preferences.priceRanges.moderate')}</SelectItem>
+                <SelectItem value="$$$" className="hover:bg-muted">{t('preferences.priceRanges.elevated')}</SelectItem>
+                <SelectItem value="$$$$" className="hover:bg-muted">{t('preferences.priceRanges.luxury')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -229,7 +263,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           {/* Sélection de rue */}
           <div>
-            <Label className="text-sm font-medium mb-3 block">Votre rue à Montréal</Label>
+            <Label className="text-sm font-medium mb-3 block">{t('preferences.street')}</Label>
             <div className="grid grid-cols-2 gap-2">
               {montrealStreets.map(street => (
                 <Badge
@@ -249,7 +283,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Rayon de livraison */}
           <div>
             <Label className="text-base font-medium">
-              Rayon de livraison (km): {localPrefs.delivery_radius || 1}
+              {t('preferences.deliveryRadius')}: {localPrefs.delivery_radius || 1}
             </Label>
             <Slider
               value={[localPrefs.delivery_radius || 1]}
@@ -265,20 +299,20 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           {/* Moments de repas favoris */}
           <div>
-            <Label className="text-base font-medium">Moments de repas favoris</Label>
+            <Label className="text-base font-medium">{t('preferences.mealTimes')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Quand commandez-vous habituellement ?
+              {t('preferences.mealTimesDesc')}
             </p>
             <div className="flex flex-wrap gap-2">
               {MEAL_TIMES.map(time => (
                 <Badge
-                  key={time}
-                  variant={(localPrefs.favorite_meal_times || []).includes(time) ? "default" : "outline"}
+                  key={time.key}
+                  variant={(localPrefs.favorite_meal_times || []).includes(time.value) ? "default" : "outline"}
                   className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleArrayItem(localPrefs.favorite_meal_times || [], time, 'favorite_meal_times')}
+                  onClick={() => toggleArrayItem(localPrefs.favorite_meal_times || [], time.value, 'favorite_meal_times')}
                 >
-                  {time}
-                  {(localPrefs.favorite_meal_times || []).includes(time) && (
+                  {time.value}
+                  {(localPrefs.favorite_meal_times || []).includes(time.value) && (
                     <X className="h-3 w-3 ml-1" />
                   )}
                 </Badge>
@@ -290,12 +324,12 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           {/* Notifications */}
           <div>
-            <Label className="text-base font-medium">Préférences de notification</Label>
+            <Label className="text-base font-medium">{t('preferences.notifications')}</Label>
             <div className="space-y-4 mt-3">
               <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
                 <div>
-                  <Label htmlFor="push-notifications" className="font-medium">Notifications push</Label>
-                  <p className="text-sm text-muted-foreground">Recevez des notifications sur votre appareil</p>
+                  <Label htmlFor="push-notifications" className="font-medium">{t('preferences.pushNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('preferences.pushNotificationsDesc')}</p>
                 </div>
                 <Switch
                   id="push-notifications"
@@ -313,8 +347,8 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               </div>
               <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
                 <div>
-                  <Label htmlFor="email-notifications" className="font-medium">Notifications courriel</Label>
-                  <p className="text-sm text-muted-foreground">Recevez des notifications par e-mail</p>
+                  <Label htmlFor="email-notifications" className="font-medium">{t('preferences.emailNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('preferences.emailNotificationsDesc')}</p>
                 </div>
                 <Switch
                   id="email-notifications"
@@ -336,10 +370,10 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
         <div className="flex gap-3 mt-6">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1">
-            Annuler
+            {t('preferences.cancel')}
           </Button>
           <Button onClick={handleSave} className="flex-1">
-            Sauvegarder
+            {t('preferences.save')}
           </Button>
         </div>
       </DialogContent>

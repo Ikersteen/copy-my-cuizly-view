@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { X, Star } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileFiltersDrawer } from "./MobileFiltersDrawer";
+import { useTranslation } from 'react-i18next';
 
 interface FiltersModalProps {
   open: boolean;
@@ -22,15 +23,8 @@ export interface FilterOptions {
   distance: number;
 }
 
-const CUISINE_OPTIONS = [
-  "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
-  "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
-  "Vietnamienne", "Espagnole", "Marocaine", "Turque"
-];
-
-const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
-
 export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModalProps) => {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
   const [filters, setFilters] = useState<FilterOptions>({
     cuisines: [],
@@ -38,6 +32,27 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
     rating: 0,
     distance: 15
   });
+
+  const CUISINE_OPTIONS = [
+    { key: "french", value: t('filters.cuisineTypes.french') },
+    { key: "italian", value: t('filters.cuisineTypes.italian') },
+    { key: "japanese", value: t('filters.cuisineTypes.japanese') },
+    { key: "chinese", value: t('filters.cuisineTypes.chinese') },
+    { key: "mexican", value: t('filters.cuisineTypes.mexican') },
+    { key: "indian", value: t('filters.cuisineTypes.indian') },
+    { key: "thai", value: t('filters.cuisineTypes.thai') },
+    { key: "lebanese", value: t('filters.cuisineTypes.lebanese') },
+    { key: "greek", value: t('filters.cuisineTypes.greek') },
+    { key: "american", value: t('filters.cuisineTypes.american') },
+    { key: "quebecois", value: t('filters.cuisineTypes.quebecois') },
+    { key: "korean", value: t('filters.cuisineTypes.korean') },
+    { key: "vietnamese", value: t('filters.cuisineTypes.vietnamese') },
+    { key: "spanish", value: t('filters.cuisineTypes.spanish') },
+    { key: "moroccan", value: t('filters.cuisineTypes.moroccan') },
+    { key: "turkish", value: t('filters.cuisineTypes.turkish') }
+  ];
+
+  const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 
   // Use mobile drawer on mobile devices
   if (isMobile) {
@@ -86,23 +101,23 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Filtrer les restaurants</DialogTitle>
+          <DialogTitle>{t('filters.title')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Types de cuisine */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Cuisines préférées</Label>
+            <Label className="text-base font-medium mb-3 block">{t('filters.cuisines')}</Label>
             <div className="flex flex-wrap gap-2">
               {CUISINE_OPTIONS.map(cuisine => (
                 <Badge
-                  key={cuisine}
-                  variant={filters.cuisines.includes(cuisine) ? "default" : "outline"}
+                  key={cuisine.key}
+                  variant={filters.cuisines.includes(cuisine.value) ? "default" : "outline"}
                   className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleCuisine(cuisine)}
+                  onClick={() => toggleCuisine(cuisine.value)}
                 >
-                  {cuisine}
-                  {filters.cuisines.includes(cuisine) && (
+                  {cuisine.value}
+                  {filters.cuisines.includes(cuisine.value) && (
                     <X className="h-3 w-3 ml-1" />
                   )}
                 </Badge>
@@ -114,7 +129,7 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
 
           {/* Gamme de prix */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Gamme de prix</Label>
+            <Label className="text-base font-medium mb-3 block">{t('filters.priceRange')}</Label>
             <div className="flex gap-2">
               {PRICE_RANGES.map(price => (
                 <Badge
@@ -134,7 +149,7 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
           {/* Note minimale */}
           <div>
             <Label className="text-base font-medium">
-              Note minimale: {filters.rating}/5
+              {t('filters.rating')}: {filters.rating}/5
             </Label>
             <Slider
               value={[filters.rating]}
@@ -155,7 +170,7 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
           {/* Distance */}
           <div>
             <Label className="text-base font-medium">
-              Distance maximale: {filters.distance} km
+              {t('filters.distance')}: {filters.distance} km
             </Label>
             <Slider
               value={[filters.distance]}
@@ -174,10 +189,10 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
 
         <div className="flex gap-3 mt-6">
           <Button variant="outline" onClick={handleReset} className="flex-1">
-            Réinitialiser
+            {t('filters.reset')}
           </Button>
           <Button onClick={handleApply} className="flex-1">
-            Appliquer les filtres
+            {t('filters.apply')}
           </Button>
         </div>
       </DialogContent>

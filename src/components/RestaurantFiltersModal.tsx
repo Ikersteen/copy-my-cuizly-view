@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { X, TrendingUp, DollarSign, Users, Clock } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface RestaurantFiltersModalProps {
   open: boolean;
@@ -22,29 +23,10 @@ export interface RestaurantFilterOptions {
   sortBy: string;
 }
 
-const CATEGORY_OPTIONS = [
-  "Promotion", "Nouveau", "Populaire", "Spécialité", "Menu du jour", 
-  "Végétarien", "Végétalien", "Sans gluten", "Halal", "Casher"
-];
-
 const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 
-const DATE_RANGES = [
-  { label: "Aujourd'hui", value: "today" },
-  { label: "Cette semaine", value: "week" },
-  { label: "Ce mois", value: "month" },
-  { label: "Tout", value: "all" }
-];
-
-const SORT_OPTIONS = [
-  { label: "Plus récent", value: "newest", icon: Clock },
-  { label: "Plus populaire", value: "popular", icon: TrendingUp },
-  { label: "Prix croissant", value: "price_asc", icon: DollarSign },
-  { label: "Prix décroissant", value: "price_desc", icon: DollarSign },
-  { label: "Nombre de vues", value: "views", icon: Users }
-];
-
 export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: RestaurantFiltersModalProps) => {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState<RestaurantFilterOptions>({
     categories: [],
     priceRange: [],
@@ -52,6 +34,34 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
     activeOnly: true,
     sortBy: "newest"
   });
+
+  const CATEGORY_OPTIONS = [
+    { key: "promotion", value: t('restaurantFilters.categoryOptions.promotion') },
+    { key: "new", value: t('restaurantFilters.categoryOptions.new') },
+    { key: "popular", value: t('restaurantFilters.categoryOptions.popular') },
+    { key: "specialty", value: t('restaurantFilters.categoryOptions.specialty') },
+    { key: "dailyMenu", value: t('restaurantFilters.categoryOptions.dailyMenu') },
+    { key: "vegetarian", value: t('restaurantFilters.categoryOptions.vegetarian') },
+    { key: "vegan", value: t('restaurantFilters.categoryOptions.vegan') },
+    { key: "glutenFree", value: t('restaurantFilters.categoryOptions.glutenFree') },
+    { key: "halal", value: t('restaurantFilters.categoryOptions.halal') },
+    { key: "kosher", value: t('restaurantFilters.categoryOptions.kosher') }
+  ];
+
+  const DATE_RANGES = [
+    { labelKey: "restaurantFilters.dateRanges.today", value: "today" },
+    { labelKey: "restaurantFilters.dateRanges.week", value: "week" },
+    { labelKey: "restaurantFilters.dateRanges.month", value: "month" },
+    { labelKey: "restaurantFilters.dateRanges.all", value: "all" }
+  ];
+
+  const SORT_OPTIONS = [
+    { labelKey: "restaurantFilters.sortOptions.newest", value: "newest", icon: Clock },
+    { labelKey: "restaurantFilters.sortOptions.popular", value: "popular", icon: TrendingUp },
+    { labelKey: "restaurantFilters.sortOptions.priceAsc", value: "price_asc", icon: DollarSign },
+    { labelKey: "restaurantFilters.sortOptions.priceDesc", value: "price_desc", icon: DollarSign },
+    { labelKey: "restaurantFilters.sortOptions.views", value: "views", icon: Users }
+  ];
 
   const handleApply = () => {
     onApplyFilters(filters);
@@ -90,23 +100,23 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Filtrer vos offres et menus</DialogTitle>
+          <DialogTitle>{t('restaurantFilters.title')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Catégories */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Catégories</Label>
+            <Label className="text-base font-medium mb-3 block">{t('restaurantFilters.categories')}</Label>
             <div className="flex flex-wrap gap-2">
               {CATEGORY_OPTIONS.map(category => (
                 <Badge
-                  key={category}
-                  variant={filters.categories.includes(category) ? "default" : "outline"}
+                  key={category.key}
+                  variant={filters.categories.includes(category.value) ? "default" : "outline"}
                   className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleCategory(category)}
+                  onClick={() => toggleCategory(category.value)}
                 >
-                  {category}
-                  {filters.categories.includes(category) && (
+                  {category.value}
+                  {filters.categories.includes(category.value) && (
                     <X className="h-3 w-3 ml-1" />
                   )}
                 </Badge>
@@ -118,7 +128,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
 
           {/* Gamme de prix */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Gamme de prix</Label>
+            <Label className="text-base font-medium mb-3 block">{t('restaurantFilters.priceRange')}</Label>
             <div className="flex gap-2">
               {PRICE_RANGES.map(price => (
                 <Badge
@@ -137,7 +147,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
 
           {/* Période */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Période</Label>
+            <Label className="text-base font-medium mb-3 block">{t('restaurantFilters.period')}</Label>
             <div className="grid grid-cols-2 gap-2">
               {DATE_RANGES.map(date => (
                 <Button
@@ -146,7 +156,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
                   className="justify-start"
                   onClick={() => setFilters(prev => ({ ...prev, dateRange: date.value }))}
                 >
-                  {date.label}
+                  {t(date.labelKey)}
                 </Button>
               ))}
             </div>
@@ -156,13 +166,13 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
 
           {/* Options */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Options</Label>
+            <Label className="text-base font-medium">{t('restaurantFilters.options')}</Label>
             
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <Label className="text-sm font-medium">Afficher uniquement les éléments actifs</Label>
+                <Label className="text-sm font-medium">{t('restaurantFilters.showActiveOnly')}</Label>
                 <p className="text-xs text-muted-foreground">
-                  Masquer les offres et menus désactivés
+                  {t('restaurantFilters.hideDisabled')}
                 </p>
               </div>
               <Switch
@@ -176,7 +186,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
 
           {/* Tri */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Trier par</Label>
+            <Label className="text-base font-medium mb-3 block">{t('restaurantFilters.sortBy')}</Label>
             <div className="grid grid-cols-1 gap-2">
               {SORT_OPTIONS.map(sort => {
                 const IconComponent = sort.icon;
@@ -188,7 +198,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
                     onClick={() => setFilters(prev => ({ ...prev, sortBy: sort.value }))}
                   >
                     <IconComponent className="h-4 w-4 mr-2" />
-                    {sort.label}
+                    {t(sort.labelKey)}
                   </Button>
                 );
               })}
@@ -198,10 +208,10 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
 
         <div className="flex gap-3 mt-6">
           <Button variant="outline" onClick={handleReset} className="flex-1">
-            Réinitialiser
+            {t('restaurantFilters.reset')}
           </Button>
           <Button onClick={handleApply} className="flex-1">
-            Appliquer les filtres
+            {t('restaurantFilters.apply')}
           </Button>
         </div>
       </DialogContent>

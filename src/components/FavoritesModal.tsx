@@ -7,6 +7,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
 interface FavoritesModalProps {
   open: boolean;
@@ -26,6 +27,7 @@ interface Restaurant {
 }
 
 export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
+  const { t } = useTranslation();
   const { favorites, toggleFavorite } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
@@ -82,7 +84,7 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Mes restaurants favoris</DialogTitle>
+          <DialogTitle>{t('favorites.title')}</DialogTitle>
         </DialogHeader>
 
         {loading ? (
@@ -92,8 +94,8 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
         ) : favoriteRestaurants.length === 0 ? (
           <div className="text-center py-8">
             <Heart className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Aucun favori pour le moment</h3>
-            <p className="text-muted-foreground">Ajoutez des restaurants à vos favoris pour les retrouver ici</p>
+            <h3 className="text-lg font-semibold mb-2">{t('favorites.noFavorites')}</h3>
+            <p className="text-muted-foreground">{t('favorites.addFavorites')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -137,7 +139,7 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                       setShowRestaurantModal(true);
                     }}
                   >
-                    Voir le profil
+                    {t('favorites.viewProfile')}
                   </Button>
                 </CardContent>
               </Card>
