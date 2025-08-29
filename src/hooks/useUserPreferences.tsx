@@ -187,13 +187,21 @@ export const useUserPreferences = () => {
       console.log('Preferences updated successfully:', data);
 
       // Update local state immediately
-      setPreferences({
+      const updatedPreferences = {
         ...data,
         notification_preferences: data.notification_preferences as any || {
           push: false,
           email: false
         }
-      });
+      };
+      
+      setPreferences(updatedPreferences);
+      
+      // Émettre un événement global pour notifier les autres composants
+      console.log('Emitting global preferences update event');
+      window.dispatchEvent(new CustomEvent('preferencesUpdated', { 
+        detail: { preferences: updatedPreferences } 
+      }));
       
       toast({
         title: "Préférences mises à jour",

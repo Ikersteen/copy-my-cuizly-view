@@ -103,19 +103,27 @@ export const PersonalizedRecommendations = () => {
     }
   }, [preferences]);
 
-  // Écouter les mises à jour des préférences
+  // Écouter les mises à jour des préférences avec plus de robustesse
   useEffect(() => {
-    const handlePreferencesUpdate = () => {
-      console.log('Preferences updated, regenerating recommendations...');
-      generateRecommendations();
+    const handlePreferencesUpdate = (event?: CustomEvent) => {
+      console.log('Preferences update event received:', event?.detail);
+      console.log('Current preferences state:', preferences);
+      
+      // Forcer le rechargement des préférences depuis la base de données
+      setTimeout(async () => {
+        console.log('Regenerating recommendations after preferences update...');
+        if (preferences) {
+          await generateRecommendations();
+        }
+      }, 200);
     };
 
-    window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
+    window.addEventListener('preferencesUpdated', handlePreferencesUpdate as EventListener);
     
     return () => {
-      window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
+      window.removeEventListener('preferencesUpdated', handlePreferencesUpdate as EventListener);
     };
-  }, []);
+  }, [preferences]);
 
   // Synchronisation en temps réel des données avec debouncing
   useEffect(() => {

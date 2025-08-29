@@ -61,12 +61,23 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
   }, [open, preferences]);
 
   const handleSave = async () => {
-    await updatePreferences(localPrefs);
-    
-    // Forcer la régénération des recommandations
-    window.dispatchEvent(new CustomEvent('preferencesUpdated'));
-    
-    onOpenChange(false);
+    try {
+      console.log('Saving preferences:', localPrefs);
+      await updatePreferences(localPrefs);
+      
+      // Attendre un peu pour que la base de données soit mise à jour
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Forcer la régénération des recommandations
+      console.log('Dispatching preferencesUpdated event');
+      window.dispatchEvent(new CustomEvent('preferencesUpdated', { 
+        detail: { preferences: localPrefs } 
+      }));
+      
+      onOpenChange(false);
+    } catch (error) {
+      console.error('Error saving preferences:', error);
+    }
   };
 
   const toggleArrayItem = (array: string[], item: string, field: keyof UserPreferences) => {
