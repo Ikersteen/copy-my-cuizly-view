@@ -158,7 +158,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           <div>
             <Label className="text-base font-medium">Restrictions alimentaires</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Indiquez vos préférences et restrictions alimentaires
+              Indiquez vos restrictions alimentaires
             </p>
             <div className="flex flex-wrap gap-2">
               {DIETARY_OPTIONS.sort().map(diet => (
@@ -183,7 +183,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           <div>
             <Label className="text-base font-medium">Allergènes à éviter</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Sélectionnez vos allergies alimentaires
+              Sélectionnez vos allergènes à éviter
             </p>
             <div className="flex flex-wrap gap-2">
               {ALLERGEN_OPTIONS.sort().map(allergen => (

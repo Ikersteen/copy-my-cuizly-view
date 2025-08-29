@@ -366,7 +366,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
             required
           />
                   
-                  <Label>Restrictions alimentaires</Label>
+                  <Label>Type de régime compatible</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {DIETARY_RESTRICTIONS.sort().map(restriction => (
                       <Badge
@@ -387,7 +387,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     ))}
                   </div>
 
-                  <Label>Allergènes à éviter</Label>
+                  <Label>Allergènes présents</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {ALLERGENS.sort().map(allergen => (
                       <Badge
@@ -584,7 +584,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       required
                     />
 
-                    <Label>Restrictions alimentaires</Label>
+                    <Label>Type de régime compatible</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                       {DIETARY_RESTRICTIONS.sort().map(restriction => (
                         <Badge
@@ -605,7 +605,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       ))}
                     </div>
 
-                    <Label>Allergènes à éviter</Label>
+                    <Label>Allergènes présents</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                       {ALLERGENS.sort().map(allergen => (
                         <Badge
