@@ -184,7 +184,7 @@ export const SavedFavoritesSection = () => {
 
   if (favoriteRestaurants.length === 0) {
     return (
-      <section className="py-8 bg-background">
+      <section className="py-16 bg-gradient-to-br from-muted/30 via-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <div className="bg-card border rounded-lg p-4 shadow-sm">
@@ -195,11 +195,48 @@ export const SavedFavoritesSection = () => {
             </div>
           </div>
           <div className="text-center space-y-8">
-            <div className="bg-muted/30 rounded-lg p-12 max-w-lg mx-auto">
-              <Heart className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
-              <p className="text-lg text-muted-foreground mb-3">
-                Votre liste de favoris est vide pour l'instant.
-              </p>
+            <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="p-4 rounded-full bg-muted/50">
+                  <Heart className="h-12 w-12 text-muted-foreground" />
+                </div>
+                <div className="space-y-3">
+                  <h2 className="text-2xl font-bold">Aucun restaurant favori</h2>
+                  <p className="text-muted-foreground max-w-lg">
+                    Vous n'avez pas encore ajouté de restaurants à vos favoris. 
+                    Explorez nos recommandations pour découvrir de nouveaux endroits à aimer !
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <Button 
+                    onClick={() => {
+                      // Cliquer sur l'onglet recommandations
+                      const recommendationsTab = document.querySelector('[data-value="recommendations"]') as HTMLButtonElement;
+                      if (recommendationsTab) {
+                        recommendationsTab.click();
+                      }
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    <Heart className="h-4 w-4" />
+                    Découvrir des restaurants
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => {
+                      // Cliquer sur l'onglet offres
+                      const offersTab = document.querySelector('[data-value="offers"]') as HTMLButtonElement;
+                      if (offersTab) {
+                        offersTab.click();
+                      }
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                    Voir les offres
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
