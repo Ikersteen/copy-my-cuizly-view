@@ -2,38 +2,41 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Bot, MapPin, Bell, Star, BarChart3, Users, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import { useTranslation } from 'react-i18next';
 
 const Features = () => {
+  const { t } = useTranslation();
+  
   const features = [
     {
       icon: Bot,
-      title: "Intelligence Artificielle",
-      description: "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
+      titleKey: "features.list.ai.title",
+      descriptionKey: "features.list.ai.description"
     },
     {
       icon: MapPin,
-      title: "Géolocalisation",
-      description: "Trouvez les meilleures offres près de chez vous à Montréal."
+      titleKey: "features.list.geolocation.title",
+      descriptionKey: "features.list.geolocation.description"
     },
     {
       icon: Bell,
-      title: "Alertes en temps réel",
-      description: "Soyez informé instantanément des nouvelles offres qui vous intéressent."
+      titleKey: "features.list.alerts.title",
+      descriptionKey: "features.list.alerts.description"
     },
     {
       icon: Star,
-      title: "Avis et notations",
-      description: "Consultez les avis authentiques des autres utilisateurs."
+      titleKey: "features.list.reviews.title",
+      descriptionKey: "features.list.reviews.description"
     },
     {
       icon: BarChart3,
-      title: "Analytics pour restaurants",
-      description: "Analysez les performances de vos offres avec des données détaillées."
+      titleKey: "features.list.analytics.title",
+      descriptionKey: "features.list.analytics.description"
     },
     {
       icon: Users,
-      title: "Ciblage intelligent",
-      description: "Atteignez la bonne clientèle au bon moment avec notre IA."
+      titleKey: "features.list.targeting.title",
+      descriptionKey: "features.list.targeting.description"
     }
   ];
 
@@ -43,16 +46,16 @@ const Features = () => {
         <div className="mb-4 sm:mb-6">
           <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour à l'accueil
+            {t('navigation.back_home')}
           </Link>
         </div>
         
         <div className="text-center mb-12 sm:mb-16">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Fonctionnalités
+            {t('features.title')}
           </h1>
           <p className="text-lg sm:text-xl text-cuizly-neutral max-w-3xl mx-auto px-2 sm:px-4">
-            Découvrez toutes les fonctionnalités qui font de Cuizly la plateforme de référence pour les offres culinaires à Montréal.
+            {t('features.subtitle')}
           </p>
         </div>
 
@@ -66,12 +69,12 @@ const Features = () => {
                     <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-foreground" />
                   </div>
                   <CardTitle className="text-lg font-semibold text-foreground">
-                    {feature.title}
+                    {t(feature.titleKey)}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <CardDescription className="text-cuizly-neutral text-sm sm:text-base">
-                    {feature.description}
+                    {t(feature.descriptionKey)}
                   </CardDescription>
                 </CardContent>
               </Card>

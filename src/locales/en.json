@@ -938,6 +938,76 @@
     "publishedSuccessfully": "Your new offer has been published successfully",
     "cannotCreate": "Unable to create offer"
   },
+  "features": {
+    "title": "Features",
+    "subtitle": "Discover all the features that make Cuizly the leading platform for culinary offers in Montreal.",
+    "list": {
+      "ai": {
+        "title": "Artificial Intelligence",
+        "description": "Personalized recommendations based on your tastes and culinary preferences."
+      },
+      "geolocation": {
+        "title": "Geolocation",
+        "description": "Find the best offers near you in Montreal."
+      },
+      "alerts": {
+        "title": "Real-time alerts",
+        "description": "Be instantly notified of new offers that interest you."
+      },
+      "reviews": {
+        "title": "Reviews and ratings",
+        "description": "Consult authentic reviews from other users."
+      },
+      "analytics": {
+        "title": "Restaurant analytics",
+        "description": "Analyze your offer performance with detailed data."
+      },
+      "targeting": {
+        "title": "Smart targeting",
+        "description": "Reach the right customers at the right time with our AI."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "A question? A suggestion? We are here to help you.",
+    "form": {
+      "title": "Send us a message",
+      "description": "Fill out the form and we will respond to you as soon as possible.",
+      "firstName": "First name",
+      "firstNamePlaceholder": "Iker",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Steen",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "How can we help you?",
+      "message": "Message",
+      "messagePlaceholder": "Describe your request...",
+      "send": "Send message"
+    },
+    "info": {
+      "title": "Contact information",
+      "email": {
+        "label": "Email",
+        "value": "cuizlycanada@gmail.com"
+      },
+      "address": {
+        "label": "Address",
+        "value": "2900 Bd Édouard-Montpetit<br />Montreal, QC H3T 1J4"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "+1 (514) 465-4783"
+      }
+    },
+    "hours": {
+      "title": "Business hours",
+      "weekdays": "Monday - Friday: 9:00 AM - 6:00 PM",
+      "saturday": "Saturday: 10:00 AM - 4:00 PM",
+      "sunday": "Sunday: Closed"
+    }
+  },
   "filters": {
     "filters": "Filters",
     "close": "Close",

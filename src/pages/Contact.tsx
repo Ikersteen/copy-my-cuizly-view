@@ -6,8 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Phone, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import { useTranslation } from 'react-i18next';
 
 const Contact = () => {
+  const { t } = useTranslation();
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -21,16 +24,16 @@ const Contact = () => {
         <div className="mb-4 sm:mb-6">
           <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour à l'accueil
+            {t('navigation.back_home')}
           </Link>
         </div>
         
         <div className="text-center mb-12 sm:mb-16">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Contactez-nous
+            {t('contact.title')}
           </h1>
           <p className="text-lg sm:text-xl text-cuizly-neutral px-2 sm:px-0">
-            Une question ? Une suggestion ? Nous sommes là pour vous aider.
+            {t('contact.subtitle')}
           </p>
         </div>
 
@@ -38,43 +41,43 @@ const Contact = () => {
           <div>
             <Card className="shadow-card border border-border">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg sm:text-xl">Envoyez-nous un message</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">{t('contact.form.title')}</CardTitle>
                 <CardDescription className="text-sm sm:text-base">
-                  Remplissez le formulaire et nous vous répondrons dans les plus brefs délais.
+                  {t('contact.form.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName" className="text-sm">Prénom</Label>
-                      <Input id="firstName" name="firstName" placeholder="Iker" required />
+                      <Label htmlFor="firstName" className="text-sm">{t('contact.form.firstName')}</Label>
+                      <Input id="firstName" name="firstName" placeholder={t('contact.form.firstNamePlaceholder')} required />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName" className="text-sm">Nom</Label>
-                      <Input id="lastName" name="lastName" placeholder="Steen" required />
+                      <Label htmlFor="lastName" className="text-sm">{t('contact.form.lastName')}</Label>
+                      <Input id="lastName" name="lastName" placeholder={t('contact.form.lastNamePlaceholder')} required />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm">Courriel</Label>
-                    <Input id="email" name="email" type="email" placeholder="votre@courriel.com" required />
+                    <Label htmlFor="email" className="text-sm">{t('contact.form.email')}</Label>
+                    <Input id="email" name="email" type="email" placeholder={t('contact.form.emailPlaceholder')} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="subject" className="text-sm">Sujet</Label>
-                    <Input id="subject" name="subject" placeholder="Comment pouvons-nous vous aider ?" required />
+                    <Label htmlFor="subject" className="text-sm">{t('contact.form.subject')}</Label>
+                    <Input id="subject" name="subject" placeholder={t('contact.form.subjectPlaceholder')} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-sm">Message</Label>
+                    <Label htmlFor="message" className="text-sm">{t('contact.form.message')}</Label>
                     <Textarea 
                       id="message" 
                       name="message"
-                      placeholder="Décrivez votre demande..."
+                      placeholder={t('contact.form.messagePlaceholder')}
                       className="min-h-[100px] sm:min-h-[120px]"
                       required 
                     />
                   </div>
                   <Button type="submit" className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
-                    Envoyer le message
+                    {t('contact.form.send')}
                   </Button>
                 </form>
               </CardContent>
@@ -84,7 +87,7 @@ const Contact = () => {
           <div className="space-y-6 sm:space-y-8">
             <div>
               <h2 className="text-xl sm:text-2xl font-semibold text-foreground mb-4 sm:mb-6">
-                Informations de contact
+                {t('contact.info.title')}
               </h2>
               <div className="space-y-4 sm:space-y-6">
                 <div className="flex items-start space-x-3 sm:space-x-4">
@@ -92,8 +95,8 @@ const Contact = () => {
                     <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-foreground text-sm sm:text-base">Courriel</h3>
-                    <p className="text-cuizly-neutral text-sm sm:text-base">cuizlycanada@gmail.com</p>
+                    <h3 className="font-medium text-foreground text-sm sm:text-base">{t('contact.info.email.label')}</h3>
+                    <p className="text-cuizly-neutral text-sm sm:text-base">{t('contact.info.email.value')}</p>
                   </div>
                 </div>
                 
@@ -102,8 +105,8 @@ const Contact = () => {
                     <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-foreground text-sm sm:text-base">Adresse</h3>
-                    <p className="text-cuizly-neutral text-sm sm:text-base">2900 Bd Édouard-Montpetit<br />Montréal, QC H3T 1J4</p>
+                    <h3 className="font-medium text-foreground text-sm sm:text-base">{t('contact.info.address.label')}</h3>
+                    <p className="text-cuizly-neutral text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: t('contact.info.address.value') }} />
                   </div>
                 </div>
                 
@@ -112,8 +115,8 @@ const Contact = () => {
                     <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-foreground text-sm sm:text-base">Téléphone</h3>
-                    <p className="text-cuizly-neutral text-sm sm:text-base">+1 (514) 465-4783</p>
+                    <h3 className="font-medium text-foreground text-sm sm:text-base">{t('contact.info.phone.label')}</h3>
+                    <p className="text-cuizly-neutral text-sm sm:text-base">{t('contact.info.phone.value')}</p>
                   </div>
                 </div>
               </div>
@@ -121,12 +124,12 @@ const Contact = () => {
 
             <div>
               <h2 className="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4">
-                Heures d'ouverture
+                {t('contact.hours.title')}
               </h2>
               <div className="space-y-1 sm:space-y-2 text-cuizly-neutral text-sm sm:text-base">
-                <p>Lundi - Vendredi: 9h00 - 18h00</p>
-                <p>Samedi: 10h00 - 16h00</p>
-                <p>Dimanche: Fermé</p>
+                <p>{t('contact.hours.weekdays')}</p>
+                <p>{t('contact.hours.saturday')}</p>
+                <p>{t('contact.hours.sunday')}</p>
               </div>
             </div>
           </div>

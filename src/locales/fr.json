@@ -907,6 +907,76 @@
     "systemError": "Erreur système",
     "unexpectedError": "Une erreur inattendue s'est produite. Veuillez recharger la page."
   },
+  "features": {
+    "title": "Fonctionnalités",
+    "subtitle": "Découvrez toutes les fonctionnalités qui font de Cuizly la plateforme de référence pour les offres culinaires à Montréal.",
+    "list": {
+      "ai": {
+        "title": "Intelligence Artificielle",
+        "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
+      },
+      "geolocation": {
+        "title": "Géolocalisation",
+        "description": "Trouvez les meilleures offres près de chez vous à Montréal."
+      },
+      "alerts": {
+        "title": "Alertes en temps réel",
+        "description": "Soyez informé instantanément des nouvelles offres qui vous intéressent."
+      },
+      "reviews": {
+        "title": "Avis et notations",
+        "description": "Consultez les avis authentiques des autres utilisateurs."
+      },
+      "analytics": {
+        "title": "Analytics pour restaurants",
+        "description": "Analysez les performances de vos offres avec des données détaillées."
+      },
+      "targeting": {
+        "title": "Ciblage intelligent",
+        "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Une question ? Une suggestion ? Nous sommes là pour vous aider.",
+    "form": {
+      "title": "Envoyez-nous un message",
+      "description": "Remplissez le formulaire et nous vous répondrons dans les plus brefs délais.",
+      "firstName": "Prénom",
+      "firstNamePlaceholder": "Iker",
+      "lastName": "Nom",
+      "lastNamePlaceholder": "Steen",
+      "email": "Courriel",
+      "emailPlaceholder": "votre@courriel.com",
+      "subject": "Sujet",
+      "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
+      "message": "Message",
+      "messagePlaceholder": "Décrivez votre demande...",
+      "send": "Envoyer le message"
+    },
+    "info": {
+      "title": "Informations de contact",
+      "email": {
+        "label": "Courriel",
+        "value": "cuizlycanada@gmail.com"
+      },
+      "address": {
+        "label": "Adresse",
+        "value": "2900 Bd Édouard-Montpetit<br />Montréal, QC H3T 1J4"
+      },
+      "phone": {
+        "label": "Téléphone",
+        "value": "+1 (514) 465-4783"
+      }
+    },
+    "hours": {
+      "title": "Heures d'ouverture",
+      "weekdays": "Lundi - Vendredi: 9h00 - 18h00",
+      "saturday": "Samedi: 10h00 - 16h00",
+      "sunday": "Dimanche: Fermé"
+    }
+  },
   "profile": {
     "errorUpload": "Erreur",
     "selectValidImage": "Veuillez sélectionner une image valide",
