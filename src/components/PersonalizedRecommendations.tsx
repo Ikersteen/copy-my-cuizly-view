@@ -607,11 +607,10 @@ export const PersonalizedRecommendations = () => {
                     <Filter className="h-4 w-4" />
                     Modifier mes préférences
                   </Button>
-                  <Button 
+                  <Button
                     variant="outline"
-                    onClick={async () => {
-                      setLoading(true);
-                      await generateRecommendations();
+                    onClick={() => {
+                      window.location.reload();
                     }}
                     disabled={loading}
                     className="flex items-center gap-2"
