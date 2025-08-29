@@ -139,9 +139,8 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   }
                 }}
               >
-                <SelectTrigger className="w-full bg-background border z-50 flex justify-between items-center">
-                  <span className="text-foreground">Sélectionner une cuisine</span>
-                  <ChevronDown className="h-4 w-4 opacity-50" />
+                <SelectTrigger className="w-full bg-background border z-50">
+                  <SelectValue placeholder="Sélectionner une cuisine" />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
                   {CUISINE_OPTIONS.filter(cuisine => !localPrefs.cuisine_preferences?.includes(cuisine)).map(cuisine => (
@@ -217,9 +216,8 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               value={localPrefs.price_range || ""}
               onValueChange={(range) => setLocalPrefs(prev => ({ ...prev, price_range: range }))}
             >
-              <SelectTrigger className="w-full bg-background border z-50 flex justify-between items-center">
-                <span className="text-foreground">{localPrefs.price_range ? `${localPrefs.price_range} - ${localPrefs.price_range === '$' ? 'Économique' : localPrefs.price_range === '$$' ? 'Modéré' : localPrefs.price_range === '$$$' ? 'Élevé' : 'Luxueux'}` : 'Sélectionner une gamme de prix'}</span>
-                <ChevronDown className="h-4 w-4 opacity-50" />
+              <SelectTrigger className="w-full bg-background border z-50">
+                <SelectValue placeholder="Sélectionner une gamme de prix" />
               </SelectTrigger>
               <SelectContent className="bg-background border z-50">
                 <SelectItem value="$" className="hover:bg-muted">$ - Économique</SelectItem>
