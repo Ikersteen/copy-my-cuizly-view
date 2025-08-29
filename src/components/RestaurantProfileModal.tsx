@@ -467,17 +467,19 @@ export const RestaurantProfileModal = ({
           <Separator />
 
           {/* Cuisine Types */}
-          <div className="space-y-4">
-            <Label className="text-base font-medium">Cuisines proposées</Label>
-            <p className="text-sm text-muted-foreground">
-              Sélectionnez les cuisines que vous proposez (synchronisées avec les préférences consommateurs)
-            </p>
+          <div className="space-y-2">
+            <div className="space-y-1">
+              <Label className="text-base font-medium">Cuisines proposées</Label>
+              <p className="text-sm text-muted-foreground">
+                Sélectionnez les cuisines que vous proposez (synchronisées avec les préférences consommateurs)
+              </p>
+            </div>
             
             {/* Selected cuisines display */}
             {formData.cuisine_type && formData.cuisine_type.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                {formData.cuisine_type.map((cuisine, index) => (
-                  <Badge key={index} variant="default" className="pr-1">
+                {formData.cuisine_type.map((cuisine) => (
+                  <Badge key={cuisine} variant="default" className="pr-1">
                     {cuisine}
                     <Button
                       variant="ghost"

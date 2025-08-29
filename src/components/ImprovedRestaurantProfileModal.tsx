@@ -556,17 +556,19 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           </div>
 
           {/* Cuisine Types */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Cuisines proposées</h3>
-            <p className="text-sm text-muted-foreground">
-              Sélectionnez les types de cuisine que vous proposez
-            </p>
+          <div className="space-y-2">
+            <div className="space-y-1">
+              <h3 className="font-semibold text-foreground">Cuisines proposées</h3>
+              <p className="text-sm text-muted-foreground">
+                Sélectionnez les types de cuisine que vous proposez
+              </p>
+            </div>
             
             {/* Selected cuisines display */}
             {formData.cuisine_type && formData.cuisine_type.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {formData.cuisine_type?.map((cuisine, index) => (
-                  <Badge key={index} variant="default" className="pr-1">
+              <div className="flex flex-wrap gap-2">
+                {formData.cuisine_type.map((cuisine) => (
+                  <Badge key={cuisine} variant="default" className="pr-1">
                     {cuisine}
                     <Button
                       variant="ghost"
@@ -577,7 +579,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                       <X className="h-3 w-3" />
                     </Button>
                   </Badge>
-                )) || []}
+                ))}
               </div>
             )}
 
