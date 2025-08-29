@@ -255,7 +255,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Rayon de livraison */}
           <div>
             <Label className="text-base font-medium">
-              Rayon de livraison: {localPrefs.delivery_radius || 1} km
+              Rayon de livraison (km): {localPrefs.delivery_radius || 1}
             </Label>
             <Slider
               value={[localPrefs.delivery_radius || 1]}
