@@ -394,20 +394,29 @@ export const PersonalizedRecommendations = () => {
     
     const handlePreferencesUpdate = () => {
       console.log('🔔 preferencesUpdated event received - loading:', loading);
+      console.log('🔔 Current preferences:', preferences);
       
-      // Éviter les appels multiples en vérifiant si on n'est pas déjà en train de charger
-      if (loading) {
-        console.log('⏸️ Already loading, ignoring preferences update');
-        return;
+      // Toujours permettre la régénération si on a des préférences
+      if (preferences?.id) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          console.log('⏰ Debounced preferences update executing with preferences:', preferences);
+          if (!loading) {
+            console.log('🚀 Triggering generateRecommendations from event');
+            generateRecommendations();
+          } else {
+            console.log('⏸️ Still loading, will retry in 1s');
+            setTimeout(() => {
+              if (preferences?.id && !loading) {
+                console.log('🔄 Retry generateRecommendations after loading');
+                generateRecommendations();
+              }
+            }, 1000);
+          }
+        }, 300); // Debounce réduit
+      } else {
+        console.log('❌ No preferences available for update');
       }
-      
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        console.log('⏰ Debounced preferences update executing');
-        if (preferences && !loading) {
-          generateRecommendations();
-        }
-      }, 500); // Debounce réduit car un seul événement maintenant
     };
 
     window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
@@ -416,7 +425,7 @@ export const PersonalizedRecommendations = () => {
       clearTimeout(debounceTimer);
       window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
     };
-  }, [loading]); // Dépendre de loading pour éviter les appels en parallèle
+  }, [preferences?.id, loading]); // Inclure preferences?.id dans les dépendances
 
   // Synchronisation en temps réel des données avec debouncing
   useEffect(() => {
