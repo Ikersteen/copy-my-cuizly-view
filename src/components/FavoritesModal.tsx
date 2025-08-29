@@ -5,12 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Star, MapPin } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { supabase } from "@/integrations/supabase/client";
+import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 import { useState, useEffect } from "react";
 
 interface FavoritesModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onRestaurantClick?: (restaurant: Restaurant) => void;
 }
 
 interface Restaurant {
@@ -20,12 +20,17 @@ interface Restaurant {
   cuisine_type: string[];
   price_range: string;
   address: string;
+  logo_url?: string;
+  cover_image_url?: string;
+  opening_hours?: any;
 }
 
-export const FavoritesModal = ({ open, onOpenChange, onRestaurantClick }: FavoritesModalProps) => {
+export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
   const { favorites, toggleFavorite } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
   useEffect(() => {
     if (open && favorites.length > 0) {
@@ -40,7 +45,13 @@ export const FavoritesModal = ({ open, onOpenChange, onRestaurantClick }: Favori
         .rpc('get_public_restaurants');
 
       if (error) throw error;
-      setFavoriteRestaurants(data || []);
+      
+      // Filtrer les restaurants qui sont dans les favoris
+      const favoriteRestaurantsData = data?.filter(restaurant => 
+        favorites.includes(restaurant.id)
+      ) || [];
+      
+      setFavoriteRestaurants(favoriteRestaurantsData);
     } catch (error) {
       console.error('Error loading favorite restaurants:', error);
     } finally {
@@ -122,7 +133,8 @@ export const FavoritesModal = ({ open, onOpenChange, onRestaurantClick }: Favori
                     onClick={() => {
                       // Track profile view
                       trackProfileView(restaurant.id);
-                      onRestaurantClick?.(restaurant);
+                      setSelectedRestaurant(restaurant);
+                      setShowRestaurantModal(true);
                     }}
                   >
                     Voir le profil
@@ -133,6 +145,12 @@ export const FavoritesModal = ({ open, onOpenChange, onRestaurantClick }: Favori
           </div>
         )}
       </DialogContent>
+      
+      <RestaurantMenuModal 
+        open={showRestaurantModal}
+        onOpenChange={setShowRestaurantModal}
+        restaurant={selectedRestaurant}
+      />
     </Dialog>
   );
 };

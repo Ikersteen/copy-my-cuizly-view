@@ -262,11 +262,6 @@ const ConsumerDashboard = () => {
       <FavoritesModal 
         open={showFavorites} 
         onOpenChange={setShowFavorites}
-        onRestaurantClick={(restaurant) => {
-          console.log('Restaurant clicked from favorites:', restaurant.name);
-          // Modal will close automatically
-          setShowFavorites(false);
-        }}
       />
       <HistoryModal 
         open={showHistory} 

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Star, ArrowRight, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
+import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 
 interface Restaurant {
   id: string;
@@ -21,6 +22,8 @@ export const SavedFavoritesSection = () => {
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
@@ -296,6 +299,8 @@ export const SavedFavoritesSection = () => {
                   onClick={() => {
                     // Track profile view
                     trackProfileView(restaurant.id);
+                    setSelectedRestaurant(restaurant);
+                    setShowRestaurantModal(true);
                   }}
                 >
                   Voir le profil
@@ -314,6 +319,12 @@ export const SavedFavoritesSection = () => {
           </div>
         )}
       </div>
+      
+      <RestaurantMenuModal 
+        open={showRestaurantModal}
+        onOpenChange={setShowRestaurantModal}
+        restaurant={selectedRestaurant}
+      />
     </section>
   );
 };
