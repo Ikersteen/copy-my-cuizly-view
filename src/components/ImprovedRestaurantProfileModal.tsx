@@ -7,7 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Upload, X, Camera, User, Trash2, Edit2, Crop } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
@@ -561,36 +562,48 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               Sélectionnez les types de cuisine que vous proposez
             </p>
             
-            <div className="flex flex-wrap gap-2 mb-4">
-              {formData.cuisine_type?.map((cuisine, index) => (
-                <Badge key={index} variant="default" className="pr-1">
-                  {cuisine}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
-                    onClick={() => removeCuisine(cuisine)}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </Badge>
-              )) || []}
-            </div>
+            {/* Selected cuisines display */}
+            {formData.cuisine_type && formData.cuisine_type.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {formData.cuisine_type?.map((cuisine, index) => (
+                  <Badge key={index} variant="default" className="pr-1">
+                    {cuisine}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
+                      onClick={() => removeCuisine(cuisine)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                )) || []}
+              </div>
+            )}
 
+            {/* Dropdown selector */}
             <div>
               <Label className="text-sm font-medium mb-3 block">Cuisines disponibles</Label>
-              <div className="flex flex-wrap gap-2">
-                {availableCuisines.map(cuisine => (
-                  <Badge
-                    key={cuisine}
-                    variant={formData.cuisine_type?.includes(cuisine) ? "default" : "outline"}
-                    className="cursor-pointer transition-all duration-200 hover:scale-105"
-                    onClick={() => addCuisine(cuisine)}
-                  >
-                    {cuisine}
-                  </Badge>
-                ))}
-              </div>
+              <Select
+                value=""
+                onValueChange={(cuisine) => {
+                  if (cuisine && !formData.cuisine_type?.includes(cuisine)) {
+                    addCuisine(cuisine);
+                  }
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sélectionner une cuisine..." />
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableCuisines.filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
+                    <SelectItem key={cuisine} value={cuisine}>
+                      {cuisine}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

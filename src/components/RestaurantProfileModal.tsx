@@ -6,14 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, X, Upload, LogOut, Trash2 } from "lucide-react";
+import { Camera, X, Upload, LogOut, Trash2, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useProfile } from "@/hooks/useProfile";
 
 interface Restaurant {
@@ -472,37 +472,62 @@ export const RestaurantProfileModal = ({
             <p className="text-sm text-muted-foreground">
               Sélectionnez les cuisines que vous proposez (synchronisées avec les préférences consommateurs)
             </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
-                "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
-                "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine", "Pizza", "Burger"
-              ].map(cuisine => (
-                <Badge
-                  key={cuisine}
-                  variant={(formData.cuisine_type || []).includes(cuisine) ? "default" : "outline"}
-                  className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => {
-                    const currentTypes = formData.cuisine_type || [];
-                    if (currentTypes.includes(cuisine)) {
-                      setFormData(prev => ({
-                        ...prev,
-                        cuisine_type: currentTypes.filter(c => c !== cuisine)
-                      }));
-                    } else {
-                      setFormData(prev => ({
-                        ...prev,
-                        cuisine_type: [...currentTypes, cuisine]
-                      }));
-                    }
-                  }}
-                >
-                  {cuisine}
-                  {(formData.cuisine_type || []).includes(cuisine) && (
-                    <X className="h-3 w-3 ml-1" />
-                  )}
-                </Badge>
-              ))}
+            
+            {/* Selected cuisines display */}
+            {formData.cuisine_type && formData.cuisine_type.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {formData.cuisine_type.map((cuisine, index) => (
+                  <Badge key={index} variant="default" className="pr-1">
+                    {cuisine}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
+                      onClick={() => {
+                        const currentTypes = formData.cuisine_type || [];
+                        setFormData(prev => ({
+                          ...prev,
+                          cuisine_type: currentTypes.filter(c => c !== cuisine)
+                        }));
+                      }}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+            )}
+
+            {/* Dropdown selector */}
+            <div>
+              <Label className="text-sm font-medium mb-3 block">Cuisines disponibles</Label>
+              <Select
+                value=""
+                onValueChange={(cuisine) => {
+                  if (cuisine && !formData.cuisine_type?.includes(cuisine)) {
+                    setFormData(prev => ({
+                      ...prev,
+                      cuisine_type: [...(prev.cuisine_type || []), cuisine]
+                    }));
+                  }
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sélectionner une cuisine..." />
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[
+                    "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
+                    "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
+                    "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine", "Pizza", "Burger"
+                  ].filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
+                    <SelectItem key={cuisine} value={cuisine}>
+                      {cuisine}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
