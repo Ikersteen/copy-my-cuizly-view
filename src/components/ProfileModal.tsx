@@ -312,6 +312,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-hidden p-0 m-4 sm:m-6">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Profil utilisateur</DialogTitle>
+        </DialogHeader>
         {/* Header simplifié sans photo de couverture */}
         <div className="p-4 sm:p-6 lg:p-8 pb-2 sm:pb-4">
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
