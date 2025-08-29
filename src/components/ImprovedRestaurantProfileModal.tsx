@@ -35,6 +35,7 @@ interface Restaurant {
   updated_at: string;
   logo_url?: string;
   cover_image_url?: string;
+  restaurant_specialties?: string[];
 }
 
 interface RestaurantProfileModalProps {
@@ -267,7 +268,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           price_range: formData.price_range || null,
           logo_url: formData.logo_url?.trim() || null,
           cover_image_url: formData.cover_image_url?.trim() || null,
-          delivery_radius: Number(formData.delivery_radius) || 5
+          delivery_radius: Number(formData.delivery_radius) || 5,
+          restaurant_specialties: formData.restaurant_specialties || []
         };
 
       console.log('Updating restaurant with data:', updateData);
@@ -587,6 +589,70 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                   {availableCuisines.filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
                     <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
                       {cuisine}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Spécialité du restaurant */}
+          <div className="space-y-2">
+            <div className="space-y-1">
+              <h3 className="font-semibold text-foreground">Spécialité du restaurant</h3>
+              <p className="text-sm text-muted-foreground">
+                Sélectionnez les moments de repas pour lesquels votre restaurant est spécialisé
+              </p>
+            </div>
+            
+            {/* Selected specialties display */}
+            {formData.restaurant_specialties && formData.restaurant_specialties.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {formData.restaurant_specialties.map((specialty) => (
+                  <Badge key={specialty} variant="secondary" className="rounded-full text-center justify-center pr-1">
+                    {specialty}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
+                      onClick={() => {
+                        const currentSpecialties = formData.restaurant_specialties || [];
+                        setFormData(prev => ({
+                          ...prev,
+                          restaurant_specialties: currentSpecialties.filter(s => s !== specialty)
+                        }));
+                      }}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+            )}
+
+            {/* Dropdown selector for specialties */}
+            <div>
+              <Select
+                value=""
+                onValueChange={(specialty) => {
+                  if (specialty && !formData.restaurant_specialties?.includes(specialty)) {
+                    setFormData(prev => ({
+                      ...prev,
+                      restaurant_specialties: [...(prev.restaurant_specialties || []), specialty]
+                    }));
+                  }
+                }}
+              >
+                <SelectTrigger className="w-full bg-background border z-50">
+                  <SelectValue placeholder="Sélectionner une spécialité" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border z-50">
+                  {[
+                    "Déjeuner / Brunch", "Déjeuner rapide", "Dîner / Souper", 
+                    "Café & Snack", "Spécialisés Détox / Santé", "Tard le soir"
+                  ].filter(specialty => !formData.restaurant_specialties?.includes(specialty)).map(specialty => (
+                    <SelectItem key={specialty} value={specialty} className="hover:bg-muted">
+                      {specialty}
                     </SelectItem>
                   ))}
                 </SelectContent>
