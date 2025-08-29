@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
+  
   return (
     <footer className="relative bg-background border-t border-border/50 overflow-hidden">
       {/* Subtle background pattern */}
@@ -17,7 +20,7 @@ const Footer = () => {
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           <div className="group">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">Produit</h3>
+            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.product')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
@@ -25,7 +28,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Fonctionnalités
+                  {t('footer.features')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -35,7 +38,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Tarifs
+                  {t('footer.rates')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -43,7 +46,7 @@ const Footer = () => {
           </div>
           
           <div className="group">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">Support</h3>
+            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.support')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
@@ -51,7 +54,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Contactez-nous
+                  {t('footer.contactUs')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -59,7 +62,7 @@ const Footer = () => {
           </div>
           
           <div className="group">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">Entreprise</h3>
+            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.company')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
@@ -67,7 +70,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Mentions légales
+                  {t('footer.legalNotices')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -75,7 +78,7 @@ const Footer = () => {
           </div>
           
           <div className="group">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">Légal</h3>
+            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.legal')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
@@ -83,7 +86,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Politique de confidentialité
+                  {t('footer.privacyPolicy')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -93,7 +96,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Conditions d'utilisation
+                  {t('footer.termsOfUse')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -103,7 +106,7 @@ const Footer = () => {
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  Politique des cookies
+                  {t('footer.cookiePolicy')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -126,7 +129,7 @@ const Footer = () => {
             </button>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
-              Ton prochain coup de cœur culinaire en un swipe.
+              {t('footer.tagline')}
             </p>
             
             {/* Enhanced Social Links */}
@@ -137,7 +140,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"
               >
-                <span className="relative z-10">Instagram</span>
+                <span className="relative z-10">{t('footer.instagram')}</span>
                 <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
               <div className="w-px h-4 bg-border/50"></div>
@@ -156,7 +159,7 @@ const Footer = () => {
               <span>© 2025</span>
               <span className="font-medium">Cuizly Technologies</span>
               <span>•</span>
-              <span>Tous droits réservés</span>
+              <span>{t('footer.allRightsReserved')}</span>
             </div>
           </div>
         </div>

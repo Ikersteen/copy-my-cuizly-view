@@ -616,6 +616,29 @@
     "changesSaved": "Changes have been saved",
     "errorCannotModify": "Unable to modify menu"
   },
+  "footer": {
+    "product": "Product",
+    "features": "Features",
+    "rates": "Pricing", 
+    "support": "Support",
+    "contactUs": "Contact us",
+    "company": "Company",
+    "legalNotices": "Legal notices",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Service",
+    "cookiePolicy": "Cookie Policy",
+    "tagline": "Your next culinary favorite in one swipe.",
+    "allRightsReserved": "All rights reserved",
+    "instagram": "Instagram"
+  },
+  "pricingLanding": {
+    "title": "Pricing for everyone",
+    "subtitle": "A free offer for consumers, affordable professional solutions for restaurateurs.",
+    "popular": "Popular",
+    "comingSoon": "Coming Soon",
+    "backToHome": "Back to Home"
+  },
   "dashboard": {
     "filters": "Filters",
     "offers": "Offers", 

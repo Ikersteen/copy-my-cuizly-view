@@ -526,6 +526,29 @@
     "selectEnd": "Sélectionnez la fin",
     "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
   },
+  "footer": {
+    "product": "Produit",
+    "features": "Fonctionnalités",
+    "rates": "Tarifs", 
+    "support": "Support",
+    "contactUs": "Contactez-nous",
+    "company": "Entreprise",
+    "legalNotices": "Mentions légales",
+    "legal": "Légal",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfUse": "Conditions d'utilisation",
+    "cookiePolicy": "Politique des cookies",
+    "tagline": "Ton prochain coup de cœur culinaire en un swipe.",
+    "allRightsReserved": "Tous droits réservés",
+    "instagram": "Instagram"
+  },
+  "pricingLanding": {
+    "title": "Des tarifs pensés pour tous",
+    "subtitle": "Une offre gratuite pour les consommateurs, des solutions professionnelles abordables pour les restaurateurs.",
+    "popular": "Populaire",
+    "comingSoon": "Bientôt",
+    "backToHome": "Retour à l'accueil"
+  },
   "dashboard": {
     "filters": "Filtres",
     "offers": "Offres",

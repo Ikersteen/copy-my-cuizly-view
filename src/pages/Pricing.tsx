@@ -4,52 +4,55 @@ import { Badge } from "@/components/ui/badge";
 import { Check, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import { useTranslation } from 'react-i18next';
 
 const Pricing = () => {
+  const { t } = useTranslation();
+  
   const plans = [
     {
-      title: "Cuizly Basique",
-      subtitle: "Pour les consommateurs",
-      price: "Gratuit à vie",
+      titleKey: "pricing.consumer.title",
+      subtitleKey: "pricing.consumer.subtitle", 
+      priceKey: "pricing.consumer.price",
       popular: true,
-      features: [
-        "Accès à toutes les offres exclusives",
-        "Recommandations IA personnalisées",
-        "Alertes prioritaires sur les promos",
-        "Tableau de bord intuitif et fluide",
-        "Support client dédié"
+      featuresKeys: [
+        "pricing.consumer.features.0",
+        "pricing.consumer.features.1", 
+        "pricing.consumer.features.2",
+        "pricing.consumer.features.3",
+        "pricing.consumer.features.4"
       ],
-      cta: "Commencer gratuitement"
+      ctaKey: "pricing.consumer.cta"
     },
     {
-      title: "Cuizly Pro",
-      subtitle: "Pour les restaurants",
-      price: "59$ CAD/mois",
-      priceNote: "ou 499$ CAD/an (économisez 2 mois !)",
+      titleKey: "pricing.pro.title",
+      subtitleKey: "pricing.pro.subtitle",
+      priceKey: "pricing.pro.price",
+      priceNoteKey: "pricing.pro.priceNote",
       comingSoon: true,
-      features: [
-        "Publicité ciblée de vos offres",
-        "Promotion dans l'app selon localisation",
-        "Ciblage par préférences utilisateur",
-        "Tableau de performance en temps réel",
-        "Support prioritaire"
+      featuresKeys: [
+        "pricing.pro.features.0",
+        "pricing.pro.features.1",
+        "pricing.pro.features.2", 
+        "pricing.pro.features.3",
+        "pricing.pro.features.4"
       ],
-      cta: "Réserver une démo"
+      ctaKey: "pricing.pro.cta"
     },
     {
-      title: "Cuizly Analytics+",
-      subtitle: "Pour optimiser avec les données des restaurants",
-      price: "349$ CAD/mois",
-      priceNote: "ou 3 490$ CAD/an (soit 2 mois gratuits !)",
+      titleKey: "pricing.analytics.title",
+      subtitleKey: "pricing.analytics.subtitle",
+      priceKey: "pricing.analytics.price",
+      priceNoteKey: "pricing.analytics.priceNote", 
       comingSoon: true,
-      features: [
-        "Toutes les fonctionnalités Pro",
-        "Rapports anonymisés détaillés",
-        "Analyses des tendances de consommation",
-        "Aperçus sur les performances par segment",
-        "Recommandations IA pour votre business"
+      featuresKeys: [
+        "pricing.analytics.features.0",
+        "pricing.analytics.features.1",
+        "pricing.analytics.features.2",
+        "pricing.analytics.features.3", 
+        "pricing.analytics.features.4"
       ],
-      cta: "Réserver une démo"
+      ctaKey: "pricing.analytics.cta"
     }
   ];
 
@@ -59,16 +62,16 @@ const Pricing = () => {
         <div className="mb-4 sm:mb-6">
           <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour à l'accueil
+            {t('pricingLanding.backToHome')}
           </Link>
         </div>
         
         <div className="text-center mb-12 sm:mb-16">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Des tarifs pensés pour tous
+            {t('pricingLanding.title')}
           </h1>
           <p className="text-lg sm:text-xl text-cuizly-neutral max-w-3xl mx-auto px-2 sm:px-4">
-            Une offre gratuite pour les consommateurs, des solutions professionnelles abordables pour les restaurateurs.
+            {t('pricingLanding.subtitle')}
           </p>
         </div>
 
@@ -77,34 +80,34 @@ const Pricing = () => {
             <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''} ${index < 2 ? 'h-fit' : ''} ${index === 2 ? 'md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto' : ''}`}>
               {plan.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-foreground text-background">
-                  Populaire
+                  {t('pricingLanding.popular')}
                 </Badge>
               )}
               {plan.comingSoon && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-destructive text-destructive-foreground animate-none pointer-events-none">
-                  Bientôt
+                  {t('pricingLanding.comingSoon')}
                 </Badge>
               )}
               <CardHeader className="text-center pb-4">
-                <CardTitle className="text-xl font-bold text-foreground">{plan.title}</CardTitle>
-                <p className="text-cuizly-neutral text-sm sm:text-base">{plan.subtitle}</p>
-                <div className="text-2xl sm:text-3xl font-bold text-foreground mt-3 sm:mt-4">{plan.price}</div>
-                {plan.priceNote && (
-                  <p className="text-xs sm:text-sm text-cuizly-neutral">{plan.priceNote}</p>
+                <CardTitle className="text-xl font-bold text-foreground">{t(plan.titleKey)}</CardTitle>
+                <p className="text-cuizly-neutral text-sm sm:text-base">{t(plan.subtitleKey)}</p>
+                <div className="text-2xl sm:text-3xl font-bold text-foreground mt-3 sm:mt-4">{t(plan.priceKey)}</div>
+                {plan.priceNoteKey && (
+                  <p className="text-xs sm:text-sm text-cuizly-neutral">{t(plan.priceNoteKey)}</p>
                 )}
               </CardHeader>
               <CardContent className="pt-0">
                 <ul className="space-y-2 sm:space-y-3 mb-6">
-                  {plan.features.map((feature, featureIndex) => (
+                  {plan.featuresKeys.map((featureKey, featureIndex) => (
                     <li key={featureIndex} className="flex items-start space-x-2 sm:space-x-3">
                       <Check className="h-4 w-4 text-foreground mt-0.5 sm:mt-1 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm text-foreground">{feature}</span>
+                      <span className="text-xs sm:text-sm text-foreground">{t(featureKey)}</span>
                     </li>
                   ))}
                 </ul>
                 <Link to={index === 0 ? "/auth" : "/auth?type=restaurant&tab=signup"}>
                   <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
-                    {plan.cta}
+                    {t(plan.ctaKey)}
                   </Button>
                 </Link>
               </CardContent>
