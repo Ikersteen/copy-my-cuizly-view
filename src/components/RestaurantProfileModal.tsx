@@ -533,8 +533,6 @@ export const RestaurantProfileModal = ({
             </div>
           </div>
 
-          <Separator />
-
           {/* Spécialité du restaurant */}
           <div className="space-y-2">
             <div className="space-y-1">
