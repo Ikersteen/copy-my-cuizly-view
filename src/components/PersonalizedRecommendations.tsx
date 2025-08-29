@@ -261,11 +261,9 @@ export const PersonalizedRecommendations = () => {
         
         console.log(`Restaurant ${restaurant.name} has ${restaurantMenus.length} menus`);
         
-        // Only process restaurants that have menus
-        if (restaurantMenus.length === 0) {
-          console.log(`Skipping ${restaurant.name} - no menus found`);
-          return null;
-        }
+        // Permettre l'affichage des restaurants même sans menus (pour le développement)
+        // Ils auront un score de base mais seront visibles
+        let baseScore = 5; // Score de base pour les restaurants sans menus
         
         // Cuisine preferences match
         if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
@@ -286,8 +284,17 @@ export const PersonalizedRecommendations = () => {
           reasons.push("Dans votre budget");
         }
         
-        // Dietary restrictions compatibility - check menus
-        if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
+        // Si pas de préférences spécifiques mais restaurant disponible, le montrer quand même
+        if (!preferences || 
+            (!preferences.cuisine_preferences?.length && 
+             (!preferences.price_range || preferences.price_range === ""))) {
+          hasAnyMatch = true;
+          score = baseScore;
+          reasons.push("Restaurant disponible");
+        }
+        
+        // Dietary restrictions compatibility - check menus (seulement si il y a des menus)
+        if (restaurantMenus.length > 0 && preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
           let compatibleMenusCount = 0;
           let totalMenusChecked = restaurantMenus.length;
           
@@ -313,8 +320,8 @@ export const PersonalizedRecommendations = () => {
           }
         }
         
-        // Allergen safety - exclude restaurants with menus containing user's allergens  
-        if (preferences?.allergens && preferences.allergens.length > 0) {
+        // Allergen safety - exclude restaurants with menus containing user's allergens (seulement si il y a des menus)
+        if (restaurantMenus.length > 0 && preferences?.allergens && preferences.allergens.length > 0) {
           let hasUnsafeMenus = false;
           let safeMenusCount = 0;
           
@@ -351,20 +358,20 @@ export const PersonalizedRecommendations = () => {
         }
 
         // Final scoring and matching logic
-        console.log(`Restaurant ${restaurant.name} final score: ${score}, hasAnyMatch: ${hasAnyMatch}`);
+        console.log(`Restaurant ${restaurant.name} final score: ${score}, hasAnyMatch: ${hasAnyMatch}, menus: ${restaurantMenus.length}`);
         
-        // If no preferences configured, don't show recommendations
-        if (!preferences || 
-            (!preferences.cuisine_preferences?.length && 
-             (!preferences.price_range || preferences.price_range === "") && 
-             !preferences.dietary_restrictions?.length &&
-             !preferences.allergens?.length)) {
-          console.log('No preferences configured, excluding restaurant');
-          return null;
+        // Si restaurant sans menus, on l'affiche quand même avec un score de base
+        if (restaurantMenus.length === 0) {
+          console.log(`Restaurant ${restaurant.name} has no menus but will be shown with base score`);
+          hasAnyMatch = true;
+          score = Math.max(score, baseScore);
+          if (reasons.length === 0) {
+            reasons.push("Restaurant disponible");
+          }
         }
 
-        // If restaurant has no matching criteria, exclude it  
-        if (!hasAnyMatch) {
+        // If restaurant has no matching criteria, exclude it only if it has menus but no matches
+        if (!hasAnyMatch && restaurantMenus.length > 0) {
           console.log(`No matches found for ${restaurant.name}, excluding`);
           return null;
         }
