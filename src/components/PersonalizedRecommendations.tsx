@@ -163,23 +163,34 @@ export const PersonalizedRecommendations = () => {
     try {
       setLoading(true);
 
-      // Fetch restaurants
-      const { data: restaurantsData, error: restaurantsError } = await supabase
-        .from('restaurants')
-        .select('*')
-        .eq('is_active', true);
+      // Fetch restaurants and menus data separately for better error handling
+      const [restaurantsResponse, menusResponse] = await Promise.all([
+        supabase.rpc('get_public_restaurants'),
+        supabase
+          .from('menus')
+          .select('*')
+          .eq('is_active', true)
+      ]);
 
-      if (restaurantsError) throw restaurantsError;
+      if (restaurantsResponse.error) {
+        console.error('Error fetching restaurants:', restaurantsResponse.error);
+        throw restaurantsResponse.error;
+      }
 
-      // Fetch menus with dietary restrictions and allergens
-      const { data: menusData, error: menusError } = await supabase
-        .from('menus')
-        .select('*, restaurant_id')
-        .eq('is_active', true);
+      if (menusResponse.error) {
+        console.error('Error fetching menus:', menusResponse.error);
+        throw menusResponse.error;
+      }
 
-      if (menusError) throw menusError;
+      const restaurantsData = restaurantsResponse.data || [];
+      const menusData = menusResponse.data || [];
 
-      if (!restaurantsData) {
+      console.log('Loaded restaurants:', restaurantsData.length);
+      console.log('Loaded menus:', menusData.length);
+      console.log('Sample menu data:', menusData[0]);
+
+      if (restaurantsData.length === 0) {
+        console.log('No restaurants found');
         setCategories([]);
         return;
       }
@@ -190,7 +201,15 @@ export const PersonalizedRecommendations = () => {
         let hasAnyMatch = false;
 
         // Get restaurant's menus for dietary analysis
-        const restaurantMenus = menusData?.filter(menu => menu.restaurant_id === restaurant.id) || [];
+        const restaurantMenus = menusData.filter(menu => menu.restaurant_id === restaurant.id);
+        
+        console.log(`Restaurant ${restaurant.name} has ${restaurantMenus.length} menus`);
+        
+        // Only process restaurants that have menus
+        if (restaurantMenus.length === 0) {
+          console.log(`Skipping ${restaurant.name} - no menus found`);
+          return null;
+        }
         
         // Cuisine preferences match
         if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
@@ -214,16 +233,19 @@ export const PersonalizedRecommendations = () => {
         // Dietary restrictions compatibility - check menus
         if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
           let compatibleMenusCount = 0;
-          let totalMenusChecked = 0;
+          let totalMenusChecked = restaurantMenus.length;
+          
+          console.log(`Checking dietary restrictions for ${restaurant.name}:`, preferences.dietary_restrictions);
           
           restaurantMenus.forEach(menu => {
-            totalMenusChecked++;
+            console.log(`Menu "${menu.description}" dietary restrictions:`, menu.dietary_restrictions);
             const accommodatedRestrictions = preferences.dietary_restrictions.filter((restriction: string) =>
               menu.dietary_restrictions?.includes(restriction)
             );
             if (accommodatedRestrictions.length > 0) {
               compatibleMenusCount++;
               score += accommodatedRestrictions.length * 8;
+              console.log(`Menu compatible! Accommodated:`, accommodatedRestrictions);
             }
           });
           
@@ -231,22 +253,26 @@ export const PersonalizedRecommendations = () => {
             hasAnyMatch = true;
             const percentage = Math.round((compatibleMenusCount / totalMenusChecked) * 100);
             reasons.push(`${percentage}% des plats compatibles`);
+            console.log(`${compatibleMenusCount}/${totalMenusChecked} menus compatible for dietary restrictions`);
           }
         }
         
-        // Allergen safety - exclude restaurants with menus containing user's allergens
+        // Allergen safety - exclude restaurants with menus containing user's allergens  
         if (preferences?.allergens && preferences.allergens.length > 0) {
           let hasUnsafeMenus = false;
           let safeMenusCount = 0;
           
+          console.log(`Checking allergens for ${restaurant.name}:`, preferences.allergens);
+          
           restaurantMenus.forEach(menu => {
+            console.log(`Menu "${menu.description}" allergens:`, menu.allergens);
             const dangerousAllergens = preferences.allergens.filter((allergen: string) =>
               menu.allergens?.includes(allergen)
             );
             if (dangerousAllergens.length > 0) {
               hasUnsafeMenus = true;
-              // Pénalité pour avoir des allergènes dangereux
-              score -= dangerousAllergens.length * 20;
+              score -= dangerousAllergens.length * 10; // Reduced penalty
+              console.log(`Unsafe menu found! Dangerous allergens:`, dangerousAllergens);
             } else {
               safeMenusCount++;
             }
@@ -255,62 +281,75 @@ export const PersonalizedRecommendations = () => {
           // Bonus seulement si TOUS les menus sont sûrs
           if (!hasUnsafeMenus && restaurantMenus.length > 0) {
             hasAnyMatch = true;
-            score += 15; // Bonus pour sécurité complète
+            score += 15;
             reasons.push("Tous les plats sont sûrs");
+            console.log(`All ${restaurantMenus.length} menus are safe for allergens`);
           } else if (safeMenusCount > 0) {
-            // Partiel sûr mais pas complètement
             const percentage = Math.round((safeMenusCount / restaurantMenus.length) * 100);
-            if (percentage >= 50) { // Au moins 50% des plats sont sûrs
+            if (percentage >= 50) {
               hasAnyMatch = true;
               reasons.push(`${percentage}% des plats sans allergènes`);
+              console.log(`${safeMenusCount}/${restaurantMenus.length} menus are safe (${percentage}%)`);
             }
           }
         }
 
+        // Final scoring and matching logic
+        console.log(`Restaurant ${restaurant.name} final score: ${score}, hasAnyMatch: ${hasAnyMatch}`);
+        
         // If no preferences configured, don't show recommendations
         if (!preferences || 
             (!preferences.cuisine_preferences?.length && 
              (!preferences.price_range || preferences.price_range === "") && 
              !preferences.dietary_restrictions?.length &&
              !preferences.allergens?.length)) {
+          console.log('No preferences configured, excluding restaurant');
           return null;
         }
 
-        // If restaurant has no matching criteria, exclude it
-        if (!hasAnyMatch || score <= 0) {
+        // If restaurant has no matching criteria, exclude it  
+        if (!hasAnyMatch) {
+          console.log(`No matches found for ${restaurant.name}, excluding`);
           return null;
         }
 
         const realRating = await getRealRating(restaurant.id);
         
-        return {
+        const result = {
           ...restaurant,
           score,
           rating: realRating.rating,
           totalRatings: realRating.totalRatings,
           reasons
         };
+        
+        console.log(`Including restaurant ${restaurant.name} with score ${score} and reasons:`, reasons);
+        return result;
       }));
 
       const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
+      console.log(`Final valid restaurants: ${validRestaurants.length}`);
 
       await loadRestaurantRatings(validRestaurants);
 
-      const newCategories: RecommendationCategory[] = [
-        {
+      const newCategories: RecommendationCategory[] = [];
+      
+      if (validRestaurants.length > 0) {
+        const sortedRestaurants = validRestaurants.sort((a, b) => b.score - a.score);
+        console.log('Top 3 restaurants by score:', sortedRestaurants.slice(0, 3).map(r => ({ name: r.name, score: r.score, reasons: r.reasons })));
+        
+        newCategories.push({
           id: 'recommended',
           title: 'Recommandé pour vous',
           subtitle: 'Basé sur vos préférences culinaires',
           icon: Sparkles,
           color: 'bg-gradient-to-r from-primary/10 to-primary/5',
-          restaurants: validRestaurants
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 12)
-        }
-      ];
+          restaurants: sortedRestaurants.slice(0, 12)
+        });
+      }
 
-      const filteredCategories = newCategories.filter(cat => cat.restaurants.length > 0);
-      setCategories(filteredCategories);
+      setCategories(newCategories);
+      console.log(`Set ${newCategories.length} categories with ${newCategories[0]?.restaurants?.length || 0} restaurants`);
 
     } catch (error) {
       console.error('Erreur lors de la génération des recommandations:', error);
