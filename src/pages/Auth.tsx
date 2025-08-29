@@ -169,7 +169,7 @@ const Auth = () => {
     const emailValidation = validateEmail(email);
     if (!emailValidation.isValid) {
       toast({
-        title: "Email invalide",
+        title: t('auth.errors.invalidEmail'),
         description: emailValidation.error,
         variant: "destructive"
       });
@@ -180,7 +180,7 @@ const Auth = () => {
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
       toast({
-        title: "Mot de passe faible",
+        title: t('auth.errors.weakPassword'),
         description: passwordValidation.error,
         variant: "destructive"
       });
@@ -191,7 +191,7 @@ const Auth = () => {
     const nameValidation = validateTextInput(fullName, INPUT_LIMITS.NAME, 'Nom complet');
     if (!nameValidation.isValid) {
       toast({
-        title: "Nom invalide",
+        title: t('auth.errors.invalidName'),
         description: nameValidation.error,
         variant: "destructive"
       });
@@ -203,7 +203,7 @@ const Auth = () => {
       const restaurantNameValidation = validateTextInput(restaurantName, INPUT_LIMITS.NAME, 'Nom du restaurant');
       if (!restaurantNameValidation.isValid) {
         toast({
-          title: "Nom du restaurant invalide",
+          title: t('auth.errors.invalidRestaurantName'),
           description: restaurantNameValidation.error,
           variant: "destructive"
         });
@@ -261,8 +261,8 @@ const Auth = () => {
         }
 
         toast({
-          title: "Compte créé !",
-          description: "Vérifiez votre email pour confirmer votre compte.",
+          title: t('auth.success.accountCreated'),
+          description: t('auth.success.checkEmailConfirmation'),
         });
       } else if (data.user) {
         // User is auto-confirmed, create profile and redirect
@@ -278,18 +278,18 @@ const Auth = () => {
         navigate('/dashboard');
       }
     } catch (error: any) {
-      let errorMessage = "Une erreur est survenue";
+      let errorMessage = t('auth.errors.genericError');
       
       if (error.message?.includes("User already registered")) {
         errorMessage = t('auth.errors.userAlreadyRegistered');
       } else if (error.message?.includes("Invalid email")) {
         errorMessage = t('auth.errors.invalidEmail');
       } else if (error.message?.includes("Password should be at least")) {
-        errorMessage = "Le mot de passe doit contenir au moins 6 caractères";
+        errorMessage = t('auth.errors.passwordMinLength');
       }
 
       toast({
-        title: "Erreur d'inscription",
+        title: t('auth.errors.signupError'),
         description: errorMessage,
         variant: "destructive",
       });
@@ -359,7 +359,7 @@ const Auth = () => {
     const emailValidation = validateEmail(email);
     if (!emailValidation.isValid) {
       toast({
-        title: "Email invalide",
+        title: t('auth.errors.invalidEmail'),
         description: emailValidation.error,
         variant: "destructive"
       });
@@ -393,18 +393,18 @@ const Auth = () => {
         navigate('/dashboard');
       }
     } catch (error: any) {
-      let errorMessage = "Identifiants incorrects";
+      let errorMessage = t('auth.errors.incorrectCredentials');
       
       if (error.message?.includes("Invalid login credentials")) {
-        errorMessage = "Email ou mot de passe incorrect";
+        errorMessage = t('auth.errors.emailOrPasswordIncorrect');
       } else if (error.message?.includes("Email not confirmed")) {
-        errorMessage = "Veuillez confirmer votre email avant de vous connecter";
+        errorMessage = t('auth.errors.emailNotConfirmed');
       } else if (error.message?.includes("Too many requests")) {
-        errorMessage = "Trop de tentatives, veuillez réessayer plus tard";
+        errorMessage = t('auth.errors.tooManyRequests');
       }
 
       toast({
-        title: "Erreur de connexion", 
+        title: t('auth.errors.signinError'), 
         description: errorMessage,
         variant: "destructive",
       });

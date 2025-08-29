@@ -241,9 +241,9 @@ const RestaurantDashboard = () => {
                 </div>
               )}
               <div>
-                <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                  {restaurant?.name || 'Mon Restaurant'} {profile?.chef_emoji_color || '👨‍🍳'}
-                </h1>
+                  <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
+                    {restaurant?.name || t('dashboard.myRestaurant')} {profile?.chef_emoji_color || '👨‍🍳'}
+                  </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
                   @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
                 </p>
@@ -325,15 +325,15 @@ const RestaurantDashboard = () => {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Nom</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.name')}</p>
                       <p className="text-foreground text-sm sm:text-base font-medium">{restaurant.name}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Adresse</p>
-                      <p className="text-foreground text-sm">{restaurant.address || 'Non renseignée'}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.address')}</p>
+                      <p className="text-foreground text-sm">{restaurant.address || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Type de cuisine</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.cuisineType')}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
@@ -343,13 +343,13 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            Non défini
+                            {t('dashboard.notDefined')}
                           </Badge>
                         )}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Spécialité du restaurant</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.restaurantSpecialty')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).restaurant_specialties?.length > 0 ? (
                           (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => (
@@ -359,7 +359,7 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            Non défini
+                            {t('dashboard.notDefined')}
                           </Badge>
                         )}
                       </div>
@@ -368,7 +368,7 @@ const RestaurantDashboard = () => {
                   
                   {restaurant.description && (
                     <div className="pt-4 border-t">
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Description</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.description')}</p>
                       <p className="text-foreground text-sm">{restaurant.description}</p>
                     </div>
                   )}
