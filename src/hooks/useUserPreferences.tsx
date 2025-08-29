@@ -197,8 +197,7 @@ export const useUserPreferences = () => {
       
       setPreferences(updatedPreferences);
       
-      // Émettre un événement global pour notifier les autres composants
-      console.log('Emitting global preferences update event');
+      console.log('💾 Emitting global preferences update event');
       window.dispatchEvent(new CustomEvent('preferencesUpdated', { 
         detail: { preferences: updatedPreferences } 
       }));

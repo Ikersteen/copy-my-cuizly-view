@@ -113,11 +113,17 @@ export const PersonalizedRecommendations = () => {
     let debounceTimer: NodeJS.Timeout;
     
     const handlePreferencesUpdate = () => {
+      console.log('🔔 preferencesUpdated event received - loading:', loading);
+      
       // Éviter les appels multiples en vérifiant si on n'est pas déjà en train de charger
-      if (loading) return;
+      if (loading) {
+        console.log('⏸️ Already loading, ignoring preferences update');
+        return;
+      }
       
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
+        console.log('⏰ Debounced preferences update executing');
         if (preferences && !loading) {
           generateRecommendations();
         }
@@ -208,10 +214,18 @@ export const PersonalizedRecommendations = () => {
   };
 
   const generateRecommendations = async () => {
+    console.log('🔄 generateRecommendations called - loading:', loading);
+    if (loading) {
+      console.log('⏸️ Already loading, skipping generateRecommendations');
+      return;
+    }
+    
+    setLoading(true);
+    console.log('🔄 Setting loading to true');
+    
     try {
       console.log('=== GENERATING RECOMMENDATIONS ===');
       console.log('Current preferences:', preferences);
-      setLoading(true);
 
       // Fetch restaurants and menus data separately for better error handling
       console.log('Fetching restaurants and menus...');
@@ -430,9 +444,10 @@ export const PersonalizedRecommendations = () => {
 
       setCategories(newCategories);
       console.log(`Set ${newCategories.length} categories with ${newCategories[0]?.restaurants?.length || 0} restaurants`);
+      console.log('✅ Recommendations generated successfully, setting loading to false');
 
     } catch (error) {
-      console.error('Erreur lors de la génération des recommandations:', error);
+      console.error('❌ Error generating recommendations:', error);
       setCategories([]);
     } finally {
       setLoading(false);
