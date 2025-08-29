@@ -251,52 +251,67 @@ export const PersonalizedRecommendations = () => {
         return;
       }
 
-      const scoredRestaurants = await Promise.all(restaurantsData.map(async (restaurant) => {
+        const scoredRestaurants = await Promise.all(restaurantsData.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
-        let hasAnyMatch = false;
+        let hasStrictMatch = false;
 
-        // Get restaurant's menus for dietary analysis
+        // Get restaurant's menus for strict matching
         const restaurantMenus = menusData.filter(menu => menu.restaurant_id === restaurant.id);
         
         console.log(`Restaurant ${restaurant.name} has ${restaurantMenus.length} menus`);
         
-        // Permettre l'affichage des restaurants même sans menus (pour le développement)
-        // Ils auront un score de base mais seront visibles
-        let baseScore = 5; // Score de base pour les restaurants sans menus
+        // STRICT MATCHING ONLY - Si pas de préférences définies, pas de recommandations
+        if (!preferences || 
+            (!preferences.cuisine_preferences?.length && 
+             !preferences.price_range && 
+             !preferences.dietary_restrictions?.length &&
+             !preferences.allergens?.length)) {
+          console.log(`No user preferences set, excluding ${restaurant.name}`);
+          return null;
+        }
         
-        // Cuisine preferences match
-        if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
+        // 1. STRICT Cuisine preferences match - OBLIGATOIRE si défini
+        if (preferences.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
           const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
             preferences.cuisine_preferences.includes(cuisine)
           ) || [];
-          if (matchingCuisines.length > 0) {
-            hasAnyMatch = true;
-            score += matchingCuisines.length * 10;
-            reasons.push(`${matchingCuisines.length} cuisine(s) favorite(s)`);
+          
+          // Vérifier aussi les cuisines des menus
+          const menuCuisineMatches = restaurantMenus.filter(menu => 
+            preferences.cuisine_preferences.includes(menu.cuisine_type)
+          );
+          
+          if (matchingCuisines.length > 0 || menuCuisineMatches.length > 0) {
+            hasStrictMatch = true;
+            score += (matchingCuisines.length + menuCuisineMatches.length) * 10;
+            reasons.push(`${matchingCuisines.length + menuCuisineMatches.length} cuisine(s) correspondante(s)`);
+          } else {
+            console.log(`No cuisine match for ${restaurant.name}, excluding`);
+            return null; // STRICT: Pas de match cuisine = exclusion
           }
         }
         
-        // Price range match
-        if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-          hasAnyMatch = true;
-          score += 15;
-          reasons.push("Dans votre budget");
+        // 2. STRICT Price range match - OBLIGATOIRE si défini
+        if (preferences.price_range && preferences.price_range !== "") {
+          if (restaurant.price_range === preferences.price_range) {
+            hasStrictMatch = true;
+            score += 15;
+            reasons.push("Dans votre budget");
+          } else {
+            console.log(`Price range mismatch for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), excluding`);
+            return null; // STRICT: Pas de match prix = exclusion
+          }
         }
         
-        // Si pas de préférences spécifiques mais restaurant disponible, le montrer quand même
-        if (!preferences || 
-            (!preferences.cuisine_preferences?.length && 
-             (!preferences.price_range || preferences.price_range === ""))) {
-          hasAnyMatch = true;
-          score = baseScore;
-          reasons.push("Restaurant disponible");
-        }
-        
-        // Dietary restrictions compatibility - check menus (seulement si il y a des menus)
-        if (restaurantMenus.length > 0 && preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
+        // 3. STRICT Dietary restrictions compatibility - OBLIGATOIRE si défini
+        if (preferences.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
+          if (restaurantMenus.length === 0) {
+            console.log(`No menus to check dietary restrictions for ${restaurant.name}, excluding`);
+            return null; // STRICT: Pas de menus pour vérifier = exclusion
+          }
+          
           let compatibleMenusCount = 0;
-          let totalMenusChecked = restaurantMenus.length;
           
           console.log(`Checking dietary restrictions for ${restaurant.name}:`, preferences.dietary_restrictions);
           
@@ -305,23 +320,31 @@ export const PersonalizedRecommendations = () => {
             const accommodatedRestrictions = preferences.dietary_restrictions.filter((restriction: string) =>
               menu.dietary_restrictions?.includes(restriction)
             );
-            if (accommodatedRestrictions.length > 0) {
+            if (accommodatedRestrictions.length === preferences.dietary_restrictions.length) {
               compatibleMenusCount++;
               score += accommodatedRestrictions.length * 8;
-              console.log(`Menu compatible! Accommodated:`, accommodatedRestrictions);
+              console.log(`Menu fully compatible! All restrictions accommodated:`, accommodatedRestrictions);
             }
           });
           
           if (compatibleMenusCount > 0) {
-            hasAnyMatch = true;
-            const percentage = Math.round((compatibleMenusCount / totalMenusChecked) * 100);
-            reasons.push(`${percentage}% des plats compatibles`);
-            console.log(`${compatibleMenusCount}/${totalMenusChecked} menus compatible for dietary restrictions`);
+            hasStrictMatch = true;
+            const percentage = Math.round((compatibleMenusCount / restaurantMenus.length) * 100);
+            reasons.push(`${percentage}% des plats adaptés à vos restrictions`);
+            console.log(`${compatibleMenusCount}/${restaurantMenus.length} menus compatible for ALL dietary restrictions`);
+          } else {
+            console.log(`No menus accommodate ALL dietary restrictions for ${restaurant.name}, excluding`);
+            return null; // STRICT: Aucun menu compatible = exclusion
           }
         }
         
-        // Allergen safety - exclude restaurants with menus containing user's allergens (seulement si il y a des menus)
-        if (restaurantMenus.length > 0 && preferences?.allergens && preferences.allergens.length > 0) {
+        // 4. STRICT Allergen safety - OBLIGATOIRE si défini
+        if (preferences.allergens && preferences.allergens.length > 0) {
+          if (restaurantMenus.length === 0) {
+            console.log(`No menus to check allergens for ${restaurant.name}, excluding`);
+            return null; // STRICT: Pas de menus pour vérifier = exclusion
+          }
+          
           let hasUnsafeMenus = false;
           let safeMenusCount = 0;
           
@@ -334,45 +357,27 @@ export const PersonalizedRecommendations = () => {
             );
             if (dangerousAllergens.length > 0) {
               hasUnsafeMenus = true;
-              score -= dangerousAllergens.length * 10; // Reduced penalty
               console.log(`Unsafe menu found! Dangerous allergens:`, dangerousAllergens);
             } else {
               safeMenusCount++;
             }
           });
           
-          // Bonus seulement si TOUS les menus sont sûrs
+          // STRICT: TOUS les menus doivent être sûrs
           if (!hasUnsafeMenus && restaurantMenus.length > 0) {
-            hasAnyMatch = true;
-            score += 15;
-            reasons.push("Tous les plats sont sûrs");
+            hasStrictMatch = true;
+            score += 20;
+            reasons.push("Tous les plats sont sûrs pour vos allergies");
             console.log(`All ${restaurantMenus.length} menus are safe for allergens`);
-          } else if (safeMenusCount > 0) {
-            const percentage = Math.round((safeMenusCount / restaurantMenus.length) * 100);
-            if (percentage >= 50) {
-              hasAnyMatch = true;
-              reasons.push(`${percentage}% des plats sans allergènes`);
-              console.log(`${safeMenusCount}/${restaurantMenus.length} menus are safe (${percentage}%)`);
-            }
+          } else {
+            console.log(`Some menus contain allergens for ${restaurant.name}, excluding`);
+            return null; // STRICT: Certains menus dangereux = exclusion
           }
         }
 
-        // Final scoring and matching logic
-        console.log(`Restaurant ${restaurant.name} final score: ${score}, hasAnyMatch: ${hasAnyMatch}, menus: ${restaurantMenus.length}`);
-        
-        // Si restaurant sans menus, on l'affiche quand même avec un score de base
-        if (restaurantMenus.length === 0) {
-          console.log(`Restaurant ${restaurant.name} has no menus but will be shown with base score`);
-          hasAnyMatch = true;
-          score = Math.max(score, baseScore);
-          if (reasons.length === 0) {
-            reasons.push("Restaurant disponible");
-          }
-        }
-
-        // If restaurant has no matching criteria, exclude it only if it has menus but no matches
-        if (!hasAnyMatch && restaurantMenus.length > 0) {
-          console.log(`No matches found for ${restaurant.name}, excluding`);
+        // STRICT: Si aucun match strict n'a été trouvé, exclure le restaurant
+        if (!hasStrictMatch) {
+          console.log(`No strict matches found for ${restaurant.name}, excluding`);
           return null;
         }
 

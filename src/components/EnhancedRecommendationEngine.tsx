@@ -218,44 +218,72 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
         console.error('Système IA indisponible, utilisation du système traditionnel:', aiError);
       }
 
-      // Fallback au système de scoring traditionnel
+      // Fallback au système de scoring traditionnel strict
       const scoredRestaurants = await Promise.all(restaurantsWithAnalytics.map(async (restaurant) => {
         let score = 0;
         let reasons: string[] = [];
+        let hasStrictMatch = false;
         
         // Analytics déjà récupérées
         const analytics = restaurant.analytics;
 
-        // 1. Score basé sur préférences utilisateur (40%)
-        let hasAnyMatch = false;
+        // STRICT MATCHING ONLY - Si pas de préférences définies, pas de recommandations
+        if (!preferences || 
+            (!preferences.cuisine_preferences?.length && 
+             !preferences.price_range && 
+             !preferences.dietary_restrictions?.length &&
+             !preferences.allergens?.length)) {
+          console.log(`No user preferences set, excluding ${restaurant.name}`);
+          return null;
+        }
+
+        // 1. STRICT Cuisine preferences match - OBLIGATOIRE si défini
         if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
           const matchedCuisines = restaurant.cuisine_type.filter(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
           );
           if (matchedCuisines.length > 0) {
-            hasAnyMatch = true;
+            hasStrictMatch = true;
             score += 40 * (matchedCuisines.length / preferences.cuisine_preferences.length);
-            reasons.push(`${matchedCuisines.length} cuisine(s) favorite(s)`);
+            reasons.push(`${matchedCuisines.length} cuisine(s) correspondante(s)`);
+          } else {
+            console.log(`No cuisine match for ${restaurant.name}, excluding`);
+            return null; // STRICT: Pas de match cuisine = exclusion
           }
         }
 
-        // 2. Score prix (20%)
-        if (preferences?.price_range === restaurant.price_range) {
-          hasAnyMatch = true;
-          score += 20;
-          reasons.push("Dans votre budget");
+        // 2. STRICT Price range match - OBLIGATOIRE si défini
+        if (preferences?.price_range && preferences.price_range !== "") {
+          if (restaurant.price_range === preferences.price_range) {
+            hasStrictMatch = true;
+            score += 20;
+            reasons.push("Dans votre budget");
+          } else {
+            console.log(`Price range mismatch for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), excluding`);
+            return null; // STRICT: Pas de match prix = exclusion
+          }
         }
 
-        // Vérifier les restrictions alimentaires (ajout d'un match potentiel)
+        // 3. STRICT Dietary restrictions - vérification obligatoire si défini
         if (preferences?.dietary_restrictions?.length) {
-          hasAnyMatch = true; // Assumption que le restaurant peut accommoder
+          // Pour le moment, on accepte si le restaurant a potentiellement des options
+          // Dans une version complète, il faudrait vérifier les menus
+          hasStrictMatch = true;
+          reasons.push("Peut accommoder vos restrictions");
         }
 
-        // Si le restaurant ne correspond à aucune préférence utilisateur, on l'exclut
-        if (preferences && (preferences.cuisine_preferences?.length || preferences.price_range || preferences.dietary_restrictions?.length)) {
-          if (!hasAnyMatch) {
-            return null; // Exclure ce restaurant des recommandations
-          }
+        // 4. STRICT Allergens - vérification obligatoire si défini  
+        if (preferences?.allergens?.length) {
+          // Pour le moment, on accepte avec prudence
+          // Dans une version complète, il faudrait vérifier les menus
+          hasStrictMatch = true;
+          reasons.push("À vérifier pour allergies");
+        }
+
+        // STRICT: Si aucun match strict n'a été trouvé, exclure le restaurant
+        if (!hasStrictMatch) {
+          console.log(`No strict matches found for ${restaurant.name}, excluding`);
+          return null;
         }
 
         // 3. Score popularité basé sur vues réelles (25%)
@@ -297,7 +325,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
           ai_score: score, // Compatibilité avec le format IA
           ai_reasons: reasons,
           sentiment_analysis: 'neutral',
-          preference_match: hasAnyMatch ? 0.8 : 0.3,
+          preference_match: hasStrictMatch ? 0.8 : 0.3,
           quality_prediction: realRating ? realRating / 5 : 0.5
         };
       }));
