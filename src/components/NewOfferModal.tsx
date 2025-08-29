@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { format } from "date-fns";
 import { validateTextInput, INPUT_LIMITS } from "@/lib/validation";
+import { useTranslation } from 'react-i18next';
 
 import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
 
@@ -31,6 +32,7 @@ export const NewOfferModal = ({
   restaurantId,
   onSuccess 
 }: NewOfferModalProps) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -62,8 +64,8 @@ export const NewOfferModal = ({
   const handleSave = async () => {
     if (!restaurantId || !formData.title || !formData.description.trim()) {
       toast({
-        title: "Erreur",
-        description: "Veuillez remplir le titre et la description de l'offre",
+        title: t('common.error'),
+        description: t('newOffer.fillTitleDescription'),
         variant: "destructive"
       });
       return;
@@ -71,8 +73,8 @@ export const NewOfferModal = ({
 
     if (!formData.discount_percentage && !formData.discount_amount) {
       toast({
-        title: "Erreur", 
-        description: "Veuillez spécifier un pourcentage ou un montant de réduction",
+        title: t('common.error'), 
+        description: t('newOffer.specifyDiscount'),
         variant: "destructive"
       });
       return;
@@ -109,8 +111,8 @@ export const NewOfferModal = ({
       if (error) throw error;
 
       toast({
-        title: "Offre créée",
-        description: "Votre nouvelle offre a été publiée avec succès"
+        title: t('newOffer.offerCreated'),
+        description: t('newOffer.publishedSuccessfully')
       });
       
       // Reset form
@@ -130,8 +132,8 @@ export const NewOfferModal = ({
     } catch (error) {
       console.error('Error creating offer:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de créer l'offre",
+        title: t('common.error'),
+        description: t('newOffer.cannotCreate'),
         variant: "destructive"
       });
     } finally {
@@ -144,27 +146,27 @@ export const NewOfferModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Créer une nouvelle offre</DialogTitle>
+          <DialogTitle>{t('newOffer.createNew')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
           <div>
-            <Label htmlFor="title">Titre de l'offre *</Label>
+            <Label htmlFor="title">{t('newOffer.title')} *</Label>
             <Input
               id="title"
               value={formData.title}
               onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-              placeholder="Ex: Pizza 2 pour 1"
+              placeholder={t('newOffer.titlePlaceholder')}
             />
           </div>
 
           <div>
-            <Label htmlFor="description">Description *</Label>
+            <Label htmlFor="description">{t('newOffer.description')} *</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Décrivez votre offre en détail..."
+              placeholder={t('newOffer.descriptionPlaceholder')}
               rows={3}
               required
             />
@@ -172,7 +174,7 @@ export const NewOfferModal = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="discount_percentage">Réduction (%)</Label>
+              <Label htmlFor="discount_percentage">{t('newOffer.discountPercent')}</Label>
               <Input
                 id="discount_percentage"
                 type="number"
@@ -188,7 +190,7 @@ export const NewOfferModal = ({
               />
             </div>
             <div>
-              <Label htmlFor="discount_amount">Réduction ($)</Label>
+              <Label htmlFor="discount_amount">{t('newOffer.discountAmount')}</Label>
               <Input
                 id="discount_amount"
                 type="number"
@@ -206,30 +208,30 @@ export const NewOfferModal = ({
           </div>
 
           <div>
-            <Label htmlFor="category">Catégorie</Label>
+            <Label htmlFor="category">{t('newOffer.category')}</Label>
             <select 
               id="category"
               value={formData.category}
               onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
               className="w-full px-3 py-2 border border-input bg-background rounded-md"
             >
-              <option value="general">Générale</option>
-              <option value="lunch">Déjeuner</option>
-              <option value="dinner">Dîner</option>
-              <option value="weekend">Week-end</option>
-              <option value="happy_hour">Happy Hour</option>
+              <option value="general">{t('newOffer.general')}</option>
+              <option value="lunch">{t('newOffer.lunch')}</option>
+              <option value="dinner">{t('newOffer.dinner')}</option>
+              <option value="weekend">{t('newOffer.weekend')}</option>
+              <option value="happy_hour">{t('newOffer.happyHour')}</option>
             </select>
           </div>
 
           <div>
-            <Label htmlFor="cuisine_type">Type de cuisine</Label>
+            <Label htmlFor="cuisine_type">{t('newOffer.cuisineType')}</Label>
             <select 
               id="cuisine_type"
               value={formData.cuisine_type}
               onChange={(e) => setFormData(prev => ({ ...prev, cuisine_type: e.target.value }))}
               className="w-full px-3 py-2 border border-input bg-background rounded-md"
             >
-              <option value="">Tous types</option>
+              <option value="">{t('newOffer.allTypes')}</option>
               {CUISINE_OPTIONS.map(cuisine => (
                 <option key={cuisine} value={cuisine}>{cuisine}</option>
               ))}
@@ -240,12 +242,12 @@ export const NewOfferModal = ({
             value={dateRange}
             onChange={setDateRange}
             maxDays={3}
-            label="Valide du ... au (max 3 jours)"
-            placeholder="Sélectionnez la période de validité"
+            label={t('newOffer.validPeriod')}
+            placeholder={t('newOffer.selectPeriod')}
           />
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="is_active">Activer l'offre immédiatement</Label>
+            <Label htmlFor="is_active">{t('newOffer.activateImmediately')}</Label>
             <Switch
               id="is_active"
               checked={formData.is_active}
@@ -257,14 +259,14 @@ export const NewOfferModal = ({
 
           <div className="flex gap-2 pt-4">
             <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1">
-              Annuler
+              {t('newOffer.cancel')}
             </Button>
             <Button 
               onClick={handleSave} 
               disabled={loading || !formData.title || !formData.description.trim()}
               className="flex-1"
             >
-              {loading ? "Création..." : "Créer l'offre"}
+              {loading ? t('newOffer.creating') : t('newOffer.createOffer')}
             </Button>
           </div>
         </div>

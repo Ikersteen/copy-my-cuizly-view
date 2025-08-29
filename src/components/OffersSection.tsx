@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Gift, Clock, CheckCircle, Edit, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 
 interface Offer {
   id: string;
@@ -28,6 +29,7 @@ interface OffersSectionProps {
 }
 
 export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) => {
+  const { t } = useTranslation();
   const [currentOffers, setCurrentOffers] = useState<Offer[]>([]);
   const [pastOffers, setPastOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,8 +69,8 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
     } catch (error) {
       console.error('Erreur lors du chargement des offres:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les offres",
+        title: t('common.error'),
+        description: t('offers.cannotLoad'),
         variant: "destructive"
       });
     } finally {
@@ -89,14 +91,14 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
 
       await loadOffers();
       toast({
-        title: "Offre supprimée",
-        description: "L'offre a été supprimée avec succès"
+        title: t('offers.offerDeleted'),
+        description: t('offers.deletedSuccessfully')
       });
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de supprimer l'offre",
+        title: t('common.error'),
+        description: t('offers.cannotDelete'),
         variant: "destructive"
       });
     }
@@ -109,7 +111,7 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
     if (offer.discount_amount) {
       return `-${offer.discount_amount}$`;
     }
-    return "Offre spéciale";
+    return t('offers.specialOffer');
   };
 
   const formatDate = (dateString: string) => {
@@ -142,12 +144,12 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Gift className="h-5 w-5" />
-          {userType === 'restaurant' ? 'Mes offres' : 'Vos offres'}
+          {userType === 'restaurant' ? t('offers.myOffers') : t('offers.yourOffers')}
         </CardTitle>
         <CardDescription>
           {userType === 'restaurant' 
-            ? 'Gérez vos offres actives et archivées' 
-            : 'Suivez vos offres en cours et votre historique'
+            ? t('offers.manageOffers') 
+            : t('offers.trackOffers')
           }
         </CardDescription>
       </CardHeader>
@@ -161,7 +163,7 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
             >
               <Clock className="h-5 w-5 text-primary" />
               <div className="text-center">
-                <div className="text-xs font-medium">En cours</div>
+                <div className="text-xs font-medium">{t('offers.ongoing')}</div>
                 <div className="text-xs font-bold text-primary">({currentOffers.length})</div>
               </div>
             </TabsTrigger>
@@ -171,7 +173,7 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
             >
               <CheckCircle className="h-5 w-5 text-muted-foreground" />
               <div className="text-center">
-                <div className="text-xs font-medium">Terminées</div>
+                <div className="text-xs font-medium">{t('offers.finished')}</div>
                 <div className="text-xs font-bold text-muted-foreground">({pastOffers.length})</div>
               </div>
             </TabsTrigger>
@@ -182,12 +184,12 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
               <div className="text-center py-8">
                 <Gift className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
                 <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                  Aucune offre en cours
+                  {t('offers.noOngoingOffers')}
                 </h3>
                 <p className="text-sm text-muted-foreground">
                   {userType === 'restaurant' 
-                    ? 'Créez votre première offre pour attirer des clients' 
-                    : 'Les nouvelles offres apparaîtront ici'
+                    ? t('offers.createFirst') 
+                    : t('offers.newOffersHere')
                   }
                 </p>
               </div>
@@ -209,7 +211,7 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
                         {offer.description}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Valide jusqu'au {formatDate(offer.valid_until)}
+                        {t('offers.validUntil')} {formatDate(offer.valid_until)}
                       </p>
                       {userType === 'consumer' && offer.restaurant && (
                         <p className="text-xs font-medium text-primary mt-1">
@@ -239,10 +241,10 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
               <div className="text-center py-8">
                 <CheckCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
                 <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                  Aucune offre terminée
+                  {t('offers.noFinishedOffers')}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  L'historique de vos offres apparaîtra ici
+                  {t('offers.historyHere')}
                 </p>
               </div>
             ) : (
@@ -259,14 +261,14 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
                           variant={!offer.is_active ? "destructive" : "secondary"} 
                           className="text-xs"
                         >
-                          {!offer.is_active ? 'Désactivée' : 'Expirée'}
+                          {!offer.is_active ? t('offers.deactivated') : t('offers.expired')}
                         </Badge>
                       </div>
                       <p className="text-xs text-muted-foreground mb-1">
                         {offer.description}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {!offer.is_active ? 'Désactivée le' : 'Expirée le'} {formatDate(offer.valid_until)}
+                        {!offer.is_active ? t('offers.deactivatedOn') : t('offers.expiredOn')} {formatDate(offer.valid_until)}
                       </p>
                       {userType === 'consumer' && offer.restaurant && (
                         <p className="text-xs font-medium text-muted-foreground mt-1">
