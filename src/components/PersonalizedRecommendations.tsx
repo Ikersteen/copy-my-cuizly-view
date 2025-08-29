@@ -609,8 +609,9 @@ export const PersonalizedRecommendations = () => {
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => {
-                      window.location.reload();
+                    onClick={async () => {
+                      setLoading(true);
+                      await generateRecommendations();
                     }}
                     disabled={loading}
                     className="flex items-center gap-2"
