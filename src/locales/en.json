@@ -61,7 +61,7 @@
     }
   },
   "contact": {
-    "title": "Contact Us",
+    "title": "Contact us",
     "subtitle": "Have a question? A suggestion? Feel free to reach out",
     "form": {
       "name": "Name",
@@ -354,5 +354,31 @@
   "errors": {
     "title": "Error",
     "loadMenus": "Unable to load menus"
+  },
+  "footer": {
+    "product": "Product",
+    "rates": "Rates", 
+    "company": "Company",
+    "legalNotices": "Legal notices",
+    "instagram": "Instagram"
+  },
+  "profile": {
+    "cancel": "Cancel",
+    "modify": "Modify",
+    "emojiAvatar": "😊 Emoji avatar",
+    "culinaryPreferences": {
+      "cancel": "Cancel"
+    },
+    "createOffer": {
+      "cancel": "Cancel"
+    },
+    "restaurantProfile": {
+      "cancel": "Cancel"
+    }
+  },
+  "dashboard": {
+    "filters": "Filters",
+    "offers": "Offers",
+    "noMoreEndlessSearches": "No more endless searches :"
   }
 }
