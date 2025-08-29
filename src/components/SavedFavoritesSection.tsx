@@ -339,15 +339,33 @@ export const SavedFavoritesSection = () => {
 
               <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  {restaurant.cuisine_type?.map((cuisine, idx) => (
+                  {restaurant.cuisine_type?.slice(0, 15).map((cuisine, idx) => (
                     <Badge 
                       key={idx} 
                       variant="outline"
-                      className="text-xs bg-muted/50 text-muted-foreground border-muted"
+                      className="text-xs bg-muted/50 text-muted-foreground border-muted flex-shrink-0"
+                      style={{
+                        width: 'calc(33.333% - 4px)', // 3 colonnes avec gap
+                        justifyContent: 'center',
+                        textAlign: 'center'
+                      }}
                     >
                       {cuisine}
                     </Badge>
                   ))}
+                  {restaurant.cuisine_type && restaurant.cuisine_type.length > 15 && (
+                    <Badge 
+                      variant="outline"
+                      className="text-xs bg-muted/30 text-muted-foreground border-muted/50"
+                      style={{
+                        width: 'calc(33.333% - 4px)',
+                        justifyContent: 'center',
+                        textAlign: 'center'
+                      }}
+                    >
+                      +{restaurant.cuisine_type.length - 15}
+                    </Badge>
+                  )}
                 </div>
 
                 <div className="bg-muted/50 rounded-lg p-3">
