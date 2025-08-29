@@ -28,6 +28,7 @@ interface Restaurant {
   cover_image_url?: string;
   chef_emoji_color?: string;
   delivery_radius?: number;
+  restaurant_specialties?: string[];
 }
 
 interface RestaurantProfileModalProps {
@@ -69,7 +70,8 @@ export const RestaurantProfileModal = ({
         logo_url: restaurant.logo_url || "",
         cover_image_url: restaurant.cover_image_url || "",
         chef_emoji_color: restaurant.chef_emoji_color || "🧑‍🍳",
-        delivery_radius: restaurant.delivery_radius || 5
+        delivery_radius: restaurant.delivery_radius || 5,
+        restaurant_specialties: restaurant.restaurant_specialties || []
       });
     }
   }, [restaurant, open]);
@@ -524,6 +526,72 @@ export const RestaurantProfileModal = ({
                   ].filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
                     <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
                       {cuisine}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Spécialité du restaurant */}
+          <div className="space-y-2">
+            <div className="space-y-1">
+              <Label className="text-base font-medium">Spécialité du restaurant</Label>
+              <p className="text-sm text-muted-foreground">
+                Sélectionnez les moments de repas pour lesquels votre restaurant est spécialisé
+              </p>
+            </div>
+            
+            {/* Selected specialties display */}
+            {formData.restaurant_specialties && formData.restaurant_specialties.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {formData.restaurant_specialties.map((specialty) => (
+                  <Badge key={specialty} variant="secondary" className="rounded-full text-center justify-center pr-1">
+                    {specialty}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
+                      onClick={() => {
+                        const currentSpecialties = formData.restaurant_specialties || [];
+                        setFormData(prev => ({
+                          ...prev,
+                          restaurant_specialties: currentSpecialties.filter(s => s !== specialty)
+                        }));
+                      }}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+            )}
+
+            {/* Dropdown selector for specialties */}
+            <div>
+              <Select
+                value=""
+                onValueChange={(specialty) => {
+                  if (specialty && !formData.restaurant_specialties?.includes(specialty)) {
+                    setFormData(prev => ({
+                      ...prev,
+                      restaurant_specialties: [...(prev.restaurant_specialties || []), specialty]
+                    }));
+                  }
+                }}
+              >
+                <SelectTrigger className="w-full bg-background border z-50">
+                  <SelectValue placeholder="Sélectionner une spécialité" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border z-50">
+                  {[
+                    "Déjeuner / Brunch", "Déjeuner rapide", "Dîner / Souper", 
+                    "Café & Snack", "Spécialisés Détox / Santé", "Tard le soir"
+                  ].filter(specialty => !formData.restaurant_specialties?.includes(specialty)).map(specialty => (
+                    <SelectItem key={specialty} value={specialty} className="hover:bg-muted">
+                      {specialty}
                     </SelectItem>
                   ))}
                 </SelectContent>

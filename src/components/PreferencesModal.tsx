@@ -39,7 +39,8 @@ const ALLERGEN_OPTIONS = [
 ];
 
 const MEAL_TIMES = [
-  "Petit-déjeuner", "Brunch", "Déjeuner", "Collation", "Dîner", "Tard le soir"
+  "Déjeuner / Brunch", "Déjeuner rapide", "Dîner / Souper", 
+  "Café & Snack", "Spécialisés Détox / Santé", "Tard le soir"
 ];
 
 const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
