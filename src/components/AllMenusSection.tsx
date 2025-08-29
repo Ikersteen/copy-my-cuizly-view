@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { RatingComponent } from '@/components/RatingComponent';
 import { useToast } from '@/hooks/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 interface Menu {
   id: string;
@@ -27,6 +28,7 @@ export const AllMenusSection = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const fetchMenus = async () => {
     setLoading(true);
@@ -52,7 +54,7 @@ export const AllMenusSection = () => {
           ...menu,
           restaurants: restaurantsData?.find(r => r.id === menu.restaurant_id) || {
             id: menu.restaurant_id,
-            name: 'Restaurant inconnu',
+            name: t('menus.unknownRestaurant'),
             description: '',
             cuisine_type: [],
             price_range: '',
@@ -67,8 +69,8 @@ export const AllMenusSection = () => {
     } catch (error) {
       console.error('Error fetching menus:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les menus",
+        title: t('errors.title'),
+        description: t('errors.loadMenus'),
         variant: "destructive",
       });
     } finally {
@@ -129,15 +131,15 @@ export const AllMenusSection = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <div className="bg-card border rounded-lg p-4 shadow-sm">
-            <h1 className="text-2xl font-bold mb-1">Tous les menus disponibles</h1>
+            <h1 className="text-2xl font-bold mb-1">{t('menus.title')}</h1>
             <p className="text-sm text-muted-foreground">
-              Découvrez les délicieux menus proposés par nos restaurants partenaires
+              {t('menus.subtitle')}
             </p>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center py-12">
           <LoadingSpinner size="lg" />
-          <p className="text-muted-foreground mt-4">Chargement des menus...</p>
+          <p className="text-muted-foreground mt-4">{t('menus.loading')}</p>
         </div>
       </div>
     );
@@ -147,9 +149,9 @@ export const AllMenusSection = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <div className="bg-card border rounded-lg p-4 shadow-sm">
-          <h1 className="text-2xl font-bold mb-1">Tous les menus disponibles</h1>
+          <h1 className="text-2xl font-bold mb-1">{t('menus.title')}</h1>
           <p className="text-sm text-muted-foreground">
-            Découvrez les délicieux menus proposés par nos restaurants partenaires
+            {t('menus.subtitle')}
           </p>
         </div>
       </div>
@@ -158,10 +160,10 @@ export const AllMenusSection = () => {
         <Card>
           <CardContent className="text-center py-12">
             <p className="text-muted-foreground text-lg">
-              Aucun menu disponible pour le moment.
+              {t('menus.noMenus')}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Revenez bientôt pour découvrir de nouveaux menus !
+              {t('menus.comeBack')}
             </p>
           </CardContent>
         </Card>
@@ -233,7 +235,7 @@ export const AllMenusSection = () => {
                 </div>
 
                 <div className="text-xs text-muted-foreground pt-2">
-                  Ajouté le {new Date(menu.created_at).toLocaleDateString('fr-CA')}
+                  {t('menus.addedOn')} {new Date(menu.created_at).toLocaleDateString()}
                 </div>
               </CardContent>
             </Card>

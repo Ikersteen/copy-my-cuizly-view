@@ -14,6 +14,7 @@ import { validatePassword, validateEmail, validateTextInput, INPUT_LIMITS } from
 import { isRateLimited } from "@/lib/security";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useEmailNotifications } from "@/hooks/useEmailNotifications";
+import { useTranslation } from 'react-i18next';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +28,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { sendWelcomeEmail } = useEmailNotifications();
+  const { t } = useTranslation();
 
   // Check URL parameters to set user type and active tab
   useEffect(() => {

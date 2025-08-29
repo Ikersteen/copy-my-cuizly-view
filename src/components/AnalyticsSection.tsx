@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Users, Eye, Star, Calendar, MapPin, ArrowUp, ArrowDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "react-i18next";
 
 interface AnalyticsSectionProps {
   restaurantId?: string;
@@ -53,6 +54,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     profileViews: 0,
     avgRating: 0,
   });
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!restaurantId) return;
@@ -246,9 +248,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
 
   const analyticsCards = [
     {
-      title: "Offres totales",
+      title: t('analytics.totalOffers'),
       value: analytics.totalOffers,
-      subtitle: `${analytics.activeOffers} actives`,
+      subtitle: `${analytics.activeOffers} ${t('analytics.activeOffers')}`,
       icon: TrendingUp,
       color: "text-blue-600",
       bgColor: "bg-blue-100 dark:bg-blue-100",
@@ -256,9 +258,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'totalOffers'
     },
     {
-      title: "Menus ajoutés",
+      title: t('analytics.menusAdded'),
       value: analytics.totalMenus,
-      subtitle: `${analytics.activeMenus} actifs`,
+      subtitle: `${analytics.activeMenus} ${t('analytics.activeMenus')}`,
       icon: Calendar,
       color: "text-green-600",
       bgColor: "bg-green-100 dark:bg-green-100",
@@ -266,9 +268,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'totalMenus'
     },
     {
-      title: "Vues du profil",
+      title: t('analytics.profileViews'),
       value: analytics.profileViews,
-      subtitle: "Vues totales",
+      subtitle: t('analytics.totalViews'),
       icon: Eye,
       color: "text-purple-600",
       bgColor: "bg-purple-100 dark:bg-purple-100",
@@ -276,9 +278,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'profileViews'
     },
     {
-      title: "Note moyenne",
+      title: t('analytics.avgRating'),
       value: analytics.avgRating.toFixed(1),
-      subtitle: "Sur 5 étoiles",
+      subtitle: t('analytics.outOfFive'),
       icon: Star,
       color: "text-orange-600",
       bgColor: "bg-orange-100 dark:bg-orange-100",
@@ -307,9 +309,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg sm:text-xl">Tableau de performance en temps réel</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">{t('analytics.title')}</CardTitle>
         <CardDescription className="text-sm">
-          Aperçus sur les performances par segment (Mise à jour en temps réel)
+          {t('analytics.subtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -350,7 +352,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
             <div className="text-center md:text-left order-2 md:order-1">
               <div className="flex items-center gap-2 mb-1">
                 <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-900">
-                  Tendances cette semaine
+                  {t('analytics.weeklyTrends')}
                 </h4>
                 {analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth > 0 ? (
                   <TrendingUp className="h-4 w-4 text-green-500" />
@@ -367,12 +369,12 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
               <p className="text-xs text-gray-700 dark:text-gray-700">
                 {analytics.weeklyGrowth !== undefined ? (
                   analytics.weeklyGrowth > 0 ? 
-                    `+${analytics.weeklyGrowth}% de vues par rapport à la semaine dernière` :
+                    `+${analytics.weeklyGrowth}% ${t('analytics.positiveGrowth')}` :
                   analytics.weeklyGrowth < 0 ?
-                    `${analytics.weeklyGrowth}% de vues par rapport à la semaine dernière` :
-                    "Aucune évolution par rapport à la semaine dernière"
+                    `${analytics.weeklyGrowth}% ${t('analytics.positiveGrowth')}` :
+                    t('analytics.noChange')
                 ) : (
-                  "Données en cours de collecte..."
+                  t('analytics.collectingData')
                 )}
               </p>
             </div>
@@ -391,11 +393,11 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                 `}
               >
                 {analytics.weeklyGrowth !== undefined ? (
-                  analytics.weeklyGrowth > 0 ? 'Tendance positive' : 
-                  analytics.weeklyGrowth < 0 ? 'Tendance négative' :
-                  'Stable'
+                  analytics.weeklyGrowth > 0 ? t('analytics.positiveTrend') : 
+                  analytics.weeklyGrowth < 0 ? t('analytics.negativeTrend') :
+                  t('analytics.stable')
                 ) : (
-                  'Collecte de données'
+                  t('analytics.dataCollection')
                 )}
               </Badge>
             </div>
