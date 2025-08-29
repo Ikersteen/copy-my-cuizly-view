@@ -12,6 +12,7 @@ import { LogOut, Trash2, User as UserIcon } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 import { validateTextInput, validatePhone, validatePassword, INPUT_LIMITS } from "@/lib/validation";
+import { useTranslation } from 'react-i18next';
 
 interface ProfileModalProps {
   open: boolean;
@@ -19,6 +20,7 @@ interface ProfileModalProps {
 }
 
 export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
+  const { t } = useTranslation();
   const firstNameRef = useRef<HTMLInputElement>(null);
   const { profile, loading: profileLoading, updateProfile, loadProfile } = useProfile();
   const [localProfile, setLocalProfile] = useState({
@@ -339,13 +341,13 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               <div className="bg-muted/30 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <UserIcon className="h-5 w-5" />
-                  Informations personnelles
+                  {t('profile.personalInfo')}
                 </h3>
                 
                 <div className="space-y-4">
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="first_name" className="text-sm font-medium">Prénom</Label>
+                      <Label htmlFor="first_name" className="text-sm font-medium">{t('profile.firstName')}</Label>
                       <Input
                         ref={firstNameRef}
                         id="first_name"
@@ -357,7 +359,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                             e.target.setSelectionRange(e.target.value.length, e.target.value.length);
                           }, 0);
                         }}
-                        placeholder="Votre prénom"
+                        placeholder={t('profile.firstNamePlaceholder')}
                         className="mt-1"
                         autoFocus={false}
                       />
@@ -366,12 +368,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                       )}
                     </div>
                     <div>
-                      <Label htmlFor="last_name" className="text-sm font-medium">Nom</Label>
+                      <Label htmlFor="last_name" className="text-sm font-medium">{t('profile.lastName')}</Label>
                       <Input
                         id="last_name"
                         value={localProfile.last_name}
                         onChange={(e) => setLocalProfile(prev => ({ ...prev, last_name: e.target.value }))}
-                        placeholder="Votre nom"
+                        placeholder={t('profile.lastNamePlaceholder')}
                         className="mt-1"
                       />
                       {validationErrors.last_name && (
@@ -381,12 +383,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                   </div>
 
                   <div>
-                    <Label htmlFor="username" className="text-sm font-medium">Nom d'utilisateur</Label>
+                    <Label htmlFor="username" className="text-sm font-medium">{t('profile.username')}</Label>
                     <Input
                       id="username"
                       value={localProfile.username}
                       onChange={(e) => setLocalProfile(prev => ({ ...prev, username: e.target.value }))}
-                      placeholder="Votre nom d'utilisateur"
+                      placeholder={t('profile.usernamePlaceholder')}
                       className="mt-1"
                     />
                     {validationErrors.username && (
@@ -395,7 +397,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                   </div>
 
                   <div>
-                    <Label htmlFor="phone" className="text-sm font-medium">Téléphone</Label>
+                    <Label htmlFor="phone" className="text-sm font-medium">{t('profile.phone')}</Label>
                     <Input
                       id="phone"
                       value={localProfile.phone}
@@ -409,7 +411,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                   </div>
 
                   <div>
-                    <Label htmlFor="email" className="text-sm font-medium">Courriel</Label>
+                    <Label htmlFor="email" className="text-sm font-medium">{t('profile.email')}</Label>
                     <Input 
                       id="email"
                       value={user?.email || ""}
@@ -423,10 +425,10 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               {/* Emoji Selection */}
               <div className="bg-muted/30 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  😊 Avatar Emoji
+                  😊 {t('profile.emojiAvatar')}
                 </h3>
                 <div>
-                  <Label className="text-sm font-medium mb-3 block">Choisissez votre emoji</Label>
+                  <Label className="text-sm font-medium mb-3 block">{t('profile.chooseEmoji')}</Label>
                   <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-32 overflow-y-auto">
                     {personEmojis.map((emoji, index) => (
                       <Button
@@ -440,7 +442,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                     ))}
                   </div>
                   <p className="text-xs text-muted-foreground mt-2">
-                    Sélectionné : <span className="text-lg">{localProfile.chef_emoji_color}</span>
+                    {t('profile.selected')} <span className="text-lg">{localProfile.chef_emoji_color}</span>
                   </p>
                 </div>
               </div>
@@ -452,7 +454,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               {/* Notifications */}
               <div className="bg-muted/30 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  🔔 Notifications
+                  🔔 {t('profile.notifications')}
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-3 bg-background rounded-lg border">

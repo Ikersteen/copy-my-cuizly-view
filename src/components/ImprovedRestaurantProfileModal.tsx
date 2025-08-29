@@ -342,16 +342,16 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Profil du restaurant</DialogTitle>
+          <DialogTitle>{t('profile.restaurantProfile')}</DialogTitle>
           <DialogDescription>
-            Modifiez les informations de votre restaurant
+            {t('profile.editRestaurantInfo')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Cover Photo Section */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Photo de couverture</h3>
+            <h3 className="font-semibold text-foreground">{t('profile.coverPhoto')}</h3>
             <div className="relative">
               <input
                 type="file"
@@ -449,15 +449,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           <div className="pt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Basic Information */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">Informations de base</h3>
+              <h3 className="font-semibold text-foreground">{t('profile.basicInfo')}</h3>
               
               <div className="space-y-2">
-                <Label htmlFor="name">Nom du restaurant</Label>
+                <Label htmlFor="name">{t('profile.restaurantName')}</Label>
                 <Input
                   id="name"
                   value={formData.name || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Nom de votre restaurant"
+                  placeholder={t('profile.restaurantNamePlaceholder')}
                   onFocus={(e) => {
                     // Move cursor to end instead of selecting all text
                     setTimeout(() => {
