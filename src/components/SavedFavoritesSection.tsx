@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Star, ArrowRight, MapPin } from "lucide-react";
+import { Heart, Star, ArrowRight, MapPin, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
@@ -195,11 +195,56 @@ export const SavedFavoritesSection = () => {
             </div>
           </div>
           <div className="text-center space-y-8">
-            <div className="bg-muted/30 rounded-lg p-12 max-w-lg mx-auto">
-              <Heart className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
-              <p className="text-lg text-muted-foreground mb-3">
-                Votre liste de favoris est vide pour l'instant.
-              </p>
+            <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-xl"></div>
+                  <div className="relative bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-full">
+                    <Heart className="h-16 w-16 text-primary" />
+                  </div>
+                </div>
+                
+                <div className="space-y-4 text-center">
+                  <h3 className="text-2xl font-bold">Aucun favori pour l'instant</h3>
+                  <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
+                    Découvrez nos restaurants et ajoutez vos préférés à votre liste de favoris en cliquant sur le cœur ❤️
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Pourquoi ce choix ? Section */}
+            <div className="bg-card border rounded-xl p-8 max-w-4xl mx-auto">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-2 rounded-lg">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold">Pourquoi ce choix ?</h3>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-primary flex items-center space-x-2">
+                    <Heart className="h-4 w-4" />
+                    <span>Liste personnalisée</span>
+                  </h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    Vos favoris vous permettent de retrouver rapidement les restaurants que vous aimez. 
+                    Une fois ajoutés, ils apparaîtront ici pour un accès facile.
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-primary flex items-center space-x-2">
+                    <Star className="h-4 w-4" />
+                    <span>Suivi personnalisé</span>
+                  </h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    Nous gardons en mémoire vos restaurants favoris et vous notifions 
+                    des nouvelles offres et des nouveaux plats disponibles.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
