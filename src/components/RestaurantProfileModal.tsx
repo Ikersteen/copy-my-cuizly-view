@@ -512,17 +512,17 @@ export const RestaurantProfileModal = ({
                   }
                 }}
               >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Sélectionner une cuisine..." />
+                <SelectTrigger className="w-full bg-background border z-50 flex justify-between items-center">
+                  <span className="text-foreground">Sélectionner une cuisine</span>
                   <ChevronDown className="h-4 w-4 opacity-50" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border z-50">
                   {[
                     "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
                     "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
                     "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine", "Pizza", "Burger"
                   ].filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
-                    <SelectItem key={cuisine} value={cuisine}>
+                    <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
                       {cuisine}
                     </SelectItem>
                   ))}
