@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Star, ArrowRight, MapPin, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 
 interface Restaurant {
@@ -19,11 +20,40 @@ interface Restaurant {
 
 export const SavedFavoritesSection = () => {
   const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
+  const { preferences } = useUserPreferences();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
+
+  // Generate reasons for why this restaurant is recommended as a favorite
+  const generateFavoriteReasons = (restaurant: Restaurant) => {
+    const reasons: string[] = [];
+
+    // Cuisine preferences match
+    if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
+      const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
+        preferences.cuisine_preferences.includes(cuisine)
+      ) || [];
+      if (matchingCuisines.length > 0) {
+        reasons.push(`${matchingCuisines.length} cuisine(s) favorite(s)`);
+      }
+    }
+    
+    // Price range match
+    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
+      reasons.push("Dans votre budget");
+    }
+
+    // Always include favorite-specific reasons
+    reasons.push("Dans vos favoris");
+    if (reasons.length === 1) {
+      reasons.push("Accès rapide");
+    }
+
+    return reasons;
+  };
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
@@ -339,37 +369,46 @@ export const SavedFavoritesSection = () => {
 
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-2">
-                  {restaurant.cuisine_type?.map((cuisine, idx) => (
-                    <Badge 
-                      key={idx} 
-                      variant="outline"
-                      className="text-xs bg-muted/50 text-muted-foreground border-muted text-center justify-center"
-                    >
-                      {cuisine}
-                    </Badge>
-                  ))}
+                  {restaurant.cuisine_type?.map((cuisine, idx) => {
+                    const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
+                    return (
+                      <Badge 
+                        key={idx} 
+                        variant={isPreferred ? "default" : "outline"}
+                        className={`text-xs text-center justify-center ${
+                          isPreferred
+                            ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
+                            : 'bg-muted/50 text-muted-foreground border-muted'
+                        }`}
+                      >
+                        {isPreferred && "★ "}{cuisine}
+                      </Badge>
+                    );
+                  })}
                 </div>
 
-                <div className="bg-muted/50 rounded-lg p-3">
-                  <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-                    <Sparkles className="h-3 w-3" />
-                    Pourquoi ce choix ?
-                  </p>
-                  <div className="flex flex-wrap gap-1">
-                    <Badge 
-                      variant="secondary" 
-                      className="text-xs bg-background/80"
-                    >
-                      Dans vos favoris
-                    </Badge>
-                    <Badge 
-                      variant="secondary" 
-                      className="text-xs bg-background/80"
-                    >
-                      Accès rapide
-                    </Badge>
-                  </div>
-                </div>
+                {(() => {
+                  const reasons = generateFavoriteReasons(restaurant);
+                  return reasons.length > 0 && (
+                    <div className="bg-muted/50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+                        <Sparkles className="h-3 w-3" />
+                        Pourquoi ce choix ?
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {reasons.slice(0, 2).map((reason, idx) => (
+                          <Badge 
+                            key={idx} 
+                            variant="secondary" 
+                            className="text-xs bg-background/80"
+                          >
+                            {reason}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 <Button 
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
