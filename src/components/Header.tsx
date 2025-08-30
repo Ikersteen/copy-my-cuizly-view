@@ -162,16 +162,12 @@ const Header = () => {
                       <Globe className="h-4 w-4" />
                       <span className="text-sm font-medium">Langue / Language</span>
                     </div>
-                     <div className="flex gap-2">
+                    <div className="flex gap-2">
                       <Button
                         variant={currentLanguage === 'fr' ? 'default' : 'outline'}
                         size="sm"
                         className="flex-1"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          changeLanguage('fr');
-                        }}
+                        onClick={() => changeLanguage('fr')}
                       >
                         🇫🇷 FR
                       </Button>
@@ -179,11 +175,7 @@ const Header = () => {
                         variant={currentLanguage === 'en' ? 'default' : 'outline'}
                         size="sm"
                         className="flex-1"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          changeLanguage('en');
-                        }}
+                        onClick={() => changeLanguage('en')}
                       >
                         🇬🇧 EN
                       </Button>
