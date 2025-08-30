@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import Footer from "@/components/Footer";
+import CTASection from "@/components/CTASection";
 
 const Waitlist = () => {
   const { t } = useTranslation();
@@ -257,6 +258,7 @@ const Waitlist = () => {
           </div>
         </div>
       </div>
+      <CTASection />
       <Footer />
     </>
   );

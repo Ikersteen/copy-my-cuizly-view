@@ -117,16 +117,17 @@ const Footer = () => {
         <div className="relative border-t-2 border-border/60 mt-8 sm:mt-12 pt-8 sm:pt-10">
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
-            <button 
-              onClick={() => window.location.reload()}
+            <Link 
+              to="/"
               className="flex items-center space-x-3 group cursor-pointer"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <img 
                 src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
                 alt="Cuizly" 
                 className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110"
               />
-            </button>
+            </Link>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
               {t('footer.tagline')}
