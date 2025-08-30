@@ -355,13 +355,13 @@ export const RestaurantMenuModal = ({
               onClick={() => setShowCommentModal(true)}
             >
               <MessageSquare className="h-4 w-4 mr-2" />
-              {t('menus.comment')}
+              Commentaire
             </Button>
             <Button className="w-full" variant="outline" onClick={handleToggleFavorite}>
               <Heart 
                 className={`h-4 w-4 mr-2 ${isFavorite(restaurant.id) ? 'fill-current text-red-500' : ''}`} 
               />
-              {isFavorite(restaurant.id) ? t('dashboard.removeFromFavorites') : t('dashboard.addToFavorites')}
+              {isFavorite(restaurant.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
             </Button>
           </div>
         </div>
