@@ -55,6 +55,13 @@ const Waitlist = () => {
     }
 
     try {
+      console.log('📋 Tentative d\'inscription à la waitlist avec les données:', {
+        email: formData.email,
+        name: formData.name,
+        company_name: formData.company_name,
+        hcaptchaToken: hcaptchaToken ? 'présent' : 'absent'
+      });
+
       // Sauvegarder dans Supabase
       const { error } = await supabase
         .from('waitlist_analytics')
@@ -69,8 +76,13 @@ const Waitlist = () => {
         });
 
       if (error) {
-        console.error('Erreur Supabase:', error);
-        toast.error(t('waitlist.messages.error'));
+        console.error('❌ Erreur Supabase détaillée:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        toast.error(t('waitlist.messages.error') + ' (Code: ' + error.code + ')');
         setIsSubmitting(false);
         // Reset hCaptcha
         setHcaptchaToken(null);
@@ -79,13 +91,16 @@ const Waitlist = () => {
         return;
       }
 
+      console.log('✅ Inscription réussie dans la base de données');
+      
       // Succès - maintenir l'état de confirmation sans reset
       setIsSubmitted(true);
       setIsSubmitting(false);
       toast.success(t('waitlist.messages.success'));
     } catch (error) {
-      console.error('Erreur:', error);
-      toast.error(t('waitlist.messages.error'));
+      console.error('❌ Erreur globale:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+      toast.error(t('waitlist.messages.error') + ' (' + errorMessage + ')');
       setIsSubmitting(false);
       // Reset hCaptcha en cas d'erreur seulement
       setHcaptchaToken(null);
