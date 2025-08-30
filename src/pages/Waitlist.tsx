@@ -62,34 +62,31 @@ const Waitlist = () => {
 
   if (isSubmitted) {
     return (
-      <>
-        <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center px-4">
-          <div className="max-w-md w-full">
-            <Card className="text-center shadow-2xl border-border">
-              <CardHeader>
-                <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle2 className="h-8 w-8 text-green-600" />
-                </div>
-                <CardTitle className="text-2xl text-foreground">
-                  Inscription confirmée !
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-6">
-                  Merci de votre intérêt pour Cuizly Analytics+. Nous vous contacterons bientôt avec plus de détails sur le lancement.
-                </p>
-                <Link to="/">
-                  <Button className="w-full">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Retour à l'accueil
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center px-4">
+        <div className="max-w-md w-full">
+          <Card className="text-center shadow-2xl border-border">
+            <CardHeader>
+              <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <CheckCircle2 className="h-8 w-8 text-green-600" />
+              </div>
+              <CardTitle className="text-2xl text-foreground">
+                Inscription confirmée !
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-6">
+                Merci de votre intérêt pour Cuizly Analytics+. Nous vous contacterons bientôt avec plus de détails sur le lancement.
+              </p>
+              <Link to="/">
+                <Button className="w-full">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Retour à l'accueil
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </div>
-        <Footer />
-      </>
+      </div>
     );
   }
 
