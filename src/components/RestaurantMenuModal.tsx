@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { RatingComponent } from "@/components/RatingComponent";
 import { CommentModal } from "@/components/CommentModal";
 import { useLanguage } from "@/hooks/useLanguage";
+import { getTranslatedDescription } from "@/lib/translations";
 
 // Composant pour afficher l'évaluation avec le prix
 const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
@@ -223,11 +224,9 @@ export const RestaurantMenuModal = ({
             </div>
 
             {/* Description */}
-            {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
-              <p className="text-muted-foreground whitespace-pre-line">
-                {currentLanguage === 'en' 
-                  ? (restaurant.description_en || restaurant.description_fr || restaurant.description)
-                  : (restaurant.description_fr || restaurant.description)}
+            {getTranslatedDescription(restaurant, currentLanguage) && (
+              <p className="text-muted-foreground">
+                {getTranslatedDescription(restaurant, currentLanguage)}
               </p>
             )}
 

@@ -1,17 +1,18 @@
-// Utility functions for translating restaurant content
+import { SupportedLanguage } from '@/hooks/useLanguage';
 
-interface Restaurant {
+interface TranslatableText {
   description?: string;
   description_fr?: string;
   description_en?: string;
 }
 
-/**
- * Get translated description based on language
- */
-export const getTranslatedDescription = (restaurant: Restaurant, language: string): string => {
+export const getTranslatedDescription = (
+  item: TranslatableText,
+  language: SupportedLanguage
+): string => {
   if (language === 'en') {
-    return restaurant.description_en || restaurant.description_fr || restaurant.description || "";
+    return item.description_en || item.description_fr || item.description || '';
+  } else {
+    return item.description_fr || item.description || '';
   }
-  return restaurant.description_fr || restaurant.description || "";
 };
