@@ -69,11 +69,11 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
   ];
 
   useEffect(() => {
-    if (restaurant) {
-      setFormData(restaurant);
+    if (restaurant && restaurant.id !== formData.id) {
+      setFormData({...restaurant});
       loadChefEmoji();
     }
-  }, [restaurant]);
+  }, [restaurant?.id]);
 
   const loadChefEmoji = async () => {
     try {
