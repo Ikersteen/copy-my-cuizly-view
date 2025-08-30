@@ -857,7 +857,9 @@
     "refreshing": "Actualisation...",
     "refreshRecommendations": "Actualiser les recommandations",
     "evaluations": "évaluations",
-    "evaluation": "évaluation", 
+    "evaluation": "évaluation",
+    "whyChoice": "Pourquoi ce choix ?",
+    "viewProfile": "Voir le profil",
     "noRatingsYet": "Pas d'évaluations pour le moment",
     "noConnection": "Pas de connexion Internet",
     "generationError": "Erreur génération recommandations"

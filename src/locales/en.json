@@ -985,6 +985,8 @@
     "refreshRecommendations": "Refresh recommendations",
     "evaluations": "ratings",
     "evaluation": "rating",
+    "whyChoice": "Why this choice?",
+    "viewProfile": "View profile",
     "noRatingsYet": "No ratings yet",
     "noConnection": "No internet connection",
     "generationError": "Error generating recommendations"
