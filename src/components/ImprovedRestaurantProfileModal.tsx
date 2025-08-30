@@ -718,24 +718,24 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-4 pt-6 border-t">
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleLogout}>
-              {t('restaurantProfile.logout')}
+              Se déconnecter
             </Button>
             
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive">{t('restaurantProfile.deleteAccount')}</Button>
+                <Button variant="destructive">Supprimer mon compte</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>{t('restaurantProfile.deleteAccountTitle')}</AlertDialogTitle>
+                  <AlertDialogTitle>Supprimer définitivement le compte ?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    {t('restaurantProfile.deleteAccountDesc')}
+                    Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, toutes vos données seront définitivement supprimées.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>{t('restaurantProfile.cancel')}</AlertDialogCancel>
+                  <AlertDialogCancel>Annuler</AlertDialogCancel>
                   <AlertDialogAction onClick={handleDeleteAccount}>
-                    {t('restaurantProfile.deleteAccountConfirm')}
+                    Supprimer mon compte
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -744,10 +744,10 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              {t('restaurantProfile.cancel')}
+              Annuler
             </Button>
             <Button onClick={handleSave} disabled={loading || !formData.name}>
-              {loading ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
+              {loading ? "Sauvegarde..." : "Sauvegarder"}
             </Button>
           </div>
         </div>

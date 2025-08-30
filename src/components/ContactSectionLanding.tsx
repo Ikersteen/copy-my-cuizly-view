@@ -67,7 +67,7 @@ const ContactSectionLanding = () => {
                     />
                   </div>
                   <Button type="submit" className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
-                    {t('contact.form.send')}
+                    Envoyer
                   </Button>
                 </form>
               </CardContent>

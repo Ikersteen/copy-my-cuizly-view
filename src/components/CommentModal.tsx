@@ -264,11 +264,11 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
               className="w-full"
             >
               {uploading ? (
-                t('commentModal.uploadingImages')
+                "Upload des images..."
               ) : (
                 <>
                   <Send className="h-4 w-4 mr-2" />
-                  {t('commentModal.publishComment')}
+                  Publier le commentaire
                 </>
               )}
             </Button>
@@ -277,7 +277,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
           {/* Liste des commentaires */}
           {loading ? (
             <div className="space-y-4">
-              <h3 className="font-medium">{t('commentModal.clientComments')}</h3>
+              <h3 className="font-medium">Commentaires des clients</h3>
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="animate-pulse border rounded-lg p-4 space-y-2">
@@ -290,7 +290,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
             </div>
           ) : totalComments > 0 && (
             <div className="space-y-4">
-              <h3 className="font-medium">{t('commentModal.clientComments')}</h3>
+              <h3 className="font-medium">Commentaires des clients</h3>
               <div className="space-y-4 max-h-60 overflow-y-auto">
                 {comments.map((comment) => (
                   <div key={comment.id} className="border rounded-lg p-4 space-y-3">
