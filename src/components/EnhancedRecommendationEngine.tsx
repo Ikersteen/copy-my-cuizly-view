@@ -33,8 +33,6 @@ interface Restaurant {
   distance?: number;
   score?: number;
   reasons?: string[];
-  delivery_radius?: number;
-  restaurant_specialties?: string[];
   analytics?: {
     profile_views: number;
     menu_views: number;
@@ -285,59 +283,6 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
           // Dans une version complète, il faudrait vérifier les menus
           hasStrictMatch = true;
           reasons.push("À vérifier pour allergies");
-        }
-
-        // 5. Favorite meal times match - BONUS si défini
-        if (preferences?.favorite_meal_times?.length) {
-          const currentHour = new Date().getHours();
-          let timeMatch = false;
-          
-          console.log(`Checking meal times for ${restaurant.name}. Current hour: ${currentHour}, User meal times:`, preferences.favorite_meal_times);
-          
-          preferences.favorite_meal_times.forEach((mealTime: string) => {
-            const mealTimeLower = mealTime.toLowerCase();
-            
-            // Correspondance pour toutes les variations possibles
-            if (mealTimeLower.includes('breakfast') || mealTimeLower.includes('petit-déjeuner') || mealTimeLower.includes('brunch')) {
-              if (currentHour >= 6 && currentHour < 11) {
-                timeMatch = true;
-                console.log(`Breakfast/Brunch match at hour ${currentHour}`);
-              }
-            }
-            if (mealTimeLower.includes('lunch') || mealTimeLower.includes('déjeuner') || mealTimeLower.includes('quick')) {
-              if (currentHour >= 11 && currentHour < 15) {
-                timeMatch = true;
-                console.log(`Lunch match at hour ${currentHour}`);
-              }
-            }
-            if (mealTimeLower.includes('dinner') || mealTimeLower.includes('dîner')) {
-              if (currentHour >= 17 && currentHour < 23) {
-                timeMatch = true;
-                console.log(`Dinner match at hour ${currentHour}`);
-              }
-            }
-            if (mealTimeLower.includes('late') || mealTimeLower.includes('tard') || mealTimeLower.includes('night')) {
-              if (currentHour >= 23 || currentHour < 6) {
-                timeMatch = true;
-                console.log(`Late night match at hour ${currentHour}`);
-              }
-            }
-            if (mealTimeLower.includes('collation') || mealTimeLower.includes('snack')) {
-              if (currentHour >= 14 && currentHour < 17) {
-                timeMatch = true;
-                console.log(`Snack time match at hour ${currentHour}`);
-              }
-            }
-          });
-          
-          if (timeMatch) {
-            hasStrictMatch = true;
-            score += 15;
-            reasons.push("Moment idéal pour commander");
-            console.log(`Perfect timing match for ${restaurant.name} with meal times:`, preferences.favorite_meal_times);
-          } else {
-            console.log(`No timing match for ${restaurant.name}. Current hour ${currentHour} doesn't match any of:`, preferences.favorite_meal_times);
-          }
         }
 
         // STRICT: Si aucun match strict n'a été trouvé, exclure le restaurant

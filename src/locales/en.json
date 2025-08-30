@@ -15,7 +15,7 @@
       "location": "in Montreal"
     },
     "subtitle": "Thanks to our <strong>artificial intelligence</strong>, discover the best restaurants in Montreal tailored to your tastes and budget.",
-    "cta": "Get started now"
+    "cta": "Get Started Now"
   },
   "mission": {
     "title": "Our Mission",
@@ -1020,11 +1020,6 @@
     "discoverMontreal": "Discover what Montreal has to offer",
     "restaurantAvailable": "Available restaurant",
     "exploreNewTastes": "Explore new tastes",
-    "perfectTiming": "Perfect timing to order",
-    "perfectTimingSpecialty": "Perfect specialty at the right time",
-    "specialtyMatch": "Matching specialty",
-    "deliveryAvailable": "Delivery available",
-    "limitedDelivery": "Limited delivery",
     "whyThisChoice": "Why this choice?",
     "whyChoice": "Why this choice?",
     "viewProfile": "View profile",
