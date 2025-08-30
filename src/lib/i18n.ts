@@ -15,6 +15,7 @@ const resources = {
   }
 };
 
+// Initialize i18n immediately
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -22,7 +23,7 @@ i18n
     resources,
     fallbackLng: 'fr',
     lng: 'fr',
-    debug: true, // Enable debug to see what's happening
+    debug: false,
     
     interpolation: {
       escapeValue: false
@@ -38,5 +39,8 @@ i18n
       useSuspense: false,
     }
   });
+
+// Force French language
+i18n.changeLanguage('fr');
 
 export default i18n;
