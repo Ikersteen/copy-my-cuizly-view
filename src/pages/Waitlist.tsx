@@ -110,6 +110,7 @@ const Waitlist = () => {
             </Card>
           </div>
         </div>
+        <CTASection />
         <Footer />
       </>
     );
