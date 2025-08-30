@@ -1335,11 +1335,13 @@
       "phone": "Téléphone",
       "phonePlaceholder": "(514) 123-4567",
       "address": "Adresse",
-      "addressPlaceholder": "123 Rue de la Montagne, Montréal, QC",
+      "addressPlaceholder": "2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4",
       "restaurantType": "Type de restaurant",
       "restaurantTypePlaceholder": "Sélectionnez le type de votre restaurant",
       "message": "Message (optionnel)",
       "messagePlaceholder": "Dites-nous en plus sur vos besoins en analytics...",
+      "security": "Vérification de sécurité",
+      "verified": "Vérifié",
       "required": "*",
       "back": "Retour",
       "submit": "Rejoindre la liste d'attente",
@@ -1377,7 +1379,10 @@
     },
     "messages": {
       "success": "Inscription réussie à la liste d'attente !",
-      "error": "Une erreur s'est produite. Veuillez réessayer."
+      "error": "Une erreur s'est produite. Veuillez réessayer.",
+      "captchaRequired": "Veuillez compléter la vérification de sécurité.",
+      "captchaExpired": "La vérification de sécurité a expiré. Veuillez recommencer.",
+      "captchaError": "Erreur lors de la vérification de sécurité. Veuillez réessayer."
     }
   }
 }

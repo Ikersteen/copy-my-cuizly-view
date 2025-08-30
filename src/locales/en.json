@@ -1452,11 +1452,13 @@
       "phone": "Phone",
       "phonePlaceholder": "(514) 123-4567",
       "address": "Address",
-      "addressPlaceholder": "123 Mountain Street, Montreal, QC",
+      "addressPlaceholder": "2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4",
       "restaurantType": "Restaurant Type",
       "restaurantTypePlaceholder": "Select your restaurant type",
       "message": "Message (optional)",
       "messagePlaceholder": "Tell us more about your analytics needs...",
+      "security": "Security Verification",
+      "verified": "Verified",
       "required": "*",
       "back": "Back",
       "submit": "Join the Waitlist",
@@ -1494,7 +1496,10 @@
     },
     "messages": {
       "success": "Successfully registered for the waitlist!",
-      "error": "An error occurred. Please try again."
+      "error": "An error occurred. Please try again.",
+      "captchaRequired": "Please complete the security verification.",
+      "captchaExpired": "Security verification has expired. Please try again.",
+      "captchaError": "Error during security verification. Please try again."
     }
   }
 }

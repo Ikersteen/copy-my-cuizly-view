@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import { ArrowLeft, CheckCircle2, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
@@ -17,6 +18,9 @@ const Waitlist = () => {
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hcaptchaToken, setHcaptchaToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
+  const hcaptchaRef = useRef<HCaptcha>(null);
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -36,11 +40,19 @@ const Waitlist = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Vérification hCaptcha
+    if (!hcaptchaToken) {
+      toast.error(t('waitlist.messages.captchaRequired'));
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       // Pour l'instant, on sauvegarde en localStorage
       // TODO: Intégrer avec Supabase quand les types seront mis à jour
       const waitlistEntry = {
         ...formData,
+        captcha_verified: true,
         created_at: new Date().toISOString(),
         id: crypto.randomUUID()
       };
@@ -56,6 +68,10 @@ const Waitlist = () => {
       toast.error(t('waitlist.messages.error'));
     } finally {
       setIsSubmitting(false);
+      // Reset hCaptcha
+      setHcaptchaToken(null);
+      setCaptchaError(null);
+      hcaptchaRef.current?.resetCaptcha();
     }
   };
 
@@ -219,6 +235,40 @@ const Waitlist = () => {
                   />
                 </div>
 
+                {/* hCaptcha */}
+                <div className="space-y-2">
+                  <Label>{t('waitlist.form.security')} {t('waitlist.form.required')}</Label>
+                  <div className="captcha-container">
+                     <HCaptcha
+                       ref={hcaptchaRef}
+                       sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
+                       onVerify={(token) => {
+                         setHcaptchaToken(token);
+                         setCaptchaError(null);
+                       }}
+                       onExpire={() => {
+                         setHcaptchaToken(null);
+                         setCaptchaError(t('waitlist.messages.captchaExpired'));
+                       }}
+                       onError={() => {
+                         setHcaptchaToken(null);
+                         setCaptchaError(t('waitlist.messages.captchaError'));
+                       }}
+                     />
+                  </div>
+                  {captchaError && (
+                    <p className="text-sm text-red-600">
+                      {captchaError}
+                    </p>
+                  )}
+                  {hcaptchaToken && (
+                    <div className="flex items-center text-xs text-green-600">
+                      <CheckCircle2 className="w-3 h-3 mr-1" />
+                      {t('waitlist.form.verified')}
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link to="/" className="flex-1">
                     <Button type="button" variant="outline" className="w-full">
@@ -228,8 +278,8 @@ const Waitlist = () => {
                   </Link>
                   <Button 
                     type="submit" 
-                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
-                    disabled={isSubmitting || !formData.email || !formData.name || !formData.company_name || !formData.phone || !formData.address || !formData.restaurant_type}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    disabled={isSubmitting || !formData.email || !formData.name || !formData.company_name || !formData.phone || !formData.address || !formData.restaurant_type || !hcaptchaToken}
                   >
                     {isSubmitting ? t('waitlist.form.submitting') : t('waitlist.form.submit')}
                   </Button>
