@@ -612,18 +612,24 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             {/* Selected specialties display */}
             {formData.restaurant_specialties && formData.restaurant_specialties.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                 {formData.restaurant_specialties.map((specialty) => {
+                 {formData.restaurant_specialties.map((specialty, index) => {
+                   // Trouver la traduction correspondante pour l'affichage
+                   const specialtyOptions = t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>;
+                   const displayLabel = specialty;
+                   
                    return (
-                   <Badge key={specialty} variant="secondary" className="rounded-full text-center justify-center pr-1">
-                     {specialty}
+                   <Badge key={`${specialty}-${index}`} variant="secondary" className="rounded-full text-center justify-center pr-1">
+                     {displayLabel}
                      <Button
                        variant="ghost"
                        size="sm"
                        className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
-                       onClick={() => {
+                       onClick={(e) => {
+                         e.preventDefault();
+                         e.stopPropagation();
                          setFormData(prev => ({
                            ...prev,
-                           restaurant_specialties: (prev.restaurant_specialties || []).filter(s => s !== specialty)
+                           restaurant_specialties: (prev.restaurant_specialties || []).filter((_, i) => i !== index)
                          }));
                        }}
                      >
@@ -652,15 +658,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                   <SelectValue placeholder={t('restaurantProfile.selectSpecialty')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
-                  {Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>).map(([key, label]) => {
-                    const isSelected = formData.restaurant_specialties?.includes(label);
-                    if (isSelected) return null;
-                    return (
+                  {Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>)
+                    .filter(([key, label]) => !formData.restaurant_specialties?.includes(label))
+                    .map(([key, label]) => (
                       <SelectItem key={key} value={label} className="hover:bg-muted">
                         {label}
                       </SelectItem>
-                    );
-                  })}
+                    ))}
                 </SelectContent>
               </Select>
             </div>
