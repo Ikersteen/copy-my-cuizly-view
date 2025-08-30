@@ -396,13 +396,16 @@
     "select": "Select Language"
   },
   "menus": {
-    "title": "All Available Menus",
+    "title": "Our Menus",
     "subtitle": "Discover delicious menus offered by our partner restaurants",
-    "noMenus": "No menus available at the moment.",
-    "comeBack": "Come back soon to discover new menus!",
+    "noMenus": "No menus available",
+    "comeBack": "This restaurant hasn't added menus yet",
     "addedOn": "Added on",
     "loading": "Loading menus...",
-    "unknownRestaurant": "Unknown restaurant"
+    "unknownRestaurant": "Unknown restaurant",
+    "comment": "Comment",
+    "dietaryRestrictions": "Dietary restrictions:",
+    "allergens": "Allergens:"
   },
   "analytics": {
     "title": "Real-time Performance Dashboard",

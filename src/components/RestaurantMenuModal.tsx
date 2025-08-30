@@ -12,6 +12,7 @@ import { RatingComponent } from "@/components/RatingComponent";
 import { CommentModal } from "@/components/CommentModal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
+import { getTranslatedDescription } from "@/lib/translations";
 
 // Composant pour afficher l'évaluation avec le prix
 const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
@@ -226,10 +227,8 @@ export const RestaurantMenuModal = ({
 
             {/* Description */}
             {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
-              <p className="text-muted-foreground">
-                {currentLanguage === 'en' 
-                  ? (restaurant.description_en || restaurant.description_fr || restaurant.description)
-                  : (restaurant.description_fr || restaurant.description)}
+              <p className="text-muted-foreground whitespace-pre-line">
+                {getTranslatedDescription(restaurant, currentLanguage)}
               </p>
             )}
 
@@ -275,7 +274,7 @@ export const RestaurantMenuModal = ({
            {/* Menus Section */}
            <div className="space-y-4">
              <div className="flex items-center justify-between">
-               <h3 className="text-xl font-semibold">Nos menus</h3>
+               <h3 className="text-xl font-semibold">{t('menus.title')}</h3>
                {menus.length > 0 && (
                  <Badge variant="outline">{menus.length} menu{menus.length > 1 ? 's' : ''}</Badge>
                )}
@@ -298,10 +297,10 @@ export const RestaurantMenuModal = ({
               <Card>
                 <CardContent className="p-8 text-center">
                   <h4 className="text-lg font-medium text-muted-foreground mb-2">
-                    Aucun menu disponible
+                    {t('menus.noMenus')}
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Ce restaurant n'a pas encore ajouté de menus
+                    {t('menus.comeBack')}
                   </p>
                 </CardContent>
               </Card>
@@ -328,12 +327,12 @@ export const RestaurantMenuModal = ({
                           <div className="flex flex-col gap-1 flex-1 min-w-0">
                             {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
                               <div className="text-xs text-muted-foreground">
-                                <span className="font-medium">Restrictions alimentaires :</span> {menu.dietary_restrictions.join(', ')}
+                                <span className="font-medium">{t('menus.dietaryRestrictions')}</span> {menu.dietary_restrictions.join(', ')}
                               </div>
                             )}
                             {menu.allergens && menu.allergens.length > 0 && (
                               <div className="text-xs text-muted-foreground">
-                                <span className="font-medium">Allergènes :</span> {menu.allergens.join(', ')}
+                                <span className="font-medium">{t('menus.allergens')}</span> {menu.allergens.join(', ')}
                               </div>
                             )}
                           </div>
@@ -356,7 +355,7 @@ export const RestaurantMenuModal = ({
               onClick={() => setShowCommentModal(true)}
             >
               <MessageSquare className="h-4 w-4 mr-2" />
-              Commentaire
+              {t('menus.comment')}
             </Button>
             <Button className="w-full" variant="outline" onClick={handleToggleFavorite}>
               <Heart 

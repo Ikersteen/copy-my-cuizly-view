@@ -334,11 +334,14 @@
   "menus": {
     "title": "Tous les menus disponibles",
     "subtitle": "Découvrez les délicieux menus proposés par nos restaurants partenaires",
-    "noMenus": "Aucun menu disponible pour le moment.",
-    "comeBack": "Revenez bientôt pour découvrir de nouveaux menus !",
+    "noMenus": "Aucun menu disponible",
+    "comeBack": "Ce restaurant n'a pas encore ajouté de menus",
     "addedOn": "Ajouté le",
     "loading": "Chargement des menus...",
-    "unknownRestaurant": "Restaurant inconnu"
+    "unknownRestaurant": "Restaurant inconnu",
+    "comment": "Commentaire",
+    "dietaryRestrictions": "Restrictions alimentaires :",
+    "allergens": "Allergènes :"
   },
   "analytics": {
     "title": "Tableau de performance en temps réel",
