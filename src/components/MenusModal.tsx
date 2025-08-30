@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
 
-import { CUISINE_OPTIONS, DIETARY_RESTRICTIONS, ALLERGENS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, DIETARY_RESTRICTIONS_OPTIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_OPTIONS, ALLERGENS_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 interface Menu {
   id: string;
@@ -31,7 +31,7 @@ interface MenusModalProps {
 }
 
 export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: MenusModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -370,7 +370,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   
                   <Label>{t('menusModal.dietaryCompatible')}</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                    {DIETARY_RESTRICTIONS.sort().map(restriction => (
+                    {DIETARY_RESTRICTIONS_OPTIONS.sort().map(restriction => (
                       <Badge
                         key={restriction}
                         variant={newMenu.dietary_restrictions.includes(restriction) ? "default" : "outline"}
@@ -384,14 +384,14 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           }));
                         }}
                       >
-                        {restriction}
+                        {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                       </Badge>
                     ))}
                   </div>
 
                   <Label>{t('menusModal.allergensPresent')}</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                    {ALLERGENS.sort().map(allergen => (
+                    {ALLERGENS_OPTIONS.sort().map(allergen => (
                       <Badge
                         key={allergen}
                         variant={newMenu.allergens.includes(allergen) ? "default" : "outline"}
@@ -405,7 +405,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           }));
                         }}
                       >
-                        {allergen}
+                        {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                       </Badge>
                     ))}
                   </div>
@@ -474,25 +474,25 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           {menu.dietary_restrictions?.length > 0 && (
                              <div>
                                <p className="text-xs font-medium text-muted-foreground mb-1">{t('menusModal.restrictions')}</p>
-                              <div className="flex flex-wrap gap-1">
-                                {menu.dietary_restrictions.map(restriction => (
-                                  <Badge key={restriction} variant="secondary" className="text-xs">
-                                    {restriction}
-                                  </Badge>
-                                ))}
-                              </div>
+                               <div className="flex flex-wrap gap-1">
+                                 {menu.dietary_restrictions.map(restriction => (
+                                   <Badge key={restriction} variant="secondary" className="text-xs">
+                                     {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || restriction}
+                                   </Badge>
+                                 ))}
+                               </div>
                             </div>
                           )}
                           {menu.allergens?.length > 0 && (
                              <div>
                                <p className="text-xs font-medium text-muted-foreground mb-1">{t('menusModal.allergens')}</p>
-                              <div className="flex flex-wrap gap-1">
-                                {menu.allergens.map(allergen => (
-                                  <Badge key={allergen} variant="destructive" className="text-xs">
-                                    {allergen}
-                                  </Badge>
-                                ))}
-                              </div>
+                               <div className="flex flex-wrap gap-1">
+                                 {menu.allergens.map(allergen => (
+                                   <Badge key={allergen} variant="destructive" className="text-xs">
+                                     {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || allergen}
+                                   </Badge>
+                                 ))}
+                               </div>
                             </div>
                           )}
                         </div>
@@ -588,7 +588,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
 
                     <Label>{t('menusModal.dietaryCompatible')}</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                      {DIETARY_RESTRICTIONS.sort().map(restriction => (
+                      {DIETARY_RESTRICTIONS_OPTIONS.sort().map(restriction => (
                         <Badge
                           key={restriction}
                           variant={editingMenu.dietary_restrictions?.includes(restriction) ? "default" : "outline"}
@@ -602,14 +602,14 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                             }) : null);
                           }}
                         >
-                          {restriction}
+                          {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                         </Badge>
                       ))}
                     </div>
 
                     <Label>{t('menusModal.allergensPresent')}</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                      {ALLERGENS.sort().map(allergen => (
+                      {ALLERGENS_OPTIONS.sort().map(allergen => (
                         <Badge
                           key={allergen}
                           variant={editingMenu.allergens?.includes(allergen) ? "default" : "outline"}
@@ -623,7 +623,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                             }) : null);
                           }}
                         >
-                          {allergen}
+                          {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                         </Badge>
                       ))}
                     </div>
