@@ -16,15 +16,16 @@ const resources = {
 };
 
 i18n
-  .use(LanguageDetector) // Detects the current language
-  .use(initReactI18next) // Passes i18n down to react-i18next
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'fr', // Fallback language
+    fallbackLng: 'fr',
+    lng: 'fr',
     debug: false,
     
     interpolation: {
-      escapeValue: false // React already does escaping
+      escapeValue: false
     },
     
     detection: {
@@ -33,13 +34,7 @@ i18n
       lookupLocalStorage: 'cuizly-language'
     },
 
-    // Force reload on language change
     react: {
-      bindI18n: 'languageChanged',
-      bindI18nStore: '',
-      transEmptyNodeValue: '',
-      transSupportBasicHtmlNodes: true,
-      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
       useSuspense: false,
     }
   });
