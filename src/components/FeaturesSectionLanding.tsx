@@ -3,7 +3,12 @@ import { Bot, MapPin, Bell, Star, BarChart3, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const FeaturesSectionLanding = () => {
-  const { t } = useTranslation();
+  const { t, ready } = useTranslation();
+  
+  // Si les traductions ne sont pas prêtes, on affiche un loader simple
+  if (!ready) {
+    return <div className="py-16 sm:py-20 bg-muted/30" />;
+  }
   
   const features = [
     {
