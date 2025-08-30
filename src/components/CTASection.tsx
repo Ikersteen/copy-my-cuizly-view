@@ -32,7 +32,7 @@ const CTASection = () => {
           <Link to="/auth">
             <Button 
               size="lg" 
-              className="bg-sky-500 hover:bg-sky-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-sky-500/25"
+              className="bg-white text-gray-900 hover:bg-gray-100 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-white/25"
             >
               {t('cta.button')}
               <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
