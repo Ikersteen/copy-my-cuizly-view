@@ -167,7 +167,10 @@ const Header = () => {
                         variant={currentLanguage === 'fr' ? 'default' : 'outline'}
                         size="sm"
                         className="flex-1"
-                        onClick={() => changeLanguage('fr')}
+                        onClick={() => {
+                          changeLanguage('fr');
+                          setIsSheetOpen(false);
+                        }}
                       >
                         🇫🇷 FR
                       </Button>
@@ -175,7 +178,10 @@ const Header = () => {
                         variant={currentLanguage === 'en' ? 'default' : 'outline'}
                         size="sm"
                         className="flex-1"
-                        onClick={() => changeLanguage('en')}
+                        onClick={() => {
+                          changeLanguage('en');
+                          setIsSheetOpen(false);
+                        }}
                       >
                         🇬🇧 EN
                       </Button>
