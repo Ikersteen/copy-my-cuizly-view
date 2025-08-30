@@ -471,6 +471,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               <div className="space-y-2">
                 <Label htmlFor="description">{t('restaurantProfile.description')}</Label>
                 <Textarea
+                  key={`description-${i18n.language}`}
                   id="description"
                   value={formData.description || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
