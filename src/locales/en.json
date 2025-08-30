@@ -1429,6 +1429,13 @@
     "menuAddedDesc": "Your menu is now visible in your list",
     "changesDesc": "Changes have been saved"
   },
+  "cta": {
+    "title": "Ready to revolutionize your culinary experience?",
+    "description": "Join the Cuizly community now and be among the first to discover the best offers in Montreal.",
+    "button": "Create my account",
+    "imageAlt": "Modern restaurant in Montreal",
+    "disclaimer": "Free registration • No commitment"
+  },
   "waitlist": {
     "badge": "VIP Waitlist",
     "title": "Join the Waitlist",

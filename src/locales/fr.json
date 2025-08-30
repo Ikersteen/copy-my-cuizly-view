@@ -1312,6 +1312,13 @@
     "menuAddedDesc": "Votre menu est maintenant visible dans votre liste",
     "changesDesc": "Les modifications ont été sauvegardées"
   },
+  "cta": {
+    "title": "Prêt à révolutionner votre expérience culinaire ?",
+    "description": "Rejoignez dès maintenant la communauté Cuizly et soyez parmi les premiers à découvrir les meilleures offres de Montréal.",
+    "button": "Créer mon compte",
+    "imageAlt": "Restaurant moderne à Montréal",
+    "disclaimer": "Inscription gratuite • Sans engagement"
+  },
   "waitlist": {
     "badge": "Liste d'attente VIP",
     "title": "Rejoignez la liste d'attente",
