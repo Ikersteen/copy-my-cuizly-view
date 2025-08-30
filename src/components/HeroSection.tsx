@@ -12,7 +12,7 @@ const HeroSection = () => {
       <div className="relative max-w-6xl mx-auto px-6 sm:px-8 text-center mobile-friendly-spacing">
         {/* Location Badge */}
         <div className="inline-flex items-center bg-gradient-to-r from-primary/8 to-primary/12 border border-primary/15 px-5 py-2.5 rounded-full text-sm font-semibold text-primary mb-4 shadow-lg backdrop-blur-md animate-fade-in">
-          <Sparkles className="mr-2 h-4 w-4" />
+          <Sparkles className="mr-2 h-4 w-4 star-logo text-primary" />
           {t('hero.badge')}
         </div>
 
