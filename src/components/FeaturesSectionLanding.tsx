@@ -13,33 +13,33 @@ const FeaturesSectionLanding = () => {
   const features = [
     {
       icon: Bot,
-      title: t('features.ai_recommendations.title'),
-      description: t('features.ai_recommendations.description')
+      titleKey: 'features.ai_recommendations.title',
+      descriptionKey: 'features.ai_recommendations.description'
     },
     {
       icon: MapPin,
-      title: t('features.geolocation.title'),
-      description: t('features.geolocation.description')
+      titleKey: 'features.geolocation.title',
+      descriptionKey: 'features.geolocation.description'
     },
     {
       icon: Bell,
-      title: t('features.real_time_alerts.title'),
-      description: t('features.real_time_alerts.description')
+      titleKey: 'features.real_time_alerts.title',
+      descriptionKey: 'features.real_time_alerts.description'
     },
     {
       icon: Star,
-      title: t('features.reviews_ratings.title'),
-      description: t('features.reviews_ratings.description')
+      titleKey: 'features.reviews_ratings.title',
+      descriptionKey: 'features.reviews_ratings.description'
     },
     {
       icon: BarChart3,
-      title: t('features.restaurant_analytics.title'),
-      description: t('features.restaurant_analytics.description')
+      titleKey: 'features.restaurant_analytics.title',
+      descriptionKey: 'features.restaurant_analytics.description'
     },
     {
       icon: Users,
-      title: t('features.smart_targeting.title'),
-      description: t('features.smart_targeting.description')
+      titleKey: 'features.smart_targeting.title',
+      descriptionKey: 'features.smart_targeting.description'
     }
   ];
 
@@ -65,12 +65,12 @@ const FeaturesSectionLanding = () => {
                     <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-cuizly-primary" />
                   </div>
                   <CardTitle className="text-lg font-semibold text-foreground">
-                    {feature.title}
+                    {t(feature.titleKey)}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <CardDescription className="text-cuizly-neutral text-sm sm:text-base">
-                    {feature.description}
+                    {t(feature.descriptionKey)}
                   </CardDescription>
                 </CardContent>
               </Card>
