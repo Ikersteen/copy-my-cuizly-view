@@ -16,7 +16,7 @@ import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
 
-import { CUISINE_OPTIONS, DIETARY_OPTIONS, ALLERGEN_OPTIONS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, DIETARY_OPTIONS, ALLERGEN_OPTIONS } from "@/constants/cuisineTypes";
 
 interface Restaurant {
   id: string;
@@ -47,7 +47,7 @@ interface RestaurantProfileModalProps {
 }
 
 export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdate }: RestaurantProfileModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState<Partial<Restaurant>>({});
   const [uploading, setUploading] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
@@ -560,19 +560,19 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             {/* Selected cuisines display */}
             {formData.cuisine_type && formData.cuisine_type.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                {formData.cuisine_type.map((cuisine) => (
-                  <Badge key={cuisine} variant="default" className="pr-1">
-                    {cuisine}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
-                      onClick={() => removeCuisine(cuisine)}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  </Badge>
-                ))}
+                 {formData.cuisine_type.map((cuisine) => (
+                   <Badge key={cuisine} variant="default" className="pr-1">
+                     {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                     <Button
+                       variant="ghost"
+                       size="sm"
+                       className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
+                       onClick={() => removeCuisine(cuisine)}
+                     >
+                       <X className="h-3 w-3" />
+                     </Button>
+                   </Badge>
+                 ))}
               </div>
             )}
 
@@ -592,7 +592,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                 <SelectContent className="bg-background border z-50">
                   {availableCuisines.filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
                     <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
-                      {cuisine}
+                      {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -612,25 +612,31 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             {/* Selected specialties display */}
             {formData.restaurant_specialties && formData.restaurant_specialties.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                {formData.restaurant_specialties.map((specialty) => (
-                  <Badge key={specialty} variant="secondary" className="rounded-full text-center justify-center pr-1">
-                    {specialty}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
-                      onClick={() => {
-                        const currentSpecialties = formData.restaurant_specialties || [];
-                        setFormData(prev => ({
-                          ...prev,
-                          restaurant_specialties: currentSpecialties.filter(s => s !== specialty)
-                        }));
-                      }}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  </Badge>
-                ))}
+                 {formData.restaurant_specialties.map((specialty) => {
+                   // Trouver la clé correspondant à la spécialité stockée
+                   const specialtyEntries = Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>);
+                   const [specialtyKey, specialtyLabel] = specialtyEntries.find(([key, label]) => label === specialty) || [specialty, specialty];
+                   
+                   return (
+                   <Badge key={specialty} variant="secondary" className="rounded-full text-center justify-center pr-1">
+                     {specialtyLabel}
+                     <Button
+                       variant="ghost"
+                       size="sm"
+                       className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
+                       onClick={() => {
+                         const currentSpecialties = formData.restaurant_specialties || [];
+                         setFormData(prev => ({
+                           ...prev,
+                           restaurant_specialties: currentSpecialties.filter(s => s !== specialty)
+                         }));
+                       }}
+                     >
+                       <X className="h-3 w-3" />
+                     </Button>
+                   </Badge>
+                   );
+                 })}
               </div>
             )}
 
