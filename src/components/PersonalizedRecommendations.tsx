@@ -326,6 +326,36 @@ export const PersonalizedRecommendations = () => {
           }
         }
 
+        // 5. Favorite meal times match - BONUS si défini
+        if (preferences.favorite_meal_times && preferences.favorite_meal_times.length > 0) {
+          const currentHour = new Date().getHours();
+          let timeMatch = false;
+          
+          preferences.favorite_meal_times.forEach((mealTime: string) => {
+            switch (mealTime) {
+              case 'breakfast':
+                if (currentHour >= 6 && currentHour < 11) timeMatch = true;
+                break;
+              case 'lunch':
+                if (currentHour >= 11 && currentHour < 15) timeMatch = true;
+                break;
+              case 'dinner':
+                if (currentHour >= 17 && currentHour < 23) timeMatch = true;
+                break;
+              case 'late_night':
+                if (currentHour >= 23 || currentHour < 6) timeMatch = true;
+                break;
+            }
+          });
+          
+          if (timeMatch) {
+            hasStrictMatch = true;
+            score += 10;
+            reasons.push(t('recommendations.perfectTiming'));
+            console.log(`Perfect timing match for ${restaurant.name} with meal times:`, preferences.favorite_meal_times);
+          }
+        }
+
         // STRICT: Si aucun match strict n'a été trouvé, exclure le restaurant
         // En mode flexible (une seule préférence), on est plus permissif
         if (!hasStrictMatch && !isFlexibleMode) {
