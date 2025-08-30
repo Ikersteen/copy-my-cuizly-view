@@ -34,7 +34,7 @@ const HeroSection = () => {
         {/* CTA */}
         <div className="animate-fade-in">
           <Link to="/auth">
-            <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
+            <Button size="lg" className="bg-sky-500 hover:bg-sky-600 text-white px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-sky-500/25 border border-sky-500/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
               {t('hero.cta')}
               <ArrowRight className="ml-3 h-5 w-5" />
             </Button>

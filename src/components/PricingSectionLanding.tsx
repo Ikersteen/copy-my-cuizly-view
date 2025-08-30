@@ -98,7 +98,7 @@ const PricingSectionLanding = () => {
                   ))}
                 </ul>
                 <Link to={index === 0 ? "/auth" : "/auth?type=restaurant&tab=signup"}>
-                  <Button className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
+                  <Button className="w-full bg-sky-500 hover:bg-sky-600 text-white text-sm sm:text-base">
                     {t(plan.ctaKey)}
                   </Button>
                 </Link>
