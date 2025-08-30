@@ -1361,15 +1361,15 @@
       "title": "Pourquoi rejoindre la liste d'attente ?",
       "priority": {
         "title": "Accès prioritaire",
-        "description": "Soyez parmi les premiers à tester nos fonctionnalités avancées"
+        "description": "Soyez parmi les premiers à découvrir nos fonctionnalités avancées"
       },
       "discount": {
-        "title": "Tarif préférentiel",
-        "description": "Bénéficiez d'une réduction exclusive pour les early adopters"
+        "title": "Tarif préférentiel", 
+        "description": "Bénéficiez d'une réduction exclusive pour les premiers utilisateurs"
       },
       "training": {
         "title": "Formation incluse",
-        "description": "Profitez d'une session de formation personnalisée gratuite"
+        "description": "Profitez d'une session de formation personnalisée offerte"
       }
     },
     "success": {
