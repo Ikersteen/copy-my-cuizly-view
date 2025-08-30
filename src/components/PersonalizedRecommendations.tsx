@@ -42,7 +42,7 @@ interface RecommendationCategory {
   color: string;
 }
 
-export const PersonalizedRecommendations = () => {
+export const PersonalizedRecommendations = ({ showOnlyFavorites = false }: { showOnlyFavorites?: boolean }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { preferences } = useUserPreferences();
@@ -446,48 +446,55 @@ export const PersonalizedRecommendations = () => {
           return null;
         }
         
-        // Si on est en mode flexible et qu'on n'a pas encore de match, donner une chance
-        if (!hasStrictMatch && isFlexibleMode) {
-          console.log(`Flexible mode: giving ${restaurant.name} a base score`);
-          hasStrictMatch = true;
-          score += 2;
-          reasons.push(t('recommendations.suggestedRestaurant'));
-        }
-
-        const realRating = await getRealRating(restaurant.id);
-        
-        const result = {
-          ...restaurant,
-          score,
-          rating: realRating.rating,
-          totalRatings: realRating.totalRatings,
-          reasons
-        };
-        
-        console.log(`Including restaurant ${restaurant.name} with score ${score} and reasons:`, reasons);
-        return result;
-      }));
-
-      const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
-      console.log(`Final valid restaurants: ${validRestaurants.length}`);
-
-      await loadRestaurantRatings(validRestaurants);
-
-      const newCategories: RecommendationCategory[] = [];
-      
-      if (validRestaurants.length > 0) {
-        const sortedRestaurants = validRestaurants.sort((a, b) => b.score - a.score);
-        console.log('Top 3 restaurants by score:', sortedRestaurants.slice(0, 3).map(r => ({ name: r.name, score: r.score, reasons: r.reasons })));
-        
-        newCategories.push({
-          id: 'recommended',
-          title: t('recommendations.recommendedForYou'),
-          subtitle: t('recommendations.basedOnPreferences'),
-          icon: Sparkles,
-          color: 'bg-gradient-to-r from-primary/10 to-primary/5',
-          restaurants: sortedRestaurants.slice(0, 12)
-        });
+      // Si on est en mode flexible et qu'on n'a pas encore de match, donner une chance
+      if (!hasStrictMatch && isFlexibleMode) {
+        console.log(`Flexible mode: giving ${restaurant.name} a base score`);
+        hasStrictMatch = true;
+        score += 2;
+        reasons.push(t('recommendations.suggestedRestaurant'));
       }
+
+      const realRating = await getRealRating(restaurant.id);
+      
+      const result = {
+        ...restaurant,
+        score,
+        rating: realRating.rating,
+        totalRatings: realRating.totalRatings,
+        reasons
+      };
+      
+      console.log(`Including restaurant ${restaurant.name} with score ${score} and reasons:`, reasons);
+      return result;
+    }));
+
+    const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
+    console.log(`Final valid restaurants: ${validRestaurants.length}`);
+
+    // Filter favorites if showOnlyFavorites is true
+    let filteredRestaurants = validRestaurants;
+    if (showOnlyFavorites) {
+      filteredRestaurants = validRestaurants.filter(restaurant => favorites.includes(restaurant.id));
+      console.log(`Filtered to favorites: ${filteredRestaurants.length} restaurants`);
+    }
+
+    await loadRestaurantRatings(filteredRestaurants);
+
+    const newCategories: RecommendationCategory[] = [];
+    
+    if (filteredRestaurants.length > 0) {
+      const sortedRestaurants = filteredRestaurants.sort((a, b) => b.score - a.score);
+      console.log('Top 3 restaurants by score:', sortedRestaurants.slice(0, 3).map(r => ({ name: r.name, score: r.score, reasons: r.reasons })));
+      
+      newCategories.push({
+        id: showOnlyFavorites ? 'favorites' : 'recommended',
+        title: showOnlyFavorites ? t('yourFavorites') : t('recommendations.recommendedForYou'),
+        subtitle: showOnlyFavorites ? t('favoriteRestaurants') : t('recommendations.basedOnPreferences'),
+        icon: showOnlyFavorites ? Heart : Sparkles,
+        color: 'bg-gradient-to-r from-primary/10 to-primary/5',
+        restaurants: sortedRestaurants.slice(0, 12)
+      });
+    }
 
       // Si aucun restaurant trouvé avec les critères stricts, essayer un fallback
       if (validRestaurants.length === 0) {
@@ -878,45 +885,47 @@ export const PersonalizedRecommendations = () => {
                   </CardHeader>
 
                    <CardContent className="space-y-4">
-                       <div className="grid grid-cols-3 gap-2">
-                         {restaurant.cuisine_type?.map((cuisine, idx) => {
-                           const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
-                           return (
-                             <Badge 
-                               key={idx} 
-                               variant={isPreferred ? "default" : "outline"}
-                               className={`text-xs text-center justify-center flex items-center gap-1 ${
-                                 isPreferred
-                                   ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
-                                   : 'bg-muted/50 text-muted-foreground border-muted'
-                               }`}
-                             >
-                               {isPreferred && <span className="text-xs">★</span>}
-                               <span>{getCuisineTranslation(cuisine)}</span>
-                             </Badge>
-                           );
-                         })}
-                       </div>
+                        {!showOnlyFavorites && (
+                          <div className="grid grid-cols-3 gap-2">
+                            {restaurant.cuisine_type?.map((cuisine, idx) => {
+                              const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
+                              return (
+                                <Badge 
+                                  key={idx} 
+                                  variant={isPreferred ? "default" : "outline"}
+                                  className={`text-xs text-center justify-center flex items-center gap-1 ${
+                                    isPreferred
+                                      ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
+                                      : 'bg-muted/50 text-muted-foreground border-muted'
+                                  }`}
+                                >
+                                  {isPreferred && <span className="text-xs">★</span>}
+                                  <span>{getCuisineTranslation(cuisine)}</span>
+                                </Badge>
+                              );
+                            })}
+                          </div>
+                        )}
 
-                     {restaurant.reasons && restaurant.reasons.length > 0 && (
-                       <div className="bg-muted/50 rounded-lg p-3">
-          <h4 className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-            <Sparkles className="h-3 w-3" />
-            {t('recommendations.whyChoice')}
-          </h4>
-                         <div className="flex flex-wrap gap-1">
-                           {restaurant.reasons.slice(0, 2).map((reason, idx) => (
-                             <Badge 
-                               key={idx} 
-                               variant="secondary" 
-                               className="text-xs bg-background/80"
-                             >
-                               {reason}
-                             </Badge>
-                           ))}
-                         </div>
-                       </div>
-                     )}
+                      {!showOnlyFavorites && restaurant.reasons && restaurant.reasons.length > 0 && (
+                        <div className="bg-muted/50 rounded-lg p-3">
+           <h4 className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+             <Sparkles className="h-3 w-3" />
+             {t('recommendations.whyChoice')}
+           </h4>
+                          <div className="flex flex-wrap gap-1">
+                            {restaurant.reasons.slice(0, 2).map((reason, idx) => (
+                              <Badge 
+                                key={idx} 
+                                variant="secondary" 
+                                className="text-xs bg-background/80"
+                              >
+                                {reason}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
 
 
                     <Button 
