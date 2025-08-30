@@ -644,12 +644,14 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             {/* Dropdown selector for specialties */}
             <div>
               <Select
+                key={`specialty-selector-${formData.restaurant_specialties?.length || 0}`}
                 value=""
                 onValueChange={(specialty) => {
                   if (specialty && !formData.restaurant_specialties?.includes(specialty)) {
+                    const newSpecialties = [...(formData.restaurant_specialties || []), specialty];
                     setFormData(prev => ({
                       ...prev,
-                      restaurant_specialties: [...(prev.restaurant_specialties || []), specialty]
+                      restaurant_specialties: newSpecialties
                     }));
                   }
                 }}
@@ -658,13 +660,17 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                   <SelectValue placeholder={t('restaurantProfile.selectSpecialty')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
-                  {Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>)
-                    .filter(([key, label]) => !formData.restaurant_specialties?.includes(label))
-                    .map(([key, label]) => (
-                      <SelectItem key={key} value={label} className="hover:bg-muted">
+                  {(() => {
+                    const specialtyOptions = t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>;
+                    const availableOptions = Object.entries(specialtyOptions)
+                      .filter(([key, label]) => !formData.restaurant_specialties?.includes(label));
+                    
+                    return availableOptions.map(([key, label]) => (
+                      <SelectItem key={`${key}-${label}`} value={label} className="hover:bg-muted">
                         {label}
                       </SelectItem>
-                    ))}
+                    ));
+                  })()}
                 </SelectContent>
               </Select>
             </div>
