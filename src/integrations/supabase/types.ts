@@ -505,8 +505,42 @@ export type Database = {
           cuisine_type: string[]
           delivery_radius: number
           description: string
-          description_en: string
-          description_fr: string
+          id: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          opening_hours: Json
+          price_range: string
+          updated_at: string
+        }[]
+      }
+      get_public_restaurants_safe: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          cover_image_url: string
+          created_at: string
+          cuisine_type: string[]
+          delivery_radius: number
+          description: string
+          id: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          opening_hours: Json
+          price_range: string
+          updated_at: string
+        }[]
+      }
+      get_public_restaurants_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          cover_image_url: string
+          created_at: string
+          cuisine_type: string[]
+          delivery_radius: number
+          description: string
           id: string
           is_active: boolean
           logo_url: string
@@ -529,6 +563,24 @@ export type Database = {
         Returns: {
           email: string
           phone: string
+        }[]
+      }
+      get_safe_restaurant_data: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          cover_image_url: string
+          created_at: string
+          cuisine_type: string[]
+          delivery_radius: number
+          description: string
+          id: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          opening_hours: Json
+          price_range: string
+          updated_at: string
         }[]
       }
       get_translated_description: {

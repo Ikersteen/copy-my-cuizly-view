@@ -10,7 +10,6 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
 import { RatingComponent } from "@/components/RatingComponent";
 import { CommentModal } from "@/components/CommentModal";
-import { useLanguage } from "@/hooks/useLanguage";
 
 // Composant pour afficher l'évaluation avec le prix
 const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
@@ -95,8 +94,6 @@ interface Restaurant {
   id: string;
   name: string;
   description: string;
-  description_fr?: string;
-  description_en?: string;
   cuisine_type: string[];
   price_range: string;
   address: string;
@@ -124,7 +121,6 @@ export const RestaurantMenuModal = ({
   const [showCommentModal, setShowCommentModal] = useState(false);
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const { toast } = useToast();
-  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     if (open && restaurant?.id) {
@@ -223,11 +219,9 @@ export const RestaurantMenuModal = ({
             </div>
 
             {/* Description */}
-            {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
+            {restaurant.description && (
               <p className="text-muted-foreground">
-                {currentLanguage === 'en' 
-                  ? (restaurant.description_en || restaurant.description_fr || restaurant.description)
-                  : (restaurant.description_fr || restaurant.description)}
+                {restaurant.description}
               </p>
             )}
 
