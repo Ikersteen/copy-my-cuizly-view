@@ -100,8 +100,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
     if (!file.type.startsWith('image/')) {
       toast({
-        title: "Erreur",
-        description: "Veuillez sélectionner une image valide",
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.selectValidImage'),
         variant: "destructive"
       });
       return;
@@ -109,8 +109,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
     if (file.size > 5 * 1024 * 1024) {
       toast({
-        title: "Erreur", 
-        description: "L'image doit faire moins de 5MB",
+        title: t('restaurantProfile.error'), 
+        description: t('restaurantProfile.imageTooLarge'),
         variant: "destructive"
       });
       return;
@@ -170,14 +170,14 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       }
       
       toast({
-        title: adjustmentType === 'cover' ? "Photo de couverture mise à jour" : "Logo mis à jour",
-        description: t('profile.imageUploaded')
+        title: t('restaurantProfile.profileUpdated'),
+        description: t('restaurantProfile.profileUpdatedDesc')
       });
     } catch (error) {
       console.error('Error uploading file:', error);
       toast({
-        title: t('profile.errorUpload'),
-        description: t('profile.cannotUpload'),
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotUpload'),
         variant: "destructive"
       });
     } finally {
@@ -196,8 +196,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       setFormData(prev => ({ ...prev, logo_url: null }));
     }
     toast({
-      title: type === 'cover' ? t('profile.imageRemoved') : t('profile.logoRemoved'),
-      description: t('profile.imageRemovedDescription')
+      title: t('restaurantProfile.profileUpdated'),
+      description: t('restaurantProfile.profileUpdatedDesc')
     });
   };
 
@@ -218,8 +218,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       if (error) {
         console.error('Error updating chef emoji:', error);
         toast({
-          title: t('profile.errorUpload'),
-          description: t('profile.cannotUpdateEmoji'),
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotSave'),
           variant: "destructive"
         });
         return;
@@ -250,8 +250,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
   const handleSave = async () => {
     if (!restaurant || !formData.name?.trim()) {
       toast({
-        title: t('profile.errorUpload'),
-        description: t('profile.nameRequired'),
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.validationErrorDesc'),
         variant: "destructive"
       });
       return;
@@ -287,8 +287,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       }
 
       toast({
-        title: "Profil mis à jour",
-        description: "Les informations ont été sauvegardées"
+        title: t('restaurantProfile.profileUpdated'),
+        description: t('restaurantProfile.profileUpdatedDesc')
       });
       
       onUpdate();
@@ -296,8 +296,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     } catch (error) {
       console.error('Error updating restaurant:', error);
       toast({
-        title: t('profile.errorUpload'),
-        description: t('profile.cannotSave'),
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotSave'),
         variant: "destructive"
       });
     } finally {
@@ -322,8 +322,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       if (error) throw error;
 
       toast({
-        title: "Compte désactivé",
-        description: "Votre compte restaurant a été désactivé"
+        title: t('restaurantProfile.profileUpdated'),
+        description: t('restaurantProfile.profileUpdatedDesc')
       });
       
       await supabase.auth.signOut();
@@ -331,8 +331,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     } catch (error) {
       console.error('Error deleting account:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de supprimer le compte",
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotDelete'),
         variant: "destructive"
       });
     }
@@ -342,16 +342,16 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t('profile.restaurantProfile')}</DialogTitle>
+          <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
           <DialogDescription>
-            {t('profile.editRestaurantInfo')}
+            {t('restaurantProfile.description')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Cover Photo Section */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">{t('profile.coverPhoto')}</h3>
+            <h3 className="font-semibold text-foreground">{t('restaurantProfile.coverPhoto')}</h3>
             <div className="relative">
               <input
                 type="file"
@@ -365,14 +365,14 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                   {formData.cover_image_url ? (
                     <img 
                       src={formData.cover_image_url} 
-                      alt="Photo de couverture"
+                      alt={t('restaurantProfile.coverPhoto')}
                       className="w-full h-full object-cover"
                     />
                   ) : (
                     <div className="w-full h-full bg-muted flex items-center justify-center">
                       <div className="text-center">
                         <Camera className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm text-muted-foreground">{t('profile.clickToAddCover')}</p>
+                        <p className="text-sm text-muted-foreground">{t('restaurantProfile.coverPhoto')}</p>
                       </div>
                     </div>
                   )}
@@ -449,15 +449,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           <div className="pt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Basic Information */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">{t('profile.basicInfo')}</h3>
+              <h3 className="font-semibold text-foreground">{t('restaurantProfile.logo')}</h3>
               
               <div className="space-y-2">
-                <Label htmlFor="name">{t('profile.restaurantName')}</Label>
+                <Label htmlFor="name">{t('restaurantProfile.restaurantName')}</Label>
                 <Input
                   id="name"
                   value={formData.name || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder={t('profile.restaurantNamePlaceholder')}
+                  placeholder={t('restaurantProfile.restaurantNamePlaceholder')}
                   onFocus={(e) => {
                     // Move cursor to end instead of selecting all text
                     setTimeout(() => {
@@ -469,12 +469,12 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('restaurantProfile.description')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Décrivez votre restaurant..."
+                  placeholder={t('restaurantProfile.descriptionPlaceholder')}
                   className="min-h-[100px]"
                 />
               </div>
@@ -482,17 +482,17 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               <MontrealAddressSelector
                 value={formData.address || ""}
                 onChange={(address) => setFormData(prev => ({ ...prev, address }))}
-                label="Adresse du restaurant"
-                placeholder="Commencez à taper votre adresse à Montréal..."
+                label={t('restaurantProfile.address')}
+                placeholder={t('restaurantProfile.addressPlaceholder')}
               />
             </div>
 
             {/* Contact & Details */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">Contact & Détails</h3>
+              <h3 className="font-semibold text-foreground">{t('restaurantProfile.phone')} & {t('restaurantProfile.email')}</h3>
               
               <div className="space-y-2">
-                <Label htmlFor="phone">Téléphone</Label>
+                <Label htmlFor="phone">{t('restaurantProfile.phone')}</Label>
                 <Input
                   id="phone"
                   value={formData.phone || ""}
@@ -502,7 +502,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Courriel</Label>
+                <Label htmlFor="email">{t('restaurantProfile.email')}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -513,23 +513,25 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="price_range">Gamme de prix</Label>
-                <select
-                  id="price_range"
+                <Label htmlFor="price_range">{t('preferences.priceRange')}</Label>
+                <Select
                   value={formData.price_range || ""}
-                  onChange={(e) => setFormData(prev => ({ ...prev, price_range: e.target.value }))}
-                  className="w-full px-3 py-2 border border-input bg-background rounded-md"
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, price_range: value }))}
                 >
-                  <option value="">Sélectionner</option>
-                  <option value="$">$ - Économique</option>
-                  <option value="$$">$$ - Modéré</option>
-                  <option value="$$$">$$$ - Cher</option>
-                  <option value="$$$$">$$$$ - Très cher</option>
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={t('preferences.selectPriceRange')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="$">{t('preferences.priceRanges.economic')}</SelectItem>
+                    <SelectItem value="$$">{t('preferences.priceRanges.moderate')}</SelectItem>
+                    <SelectItem value="$$$">{t('preferences.priceRanges.elevated')}</SelectItem>
+                    <SelectItem value="$$$$">{t('preferences.priceRanges.luxury')}</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="delivery_radius">Rayon de livraison (km)</Label>
+                <Label htmlFor="delivery_radius">{t('restaurantProfile.deliveryRadius')}</Label>
                 <Input
                   id="delivery_radius"
                   type="number"
@@ -549,9 +551,9 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           {/* Cuisine Types */}
           <div className="space-y-2">
             <div className="space-y-1">
-              <h3 className="font-semibold text-foreground">Cuisines proposées</h3>
+              <h3 className="font-semibold text-foreground">{t('restaurantProfile.cuisines')}</h3>
               <p className="text-sm text-muted-foreground">
-                Sélectionnez les types de cuisine que vous proposez
+                {t('restaurantProfile.cuisinesDesc')}
               </p>
             </div>
             
@@ -585,7 +587,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                 }}
               >
                 <SelectTrigger className="w-full bg-background border z-50">
-                  <SelectValue placeholder="Sélectionner une cuisine" />
+                  <SelectValue placeholder={t('restaurantProfile.selectCuisine')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
                   {availableCuisines.filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
@@ -601,9 +603,9 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           {/* Spécialité du restaurant */}
           <div className="space-y-2">
             <div className="space-y-1">
-              <h3 className="font-semibold text-foreground">Spécialité du restaurant</h3>
+              <h3 className="font-semibold text-foreground">{t('restaurantProfile.restaurantSpecialty')}</h3>
               <p className="text-sm text-muted-foreground">
-                Sélectionnez les moments de repas pour lesquels votre restaurant est spécialisé
+                {t('restaurantProfile.restaurantSpecialtyDesc')}
               </p>
             </div>
             
@@ -646,17 +648,18 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                 }}
               >
                 <SelectTrigger className="w-full bg-background border z-50">
-                  <SelectValue placeholder="Sélectionner une spécialité" />
+                  <SelectValue placeholder={t('restaurantProfile.selectSpecialty')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
-                  {[
-                    "Déjeuner / Brunch", "Déjeuner rapide", "Dîner / Souper", 
-                    "Café & Snack", "Spécialisés Détox / Santé", "Tard le soir"
-                  ].filter(specialty => !formData.restaurant_specialties?.includes(specialty)).map(specialty => (
-                    <SelectItem key={specialty} value={specialty} className="hover:bg-muted">
-                      {specialty}
-                    </SelectItem>
-                  ))}
+                  {Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>).map(([key, label]) => {
+                    const isSelected = formData.restaurant_specialties?.includes(label);
+                    if (isSelected) return null;
+                    return (
+                      <SelectItem key={key} value={label} className="hover:bg-muted">
+                        {label}
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </div>
@@ -666,7 +669,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
           {/* Chef Emoji Selection */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Emoji Cuisinier</h3>
+            <h3 className="font-semibold text-foreground">{t('restaurantProfile.profileEmoji')}</h3>
             <div className="grid grid-cols-6 gap-2">
               {chefEmojis.map((emoji, index) => (
                 <Button
@@ -686,24 +689,24 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-4 pt-6 border-t">
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleLogout}>
-              Déconnexion
+              {t('restaurantProfile.logout')}
             </Button>
             
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive">{t('profile.deleteAccount')}</Button>
+                <Button variant="destructive">{t('restaurantProfile.deleteAccount')}</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                  <AlertDialogTitle>{t('restaurantProfile.deleteAccountTitle')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Cette action désactivera votre compte restaurant. Vous pourrez le réactiver en nous contactant.
+                    {t('restaurantProfile.deleteAccountDesc')}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>{t('profile.cancel')}</AlertDialogCancel>
+                  <AlertDialogCancel>{t('restaurantProfile.cancel')}</AlertDialogCancel>
                   <AlertDialogAction onClick={handleDeleteAccount}>
-                    {t('profile.delete')}
+                    {t('restaurantProfile.deleteAccountConfirm')}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -712,10 +715,10 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              {t('profile.cancel')}
+              {t('restaurantProfile.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={loading || !formData.name}>
-              {loading ? t('profile.saving') : t('profile.save')}
+              {loading ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
             </Button>
           </div>
         </div>
@@ -726,7 +729,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           onOpenChange={setShowPhotoAdjustment}
           imageUrl={adjustmentImageUrl}
           onSave={handleAdjustedPhoto}
-          title={adjustmentType === 'cover' ? "Ajuster la photo de couverture" : "Ajuster le logo"}
+          title={adjustmentType === 'cover' ? t('restaurantProfile.coverPhoto') : t('restaurantProfile.logo')}
         />
       </DialogContent>
     </Dialog>
