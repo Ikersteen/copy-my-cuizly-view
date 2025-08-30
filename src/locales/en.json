@@ -1015,7 +1015,8 @@
     "delete": "Delete",
     "saving": "Saving...",
     "save": "Save"
-  }
+  },
+  "dashboard": {
     "completeProfile": "Please first complete your restaurant profile",
     "name": "Name",
     "address": "Address",
@@ -1025,6 +1026,7 @@
     "restaurantSpecialty": "Restaurant specialty",
     "description": "Description",
     "noMoreEndlessSearches": "No more endless searches :"
+  }
   },
   "offers": {
     "myOffers": "My offers",
