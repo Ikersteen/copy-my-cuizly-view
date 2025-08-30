@@ -65,7 +65,7 @@ export const SavedFavoritesSection = () => {
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
       const { data } = await supabase
-        .from('comments')
+        .from('Comments')
         .select('rating')
         .eq('restaurant_id', restaurantId)
         .not('rating', 'is', null);

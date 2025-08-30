@@ -101,7 +101,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
           .eq('restaurant_id', restaurantId)
           .order('date', { ascending: false }),
         supabase
-          .from('comments')
+          .from('Comments')
           .select('rating')
           .eq('restaurant_id', restaurantId)
           .not('rating', 'is', null),

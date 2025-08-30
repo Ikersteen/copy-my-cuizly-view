@@ -31,7 +31,7 @@ export const useComments = (restaurantId?: string) => {
     try {
       // First get comments
       const { data: commentsData, error: commentsError } = await supabase
-        .from('comments')
+        .from('Comments')
         .select('*')
         .eq('restaurant_id', restaurantId)
         .eq('is_active', true)
@@ -99,7 +99,7 @@ export const useComments = (restaurantId?: string) => {
       if (!user) throw new Error('User not authenticated');
 
       const { error } = await supabase
-        .from('comments')
+        .from('Comments')
         .insert({
           user_id: user.id,
           restaurant_id: restaurantId,
@@ -141,7 +141,7 @@ export const useComments = (restaurantId?: string) => {
         {
           event: '*',
           schema: 'public',
-          table: 'comments',
+          table: 'Comments',
           filter: `restaurant_id=eq.${restaurantId}`,
         },
         (payload) => {
