@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
 
-import { CUISINE_OPTIONS, DIETARY_RESTRICTIONS_OPTIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_OPTIONS, ALLERGENS_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, DIETARY_RESTRICTIONS_OPTIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_OPTIONS, ALLERGENS_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 interface Menu {
   id: string;
@@ -355,7 +355,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   >
                     <option value="">{t('menusModal.selectCuisineType')}</option>
                     {CUISINE_OPTIONS.map(cuisine => (
-                      <option key={cuisine} value={cuisine}>{cuisine}</option>
+                      <option key={cuisine} value={cuisine}>
+                        {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
+                      </option>
                     ))}
                   </select>
 
@@ -458,7 +460,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       )}
                       
                       <div className="mb-3 flex items-center justify-between">
-                        <Badge variant="outline">{menu.cuisine_type}</Badge>
+                        <Badge variant="outline">
+                          {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || menu.cuisine_type}
+                        </Badge>
                         <Badge 
                           variant={menu.is_active ? "default" : "secondary"}
                         >
@@ -573,7 +577,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     >
                       <option value="">{t('menusModal.selectCuisineType')}</option>
                       {CUISINE_OPTIONS.map(cuisine => (
-                        <option key={cuisine} value={cuisine}>{cuisine}</option>
+                        <option key={cuisine} value={cuisine}>
+                          {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
+                        </option>
                       ))}
                     </select>
 
