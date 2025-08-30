@@ -24,6 +24,61 @@ export const CUISINE_TRANSLATIONS = {
   african: { fr: "Africaine", en: "African" }
 };
 
+export const DIETARY_RESTRICTIONS_OPTIONS = [
+  "vegetarian", "vegan", "gluten_free", "halal", "kosher", "paleo",
+  "ketogenic", "lactose_free", "pescatarian", "low_sodium",
+  "fruitarian", "carnivore", "detox", "spicy", "not_spicy", "low_sugar"
+];
+
+export const DIETARY_RESTRICTIONS_TRANSLATIONS = {
+  vegetarian: { fr: "Végétarien", en: "Vegetarian" },
+  vegan: { fr: "Végan", en: "Vegan" },
+  gluten_free: { fr: "Sans gluten", en: "Gluten-free" },
+  halal: { fr: "Halal", en: "Halal" },
+  kosher: { fr: "Casher", en: "Kosher" },
+  paleo: { fr: "Paléo", en: "Paleo" },
+  ketogenic: { fr: "Cétogène", en: "Ketogenic" },
+  lactose_free: { fr: "Sans lactose", en: "Lactose-free" },
+  pescatarian: { fr: "Pescétarien", en: "Pescatarian" },
+  low_sodium: { fr: "Faible en sodium", en: "Low sodium" },
+  fruitarian: { fr: "Frugivore", en: "Fruitarian" },
+  carnivore: { fr: "Carnivore", en: "Carnivore" },
+  detox: { fr: "Détox", en: "Detox" },
+  spicy: { fr: "Épicé", en: "Spicy" },
+  not_spicy: { fr: "Non épicé", en: "Not spicy" },
+  low_sugar: { fr: "Faible en sucre", en: "Low sugar" }
+};
+
+export const ALLERGENS_OPTIONS = [
+  "peanuts", "nuts", "milk", "eggs", "wheat", "soy", "fish",
+  "seafood", "sesame_seeds", "sulfites", "mustard",
+  "lupin", "celery", "gluten", "corn", "peas_legumes",
+  "kiwi", "banana", "stone_fruits"
+];
+
+export const ALLERGENS_TRANSLATIONS = {
+  peanuts: { fr: "Arachides", en: "Peanuts" },
+  nuts: { fr: "Noix", en: "Nuts" },
+  milk: { fr: "Lait", en: "Milk" },
+  eggs: { fr: "Œufs", en: "Eggs" },
+  wheat: { fr: "Blé", en: "Wheat" },
+  soy: { fr: "Soja", en: "Soy" },
+  fish: { fr: "Poisson", en: "Fish" },
+  seafood: { fr: "Fruits de mer", en: "Seafood" },
+  sesame_seeds: { fr: "Graines de sésame", en: "Sesame seeds" },
+  sulfites: { fr: "Sulfites", en: "Sulfites" },
+  mustard: { fr: "Moutarde", en: "Mustard" },
+  lupin: { fr: "Lupin", en: "Lupin" },
+  celery: { fr: "Céleri", en: "Celery" },
+  gluten: { fr: "Gluten", en: "Gluten" },
+  corn: { fr: "Maïs", en: "Corn" },
+  peas_legumes: { fr: "Pois / légumineuses", en: "Peas/Legumes" },
+  kiwi: { fr: "Kiwi", en: "Kiwi" },
+  banana: { fr: "Banane", en: "Banana" },
+  stone_fruits: { fr: "Fruits à noyau", en: "Stone fruits" }
+};
+
+// Legacy arrays for backward compatibility
 export const DIETARY_RESTRICTIONS = [
   "Végétarien", "Végan", "Sans gluten", "Halal", "Casher", "Paléo",
   "Cétogène", "Sans lactose", "Pescétarien", "Faible en sodium",
