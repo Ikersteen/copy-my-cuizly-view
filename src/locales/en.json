@@ -1451,6 +1451,8 @@
       "restaurantNamePlaceholder": "My Restaurant",
       "phone": "Phone",
       "phonePlaceholder": "(514) 123-4567",
+      "address": "Address",
+      "addressPlaceholder": "123 Mountain Street, Montreal, QC",
       "restaurantType": "Restaurant Type",
       "restaurantTypePlaceholder": "Select your restaurant type",
       "message": "Message (optional)",

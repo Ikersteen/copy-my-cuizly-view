@@ -22,6 +22,7 @@ const Waitlist = () => {
     name: "",
     company_name: "",
     phone: "",
+    address: "",
     restaurant_type: "",
     message: ""
   });
@@ -153,20 +154,22 @@ const Waitlist = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="company">{t('waitlist.form.restaurantName')}</Label>
+                    <Label htmlFor="company">{t('waitlist.form.restaurantName')} {t('waitlist.form.required')}</Label>
                     <Input
                       id="company"
                       type="text"
+                      required
                       value={formData.company_name}
                       onChange={(e) => handleChange('company_name', e.target.value)}
                       placeholder={t('waitlist.form.restaurantNamePlaceholder')}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">{t('waitlist.form.phone')}</Label>
+                    <Label htmlFor="phone">{t('waitlist.form.phone')} {t('waitlist.form.required')}</Label>
                     <Input
                       id="phone"
                       type="tel"
+                      required
                       value={formData.phone}
                       onChange={(e) => handleChange('phone', e.target.value)}
                       placeholder={t('waitlist.form.phonePlaceholder')}
@@ -175,8 +178,20 @@ const Waitlist = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="restaurant-type">{t('waitlist.form.restaurantType')}</Label>
-                  <Select value={formData.restaurant_type} onValueChange={(value) => handleChange('restaurant_type', value)}>
+                  <Label htmlFor="address">{t('waitlist.form.address')} {t('waitlist.form.required')}</Label>
+                  <Input
+                    id="address"
+                    type="text"
+                    required
+                    value={formData.address}
+                    onChange={(e) => handleChange('address', e.target.value)}
+                    placeholder={t('waitlist.form.addressPlaceholder')}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="restaurant-type">{t('waitlist.form.restaurantType')} {t('waitlist.form.required')}</Label>
+                  <Select value={formData.restaurant_type} onValueChange={(value) => handleChange('restaurant_type', value)} required>
                     <SelectTrigger>
                       <SelectValue placeholder={t('waitlist.form.restaurantTypePlaceholder')} />
                     </SelectTrigger>
@@ -213,8 +228,8 @@ const Waitlist = () => {
                   </Link>
                   <Button 
                     type="submit" 
-                    className="flex-1"
-                    disabled={isSubmitting || !formData.email || !formData.name}
+                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
+                    disabled={isSubmitting || !formData.email || !formData.name || !formData.company_name || !formData.phone || !formData.address || !formData.restaurant_type}
                   >
                     {isSubmitting ? t('waitlist.form.submitting') : t('waitlist.form.submit')}
                   </Button>

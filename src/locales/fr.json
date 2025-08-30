@@ -1334,6 +1334,8 @@
       "restaurantNamePlaceholder": "Mon restaurant",
       "phone": "Téléphone",
       "phonePlaceholder": "(514) 123-4567",
+      "address": "Adresse",
+      "addressPlaceholder": "123 Rue de la Montagne, Montréal, QC",
       "restaurantType": "Type de restaurant",
       "restaurantTypePlaceholder": "Sélectionnez le type de votre restaurant",
       "message": "Message (optionnel)",
