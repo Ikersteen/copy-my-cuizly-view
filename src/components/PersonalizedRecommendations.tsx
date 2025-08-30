@@ -222,9 +222,11 @@ export const PersonalizedRecommendations = () => {
               hasStrictMatch = true;
               score += 8; // Score réduit mais accepté
               if (restaurantPriceIndex < userPriceIndex) {
+                console.log(`Restaurant ${restaurant.name} is more economical: ${restaurant.price_range} vs user's ${preferences.price_range}`);
                 console.log('Adding economicOption translation');
                 reasons.push(t('recommendations.economicOption'));
               } else {
+                console.log(`Restaurant ${restaurant.name} is more expensive: ${restaurant.price_range} vs user's ${preferences.price_range}`);
                 reasons.push(t('recommendations.moreExpensive'));
               }
               console.log(`Price range close match for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), including`);
