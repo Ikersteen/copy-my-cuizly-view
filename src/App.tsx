@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
-import { Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Header from "@/components/Header";
 import CookieBanner from "@/components/CookieBanner";
@@ -26,7 +26,14 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const location = useLocation();
+  const { ready } = useTranslation();
   const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard');
+
+  if (!ready) {
+    return <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
+    </div>;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -112,13 +119,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Suspense fallback={
-            <div className="min-h-screen bg-background flex items-center justify-center">
-              <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
-            </div>
-          }>
-            <AppContent />
-          </Suspense>
+          <AppContent />
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
