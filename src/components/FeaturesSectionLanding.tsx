@@ -13,33 +13,33 @@ const FeaturesSectionLanding = () => {
   const features = [
     {
       icon: Bot,
-      titleKey: 'features.ai_recommendations.title',
-      descriptionKey: 'features.ai_recommendations.description'
+      titleKey: 'features.list.ai.title',
+      descriptionKey: 'features.list.ai.description'
     },
     {
       icon: MapPin,
-      titleKey: 'features.geolocation.title',
-      descriptionKey: 'features.geolocation.description'
+      titleKey: 'features.list.geolocation.title',
+      descriptionKey: 'features.list.geolocation.description'
     },
     {
       icon: Bell,
-      titleKey: 'features.real_time_alerts.title',
-      descriptionKey: 'features.real_time_alerts.description'
+      titleKey: 'features.list.alerts.title',
+      descriptionKey: 'features.list.alerts.description'
     },
     {
       icon: Star,
-      titleKey: 'features.reviews_ratings.title',
-      descriptionKey: 'features.reviews_ratings.description'
+      titleKey: 'features.list.reviews.title',
+      descriptionKey: 'features.list.reviews.description'
     },
     {
       icon: BarChart3,
-      titleKey: 'features.restaurant_analytics.title',
-      descriptionKey: 'features.restaurant_analytics.description'
+      titleKey: 'features.list.analytics.title',
+      descriptionKey: 'features.list.analytics.description'
     },
     {
       icon: Users,
-      titleKey: 'features.smart_targeting.title',
-      descriptionKey: 'features.smart_targeting.description'
+      titleKey: 'features.list.targeting.title',
+      descriptionKey: 'features.list.targeting.description'
     }
   ];
 
