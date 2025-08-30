@@ -579,10 +579,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             {/* Dropdown selector */}
             <div>
               <Select
+                key={`cuisine-select-${formData.cuisine_type?.length || 0}`}
                 value=""
                 onValueChange={(cuisine) => {
                   if (cuisine && !formData.cuisine_type?.includes(cuisine)) {
-                    addCuisine(cuisine);
+                    const newCuisines = [...(formData.cuisine_type || []), cuisine];
+                    setFormData(prev => ({
+                      ...prev,
+                      cuisine_type: newCuisines
+                    }));
                   }
                 }}
               >
@@ -590,11 +595,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                   <SelectValue placeholder={t('restaurantProfile.selectCuisine')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
-                  {availableCuisines.filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
-                    <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
-                      {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
-                    </SelectItem>
-                  ))}
+                  {availableCuisines
+                    .filter(cuisine => !formData.cuisine_type?.includes(cuisine))
+                    .map(cuisine => (
+                      <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
+                        {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
             </div>
