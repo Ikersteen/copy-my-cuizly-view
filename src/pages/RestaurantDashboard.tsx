@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 import type { User } from "@supabase/supabase-js";
 
 interface Restaurant {
@@ -172,8 +172,10 @@ const RestaurantDashboard = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground">{t('dashboard.loadingDashboard')}</p>
+          <div className="w-16 h-16 flex items-center justify-center animate-pulse mx-auto">
+            <img src={cuizlyLogo} alt="Cuizly" className="w-16 h-16 object-contain" />
+          </div>
+          <p className="text-muted-foreground animate-pulse">{t('dashboard.loadingDashboard')}</p>
         </div>
       </div>
     );

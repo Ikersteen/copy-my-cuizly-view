@@ -612,14 +612,12 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             {/* Selected specialties display */}
             {formData.restaurant_specialties && formData.restaurant_specialties.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                 {formData.restaurant_specialties.map((specialty) => {
-                   // Trouver la clé correspondant à la spécialité stockée
-                   const specialtyEntries = Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>);
-                   const [specialtyKey, specialtyLabel] = specialtyEntries.find(([key, label]) => label === specialty) || [specialty, specialty];
-                   
-                   return (
+                 {formData.restaurant_specialties.map((specialty) => (
                    <Badge key={specialty} variant="secondary" className="rounded-full text-center justify-center pr-1">
-                     {specialtyLabel}
+                     {/* Afficher la traduction de la spécialité en utilisant directement la clé */}
+                     {Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>)
+                       .find(([key, value]) => key === specialty || value === specialty)?.[1] || 
+                      specialty}
                      <Button
                        variant="ghost"
                        size="sm"
@@ -635,8 +633,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                        <X className="h-3 w-3" />
                      </Button>
                    </Badge>
-                   );
-                 })}
+                 ))}
               </div>
             )}
 
