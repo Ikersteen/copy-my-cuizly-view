@@ -613,22 +613,17 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
             {formData.restaurant_specialties && formData.restaurant_specialties.length > 0 && (
               <div className="flex flex-wrap gap-2">
                  {formData.restaurant_specialties.map((specialty) => {
-                   // Trouver la clé correspondant à la spécialité stockée
-                   const specialtyEntries = Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>);
-                   const [specialtyKey, specialtyLabel] = specialtyEntries.find(([key, label]) => label === specialty) || [specialty, specialty];
-                   
                    return (
                    <Badge key={specialty} variant="secondary" className="rounded-full text-center justify-center pr-1">
-                     {specialtyLabel}
+                     {specialty}
                      <Button
                        variant="ghost"
                        size="sm"
                        className="h-4 w-4 p-0 ml-2 hover:bg-destructive hover:text-destructive-foreground"
                        onClick={() => {
-                         const currentSpecialties = formData.restaurant_specialties || [];
                          setFormData(prev => ({
                            ...prev,
-                           restaurant_specialties: currentSpecialties.filter(s => s !== specialty)
+                           restaurant_specialties: (prev.restaurant_specialties || []).filter(s => s !== specialty)
                          }));
                        }}
                      >
