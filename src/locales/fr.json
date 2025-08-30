@@ -888,7 +888,8 @@
     "delete": "Supprimer",
     "saving": "Sauvegarde...",
     "save": "Sauvegarder"
-  }
+  },
+  "dashboard": {
     "restaurantDetails": "Détails de votre établissement",
     "completeProfile": "Veuillez d'abord compléter votre profil de restaurant",
     "name": "Nom",
@@ -899,6 +900,7 @@
     "restaurantSpecialty": "Spécialité du restaurant",
     "description": "Description",
     "noMoreEndlesssearches": "Fini les recherches interminables :"
+  }
   },
   "offers": {
     "myOffers": "Mes offres",
