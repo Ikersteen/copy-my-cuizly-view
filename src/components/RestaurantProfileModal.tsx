@@ -186,8 +186,8 @@ export const RestaurantProfileModal = ({
     // Validate file type
     if (!file.type.startsWith('image/')) {
       toast({
-        title: t('profile.errorUpload'),
-        description: t('profile.selectValidImage'),
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.selectValidImage'),
         variant: "destructive"
       });
       return;
@@ -196,8 +196,8 @@ export const RestaurantProfileModal = ({
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({
-        title: t('profile.errorUpload'), 
-        description: t('profile.imageTooLarge'),
+        title: t('restaurantProfile.error'), 
+        description: t('restaurantProfile.imageTooLarge'),
         variant: "destructive"
       });
       return;
@@ -232,7 +232,7 @@ export const RestaurantProfileModal = ({
       }
       
       toast({
-        title: type === 'cover' ? t('profile.imageUploaded') : t('profile.imageUploaded'),
+        title: t('restaurantProfile.profileUpdated'),
         description: type === 'cover' ? t('restaurantProfile.uploadingCover') : t('restaurantProfile.uploadingLogo')
       });
     } catch (error) {
