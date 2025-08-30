@@ -10,33 +10,33 @@ const Features = () => {
   const features = [
     {
       icon: Bot,
-      titleKey: "features.list.ai.title",
-      descriptionKey: "features.list.ai.description"
+      titleKey: "features.ai_recommendations.title",
+      descriptionKey: "features.ai_recommendations.description"
     },
     {
       icon: MapPin,
-      titleKey: "features.list.geolocation.title",
-      descriptionKey: "features.list.geolocation.description"
+      titleKey: "features.geolocation.title",
+      descriptionKey: "features.geolocation.description"
     },
     {
       icon: Bell,
-      titleKey: "features.list.alerts.title",
-      descriptionKey: "features.list.alerts.description"
+      titleKey: "features.real_time_alerts.title",
+      descriptionKey: "features.real_time_alerts.description"
     },
     {
       icon: Star,
-      titleKey: "features.list.reviews.title",
-      descriptionKey: "features.list.reviews.description"
+      titleKey: "features.reviews_ratings.title",
+      descriptionKey: "features.reviews_ratings.description"
     },
     {
       icon: BarChart3,
-      titleKey: "features.list.analytics.title",
-      descriptionKey: "features.list.analytics.description"
+      titleKey: "features.restaurant_analytics.title",
+      descriptionKey: "features.restaurant_analytics.description"
     },
     {
       icon: Users,
-      titleKey: "features.list.targeting.title",
-      descriptionKey: "features.list.targeting.description"
+      titleKey: "features.smart_targeting.title",
+      descriptionKey: "features.smart_targeting.description"
     }
   ];
 
