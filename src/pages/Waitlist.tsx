@@ -10,12 +10,14 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useLanguage } from "@/hooks/useLanguage";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
 
 const Waitlist = () => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hcaptchaToken, setHcaptchaToken] = useState<string | null>(null);
@@ -242,6 +244,7 @@ const Waitlist = () => {
                      <HCaptcha
                        ref={hcaptchaRef}
                        sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
+                       languageOverride={currentLanguage === 'fr' ? 'fr' : 'en'}
                        onVerify={(token) => {
                          setHcaptchaToken(token);
                          setCaptchaError(null);
