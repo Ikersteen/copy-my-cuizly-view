@@ -21,14 +21,15 @@ i18n
   .init({
     resources,
     fallbackLng: 'fr', // Fallback language
-    debug: false,
+    lng: 'fr', // Force French as default
+    debug: true, // Enable debug to see what's happening
     
     interpolation: {
       escapeValue: false // React already does escaping
     },
     
     detection: {
-      order: ['localStorage', 'navigator', 'htmlTag'],
+      order: ['localStorage', 'htmlTag', 'navigator'],
       caches: ['localStorage'],
       lookupLocalStorage: 'cuizly-language'
     }
