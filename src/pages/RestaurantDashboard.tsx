@@ -13,6 +13,7 @@ import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
+import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 import type { User } from "@supabase/supabase-js";
 
@@ -47,7 +48,7 @@ const RestaurantDashboard = () => {
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   const { toast } = useToast();
   const { profile, updateProfile } = useProfile();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     loadData();
@@ -338,7 +339,7 @@ const RestaurantDashboard = () => {
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
                             <Badge key={index} variant="outline" className="text-xs">
-                              {cuisine}
+                              {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
                             </Badge>
                           ))
                         ) : (
@@ -352,11 +353,17 @@ const RestaurantDashboard = () => {
                       <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.restaurantSpecialty')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).restaurant_specialties?.length > 0 ? (
-                          (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => (
+                          (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => {
+                            // Trouver la traduction de la spécialité
+                            const specialtyEntries = Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>);
+                            const translatedSpecialty = specialtyEntries.find(([key, label]) => label === specialty)?.[1] || specialty;
+                            
+                            return (
                             <Badge key={index} variant="secondary" className="text-xs rounded-full">
-                              {specialty}
+                              {translatedSpecialty}
                             </Badge>
-                          ))
+                            );
+                          })
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
                             {t('dashboard.notDefined')}
