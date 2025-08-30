@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from '@/hooks/useLanguage';
 import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { getTranslatedDescription } from "@/lib/translations";
 
 interface Restaurant {
   id: string;
@@ -718,7 +719,7 @@ export const PersonalizedRecommendations = () => {
                             )}
                           </div>
                           <CardDescription className="line-clamp-2 text-sm mt-1">
-                            {restaurant.description}
+                            {getTranslatedDescription(restaurant, currentLanguage)}
                           </CardDescription>
                         </div>
                         <Button

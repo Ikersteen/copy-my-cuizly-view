@@ -7,11 +7,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
+import { useLanguage } from "@/hooks/useLanguage";
+import { getTranslatedDescription } from "@/lib/translations";
 
 interface Restaurant {
   id: string;
   name: string;
   description: string;
+  description_fr?: string;
+  description_en?: string;
   cuisine_type: string[];
   price_range: string;
   address: string;
@@ -21,6 +25,7 @@ interface Restaurant {
 export const SavedFavoritesSection = () => {
   const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
   const { preferences } = useUserPreferences();
+  const { currentLanguage } = useLanguage();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
@@ -275,7 +280,7 @@ export const SavedFavoritesSection = () => {
                         )}
                       </div>
                       <CardDescription className="line-clamp-2 text-sm mt-1">
-                        {restaurant.description}
+                        {getTranslatedDescription(restaurant, currentLanguage)}
                       </CardDescription>
                     </div>
                   </div>
