@@ -1322,7 +1322,7 @@
   "waitlist": {
     "badge": "Liste d'attente VIP",
     "title": "Rejoignez la liste d'attente",
-    "subtitle": "Avec Cuizly Analytics+, transformez vos données en actions concrètes : améliorez votre stratégie culinaire, optimisez la gestion de votre restaurant et augmentez vos revenus.",
+    "subtitle": "Avec <strong>Cuizly Analytics+</strong>, transformez vos données en actions concrètes : améliorez votre stratégie culinaire, optimisez la gestion de votre restaurant et augmentez vos revenus.",
     "form": {
       "title": "Informations de contact",
       "description": "Remplissez ce formulaire pour être notifié du lancement de Cuizly Analytics+",
@@ -1374,7 +1374,7 @@
     },
     "success": {
       "title": "Inscription confirmée !",
-      "message": "Merci de votre intérêt pour Cuizly Analytics+. Nous vous contacterons bientôt avec plus de détails sur le lancement.",
+      "message": "Merci de votre intérêt pour <strong>Cuizly Analytics+</strong>. Nous vous contacterons bientôt avec plus de détails sur le lancement.",
       "backHome": "Retour à l'accueil"
     },
     "messages": {

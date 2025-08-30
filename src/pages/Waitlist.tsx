@@ -114,8 +114,7 @@ const Waitlist = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-6">
-                  {t('waitlist.success.message')}
+                <p className="text-muted-foreground mb-6" dangerouslySetInnerHTML={{ __html: t('waitlist.success.message') }}>
                 </p>
                 <Link to="/">
                   <Button className="w-full">
