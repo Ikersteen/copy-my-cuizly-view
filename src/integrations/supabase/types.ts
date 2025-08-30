@@ -14,7 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      comments: {
+      Comments: {
         Row: {
           comment_text: string | null
           created_at: string
