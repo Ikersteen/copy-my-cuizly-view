@@ -923,6 +923,8 @@
     }
   },
   "recommendations": {
+    "generatingRecommendations": "Generating personalized recommendations...",
+    "analyzingPreferences": "Analyzing your culinary preferences",
     "loadingTitle": "Loading recommendations...",
     "recommendedForYou": "Recommended for you",
     "analysisRealTime": "Real-time analysis",

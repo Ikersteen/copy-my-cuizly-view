@@ -796,6 +796,8 @@
     }
   },
   "recommendations": {
+    "generatingRecommendations": "Génération de recommandations personnalisées...",
+    "analyzingPreferences": "Analyse de vos préférences culinaires",
     "loadingTitle": "Chargement des recommandations...",
     "recommendedForYou": "Recommandé pour vous",
     "analysisRealTime": "Analyse temps réel",
