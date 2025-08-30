@@ -9,6 +9,7 @@ import { ArrowLeft, CheckCircle2, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
 
@@ -64,6 +65,7 @@ const Waitlist = () => {
   if (isSubmitted) {
     return (
       <>
+        <Header />
         <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center px-4">
           <div className="max-w-md w-full">
             <Card className="text-center shadow-2xl border-border">
@@ -96,6 +98,7 @@ const Waitlist = () => {
 
   return (
     <>
+      <Header />
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-12 px-4">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
