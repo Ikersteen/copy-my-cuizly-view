@@ -222,6 +222,7 @@ export const PersonalizedRecommendations = () => {
               hasStrictMatch = true;
               score += 8; // Score réduit mais accepté
               if (restaurantPriceIndex < userPriceIndex) {
+                console.log('Adding economicOption translation');
                 reasons.push(t('recommendations.economicOption'));
               } else {
                 reasons.push(t('recommendations.moreExpensive'));
