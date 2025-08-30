@@ -1352,5 +1352,24 @@
     "checkInternetConnection": "Check your internet connection and reload the page.",
     "systemError": "System error",
     "unexpectedError": "An unexpected error occurred. Please reload the page."
+  },
+  "menusModal": {
+    "restaurantNotConfigured": "Your restaurant is not yet configured.",
+    "menuImage": "Menu image", 
+    "preview": "Preview",
+    "cuisineType": "Cuisine type",
+    "selectCuisineType": "Select a type",
+    "dietaryCompatible": "Compatible dietary type",
+    "allergensPresent": "Allergens present",
+    "yourMenus": "Your menus",
+    "active": "active",
+    "activeStatus": "Active",
+    "inactiveStatus": "Inactive",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "restrictions": "Restrictions:",
+    "allergens": "Allergens:",
+    "menuAddedDesc": "Your menu is now visible in your list",
+    "changesDesc": "Changes have been saved"
   }
 }

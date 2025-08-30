@@ -1235,5 +1235,24 @@
     "delete": "Supprimer",
     "saving": "Sauvegarde...",
     "save": "Sauvegarder"
+  },
+  "menusModal": {
+    "restaurantNotConfigured": "Votre restaurant n'est pas encore configuré.",
+    "menuImage": "Image du menu",
+    "preview": "Aperçu",
+    "cuisineType": "Type de cuisine",
+    "selectCuisineType": "Sélectionner un type",
+    "dietaryCompatible": "Type de régime compatible",
+    "allergensPresent": "Allergènes présents",
+    "yourMenus": "Vos menus",
+    "active": "actifs",
+    "activeStatus": "Actif",
+    "inactiveStatus": "Inactif",
+    "activate": "Activer",
+    "deactivate": "Désactiver",
+    "restrictions": "Restrictions :",
+    "allergens": "Allergènes :",
+    "menuAddedDesc": "Votre menu est maintenant visible dans votre liste",
+    "changesDesc": "Les modifications ont été sauvegardées"
   }
 }

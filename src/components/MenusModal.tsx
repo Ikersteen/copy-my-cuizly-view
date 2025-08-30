@@ -190,7 +190,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       
       toast({
         title: t('menus.menuAdded'),
-        description: "Votre menu est maintenant visible dans votre liste",
+        description: t('menusModal.menuAddedDesc'),
       });
     } catch (error) {
       console.error('Erreur lors de l\'ajout du menu:', error);
@@ -273,7 +273,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       setEditingMenu(null);
       toast({
         title: t('menus.menuModified'),
-        description: "Les modifications ont été sauvegardées"
+        description: t('menusModal.changesDesc')
       });
     } catch (error) {
       console.error('Erreur lors de la modification:', error);
@@ -298,7 +298,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
         {!restaurantId ? (
           <div className="text-center py-8 space-y-4">
             <p className="text-muted-foreground">
-              Votre restaurant n'est pas encore configuré. 
+              {t('menusModal.restaurantNotConfigured')}
             </p>
             <p className="text-sm text-muted-foreground mb-4">
               {t('menus.completeProfile')}
@@ -316,7 +316,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Image du menu</Label>
+                  <Label>{t('menusModal.menuImage')}</Label>
                   <div className="flex flex-col space-y-2">
                     <Input
                       type="file"
@@ -330,7 +330,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       <div className="relative w-32 h-32">
                         <img
                           src={newMenu.image_url}
-                          alt="Aperçu"
+                          alt={t('menusModal.preview')}
                           className="w-full h-full object-cover rounded-lg"
                         />
                         <Button
@@ -347,13 +347,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Type de cuisine</Label>
+                  <Label>{t('menusModal.cuisineType')}</Label>
                   <select
                     value={newMenu.cuisine_type}
                     onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
                     className="w-full px-3 py-2 border border-input bg-background rounded-md"
                   >
-                    <option value="">Sélectionner un type</option>
+                    <option value="">{t('menusModal.selectCuisineType')}</option>
                     {CUISINE_OPTIONS.map(cuisine => (
                       <option key={cuisine} value={cuisine}>{cuisine}</option>
                     ))}
@@ -368,7 +368,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
             required
           />
                   
-                  <Label>Type de régime compatible</Label>
+                  <Label>{t('menusModal.dietaryCompatible')}</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {DIETARY_RESTRICTIONS.sort().map(restriction => (
                       <Badge
@@ -389,7 +389,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     ))}
                   </div>
 
-                  <Label>Allergènes présents</Label>
+                  <Label>{t('menusModal.allergensPresent')}</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {ALLERGENS.sort().map(allergen => (
                       <Badge
@@ -426,8 +426,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           {/* Liste des menus existants */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">Vos menus ({menus.length}/5)</h3>
-              <Badge variant="outline">{menus.filter(m => m.is_active).length} actifs</Badge>
+              <h3 className="font-medium">{t('menusModal.yourMenus')} ({menus.length}/5)</h3>
+              <Badge variant="outline">{menus.filter(m => m.is_active).length} {t('menusModal.active')}</Badge>
             </div>
 
             {menus.length === 0 ? (
@@ -462,7 +462,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         <Badge 
                           variant={menu.is_active ? "default" : "secondary"}
                         >
-                          {menu.is_active ? "Actif" : "Inactif"}
+                          {menu.is_active ? t('menusModal.activeStatus') : t('menusModal.inactiveStatus')}
                         </Badge>
                       </div>
                       <p className="text-sm text-foreground mb-3">
@@ -472,8 +472,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       {(menu.dietary_restrictions?.length > 0 || menu.allergens?.length > 0) && (
                         <div className="mb-3 space-y-2">
                           {menu.dietary_restrictions?.length > 0 && (
-                            <div>
-                              <p className="text-xs font-medium text-muted-foreground mb-1">Restrictions:</p>
+                             <div>
+                               <p className="text-xs font-medium text-muted-foreground mb-1">{t('menusModal.restrictions')}</p>
                               <div className="flex flex-wrap gap-1">
                                 {menu.dietary_restrictions.map(restriction => (
                                   <Badge key={restriction} variant="secondary" className="text-xs">
@@ -484,8 +484,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                             </div>
                           )}
                           {menu.allergens?.length > 0 && (
-                            <div>
-                              <p className="text-xs font-medium text-muted-foreground mb-1">Allergènes:</p>
+                             <div>
+                               <p className="text-xs font-medium text-muted-foreground mb-1">{t('menusModal.allergens')}</p>
                               <div className="flex flex-wrap gap-1">
                                 {menu.allergens.map(allergen => (
                                   <Badge key={allergen} variant="destructive" className="text-xs">
@@ -512,7 +512,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           size="sm"
                           onClick={() => handleToggleActive(menu.id, menu.is_active)}
                         >
-                          {menu.is_active ? "Désactiver" : "Activer"}
+                          {menu.is_active ? t('menusModal.deactivate') : t('menusModal.activate')}
                         </Button>
                         <Button
                           variant="destructive"
@@ -542,7 +542,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Image du menu</Label>
+                    <Label>{t('menusModal.menuImage')}</Label>
                     <div className="flex flex-col space-y-2">
                       <Input
                         type="file"
@@ -556,7 +556,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         <div className="relative w-32 h-32">
                           <img
                             src={editingMenu.image_url}
-                            alt="Aperçu"
+                            alt={t('menusModal.preview')}
                             className="w-full h-full object-cover rounded-lg"
                           />
                         </div>
@@ -565,13 +565,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Type de cuisine</Label>
+                    <Label>{t('menusModal.cuisineType')}</Label>
                     <select
                       value={editingMenu.cuisine_type}
                       onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, cuisine_type: e.target.value }) : null)}
                       className="w-full px-3 py-2 border border-input bg-background rounded-md"
                     >
-                      <option value="">Sélectionner un type</option>
+                      <option value="">{t('menusModal.selectCuisineType')}</option>
                       {CUISINE_OPTIONS.map(cuisine => (
                         <option key={cuisine} value={cuisine}>{cuisine}</option>
                       ))}
@@ -586,7 +586,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       required
                     />
 
-                    <Label>Type de régime compatible</Label>
+                    <Label>{t('menusModal.dietaryCompatible')}</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                       {DIETARY_RESTRICTIONS.sort().map(restriction => (
                         <Badge
@@ -607,7 +607,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       ))}
                     </div>
 
-                    <Label>Allergènes présents</Label>
+                    <Label>{t('menusModal.allergensPresent')}</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                       {ALLERGENS.sort().map(allergen => (
                         <Badge
