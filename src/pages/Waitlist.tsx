@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useLanguage } from "@/hooks/useLanguage";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
@@ -46,31 +47,47 @@ const Waitlist = () => {
     if (!hcaptchaToken) {
       toast.error(t('waitlist.messages.captchaRequired'));
       setIsSubmitting(false);
+      // Reset hCaptcha
+      setHcaptchaToken(null);
+      setCaptchaError(null);
+      hcaptchaRef.current?.resetCaptcha();
       return;
     }
 
     try {
-      // Pour l'instant, on sauvegarde en localStorage
-      // TODO: Intégrer avec Supabase quand les types seront mis à jour
-      const waitlistEntry = {
-        ...formData,
-        captcha_verified: true,
-        created_at: new Date().toISOString(),
-        id: crypto.randomUUID()
-      };
-      
-      const existingEntries = JSON.parse(localStorage.getItem('waitlist_analytics') || '[]');
-      existingEntries.push(waitlistEntry);
-      localStorage.setItem('waitlist_analytics', JSON.stringify(existingEntries));
+      // Sauvegarder dans Supabase
+      const { error } = await supabase
+        .from('waitlist_analytics')
+        .insert({
+          email: formData.email,
+          name: formData.name,
+          company_name: formData.company_name,
+          phone: formData.phone,
+          address: formData.address,
+          restaurant_type: formData.restaurant_type,
+          message: formData.message || null
+        });
 
+      if (error) {
+        console.error('Erreur Supabase:', error);
+        toast.error(t('waitlist.messages.error'));
+        setIsSubmitting(false);
+        // Reset hCaptcha
+        setHcaptchaToken(null);
+        setCaptchaError(null);
+        hcaptchaRef.current?.resetCaptcha();
+        return;
+      }
+
+      // Succès - maintenir l'état de confirmation sans reset
       setIsSubmitted(true);
+      setIsSubmitting(false);
       toast.success(t('waitlist.messages.success'));
     } catch (error) {
       console.error('Erreur:', error);
       toast.error(t('waitlist.messages.error'));
-    } finally {
       setIsSubmitting(false);
-      // Reset hCaptcha
+      // Reset hCaptcha en cas d'erreur seulement
       setHcaptchaToken(null);
       setCaptchaError(null);
       hcaptchaRef.current?.resetCaptcha();
