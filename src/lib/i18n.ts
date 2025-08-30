@@ -22,7 +22,7 @@ i18n
     resources,
     fallbackLng: 'fr',
     lng: 'fr',
-    debug: false,
+    debug: true,
     
     interpolation: {
       escapeValue: false
@@ -35,8 +35,11 @@ i18n
     },
 
     react: {
-      useSuspense: false,
-    }
+      useSuspense: true,
+    },
+    
+    // Assurer que les traductions sont chargées de manière synchrone
+    initImmediate: false
   });
 
 export default i18n;
