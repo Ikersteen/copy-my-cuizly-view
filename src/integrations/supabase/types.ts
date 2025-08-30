@@ -526,6 +526,24 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_public_restaurants_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          cover_image_url: string
+          created_at: string
+          cuisine_type: string[]
+          delivery_radius: number
+          description: string
+          id: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          opening_hours: Json
+          price_range: string
+          updated_at: string
+        }[]
+      }
       get_public_user_names: {
         Args: { user_ids: string[] }
         Returns: {
