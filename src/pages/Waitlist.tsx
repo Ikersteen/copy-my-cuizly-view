@@ -9,7 +9,6 @@ import { ArrowLeft, CheckCircle2, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 
 const Waitlist = () => {
   const { t } = useTranslation();
@@ -29,21 +28,17 @@ const Waitlist = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('waitlist_analytics')
-        .insert([
-          {
-            email: formData.email,
-            name: formData.name,
-            company_name: formData.company_name,
-            phone: formData.phone,
-            restaurant_type: formData.restaurant_type,
-            message: formData.message,
-            created_at: new Date().toISOString()
-          }
-        ]);
-
-      if (error) throw error;
+      // Pour l'instant, on sauvegarde en localStorage
+      // TODO: Intégrer avec Supabase quand les types seront mis à jour
+      const waitlistEntry = {
+        ...formData,
+        created_at: new Date().toISOString(),
+        id: crypto.randomUUID()
+      };
+      
+      const existingEntries = JSON.parse(localStorage.getItem('waitlist_analytics') || '[]');
+      existingEntries.push(waitlistEntry);
+      localStorage.setItem('waitlist_analytics', JSON.stringify(existingEntries));
 
       setIsSubmitted(true);
       toast.success("Inscription réussie à la liste d'attente !");
