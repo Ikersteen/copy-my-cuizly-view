@@ -163,7 +163,7 @@ export const AllMenusSection = () => {
               {t('menus.noMenus')}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {t('menus.comeBack')}
+              Ce restaurant n'a pas encore ajouté de menus
             </p>
           </CardContent>
         </Card>

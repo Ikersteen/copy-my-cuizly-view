@@ -44,19 +44,19 @@ export const SavedFavoritesSection = () => {
         preferences.cuisine_preferences.includes(cuisine)
       ) || [];
       if (matchingCuisines.length > 0) {
-        reasons.push(`${matchingCuisines.length} ${t('recommendations.cuisineMatches')}`);
+        reasons.push(`${matchingCuisines.length} cuisine(s) correspondante(s)`);
       }
     }
     
     // Price range match
     if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push(t('recommendations.inYourBudget'));
+      reasons.push("Dans votre budget");
     }
 
     // Always include favorite-specific reasons
-    reasons.push(t('recommendations.inYourFavorites'));
+    reasons.push("Dans vos favoris");
     if (reasons.length === 1) {
-      reasons.push(t('recommendations.quickAccess'));
+      reasons.push("Accès rapide");
     }
 
     return reasons;
@@ -227,9 +227,9 @@ export const SavedFavoritesSection = () => {
             <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
                 <div className="space-y-4 text-center">
-                  <h3 className="text-2xl font-bold whitespace-nowrap">{t('dashboard.noFavoritesYet')}</h3>
+                  <h3 className="text-2xl font-bold whitespace-nowrap">Aucun favori pour l'instant</h3>
                   <p className="text-muted-foreground max-w-md">
-                    {t('dashboard.findFavoritesHere')}
+                    Retrouvez vos restaurants favoris ici.
                   </p>
                 </div>
               </div>
@@ -309,12 +309,12 @@ export const SavedFavoritesSection = () => {
                         <div className="flex items-center space-x-1">
                           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                           <span className="font-medium text-xs">
-                            {currentRating.rating} ({currentRating.totalRatings} {currentRating.totalRatings > 1 ? t('recommendations.evaluations') : t('recommendations.evaluation')})
+                            {currentRating.rating} ({currentRating.totalRatings} {currentRating.totalRatings > 1 ? 'évaluations' : 'évaluation'})
                           </span>
                         </div>
                       );
                     } else {
-                      return <span className="text-xs text-muted-foreground">{t('recommendations.noRatingsYet')}</span>;
+                      return <span className="text-xs text-muted-foreground">Pas d'évaluations pour le moment</span>;
                     }
                   })()}
                 </div>
@@ -347,7 +347,7 @@ export const SavedFavoritesSection = () => {
                     <div className="bg-muted/50 rounded-lg p-3">
                       <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
                         <Sparkles className="h-3 w-3" />
-                        {t('recommendations.whyChoice')}
+                        Pourquoi ce choix ?
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {reasons.slice(0, 2).map((reason, idx) => (
@@ -374,7 +374,7 @@ export const SavedFavoritesSection = () => {
                     setShowRestaurantModal(true);
                   }}
                 >
-                  {t('recommendations.viewProfile')}
+                  Voir le profil
                 </Button>
               </CardContent>
             </Card>
@@ -384,7 +384,7 @@ export const SavedFavoritesSection = () => {
         {favoriteRestaurants.length > 4 && (
           <div className="mt-8 text-center">
             <Button variant="outline" className="group">
-              {t('dashboard.viewAllFavorites')}
+              Voir tous mes favoris
               <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>

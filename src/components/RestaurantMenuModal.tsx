@@ -274,7 +274,7 @@ export const RestaurantMenuModal = ({
            {/* Menus Section */}
            <div className="space-y-4">
              <div className="flex items-center justify-between">
-               <h3 className="text-xl font-semibold">{t('menus.ourMenus')}</h3>
+               <h3 className="text-xl font-semibold">Nos menus</h3>
                {menus.length > 0 && (
                  <Badge variant="outline">{menus.length} menu{menus.length > 1 ? 's' : ''}</Badge>
                )}
@@ -297,10 +297,10 @@ export const RestaurantMenuModal = ({
               <Card>
                 <CardContent className="p-8 text-center">
                   <h4 className="text-lg font-medium text-muted-foreground mb-2">
-                    {t('menus.noMenus')}
+                    Aucun menu disponible
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    {t('menus.comeBack')}
+                    Ce restaurant n'a pas encore ajouté de menus
                   </p>
                 </CardContent>
               </Card>
