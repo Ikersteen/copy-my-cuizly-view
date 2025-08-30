@@ -49,10 +49,10 @@ const Waitlist = () => {
       localStorage.setItem('waitlist_analytics', JSON.stringify(existingEntries));
 
       setIsSubmitted(true);
-      toast.success("Inscription réussie à la liste d'attente !");
+      toast.success(t('waitlist.messages.success'));
     } catch (error) {
       console.error('Erreur:', error);
-      toast.error("Une erreur s'est produite. Veuillez réessayer.");
+      toast.error(t('waitlist.messages.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -74,17 +74,17 @@ const Waitlist = () => {
                   <CheckCircle2 className="h-8 w-8 text-green-600" />
                 </div>
                 <CardTitle className="text-2xl text-foreground">
-                  Inscription confirmée !
+                  {t('waitlist.success.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-6">
-                  Merci de votre intérêt pour Cuizly Analytics+. Nous vous contacterons bientôt avec plus de détails sur le lancement.
+                  {t('waitlist.success.message')}
                 </p>
                 <Link to="/">
                   <Button className="w-full">
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Retour à l'accueil
+                    {t('waitlist.success.backHome')}
                   </Button>
                 </Link>
               </CardContent>
@@ -105,13 +105,12 @@ const Waitlist = () => {
           <div className="text-center mb-8">
             <div className="inline-flex items-center bg-gradient-to-r from-primary/8 to-primary/12 border border-primary/15 px-4 py-2 rounded-full text-sm font-semibold text-primary mb-4">
               <Users className="mr-2 h-4 w-4" />
-              Liste d'attente VIP
+              {t('waitlist.badge')}
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              Rejoignez la liste d'attente
+              {t('waitlist.title')}
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Avec <span className="font-semibold text-primary">Cuizly Analytics+</span>, transformez vos données en actions concrètes : améliorez votre stratégie culinaire, optimisez la gestion de votre restaurant et augmentez vos revenus.
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: t('waitlist.subtitle') }}>
             </p>
           </div>
 
@@ -119,88 +118,88 @@ const Waitlist = () => {
           <Card className="shadow-2xl border-border">
             <CardHeader>
               <CardTitle className="text-xl text-foreground">
-                Informations de contact
+                {t('waitlist.form.title')}
               </CardTitle>
               <p className="text-muted-foreground">
-                Remplissez ce formulaire pour être notifié du lancement de Cuizly Analytics+
+                {t('waitlist.form.description')}
               </p>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Nom complet *</Label>
+                    <Label htmlFor="name">{t('waitlist.form.fullName')} {t('waitlist.form.required')}</Label>
                     <Input
                       id="name"
                       type="text"
                       required
                       value={formData.name}
                       onChange={(e) => handleChange('name', e.target.value)}
-                      placeholder="Iker Steen"
+                      placeholder={t('waitlist.form.fullNamePlaceholder')}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email">{t('waitlist.form.email')} {t('waitlist.form.required')}</Label>
                     <Input
                       id="email"
                       type="email"
                       required
                       value={formData.email}
                       onChange={(e) => handleChange('email', e.target.value)}
-                      placeholder="votre@email.com"
+                      placeholder={t('waitlist.form.emailPlaceholder')}
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="company">Nom du restaurant</Label>
+                    <Label htmlFor="company">{t('waitlist.form.restaurantName')}</Label>
                     <Input
                       id="company"
                       type="text"
                       value={formData.company_name}
                       onChange={(e) => handleChange('company_name', e.target.value)}
-                      placeholder="Mon restaurant"
+                      placeholder={t('waitlist.form.restaurantNamePlaceholder')}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Téléphone</Label>
+                    <Label htmlFor="phone">{t('waitlist.form.phone')}</Label>
                     <Input
                       id="phone"
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => handleChange('phone', e.target.value)}
-                      placeholder="(514) 123-4567"
+                      placeholder={t('waitlist.form.phonePlaceholder')}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="restaurant-type">Type de restaurant</Label>
+                  <Label htmlFor="restaurant-type">{t('waitlist.form.restaurantType')}</Label>
                   <Select value={formData.restaurant_type} onValueChange={(value) => handleChange('restaurant_type', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Sélectionnez le type de votre restaurant" />
+                      <SelectValue placeholder={t('waitlist.form.restaurantTypePlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="fine-dining">Restaurant gastronomique</SelectItem>
-                      <SelectItem value="casual-dining">Restaurant décontracté</SelectItem>
-                      <SelectItem value="fast-casual">Restauration rapide décontractée</SelectItem>
-                      <SelectItem value="cafe-bistro">Café / Bistro</SelectItem>
-                      <SelectItem value="food-truck">Food Truck</SelectItem>
-                      <SelectItem value="bar-pub">Bar / Pub</SelectItem>
-                      <SelectItem value="bakery">Boulangerie / Pâtisserie</SelectItem>
-                      <SelectItem value="other">Autre</SelectItem>
+                      <SelectItem value="fine-dining">{t('waitlist.restaurantTypes.fineDining')}</SelectItem>
+                      <SelectItem value="casual-dining">{t('waitlist.restaurantTypes.casualDining')}</SelectItem>
+                      <SelectItem value="fast-casual">{t('waitlist.restaurantTypes.fastCasual')}</SelectItem>
+                      <SelectItem value="cafe-bistro">{t('waitlist.restaurantTypes.cafeBistro')}</SelectItem>
+                      <SelectItem value="food-truck">{t('waitlist.restaurantTypes.foodTruck')}</SelectItem>
+                      <SelectItem value="bar-pub">{t('waitlist.restaurantTypes.barPub')}</SelectItem>
+                      <SelectItem value="bakery">{t('waitlist.restaurantTypes.bakery')}</SelectItem>
+                      <SelectItem value="other">{t('waitlist.restaurantTypes.other')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="message">Message (optionnel)</Label>
+                  <Label htmlFor="message">{t('waitlist.form.message')}</Label>
                   <Textarea
                     id="message"
                     value={formData.message}
                     onChange={(e) => handleChange('message', e.target.value)}
-                    placeholder="Dites-nous en plus sur vos besoins en analytics..."
+                    placeholder={t('waitlist.form.messagePlaceholder')}
                     rows={3}
                   />
                 </div>
@@ -209,7 +208,7 @@ const Waitlist = () => {
                   <Link to="/" className="flex-1">
                     <Button type="button" variant="outline" className="w-full">
                       <ArrowLeft className="mr-2 h-4 w-4" />
-                      Retour
+                      {t('waitlist.form.back')}
                     </Button>
                   </Link>
                   <Button 
@@ -217,7 +216,7 @@ const Waitlist = () => {
                     className="flex-1"
                     disabled={isSubmitting || !formData.email || !formData.name}
                   >
-                    {isSubmitting ? "Inscription..." : "Rejoindre la liste d'attente"}
+                    {isSubmitting ? t('waitlist.form.submitting') : t('waitlist.form.submit')}
                   </Button>
                 </div>
               </form>
@@ -227,34 +226,34 @@ const Waitlist = () => {
           {/* Benefits */}
           <div className="mt-12 text-center">
             <h3 className="text-lg font-semibold text-foreground mb-4">
-              Pourquoi rejoindre la liste d'attente ?
+              {t('waitlist.benefits.title')}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="p-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <CheckCircle2 className="h-6 w-6 text-primary" />
                 </div>
-                <h4 className="font-semibold text-foreground mb-2">Accès prioritaire</h4>
+                <h4 className="font-semibold text-foreground mb-2">{t('waitlist.benefits.priority.title')}</h4>
                 <p className="text-sm text-muted-foreground">
-                  Soyez parmi les premiers à tester nos fonctionnalités avancées
+                  {t('waitlist.benefits.priority.description')}
                 </p>
               </div>
               <div className="p-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <CheckCircle2 className="h-6 w-6 text-primary" />
                 </div>
-                <h4 className="font-semibold text-foreground mb-2">Tarif préférentiel</h4>
+                <h4 className="font-semibold text-foreground mb-2">{t('waitlist.benefits.discount.title')}</h4>
                 <p className="text-sm text-muted-foreground">
-                  Bénéficiez d'une réduction exclusive pour les early adopters
+                  {t('waitlist.benefits.discount.description')}
                 </p>
               </div>
               <div className="p-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <CheckCircle2 className="h-6 w-6 text-primary" />
                 </div>
-                <h4 className="font-semibold text-foreground mb-2">Formation incluse</h4>
+                <h4 className="font-semibold text-foreground mb-2">{t('waitlist.benefits.training.title')}</h4>
                 <p className="text-sm text-muted-foreground">
-                  Profitez d'une session de formation personnalisée gratuite
+                  {t('waitlist.benefits.training.description')}
                 </p>
               </div>
             </div>

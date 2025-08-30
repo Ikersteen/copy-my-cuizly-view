@@ -1428,5 +1428,64 @@
     "allergens": "Allergens:",
     "menuAddedDesc": "Your menu is now visible in your list",
     "changesDesc": "Changes have been saved"
+  },
+  "waitlist": {
+    "badge": "VIP Waitlist",
+    "title": "Join the Waitlist",
+    "subtitle": "With Cuizly Analytics+, transform your data into concrete actions: improve your culinary strategy, optimize your restaurant management and increase your revenue.",
+    "form": {
+      "title": "Contact Information",
+      "description": "Fill out this form to be notified of the Cuizly Analytics+ launch",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Smith",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "restaurantName": "Restaurant Name",
+      "restaurantNamePlaceholder": "My Restaurant",
+      "phone": "Phone",
+      "phonePlaceholder": "(514) 123-4567",
+      "restaurantType": "Restaurant Type",
+      "restaurantTypePlaceholder": "Select your restaurant type",
+      "message": "Message (optional)",
+      "messagePlaceholder": "Tell us more about your analytics needs...",
+      "required": "*",
+      "back": "Back",
+      "submit": "Join the Waitlist",
+      "submitting": "Submitting..."
+    },
+    "restaurantTypes": {
+      "fineDining": "Fine Dining",
+      "casualDining": "Casual Dining",
+      "fastCasual": "Fast Casual",
+      "cafeBistro": "Café / Bistro",
+      "foodTruck": "Food Truck",
+      "barPub": "Bar / Pub",
+      "bakery": "Bakery / Pastry Shop",
+      "other": "Other"
+    },
+    "benefits": {
+      "title": "Why join the waitlist?",
+      "priority": {
+        "title": "Priority Access",
+        "description": "Be among the first to test our advanced features"
+      },
+      "discount": {
+        "title": "Preferential Pricing",
+        "description": "Get an exclusive discount for early adopters"
+      },
+      "training": {
+        "title": "Training Included",
+        "description": "Enjoy a free personalized training session"
+      }
+    },
+    "success": {
+      "title": "Registration Confirmed!",
+      "message": "Thank you for your interest in Cuizly Analytics+. We will contact you soon with more details about the launch.",
+      "backHome": "Back to Home"
+    },
+    "messages": {
+      "success": "Successfully registered for the waitlist!",
+      "error": "An error occurred. Please try again."
+    }
   }
 }

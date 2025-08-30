@@ -1311,5 +1311,64 @@
     "allergens": "Allergènes :",
     "menuAddedDesc": "Votre menu est maintenant visible dans votre liste",
     "changesDesc": "Les modifications ont été sauvegardées"
+  },
+  "waitlist": {
+    "badge": "Liste d'attente VIP",
+    "title": "Rejoignez la liste d'attente",
+    "subtitle": "Avec Cuizly Analytics+, transformez vos données en actions concrètes : améliorez votre stratégie culinaire, optimisez la gestion de votre restaurant et augmentez vos revenus.",
+    "form": {
+      "title": "Informations de contact",
+      "description": "Remplissez ce formulaire pour être notifié du lancement de Cuizly Analytics+",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "Iker Steen",
+      "email": "Email",
+      "emailPlaceholder": "votre@email.com",
+      "restaurantName": "Nom du restaurant",
+      "restaurantNamePlaceholder": "Mon restaurant",
+      "phone": "Téléphone",
+      "phonePlaceholder": "(514) 123-4567",
+      "restaurantType": "Type de restaurant",
+      "restaurantTypePlaceholder": "Sélectionnez le type de votre restaurant",
+      "message": "Message (optionnel)",
+      "messagePlaceholder": "Dites-nous en plus sur vos besoins en analytics...",
+      "required": "*",
+      "back": "Retour",
+      "submit": "Rejoindre la liste d'attente",
+      "submitting": "Inscription..."
+    },
+    "restaurantTypes": {
+      "fineDining": "Restaurant gastronomique",
+      "casualDining": "Restaurant décontracté",
+      "fastCasual": "Restauration rapide décontractée",
+      "cafeBistro": "Café / Bistro",
+      "foodTruck": "Food Truck",
+      "barPub": "Bar / Pub",
+      "bakery": "Boulangerie / Pâtisserie",
+      "other": "Autre"
+    },
+    "benefits": {
+      "title": "Pourquoi rejoindre la liste d'attente ?",
+      "priority": {
+        "title": "Accès prioritaire",
+        "description": "Soyez parmi les premiers à tester nos fonctionnalités avancées"
+      },
+      "discount": {
+        "title": "Tarif préférentiel",
+        "description": "Bénéficiez d'une réduction exclusive pour les early adopters"
+      },
+      "training": {
+        "title": "Formation incluse",
+        "description": "Profitez d'une session de formation personnalisée gratuite"
+      }
+    },
+    "success": {
+      "title": "Inscription confirmée !",
+      "message": "Merci de votre intérêt pour Cuizly Analytics+. Nous vous contacterons bientôt avec plus de détails sur le lancement.",
+      "backHome": "Retour à l'accueil"
+    },
+    "messages": {
+      "success": "Inscription réussie à la liste d'attente !",
+      "error": "Une erreur s'est produite. Veuillez réessayer."
+    }
   }
 }
