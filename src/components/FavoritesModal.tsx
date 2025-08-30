@@ -8,7 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 import { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from "@/hooks/useLanguage";
 
 interface FavoritesModalProps {
   open: boolean;
@@ -19,8 +18,6 @@ interface Restaurant {
   id: string;
   name: string;
   description: string;
-  description_fr?: string;
-  description_en?: string;
   cuisine_type: string[];
   price_range: string;
   address: string;
@@ -31,7 +28,6 @@ interface Restaurant {
 
 export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
   const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
   const { favorites, toggleFavorite } = useFavorites();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
@@ -116,11 +112,7 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                       <Heart className="h-4 w-4 fill-current text-red-500" />
                     </Button>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {currentLanguage === 'en' 
-                      ? (restaurant.description_en || restaurant.description_fr || restaurant.description)
-                      : (restaurant.description_fr || restaurant.description)}
-                  </p>
+                  <p className="text-sm text-muted-foreground">{restaurant.description}</p>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center space-x-1 text-sm text-muted-foreground mb-3">

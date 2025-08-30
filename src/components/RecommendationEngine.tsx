@@ -6,14 +6,11 @@ import { Star, Clock, MapPin, Heart, Sparkles } from "lucide-react";
 import { UserPreferences } from "@/hooks/useUserPreferences";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
-import { useLanguage } from "@/hooks/useLanguage";
 
 interface Restaurant {
   id: string;
   name: string;
   description: string;
-  description_fr?: string;
-  description_en?: string;
   address: string;
   cuisine_type: string[];
   price_range: string;
@@ -41,7 +38,6 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
   const [loading, setLoading] = useState(true);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
-  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     if (preferences) {
@@ -315,9 +311,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
                     )}
                   </div>
                   <p className="text-sm text-cuizly-neutral line-clamp-2">
-                    {currentLanguage === 'en' 
-                      ? (restaurant.description_en || restaurant.description_fr || restaurant.description)
-                      : (restaurant.description_fr || restaurant.description)}
+                    {restaurant.description}
                   </p>
                 </div>
                 <Badge variant="outline" className="ml-2">
