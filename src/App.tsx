@@ -28,7 +28,8 @@ const AppContent = () => {
   const location = useLocation();
   const { ready } = useTranslation();
   const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard');
-
+  
+  // Wait for translations to be ready
   if (!ready) {
     return <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
