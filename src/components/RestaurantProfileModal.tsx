@@ -124,8 +124,8 @@ export const RestaurantProfileModal = ({
     
     if (!validateForm()) {
       toast({
-        title: "Validation Error",
-        description: "Please fix the validation errors before saving",
+        title: t('restaurantProfile.validationError'),
+        description: t('restaurantProfile.validationErrorDesc'),
         variant: "destructive"
       });
       return;
@@ -170,8 +170,8 @@ export const RestaurantProfileModal = ({
     } catch (error) {
       console.error('Error updating restaurant:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de sauvegarder les modifications",
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotSave'),
         variant: "destructive"
       });
     } finally {
@@ -238,8 +238,8 @@ export const RestaurantProfileModal = ({
     } catch (error) {
       console.error('Error uploading file:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'uploader l'image",
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotUpload'),
         variant: "destructive"
       });
     } finally {
@@ -267,8 +267,8 @@ export const RestaurantProfileModal = ({
       if (error) throw error;
       
       toast({
-        title: "Déconnexion réussie",
-        description: "À bientôt sur Cuizly !"
+        title: t('restaurantProfile.logoutSuccess'),
+        description: t('restaurantProfile.logoutSuccessDesc')
       });
       
       onOpenChange(false);
@@ -276,18 +276,19 @@ export const RestaurantProfileModal = ({
     } catch (error) {
       console.error('Error logging out:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de se déconnecter",
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotLogout'),
         variant: "destructive"
       });
     }
   };
 
   const handleDeleteAccount = async () => {
-    if (deleteConfirmation !== "Supprimer mon compte") {
+    const confirmText = t('restaurantProfile.deleteAccount');
+    if (deleteConfirmation !== confirmText) {
       toast({
-        title: "Erreur",
-        description: "Veuillez taper exactement 'Supprimer mon compte' pour confirmer",
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.confirmationError'),
         variant: "destructive"
       });
       return;
@@ -308,8 +309,8 @@ export const RestaurantProfileModal = ({
       }
       
       toast({
-        title: "Demande de suppression enregistrée",
-        description: "Votre compte sera automatiquement supprimé dans 30 jours. Vous pouvez vous reconnecter avant cette échéance pour annuler la suppression.",
+        title: t('restaurantProfile.deletionRequested'),
+        description: t('restaurantProfile.deletionRequestedDesc'),
         duration: 10000
       });
       
@@ -319,8 +320,8 @@ export const RestaurantProfileModal = ({
     } catch (error) {
       console.error('Error deleting account:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de traiter la demande de suppression",
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotDelete'),
         variant: "destructive"
       });
     } finally {
@@ -529,15 +530,16 @@ export const RestaurantProfileModal = ({
                   <SelectValue placeholder={t('restaurantProfile.selectCuisine')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
-                  {[
-                    "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
-                    "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
-                    "Vietnamienne", "Espagnole", "Marocaine", "Turque", "Africaine", "Pizza", "Burger"
-                  ].filter(cuisine => !formData.cuisine_type?.includes(cuisine)).map(cuisine => (
-                    <SelectItem key={cuisine} value={cuisine} className="hover:bg-muted">
-                      {cuisine}
-                    </SelectItem>
-                  ))}
+                  {Object.entries(CUISINE_TRANSLATIONS).map(([key, translations]) => {
+                    const cuisineLabel = translations[currentLanguage];
+                    const isSelected = formData.cuisine_type?.includes(cuisineLabel);
+                    if (isSelected) return null;
+                    return (
+                      <SelectItem key={key} value={cuisineLabel} className="hover:bg-muted">
+                        {cuisineLabel}
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </div>
@@ -546,9 +548,9 @@ export const RestaurantProfileModal = ({
           {/* Spécialité du restaurant */}
           <div className="space-y-2">
             <div className="space-y-1">
-              <Label className="text-base font-medium">Spécialité du restaurant</Label>
+              <Label className="text-base font-medium">{t('restaurantProfile.restaurantSpecialty')}</Label>
               <p className="text-sm text-muted-foreground">
-                Sélectionnez les moments de repas pour lesquels votre restaurant est spécialisé
+                {t('restaurantProfile.restaurantSpecialtyDesc')}
               </p>
             </div>
             
@@ -591,17 +593,18 @@ export const RestaurantProfileModal = ({
                 }}
               >
                 <SelectTrigger className="w-full bg-background border z-50">
-                  <SelectValue placeholder="Sélectionner une spécialité" />
+                  <SelectValue placeholder={t('restaurantProfile.selectSpecialty')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
-                  {[
-                    "Déjeuner / Brunch", "Déjeuner rapide", "Dîner / Souper", 
-                    "Café & Snack", "Spécialisés Détox / Santé", "Tard le soir"
-                  ].filter(specialty => !formData.restaurant_specialties?.includes(specialty)).map(specialty => (
-                    <SelectItem key={specialty} value={specialty} className="hover:bg-muted">
-                      {specialty}
-                    </SelectItem>
-                  ))}
+                  {Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>).map(([key, label]) => {
+                    const isSelected = formData.restaurant_specialties?.includes(label);
+                    if (isSelected) return null;
+                    return (
+                      <SelectItem key={key} value={label} className="hover:bg-muted">
+                        {label}
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </div>
@@ -613,9 +616,9 @@ export const RestaurantProfileModal = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Emoji cuisinier */}
             <div className="space-y-4">
-              <Label className="text-base font-medium">Emoji du profil</Label>
+              <Label className="text-base font-medium">{t('restaurantProfile.profileEmoji')}</Label>
               <p className="text-sm text-muted-foreground">
-                Choisissez l'emoji qui apparaîtra sur votre profil
+                {t('restaurantProfile.profileEmojiDesc')}
               </p>
               <div className="grid grid-cols-6 gap-2">
                 {[
@@ -643,7 +646,7 @@ export const RestaurantProfileModal = ({
 
             {/* Rayon de livraison */}
             <div className="space-y-4">
-              <Label htmlFor="delivery_radius" className="text-base font-medium">Rayon de livraison (km)</Label>
+              <Label htmlFor="delivery_radius" className="text-base font-medium">{t('restaurantProfile.deliveryRadius')}</Label>
               <Input
                 id="delivery_radius"
                 type="number"
@@ -654,7 +657,7 @@ export const RestaurantProfileModal = ({
                 placeholder="5"
               />
               <p className="text-sm text-muted-foreground">
-                Distance maximale pour les livraisons (1-50 km)
+                {t('restaurantProfile.deliveryRadiusDesc')}
               </p>
             </div>
           </div>
@@ -678,7 +681,7 @@ export const RestaurantProfileModal = ({
                 className="w-full justify-start"
               >
                 <LogOut className="h-4 w-4 mr-2" />
-                Se déconnecter
+                {t('restaurantProfile.logout')}
               </Button>
               
               <Button 
@@ -687,21 +690,21 @@ export const RestaurantProfileModal = ({
                 className="w-full justify-start text-destructive hover:text-destructive"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Supprimer mon compte
+                {t('restaurantProfile.deleteAccount')}
               </Button>
             </div>
 
             {showDeleteSection && (
               <div className="space-y-3 p-4 border rounded-lg bg-destructive/5">
                 <div className="space-y-2">
-                  <Label className="text-destructive font-medium">Confirmation de suppression</Label>
+                  <Label className="text-destructive font-medium">{t('restaurantProfile.confirmDeletion')}</Label>
                   <p className="text-sm text-muted-foreground">
-                    Cette action est irréversible. Pour confirmer, tapez exactement : <strong>"Supprimer mon compte"</strong>
+                    {t('restaurantProfile.deletionWarning')}
                   </p>
                   <Input
                     value={deleteConfirmation}
                     onChange={(e) => setDeleteConfirmation(e.target.value)}
-                    placeholder="Tapez: Supprimer mon compte"
+                    placeholder={t('restaurantProfile.deletionPlaceholder')}
                   />
                 </div>
                 
@@ -709,28 +712,26 @@ export const RestaurantProfileModal = ({
                   <AlertDialogTrigger asChild>
                     <Button 
                       variant="destructive"
-                      disabled={deleteConfirmation !== "Supprimer mon compte"}
+                      disabled={deleteConfirmation !== t('restaurantProfile.deleteAccount')}
                       className="w-full"
                     >
-                      Confirmer la suppression
+                      {t('restaurantProfile.confirmDeletionButton')}
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Supprimer définitivement le compte ?</AlertDialogTitle>
+                      <AlertDialogTitle>{t('restaurantProfile.deleteAccountTitle')}</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, 
-                        vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, 
-                        toutes vos données seront définitivement supprimées.
+                        {t('restaurantProfile.deleteAccountDesc')}
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogCancel>{t('restaurantProfile.deleteAccountCancel')}</AlertDialogCancel>
                       <AlertDialogAction 
                         onClick={handleDeleteAccount}
                         className="bg-destructive hover:bg-destructive/90"
                       >
-                        Supprimer mon compte
+                        {t('restaurantProfile.deleteAccountConfirm')}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
