@@ -22,7 +22,7 @@ i18n
     resources,
     fallbackLng: 'fr',
     lng: 'fr',
-    debug: false,
+    debug: true, // Enable debug to see what's happening
     
     interpolation: {
       escapeValue: false
@@ -35,7 +35,7 @@ i18n
     },
 
     react: {
-      useSuspense: true,
+      useSuspense: false,
     }
   });
 

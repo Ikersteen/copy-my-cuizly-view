@@ -26,11 +26,11 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const location = useLocation();
-  const { ready } = useTranslation();
+  const { i18n, ready } = useTranslation();
   const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard');
   
-  // Wait for translations to be ready
-  if (!ready) {
+  // Force French language and wait for translations to be ready
+  if (!i18n.isInitialized || !ready) {
     return <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
     </div>;
