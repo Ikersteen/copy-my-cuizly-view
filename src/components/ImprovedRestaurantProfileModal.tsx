@@ -22,6 +22,8 @@ interface Restaurant {
   id: string;
   name: string;
   description: string;
+  description_fr?: string;
+  description_en?: string;
   address: string;
   phone?: string;
   email?: string;
@@ -263,6 +265,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         const updateData = {
           name: formData.name.trim(),
           description: formData.description?.trim() || null,
+          description_fr: formData.description_fr?.trim() || null,
+          description_en: formData.description_en?.trim() || null,
           address: formData.address?.trim() || null,
           phone: formData.phone?.trim() || null,
           email: formData.email?.trim() || null,
@@ -473,8 +477,14 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                 <Textarea
                   key={`description-${i18n.language}`}
                   id="description"
-                  value={formData.description || ""}
-                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  value={i18n.language === 'en' ? (formData.description_en || "") : (formData.description_fr || "")}
+                  onChange={(e) => {
+                    if (i18n.language === 'en') {
+                      setFormData(prev => ({ ...prev, description_en: e.target.value }));
+                    } else {
+                      setFormData(prev => ({ ...prev, description_fr: e.target.value }));
+                    }
+                  }}
                   placeholder={t('restaurantProfile.descriptionPlaceholder')}
                   className="min-h-[100px]"
                 />

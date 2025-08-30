@@ -11,11 +11,15 @@ import { useRatings } from "@/hooks/useRatings";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { supabase } from "@/integrations/supabase/client";
 import { RatingComponent } from "@/components/RatingComponent";
+import { useLanguage } from "@/hooks/useLanguage";
+import { getTranslatedDescription } from "@/lib/translations";
 
 interface Restaurant {
   id: string;
   name: string;
   description: string;
+  description_fr?: string;
+  description_en?: string;
   address: string;
   cuisine_type: string[];
   price_range: string;
@@ -64,6 +68,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
   
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { ratings, addRating } = useRatings();
+  const { currentLanguage } = useLanguage();
 
   // Fonction pour récupérer la vraie note d'un restaurant
   const getRealRating = async (restaurantId: string): Promise<number | null> => {
@@ -437,7 +442,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                      {restaurant.description}
+                      {getTranslatedDescription(restaurant, currentLanguage)}
                     </p>
                   </div>
                 </div>
@@ -557,7 +562,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
                     )}
                     <div>
                       <DialogTitle className="text-2xl">{selectedRestaurant.name}</DialogTitle>
-                      <p className="text-muted-foreground">{selectedRestaurant.description}</p>
+                      <p className="text-muted-foreground">{getTranslatedDescription(selectedRestaurant, currentLanguage)}</p>
                       <div className="flex items-center space-x-4 mt-2">
                         <div className="flex items-center space-x-1">
                           <Star className="h-4 w-4 fill-current text-yellow-500" />
