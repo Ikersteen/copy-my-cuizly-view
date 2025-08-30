@@ -300,6 +300,8 @@ export type Database = {
           cuisine_type: string[] | null
           delivery_radius: number | null
           description: string | null
+          description_en: string | null
+          description_fr: string | null
           dietary_restrictions: string[] | null
           email: string | null
           id: string
@@ -321,6 +323,8 @@ export type Database = {
           cuisine_type?: string[] | null
           delivery_radius?: number | null
           description?: string | null
+          description_en?: string | null
+          description_fr?: string | null
           dietary_restrictions?: string[] | null
           email?: string | null
           id?: string
@@ -342,6 +346,8 @@ export type Database = {
           cuisine_type?: string[] | null
           delivery_radius?: number | null
           description?: string | null
+          description_en?: string | null
+          description_fr?: string | null
           dietary_restrictions?: string[] | null
           email?: string | null
           id?: string
@@ -576,6 +582,13 @@ export type Database = {
           price_range: string
           updated_at: string
         }[]
+      }
+      get_translated_description: {
+        Args: {
+          language?: string
+          restaurant_row: Database["public"]["Tables"]["restaurants"]["Row"]
+        }
+        Returns: string
       }
       has_role: {
         Args: {
