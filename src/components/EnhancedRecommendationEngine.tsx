@@ -442,7 +442,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                      {getTranslatedDescription(restaurant, currentLanguage)}
+                      <span className="whitespace-pre-line">{getTranslatedDescription(restaurant, currentLanguage)}</span>
                     </p>
                   </div>
                 </div>
@@ -562,7 +562,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
                     )}
                     <div>
                       <DialogTitle className="text-2xl">{selectedRestaurant.name}</DialogTitle>
-                      <p className="text-muted-foreground">{getTranslatedDescription(selectedRestaurant, currentLanguage)}</p>
+                      <p className="text-muted-foreground whitespace-pre-line">{getTranslatedDescription(selectedRestaurant, currentLanguage)}</p>
                       <div className="flex items-center space-x-4 mt-2">
                         <div className="flex items-center space-x-1">
                           <Star className="h-4 w-4 fill-current text-yellow-500" />

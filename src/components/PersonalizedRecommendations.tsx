@@ -719,7 +719,7 @@ export const PersonalizedRecommendations = () => {
                             )}
                           </div>
                           <CardDescription className="line-clamp-2 text-sm mt-1">
-                            {getTranslatedDescription(restaurant, currentLanguage)}
+                            <span className="whitespace-pre-line">{getTranslatedDescription(restaurant, currentLanguage)}</span>
                           </CardDescription>
                         </div>
                         <Button

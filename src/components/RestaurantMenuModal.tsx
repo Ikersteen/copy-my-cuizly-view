@@ -224,7 +224,7 @@ export const RestaurantMenuModal = ({
 
             {/* Description */}
             {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground whitespace-pre-line">
                 {currentLanguage === 'en' 
                   ? (restaurant.description_en || restaurant.description_fr || restaurant.description)
                   : (restaurant.description_fr || restaurant.description)}
