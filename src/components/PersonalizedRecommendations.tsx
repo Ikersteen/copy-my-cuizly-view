@@ -24,6 +24,7 @@ interface Restaurant {
   price_range: string;
   address: string;
   delivery_radius?: number;
+  restaurant_specialties?: string[];
   logo_url?: string;
   score?: number;
   reasons?: string[];
@@ -328,56 +329,113 @@ export const PersonalizedRecommendations = () => {
           }
         }
 
-        // 5. Favorite meal times match - BONUS si défini
+        // 5. Favorite meal times match avec Restaurant specialties - BONUS si défini
         if (preferences.favorite_meal_times && preferences.favorite_meal_times.length > 0) {
           const currentHour = new Date().getHours();
           let timeMatch = false;
+          let specialtyMatch = false;
           
           console.log(`Checking meal times for ${restaurant.name}. Current hour: ${currentHour}, User meal times:`, preferences.favorite_meal_times);
+          console.log(`Restaurant specialties:`, (restaurant as any).restaurant_specialties);
           
           preferences.favorite_meal_times.forEach((mealTime: string) => {
             const mealTimeLower = mealTime.toLowerCase();
             
-            // Correspondance pour toutes les variations possibles
-            if (mealTimeLower.includes('breakfast') || mealTimeLower.includes('petit-déjeuner') || mealTimeLower.includes('brunch')) {
-              if (currentHour >= 6 && currentHour < 11) {
-                timeMatch = true;
-                console.log(`Breakfast/Brunch match at hour ${currentHour}`);
-              }
+            // Vérification de correspondance avec les spécialités du restaurant
+            if ((restaurant as any).restaurant_specialties) {
+              (restaurant as any).restaurant_specialties.forEach((specialty: string) => {
+                const specialtyLower = specialty.toLowerCase();
+                
+                // Correspondance breakfast/brunch
+                if ((mealTimeLower.includes('breakfast') || mealTimeLower.includes('petit-déjeuner') || mealTimeLower.includes('brunch')) &&
+                    (specialtyLower.includes('breakfast') || specialtyLower.includes('brunch'))) {
+                  specialtyMatch = true;
+                  if (currentHour >= 6 && currentHour < 11) timeMatch = true;
+                }
+                
+                // Correspondance lunch
+                if ((mealTimeLower.includes('lunch') || mealTimeLower.includes('déjeuner') || mealTimeLower.includes('quick')) &&
+                    (specialtyLower.includes('lunch') || specialtyLower.includes('quick'))) {
+                  specialtyMatch = true;
+                  if (currentHour >= 11 && currentHour < 15) timeMatch = true;
+                }
+                
+                // Correspondance dinner
+                if ((mealTimeLower.includes('dinner') || mealTimeLower.includes('dîner')) &&
+                    (specialtyLower.includes('dinner') || specialtyLower.includes('dîner'))) {
+                  specialtyMatch = true;
+                  if (currentHour >= 17 && currentHour < 23) timeMatch = true;
+                }
+                
+                // Correspondance late night
+                if ((mealTimeLower.includes('late') || mealTimeLower.includes('tard') || mealTimeLower.includes('night')) &&
+                    (specialtyLower.includes('late') || specialtyLower.includes('night'))) {
+                  specialtyMatch = true;
+                  if (currentHour >= 23 || currentHour < 6) timeMatch = true;
+                }
+                
+                // Correspondance snack/coffee
+                if ((mealTimeLower.includes('collation') || mealTimeLower.includes('snack') || mealTimeLower.includes('coffee')) &&
+                    (specialtyLower.includes('snack') || specialtyLower.includes('coffee'))) {
+                  specialtyMatch = true;
+                  if (currentHour >= 14 && currentHour < 17) timeMatch = true;
+                }
+              });
             }
-            if (mealTimeLower.includes('lunch') || mealTimeLower.includes('déjeuner') || mealTimeLower.includes('quick')) {
-              if (currentHour >= 11 && currentHour < 15) {
-                timeMatch = true;
-                console.log(`Lunch match at hour ${currentHour}`);
+            
+            // Fallback: vérification horaire sans spécialité si pas de correspondance
+            if (!specialtyMatch) {
+              if (mealTimeLower.includes('breakfast') || mealTimeLower.includes('petit-déjeuner') || mealTimeLower.includes('brunch')) {
+                if (currentHour >= 6 && currentHour < 11) timeMatch = true;
               }
-            }
-            if (mealTimeLower.includes('dinner') || mealTimeLower.includes('dîner')) {
-              if (currentHour >= 17 && currentHour < 23) {
-                timeMatch = true;
-                console.log(`Dinner match at hour ${currentHour}`);
+              if (mealTimeLower.includes('lunch') || mealTimeLower.includes('déjeuner') || mealTimeLower.includes('quick')) {
+                if (currentHour >= 11 && currentHour < 15) timeMatch = true;
               }
-            }
-            if (mealTimeLower.includes('late') || mealTimeLower.includes('tard') || mealTimeLower.includes('night')) {
-              if (currentHour >= 23 || currentHour < 6) {
-                timeMatch = true;
-                console.log(`Late night match at hour ${currentHour}`);
+              if (mealTimeLower.includes('dinner') || mealTimeLower.includes('dîner')) {
+                if (currentHour >= 17 && currentHour < 23) timeMatch = true;
               }
-            }
-            if (mealTimeLower.includes('collation') || mealTimeLower.includes('snack')) {
-              if (currentHour >= 14 && currentHour < 17) {
-                timeMatch = true;
-                console.log(`Snack time match at hour ${currentHour}`);
+              if (mealTimeLower.includes('late') || mealTimeLower.includes('tard') || mealTimeLower.includes('night')) {
+                if (currentHour >= 23 || currentHour < 6) timeMatch = true;
+              }
+              if (mealTimeLower.includes('collation') || mealTimeLower.includes('snack')) {
+                if (currentHour >= 14 && currentHour < 17) timeMatch = true;
               }
             }
           });
           
-          if (timeMatch) {
+          // Scoring basé sur la correspondance
+          if (specialtyMatch && timeMatch) {
             hasStrictMatch = true;
-            score += 10;
+            score += 20; // Score élevé pour double correspondance
+            reasons.push(t('recommendations.perfectTimingSpecialty'));
+            console.log(`Perfect specialty + timing match for ${restaurant.name}`);
+          } else if (specialtyMatch) {
+            hasStrictMatch = true;
+            score += 12; // Score moyen pour correspondance spécialité
+            reasons.push(t('recommendations.specialtyMatch'));
+            console.log(`Specialty match for ${restaurant.name}`);
+          } else if (timeMatch) {
+            hasStrictMatch = true;
+            score += 8; // Score plus faible pour horaire seulement
             reasons.push(t('recommendations.perfectTiming'));
-            console.log(`Perfect timing match for ${restaurant.name} with meal times:`, preferences.favorite_meal_times);
+            console.log(`Timing match only for ${restaurant.name}`);
+          }
+        }
+
+        // 6. Delivery radius compatibility - BONUS si défini
+        if (preferences.delivery_radius && restaurant.delivery_radius) {
+          console.log(`Checking delivery radius for ${restaurant.name}: restaurant ${restaurant.delivery_radius}km vs user ${preferences.delivery_radius}km`);
+          
+          if (restaurant.delivery_radius >= preferences.delivery_radius) {
+            hasStrictMatch = true;
+            score += 8;
+            reasons.push(t('recommendations.deliveryAvailable'));
+            console.log(`Delivery radius compatible for ${restaurant.name}`);
           } else {
-            console.log(`No timing match for ${restaurant.name}. Current hour ${currentHour} doesn't match any of:`, preferences.favorite_meal_times);
+            // Pénaliser si le restaurant ne peut pas livrer
+            score -= 10;
+            reasons.push(t('recommendations.limitedDelivery'));
+            console.log(`Limited delivery for ${restaurant.name}`);
           }
         }
 

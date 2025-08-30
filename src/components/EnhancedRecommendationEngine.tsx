@@ -33,6 +33,8 @@ interface Restaurant {
   distance?: number;
   score?: number;
   reasons?: string[];
+  delivery_radius?: number;
+  restaurant_specialties?: string[];
   analytics?: {
     profile_views: number;
     menu_views: number;
