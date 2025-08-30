@@ -333,6 +333,7 @@
   },
   "menus": {
     "title": "Tous les menus disponibles",
+    "ourMenus": "Nos menus",
     "subtitle": "Découvrez les délicieux menus proposés par nos restaurants partenaires",
     "noMenus": "Aucun menu disponible",
     "comeBack": "Ce restaurant n'a pas encore ajouté de menus",

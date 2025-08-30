@@ -396,7 +396,8 @@
     "select": "Select Language"
   },
   "menus": {
-    "title": "Our Menus",
+    "title": "All Available Menus",
+    "ourMenus": "Our Menus",
     "subtitle": "Discover delicious menus offered by our partner restaurants",
     "noMenus": "No menus available",
     "comeBack": "This restaurant hasn't added menus yet",

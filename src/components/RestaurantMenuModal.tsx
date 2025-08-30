@@ -274,7 +274,7 @@ export const RestaurantMenuModal = ({
            {/* Menus Section */}
            <div className="space-y-4">
              <div className="flex items-center justify-between">
-               <h3 className="text-xl font-semibold">{t('menus.title')}</h3>
+               <h3 className="text-xl font-semibold">{t('menus.ourMenus')}</h3>
                {menus.length > 0 && (
                  <Badge variant="outline">{menus.length} menu{menus.length > 1 ? 's' : ''}</Badge>
                )}
