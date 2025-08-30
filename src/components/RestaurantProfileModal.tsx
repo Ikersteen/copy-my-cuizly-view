@@ -15,6 +15,9 @@ import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
 import { useProfile } from "@/hooks/useProfile";
+import { useTranslation } from 'react-i18next';
+import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface Restaurant {
   id: string;
@@ -44,6 +47,8 @@ export const RestaurantProfileModal = ({
   restaurant, 
   onUpdate 
 }: RestaurantProfileModalProps) => {
+  const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const { updateProfile } = useProfile();
   const [formData, setFormData] = useState<Partial<Restaurant>>({});
   const [loading, setLoading] = useState(false);
@@ -57,6 +62,11 @@ export const RestaurantProfileModal = ({
   const coverInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Function to get translated cuisine name
+  const getCuisineTranslation = (cuisineKey: string) => {
+    return CUISINE_TRANSLATIONS[cuisineKey as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisineKey;
+  };
 
   useEffect(() => {
     if (restaurant && open) {
@@ -153,8 +163,8 @@ export const RestaurantProfileModal = ({
       onUpdate();
 
       toast({
-        title: "Profil mis à jour",
-        description: "Les informations de votre restaurant ont été sauvegardées"
+        title: t('restaurantProfile.profileUpdated'),
+        description: t('restaurantProfile.profileUpdatedDesc')
       });
       onOpenChange(false);
     } catch (error) {
@@ -176,8 +186,8 @@ export const RestaurantProfileModal = ({
     // Validate file type
     if (!file.type.startsWith('image/')) {
       toast({
-        title: "Erreur",
-        description: "Veuillez sélectionner une image valide",
+        title: t('profile.errorUpload'),
+        description: t('profile.selectValidImage'),
         variant: "destructive"
       });
       return;
@@ -186,8 +196,8 @@ export const RestaurantProfileModal = ({
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({
-        title: "Erreur", 
-        description: "L'image doit faire moins de 5MB",
+        title: t('profile.errorUpload'), 
+        description: t('profile.imageTooLarge'),
         variant: "destructive"
       });
       return;
@@ -222,8 +232,8 @@ export const RestaurantProfileModal = ({
       }
       
       toast({
-        title: type === 'cover' ? "Photo de couverture mise à jour" : "Logo mis à jour",
-        description: type === 'cover' ? "La photo de couverture a été uploadée avec succès" : "Le logo a été uploadé avec succès"
+        title: type === 'cover' ? t('profile.imageUploaded') : t('profile.imageUploaded'),
+        description: type === 'cover' ? t('restaurantProfile.uploadingCover') : t('restaurantProfile.uploadingLogo')
       });
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -322,23 +332,23 @@ export const RestaurantProfileModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Profil du restaurant</DialogTitle>
+          <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
           <DialogDescription>
-            Modifiez les informations de votre restaurant, votre logo et votre photo de couverture
+            {t('restaurantProfile.description')}
           </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">
           {/* Cover Image Section */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Photo de couverture</Label>
+            <Label className="text-base font-medium">{t('restaurantProfile.coverPhoto')}</Label>
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <div className="w-full aspect-[16/9] sm:aspect-[21/9] lg:aspect-[5/2] max-w-full rounded-xl bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
                   {formData.cover_image_url ? (
                     <img 
                       src={formData.cover_image_url} 
-                      alt="Photo de couverture"
+                      alt={t('restaurantProfile.coverPhoto')}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -363,7 +373,7 @@ export const RestaurantProfileModal = ({
                 />
               </div>
               {uploadingCover && (
-                <p className="text-sm text-muted-foreground">Upload de la photo de couverture...</p>
+                <p className="text-sm text-muted-foreground">{t('restaurantProfile.uploadingCover')}</p>
               )}
             </div>
           </div>
@@ -372,7 +382,7 @@ export const RestaurantProfileModal = ({
 
           {/* Logo Section */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Logo du restaurant</Label>
+            <Label className="text-base font-medium">{t('restaurantProfile.logo')}</Label>
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">
@@ -404,7 +414,7 @@ export const RestaurantProfileModal = ({
                 />
               </div>
               {uploading && (
-                <p className="text-sm text-muted-foreground">Upload du logo...</p>
+                <p className="text-sm text-muted-foreground">{t('restaurantProfile.uploadingLogo')}</p>
               )}
             </div>
           </div>
@@ -414,22 +424,22 @@ export const RestaurantProfileModal = ({
           {/* Informations de base */}
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">Nom du restaurant *</Label>
+              <Label htmlFor="name">{t('restaurantProfile.restaurantName')} *</Label>
               <Input
                 id="name"
                 value={formData.name || ""}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Nom de votre restaurant"
+                placeholder={t('restaurantProfile.restaurantNamePlaceholder')}
               />
             </div>
 
             <div>
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('restaurantProfile.description')}</Label>
               <Textarea
                 id="description"
                 value={formData.description || ""}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Décrivez votre restaurant en quelques mots..."
+                placeholder={t('restaurantProfile.descriptionPlaceholder')}
                 rows={3}
               />
             </div>
@@ -438,14 +448,14 @@ export const RestaurantProfileModal = ({
               <MontrealAddressSelector
                 value={formData.address || ""}
                 onChange={(address) => setFormData(prev => ({ ...prev, address }))}
-                label="Adresse du restaurant"
-                placeholder="Commencez à taper une adresse à Montréal..."
+                label={t('restaurantProfile.address')}
+                placeholder={t('restaurantProfile.addressPlaceholder')}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="phone">Téléphone</Label>
+                <Label htmlFor="phone">{t('restaurantProfile.phone')}</Label>
                 <Input
                   id="phone"
                   value={formData.phone || ""}
@@ -454,7 +464,7 @@ export const RestaurantProfileModal = ({
                 />
               </div>
                 <div>
-                  <Label htmlFor="email">Courriel</Label>
+                  <Label htmlFor="email">{t('restaurantProfile.email')}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -471,9 +481,9 @@ export const RestaurantProfileModal = ({
           {/* Cuisine Types */}
           <div className="space-y-2">
             <div className="space-y-1">
-              <Label className="text-base font-medium">Cuisines proposées</Label>
+              <Label className="text-base font-medium">{t('restaurantProfile.cuisines')}</Label>
               <p className="text-sm text-muted-foreground">
-                Sélectionnez les cuisines que vous proposez (synchronisées avec les préférences consommateurs)
+                {t('restaurantProfile.cuisinesDesc')}
               </p>
             </div>
             
@@ -516,7 +526,7 @@ export const RestaurantProfileModal = ({
                 }}
               >
                 <SelectTrigger className="w-full bg-background border z-50">
-                  <SelectValue placeholder="Sélectionner une cuisine" />
+                  <SelectValue placeholder={t('restaurantProfile.selectCuisine')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
                   {[
@@ -654,10 +664,10 @@ export const RestaurantProfileModal = ({
           <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-end">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Annuler
+                {t('restaurantProfile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={loading || !formData.name}>
-                {loading ? "Sauvegarde..." : "Sauvegarder"}
+                {loading ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>
             </div>
 

@@ -9,6 +9,8 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 import { RestaurantFiltersModal, RestaurantFilterOptions } from "@/components/RestaurantFiltersModal";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from '@/hooks/useLanguage';
+import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface Restaurant {
@@ -40,6 +42,7 @@ interface RecommendationCategory {
 
 export const PersonalizedRecommendations = () => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const { preferences } = useUserPreferences();
   const { favorites, toggleFavorite } = useFavorites();
   const [categories, setCategories] = useState<RecommendationCategory[]>([]);
@@ -48,6 +51,11 @@ export const PersonalizedRecommendations = () => {
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
+
+  // Function to get translated cuisine name
+  const getCuisineTranslation = (cuisineKey: string) => {
+    return CUISINE_TRANSLATIONS[cuisineKey as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisineKey;
+  };
 
   // Réduire les logs excessifs
   // console.log('PersonalizedRecommendations component loaded');
@@ -769,7 +777,7 @@ export const PersonalizedRecommendations = () => {
                                }`}
                              >
                                {isPreferred && <span className="text-xs">★</span>}
-                               <span>{cuisine}</span>
+                               <span>{getCuisineTranslation(cuisine)}</span>
                              </Badge>
                            );
                          })}
