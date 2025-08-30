@@ -97,7 +97,7 @@ const Waitlist = () => {
             Rejoignez la liste d'attente
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Soyez parmi les premiers à accéder à <span className="font-semibold text-primary">Cuizly Analytics+</span> et révolutionnez votre stratégie restaurant avec nos données exclusives.
+            Avec <span className="font-semibold text-primary">Cuizly Analytics+</span>, transformez vos données en actions concrètes : améliorez votre stratégie culinaire, optimisez la gestion de votre restaurant et augmentez vos revenus.
           </p>
         </div>
 
@@ -122,7 +122,7 @@ const Waitlist = () => {
                     required
                     value={formData.name}
                     onChange={(e) => handleChange('name', e.target.value)}
-                    placeholder="Votre nom complet"
+                    placeholder="Iker Steen"
                   />
                 </div>
                 <div className="space-y-2">
@@ -146,7 +146,7 @@ const Waitlist = () => {
                     type="text"
                     value={formData.company_name}
                     onChange={(e) => handleChange('company_name', e.target.value)}
-                    placeholder="Restaurant ABC"
+                    placeholder="Mon restaurant"
                   />
                 </div>
                 <div className="space-y-2">
