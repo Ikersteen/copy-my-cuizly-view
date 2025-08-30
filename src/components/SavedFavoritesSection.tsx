@@ -9,6 +9,7 @@ import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
+import { useTranslation } from "react-i18next";
 
 interface Restaurant {
   id: string;
@@ -26,6 +27,7 @@ export const SavedFavoritesSection = () => {
   const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
   const { preferences } = useUserPreferences();
   const { currentLanguage } = useLanguage();
+  const { t } = useTranslation();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
@@ -225,9 +227,9 @@ export const SavedFavoritesSection = () => {
             <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
                 <div className="space-y-4 text-center">
-                  <h3 className="text-2xl font-bold whitespace-nowrap">Aucun favori pour l'instant</h3>
+                  <h3 className="text-2xl font-bold whitespace-nowrap">{t('consumer.noFavoritesYet')}</h3>
                   <p className="text-muted-foreground max-w-md">
-                    Retrouvez vos restaurants favoris ici.
+                    {t('consumer.findFavoritesHere')}
                   </p>
                 </div>
               </div>
@@ -382,7 +384,7 @@ export const SavedFavoritesSection = () => {
         {favoriteRestaurants.length > 4 && (
           <div className="mt-8 text-center">
             <Button variant="outline" className="group">
-              Voir tous mes favoris
+              {t('consumer.viewAllFavorites')}
               <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>

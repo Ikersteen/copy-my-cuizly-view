@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { RatingComponent } from "@/components/RatingComponent";
 import { CommentModal } from "@/components/CommentModal";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "react-i18next";
 
 // Composant pour afficher l'évaluation avec le prix
 const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
@@ -125,6 +126,7 @@ export const RestaurantMenuModal = ({
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const { toast } = useToast();
   const { currentLanguage } = useLanguage();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (open && restaurant?.id) {
@@ -360,7 +362,7 @@ export const RestaurantMenuModal = ({
               <Heart 
                 className={`h-4 w-4 mr-2 ${isFavorite(restaurant.id) ? 'fill-current text-red-500' : ''}`} 
               />
-              {isFavorite(restaurant.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+              {isFavorite(restaurant.id) ? t('consumer.removeFromFavorites') : t('consumer.addToFavorites')}
             </Button>
           </div>
         </div>
