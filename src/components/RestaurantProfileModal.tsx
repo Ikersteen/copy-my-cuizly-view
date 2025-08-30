@@ -383,7 +383,6 @@ export const RestaurantProfileModal = ({
 
           {/* Logo Section */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">{t('restaurantProfile.logo')}</Label>
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/25">

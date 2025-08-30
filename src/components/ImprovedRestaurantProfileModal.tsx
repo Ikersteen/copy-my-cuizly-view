@@ -453,7 +453,6 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           <div className="pt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Basic Information */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">{t('restaurantProfile.logo')}</h3>
               
               <div className="space-y-2">
                 <Label htmlFor="name">{t('restaurantProfile.restaurantName')}</Label>
@@ -500,7 +499,6 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
             {/* Contact & Details */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">{t('restaurantProfile.phone')} & {t('restaurantProfile.email')}</h3>
               
               <div className="space-y-2">
                 <Label htmlFor="phone">{t('restaurantProfile.phone')}</Label>
