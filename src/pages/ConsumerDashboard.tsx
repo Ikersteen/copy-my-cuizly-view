@@ -243,7 +243,7 @@ const ConsumerDashboard = () => {
           </TabsContent>
 
           <TabsContent value="favorites" className="space-y-2 mt-2">
-            <SavedFavoritesSection />
+            <PersonalizedRecommendations showOnlyFavorites={true} />
           </TabsContent>
 
           <TabsContent value="offers" className="space-y-2 mt-2">
