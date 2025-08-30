@@ -365,6 +365,48 @@
     "dataCollection": "Collecte de données"
   },
   "auth": {
+    "title": "Rejoignez Cuizly",
+    "subtitle": "Ton prochain coup de cœur culinaire en un swipe",
+    "tabs": {
+      "signin": "Connexion",
+      "signup": "Inscription"
+    },
+    "form": {
+      "email": "Courriel",
+      "emailPlaceholder": "votre@courriel.com",
+      "password": "Mot de passe",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "Iker Steen",
+      "restaurantName": "Nom du restaurant",
+      "restaurantNamePlaceholder": "Mon restaurant",
+      "securityVerification": "Vérification de sécurité",
+      "verified": "Vérifié",
+      "signin": "Se connecter",
+      "signingIn": "Connexion...",
+      "or": "ou",
+      "continueWithGoogle": "Continuer avec Google",
+      "iAm": "Je suis",
+      "consumer": "Consommateur",
+      "restaurantOwner": "Restaurateur",
+      "passwordRequirements": {
+        "title": "Votre mot de passe doit contenir :",
+        "minLength": "Au moins 8 caractères",
+        "uppercase": "Une lettre majuscule",
+        "lowercase": "Une lettre minuscule",
+        "number": "Un chiffre",
+        "special": "Un caractère spécial"
+      },
+      "bookDemo": "Réserver une démo",
+      "createAccountInvitation": "Créer mon compte (Invitation requise)"
+    },
+    "createAccount": "Créer mon compte",
+    "creatingAccount": "Création du compte...",
+    "termsText": {
+      "prefix": "En vous inscrivant, vous acceptez nos",
+      "terms": "conditions d'utilisation",
+      "and": "et notre",
+      "privacy": "politique de confidentialité"
+    },
     "errors": {
       "tooManyAttempts": "Trop de tentatives",
       "pleaseWait": "Veuillez patienter avant de réessayer",

@@ -516,7 +516,7 @@ const Auth = () => {
         <div className="mb-6">
           <Link to="/" className="inline-flex items-center text-cuizly-neutral hover:text-foreground text-sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour à l'accueil
+            {t('navigation.back_home')}
           </Link>
         </div>
 
@@ -529,9 +529,9 @@ const Auth = () => {
               className="h-16 object-contain"
             />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Rejoignez Cuizly</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('auth.title')}</h1>
           <p className="text-cuizly-neutral text-lg">
-            Ton prochain coup de cœur culinaire en un swipe
+            {t('auth.subtitle')}
           </p>
         </div>
 
@@ -551,7 +551,7 @@ const Auth = () => {
                     hcaptchaRef.current?.resetCaptcha();
                   }}
                 >
-                  Connexion
+                  {t('auth.tabs.signin')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="signup" 
@@ -565,21 +565,21 @@ const Auth = () => {
                     hcaptchaRef.current?.resetCaptcha();
                   }}
                 >
-                  Inscription
+                  {t('auth.tabs.signup')}
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="signin" className="space-y-4">
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signin-email" className="text-sm">Courriel</Label>
+                    <Label htmlFor="signin-email" className="text-sm">{t('auth.form.email')}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
                         id="signin-email"
                         name="email"
                         type="email"
-                        placeholder="votre@courriel.com"
+                        placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
                         required
                       />
@@ -587,7 +587,7 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signin-password" className="text-sm">Mot de passe</Label>
+                    <Label htmlFor="signin-password" className="text-sm">{t('auth.form.password')}</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
@@ -611,7 +611,7 @@ const Auth = () => {
 
                   {/* hCaptcha pour la connexion */}
                   <div className="space-y-2">
-                    <Label className="text-sm text-foreground">Vérification de sécurité</Label>
+                    <Label className="text-sm text-foreground">{t('auth.form.securityVerification')}</Label>
                     <div className="flex justify-center">
                       <HCaptcha
                         ref={hcaptchaRef}
@@ -647,13 +647,13 @@ const Auth = () => {
                         <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
-                        Vérifié
+                        {t('auth.form.verified')}
                       </div>
                     )}
                   </div>
 
                   <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
-                    {isLoading ? "Connexion..." : "Se connecter"}
+                    {isLoading ? t('auth.form.signingIn') : t('auth.form.signin')}
                   </Button>
                 </form>
 
@@ -662,7 +662,7 @@ const Auth = () => {
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">ou</span>
+                    <span className="bg-background px-2 text-muted-foreground">{t('auth.form.or')}</span>
                   </div>
                 </div>
 
@@ -679,7 +679,7 @@ const Auth = () => {
                       <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                       <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                     </svg>
-                    Continuer avec Google
+                    {t('auth.form.continueWithGoogle')}
                   </Button>
                 </div>
               </TabsContent>
@@ -687,7 +687,7 @@ const Auth = () => {
               <TabsContent value="signup" className="space-y-3 sm:space-y-4">
                 <form onSubmit={handleSignUp} className="space-y-3 sm:space-y-4">
                   <div className="space-y-3">
-                    <Label className="text-sm">Je suis</Label>
+                    <Label className="text-sm">{t('auth.form.iAm')}</Label>
                     <RadioGroup
                       value={userType}
                       onValueChange={(value: 'consumer' | 'restaurant_owner') => setUserType(value)}
@@ -696,26 +696,26 @@ const Auth = () => {
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="consumer" id="consumer" />
                         <Label htmlFor="consumer" className="text-xs sm:text-sm cursor-pointer">
-                          Consommateur
+                          {t('auth.form.consumer')}
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="restaurant_owner" id="restaurant_owner" />
                         <Label htmlFor="restaurant_owner" className="text-xs sm:text-sm cursor-pointer">
-                          Restaurateur
+                          {t('auth.form.restaurantOwner')}
                         </Label>
                       </div>
                     </RadioGroup>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="fullName" className="text-sm">Nom complet</Label>
+                    <Label htmlFor="fullName" className="text-sm">{t('auth.form.fullName')}</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
                         id="fullName"
                         name="fullName"
-                        placeholder="Iker Steen"
+                        placeholder={t('auth.form.fullNamePlaceholder')}
                         className="pl-10 text-sm"
                         required
                       />
@@ -724,13 +724,13 @@ const Auth = () => {
 
                   {userType === 'restaurant_owner' && (
                     <div className="space-y-2">
-                      <Label htmlFor="restaurantName" className="text-sm">Nom du restaurant</Label>
+                      <Label htmlFor="restaurantName" className="text-sm">{t('auth.form.restaurantName')}</Label>
                       <div className="relative">
                         <Building className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                         <Input
                           id="restaurantName"
                           name="restaurantName"
-                          placeholder="Mon restaurant"
+                          placeholder={t('auth.form.restaurantNamePlaceholder')}
                           className="pl-10 text-sm"
                           required={userType === 'restaurant_owner'}
                         />
@@ -739,14 +739,14 @@ const Auth = () => {
                   )}
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-sm">Courriel</Label>
+                    <Label htmlFor="signup-email" className="text-sm">{t('auth.form.email')}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
                         id="signup-email"
                         name="email"
                         type="email"
-                        placeholder="votre@courriel.com"
+                        placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
                         required
                       />
@@ -754,7 +754,7 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-sm">Mot de passe</Label>
+                    <Label htmlFor="signup-password" className="text-sm">{t('auth.form.password')}</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                       <Input
@@ -777,19 +777,19 @@ const Auth = () => {
                   </div>
 
                   <div className="text-xs text-cuizly-neutral space-y-1">
-                    <p>Votre mot de passe doit contenir :</p>
+                    <p>{t('auth.form.passwordRequirements.title')}</p>
                     <ul className="list-disc list-inside space-y-0.5 ml-2">
-                      <li>Au moins 8 caractères</li>
-                      <li>Une lettre majuscule</li>
-                      <li>Une lettre minuscule</li>
-                      <li>Un chiffre</li>
-                      <li>Un caractère spécial</li>
+                      <li>{t('auth.form.passwordRequirements.minLength')}</li>
+                      <li>{t('auth.form.passwordRequirements.uppercase')}</li>
+                      <li>{t('auth.form.passwordRequirements.lowercase')}</li>
+                      <li>{t('auth.form.passwordRequirements.number')}</li>
+                      <li>{t('auth.form.passwordRequirements.special')}</li>
                     </ul>
                   </div>
 
                   {/* hCaptcha pour l'inscription */}
                   <div className="space-y-2">
-                    <Label className="text-sm text-foreground">Vérification de sécurité</Label>
+                    <Label className="text-sm text-foreground">{t('auth.form.securityVerification')}</Label>
                     <div className="flex justify-center">
                       <HCaptcha
                         ref={hcaptchaRef}
@@ -825,7 +825,7 @@ const Auth = () => {
                         <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
-                        Vérifié
+                        {t('auth.form.verified')}
                       </div>
                     )}
                   </div>
@@ -837,14 +837,14 @@ const Auth = () => {
                         className="w-full text-sm bg-sky-500 hover:bg-sky-600 text-white"
                         onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
                       >
-                        Réserver une démo
+                        {t('auth.form.bookDemo')}
                       </Button>
                       <Button 
                         type="submit" 
                         className="w-full text-sm opacity-50 cursor-not-allowed" 
                         disabled={true}
                       >
-                        Créer mon compte (Invitation requise)
+                        {t('auth.form.createAccountInvitation')}
                       </Button>
                     </div>
                   ) : (
@@ -859,7 +859,7 @@ const Auth = () => {
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">ou</span>
+                    <span className="bg-background px-2 text-muted-foreground">{t('auth.form.or')}</span>
                   </div>
                 </div>
 
@@ -876,7 +876,7 @@ const Auth = () => {
                       <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                       <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                     </svg>
-                    Continuer avec Google
+                    {t('auth.form.continueWithGoogle')}
                   </Button>
                 </div>
               </TabsContent>
@@ -886,13 +886,13 @@ const Auth = () => {
 
         <div className="text-center text-xs text-cuizly-neutral mt-4 sm:mt-6 space-y-2 px-2">
           <p>
-            En vous inscrivant, vous acceptez nos{" "}
+            {t('auth.termsText.prefix')}{" "}
             <Link to="/terms" className="underline hover:no-underline">
-              conditions d'utilisation
+              {t('auth.termsText.terms')}
             </Link>{" "}
-            et notre{" "}
+            {t('auth.termsText.and')}{" "}
             <Link to="/privacy" className="underline hover:no-underline">
-              politique de confidentialité
+              {t('auth.termsText.privacy')}
             </Link>
           </p>
         </div>

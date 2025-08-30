@@ -429,6 +429,48 @@
     "dataCollection": "Data collection"
   },
   "auth": {
+    "title": "Join Cuizly",
+    "subtitle": "Your next culinary crush in one swipe",
+    "tabs": {
+      "signin": "Sign In",
+      "signup": "Sign Up"
+    },
+    "form": {
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "restaurantName": "Restaurant Name",
+      "restaurantNamePlaceholder": "My Restaurant",
+      "securityVerification": "Security Verification",
+      "verified": "Verified",
+      "signin": "Sign In",
+      "signingIn": "Signing in...",
+      "or": "or",
+      "continueWithGoogle": "Continue with Google",
+      "iAm": "I am",
+      "consumer": "Consumer",
+      "restaurantOwner": "Restaurant Owner",
+      "passwordRequirements": {
+        "title": "Your password must contain:",
+        "minLength": "At least 8 characters",
+        "uppercase": "One uppercase letter",
+        "lowercase": "One lowercase letter",
+        "number": "One number",
+        "special": "One special character"
+      },
+      "bookDemo": "Book a Demo",
+      "createAccountInvitation": "Create Account (Invitation Required)"
+    },
+    "createAccount": "Create Account",
+    "creatingAccount": "Creating account...",
+    "termsText": {
+      "prefix": "By signing up, you accept our",
+      "terms": "terms of service",
+      "and": "and our",
+      "privacy": "privacy policy"
+    },
     "errors": {
       "tooManyAttempts": "Too many attempts",
       "pleaseWait": "Please wait before trying again",
