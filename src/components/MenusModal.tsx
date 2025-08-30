@@ -347,7 +347,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 </div>
 
                 <div className="space-y-2">
-                  <Label>{t('menusModal.cuisineType')}</Label>
+                  <Label>{t('restaurantProfile.cuisineType')}</Label>
                   <select
                     value={newMenu.cuisine_type}
                     onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
@@ -569,7 +569,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('menusModal.cuisineType')}</Label>
+                    <Label>{t('restaurantProfile.cuisineType')}</Label>
                     <select
                       value={editingMenu.cuisine_type}
                       onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, cuisine_type: e.target.value }) : null)}
