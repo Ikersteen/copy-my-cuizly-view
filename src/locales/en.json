@@ -606,7 +606,6 @@
     "preferencesUpdateError": "Cannot save your preferences",
     "preferencesSavedSuccessfully": "Your preferences have been saved successfully"
   },
-  "addresses": {
     "montreal": {
       "streets": [
         "Mount Royal Avenue", "Sherbrooke Street", "René-Lévesque Boulevard",

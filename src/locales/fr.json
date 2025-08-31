@@ -542,7 +542,6 @@
     "preferencesUpdateError": "Impossible de sauvegarder vos préférences",
     "preferencesSavedSuccessfully": "Vos préférences ont été sauvegardées avec succès"
   },
-  "addresses": {
     "montreal": {
       "streets": [
         "Avenue du Mont-Royal", "Rue Sherbrooke", "Boulevard René-Lévesque",
