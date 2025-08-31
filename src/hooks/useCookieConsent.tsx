@@ -16,7 +16,6 @@ const CONSENT_EXPIRY_MONTHS = 6;
 export const useCookieConsent = () => {
   const [hasConsented, setHasConsented] = useState<boolean | null>(null);
   const [showBanner, setShowBanner] = useState(false);
-  const [userInteracted, setUserInteracted] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true,
     analytics: false,
@@ -36,7 +35,7 @@ export const useCookieConsent = () => {
         if (now - parsed.timestamp > sixMonthsInMs) {
           localStorage.removeItem('cookieConsentData');
           setHasConsented(null);
-          // Don't show banner until user interacts
+          setShowBanner(true);
         } else {
           const hasAnyConsent = parsed.preferences.analytics || parsed.preferences.marketing;
           setHasConsented(hasAnyConsent);
@@ -47,24 +46,13 @@ export const useCookieConsent = () => {
         // Invalid data, reset
         localStorage.removeItem('cookieConsentData');
         setHasConsented(null);
-        // Don't show banner until user interacts
+        setShowBanner(true);
       }
     } else {
       setHasConsented(null);
-      // Don't show banner until user interacts
+      setShowBanner(true);
     }
   }, []);
-
-  // Show banner after a short delay if no consent exists
-  useEffect(() => {
-    if (hasConsented === null) {
-      const timer = setTimeout(() => {
-        setShowBanner(true);
-      }, 2000); // Délai de 2 secondes
-
-      return () => clearTimeout(timer);
-    }
-  }, [hasConsented]);
 
   const saveConsentData = (prefs: CookiePreferences) => {
     const consentData: CookieConsentData = {
@@ -114,11 +102,6 @@ export const useCookieConsent = () => {
       analytics: false,
       marketing: false
     });
-    // Don't automatically show banner on reset
-  };
-
-  // Manual function to show banner when needed
-  const showConsentBanner = () => {
     setShowBanner(true);
   };
 
@@ -129,7 +112,6 @@ export const useCookieConsent = () => {
     acceptCookies,
     declineCookies,
     saveCustomPreferences,
-    resetConsent,
-    showConsentBanner
+    resetConsent
   };
 };

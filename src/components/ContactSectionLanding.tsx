@@ -11,17 +11,8 @@ const ContactSectionLanding = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    
-    // Create mailto link but don't auto-open it
     const email = `mailto:cuizlycanada@gmail.com?subject=${encodeURIComponent(formData.get('subject') as string)}&body=${encodeURIComponent(`De: ${formData.get('firstName')} ${formData.get('lastName')} (${formData.get('email')})\n\nMessage:\n${formData.get('message')}`)}`;
-    
-    // Copy to clipboard instead of auto-opening
-    navigator.clipboard.writeText(email).then(() => {
-      alert('Informations de contact copiées dans le presse-papiers. Vous pouvez maintenant coller dans votre client email.');
-    }).catch(() => {
-      // Fallback: show the email in a prompt
-      prompt('Copiez ce lien email:', email);
-    });
+    window.location.href = email;
   };
 
   return (
