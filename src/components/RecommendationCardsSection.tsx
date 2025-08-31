@@ -110,6 +110,10 @@ export const RecommendationCardsSection = () => {
     console.log('🔍 Generating recommendations with preferences:', preferences);
     setLoading(true);
     
+    // Clear any cached data that might contain old recommendation formats
+    setRecommendedRestaurants([]);
+    setRestaurantRatings({});
+    
     try {
       // Try AI recommendations first
       try {
@@ -129,7 +133,7 @@ export const RecommendationCardsSection = () => {
           if (!aiError && aiResult?.recommendations?.length > 0) {
             console.log('✅ AI recommendations successful');
             
-            // Get real ratings for AI recommendations
+            // Get real ratings for AI recommendations and clear old reason format
             const ratingsPromises = aiResult.recommendations.map(async (restaurant: any) => {
               const ratingData = await getRealRating(restaurant.id);
               setRestaurantRatings(prev => ({
@@ -138,7 +142,8 @@ export const RecommendationCardsSection = () => {
               }));
               return {
                 ...restaurant,
-                reasons: restaurant.ai_reasons || generateRecommendationReasons(restaurant)
+                // Force use of new reason format, ignore any old cached reasons
+                reasons: restaurant.ai_reasons?.length > 0 ? restaurant.ai_reasons : generateRecommendationReasons(restaurant)
               };
             });
 
@@ -210,6 +215,7 @@ export const RecommendationCardsSection = () => {
         return {
           ...restaurant,
           score,
+          // Force regeneration of reasons with new format
           reasons: generateRecommendationReasons(restaurant)
         };
       });

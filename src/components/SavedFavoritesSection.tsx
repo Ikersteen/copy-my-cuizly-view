@@ -160,17 +160,25 @@ export const SavedFavoritesSection = () => {
     try {
       console.log('🔍 Loading restaurants for favorites:', favorites);
       
+      // Clear any cached data that might contain old reason formats
+      setFavoriteRestaurants([]);
+      setRestaurantRatings({});
+      
       // Utiliser la fonction RPC get_public_restaurants pour respecter les politiques RLS
       const { data, error } = await supabase.rpc('get_public_restaurants');
       
       if (error) throw error;
       
-      // Filtrer les restaurants qui sont dans les favoris
+      // Filtrer les restaurants qui sont dans les favoris et forcer la régénération des raisons
       const favoriteRestaurantsData = data?.filter(restaurant => 
         favorites.includes(restaurant.id)
-      ) || [];
+      ).map(restaurant => ({
+        ...restaurant,
+        // Force regeneration of reasons with new consistent format
+        reasons: generateFavoriteReasons(restaurant)
+      })) || [];
       
-      console.log('✅ Loaded favorite restaurants:', favoriteRestaurantsData);
+      console.log('✅ Loaded favorite restaurants with fresh reasons:', favoriteRestaurantsData);
       setFavoriteRestaurants(favoriteRestaurantsData);
       
       // Charger les évaluations pour ces restaurants
