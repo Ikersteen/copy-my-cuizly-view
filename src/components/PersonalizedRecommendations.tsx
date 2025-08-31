@@ -392,20 +392,29 @@ export const PersonalizedRecommendations = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {categories.map((category) => (
           <div key={category.id} className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-lg ${category.color}`}>
-                  <category.icon className="h-5 w-5 text-primary" />
+            {/* En-tête de catégorie */}
+            <div className={`rounded-2xl p-6 ${category.color}`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3 sm:space-x-4">
+                  <div className="p-2 sm:p-3 rounded-xl bg-white/80 dark:bg-gray-800/80">
+                    <category.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg sm:text-2xl font-bold text-foreground">
+                      {category.title}
+                    </h2>
+                    <p className="text-xs sm:text-base text-muted-foreground">
+                      {category.subtitle}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{category.title}</h3>
-                  <p className="text-sm text-muted-foreground">{category.subtitle}</p>
+                <div className="hidden md:flex gap-2">
+                  <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
+                    <Filter className="h-4 w-4 mr-0.5" />
+                    {t('recommendations.filters')}
+                  </Button>
                 </div>
               </div>
-              <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
-                <Filter className="h-4 w-4 mr-0.5" />
-                {t('recommendations.filters')}
-              </Button>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -548,6 +557,12 @@ export const PersonalizedRecommendations = () => {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+            <div className="md:hidden text-center flex gap-2 justify-center flex-wrap">
+              <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
+                <Filter className="h-4 w-4 mr-0.5" />
+                {t('recommendations.filters')}
+              </Button>
             </div>
           </div>
         ))}
