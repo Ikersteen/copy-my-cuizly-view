@@ -1659,5 +1659,29 @@
     "comment": "Commentaire",
     "addToFavorites": "Ajouter aux favoris",
     "removeFromFavorites": "Retirer des favoris"
+  },
+  "recommendations": {
+    "aiRecommendations": "Recommandations IA",
+    "poweredByAI": "Alimenté par l'intelligence artificielle",
+    "aiRecommended": "Recommandé par l'IA",
+    "cuisineMatches": "correspondances de cuisine",
+    "inYourBudget": "Dans votre budget",
+    "accommodatesDiet": "Accommode vos restrictions alimentaires",
+    "availableRestaurant": "Restaurant disponible",
+    "recommendedForYou": "Recommandé pour vous",
+    "basedOnPreferences": "Basé sur vos préférences",
+    "generatingRecommendations": "Génération de recommandations personnalisées...",
+    "analyzingPreferences": "Analyse de vos préférences culinaires",
+    "noRecommendationsTitle": "Aucune recommandation trouvée",
+    "noRecommendationsDesc": "Nous n'avons trouvé aucun restaurant correspondant à vos préférences actuelles.",
+    "modifyPreferences": "Modifier les préférences",
+    "refreshing": "Actualisation...",
+    "refreshRecommendations": "Actualiser les recommandations",
+    "filters": "Filtres",
+    "evaluations": "évaluations",
+    "evaluation": "évaluation",
+    "noRatingsYet": "Pas d'évaluations pour le moment",
+    "whyChoice": "Pourquoi ce choix ?",
+    "viewProfile": "Voir le profil"
   }
 }
