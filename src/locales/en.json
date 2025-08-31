@@ -114,16 +114,6 @@
       "description": "Discover the best culinary addresses in Montreal around you in real time."
     }
   },
-  "contact": {
-    "title": "Contact us",
-    "subtitle": "Have a question? A suggestion? Feel free to reach out",
-    "form": {
-      "name": "Name",
-      "email": "Email", 
-      "message": "Message",
-      "send": "Send"
-    }
-  },
   "notFound": {
     "title": "404",
     "message": "Oops! Page not found",
@@ -1446,7 +1436,7 @@
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "A question? A suggestion? We are here to help you.",
+    "subtitle": "A question? A suggestion? We're here to help!",
     "form": {
       "title": "Send us a message",
       "description": "Fill out the form and we will respond to you as soon as possible.",

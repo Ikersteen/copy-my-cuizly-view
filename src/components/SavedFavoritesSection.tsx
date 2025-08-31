@@ -356,7 +356,7 @@ export const SavedFavoritesSection = () => {
                     <div className="bg-muted/50 rounded-lg p-3">
                        <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
                          <Sparkles className="h-3 w-3" />
-                         {t('recommendations.whyThisChoice')}
+                         {t('favorites.whyThisChoice')}
                        </p>
                       <div className="flex flex-wrap gap-1">
                         {reasons.slice(0, 2).map((reason, idx) => (
