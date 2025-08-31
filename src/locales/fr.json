@@ -408,10 +408,8 @@
     "veryClose": "Très proche",
     "confirmedExcellence": "Excellence confirmée",
     "wellRated": "Bien évalué",
-    "realTimeAnalysis": "Analyse temps réel",
-    "basedOnYourTastes": "Basé sur vos goûts",
-    "popularRestaurant": "Restaurant populaire",
-    "closeToYou": "Proche de vous"
+    "realTimeAnalysis": "Analyse temps réel", 
+    "basedOnYourTastes": "Basé sur vos goûts"
   },
   "ratings": {
     "published": "Évaluation publiée",
@@ -1123,7 +1121,17 @@
     "evaluation": "évaluation",
     "noRatingsYet": "Pas d'évaluations pour le moment",
     "noConnection": "Pas de connexion Internet",
-    "generationError": "Erreur génération recommandations"
+    "generationError": "Erreur génération recommandations",
+    "cuisineMatches": "correspondances de cuisine",
+    "inYourBudget": "Dans votre budget", 
+    "accommodatesDiet": "Accommode vos restrictions alimentaires",
+    "availableRestaurant": "Restaurant disponible",
+    "recommendedForYou": "Recommandé pour vous",
+    "generatingRecommendations": "Génération de recommandations personnalisées...",
+    "analyzingPreferences": "Analyse de vos préférences culinaires",
+    "noRecommendationsTitle": "Aucune recommandation trouvée",
+    "popularRestaurant": "Restaurant populaire",
+    "closeToYou": "Proche de vous"
   },
   "profile": {
     "personalInfo": "Informations personnelles",
@@ -1651,7 +1659,9 @@
     "evaluations": "évaluations",
     "evaluation": "évaluation",
     "noRatingsYet": "Pas d'évaluations pour le moment",
-    "whyChoice": "Pourquoi ce choix ?",
-    "viewProfile": "Voir le profil"
+    "whyThisChoice": "Pourquoi ce choix ?",
+    "viewProfile": "Voir le profil",
+    "popularRestaurant": "Restaurant populaire",
+    "closeToYou": "Proche de vous"
   }
 }

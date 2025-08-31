@@ -476,10 +476,8 @@
     "veryClose": "Very close",
     "confirmedExcellence": "Confirmed excellence",
     "wellRated": "Well rated",
-    "realTimeAnalysis": "Real-time analysis",
-    "basedOnYourTastes": "Based on your tastes",
-    "popularRestaurant": "Popular restaurant",
-    "closeToYou": "Close to you"
+    "realTimeAnalysis": "Real-time analysis", 
+    "basedOnYourTastes": "Based on your tastes"
   },
   "ratings": {
     "published": "Rating published",
@@ -1230,6 +1228,17 @@
     "evaluation": "rating",
     "noRatingsYet": "No ratings yet",
     "noConnection": "No internet connection",
+    "generationError": "Error generating recommendations",
+    "cuisineMatches": "cuisine matches",
+    "inYourBudget": "In your budget",
+    "accommodatesDiet": "Accommodates your dietary restrictions", 
+    "availableRestaurant": "Available restaurant",
+    "recommendedForYou": "Recommended for you",
+    "generatingRecommendations": "Generating personalized recommendations...",
+    "analyzingPreferences": "Analyzing your culinary preferences",
+    "noRecommendationsTitle": "No recommendations found",
+    "popularRestaurant": "Popular restaurant",
+    "closeToYou": "Close to you"
     "generationError": "Error generating recommendations"
   },
   "profile": {
@@ -1744,9 +1753,11 @@
     "refreshRecommendations": "Refresh recommendations",
     "filters": "Filters",
     "evaluations": "ratings",
-    "evaluation": "rating",
+    "evaluation": "rating", 
     "noRatingsYet": "No ratings yet",
-    "whyChoice": "Why this choice?",
-    "viewProfile": "View profile"
+    "whyThisChoice": "Why this choice?",
+    "viewProfile": "View profile",
+    "popularRestaurant": "Popular restaurant",
+    "closeToYou": "Close to you"
   }
 }
