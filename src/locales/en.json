@@ -18,9 +18,9 @@
     "cta": "Get started now"
   },
   "mission": {
-    "title": "Our Mission",
+    "title": "Mission",
     "subtitle": "Connecting food lovers to the finest culinary experiences in Montreal",
-    "description": "Cuizly revolutionizes gastronomic discovery by using artificial intelligence to recommend restaurants perfectly suited to your preferences, budget, and current cravings."
+    "description": "Cuizly revolutionizes gastronomic discovery by using artificial intelligence to recommend restaurants perfectly suited to consumer preferences, budget, and cravings."
   },
   "features": {
     "title": "Features",
@@ -350,9 +350,49 @@
     "button": "Create my account",
     "imageAlt": "Modern restaurant in Montreal"
   },
+  "contact": {
+    "title": "Contact us",
+    "subtitle": "Have a question ? A suggestion ? We're here to help !",
+    "form": {
+      "title": "Send message",
+      "description": "Fill out the form and we'll get back to you as soon as possible.",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Your last name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "Subject of your message",
+      "message": "Message",
+      "messagePlaceholder": "Describe your request...",
+      "send": "Send message"
+    },
+    "info": {
+      "title": "Contact information",
+      "email": {
+        "label": "Email",
+        "value": "cuizlycanada@gmail.com"
+      },
+      "address": {
+        "label": "Address",
+        "value": "2900 Bd Édouard-Montpetit<br />Montreal, QC H3T 1J4"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "(514) 123-4567"
+      }
+    },
+    "hours": {
+      "title": "Opening hours",
+      "weekdays": "Monday-Friday: 9am-5pm",
+      "saturday": "Saturday: 10am-2pm",
+      "sunday": "Sunday: Closed"
+    }
+  },
   "contactForm": {
     "title": "Contact us",
-    "subtitle": "Have a question? A suggestion? We're here to help.",
+    "subtitle": "Have a question ? A suggestion ? We're here to help !",
     "description": "Fill out the form and we'll get back to you as soon as possible.",
     "firstName": "First Name",
     "message": "Message",

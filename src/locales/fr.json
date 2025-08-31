@@ -18,9 +18,9 @@
     "cta": "Commencer maintenant"
   },
   "mission": {
-    "title": "Notre Mission",
+    "title": "Mission",
     "subtitle": "Connecter les gourmets aux meilleures expériences culinaires de Montréal",
-    "description": "Cuizly révolutionne la découverte gastronomique en utilisant l'intelligence artificielle pour recommander des restaurants parfaitement adaptés à vos préférences, votre budget et vos envies du moment."
+    "description": "Cuizly révolutionne la découverte gastronomique en utilisant l'intelligence artificielle pour recommander des restaurants parfaitement adaptés aux préférences, au budget et aux envies des consommateurs."
   },
   "features": {
     "title": "Fonctionnalités",
@@ -104,12 +104,42 @@
   },
   "contact": {
     "title": "Contactez-nous",
-    "subtitle": "Une question ? Une suggestion ? N'hésitez pas à nous écrire",
+    "subtitle": "Une question ? Une suggestion ? Nous sommes là pour vous aider !",
     "form": {
-      "name": "Nom",
+      "title": "Envoyer le message",
+      "description": "Remplissez le formulaire et nous vous recontacterons dans les plus brefs délais.",
+      "firstName": "Prénom",
+      "firstNamePlaceholder": "Votre prénom",
+      "lastName": "Nom",
+      "lastNamePlaceholder": "Votre nom",
       "email": "Email",
+      "emailPlaceholder": "votre@email.com",
+      "subject": "Sujet",
+      "subjectPlaceholder": "Sujet de votre message",
       "message": "Message",
-      "send": "Envoyer"
+      "messagePlaceholder": "Décrivez votre demande...",
+      "send": "Envoyer le message"
+    },
+    "info": {
+      "title": "Informations de contact",
+      "email": {
+        "label": "Email",
+        "value": "cuizlycanada@gmail.com"
+      },
+      "address": {
+        "label": "Adresse",
+        "value": "2900 Bd Édouard-Montpetit<br />Montréal, QC H3T 1J4"
+      },
+      "phone": {
+        "label": "Téléphone",
+        "value": "(514) 123-4567"
+      }
+    },
+    "hours": {
+      "title": "Heures d'ouverture",
+      "weekdays": "Lundi-Vendredi : 9h-17h",
+      "saturday": "Samedi : 10h-14h",
+      "sunday": "Dimanche : Fermé"
     }
   },
   "notFound": {
