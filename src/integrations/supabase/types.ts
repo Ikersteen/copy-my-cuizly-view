@@ -555,11 +555,14 @@ export type Database = {
           description_en: string
           description_fr: string
           dietary_restrictions: string[]
+          email: string
           id: string
           is_active: boolean
           logo_url: string
           name: string
           opening_hours: Json
+          owner_id: string
+          phone: string
           price_range: string
           restaurant_specialties: string[]
           updated_at: string
