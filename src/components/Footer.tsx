@@ -125,7 +125,12 @@ const Footer = () => {
               <img 
                 src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
                 alt="Cuizly" 
-                className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110"
+                className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:hidden"
+              />
+              <img 
+                src="/lovable-uploads/cuizly-logo-white.png" 
+                alt="Cuizly" 
+                className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 hidden dark:block"
               />
             </Link>
             
