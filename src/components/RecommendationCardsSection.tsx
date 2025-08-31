@@ -48,7 +48,7 @@ export const RecommendationCardsSection = () => {
 
     // Price range match (priority 1)
     if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push("Dans votre budget");
+      reasons.push(t('recommendations.inYourBudget'));
     }
 
     // Cuisine preferences match (priority 2)
@@ -57,7 +57,7 @@ export const RecommendationCardsSection = () => {
         preferences.cuisine_preferences.includes(cuisine)
       ) || [];
       if (matchingCuisines.length > 0) {
-        reasons.push("Cuisine appréciée");
+        reasons.push(t('recommendations.cuisineMatches'));
       }
     }
 

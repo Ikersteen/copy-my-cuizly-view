@@ -1685,6 +1685,7 @@
     }
   },
   "favorites": {
+    "added": "Added to favorites",
     "noFavorites": "No favorites yet",
     "noFavoritesDescription": "Find your favorite restaurants here.",
     "viewProfile": "View profile",

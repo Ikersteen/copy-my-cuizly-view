@@ -1568,6 +1568,7 @@
     }
   },
   "favorites": {
+    "added": "Ajouté aux favoris",
     "noFavorites": "Aucun favori pour l'instant",
     "noFavoritesDescription": "Retrouvez vos restaurants favoris ici.",
     "viewProfile": "Voir le profil",
