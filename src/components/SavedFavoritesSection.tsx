@@ -45,19 +45,21 @@ export const SavedFavoritesSection = () => {
         preferences.cuisine_preferences.includes(cuisine)
       ) || [];
       if (matchingCuisines.length > 0) {
-        reasons.push(`${matchingCuisines.length} ${t('favorites.matchingCuisines')}`);
+        reasons.push(`${matchingCuisines.length} ${t('recommendations.cuisineMatches')}`);
       }
     }
     
     // Price range match
     if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push(t('favorites.inYourBudget'));
+      reasons.push(t('recommendations.inYourBudget'));
     }
 
-    // Always include favorite-specific reasons
-    reasons.push(t('favorites.inFavorites'));
-    if (reasons.length === 1) {
-      reasons.push(t('favorites.quickAccess'));
+    // Default recommendation reasons
+    if (reasons.length === 0) {
+      reasons.push(t('recommendations.basedOnPreferences'));
+      reasons.push(t('recommendations.popularRestaurant'));
+    } else if (reasons.length === 1) {
+      reasons.push(t('recommendations.closeToYou'));
     }
 
     return reasons;

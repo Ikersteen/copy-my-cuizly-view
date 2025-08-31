@@ -123,7 +123,7 @@ export const RecommendationCardsSection = () => {
               }));
               return {
                 ...restaurant,
-                reasons: restaurant.ai_reasons || generateRecommendationReasons(restaurant)
+                reasons: generateRecommendationReasons(restaurant)
               };
             });
 
