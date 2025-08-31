@@ -52,7 +52,7 @@ const Header = () => {
               className="flex items-center py-2 cursor-pointer"
             >
               <img 
-                src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
+                src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
                 alt="Cuizly" 
                 className="h-[50px] w-auto"
               />
