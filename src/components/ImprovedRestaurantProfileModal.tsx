@@ -102,9 +102,11 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'cover') => {
     const file = event.target.files?.[0];
+    console.log('📁 File selected:', file?.name, file?.type, file?.size);
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
+      console.log('❌ Invalid file type:', file.type);
       toast({
         title: t('restaurantProfile.error'),
         description: t('restaurantProfile.selectValidImage'),
@@ -114,6 +116,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     }
 
     if (file.size > 5 * 1024 * 1024) {
+      console.log('❌ File too large:', file.size);
       toast({
         title: t('restaurantProfile.error'), 
         description: t('restaurantProfile.imageTooLarge'),
@@ -122,18 +125,29 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       return;
     }
 
+    console.log('🔄 Converting file to base64...');
     // Convert file to base64 for preview
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64Image = e.target?.result as string;
+      console.log('✅ Base64 conversion complete, length:', base64Image.length);
+      console.log('🖼️ Base64 preview:', base64Image.substring(0, 100) + '...');
       setAdjustmentImageUrl(base64Image);
       setAdjustmentType(type);
       setShowPhotoAdjustment(true);
+      console.log('📱 Opening photo adjustment modal for type:', type);
+    };
+    reader.onerror = (error) => {
+      console.error('❌ Error reading file:', error);
     };
     reader.readAsDataURL(file);
   };
 
   const handleAdjustedPhoto = async (adjustedImageData: string) => {
+    console.log('🎨 handleAdjustedPhoto called with data length:', adjustedImageData.length);
+    console.log('🎨 Adjustment type:', adjustmentType);
+    console.log('🎨 Image data preview:', adjustedImageData.substring(0, 100) + '...');
+    
     if (adjustmentType === 'cover') {
       setUploadingCover(true);
     } else {
@@ -144,8 +158,13 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       const { data: { session } } = await supabase.auth.getSession();
       if (!session || !restaurant) throw new Error('No session or restaurant');
 
+      console.log('👤 Session user ID:', session.user.id);
+      console.log('🏪 Restaurant ID:', restaurant.id);
+
       // Convert base64 to blob
       const base64Data = adjustedImageData.split(',')[1];
+      console.log('🔄 Base64 data length after split:', base64Data.length);
+      
       const byteCharacters = atob(base64Data);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
@@ -153,6 +172,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       }
       const byteArray = new Uint8Array(byteNumbers);
       const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      console.log('📦 Blob created with size:', blob.size, 'type:', blob.type);
       
       // Add timestamp for unique filename to avoid cache issues
       const timestamp = Date.now();
@@ -164,7 +184,12 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         .from('restaurant-images')
         .upload(fileName, blob);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('❌ Upload error:', uploadError);
+        throw uploadError;
+      }
+
+      console.log('✅ Upload successful');
 
       const { data } = supabase.storage
         .from('restaurant-images')
@@ -186,14 +211,21 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         .update(updateData)
         .eq('id', restaurant.id);
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('❌ Database error:', dbError);
+        throw dbError;
+      }
+
+      console.log('✅ Database update successful');
 
       // Update local state
       console.log('🔄 Updating local state with URL:', imageUrl);
       if (adjustmentType === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: imageUrl }));
+        console.log('✅ Cover image updated in local state');
       } else {
         setFormData(prev => ({ ...prev, logo_url: imageUrl }));
+        console.log('✅ Logo updated in local state');
       }
       
       toast({
@@ -201,9 +233,10 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         description: t('restaurantProfile.profileUpdatedDesc')
       });
 
+      console.log('🔄 Calling onUpdate to refresh parent component');
       onUpdate(); // Refresh parent component
     } catch (error) {
-      console.error('❌ Error uploading file:', error);
+      console.error('❌ Error in handleAdjustedPhoto:', error);
       toast({
         title: t('restaurantProfile.error'),
         description: t('restaurantProfile.cannotUpload'),
@@ -216,6 +249,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         setUploading(false);
       }
       setShowPhotoAdjustment(false);
+      console.log('🏁 handleAdjustedPhoto completed');
     }
   };
 
