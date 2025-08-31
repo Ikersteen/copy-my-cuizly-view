@@ -50,7 +50,11 @@ const Header = () => {
             <Link 
               to="/"
               className="flex items-center py-2 cursor-pointer"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             >
               <img 
                 src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 
