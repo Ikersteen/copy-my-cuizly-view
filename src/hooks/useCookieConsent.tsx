@@ -55,8 +55,16 @@ export const useCookieConsent = () => {
     }
   }, []);
 
-  // Removed automatic user interaction detection
-  // Banner will only show when manually triggered
+  // Show banner after a short delay if no consent exists
+  useEffect(() => {
+    if (hasConsented === null) {
+      const timer = setTimeout(() => {
+        setShowBanner(true);
+      }, 2000); // Délai de 2 secondes
+
+      return () => clearTimeout(timer);
+    }
+  }, [hasConsented]);
 
   const saveConsentData = (prefs: CookiePreferences) => {
     const consentData: CookieConsentData = {
