@@ -462,23 +462,6 @@
     "stable": "Stable",
     "dataCollection": "Data collection"
   },
-  "recommendations": {
-    "fallbackError": "Fallback to traditional system",
-    "aiGeneratedCount": "AI recommendations generated:",
-    "aiSystemUnavailable": "AI system unavailable, using traditional system:",
-    "verifyForAllergies": "Check for allergies",
-    "excellentlyRated": "Excellently rated",
-    "veryWellRated": "Very well rated",
-    "generationError": "Recommendation generation error:",
-    "aiRecommends": "AI recommends",
-    "recommendedBecause": "Recommended because",
-    "inYourNeighborhood": "In your neighborhood",
-    "veryClose": "Very close",
-    "confirmedExcellence": "Confirmed excellence",
-    "wellRated": "Well rated",
-    "realTimeAnalysis": "Real-time analysis", 
-    "basedOnYourTastes": "Based on your tastes"
-  },
   "ratings": {
     "published": "Rating published",
     "evaluation": "evaluation",
@@ -1170,7 +1153,7 @@
       "lateNight": "Late night"
     }
   },
-  "recommendations": {
+  "dashboard": {
     "generatingRecommendations": "Generating personalized recommendations...",
     "analyzingPreferences": "Analyzing your culinary preferences",
     "loadingTitle": "Loading recommendations...",
@@ -1238,7 +1221,7 @@
     "analyzingPreferences": "Analyzing your culinary preferences",
     "noRecommendationsTitle": "No recommendations found",
     "popularRestaurant": "Popular restaurant",
-    "closeToYou": "Close to you"
+    "closeToYou": "Close to you",
     "generationError": "Error generating recommendations"
   },
   "profile": {
