@@ -11,9 +11,6 @@
   
   # Cache Control
   Cache-Control: public, max-age=31536000, immutable
-  
-  # MIME Types
-  X-Content-Type-Options: nosniff
 
 # Assets avec cache long terme
 /assets/*
