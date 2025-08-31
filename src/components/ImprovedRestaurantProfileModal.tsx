@@ -178,7 +178,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       
       toast({
         title: t('restaurantProfile.imageUploaded'),
-        description: t('restaurantProfile.imageRemovedDescription')
+        description: t('restaurantProfile.imageUploadedDescription')
       });
     } catch (error) {
       console.error('Error uploading file:', error);

@@ -1365,7 +1365,10 @@
     "cannotDelete": "Unable to process deletion request",
     "confirmationError": "Please type exactly 'Delete my account' to confirm",
     "clickToAddCover": "Click to add cover photo",
-    "imageUploaded": "Image uploaded successfully"
+    "imageUploaded": "Image uploaded successfully",
+    "imageUploadedDescription": "The image has been added to your profile",
+    "imageRemoved": "Image removed",
+    "imageRemovedDescription": "The image has been removed from your profile"
   },
   "dashboard": {
     "hello": "Hello",
