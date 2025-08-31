@@ -133,7 +133,10 @@ async function analyzeRestaurantWithAI(
           role: 'system',
           content: `Tu es un expert en recommandations de restaurants. Analyse les restaurants en fonction des préférences utilisateur et fournis un scoring détaillé en JSON.
           
-          IMPORTANT: Tient compte des moments de repas favoris pour adapter tes recommandations selon l'heure actuelle.
+          IMPORTANT: 
+          - Tient compte des moments de repas favoris pour adapter tes recommandations selon l'heure actuelle.
+          - Soit TRÈS BREF dans tes raisons (maximum 3-4 mots par raison)
+          - Utilise des phrases courtes et directes
           
           Format de réponse requis (JSON uniquement, sans markdown):
           {
