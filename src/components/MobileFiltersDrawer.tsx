@@ -85,26 +85,26 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="max-h-[90vh] mobile-friendly-spacing">
-        <DrawerClose className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none touch-target">
-          <X className="h-5 w-5" />
+      <DrawerContent className="max-h-[90vh]">
+        <DrawerClose className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+          <X className="h-4 w-4" />
           <span className="sr-only">{t('filters.close')}</span>
         </DrawerClose>
 
-        <DrawerHeader className="pb-4 px-6">
-          <DrawerTitle className="text-xl sm:text-2xl font-semibold">{t('filters.filters')}</DrawerTitle>
+        <DrawerHeader className="pb-4">
+          <DrawerTitle className="text-xl font-semibold">{t('filters.filters')}</DrawerTitle>
         </DrawerHeader>
 
-        <div className="px-6 pb-4 space-y-6 overflow-y-auto flex-1">
+        <div className="px-4 pb-4 space-y-6 overflow-y-auto flex-1">
           {/* Cuisines */}
-          <div className="space-y-4">
-            <Label className="text-base font-medium block">{t('filters.preferredCuisines')}</Label>
-            <div className="flex flex-wrap gap-3">
+          <div className="space-y-3">
+            <Label className="text-base font-medium">{t('filters.preferredCuisines')}</Label>
+            <div className="flex flex-wrap gap-2">
               {CUISINE_OPTIONS.map((cuisine) => (
                 <Badge
                   key={cuisine}
                   variant={filters.cuisines.includes(cuisine) ? "default" : "outline"}
-                  className="cursor-pointer touch-target px-4 py-3 text-sm font-medium transition-all duration-200 focus-touch"
+                  className="cursor-pointer min-h-[44px] px-4 py-2 text-sm"
                   onClick={() => toggleCuisine(cuisine)}
                 >
                   {cuisine}
@@ -116,14 +116,14 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
           <Separator />
 
           {/* Price Range */}
-          <div className="space-y-4">
-            <Label className="text-base font-medium block">{t('filters.priceRange')}</Label>
-            <div className="flex gap-3">
+          <div className="space-y-3">
+            <Label className="text-base font-medium">{t('filters.priceRange')}</Label>
+            <div className="flex gap-2">
               {PRICE_RANGES.map((price) => (
                 <Badge
                   key={price}
                   variant={filters.priceRange.includes(price) ? "default" : "outline"}
-                  className="cursor-pointer touch-target min-w-[56px] justify-center text-lg font-medium py-3 transition-all duration-200 focus-touch"
+                  className="cursor-pointer min-h-[44px] min-w-[44px] justify-center text-base"
                   onClick={() => togglePriceRange(price)}
                 >
                   {price}
@@ -136,7 +136,7 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
 
           {/* Rating */}
           <div className="space-y-4">
-            <Label className="text-base font-medium block">{t('filters.minimumRating')}</Label>
+            <Label className="text-base font-medium">{t('filters.minimumRating')}</Label>
             <div className="px-2">
               <Slider
                 value={[filters.rating]}
@@ -146,10 +146,10 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
                 step={0.5}
                 className="w-full"
               />
-              <div className="flex items-center justify-between mt-3">
+              <div className="flex items-center justify-between mt-2">
                 <div className="flex items-center">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                  <span className="text-base font-medium">{filters.rating}</span>
+                  <span className="text-sm">{filters.rating}</span>
                 </div>
                 <span className="text-sm text-muted-foreground">5 {t('filters.stars')}</span>
               </div>
@@ -160,7 +160,7 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
 
           {/* Distance */}
           <div className="space-y-4">
-            <Label className="text-base font-medium block">{t('filters.maximumDistance')}</Label>
+            <Label className="text-base font-medium">{t('filters.maximumDistance')}</Label>
             <div className="px-2">
               <Slider
                 value={[filters.distance]}
@@ -170,19 +170,19 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
                 step={1}
                 className="w-full"
               />
-              <div className="flex justify-between mt-3">
-                <span className="text-base font-medium">{filters.distance} km</span>
+              <div className="flex justify-between mt-2">
+                <span className="text-sm">{filters.distance} km</span>
                 <span className="text-sm text-muted-foreground">50 km</span>
               </div>
             </div>
           </div>
         </div>
 
-        <DrawerFooter className="pt-4 px-6 space-y-3">
-          <Button onClick={handleApply} className="mobile-button touch-device focus-touch">
+        <DrawerFooter className="pt-4 space-y-2">
+          <Button onClick={handleApply} className="w-full min-h-[52px] text-base">
             {t('filters.applyFilters')}
           </Button>
-          <Button variant="outline" onClick={handleReset} className="mobile-button touch-device focus-touch">
+          <Button variant="outline" onClick={handleReset} className="w-full min-h-[52px] text-base">
             {t('filters.reset')}
           </Button>
         </DrawerFooter>
