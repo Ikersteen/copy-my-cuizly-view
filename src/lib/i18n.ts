@@ -37,10 +37,9 @@ i18n
 
     react: {
       useSuspense: false,
+      bindI18n: 'languageChanged',
+      bindI18nStore: false,
     }
   });
-
-// Force French language
-i18n.changeLanguage('fr');
 
 export default i18n;
