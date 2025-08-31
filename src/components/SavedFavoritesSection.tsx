@@ -246,9 +246,6 @@ export const SavedFavoritesSection = () => {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
-                        {restaurant.name}
-                      </CardTitle>
                       <div className="flex items-center space-x-1 mt-1">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm text-muted-foreground">Montreal</span>
@@ -275,26 +272,6 @@ export const SavedFavoritesSection = () => {
                   >
                     <Heart className="h-4 w-4 text-red-500 fill-current" />
                   </Button>
-                </div>
-
-                <div className="flex items-center text-sm pt-2">
-                  {(() => {
-                    const currentRating = restaurantRatings[restaurant.id];
-                    const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
-                    
-                    if (hasRating) {
-                      return (
-                        <div className="flex items-center space-x-1">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                           <span className="font-medium text-xs">
-                             {currentRating.rating} ({currentRating.totalRatings} {currentRating.totalRatings > 1 ? t('favorites.evaluations') : t('favorites.evaluation')})
-                           </span>
-                        </div>
-                      );
-                    } else {
-                      return <span className="text-xs text-muted-foreground">{t('favorites.noRatingsYet')}</span>;
-                    }
-                  })()}
                 </div>
               </CardHeader>
 
