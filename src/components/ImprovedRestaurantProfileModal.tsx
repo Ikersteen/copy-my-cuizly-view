@@ -169,35 +169,17 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       const imageUrl = data.publicUrl;
       console.log('Image uploaded successfully:', imageUrl);
 
-      // Update formData
+      // Update formData for UI only - no auto-save
       if (adjustmentType === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: imageUrl }));
       } else {
         setFormData(prev => ({ ...prev, logo_url: imageUrl }));
       }
       
-      // Auto-save the image to database immediately
-      const updateField = adjustmentType === 'cover' ? 'cover_image_url' : 'logo_url';
-      const { error: dbError } = await supabase
-        .from('restaurants')
-        .update({ [updateField]: imageUrl })
-        .eq('id', restaurant.id);
-
-      if (dbError) {
-        console.error('Error saving image to database:', dbError);
-        toast({
-          title: t('restaurantProfile.error'),
-          description: t('restaurantProfile.cannotSave'),
-          variant: "destructive"
-        });
-      } else {
-        toast({
-          title: t('restaurantProfile.profileUpdated'),
-          description: adjustmentType === 'cover' ? t('restaurantProfile.coverUpdated') : t('restaurantProfile.logoUpdated')
-        });
-        // Trigger parent component update
-        onUpdate();
-      }
+      toast({
+        title: t('restaurantProfile.imageUploaded'),
+        description: t('restaurantProfile.imageRemovedDescription')
+      });
     } catch (error) {
       console.error('Error uploading file:', error);
       toast({
@@ -219,41 +201,17 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     if (!restaurant) return;
     
     try {
-      // Update formData immediately for UI
+      // Update formData for UI only - no auto-save
       if (type === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: null }));
       } else {
         setFormData(prev => ({ ...prev, logo_url: null }));
       }
       
-      // Auto-save the removal to database
-      const updateField = type === 'cover' ? 'cover_image_url' : 'logo_url';
-      const { error } = await supabase
-        .from('restaurants')
-        .update({ [updateField]: null })
-        .eq('id', restaurant.id);
-
-      if (error) {
-        console.error('Error removing image from database:', error);
-        toast({
-          title: t('restaurantProfile.error'),
-          description: t('restaurantProfile.cannotSave'),
-          variant: "destructive"
-        });
-        // Revert the change on error
-        if (type === 'cover') {
-          setFormData(prev => ({ ...prev, cover_image_url: restaurant.cover_image_url }));
-        } else {
-          setFormData(prev => ({ ...prev, logo_url: restaurant.logo_url }));
-        }
-      } else {
-        toast({
-          title: t('restaurantProfile.profileUpdated'),
-          description: type === 'cover' ? t('restaurantProfile.coverRemoved') : t('restaurantProfile.logoRemoved')
-        });
-        // Trigger parent component update
-        onUpdate();
-      }
+      toast({
+        title: t('restaurantProfile.imageRemoved'),
+        description: t('restaurantProfile.imageRemovedDescription')
+      });
     } catch (error) {
       console.error('Error removing photo:', error);
     }
@@ -422,20 +380,20 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
               />
               <label htmlFor="cover-upload" className="cursor-pointer block">
                 <div className="w-full h-32 bg-muted rounded-xl overflow-hidden border-2 border-dashed border-border hover:border-primary/50 transition-colors">
-                  {formData.cover_image_url ? (
-                    <img 
-                      src={formData.cover_image_url} 
-                      alt={t('restaurantProfile.coverPhoto')}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-muted flex items-center justify-center">
-                      <div className="text-center">
-                        <Camera className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm text-muted-foreground">{t('restaurantProfile.coverPhoto')}</p>
-                      </div>
-                    </div>
-                  )}
+                   {formData.cover_image_url ? (
+                     <img 
+                       src={formData.cover_image_url} 
+                       alt={t('restaurantProfile.coverPhoto')}
+                       className="w-full h-full object-cover"
+                     />
+                   ) : (
+                     <div className="w-full h-full bg-muted/50 flex items-center justify-center">
+                       <div className="text-center">
+                         <Camera className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                         <p className="text-sm text-muted-foreground">{t('restaurantProfile.clickToAddCover')}</p>
+                       </div>
+                     </div>
+                   )}
                 </div>
               </label>
               
@@ -456,17 +414,17 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
           <div className="flex justify-center">
             <div className="relative">
               <div className="w-24 h-24 bg-background rounded-full p-2 shadow-lg border">
-                {formData.logo_url ? (
-                  <img 
-                    src={formData.logo_url} 
-                    alt="Logo"
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full rounded-full bg-muted flex items-center justify-center">
-                    <User className="h-8 w-8 text-muted-foreground" />
-                  </div>
-                )}
+                 {formData.logo_url ? (
+                   <img 
+                     src={formData.logo_url} 
+                     alt="Logo"
+                     className="w-full h-full rounded-full object-cover"
+                   />
+                 ) : (
+                   <div className="w-full h-full rounded-full bg-muted/50 flex items-center justify-center">
+                     <Camera className="h-6 w-6 text-muted-foreground" />
+                   </div>
+                 )}
               </div>
               
               {/* Logo Controls */}
@@ -772,24 +730,24 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-4 pt-6 border-t">
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleLogout}>
-              Se déconnecter
+              {t('restaurantProfile.logout')}
             </Button>
             
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive">Supprimer mon compte</Button>
+                <Button variant="destructive">{t('restaurantProfile.deleteAccount')}</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Supprimer définitivement le compte ?</AlertDialogTitle>
+                  <AlertDialogTitle>{t('restaurantProfile.confirmDelete')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, toutes vos données seront définitivement supprimées.
+                    {t('restaurantProfile.deleteAccountDescription')}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogCancel>{t('restaurantProfile.cancel')}</AlertDialogCancel>
                   <AlertDialogAction onClick={handleDeleteAccount}>
-                    Supprimer mon compte
+                    {t('restaurantProfile.confirmDeleteButton')}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -798,10 +756,10 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Annuler
+              {t('restaurantProfile.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={loading || !formData.name}>
-              {loading ? "Sauvegarde..." : "Sauvegarder"}
+              {loading ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
             </Button>
           </div>
         </div>

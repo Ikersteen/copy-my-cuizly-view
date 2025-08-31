@@ -1257,7 +1257,9 @@
     "cannotUpload": "Impossible d'uploader l'image",
     "cannotLogout": "Impossible de se déconnecter",
     "cannotDelete": "Impossible de traiter la demande de suppression",
-    "confirmationError": "Veuillez taper exactement 'Supprimer mon compte' pour confirmer"
+    "confirmationError": "Veuillez taper exactement 'Supprimer mon compte' pour confirmer",
+    "clickToAddCover": "Cliquer pour ajouter une photo de couverture",
+    "imageUploaded": "Image uploadée avec succès"
   },
   "dashboard": {
     "hello": "Bonjour",

@@ -1363,7 +1363,9 @@
     "cannotUpload": "Unable to upload image",
     "cannotLogout": "Unable to log out",
     "cannotDelete": "Unable to process deletion request",
-    "confirmationError": "Please type exactly 'Delete my account' to confirm"
+    "confirmationError": "Please type exactly 'Delete my account' to confirm",
+    "clickToAddCover": "Click to add cover photo",
+    "imageUploaded": "Image uploaded successfully"
   },
   "dashboard": {
     "hello": "Hello",
