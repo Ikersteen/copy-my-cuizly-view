@@ -55,12 +55,7 @@ const Header = () => {
               <img 
                 src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
                 alt="Cuizly" 
-                className="h-[50px] w-auto dark:hidden"
-              />
-              <img 
-                src="/lovable-uploads/cuizly-logo-white.png" 
-                alt="Cuizly" 
-                className="h-[50px] w-auto hidden dark:block"
+                className="h-[50px] w-auto"
               />
             </Link>
           </div>
