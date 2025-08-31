@@ -35,34 +35,32 @@ export const SavedFavoritesSection = () => {
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
-  // Generate reasons for why this restaurant is recommended as a favorite
+  // Generate short, consistent reasons for favorite restaurants
   const generateFavoriteReasons = (restaurant: Restaurant) => {
     const reasons: string[] = [];
 
-    // Cuisine preferences match
+    // Price range match (priority 1)
+    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
+      reasons.push("Dans votre budget");
+    }
+
+    // Cuisine preferences match (priority 2)
     if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
       const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
         preferences.cuisine_preferences.includes(cuisine)
       ) || [];
       if (matchingCuisines.length > 0) {
-        reasons.push(`${matchingCuisines.length} ${t('recommendations.cuisineMatches')}`);
+        reasons.push("Cuisine appréciée");
       }
     }
-    
-    // Price range match
-    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push(t('recommendations.inYourBudget'));
-    }
 
-    // Default recommendation reasons
+    // Default if no specific matches
     if (reasons.length === 0) {
-      reasons.push(t('recommendations.basedOnPreferences'));
-      reasons.push(t('recommendations.popularRestaurant'));
-    } else if (reasons.length === 1) {
-      reasons.push(t('recommendations.closeToYou'));
+      reasons.push("Près de vous");
     }
 
-    return reasons;
+    // Limit to maximum 2 reasons for consistency
+    return reasons.slice(0, 2);
   };
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
