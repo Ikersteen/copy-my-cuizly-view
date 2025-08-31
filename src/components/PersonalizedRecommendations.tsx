@@ -528,16 +528,20 @@ export const PersonalizedRecommendations = () => {
 
                     {/* Section "Pourquoi ce choix ?" */}
                     {restaurant.reasons && restaurant.reasons.length > 0 && (
-                      <div className="mb-6">
-                        <div className="flex items-center mb-3 text-gray-600">
-                          <Star className="h-4 w-4 mr-1" />
-                          <span className="text-sm font-medium">Pourquoi ce choix ?</span>
-                        </div>
-                        <div className="space-y-1">
+                      <div className="bg-muted/50 rounded-lg p-3 mb-6">
+                         <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+                           <Sparkles className="h-3 w-3" />
+                           {t('recommendations.whyThisChoice')}
+                         </p>
+                        <div className="flex flex-wrap gap-1">
                           {restaurant.reasons.slice(0, 2).map((reason, idx) => (
-                            <div key={idx} className="text-sm text-gray-700">
+                            <Badge 
+                              key={idx} 
+                              variant="secondary" 
+                              className="text-xs bg-background/80"
+                            >
                               {reason}
-                            </div>
+                            </Badge>
                           ))}
                         </div>
                       </div>
