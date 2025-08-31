@@ -299,10 +299,14 @@ export const RecommendationCardsSection = () => {
     return (
       <section className="py-8 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center py-8">
-            <div className="flex items-center gap-3">
-              <Sparkles className="h-5 w-5 text-primary animate-pulse flex-shrink-0" />
-              <span className="text-sm text-muted-foreground">{t('recommendations.generatingRecommendations')}</span>
+          <div className="flex flex-col items-center justify-center py-12">
+            <LoadingSpinner size="lg" />
+            <div className="mt-6 text-center">
+              <div className="flex items-center justify-center gap-1 sm:gap-3 mb-3">
+                <Sparkles className="h-5 w-5 text-primary animate-pulse flex-shrink-0" />
+                <h2 className="text-lg font-semibold">{t('recommendations.generatingRecommendations')}</h2>
+              </div>
+              <p className="text-muted-foreground">{t('recommendations.analyzingPreferences')}</p>
             </div>
           </div>
         </div>
