@@ -388,36 +388,26 @@ export const PersonalizedRecommendations = () => {
   }
 
   return (
-    <section className="py-8 bg-gradient-to-br from-muted/30 via-background to-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <section className="py-8 bg-gradient-to-br from-background to-muted/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {categories.map((category) => (
-          <div key={category.id} className="space-y-8">
-            {/* En-tête de catégorie */}
-            <div className={`rounded-2xl p-6 ${category.color}`}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3 sm:space-x-4">
-                  <div className="p-2 sm:p-3 rounded-xl bg-white/80 dark:bg-gray-800/80">
-                    <category.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg sm:text-2xl font-bold text-foreground">
-                      {category.title}
-                    </h2>
-                    <p className="text-xs sm:text-base text-muted-foreground">
-                      {category.subtitle}
-                    </p>
-                  </div>
+          <div key={category.id} className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className={`p-2 rounded-lg ${category.color}`}>
+                  <category.icon className="h-5 w-5 text-primary" />
                 </div>
-                <div className="hidden md:flex gap-2">
-                  <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
-                    <Filter className="h-4 w-4 mr-0.5" />
-                    {t('recommendations.filters')}
-                  </Button>
+                <div>
+                  <h3 className="text-lg font-semibold">{category.title}</h3>
+                  <p className="text-sm text-muted-foreground">{category.subtitle}</p>
                 </div>
               </div>
+              <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
+                <Filter className="h-4 w-4 mr-0.5" />
+                {t('recommendations.filters')}
+              </Button>
             </div>
-
-            {/* Grille de restaurants */}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {category.restaurants.map((restaurant) => (
                 <Card 
@@ -437,7 +427,9 @@ export const PersonalizedRecommendations = () => {
                           </div>
                         ) : (
                           <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 border-2 border-primary/20">
-                            <ChefHat className="h-6 w-6 text-primary" />
+                            <span className="text-primary font-semibold text-lg">
+                              {restaurant.name.charAt(0)}
+                            </span>
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
@@ -458,24 +450,18 @@ export const PersonalizedRecommendations = () => {
                             {getTranslatedDescription(restaurant, currentLanguage)}
                           </CardDescription>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="p-2 shrink-0"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(restaurant.id);
-                          }}
-                        >
-                          <Heart 
-                            className={`h-5 w-5 transition-colors ${
-                              favorites.includes(restaurant.id) 
-                                ? 'fill-red-500 text-red-500' 
-                                : 'text-muted-foreground hover:text-red-500'
-                            }`} 
-                          />
-                        </Button>
                       </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFavorite(restaurant.id);
+                        }}
+                        className="transition-colors hover:bg-red-50"
+                      >
+                        <Heart className={`h-4 w-4 ${favorites.includes(restaurant.id) ? 'text-red-500 fill-current' : 'text-muted-foreground'} transition-colors`} />
+                      </Button>
                     </div>
 
                     <div className="flex items-center text-sm pt-2">
@@ -500,7 +486,7 @@ export const PersonalizedRecommendations = () => {
 
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-3 gap-2">
-                      {restaurant.cuisine_type?.slice(0, 3).map((cuisine, idx) => {
+                      {restaurant.cuisine_type?.map((cuisine, idx) => {
                         const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
                         return (
                           <Badge 
@@ -513,7 +499,7 @@ export const PersonalizedRecommendations = () => {
                             }`}
                           >
                             {isPreferred && <span className="text-xs">★</span>}
-                            <span>{getCuisineTranslation(cuisine)}</span>
+                            <span>{cuisine}</span>
                           </Badge>
                         );
                       })}
@@ -521,10 +507,10 @@ export const PersonalizedRecommendations = () => {
 
                     {restaurant.reasons && restaurant.reasons.length > 0 && (
                       <div className="bg-muted/50 rounded-lg p-3">
-                        <h4 className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+                        <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
                           <Sparkles className="h-3 w-3" />
                           {t('recommendations.whyChoice')}
-                        </h4>
+                        </p>
                         <div className="flex flex-wrap gap-1">
                           {restaurant.reasons.slice(0, 2).map((reason, idx) => (
                             <Badge 
@@ -543,7 +529,6 @@ export const PersonalizedRecommendations = () => {
                       className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
                       size="sm"
                       onClick={() => {
-                        // Track profile view
                         trackProfileView(restaurant.id);
                         setSelectedRestaurant(restaurant);
                         setShowRestaurantModal(true);
@@ -554,13 +539,6 @@ export const PersonalizedRecommendations = () => {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-
-            <div className="md:hidden text-center flex gap-2 justify-center flex-wrap">
-              <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
-                <Filter className="h-4 w-4 mr-0.5" />
-                {t('recommendations.filters')}
-              </Button>
             </div>
           </div>
         ))}
