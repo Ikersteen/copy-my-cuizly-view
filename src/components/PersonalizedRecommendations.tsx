@@ -92,10 +92,11 @@ export const PersonalizedRecommendations = () => {
   };
 
   const generateRecommendations = useCallback(async () => {
+    console.log('🔍 Generating recommendations with preferences:', preferences);
+    
     if (!preferences) {
-      console.log('❌ No preferences available');
-      setLoading(false);
-      return;
+      console.log('❌ No preferences available, will show all restaurants');
+      // Ne pas sortir complètement, montrer tous les restaurants disponibles
     }
 
     console.log('🚀 Starting optimized recommendation generation');
@@ -117,7 +118,11 @@ export const PersonalizedRecommendations = () => {
       const restaurantsData = restaurantsResponse.data || [];
       const menusData = menusResponse.data || [];
 
+      console.log('📊 Found restaurants:', restaurantsData.length);
+      console.log('🍽️ Found menus:', menusData.length);
+
       if (restaurantsData.length === 0) {
+        console.log('❌ No restaurants found');
         setCategories([]);
         setLoading(false);
         return;
@@ -167,12 +172,13 @@ export const PersonalizedRecommendations = () => {
       }
 
       // Fallback optimisé au scoring traditionnel
+      console.log('🎯 Using traditional scoring for', restaurantsData.length, 'restaurants');
       const scoredRestaurants = restaurantsData.map(restaurant => {
         let score = 0;
         let reasons: string[] = [];
         
         // Scoring simplifié mais efficace
-        if (preferences.cuisine_preferences?.length) {
+        if (preferences?.cuisine_preferences?.length) {
           const restaurantMenus = menusData.filter(menu => menu.restaurant_id === restaurant.id);
           const cuisineMatches = restaurant.cuisine_type?.filter(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
@@ -188,12 +194,12 @@ export const PersonalizedRecommendations = () => {
           }
         }
 
-        if (preferences.price_range && restaurant.price_range === preferences.price_range) {
+        if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
           score += 20;
           reasons.push(t('recommendations.inYourBudget'));
         }
 
-        if (preferences.dietary_restrictions?.length) {
+        if (preferences?.dietary_restrictions?.length) {
           score += 15;
           reasons.push(t('recommendations.accommodatesDiet'));
         }
@@ -215,6 +221,8 @@ export const PersonalizedRecommendations = () => {
       const topRestaurants = scoredRestaurants
         .sort((a, b) => b.score - a.score)
         .slice(0, 12);
+      
+      console.log('🏆 Top restaurants selected:', topRestaurants.length);
 
       // Charger les ratings en batch
       const restaurantsWithRatings = await Promise.all(
@@ -228,14 +236,17 @@ export const PersonalizedRecommendations = () => {
         })
       );
 
-      setCategories([{
+      const finalCategories = [{
         id: 'recommended',
         title: t('recommendations.recommendedForYou'),
         subtitle: t('recommendations.basedOnPreferences'),
         icon: Sparkles,
         color: 'bg-gradient-to-r from-primary/10 to-primary/5',
         restaurants: restaurantsWithRatings
-      }]);
+      }];
+      
+      console.log('✅ Final categories set:', finalCategories.length, 'with total restaurants:', finalCategories[0]?.restaurants?.length);
+      setCategories(finalCategories);
 
     } catch (error) {
       console.error('❌ Error generating recommendations:', error);
