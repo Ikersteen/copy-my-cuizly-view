@@ -301,9 +301,9 @@ export const RecommendationCardsSection = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-center py-8 sm:py-12">
             <LoadingSpinner size="lg" />
-            <div className="flex flex-col sm:flex-row items-center sm:space-x-2 mt-4 text-center sm:text-left">
-              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse mb-2 sm:mb-0" />
-              <div className="space-y-1">
+            <div className="flex items-center justify-center gap-2 mt-4">
+              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse" />
+              <div className="text-center sm:text-left">
                 <h2 className="text-base sm:text-lg lg:text-xl font-semibold">{t('recommendations.generatingRecommendations')}</h2>
                 <p className="text-xs sm:text-sm text-muted-foreground">{t('recommendations.analyzingPreferences')}</p>
               </div>
@@ -441,18 +441,18 @@ export const RecommendationCardsSection = () => {
                   {restaurant.cuisine_type?.map((cuisine, idx) => {
                     const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
                     return (
-                      <Badge 
-                        key={idx} 
-                        variant={isPreferred ? "default" : "outline"}
-                        className={`text-xs text-center justify-center flex items-center gap-1 ${
-                          isPreferred
-                            ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
-                            : 'bg-muted/50 text-muted-foreground border-muted'
-                        }`}
-                      >
-                        {isPreferred && <span className="text-xs">★</span>}
-                        <span>{CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}</span>
-                      </Badge>
+                       <Badge 
+                         key={idx} 
+                         variant={isPreferred ? "default" : "outline"}
+                         className={`text-xs text-center justify-center flex items-center gap-0.5 ${
+                           isPreferred
+                             ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
+                             : 'bg-muted/50 text-muted-foreground border-muted'
+                         }`}
+                       >
+                         {isPreferred && <span className="text-xs leading-none">★</span>}
+                         <span className="leading-none">{CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}</span>
+                       </Badge>
                     );
                   })}
                 </div>
