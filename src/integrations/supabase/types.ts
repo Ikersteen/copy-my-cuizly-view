@@ -535,6 +535,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      allow_public_restaurant_data: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       get_public_restaurants: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -599,6 +603,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      is_authenticated_user: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       log_security_event: {
         Args: {
           p_event_details?: Json
@@ -608,6 +616,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: string
+      }
+      log_unauthorized_access_attempt: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       track_profile_view: {
         Args: { p_restaurant_id: string }
