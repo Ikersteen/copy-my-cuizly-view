@@ -297,7 +297,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
         const popularityScore = Math.min(analytics.profile_views / 100, 1) * 25;
         score += popularityScore;
         if (analytics.profile_views > 50) {
-          reasons.push("Restaurant populaire");
+          reasons.push(t('recommendations.popularRestaurant'));
         }
 
         // 4. Score qualité basé sur notes réelles (15%)
@@ -401,11 +401,11 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Sparkles className="h-5 w-5 text-primary" />
-          <h2 className="text-xl font-semibold">Recommandé pour vous</h2>
+          <h2 className="text-xl font-semibold">{t('recommendations.recommendedForYou')}</h2>
         </div>
         <Badge variant="outline" className="flex items-center gap-1">
           <Eye className="h-3 w-3" />
-          Analyse temps réel
+          {t('recommendations.realTimeAnalysis')}
         </Badge>
       </div>
 

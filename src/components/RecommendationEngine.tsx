@@ -172,7 +172,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
           if (!reasons.includes(t('recommendations.inYourNeighborhood'))) reasons.push(t('recommendations.veryClose'));
         } else if (distance <= maxRadius / 2) {
           score += 15;
-          reasons.push("Proche de vous");
+          reasons.push(t('recommendations.closeToYou'));
         }
 
         // 4. Score de qualité basé sur les données analysées (pondération: 15%)
@@ -285,11 +285,11 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Sparkles className="h-5 w-5" />
-          <h2 className="text-xl font-semibold">Recommandé pour vous</h2>
+          <h2 className="text-xl font-semibold">{t('recommendations.recommendedForYou')}</h2>
         </div>
         {preferences?.cuisine_preferences?.length && (
           <Badge variant="outline">
-            Basé sur vos goûts
+            {t('recommendations.basedOnYourTastes')}
           </Badge>
         )}
       </div>
