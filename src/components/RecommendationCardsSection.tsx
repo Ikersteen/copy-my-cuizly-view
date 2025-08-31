@@ -40,41 +40,39 @@ export const RecommendationCardsSection = () => {
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Generate reasons for why this restaurant is recommended
+  // Generate short, consistent reasons for restaurant recommendations
   const generateRecommendationReasons = (restaurant: Restaurant) => {
     const reasons: string[] = [];
     const currentHour = new Date().getHours();
     const currentMealTime = getCurrentMealTime(currentHour);
 
-    // Meal time match
-    if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-      reasons.push(t('recommendations.perfectMealTime'));
+    // Price range match (priority 1)
+    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
+      reasons.push("Dans votre budget");
     }
 
-    // Cuisine preferences match
+    // Cuisine preferences match (priority 2)
     if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
       const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
         preferences.cuisine_preferences.includes(cuisine)
       ) || [];
       if (matchingCuisines.length > 0) {
-        reasons.push(`${matchingCuisines.length} ${t('recommendations.cuisineMatches')}`);
+        reasons.push("Cuisine appréciée");
       }
     }
-    
-    // Price range match
-    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push(t('recommendations.inYourBudget'));
+
+    // Meal time match (priority 3)
+    if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
+      reasons.push("Moment idéal");
     }
 
-    // Default recommendation reasons
+    // Default if no specific matches (keep it short)
     if (reasons.length === 0) {
-      reasons.push(t('recommendations.basedOnPreferences'));
-      reasons.push(t('recommendations.popularRestaurant'));
-    } else if (reasons.length === 1) {
-      reasons.push(t('recommendations.closeToYou'));
+      reasons.push("Près de vous");
     }
 
-    return reasons;
+    // Limit to maximum 2 reasons for consistency
+    return reasons.slice(0, 2);
   };
 
   // Helper function for meal time calculation (used in multiple places)

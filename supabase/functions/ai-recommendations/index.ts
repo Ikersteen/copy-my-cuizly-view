@@ -131,17 +131,21 @@ async function analyzeRestaurantWithAI(
       messages: [
         {
           role: 'system',
-          content: `Tu es un expert en recommandations de restaurants. Analyse les restaurants en fonction des préférences utilisateur et fournis un scoring détaillé en JSON.
+          content: `Tu es un expert en recommandations de restaurants. Fournis un scoring simple en JSON.
           
-          IMPORTANT: 
-          - Tient compte des moments de repas favoris pour adapter tes recommandations selon l'heure actuelle.
-          - Soit TRÈS BREF dans tes raisons (maximum 3-4 mots par raison)
-          - Utilise des phrases courtes et directes
+          RÈGLES STRICTES:
+          - Raisons MAX 2-3 mots chacune
+          - Utilise SEULEMENT ces formats:
+            * "Dans votre budget" (si prix correspond)
+            * "Cuisine appréciée" (si cuisine correspond) 
+            * "Moment idéal" (si horaire correspond)
+            * "Près de vous" (par défaut)
+          - Maximum 2 raisons par restaurant
           
-          Format de réponse requis (JSON uniquement, sans markdown):
+          Format JSON uniquement:
           {
             "score": number (0-100),
-            "reasons": ["raison1", "raison2", ...],
+            "reasons": ["raison1", "raison2"],
             "sentiment_analysis": "positive|neutral|negative", 
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
