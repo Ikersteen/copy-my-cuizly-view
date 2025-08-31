@@ -13,6 +13,7 @@ import { CommentModal } from "@/components/CommentModal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
+import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 // Composant pour afficher l'évaluation avec le prix
 const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
@@ -236,7 +237,7 @@ export const RestaurantMenuModal = ({
             <div className="flex flex-wrap gap-2">
               {restaurant.cuisine_type?.map((cuisine, idx) => (
                 <Badge key={idx} variant="outline">
-                  {cuisine}
+                  {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
                 </Badge>
               ))}
             </div>
@@ -322,7 +323,7 @@ export const RestaurantMenuModal = ({
                       <div className="space-y-2">
                         <div className="flex flex-wrap gap-2 items-start">
                           <Badge variant="outline" className="text-xs">
-                            {menu.cuisine_type}
+                            {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
                           </Badge>
                           <div className="flex flex-col gap-1 flex-1 min-w-0">
                             {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
