@@ -421,14 +421,13 @@ export const PersonalizedRecommendations = () => {
               {category.restaurants.map((restaurant) => (
                 <Card 
                   key={restaurant.id}
-                  className="group cursor-pointer border-0 shadow-lg bg-white rounded-2xl overflow-hidden"
+                  className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80"
                 >
-                  <CardContent className="p-6">
-                    {/* Header avec nom et favoris */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center space-x-3">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-3 flex-1">
                         {restaurant.logo_url ? (
-                          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                          <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">
                             <img 
                               src={restaurant.logo_url} 
                               alt={restaurant.name}
@@ -436,24 +435,29 @@ export const PersonalizedRecommendations = () => {
                             />
                           </div>
                         ) : (
-                          <div className="w-12 h-12 rounded-lg bg-black flex items-center justify-center flex-shrink-0">
-                            <ChefHat className="h-6 w-6 text-white" />
+                          <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 border-2 border-primary/20">
+                            <span className="text-primary font-semibold text-lg">
+                              {restaurant.name.charAt(0)}
+                            </span>
                           </div>
                         )}
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-900 mb-1">
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
                             {restaurant.name}
-                          </h3>
-                          <div className="flex items-center text-gray-600 text-sm">
-                            <MapPin className="h-4 w-4 mr-1" />
-                            <span>Montreal</span>
+                          </CardTitle>
+                          <div className="flex items-center space-x-1 mt-1">
+                            <MapPin className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm text-muted-foreground">Montreal</span>
                             {restaurant.price_range && (
                               <>
-                                <span className="mx-1">•</span>
-                                <span className="font-medium">{restaurant.price_range}</span>
+                                <span className="text-sm text-muted-foreground">•</span>
+                                <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
                               </>
                             )}
                           </div>
+                          <CardDescription className="line-clamp-2 text-sm mt-1">
+                            {getTranslatedDescription(restaurant, currentLanguage)}
+                          </CardDescription>
                         </div>
                       </div>
                       <Button
@@ -463,101 +467,89 @@ export const PersonalizedRecommendations = () => {
                           e.stopPropagation();
                           toggleFavorite(restaurant.id);
                         }}
-                        className="p-2"
+                        className="transition-colors hover:bg-red-50"
                       >
-                        <Heart className={`h-6 w-6 ${favorites.includes(restaurant.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`} />
+                        <Heart className={`h-4 w-4 ${favorites.includes(restaurant.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`} />
                       </Button>
                     </div>
 
-                    {/* Description avec emojis */}
-                    <div className="mb-4">
-                      <p className="text-gray-700 text-sm leading-relaxed">
-                        🌍✨ {getTranslatedDescription(restaurant, currentLanguage) || "Cuisine ouverte au monde"}
-                      </p>
-                      <p className="text-gray-700 text-sm leading-relaxed mt-1">
-                        ✨🌍✈️ Un voyage culinaire unique vous attend...
-                      </p>
-                    </div>
-
-                    {/* Note */}
-                    <div className="mb-6">
+                    <div className="flex items-center text-sm pt-2">
                       {(() => {
-                        const hasRating = restaurant.totalRatings && restaurant.totalRatings > 0 && restaurant.rating !== null && restaurant.rating > 0;
+                        const currentRating = restaurantRatings[restaurant.id];
+                        const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
                         
                         if (hasRating) {
                           return (
-                            <div className="flex items-center">
-                              <Star className="h-5 w-5 fill-yellow-400 text-yellow-400 mr-1" />
-                              <span className="font-medium text-gray-900">
-                                {restaurant.rating} ({restaurant.totalRatings} {restaurant.totalRatings > 1 ? t('recommendations.evaluations') : t('recommendations.evaluation')})
-                              </span>
+                            <div className="flex items-center space-x-1">
+                              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                               <span className="font-medium text-xs">
+                                 {currentRating.rating} ({currentRating.totalRatings} {currentRating.totalRatings > 1 ? t('recommendations.evaluations') : t('recommendations.evaluation')})
+                               </span>
                             </div>
                           );
                         } else {
-                          return (
-                            <div className="flex items-center">
-                              <Star className="h-5 w-5 text-gray-300 mr-1" />
-                              <span className="text-gray-500 text-sm">{t('recommendations.noRatingsYet')}</span>
-                            </div>
-                          );
+                          return <span className="text-xs text-muted-foreground">{t('recommendations.noRatingsYet')}</span>;
                         }
                       })()}
                     </div>
+                  </CardHeader>
 
-                    {/* Grille de badges cuisine avec fond noir */}
-                    <div className="mb-6">
-                      <div className="grid grid-cols-3 gap-2">
-                        {restaurant.cuisine_type?.slice(0, 15).map((cuisine, idx) => {
-                          const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
-                          return (
-                            <div
-                              key={idx}
-                              className={`px-3 py-2 rounded-full text-xs font-medium text-center flex items-center justify-center gap-1 ${
-                                isPreferred
-                                  ? 'bg-black text-white'
-                                  : 'bg-black text-white'
-                              }`}
-                            >
-                              <span className="text-white">★</span>
-                              <span>{cuisine}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-3 gap-2">
+                      {restaurant.cuisine_type?.map((cuisine, idx) => {
+                        const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
+                        return (
+                          <Badge 
+                            key={idx} 
+                            variant={isPreferred ? "default" : "outline"}
+                            className={`text-xs text-center justify-center flex items-center gap-1 ${
+                              isPreferred
+                                ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
+                                : 'bg-muted/50 text-muted-foreground border-muted'
+                            }`}
+                          >
+                            {isPreferred && <span className="text-xs">★</span>}
+                            <span>{cuisine}</span>
+                          </Badge>
+                        );
+                      })}
                     </div>
 
-                    {/* Section "Pourquoi ce choix ?" */}
-                    {restaurant.reasons && restaurant.reasons.length > 0 && (
-                      <div className="bg-muted/50 rounded-lg p-3 mb-6">
-                         <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-                           <Sparkles className="h-3 w-3" />
-                           {t('recommendations.whyThisChoice')}
-                         </p>
-                        <div className="flex flex-wrap gap-1">
-                          {restaurant.reasons.slice(0, 2).map((reason, idx) => (
-                            <Badge 
-                              key={idx} 
-                              variant="secondary" 
-                              className="text-xs bg-background/80"
-                            >
-                              {reason}
-                            </Badge>
-                          ))}
+                    {(() => {
+                      const reasons = restaurant.reasons || [];
+                      return reasons.length > 0 && (
+                        <div className="bg-muted/50 rounded-lg p-3">
+                           <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+                             <Sparkles className="h-3 w-3" />
+                             {t('recommendations.whyThisChoice')}
+                           </p>
+                          <div className="flex flex-wrap gap-1">
+                            {reasons.slice(0, 2).map((reason, idx) => (
+                              <Badge 
+                                key={idx} 
+                                variant="secondary" 
+                                className="text-xs bg-background/80"
+                              >
+                                {reason}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
-                    {/* Bouton noir "Voir le profil" */}
-                    <Button
-                      className="w-full bg-black text-white hover:bg-gray-800 py-3 rounded-xl font-medium"
+                    <Button 
+                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
+                      size="sm"
                       onClick={() => {
+                        // Track profile view
                         trackProfileView(restaurant.id);
                         setSelectedRestaurant(restaurant);
                         setShowRestaurantModal(true);
                       }}
-                    >
-                      Voir le profil
-                    </Button>
+                     >
+                       {t('recommendations.viewProfile')}
+                     </Button>
                   </CardContent>
                 </Card>
               ))}
