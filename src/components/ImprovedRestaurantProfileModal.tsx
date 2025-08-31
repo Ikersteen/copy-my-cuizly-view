@@ -177,8 +177,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       }
       
       toast({
-        title: t('restaurantProfile.imageUploaded'),
-        description: t('restaurantProfile.imageUploadedDescription')
+        title: t('restaurantProfile.profileUpdated'),
+        description: t('restaurantProfile.profileUpdatedDesc')
       });
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -209,8 +209,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       }
       
       toast({
-        title: t('restaurantProfile.imageRemoved'),
-        description: t('restaurantProfile.imageRemovedDescription')
+        title: t('restaurantProfile.profileUpdated'),
+        description: t('restaurantProfile.profileUpdatedDesc')
       });
     } catch (error) {
       console.error('Error removing photo:', error);

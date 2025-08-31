@@ -914,11 +914,7 @@
     "save": "Sauvegarder",
     "saving": "Sauvegarde...",
     "profileUpdated": "Profil mis à jour",
-    "profileUpdatedDesc": "Les informations de votre restaurant ont été sauvegardées",
-    "imageUploaded": "Image uploadée avec succès",
-    "imageUploadedDescription": "L'image a été ajoutée à votre profil",
-    "imageRemoved": "Image supprimée",
-    "imageRemovedDescription": "L'image a été supprimée de votre profil"
+    "profileUpdatedDesc": "Les informations de votre restaurant ont été sauvegardées"
   },
   "favorites": {
     "title": "Mes restaurants favoris",
