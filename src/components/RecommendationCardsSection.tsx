@@ -297,16 +297,16 @@ export const RecommendationCardsSection = () => {
 
   if (loading) {
     return (
-      <section className="py-8 bg-background">
+      <section className="py-6 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-center py-8 sm:py-12">
+          <div className="flex flex-col items-center justify-center py-6 sm:py-12">
             <LoadingSpinner size="lg" />
-            <div className="flex items-center justify-center gap-2 mt-4">
-              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse" />
-              <div className="text-center sm:text-left">
-                <h2 className="text-base sm:text-lg lg:text-xl font-semibold">{t('recommendations.generatingRecommendations')}</h2>
-                <p className="text-xs sm:text-sm text-muted-foreground">{t('recommendations.analyzingPreferences')}</p>
+            <div className="mt-4 text-center space-y-2">
+              <div className="flex items-center justify-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary animate-pulse" />
+                <h2 className="text-sm sm:text-lg font-semibold">{t('recommendations.generatingRecommendations')}</h2>
               </div>
+              <p className="text-xs sm:text-sm text-muted-foreground px-4">{t('recommendations.analyzingPreferences')}</p>
             </div>
           </div>
         </div>
