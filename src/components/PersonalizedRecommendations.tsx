@@ -96,53 +96,35 @@ export const PersonalizedRecommendations = () => {
   };
 
   const generateRecommendations = useCallback(async () => {
-    console.log('🔄 generateRecommendations called - loading:', loading);
-    
     setLoading(true);
-    console.log('🔄 Setting loading to true');
     
     try {
-      console.log('=== GENERATING RECOMMENDATIONS ===');
-      console.log('Current preferences:', preferences);
-
       // Vérifier la connectivité réseau
       if (!navigator.onLine) {
         throw new Error('Pas de connexion Internet');
       }
 
-      // Fetch restaurants and menus data separately for better error handling
-      console.log('Fetching restaurants and menus...');
+      // Fetch restaurants and menus data separately - optimisé
       const [restaurantsResponse, menusResponse] = await Promise.all([
         supabase.rpc('get_public_restaurants'),
         supabase
           .from('menus')
-          .select('*')
+          .select('restaurant_id, cuisine_type, dietary_restrictions, allergens, is_active')
           .eq('is_active', true)
       ]);
 
-      console.log('Restaurants response:', restaurantsResponse);
-      console.log('Menus response:', menusResponse);
-
       if (restaurantsResponse.error) {
-        console.error('Error fetching restaurants:', restaurantsResponse.error);
         throw restaurantsResponse.error;
       }
 
       if (menusResponse.error) {
-        console.error('Error fetching menus:', menusResponse.error);
         throw menusResponse.error;
       }
 
       const restaurantsData = restaurantsResponse.data || [];
       const menusData = menusResponse.data || [];
 
-      console.log('Loaded restaurants:', restaurantsData.length);
-      console.log('Loaded menus:', menusData.length);
-      console.log('Sample restaurant data:', restaurantsData[0]);
-      console.log('Sample menu data:', menusData[0]);
-
       if (restaurantsData.length === 0) {
-        console.log('No restaurants found');
         setCategories([]);
         setLoading(false);
         return;
@@ -156,15 +138,12 @@ export const PersonalizedRecommendations = () => {
         // Get restaurant's menus for strict matching
         const restaurantMenus = menusData.filter(menu => menu.restaurant_id === restaurant.id);
         
-        console.log(`Restaurant ${restaurant.name} has ${restaurantMenus.length} menus`);
-        
         // Analyse de scoring - afficher des recommandations même sans préférences strictes
         if (!preferences || 
             (!preferences.cuisine_preferences?.length && 
              !preferences.price_range && 
              !preferences.dietary_restrictions?.length &&
              !preferences.allergens?.length)) {
-          console.log(`No specific preferences set, providing general recommendations for ${restaurant.name}`);
           // Attribuer un score de base pour les restaurants sans matching strict
           score += 5;
           reasons.push(t('recommendations.popularRestaurant'));
@@ -196,12 +175,10 @@ export const PersonalizedRecommendations = () => {
             reasons.push(`${matchingCuisines.length + menuCuisineMatches.length} ${t('recommendations.cuisineMatches')}`);
           } else if (isFlexibleMode) {
             // En mode flexible, donner des points même sans correspondance exacte
-            console.log(`No exact cuisine match for ${restaurant.name}, but showing in flexible mode`);
             hasStrictMatch = true;
             score += 3; // Score plus faible mais permet l'affichage
             reasons.push(t('recommendations.discoverRestaurant'));
           } else {
-            console.log(`No cuisine match for ${restaurant.name}, excluding in strict mode`);
             return null; // STRICT: Pas de match cuisine = exclusion
           }
         }
@@ -226,16 +203,13 @@ export const PersonalizedRecommendations = () => {
               } else {
                 reasons.push(t('recommendations.moreExpensive'));
               }
-              console.log(`Price range close match for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), including`);
             } else {
               // En mode flexible, accepter quand même avec score très bas
               if (isFlexibleMode) {
                 hasStrictMatch = true;
                 score += 2;
                 reasons.push(t('recommendations.differentBudget'));
-                console.log(`Price range different but allowing in flexible mode for ${restaurant.name}`);
               } else {
-                console.log(`Price range too different for ${restaurant.name} (${restaurant.price_range} vs ${preferences.price_range}), excluding`);
                 return null;
               }
             }
@@ -245,7 +219,6 @@ export const PersonalizedRecommendations = () => {
         // 3. STRICT Dietary restrictions compatibility - OBLIGATOIRE si défini
         if (preferences.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
           if (restaurantMenus.length === 0) {
-            console.log(`No menus to check dietary restrictions for ${restaurant.name}, but allowing anyway`);
             // Allow restaurants without menus - they might have suitable options
             hasStrictMatch = true;
             score += 5; // Small bonus for being available
@@ -253,17 +226,13 @@ export const PersonalizedRecommendations = () => {
           } else {
             let compatibleMenusCount = 0;
             
-            console.log(`Checking dietary restrictions for ${restaurant.name}:`, preferences.dietary_restrictions);
-            
             restaurantMenus.forEach(menu => {
-              console.log(`Menu "${menu.description}" dietary restrictions:`, menu.dietary_restrictions);
               const accommodatedRestrictions = preferences.dietary_restrictions.filter((restriction: string) =>
                 menu.dietary_restrictions?.includes(restriction)
               );
               if (accommodatedRestrictions.length === preferences.dietary_restrictions.length) {
                 compatibleMenusCount++;
                 score += accommodatedRestrictions.length * 8;
-                console.log(`Menu fully compatible! All restrictions accommodated:`, accommodatedRestrictions);
               }
             });
             
@@ -271,9 +240,7 @@ export const PersonalizedRecommendations = () => {
               hasStrictMatch = true;
               const percentage = Math.round((compatibleMenusCount / restaurantMenus.length) * 100);
               reasons.push(`${percentage}% ${t('recommendations.dishesAdapted')}`);
-              console.log(`${compatibleMenusCount}/${restaurantMenus.length} menus compatible for ALL dietary restrictions`);
             } else {
-              console.log(`No menus accommodate ALL dietary restrictions for ${restaurant.name}, but allowing anyway`);
               // Allow restaurants even if menus don't match perfectly
               hasStrictMatch = true;
               score += 2; // Small score for availability
@@ -285,7 +252,6 @@ export const PersonalizedRecommendations = () => {
         // 4. STRICT Allergen safety - OBLIGATOIRE si défini
         if (preferences.allergens && preferences.allergens.length > 0) {
           if (restaurantMenus.length === 0) {
-            console.log(`No menus to check allergens for ${restaurant.name}, but allowing with caution`);
             // Allow restaurants without menus but add caution
             hasStrictMatch = true;
             score += 1; // Very small score due to uncertainty
@@ -294,16 +260,12 @@ export const PersonalizedRecommendations = () => {
             let hasUnsafeMenus = false;
             let safeMenusCount = 0;
             
-            console.log(`Checking allergens for ${restaurant.name}:`, preferences.allergens);
-            
             restaurantMenus.forEach(menu => {
-              console.log(`Menu "${menu.description}" allergens:`, menu.allergens);
               const dangerousAllergens = preferences.allergens.filter((allergen: string) =>
                 menu.allergens?.includes(allergen)
               );
               if (dangerousAllergens.length > 0) {
                 hasUnsafeMenus = true;
-                console.log(`Unsafe menu found! Dangerous allergens:`, dangerousAllergens);
               } else {
                 safeMenusCount++;
               }
@@ -314,13 +276,11 @@ export const PersonalizedRecommendations = () => {
               hasStrictMatch = true;
               score += 20;
               reasons.push(t('recommendations.allDishesSafe'));
-              console.log(`All ${restaurantMenus.length} menus are safe for allergens`);
             } else if (hasUnsafeMenus) {
               // Some menus have allergens, but still allow with warning
               hasStrictMatch = true;
               score += 1; // Very low score due to risk
               reasons.push(t('recommendations.cautionAllergens'));
-              console.log(`Some menus contain allergens for ${restaurant.name}, but allowing with warning`);
             }
           }
         }
@@ -328,42 +288,45 @@ export const PersonalizedRecommendations = () => {
         // STRICT: Si aucun match strict n'a été trouvé, exclure le restaurant
         // En mode flexible (une seule préférence), on est plus permissif
         if (!hasStrictMatch && !isFlexibleMode) {
-          console.log(`No strict matches found for ${restaurant.name}, excluding`);
           return null;
         }
         
         // Si on est en mode flexible et qu'on n'a pas encore de match, donner une chance
         if (!hasStrictMatch && isFlexibleMode) {
-          console.log(`Flexible mode: giving ${restaurant.name} a base score`);
           hasStrictMatch = true;
           score += 2;
           reasons.push(t('recommendations.suggestedRestaurant'));
         }
 
-        const realRating = await getRealRating(restaurant.id);
-        
+        // Optimisation: Éviter l'appel getRealRating pour chaque restaurant
+        // Les ratings seront chargés en une seule fois après
         const result = {
           ...restaurant,
           score,
-          rating: realRating.rating,
-          totalRatings: realRating.totalRatings,
+          rating: null, // Sera rempli plus tard
+          totalRatings: 0, // Sera rempli plus tard
           reasons
         };
         
-        console.log(`Including restaurant ${restaurant.name} with score ${score} and reasons:`, reasons);
         return result;
       }));
 
       const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
-      console.log(`Final valid restaurants: ${validRestaurants.length}`);
 
-      await loadRestaurantRatings(validRestaurants);
+      // Optimisation: Charger les ratings en batch pour tous les restaurants valides
+      const ratingsPromises = validRestaurants.map(async (restaurant) => {
+        const ratingData = await getRealRating(restaurant.id);
+        restaurant.rating = ratingData.rating;
+        restaurant.totalRatings = ratingData.totalRatings;
+        return restaurant;
+      });
+
+      await Promise.all(ratingsPromises);
 
       const newCategories: RecommendationCategory[] = [];
       
       if (validRestaurants.length > 0) {
         const sortedRestaurants = validRestaurants.sort((a, b) => b.score - a.score);
-        console.log('Top 3 restaurants by score:', sortedRestaurants.slice(0, 3).map(r => ({ name: r.name, score: r.score, reasons: r.reasons })));
         
         newCategories.push({
           id: 'recommended',
@@ -377,10 +340,8 @@ export const PersonalizedRecommendations = () => {
 
       // Si aucun restaurant trouvé avec les critères stricts, essayer un fallback
       if (validRestaurants.length === 0) {
-        console.log('No restaurants found with strict criteria, trying fallback...');
-        
         // Fallback: prendre tous les restaurants disponibles avec scores minimaux
-        const fallbackRestaurants = await Promise.all(restaurantsData.map(async (restaurant: any) => {
+        const fallbackRestaurants = await Promise.all(restaurantsData.slice(0, 12).map(async (restaurant: any) => {
           const realRating = await getRealRating(restaurant.id);
           
           return {
@@ -392,8 +353,6 @@ export const PersonalizedRecommendations = () => {
           };
         }));
         
-        await loadRestaurantRatings(fallbackRestaurants);
-        
         if (fallbackRestaurants.length > 0) {
           newCategories.push({
             id: 'available',
@@ -401,16 +360,12 @@ export const PersonalizedRecommendations = () => {
             subtitle: t('recommendations.discoverMontreal'),
             icon: MapPin,
             color: 'bg-gradient-to-r from-blue-50 to-blue-100',
-            restaurants: fallbackRestaurants.slice(0, 12)
+            restaurants: fallbackRestaurants
           });
-          
-          console.log(`Added fallback category with ${fallbackRestaurants.length} restaurants`);
         }
       }
 
       setCategories(newCategories);
-      console.log(`Set ${newCategories.length} categories with ${newCategories[0]?.restaurants?.length || 0} restaurants`);
-      console.log('✅ Recommendations generated successfully, setting loading to false');
 
     } catch (error) {
       console.error('❌ Error generating recommendations:', error);
@@ -425,14 +380,11 @@ export const PersonalizedRecommendations = () => {
       setCategories([]);
     } finally {
       setLoading(false);
-      console.log('✅ Loading set to false in finally block');
     }
   }, [preferences]); // Dépendances pour useCallback
 
   const trackProfileView = async (restaurantId: string) => {
     try {
-      console.log(`Tracking profile view for restaurant ${restaurantId}`);
-      
       // Utiliser la fonction database sécurisée
       const { error } = await supabase.rpc('track_profile_view', {
         p_restaurant_id: restaurantId
@@ -440,8 +392,6 @@ export const PersonalizedRecommendations = () => {
 
       if (error) {
         console.error('Error tracking profile view:', error);
-      } else {
-        console.log('Profile view tracked successfully');
       }
     } catch (error) {
       console.error('Error tracking profile view:', error);
@@ -451,7 +401,6 @@ export const PersonalizedRecommendations = () => {
   // Charger les recommandations une seule fois au montage
   useEffect(() => {
     if (preferences?.id) {
-      console.log('🚀 Initial recommendations generation triggered for preferences:', preferences.id);
       generateRecommendations();
     }
   }, [preferences?.id]); // Supprimer generateRecommendations des dépendances
@@ -461,29 +410,20 @@ export const PersonalizedRecommendations = () => {
     let debounceTimer: NodeJS.Timeout;
     
     const handlePreferencesUpdate = () => {
-      console.log('🔔 preferencesUpdated event received - loading:', loading);
-      console.log('🔔 Current preferences:', preferences);
-      
       // Toujours permettre la régénération si on a des préférences
       if (preferences?.id) {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
-          console.log('⏰ Debounced preferences update executing with preferences:', preferences);
           if (!loading) {
-            console.log('🚀 Triggering generateRecommendations from event');
             generateRecommendations();
           } else {
-            console.log('⏸️ Still loading, will retry in 1s');
             setTimeout(() => {
               if (preferences?.id && !loading) {
-                console.log('🔄 Retry generateRecommendations after loading');
                 generateRecommendations();
               }
             }, 1000);
           }
         }, 300); // Debounce réduit
-      } else {
-        console.log('❌ No preferences available for update');
       }
     };
 
@@ -502,7 +442,6 @@ export const PersonalizedRecommendations = () => {
     const debouncedRegenerate = () => {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        console.log('Debounced regeneration triggered...');
         generateRecommendations();
       }, 500); // 500ms de débounce
     };
@@ -514,7 +453,6 @@ export const PersonalizedRecommendations = () => {
         schema: 'public',
         table: 'restaurants'
       }, () => {
-        console.log('Restaurant data updated, scheduling regeneration...');
         debouncedRegenerate();
       })
       .subscribe();
@@ -526,7 +464,6 @@ export const PersonalizedRecommendations = () => {
         schema: 'public',
         table: 'menus'
       }, () => {
-        console.log('Menu data updated, scheduling regeneration...');
         debouncedRegenerate();
       })
       .subscribe();
@@ -538,7 +475,6 @@ export const PersonalizedRecommendations = () => {
         schema: 'public',
         table: 'comments'
       }, async (payload: any) => {
-        console.log('Rating updated, updating specific restaurant rating...');
         const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
         if (restaurantId) {
           await updateRestaurantRating(restaurantId);
@@ -570,10 +506,7 @@ export const PersonalizedRecommendations = () => {
     setRestaurantRatings(ratingsMap);
   };
 
-  console.log('Rendering PersonalizedRecommendations - loading:', loading, 'categories:', categories.length);
-
   if (loading) {
-    console.log('Rendering loading state');
     return (
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -593,7 +526,6 @@ export const PersonalizedRecommendations = () => {
   }
 
   if (categories.length === 0) {
-    console.log('Rendering no recommendations state');
     return (
       <section className="py-16 bg-gradient-to-br from-muted/30 via-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -650,7 +582,6 @@ export const PersonalizedRecommendations = () => {
     );
   }
 
-  console.log('Rendering recommendations with', categories.length, 'categories');
   return (
     <section className="py-8 bg-gradient-to-br from-muted/30 via-background to-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
