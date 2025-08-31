@@ -23,35 +23,40 @@ export const useCookieConsent = () => {
   });
 
   useEffect(() => {
-    const consentData = localStorage.getItem('cookieConsentData');
-    
-    if (consentData) {
-      try {
-        const parsed: CookieConsentData = JSON.parse(consentData);
-        const now = new Date().getTime();
-        const sixMonthsInMs = CONSENT_EXPIRY_MONTHS * 30 * 24 * 60 * 60 * 1000;
-        
-        // Check if consent has expired
-        if (now - parsed.timestamp > sixMonthsInMs) {
+    // Délai de 2 secondes avant de vérifier les cookies
+    const timer = setTimeout(() => {
+      const consentData = localStorage.getItem('cookieConsentData');
+      
+      if (consentData) {
+        try {
+          const parsed: CookieConsentData = JSON.parse(consentData);
+          const now = new Date().getTime();
+          const sixMonthsInMs = CONSENT_EXPIRY_MONTHS * 30 * 24 * 60 * 60 * 1000;
+          
+          // Check if consent has expired
+          if (now - parsed.timestamp > sixMonthsInMs) {
+            localStorage.removeItem('cookieConsentData');
+            setHasConsented(null);
+            setShowBanner(true);
+          } else {
+            const hasAnyConsent = parsed.preferences.analytics || parsed.preferences.marketing;
+            setHasConsented(hasAnyConsent);
+            setPreferences(parsed.preferences);
+            setShowBanner(false);
+          }
+        } catch {
+          // Invalid data, reset
           localStorage.removeItem('cookieConsentData');
           setHasConsented(null);
           setShowBanner(true);
-        } else {
-          const hasAnyConsent = parsed.preferences.analytics || parsed.preferences.marketing;
-          setHasConsented(hasAnyConsent);
-          setPreferences(parsed.preferences);
-          setShowBanner(false);
         }
-      } catch {
-        // Invalid data, reset
-        localStorage.removeItem('cookieConsentData');
+      } else {
         setHasConsented(null);
         setShowBanner(true);
       }
-    } else {
-      setHasConsented(null);
-      setShowBanner(true);
-    }
+    }, 2000); // Délai de 2 secondes
+
+    return () => clearTimeout(timer);
   }, []);
 
   const saveConsentData = (prefs: CookiePreferences) => {
