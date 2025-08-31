@@ -96,6 +96,13 @@ export const PersonalizedRecommendations = () => {
   };
 
   const generateRecommendations = useCallback(async () => {
+    if (!preferences) {
+      console.log('❌ No preferences available');
+      setLoading(false);
+      return;
+    }
+
+    console.log('🚀 Starting recommendation generation with preferences:', preferences);
     setLoading(true);
     
     try {
@@ -312,6 +319,8 @@ export const PersonalizedRecommendations = () => {
       }));
 
       const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
+      console.log('✅ Valid restaurants after scoring:', validRestaurants.length);
+      console.log('📊 Scored restaurants:', validRestaurants.map(r => ({ name: r?.name, score: r?.score, reasons: r?.reasons })));
 
       // Optimisation: Charger les ratings en batch pour tous les restaurants valides
       const ratingsPromises = validRestaurants.map(async (restaurant) => {
@@ -327,6 +336,7 @@ export const PersonalizedRecommendations = () => {
       
       if (validRestaurants.length > 0) {
         const sortedRestaurants = validRestaurants.sort((a, b) => b.score - a.score);
+        console.log('🎯 Creating recommendation category with', sortedRestaurants.length, 'restaurants');
         
         newCategories.push({
           id: 'recommended',
@@ -340,6 +350,7 @@ export const PersonalizedRecommendations = () => {
 
       // Si aucun restaurant trouvé avec les critères stricts, essayer un fallback
       if (validRestaurants.length === 0) {
+        console.log('⚠️ No valid restaurants found, trying fallback approach');
         // Fallback: prendre tous les restaurants disponibles avec scores minimaux
         const fallbackRestaurants = await Promise.all(restaurantsData.slice(0, 12).map(async (restaurant: any) => {
           const realRating = await getRealRating(restaurant.id);
@@ -353,6 +364,8 @@ export const PersonalizedRecommendations = () => {
           };
         }));
         
+        console.log('🔄 Fallback restaurants:', fallbackRestaurants.length);
+        
         if (fallbackRestaurants.length > 0) {
           newCategories.push({
             id: 'available',
@@ -365,6 +378,7 @@ export const PersonalizedRecommendations = () => {
         }
       }
 
+      console.log('📋 Final categories:', newCategories.length);
       setCategories(newCategories);
 
     } catch (error) {
