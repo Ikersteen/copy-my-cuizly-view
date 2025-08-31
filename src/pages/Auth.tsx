@@ -528,7 +528,12 @@ const Auth = () => {
             <img 
               src="/lovable-uploads/e8fe9351-fe46-440d-914c-b9b28918fe73.png" 
               alt="Cuizly Logo" 
-              className="h-16 object-contain"
+              className="h-16 object-contain dark:hidden"
+            />
+            <img 
+              src="/lovable-uploads/e7e97d69-a6d1-4978-8f05-560def81179e.png" 
+              alt="Cuizly Logo" 
+              className="h-16 object-contain hidden dark:block"
             />
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-2">{t('auth.title')}</h1>
