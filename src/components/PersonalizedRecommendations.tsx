@@ -45,7 +45,7 @@ export const PersonalizedRecommendations = () => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { preferences } = useUserPreferences();
-  const { favorites, toggleFavorite } = useFavorites();
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const [categories, setCategories] = useState<RecommendationCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
@@ -469,7 +469,7 @@ export const PersonalizedRecommendations = () => {
                         }}
                         className="transition-colors hover:bg-red-50"
                       >
-                        <Heart className={`h-4 w-4 ${favorites.includes(restaurant.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`} />
+                        <Heart className={`h-4 w-4 ${isFavorite(restaurant.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`} />
                       </Button>
                     </div>
 
