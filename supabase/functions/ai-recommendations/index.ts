@@ -26,6 +26,8 @@ interface UserPreferences {
   dietary_restrictions?: string[];
   delivery_radius?: number;
   street?: string;
+  favorite_meal_times?: string[];
+  allergens?: string[];
 }
 
 interface AIScore {
@@ -131,11 +133,13 @@ async function analyzeRestaurantWithAI(
           role: 'system',
           content: `Tu es un expert en recommandations de restaurants. Analyse les restaurants en fonction des préférences utilisateur et fournis un scoring détaillé en JSON.
           
-          Format de réponse requis:
+          IMPORTANT: Tient compte des moments de repas favoris pour adapter tes recommandations selon l'heure actuelle.
+          
+          Format de réponse requis (JSON uniquement, sans markdown):
           {
             "score": number (0-100),
             "reasons": ["raison1", "raison2", ...],
-            "sentiment_analysis": "positive|neutral|negative",
+            "sentiment_analysis": "positive|neutral|negative", 
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
           }`
@@ -145,8 +149,7 @@ async function analyzeRestaurantWithAI(
           content: prompt
         }
       ],
-      max_completion_tokens: 500,
-      temperature: 0.3
+      max_tokens: 500
     }),
   });
 
@@ -166,6 +169,10 @@ async function analyzeRestaurantWithAI(
 }
 
 function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferences): string {
+  const currentHour = new Date().getHours();
+  const currentMealTime = getCurrentMealTime(currentHour);
+  const isMealTimeMatch = preferences.favorite_meal_times?.includes(currentMealTime) || false;
+
   return `
 Analyse ce restaurant pour les recommandations:
 
@@ -183,27 +190,55 @@ Préférences utilisateur:
 - Cuisines préférées: ${preferences.cuisine_preferences?.join(', ') || 'Aucune spécifiée'}
 - Budget: ${preferences.price_range || 'Non spécifié'}
 - Restrictions alimentaires: ${preferences.dietary_restrictions?.join(', ') || 'Aucune'}
+- Allergènes: ${preferences.allergens?.join(', ') || 'Aucun'}
+- Moments de repas favoris: ${preferences.favorite_meal_times?.join(', ') || 'Non spécifiés'}
 - Rayon de livraison: ${preferences.delivery_radius || 'Non spécifié'} km
 
-Analyse sémantique:
-1. Correspondance avec les préférences (40%)
-2. Qualité basée sur les notes et popularité (30%)
-3. Analyse de sentiment de la description (20%)
-4. Prédiction de satisfaction utilisateur (10%)
+Contexte temporel:
+- Heure actuelle: ${currentHour}h (${currentMealTime})
+- Correspond aux préférences de repas: ${isMealTimeMatch ? 'OUI' : 'NON'}
 
-Fournis un score total sur 100 et des raisons détaillées.
+Analyse sémantique (pondération dynamique):
+1. Correspondance cuisine et préférences (30%)
+2. Adéquation avec le moment de repas actuel (25%)
+3. Qualité basée sur les notes et popularité (25%)
+4. Analyse de sentiment de la description (15%)
+5. Respect des restrictions alimentaires (5%)
+
+CRITÈRES SPÉCIAUX:
+- Si c'est un moment de repas favori: +15 points bonus
+- Si restrictions alimentaires respectées: +10 points bonus  
+- Si cuisine très appréciée: +10 points bonus
+
+Fournis un score total sur 100 et des raisons spécifiques incluant l'adéquation temporelle.
   `;
+}
+
+function getCurrentMealTime(hour: number): string {
+  if (hour >= 6 && hour < 11) return 'Déjeuner / Brunch';
+  if (hour >= 11 && hour < 15) return 'Déjeuner rapide';
+  if (hour >= 15 && hour < 17) return 'Collation';
+  if (hour >= 17 && hour < 22) return 'Dîner / Souper';
+  if (hour >= 22 || hour < 2) return 'Repas tardif';
+  return 'Détox';
 }
 
 function calculateFallbackScore(restaurant: Restaurant, preferences: UserPreferences): number {
   let score = 0;
+  const currentHour = new Date().getHours();
+  const currentMealTime = getCurrentMealTime(currentHour);
 
-  // Correspondance cuisine (40%)
+  // Correspondance cuisine (30%)
   if (preferences.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
     const matches = restaurant.cuisine_type.filter(cuisine =>
       preferences.cuisine_preferences!.includes(cuisine)
     ).length;
-    score += (matches / preferences.cuisine_preferences.length) * 40;
+    score += (matches / preferences.cuisine_preferences.length) * 30;
+  }
+
+  // Moment de repas (25%)
+  if (preferences.favorite_meal_times?.includes(currentMealTime)) {
+    score += 25;
   }
 
   // Prix (20%)
@@ -211,9 +246,9 @@ function calculateFallbackScore(restaurant: Restaurant, preferences: UserPrefere
     score += 20;
   }
 
-  // Qualité (30%)
+  // Qualité (15%)
   if (restaurant.average_rating) {
-    score += (restaurant.average_rating / 5) * 30;
+    score += (restaurant.average_rating / 5) * 15;
   }
 
   // Popularité (10%)

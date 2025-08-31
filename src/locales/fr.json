@@ -1643,8 +1643,9 @@
     "evaluation": "évaluation",
     "noRatingsYet": "Pas d'évaluations pour le moment",
     "whyThisChoice": "Pourquoi ce choix ?",
-    "viewProfile": "Voir le profil",
-    "popularRestaurant": "Restaurant populaire",
-    "closeToYou": "Proche de vous"
+     "viewProfile": "Voir le profil",
+     "popularRestaurant": "Restaurant populaire",
+     "closeToYou": "Proche de vous",
+     "perfectMealTime": "Parfait pour ce moment de repas"
   }
 }

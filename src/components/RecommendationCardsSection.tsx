@@ -43,6 +43,13 @@ export const RecommendationCardsSection = () => {
   // Generate reasons for why this restaurant is recommended
   const generateRecommendationReasons = (restaurant: Restaurant) => {
     const reasons: string[] = [];
+    const currentHour = new Date().getHours();
+    const currentMealTime = getCurrentMealTime(currentHour);
+
+    // Meal time match
+    if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
+      reasons.push(t('recommendations.perfectMealTime'));
+    }
 
     // Cuisine preferences match
     if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
@@ -68,6 +75,16 @@ export const RecommendationCardsSection = () => {
     }
 
     return reasons;
+  };
+
+  // Helper function for meal time calculation (used in multiple places)
+  const getCurrentMealTime = (hour: number): string => {
+    if (hour >= 6 && hour < 11) return 'Déjeuner / Brunch';
+    if (hour >= 11 && hour < 15) return 'Déjeuner rapide';
+    if (hour >= 15 && hour < 17) return 'Collation';
+    if (hour >= 17 && hour < 22) return 'Dîner / Souper';
+    if (hour >= 22 || hour < 2) return 'Repas tardif';
+    return 'Détox';
   };
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
@@ -123,7 +140,7 @@ export const RecommendationCardsSection = () => {
               }));
               return {
                 ...restaurant,
-                reasons: generateRecommendationReasons(restaurant)
+                reasons: restaurant.ai_reasons || generateRecommendationReasons(restaurant)
               };
             });
 
@@ -156,7 +173,10 @@ export const RecommendationCardsSection = () => {
       // Score restaurants
       const scoredRestaurants = restaurantsData.map(restaurant => {
         let score = 0;
+        const currentHour = new Date().getHours();
+        const currentMealTime = getCurrentMealTime(currentHour);
         
+        // Cuisine preferences (25%)
         if (preferences?.cuisine_preferences?.length) {
           const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
           const cuisineMatches = restaurant.cuisine_type?.filter(cuisine =>
@@ -168,19 +188,26 @@ export const RecommendationCardsSection = () => {
           );
 
           if (cuisineMatches.length > 0 || menuCuisineMatches.length > 0) {
-            score += 30 + (cuisineMatches.length + menuCuisineMatches.length) * 10;
+            score += 25 + (cuisineMatches.length + menuCuisineMatches.length) * 5;
           }
         }
 
+        // Meal time preference (25%)
+        if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
+          score += 25;
+        }
+
+        // Price range (20%)
         if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
           score += 20;
         }
 
+        // Dietary restrictions (15%)
         if (preferences?.dietary_restrictions?.length) {
           score += 15;
         }
 
-        score += 10; // Base score
+        score += 15; // Base score
 
         return {
           ...restaurant,
@@ -188,6 +215,16 @@ export const RecommendationCardsSection = () => {
           reasons: generateRecommendationReasons(restaurant)
         };
       });
+
+      // Helper function for meal time calculation  
+      function getCurrentMealTime(hour: number): string {
+        if (hour >= 6 && hour < 11) return 'Déjeuner / Brunch';
+        if (hour >= 11 && hour < 15) return 'Déjeuner rapide';
+        if (hour >= 15 && hour < 17) return 'Collation';
+        if (hour >= 17 && hour < 22) return 'Dîner / Souper';
+        if (hour >= 22 || hour < 2) return 'Repas tardif';
+        return 'Détox';
+      }
 
       // Sort by score and take top restaurants
       const topRestaurants = scoredRestaurants
