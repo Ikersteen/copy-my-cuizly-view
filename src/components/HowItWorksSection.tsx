@@ -1,5 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Smartphone, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const HowItWorksSection = () => {
@@ -7,12 +6,12 @@ const HowItWorksSection = () => {
   
   const steps = [
     {
-      icon: Smartphone,
+      icon: "🍻",
       title: t('howItWorks.step1.title'),
       description: t('howItWorks.step1.description')
     },
     {
-      icon: MapPin,
+      icon: "🍽️",
       title: t('howItWorks.step2.title'),
       description: t('howItWorks.step2.description')
     }
@@ -32,21 +31,20 @@ const HowItWorksSection = () => {
 
           <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
             {steps.map((step, index) => {
-              const Icon = step.icon;
               return (
                 <Card key={index} className="border-primary/10 bg-background/50 backdrop-blur-sm">
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex items-start space-x-3 sm:space-x-4">
                       <div className="flex-shrink-0">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                          <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-cuizly-primary" />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-cuizly-primary to-cuizly-accent flex items-center justify-center shadow-lg">
+                          <span className="text-lg sm:text-xl">{step.icon}</span>
                         </div>
                       </div>
-                      <div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">
                           {step.title}
                         </h3>
-                        <p className="text-cuizly-neutral leading-relaxed text-sm sm:text-base">
+                        <p className="text-sm sm:text-base text-cuizly-neutral leading-relaxed">
                           {step.description}
                         </p>
                       </div>
