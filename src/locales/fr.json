@@ -486,11 +486,16 @@
     "save": "Sauvegarder"
   },
   "comments": {
+    "title": "Partagez votre expérience avec d'autres gourmets",
+    "ratingCount": "évaluations",
+    "placeholder": "Partagez votre expérience...",
+    "notAuthenticated": "Non authentifié",
+    "publishComment": "Publier le commentaire",
+    "clientComments": "Commentaires clients",
     "added": "Commentaire ajouté",
-    "addedSuccess": "Votre commentaire a été publié avec succès",
+    "addedSuccess": "Votre commentaire a été ajouté avec succès",
     "limitReached": "Limite atteinte",
     "maxImages": "Maximum 3 images autorisées",
-    "notAuthenticated": "Non authentifié", 
     "error": "Erreur",
     "commentOrRating": "Veuillez ajouter un commentaire ou une note",
     "cannotPublish": "Impossible de publier le commentaire",
@@ -505,9 +510,7 @@
     "photos": "Photos (optionnel)",
     "clickToAddPhotos": "Cliquez pour ajouter des photos",
     "commentImage": "Image du commentaire",
-    "uploadImages": "Upload des images...",
-    "publishComment": "Publier le commentaire",
-    "clientComments": "Commentaires des clients"
+    "uploadImages": "Upload des images..."
   },
   "menusModal": {
     "menuImage": "Image du menu",
@@ -755,16 +758,6 @@
       "sunday": "Dimanche: Fermé"
     }
   },
-  "comments": {
-    "title": "Partagez votre expérience avec d'autres gourmets",
-    "ratingCount": "évaluations",
-    "placeholder": "Partagez votre expérience...",
-    "notAuthenticated": "Non authentifié",
-    "publishComment": "Publier le commentaire",
-    "clientComments": "Commentaires clients",
-    "added": "Commentaire ajouté",
-    "addedSuccess": "Votre commentaire a été ajouté avec succès"
-  },
   "dateRange": {
     "label": "Période de validité",
     "placeholder": "Sélectionner les dates",
@@ -795,30 +788,6 @@
     "restaurantProfile": {
       "cancel": "Annuler"
     }
-  },
-  "commentModal": {
-    "title": "Partager votre expérience",
-    "description": "Partagez votre expérience avec d'autres gourmets",
-    "shareExperience": "Partagez votre expérience avec d'autres gourmets",
-    "limitReached": "Limite atteinte",
-    "maxImages": "Vous ne pouvez ajouter que 3 images maximum",
-    "notAuthenticated": "Non authentifié",
-    "error": "Erreur",
-    "commentOrRating": "Veuillez ajouter un commentaire ou une note",
-    "cannotPublish": "Impossible de publier le commentaire",
-    "ratings": "évaluations",
-    "comment": "commentaire",
-    "comments": "commentaires",
-    "yourRating": "Votre note (optionnel)",
-    "yourComment": "Votre commentaire",
-    "shareExperiencePlaceholder": "Partagez votre expérience...",
-    "photos": "Photos (max 3)",
-    "clickToAddPhotos": "Cliquez pour ajouter des photos",
-    "uploadingImages": "Upload des images...",
-    "publishComment": "Publier le commentaire",
-    "clientComments": "Commentaires des clients",
-    "consumer": "Consommateur",
-    "commentImage": "Commentaire image"
   },
   "dateRangePicker": {
     "validityPeriod": "Période de validité",

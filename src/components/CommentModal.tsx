@@ -38,8 +38,8 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     const files = Array.from(e.target.files || []);
     if (images.length + files.length > 3) {
       toast({
-        title: t('commentModal.limitReached'),
-        description: t('commentModal.maxImages'),
+        title: t('comments.limitReached'),
+        description: t('comments.maxImages'),
         variant: "destructive"
       });
       return;
@@ -55,7 +55,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     if (images.length === 0) return [];
 
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw new Error(t('commentModal.notAuthenticated'));
+    if (!session) throw new Error(t('comments.notAuthenticated'));
 
     const imageUrls: string[] = [];
 
@@ -83,8 +83,8 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     e.preventDefault();
     if (!restaurant || (!commentText.trim() && rating === 0)) {
       toast({
-        title: t('commentModal.error'),
-        description: t('commentModal.commentOrRating'),
+        title: t('comments.error'),
+        description: t('comments.commentOrRating'),
         variant: "destructive"
       });
       return;
@@ -111,8 +111,8 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     } catch (error) {
       console.error('Error submitting comment:', error);
       toast({
-        title: t('commentModal.error'),
-        description: t('commentModal.cannotPublish'),
+        title: t('comments.error'),
+        description: t('comments.cannotPublish'),
         variant: "destructive"
       });
     } finally {
@@ -127,7 +127,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     if (comment.profiles?.username) {
       return comment.profiles.username;
     }
-    return t('commentModal.consumer');
+    return t('comments.consumer');
   };
 
   return (
@@ -149,7 +149,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
             {restaurant?.name}
           </DialogTitle>
           <DialogDescription>
-            {t('commentModal.shareExperience')}
+            {t('comments.shareExperience')}
           </DialogDescription>
         </DialogHeader>
 
@@ -164,11 +164,11 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                     {averageRating.toFixed(1)}
                   </span>
                   <span className="text-muted-foreground">
-                    ({comments.filter(c => c.rating).length} {t('commentModal.ratings')})
+                    ({comments.filter(c => c.rating).length} {t('comments.ratings')})
                   </span>
                 </div>
                 <Badge variant="secondary">
-                  {totalComments} {totalComments > 1 ? t('commentModal.comments') : t('commentModal.comment')}
+                  {totalComments} {totalComments > 1 ? t('comments.comments') : t('comments.comment')}
                 </Badge>
               </div>
             </div>
@@ -178,7 +178,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Note */}
             <div className="space-y-2">
-              <Label>{t('commentModal.yourRating')}</Label>
+              <Label>{t('comments.yourRating')}</Label>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -203,10 +203,10 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
             {/* Commentaire */}
             <div className="space-y-2">
-              <Label htmlFor="comment">{t('commentModal.yourComment')}</Label>
+              <Label htmlFor="comment">{t('comments.yourComment')}</Label>
               <Textarea
                 id="comment"
-                placeholder={t('commentModal.shareExperiencePlaceholder')}
+                placeholder={t('comments.shareExperiencePlaceholder')}
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
                 rows={3}
@@ -215,7 +215,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
             {/* Images */}
             <div className="space-y-2">
-              <Label>{t('commentModal.photos')}</Label>
+              <Label>{t('comments.photos')}</Label>
               <div className="space-y-3">
                 {images.length > 0 && (
                   <div className="grid grid-cols-3 gap-2">
@@ -250,7 +250,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                     <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center cursor-pointer hover:border-primary/50 transition-colors">
                       <Camera className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
                       <span className="text-sm text-muted-foreground">
-                        {t('commentModal.clickToAddPhotos')}
+                        {t('comments.clickToAddPhotos')}
                       </span>
                     </div>
                   </label>
@@ -324,7 +324,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                           <img
                             key={index}
                             src={imageUrl}
-                            alt={`${t('commentModal.commentImage')} ${index + 1}`}
+                            alt={`${t('comments.commentImage')} ${index + 1}`}
                             className="w-full h-16 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
                             onClick={() => window.open(imageUrl, '_blank')}
                           />

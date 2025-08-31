@@ -406,16 +406,6 @@
       "sunday": "Sunday: Closed"
     }
   },
-  "comments": {
-    "title": "Share your experience with other food lovers",
-    "ratingCount": "ratings",
-    "placeholder": "Share your experience...",
-    "notAuthenticated": "Not authenticated",
-    "publishComment": "Publish Comment",
-    "clientComments": "Client Comments",
-    "added": "Comment added",
-    "addedSuccess": "Your comment has been added successfully"
-  },
   "dateRange": {
     "label": "Valid period",
     "placeholder": "Select dates",
@@ -564,15 +554,20 @@
     "save": "Save"
   },
   "comments": {
+    "title": "Share your experience with other food lovers",
+    "ratingCount": "ratings", 
+    "placeholder": "Share your experience...",
+    "notAuthenticated": "Not authenticated",
+    "publishComment": "Publish Comment",
+    "clientComments": "Client Comments",
     "added": "Comment added",
-    "addedSuccess": "Your comment has been published successfully",
+    "addedSuccess": "Your comment has been added successfully",
     "limitReached": "Limit reached",
     "maxImages": "Maximum 3 images allowed",
-    "notAuthenticated": "Not authenticated",
     "error": "Error",
     "commentOrRating": "Please add a comment or rating",
     "cannotPublish": "Cannot publish comment",
-    "consumer": "Consumer",
+    "consumer": "Consumer", 
     "shareExperience": "Share your experience with other food lovers",
     "ratings": "ratings",
     "comment": "comment",
@@ -583,9 +578,7 @@
     "photos": "Photos (optional)",
     "clickToAddPhotos": "Click to add photos",
     "commentImage": "Comment image",
-    "uploadImages": "Uploading images...",
-    "publishComment": "Publish comment",
-    "clientComments": "Customer comments"
+    "uploadImages": "Uploading images..."
   },
   "menusModal": {
     "menuImage": "Menu image",
@@ -805,30 +798,6 @@
     "restaurantProfile": {
       "cancel": "Cancel"
     }
-  },
-  "commentModal": {
-    "title": "Share your experience",
-    "description": "Share your experience with other food lovers",
-    "shareExperience": "Share your experience with other food lovers",
-    "limitReached": "Limit reached",
-    "maxImages": "You can only add 3 images maximum",
-    "notAuthenticated": "Not authenticated",
-    "error": "Error",
-    "commentOrRating": "Please add a comment or rating",
-    "cannotPublish": "Unable to publish comment", 
-    "ratings": "ratings",
-    "comment": "comment",
-    "comments": "comments", 
-    "yourRating": "Your rating (optional)",
-    "yourComment": "Your comment",
-    "shareExperiencePlaceholder": "Share your experience...",
-    "photos": "Photos (max 3)",
-    "clickToAddPhotos": "Click to add photos",
-    "uploadingImages": "Uploading images...",
-    "publishComment": "Publish comment",
-    "clientComments": "Customer comments",
-    "consumer": "Consumer",
-    "commentImage": "Comment image"
   },
   "dateRangePicker": {
     "validityPeriod": "Validity period",
