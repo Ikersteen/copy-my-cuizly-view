@@ -52,7 +52,8 @@ const Header = () => {
               className="flex items-center py-2 cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
-                window.location.href = '/';
+                navigate('/');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
               <img 

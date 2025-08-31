@@ -155,7 +155,7 @@ const ConsumerDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground animate-pulse">{t('dashboard.loadingPersonalizedExperience')}</p>
+          <p className="text-muted-foreground animate-pulse">Chargement de votre expérience personnalisée...</p>
         </div>
       </div>
     );
@@ -175,9 +175,9 @@ const ConsumerDashboard = () => {
                 </span>
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                  {t('dashboard.hello')} {profile?.first_name || ""} ! {profile?.chef_emoji_color || '👋'}
-                </h1>
+                  <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
+                    Bonjour {profile?.first_name || ""} ! {profile?.chef_emoji_color || '👋'}
+                  </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
                   {profile?.username ? `@${profile.username}` : ""}
                 </p>
@@ -197,7 +197,7 @@ const ConsumerDashboard = () => {
                 className="px-3 py-2 h-10"
               >
                 <UserIcon className="h-4 w-4 mr-1 sm:mr-2" />
-                <span className="text-xs sm:text-sm">{t('dashboard.profile')}</span>
+                <span className="text-xs sm:text-sm">Profil</span>
               </Button>
               <Button 
                 variant="outline"
@@ -206,7 +206,7 @@ const ConsumerDashboard = () => {
                 className="px-3 py-2 h-10"
               >
                 <Settings className="h-4 w-4 mr-1 sm:mr-2" />
-                <span className="text-xs sm:text-sm">{t('dashboard.preferences')}</span>
+                <span className="text-xs sm:text-sm">Préférences</span>
               </Button>
               <Button 
                 variant="outline"
@@ -215,7 +215,7 @@ const ConsumerDashboard = () => {
                 className="px-3 py-2 h-10 text-destructive hover:text-destructive hover:bg-destructive/10"
               >
                 <LogOut className="h-4 w-4 mr-1 sm:mr-2" />
-                <span className="text-xs sm:text-sm">{t('dashboard.logout')}</span>
+                <span className="text-xs sm:text-sm">Déconnexion</span>
               </Button>
             </div>
           </div>
@@ -226,15 +226,15 @@ const ConsumerDashboard = () => {
           <TabsList className="grid w-full grid-cols-3 h-11">
             <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2 gap-1">
               <Star className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{t('dashboard.recommendations')}</span>
+              <span className="truncate">Recommandations</span>
             </TabsTrigger>
             <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2 gap-1">
               <Heart className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{t('dashboard.favorites')}</span>
+              <span className="truncate">Favoris</span>
             </TabsTrigger>
             <TabsTrigger value="offers" className="text-xs sm:text-sm px-2 py-2 gap-1">
               <Gift className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{t('dashboard.offers')}</span>
+              <span className="truncate">Offres</span>
             </TabsTrigger>
           </TabsList>
 
