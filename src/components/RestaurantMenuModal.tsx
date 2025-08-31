@@ -23,7 +23,7 @@ const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; pri
     const fetchRating = async () => {
       try {
         const { data } = await supabase
-          .from('Comments')
+          .from('comments')
           .select('rating')
           .eq('restaurant_id', restaurantId)
           .not('rating', 'is', null);

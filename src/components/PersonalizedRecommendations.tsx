@@ -65,7 +65,7 @@ export const PersonalizedRecommendations = () => {
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
       const { data } = await supabase
-        .from('Comments')
+        .from('comments')
         .select('rating')
         .eq('restaurant_id', restaurantId)
         .not('rating', 'is', null);
