@@ -1661,7 +1661,7 @@
     "removeFromFavorites": "Retirer des favoris"
   },
   "recommendations": {
-    "aiRecommendations": "Recommandations IA",
+    "aiRecommendations": "Recommandations par Cuizly",
     "poweredByAI": "Alimenté par l'intelligence artificielle",
     "aiRecommended": "Recommandé par l'IA",
     "cuisineMatches": "correspondances de cuisine",

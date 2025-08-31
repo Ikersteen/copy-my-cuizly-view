@@ -1756,7 +1756,7 @@
     "removeFromFavorites": "Remove from favorites"
   },
   "recommendations": {
-    "aiRecommendations": "AI Recommendations",
+    "aiRecommendations": "Cuizly Recommendations",
     "poweredByAI": "Powered by artificial intelligence",
     "aiRecommended": "Recommended by AI",
     "cuisineMatches": "cuisine matches",
