@@ -16,6 +16,7 @@ const CONSENT_EXPIRY_MONTHS = 6;
 export const useCookieConsent = () => {
   const [hasConsented, setHasConsented] = useState<boolean | null>(null);
   const [showBanner, setShowBanner] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true,
     analytics: false,
@@ -35,7 +36,7 @@ export const useCookieConsent = () => {
         if (now - parsed.timestamp > sixMonthsInMs) {
           localStorage.removeItem('cookieConsentData');
           setHasConsented(null);
-          setShowBanner(true);
+          // Don't show banner until user interacts
         } else {
           const hasAnyConsent = parsed.preferences.analytics || parsed.preferences.marketing;
           setHasConsented(hasAnyConsent);
@@ -46,13 +47,34 @@ export const useCookieConsent = () => {
         // Invalid data, reset
         localStorage.removeItem('cookieConsentData');
         setHasConsented(null);
-        setShowBanner(true);
+        // Don't show banner until user interacts
       }
     } else {
       setHasConsented(null);
-      setShowBanner(true);
+      // Don't show banner until user interacts
     }
   }, []);
+
+  // Listen for user interactions to show banner
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (!userInteracted && hasConsented === null) {
+        setUserInteracted(true);
+        setShowBanner(true);
+      }
+    };
+
+    const events = ['click', 'scroll', 'mousemove', 'keydown'];
+    events.forEach(event => {
+      document.addEventListener(event, handleUserInteraction, { once: true });
+    });
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, handleUserInteraction);
+      });
+    };
+  }, [hasConsented, userInteracted]);
 
   const saveConsentData = (prefs: CookiePreferences) => {
     const consentData: CookieConsentData = {
