@@ -140,6 +140,13 @@ export type Database = {
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_offers_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       orders: {
@@ -176,6 +183,13 @@ export type Database = {
             columns: ["restaurant_id"]
             isOneToOne: false
             referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_orders_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants_public"
             referencedColumns: ["id"]
           },
         ]
@@ -420,6 +434,13 @@ export type Database = {
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_favorites_restaurant"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       user_preferences: {
@@ -532,13 +553,76 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      restaurants_public: {
+        Row: {
+          address: string | null
+          allergens: string[] | null
+          cover_image_url: string | null
+          created_at: string | null
+          cuisine_type: string[] | null
+          delivery_radius: number | null
+          description: string | null
+          description_en: string | null
+          description_fr: string | null
+          dietary_restrictions: string[] | null
+          id: string | null
+          is_active: boolean | null
+          logo_url: string | null
+          name: string | null
+          opening_hours: Json | null
+          price_range: string | null
+          restaurant_specialties: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          allergens?: string[] | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          cuisine_type?: string[] | null
+          delivery_radius?: number | null
+          description?: string | null
+          description_en?: string | null
+          description_fr?: string | null
+          dietary_restrictions?: string[] | null
+          id?: string | null
+          is_active?: boolean | null
+          logo_url?: string | null
+          name?: string | null
+          opening_hours?: Json | null
+          price_range?: string | null
+          restaurant_specialties?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          allergens?: string[] | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          cuisine_type?: string[] | null
+          delivery_radius?: number | null
+          description?: string | null
+          description_en?: string | null
+          description_fr?: string | null
+          dietary_restrictions?: string[] | null
+          id?: string | null
+          is_active?: boolean | null
+          logo_url?: string | null
+          name?: string | null
+          opening_hours?: Json | null
+          price_range?: string | null
+          restaurant_specialties?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_public_restaurants: {
         Args: Record<PropertyKey, never>
         Returns: {
           address: string
+          allergens: string[]
           cover_image_url: string
           created_at: string
           cuisine_type: string[]
@@ -546,12 +630,14 @@ export type Database = {
           description: string
           description_en: string
           description_fr: string
+          dietary_restrictions: string[]
           id: string
           is_active: boolean
           logo_url: string
           name: string
           opening_hours: Json
           price_range: string
+          restaurant_specialties: string[]
           updated_at: string
         }[]
       }
