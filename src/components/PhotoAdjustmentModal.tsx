@@ -68,8 +68,8 @@ export const PhotoAdjustmentModal = ({
 
     // Set canvas size to match the image natural dimensions or reasonable size
     const img = imageRef.current;
-    const maxWidth = 800;
-    const maxHeight = 600;
+    const maxWidth = 1200; // Increased from 800
+    const maxHeight = 900;  // Increased from 600
     
     let { naturalWidth: width, naturalHeight: height } = img;
     
@@ -82,7 +82,7 @@ export const PhotoAdjustmentModal = ({
     canvas.width = width;
     canvas.height = height;
 
-    // Clear canvas
+    // Clear canvas with transparent background
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Apply transformations
@@ -96,8 +96,18 @@ export const PhotoAdjustmentModal = ({
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-    // Get the adjusted image data
-    const adjustedImageData = canvas.toDataURL('image/jpeg', 0.9);
+    // Detect if image has transparency or if original was PNG
+    const isTransparent = imageUrl.toLowerCase().includes('data:image/png') || 
+                         imageUrl.toLowerCase().includes('.png');
+    
+    console.log('🖼️ Image type detected:', isTransparent ? 'PNG (transparent)' : 'JPEG');
+    
+    // Get the adjusted image data with appropriate format
+    const adjustedImageData = isTransparent 
+      ? canvas.toDataURL('image/png') // Keep PNG for transparency
+      : canvas.toDataURL('image/jpeg', 0.95); // Higher quality JPEG
+      
+    console.log('💾 Generated image data length:', adjustedImageData.length);
     onSave(adjustedImageData);
     onOpenChange(false);
     resetAdjustments();
