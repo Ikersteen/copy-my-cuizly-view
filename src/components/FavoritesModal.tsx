@@ -9,7 +9,6 @@ import { RestaurantMenuModal } from "./RestaurantMenuModal";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
-import { getTranslatedDescription } from "@/lib/translations";
 import { useState, useEffect } from "react";
 
 interface FavoritesModalProps {
@@ -119,7 +118,9 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {getTranslatedDescription(restaurant, currentLanguage)}
+                    {currentLanguage === 'en' 
+                      ? (restaurant.description_en || restaurant.description_fr || restaurant.description)
+                      : (restaurant.description_fr || restaurant.description)}
                   </p>
                 </CardHeader>
                 <CardContent>
