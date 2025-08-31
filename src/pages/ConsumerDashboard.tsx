@@ -20,7 +20,6 @@ import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
 import { PersonalizedRecommendations } from "@/components/PersonalizedRecommendations";
-import { EnhancedRecommendationEngine } from "@/components/EnhancedRecommendationEngine";
 import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";

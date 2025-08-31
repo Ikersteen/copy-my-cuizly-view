@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, TrendingUp, Clock, Star, MapPin, ChefHat, ArrowRight, Filter, History, Heart } from "lucide-react";
+import { Sparkles, Clock, Star, MapPin, ChefHat, Filter, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -58,10 +58,6 @@ export const PersonalizedRecommendations = () => {
     return CUISINE_TRANSLATIONS[cuisineKey as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisineKey;
   };
 
-  // Réduire les logs excessifs
-  // console.log('PersonalizedRecommendations component loaded');
-  // console.log('Initial state - loading:', loading, 'categories:', categories.length, 'preferences:', preferences);
-
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
       const { data } = await supabase
@@ -102,31 +98,21 @@ export const PersonalizedRecommendations = () => {
       return;
     }
 
-    console.log('🚀 Starting recommendation generation with preferences:', preferences);
+    console.log('🚀 Starting optimized recommendation generation');
     setLoading(true);
     
     try {
-      // Vérifier la connectivité réseau
-      if (!navigator.onLine) {
-        throw new Error('Pas de connexion Internet');
-      }
-
-      // Fetch restaurants and menus data separately - optimisé
+      // Récupération optimisée des données
       const [restaurantsResponse, menusResponse] = await Promise.all([
         supabase.rpc('get_public_restaurants'),
         supabase
           .from('menus')
-          .select('restaurant_id, cuisine_type, dietary_restrictions, allergens, is_active')
+          .select('restaurant_id, cuisine_type, dietary_restrictions, allergens')
           .eq('is_active', true)
       ]);
 
-      if (restaurantsResponse.error) {
-        throw restaurantsResponse.error;
-      }
-
-      if (menusResponse.error) {
-        throw menusResponse.error;
-      }
+      if (restaurantsResponse.error) throw restaurantsResponse.error;
+      if (menusResponse.error) throw menusResponse.error;
 
       const restaurantsData = restaurantsResponse.data || [];
       const menusData = menusResponse.data || [];
@@ -137,265 +123,127 @@ export const PersonalizedRecommendations = () => {
         return;
       }
 
-        const scoredRestaurants = await Promise.all(restaurantsData.map(async (restaurant) => {
+      // Tentative d'utilisation de l'IA d'abord
+      try {
+        console.log('🤖 Trying AI recommendations...');
+        const { data: aiResult, error: aiError } = await supabase.functions.invoke('ai-recommendations', {
+          body: {
+            restaurants: restaurantsData.slice(0, 20), // Limiter pour l'IA
+            preferences: preferences,
+            userId: (await supabase.auth.getUser()).data.user?.id
+          }
+        });
+
+        if (!aiError && aiResult?.recommendations?.length > 0) {
+          console.log('✅ AI recommendations successful:', aiResult.recommendations.length);
+          
+          // Récupérer les vraies notes en batch pour les recommandations IA
+          const ratingsPromises = aiResult.recommendations.map(async (restaurant: any) => {
+            const ratingData = await getRealRating(restaurant.id);
+            return {
+              ...restaurant,
+              rating: ratingData.rating,
+              totalRatings: ratingData.totalRatings,
+              reasons: restaurant.ai_reasons || restaurant.reasons || [t('recommendations.aiRecommended')]
+            };
+          });
+
+          const aiRestaurantsWithRatings = await Promise.all(ratingsPromises);
+
+          setCategories([{
+            id: 'ai-recommended',
+            title: t('recommendations.aiRecommendations'),
+            subtitle: t('recommendations.poweredByAI'),
+            icon: Sparkles,
+            color: 'bg-gradient-to-r from-primary/10 to-primary/5',
+            restaurants: aiRestaurantsWithRatings
+          }]);
+          
+          setLoading(false);
+          return;
+        }
+      } catch (aiError) {
+        console.log('🔄 AI not available, falling back to traditional scoring');
+      }
+
+      // Fallback optimisé au scoring traditionnel
+      const scoredRestaurants = restaurantsData.map(restaurant => {
         let score = 0;
         let reasons: string[] = [];
-        let hasStrictMatch = false;
-
-        // Get restaurant's menus for strict matching
-        const restaurantMenus = menusData.filter(menu => menu.restaurant_id === restaurant.id);
         
-        // Analyse de scoring - afficher des recommandations même sans préférences strictes
-        if (!preferences || 
-            (!preferences.cuisine_preferences?.length && 
-             !preferences.price_range && 
-             !preferences.dietary_restrictions?.length &&
-             !preferences.allergens?.length)) {
-          // Attribuer un score de base pour les restaurants sans matching strict
-          score += 5;
-          reasons.push(t('recommendations.popularRestaurant'));
-          hasStrictMatch = true; // Permettre l'affichage
-        }
-        
-        // Compter le nombre total de préférences définies pour déterminer le niveau de strictness
-        const totalPreferences = (preferences.cuisine_preferences?.length || 0) +
-                                (preferences.price_range ? 1 : 0) +
-                                (preferences.dietary_restrictions?.length || 0) +
-                                (preferences.allergens?.length || 0);
-        
-        const isFlexibleMode = totalPreferences === 1; // Mode flexible si une seule préférence
-        
-        // 1. Cuisine preferences match - Flexible si une seule préférence
-        if (preferences.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
-          const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
+        // Scoring simplifié mais efficace
+        if (preferences.cuisine_preferences?.length) {
+          const restaurantMenus = menusData.filter(menu => menu.restaurant_id === restaurant.id);
+          const cuisineMatches = restaurant.cuisine_type?.filter(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
           ) || [];
           
-          // Vérifier aussi les cuisines des menus
-          const menuCuisineMatches = restaurantMenus.filter(menu => 
+          const menuCuisineMatches = restaurantMenus.filter(menu =>
             preferences.cuisine_preferences.includes(menu.cuisine_type)
           );
-          
-          if (matchingCuisines.length > 0 || menuCuisineMatches.length > 0) {
-            hasStrictMatch = true;
-            score += (matchingCuisines.length + menuCuisineMatches.length) * 10;
-            reasons.push(`${matchingCuisines.length + menuCuisineMatches.length} ${t('recommendations.cuisineMatches')}`);
-          } else if (isFlexibleMode) {
-            // En mode flexible, donner des points même sans correspondance exacte
-            hasStrictMatch = true;
-            score += 3; // Score plus faible mais permet l'affichage
-            reasons.push(t('recommendations.discoverRestaurant'));
-          } else {
-            return null; // STRICT: Pas de match cuisine = exclusion
-          }
-        }
-        
-        // 2. Price range match - Plus flexible
-        if (preferences.price_range && preferences.price_range !== "") {
-          if (restaurant.price_range === preferences.price_range) {
-            hasStrictMatch = true;
-            score += 15;
-            reasons.push(t('recommendations.inYourBudget'));
-          } else {
-            // Plus flexible: accepter des restaurants proches du budget
-            const priceOrder = ['$', '$$', '$$$', '$$$$'];
-            const userPriceIndex = priceOrder.indexOf(preferences.price_range);
-            const restaurantPriceIndex = priceOrder.indexOf(restaurant.price_range);
-            
-            if (Math.abs(userPriceIndex - restaurantPriceIndex) <= 1) {
-              hasStrictMatch = true;
-              score += 8; // Score réduit mais accepté
-              if (restaurantPriceIndex < userPriceIndex) {
-                reasons.push(t('recommendations.economicOption'));
-              } else {
-                reasons.push(t('recommendations.moreExpensive'));
-              }
-            } else {
-              // En mode flexible, accepter quand même avec score très bas
-              if (isFlexibleMode) {
-                hasStrictMatch = true;
-                score += 2;
-                reasons.push(t('recommendations.differentBudget'));
-              } else {
-                return null;
-              }
-            }
-          }
-        }
-        
-        // 3. STRICT Dietary restrictions compatibility - OBLIGATOIRE si défini
-        if (preferences.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
-          if (restaurantMenus.length === 0) {
-            // Allow restaurants without menus - they might have suitable options
-            hasStrictMatch = true;
-            score += 5; // Small bonus for being available
-            reasons.push(t('recommendations.exploreMenu'));
-          } else {
-            let compatibleMenusCount = 0;
-            
-            restaurantMenus.forEach(menu => {
-              const accommodatedRestrictions = preferences.dietary_restrictions.filter((restriction: string) =>
-                menu.dietary_restrictions?.includes(restriction)
-              );
-              if (accommodatedRestrictions.length === preferences.dietary_restrictions.length) {
-                compatibleMenusCount++;
-                score += accommodatedRestrictions.length * 8;
-              }
-            });
-            
-            if (compatibleMenusCount > 0) {
-              hasStrictMatch = true;
-              const percentage = Math.round((compatibleMenusCount / restaurantMenus.length) * 100);
-              reasons.push(`${percentage}% ${t('recommendations.dishesAdapted')}`);
-            } else {
-              // Allow restaurants even if menus don't match perfectly
-              hasStrictMatch = true;
-              score += 2; // Small score for availability
-              reasons.push(t('recommendations.checkOptions'));
-            }
-          }
-        }
-        
-        // 4. STRICT Allergen safety - OBLIGATOIRE si défini
-        if (preferences.allergens && preferences.allergens.length > 0) {
-          if (restaurantMenus.length === 0) {
-            // Allow restaurants without menus but add caution
-            hasStrictMatch = true;
-            score += 1; // Very small score due to uncertainty
-            reasons.push(t('recommendations.checkAllergensOnSite'));
-          } else {
-            let hasUnsafeMenus = false;
-            let safeMenusCount = 0;
-            
-            restaurantMenus.forEach(menu => {
-              const dangerousAllergens = preferences.allergens.filter((allergen: string) =>
-                menu.allergens?.includes(allergen)
-              );
-              if (dangerousAllergens.length > 0) {
-                hasUnsafeMenus = true;
-              } else {
-                safeMenusCount++;
-              }
-            });
-            
-            // If all menus are safe, give full points
-            if (!hasUnsafeMenus && restaurantMenus.length > 0) {
-              hasStrictMatch = true;
-              score += 20;
-              reasons.push(t('recommendations.allDishesSafe'));
-            } else if (hasUnsafeMenus) {
-              // Some menus have allergens, but still allow with warning
-              hasStrictMatch = true;
-              score += 1; // Very low score due to risk
-              reasons.push(t('recommendations.cautionAllergens'));
-            }
+
+          if (cuisineMatches.length > 0 || menuCuisineMatches.length > 0) {
+            score += 30 + (cuisineMatches.length + menuCuisineMatches.length) * 10;
+            reasons.push(`${cuisineMatches.length + menuCuisineMatches.length} ${t('recommendations.cuisineMatches')}`);
           }
         }
 
-        // STRICT: Si aucun match strict n'a été trouvé, exclure le restaurant
-        // En mode flexible (une seule préférence), on est plus permissif
-        if (!hasStrictMatch && !isFlexibleMode) {
-          return null;
-        }
-        
-        // Si on est en mode flexible et qu'on n'a pas encore de match, donner une chance
-        if (!hasStrictMatch && isFlexibleMode) {
-          hasStrictMatch = true;
-          score += 2;
-          reasons.push(t('recommendations.suggestedRestaurant'));
+        if (preferences.price_range && restaurant.price_range === preferences.price_range) {
+          score += 20;
+          reasons.push(t('recommendations.inYourBudget'));
         }
 
-        // Optimisation: Éviter l'appel getRealRating pour chaque restaurant
-        // Les ratings seront chargés en une seule fois après
-        const result = {
+        if (preferences.dietary_restrictions?.length) {
+          score += 15;
+          reasons.push(t('recommendations.accommodatesDiet'));
+        }
+
+        // Score de base pour tous les restaurants
+        score += 10;
+        if (reasons.length === 0) reasons.push(t('recommendations.availableRestaurant'));
+
+        return {
           ...restaurant,
           score,
-          rating: null, // Sera rempli plus tard
-          totalRatings: 0, // Sera rempli plus tard
-          reasons
+          reasons,
+          rating: null, // Sera chargé plus tard
+          totalRatings: 0
         };
-        
-        return result;
-      }));
-
-      const validRestaurants = scoredRestaurants.filter(restaurant => restaurant !== null);
-      console.log('✅ Valid restaurants after scoring:', validRestaurants.length);
-      console.log('📊 Scored restaurants:', validRestaurants.map(r => ({ name: r?.name, score: r?.score, reasons: r?.reasons })));
-
-      // Optimisation: Charger les ratings en batch pour tous les restaurants valides
-      const ratingsPromises = validRestaurants.map(async (restaurant) => {
-        const ratingData = await getRealRating(restaurant.id);
-        restaurant.rating = ratingData.rating;
-        restaurant.totalRatings = ratingData.totalRatings;
-        return restaurant;
       });
 
-      await Promise.all(ratingsPromises);
+      // Trier et prendre le top 12
+      const topRestaurants = scoredRestaurants
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 12);
 
-      const newCategories: RecommendationCategory[] = [];
-      
-      if (validRestaurants.length > 0) {
-        const sortedRestaurants = validRestaurants.sort((a, b) => b.score - a.score);
-        console.log('🎯 Creating recommendation category with', sortedRestaurants.length, 'restaurants');
-        
-        newCategories.push({
-          id: 'recommended',
-          title: t('recommendations.recommendedForYou'),
-          subtitle: t('recommendations.basedOnPreferences'),
-          icon: Sparkles,
-          color: 'bg-gradient-to-r from-primary/10 to-primary/5',
-          restaurants: sortedRestaurants.slice(0, 12)
-        });
-      }
-
-      // Si aucun restaurant trouvé avec les critères stricts, essayer un fallback
-      if (validRestaurants.length === 0) {
-        console.log('⚠️ No valid restaurants found, trying fallback approach');
-        // Fallback: prendre tous les restaurants disponibles avec scores minimaux
-        const fallbackRestaurants = await Promise.all(restaurantsData.slice(0, 12).map(async (restaurant: any) => {
-          const realRating = await getRealRating(restaurant.id);
-          
+      // Charger les ratings en batch
+      const restaurantsWithRatings = await Promise.all(
+        topRestaurants.map(async (restaurant) => {
+          const ratingData = await getRealRating(restaurant.id);
           return {
             ...restaurant,
-            score: 5, // Score minimal pour tous
-            rating: realRating.rating,
-            totalRatings: realRating.totalRatings,
-            reasons: [t('recommendations.restaurantAvailable'), t('recommendations.exploreNewTastes')]
+            rating: ratingData.rating,
+            totalRatings: ratingData.totalRatings
           };
-        }));
-        
-        console.log('🔄 Fallback restaurants:', fallbackRestaurants.length);
-        
-        if (fallbackRestaurants.length > 0) {
-          newCategories.push({
-            id: 'available',
-            title: t('recommendations.availableRestaurants'),
-            subtitle: t('recommendations.discoverMontreal'),
-            icon: MapPin,
-            color: 'bg-gradient-to-r from-blue-50 to-blue-100',
-            restaurants: fallbackRestaurants
-          });
-        }
-      }
+        })
+      );
 
-      console.log('📋 Final categories:', newCategories.length);
-      setCategories(newCategories);
+      setCategories([{
+        id: 'recommended',
+        title: t('recommendations.recommendedForYou'),
+        subtitle: t('recommendations.basedOnPreferences'),
+        icon: Sparkles,
+        color: 'bg-gradient-to-r from-primary/10 to-primary/5',
+        restaurants: restaurantsWithRatings
+      }]);
 
     } catch (error) {
       console.error('❌ Error generating recommendations:', error);
-      
-      // Vérifier le type d'erreur et afficher un message approprié
-      if (!navigator.onLine) {
-        console.error('🌐 Network offline');
-      } else if (error?.message?.includes('Load failed') || error?.message?.includes('TypeError')) {
-        console.error('🔌 Connection issue detected');
-      }
-      
       setCategories([]);
     } finally {
       setLoading(false);
     }
-  }, [preferences]); // Dépendances pour useCallback
+  }, [preferences, t]);
 
   const trackProfileView = async (restaurantId: string) => {
     try {
@@ -412,113 +260,46 @@ export const PersonalizedRecommendations = () => {
     }
   };
 
-  // Charger les recommandations une seule fois au montage
+  // Charger les recommandations au montage et sur mise à jour des préférences
   useEffect(() => {
     if (preferences?.id) {
       generateRecommendations();
     }
-  }, [preferences?.id]); // Supprimer generateRecommendations des dépendances
+  }, [preferences?.id, generateRecommendations]);
 
-  // Écouter les mises à jour des préférences - une seule source de vérité
+  // Écouter les événements de mise à jour des préférences
   useEffect(() => {
-    let debounceTimer: NodeJS.Timeout;
-    
     const handlePreferencesUpdate = () => {
-      // Toujours permettre la régénération si on a des préférences
-      if (preferences?.id) {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-          if (!loading) {
-            generateRecommendations();
-          } else {
-            setTimeout(() => {
-              if (preferences?.id && !loading) {
-                generateRecommendations();
-              }
-            }, 1000);
-          }
-        }, 300); // Debounce réduit
+      if (preferences?.id && !loading) {
+        generateRecommendations();
       }
     };
 
     window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
-    
+
     return () => {
-      clearTimeout(debounceTimer);
       window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
     };
-  }, [preferences?.id, loading]); // Inclure preferences?.id dans les dépendances
+  }, [preferences?.id, loading, generateRecommendations]);
 
-  // Synchronisation en temps réel des données avec debouncing
+  // Écouter les mises à jour en temps réel (optionnel)
   useEffect(() => {
-    let debounceTimer: NodeJS.Timeout;
-
-    const debouncedRegenerate = () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        generateRecommendations();
-      }, 500); // 500ms de débounce
-    };
-
-    const restaurantSubscription = supabase
-      .channel('recommendations-restaurants')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'restaurants'
-      }, () => {
-        debouncedRegenerate();
-      })
-      .subscribe();
-
-    const menuSubscription = supabase
-      .channel('recommendations-menus')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'menus'
-      }, () => {
-        debouncedRegenerate();
-      })
-      .subscribe();
-
-    const ratingsSubscription = supabase
-      .channel('recommendations-ratings')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'comments'
-      }, async (payload: any) => {
-        const restaurantId = payload.new?.restaurant_id || payload.old?.restaurant_id;
-        if (restaurantId) {
-          await updateRestaurantRating(restaurantId);
-          debouncedRegenerate();
+    const subscription = supabase
+      .channel('recommendations_updates')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'restaurants' },
+        () => {
+          if (preferences?.id && !loading) {
+            setTimeout(() => generateRecommendations(), 1000);
+          }
         }
-      })
+      )
       .subscribe();
 
     return () => {
-      clearTimeout(debounceTimer);
-      supabase.removeChannel(restaurantSubscription);
-      supabase.removeChannel(menuSubscription);
-      supabase.removeChannel(ratingsSubscription);
+      supabase.removeChannel(subscription);
     };
-  }, []);
-
-  const loadRestaurantRatings = async (restaurants: any[]) => {
-    const ratingsPromises = restaurants.map(async (restaurant) => {
-      const ratingData = await getRealRating(restaurant.id);
-      return { id: restaurant.id, ...ratingData };
-    });
-
-    const allRatings = await Promise.all(ratingsPromises);
-    const ratingsMap = allRatings.reduce((acc, rating) => {
-      acc[rating.id] = { rating: rating.rating, totalRatings: rating.totalRatings };
-      return acc;
-    }, {} as Record<string, { rating: number | null; totalRatings: number }>);
-
-    setRestaurantRatings(ratingsMap);
-  };
+  }, [preferences?.id, loading, generateRecommendations]);
 
   if (loading) {
     return (
@@ -617,12 +398,12 @@ export const PersonalizedRecommendations = () => {
                     </p>
                   </div>
                 </div>
-                 <div className="hidden md:flex gap-2">
-                   <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
-                     <Filter className="h-4 w-4 mr-0.5" />
-            <h3 className="text-lg font-semibold mb-1">{t('recommendations.filters')}</h3>
-                   </Button>
-                 </div>
+                <div className="hidden md:flex gap-2">
+                  <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
+                    <Filter className="h-4 w-4 mr-0.5" />
+                    {t('recommendations.filters')}
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -687,68 +468,66 @@ export const PersonalizedRecommendations = () => {
                       </div>
                     </div>
 
-            <div className="flex items-center text-sm pt-2">
-              {(() => {
-                const currentRating = restaurantRatings[restaurant.id];
-                const hasRating = currentRating && currentRating.totalRatings > 0 && currentRating.rating !== null && currentRating.rating > 0;
-                
-                if (hasRating) {
-                  return (
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-medium text-xs">
-                        {currentRating.rating} ({currentRating.totalRatings} {currentRating.totalRatings > 1 ? t('recommendations.evaluations') : t('recommendations.evaluation')})
-                      </span>
+                    <div className="flex items-center text-sm pt-2">
+                      {(() => {
+                        const hasRating = restaurant.totalRatings && restaurant.totalRatings > 0 && restaurant.rating !== null && restaurant.rating > 0;
+                        
+                        if (hasRating) {
+                          return (
+                            <div className="flex items-center space-x-1">
+                              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                              <span className="font-medium text-xs">
+                                {restaurant.rating} ({restaurant.totalRatings} {restaurant.totalRatings > 1 ? t('recommendations.evaluations') : t('recommendations.evaluation')})
+                              </span>
+                            </div>
+                          );
+                        } else {
+                          return <span className="text-xs text-muted-foreground">{t('recommendations.noRatingsYet')}</span>;
+                        }
+                      })()}
                     </div>
-                  );
-                } else {
-                  return <span className="text-xs text-muted-foreground">{t('recommendations.noRatingsYet')}</span>;
-                }
-              })()}
-            </div>
                   </CardHeader>
 
-                   <CardContent className="space-y-4">
-                       <div className="grid grid-cols-3 gap-2">
-                         {restaurant.cuisine_type?.map((cuisine, idx) => {
-                           const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
-                           return (
-                             <Badge 
-                               key={idx} 
-                               variant={isPreferred ? "default" : "outline"}
-                               className={`text-xs text-center justify-center flex items-center gap-1 ${
-                                 isPreferred
-                                   ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
-                                   : 'bg-muted/50 text-muted-foreground border-muted'
-                               }`}
-                             >
-                               {isPreferred && <span className="text-xs">★</span>}
-                               <span>{getCuisineTranslation(cuisine)}</span>
-                             </Badge>
-                           );
-                         })}
-                       </div>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-3 gap-2">
+                      {restaurant.cuisine_type?.slice(0, 3).map((cuisine, idx) => {
+                        const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
+                        return (
+                          <Badge 
+                            key={idx} 
+                            variant={isPreferred ? "default" : "outline"}
+                            className={`text-xs text-center justify-center flex items-center gap-1 ${
+                              isPreferred
+                                ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
+                                : 'bg-muted/50 text-muted-foreground border-muted'
+                            }`}
+                          >
+                            {isPreferred && <span className="text-xs">★</span>}
+                            <span>{getCuisineTranslation(cuisine)}</span>
+                          </Badge>
+                        );
+                      })}
+                    </div>
 
-                     {restaurant.reasons && restaurant.reasons.length > 0 && (
-                       <div className="bg-muted/50 rounded-lg p-3">
-          <h4 className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-            <Sparkles className="h-3 w-3" />
-            {t('recommendations.whyChoice')}
-          </h4>
-                         <div className="flex flex-wrap gap-1">
-                           {restaurant.reasons.slice(0, 2).map((reason, idx) => (
-                             <Badge 
-                               key={idx} 
-                               variant="secondary" 
-                               className="text-xs bg-background/80"
-                             >
-                               {reason}
-                             </Badge>
-                           ))}
-                         </div>
-                       </div>
-                     )}
-
+                    {restaurant.reasons && restaurant.reasons.length > 0 && (
+                      <div className="bg-muted/50 rounded-lg p-3">
+                        <h4 className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
+                          <Sparkles className="h-3 w-3" />
+                          {t('recommendations.whyChoice')}
+                        </h4>
+                        <div className="flex flex-wrap gap-1">
+                          {restaurant.reasons.slice(0, 2).map((reason, idx) => (
+                            <Badge 
+                              key={idx} 
+                              variant="secondary" 
+                              className="text-xs bg-background/80"
+                            >
+                              {reason}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     <Button 
                       className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
@@ -767,27 +546,27 @@ export const PersonalizedRecommendations = () => {
               ))}
             </div>
 
-             <div className="md:hidden text-center flex gap-2 justify-center flex-wrap">
-               <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
-                 <Filter className="h-4 w-4 mr-0.5" />
-                 {t('recommendations.filters')}
-               </Button>
-             </div>
+            <div className="md:hidden text-center flex gap-2 justify-center flex-wrap">
+              <Button variant="outline" size="sm" className="group" onClick={() => setShowFilters(true)}>
+                <Filter className="h-4 w-4 mr-0.5" />
+                {t('recommendations.filters')}
+              </Button>
+            </div>
           </div>
         ))}
       </div>
 
-       <RestaurantMenuModal 
-         open={showRestaurantModal}
-         onOpenChange={setShowRestaurantModal}
-         restaurant={selectedRestaurant}
-       />
-       
-       <RestaurantFiltersModal 
-         open={showFilters}
-         onOpenChange={setShowFilters}
-         onApplyFilters={handleApplyFilters}
-       />
+      <RestaurantMenuModal 
+        open={showRestaurantModal}
+        onOpenChange={setShowRestaurantModal}
+        restaurant={selectedRestaurant}
+      />
+      
+      <RestaurantFiltersModal 
+        open={showFilters}
+        onOpenChange={setShowFilters}
+        onApplyFilters={handleApplyFilters}
+      />
     </section>
   );
 };
