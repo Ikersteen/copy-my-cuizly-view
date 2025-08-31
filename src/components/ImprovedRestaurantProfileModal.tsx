@@ -311,7 +311,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.href = '/';
+    window.location.reload(); // Reload pour retourner à l'état non connecté
   };
 
   const handleDeleteAccount = async () => {
@@ -331,7 +331,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       });
       
       await supabase.auth.signOut();
-      window.location.href = '/';
+      window.location.reload(); // Reload pour retourner à l'état non connecté
     } catch (error) {
       console.error('Error deleting account:', error);
       toast({

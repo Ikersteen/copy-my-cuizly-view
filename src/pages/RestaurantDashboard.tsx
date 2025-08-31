@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import type { User } from "@supabase/supabase-js";
+import { useNavigate } from "react-router-dom";
 
 interface Restaurant {
   id: string;
@@ -49,6 +50,7 @@ const RestaurantDashboard = () => {
   const { toast } = useToast();
   const { profile, updateProfile } = useProfile();
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadData();
@@ -70,14 +72,14 @@ const RestaurantDashboard = () => {
       
       if (sessionError) {
         console.error('Session error:', sessionError);
-        // Redirect to auth if session is invalid
-        window.location.href = '/auth';
+        // Redirection avec navigate
+        navigate('/auth');
         return;
       }
 
       if (!session?.user) {
         console.warn('No valid session found');
-        window.location.href = '/auth';
+        navigate('/auth');
         return;
       }
 
@@ -182,7 +184,7 @@ const RestaurantDashboard = () => {
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      window.location.href = '/';
+      navigate('/');
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
     }

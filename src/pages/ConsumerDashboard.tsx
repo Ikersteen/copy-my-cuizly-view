@@ -14,6 +14,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useProfile } from "@/hooks/useProfile";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
@@ -43,6 +44,8 @@ const ConsumerDashboard = () => {
   const { offers: fastOffers } = useOffers('fast');
   const { offers: promotionOffers } = useOffers('promotion');
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const navigate = useNavigate();
+  
   const { toast } = useToast();
   const { t } = useTranslation();
 
@@ -136,17 +139,15 @@ const ConsumerDashboard = () => {
       // Clear user state
       setUser(null);
       
-      // Force redirect to home
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 100);
+      // Redirection avec navigate au lieu de window.location.href
+      navigate("/");
     } catch (error) {
       console.error('Error logging out:', error);
-      // Force logout even on error
+      // Force logout même en cas d'erreur
       localStorage.clear();
       sessionStorage.clear();
       setUser(null);
-      window.location.href = "/";
+      navigate("/");
     }
   };
 

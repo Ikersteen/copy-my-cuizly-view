@@ -120,10 +120,6 @@ const Footer = () => {
             <Link 
               to="/"
               className="flex items-center space-x-3 group cursor-pointer"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = '/';
-              }}
             >
               <img 
                 src="/lovable-uploads/db9c9936-605a-4c88-aa46-6154a944bb5c.png" 

@@ -62,7 +62,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     loadAnalytics();
     
     // Use polling method directly instead of trying WebSocket first
-    console.log('📊 Setting up polling method for analytics');
+    // Using polling method for analytics
     const intervalId = setInterval(loadAnalytics, 30000);
 
     return () => {
@@ -74,7 +74,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
     if (!restaurantId) return;
 
     try {
-      console.log('Loading analytics for restaurant:', restaurantId);
+      // Loading analytics for restaurant
       
       // Get current week date range for trends calculation
       const now = new Date();
@@ -113,13 +113,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
           .lte('date', lastWeekEnd.toISOString().split('T')[0])
       ]);
 
-      console.log('Raw data retrieved:', {
-        offers: offersData.data,
-        menus: menusData.data,
-        analytics: analyticsData.data,
-        ratings: ratingsData.data,
-        lastWeek: lastWeekData.data
-      });
+      // Processing raw analytics data
 
       if (offersData.error) throw offersData.error;
       if (menusData.error) throw menusData.error;
@@ -166,15 +160,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
         ? ratingsData.data.reduce((sum, rating) => sum + rating.rating, 0) / totalRatings 
         : 0;
 
-      console.log('Calculated metrics:', {
-        totalProfileViews,
-        totalMenuViews,
-        avgRating,
-        totalRatings,
-        currentWeekViews,
-        lastWeekViews,
-        weeklyGrowth
-      });
+      // Analytics metrics calculated successfully
 
       const newAnalytics = {
         totalOffers,
