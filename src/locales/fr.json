@@ -542,21 +542,20 @@
     "preferencesUpdateError": "Impossible de sauvegarder vos préférences",
     "preferencesSavedSuccessfully": "Vos préférences ont été sauvegardées avec succès"
   },
-    "montreal": {
-      "streets": [
-        "Avenue du Mont-Royal", "Rue Sherbrooke", "Boulevard René-Lévesque",
-        "Rue Saint-Denis", "Avenue du Parc", "Boulevard Saint-Laurent",
-        "Rue Crescent", "Rue Peel", "Boulevard Décarie", "Rue Fleury"
-      ],
-      "neighborhoods": [
-        "Ville-Marie", "Le Plateau-Mont-Royal", "Rosemont–La Petite-Patrie",
-        "Mercier–Hochelaga-Maisonneuve", "Villeray–Saint-Michel–Parc-Extension",
-        "Ahuntsic-Cartierville", "Côte-des-Neiges–Notre-Dame-de-Grâce",
-        "Verdun", "Le Sud-Ouest", "Outremont", "LaSalle", "Lachine",
-        "L'Île-Bizard–Sainte-Geneviève", "Pierrefonds-Roxboro",
-        "Montréal-Nord", "Saint-Léonard", "Rivière-des-Prairies–Pointe-aux-Trembles"
-      ]
-    },
+  "montreal": {
+    "streets": [
+      "Avenue du Mont-Royal", "Rue Sherbrooke", "Boulevard René-Lévesque",
+      "Rue Saint-Denis", "Avenue du Parc", "Boulevard Saint-Laurent",
+      "Rue Crescent", "Rue Peel", "Boulevard Décarie", "Rue Fleury"
+    ],
+    "neighborhoods": [
+      "Ville-Marie", "Le Plateau-Mont-Royal", "Rosemont–La Petite-Patrie",
+      "Mercier–Hochelaga-Maisonneuve", "Villeray–Saint-Michel–Parc-Extension",
+      "Ahuntsic-Cartierville", "Côte-des-Neiges–Notre-Dame-de-Grâce",
+      "Verdun", "Le Sud-Ouest", "Outremont", "LaSalle", "Lachine",
+      "L'Île-Bizard–Sainte-Geneviève", "Pierrefonds-Roxboro",
+      "Montréal-Nord", "Saint-Léonard", "Rivière-des-Prairies–Pointe-aux-Trembles"
+    ],
     "placeholder": "Commencez à taper une adresse à Montréal..."
   },
   "auth": {
