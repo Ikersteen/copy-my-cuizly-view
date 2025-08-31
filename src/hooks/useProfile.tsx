@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { RealtimeChannel } from "@supabase/supabase-js";
+import { useTranslation } from 'react-i18next';
 
 export interface UserProfile {
   id?: string;
@@ -17,6 +18,7 @@ export const useProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadProfile();
@@ -123,16 +125,16 @@ export const useProfile = () => {
       console.log('✅ Profile updated successfully:', data);
 
       toast({
-        title: "Profil mis à jour",
-        description: "Vos informations ont été sauvegardées"
+        title: t('toasts.profileUpdated'),
+        description: t('toasts.informationSaved')
       });
       
       return { success: true };
     } catch (error) {
       console.error('❌ updateProfile error:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de sauvegarder le profil",
+        title: t('toasts.error'),
+        description: t('toasts.cannotSaveProfile'),
         variant: "destructive"
       });
       return { success: false, error };

@@ -347,7 +347,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Type de cuisine</Label>
+                  <Label>{t('cuisines.typeLabel')}</Label>
                   <select
                     value={newMenu.cuisine_type}
                     onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
@@ -361,11 +361,11 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     ))}
                   </select>
 
-          <Label>Description *</Label>
+          <Label>{t('cuisines.descriptionLabel')}</Label>
           <Textarea
             value={newMenu.description}
             onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
-            placeholder={t('menus.describeMenu')}
+            placeholder={t('cuisines.describeMenu')}
             className="min-h-[80px]"
             required
           />

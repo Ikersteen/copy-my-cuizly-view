@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export interface CommentWithProfile {
   id: string;
@@ -23,6 +24,7 @@ export const useComments = (restaurantId?: string) => {
   const [averageRating, setAverageRating] = useState(0);
   const [totalComments, setTotalComments] = useState(0);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const fetchComments = async () => {
     if (!restaurantId) return;
@@ -78,8 +80,8 @@ export const useComments = (restaurantId?: string) => {
     } catch (error) {
       console.error('Error fetching comments:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les commentaires",
+        title: t('toasts.error'),
+        description: t('toasts.cannotLoadComments'),
         variant: "destructive",
       });
     } finally {
@@ -111,8 +113,8 @@ export const useComments = (restaurantId?: string) => {
       if (error) throw error;
 
       toast({
-        title: "Commentaire ajouté",
-        description: "Votre commentaire a été publié avec succès",
+        title: t('comments.added'),
+        description: t('comments.addedSuccess'),
       });
 
       fetchComments(); // Refresh the comments
@@ -120,8 +122,8 @@ export const useComments = (restaurantId?: string) => {
     } catch (error) {
       console.error('Error adding comment:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'ajouter le commentaire",
+        title: t('toasts.error'),
+        description: t('toasts.cannotAddComment'),
         variant: "destructive",
       });
       return false;

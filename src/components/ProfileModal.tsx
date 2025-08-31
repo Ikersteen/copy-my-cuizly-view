@@ -90,8 +90,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     } catch (error) {
       console.error('Error loading user session:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger la session utilisateur",
+        title: t('errors.title'),
+        description: t('errors.loadSession'),
         variant: "destructive"
       });
     }
@@ -133,8 +133,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     if (!user) {
       console.error('❌ No user found in session');
       toast({
-        title: "Erreur",
-        description: "Session utilisateur introuvable",
+        title: t('errors.title'),
+        description: t('errors.sessionNotFound'),
         variant: "destructive"
       });
       return;
@@ -144,8 +144,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     if (!validateForm()) {
       console.error('❌ Form validation failed');
       toast({
-        title: "Erreur de validation",
-        description: "Veuillez corriger les erreurs avant de sauvegarder",
+        title: t('errors.validation'),
+        description: t('errors.correctErrors'),
         variant: "destructive"
       });
       return;
@@ -195,8 +195,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       }
       
       toast({
-        title: "Déconnexion réussie",
-        description: "À bientôt sur Cuizly !"
+        title: t('profile.logoutSuccess'),
+        description: t('profile.seeYouSoon')
       });
       
       // Fermer le modal et rediriger vers l'accueil
@@ -219,8 +219,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const handleDeleteAccount = async () => {
     if (deleteConfirmation !== t('profile.deleteConfirmationPhrase')) {
       toast({
-        title: "Erreur",
-        description: `Veuillez taper exactement '${t('profile.deleteConfirmationPhrase')}' pour confirmer`,
+        title: t('errors.title'),
+        description: `${t('profile.typeExactly')} '${t('profile.deleteConfirmationPhrase')}' ${t('profile.toConfirm')}`,
         variant: "destructive"
       });
       return;
@@ -241,8 +241,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       }
       
       toast({
-        title: "Demande de suppression enregistrée",
-        description: "Votre compte sera automatiquement supprimé dans 30 jours. Vous pouvez vous reconnecter avant cette échéance pour annuler la suppression.",
+        title: t('profile.deleteRequestRegistered'),
+        description: t('profile.accountDeletedIn30Days'),
         duration: 10000
       });
       
@@ -253,8 +253,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     } catch (error) {
       console.error('Error deleting account:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de traiter la demande de suppression",
+        title: t('errors.title'),
+        description: t('errors.cannotProcessDeletion'),
         variant: "destructive"
       });
     } finally {
@@ -267,7 +267,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     const passwordValidation = validatePassword(passwordData.newPassword);
     if (!passwordValidation.isValid) {
       toast({
-        title: "Erreur de mot de passe",
+        title: t('errors.passwordError'),
         description: passwordValidation.error,
         variant: "destructive"
       });
@@ -276,8 +276,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       toast({
-        title: "Erreur",
-        description: "Les mots de passe ne correspondent pas",
+        title: t('errors.title'),
+        description: t('errors.passwordMismatch'),
         variant: "destructive"
       });
       return;
@@ -292,16 +292,16 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       if (error) throw error;
 
       toast({
-        title: "Mot de passe mis à jour",
-        description: "Votre mot de passe a été modifié avec succès"
+        title: t('profile.passwordUpdated'),
+        description: t('profile.passwordUpdatedSuccess')
       });
       setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
       setShowPasswordSection(false);
     } catch (error) {
       console.error('Error updating password:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de changer le mot de passe",
+        title: t('errors.title'),
+        description: t('errors.cannotChangePassword'),
         variant: "destructive"
       });
     } finally {
@@ -313,7 +313,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-hidden p-0 m-4 sm:m-6">
         <DialogHeader className="sr-only">
-          <DialogTitle>Profil utilisateur</DialogTitle>
+          <DialogTitle>{t('profile.userProfile')}</DialogTitle>
         </DialogHeader>
         {/* Header simplifié sans photo de couverture */}
         <div className="p-4 sm:p-6 lg:p-8 pb-2 sm:pb-4">

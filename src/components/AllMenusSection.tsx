@@ -131,15 +131,15 @@ export const AllMenusSection = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <div className="bg-card border rounded-lg p-4 shadow-sm">
-            <h1 className="text-2xl font-bold mb-1">Tous les menus disponibles</h1>
+            <h1 className="text-2xl font-bold mb-1">{t('menus.title')}</h1>
             <p className="text-sm text-muted-foreground">
-              Découvrez les délicieux menus proposés par nos restaurants partenaires
+              {t('menus.subtitle')}
             </p>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center py-12">
           <LoadingSpinner size="lg" />
-          <p className="text-muted-foreground mt-4">Chargement des menus...</p>
+          <p className="text-muted-foreground mt-4">{t('menus.loading')}</p>
         </div>
       </div>
     );
@@ -149,9 +149,9 @@ export const AllMenusSection = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <div className="bg-card border rounded-lg p-4 shadow-sm">
-          <h1 className="text-2xl font-bold mb-1">Tous les menus disponibles</h1>
+          <h1 className="text-2xl font-bold mb-1">{t('menus.title')}</h1>
           <p className="text-sm text-muted-foreground">
-            Découvrez les délicieux menus proposés par nos restaurants partenaires
+            {t('menus.subtitle')}
           </p>
         </div>
       </div>
@@ -160,10 +160,10 @@ export const AllMenusSection = () => {
         <Card>
           <CardContent className="text-center py-12">
             <p className="text-muted-foreground text-lg">
-              Aucun menu disponible
+              {t('menus.noMenus')}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Ce restaurant n'a pas encore ajouté de menus
+              {t('menus.comeBack')}
             </p>
           </CardContent>
         </Card>
@@ -235,7 +235,7 @@ export const AllMenusSection = () => {
                 </div>
 
                 <div className="text-xs text-muted-foreground pt-2">
-                  Ajouté le {new Date(menu.created_at).toLocaleDateString()}
+                  {t('menus.addedOn')} {new Date(menu.created_at).toLocaleDateString()}
                 </div>
               </CardContent>
             </Card>

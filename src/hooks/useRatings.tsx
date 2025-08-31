@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export interface Rating {
   id: string;
@@ -22,6 +23,7 @@ export const useRatings = (restaurantId?: string) => {
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const fetchRatings = async () => {
     if (!restaurantId) return;
@@ -74,8 +76,8 @@ export const useRatings = (restaurantId?: string) => {
     } catch (error) {
       console.error('Error fetching ratings:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les évaluations",
+        title: t('toasts.error'),
+        description: t('toasts.cannotLoadRatings'),
         variant: "destructive",
       });
     } finally {
@@ -102,8 +104,8 @@ export const useRatings = (restaurantId?: string) => {
       if (error) throw error;
 
       toast({
-        title: "Évaluation ajoutée",
-        description: "Merci pour votre évaluation !",
+        title: t('toasts.ratingAdded'),
+        description: t('toasts.thankYouRating'),
       });
 
       fetchRatings(); // Refresh the ratings
@@ -111,8 +113,8 @@ export const useRatings = (restaurantId?: string) => {
     } catch (error) {
       console.error('Error adding rating:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'ajouter l'évaluation",
+        title: t('toasts.error'),
+        description: t('toasts.cannotAddRating'),
         variant: "destructive",
       });
       return false;

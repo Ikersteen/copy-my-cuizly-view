@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 
 export const useFavorites = () => {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Wait a moment for authentication to stabilize then load once
@@ -116,15 +118,15 @@ export const useFavorites = () => {
           });
 
         if (error) throw error;
-        toast({ title: "Ajouté aux favoris" });
+        toast({ title: t('favorites.added') });
       }
     } catch (error) {
       console.error('Error toggling favorite:', error);
       // ❌ En cas d'erreur, revenir à l'état précédent
       loadFavorites();
       toast({
-        title: "Erreur",
-        description: "Impossible de modifier les favoris",
+        title: t('toasts.error'),
+        description: t('toasts.cannotModifyFavorites'),
         variant: "destructive"
       });
     }

@@ -36,6 +36,7 @@ export const useUserPreferences = () => {
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const initPreferences = async () => {
@@ -203,14 +204,14 @@ export const useUserPreferences = () => {
       }));
       
       toast({
-        title: "Préférences mises à jour",
-        description: "Vos préférences ont été sauvegardées avec succès"
+        title: t('toasts.preferencesUpdated'),
+        description: t('toasts.preferencesSavedSuccessfully')
       });
     } catch (error) {
       console.error('Erreur lors de la mise à jour:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de sauvegarder vos préférences",
+        title: t('toasts.error'),
+        description: t('toasts.preferencesUpdateError'),
         variant: "destructive"
       });
     }
