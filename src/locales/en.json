@@ -1220,7 +1220,6 @@
     "restaurantAvailable": "Available restaurant",
     "exploreNewTastes": "Explore new tastes",
     "whyThisChoice": "Why this choice?",
-    "whyChoice": "Why this choice?",
     "viewProfile": "View profile",
     "filters": "Filters",
     "noRecommendationsDesc": "We couldn't find any restaurants that exactly match your current preferences.",
@@ -1229,8 +1228,6 @@
     "refreshRecommendations": "Refresh recommendations",
     "evaluations": "ratings",
     "evaluation": "rating",
-    "whyChoice": "Why this choice?",
-    "viewProfile": "View profile",
     "noRatingsYet": "No ratings yet",
     "noConnection": "No internet connection",
     "generationError": "Error generating recommendations"
