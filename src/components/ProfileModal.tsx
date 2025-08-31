@@ -8,7 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Trash2, User as UserIcon } from "lucide-react";
+import { LogOut, Trash2, User as UserIcon, Camera, Upload, X } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 import { validateTextInput, validatePhone, validatePassword, INPUT_LIMITS } from "@/lib/validation";
@@ -29,6 +29,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     phone: "",
     username: "",
     chef_emoji_color: "👋",
+    avatar_url: "",
     notifications: {
       push: false,
       email: false
@@ -45,6 +46,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const [showDeleteSection, setShowDeleteSection] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [uploading, setUploading] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -73,6 +76,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         phone: profile.phone || "",
         username: profile.username || "",
         chef_emoji_color: profile.chef_emoji_color || "👋",
+        avatar_url: profile.avatar_url || "",
         notifications: {
           push: false,
           email: false
@@ -160,7 +164,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         last_name: localProfile.last_name ? validateTextInput(localProfile.last_name, INPUT_LIMITS.NAME).sanitized : localProfile.last_name,
         phone: localProfile.phone ? validateTextInput(localProfile.phone, INPUT_LIMITS.PHONE).sanitized : localProfile.phone,
         username: localProfile.username,
-        chef_emoji_color: localProfile.chef_emoji_color
+        chef_emoji_color: localProfile.chef_emoji_color,
+        avatar_url: localProfile.avatar_url
       };
 
       console.log('🧹 Sanitized profile:', sanitizedProfile);
@@ -309,18 +314,131 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     }
   };
 
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: t('errors.title'),
+        description: t('profile.selectValidImage'),
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: t('errors.title'),
+        description: t('profile.imageTooLarge'),
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/avatar-${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      setLocalProfile(prev => ({ ...prev, avatar_url: data.publicUrl }));
+      
+      toast({
+        title: t('profile.avatarUpdated'),
+        description: t('profile.avatarUploadSuccess')
+      });
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      toast({
+        title: t('errors.title'),
+        description: t('profile.cannotUploadAvatar'),
+        variant: "destructive"
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveAvatar = () => {
+    setLocalProfile(prev => ({ ...prev, avatar_url: "" }));
+    toast({
+      title: t('profile.avatarRemoved'),
+      description: t('profile.avatarRemovedSuccess')
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-hidden p-0 m-4 sm:m-6">
         <DialogHeader className="sr-only">
           <DialogTitle>{t('profile.userProfile')}</DialogTitle>
         </DialogHeader>
-        {/* Header simplifié sans photo de couverture */}
+        {/* Header avec avatar */}
         <div className="p-4 sm:p-6 lg:p-8 pb-2 sm:pb-4">
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary rounded-full flex items-center justify-center text-2xl sm:text-3xl font-bold text-primary-foreground border-4 border-background shadow-lg">
-              {(localProfile.username || user?.email?.split('@')[0] || 'U').charAt(0).toUpperCase()}
+            <div className="relative">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-4 border-background shadow-lg bg-muted">
+                {localProfile.avatar_url ? (
+                  <img 
+                    src={localProfile.avatar_url} 
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-primary flex items-center justify-center text-2xl sm:text-3xl font-bold text-primary-foreground">
+                    {localProfile.chef_emoji_color || (localProfile.username || user?.email?.split('@')[0] || 'U').charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </div>
+              
+              {/* Avatar Controls */}
+              <div className="absolute -bottom-2 -right-2 flex gap-1">
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  className="hidden"
+                />
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="h-8 w-8 p-0 rounded-full"
+                  onClick={() => avatarInputRef.current?.click()}
+                  disabled={uploading}
+                >
+                  {uploading ? (
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent animate-spin rounded-full" />
+                  ) : (
+                    <Camera className="h-4 w-4" />
+                  )}
+                </Button>
+                
+                {localProfile.avatar_url && (
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    className="h-8 w-8 p-0 rounded-full"
+                    onClick={handleRemoveAvatar}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
+            
             <div className="text-center sm:text-left">
               <h1 className="text-xl sm:text-2xl font-bold text-foreground">
                 {localProfile.first_name} {localProfile.last_name}

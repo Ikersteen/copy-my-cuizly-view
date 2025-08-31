@@ -12,6 +12,7 @@ export interface UserProfile {
   phone?: string;
   username?: string;
   chef_emoji_color?: string;
+  avatar_url?: string;
 }
 
 export const useProfile = () => {
