@@ -19,7 +19,7 @@ import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
-import { PersonalizedRecommendations } from "@/components/PersonalizedRecommendations";
+import { RecommendationCardsSection } from "@/components/RecommendationCardsSection";
 import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
@@ -239,7 +239,7 @@ const ConsumerDashboard = () => {
           </TabsList>
 
           <TabsContent value="recommendations" className="space-y-2 mt-2">
-            <PersonalizedRecommendations />
+            <RecommendationCardsSection />
           </TabsContent>
 
           <TabsContent value="favorites" className="space-y-2 mt-2">
