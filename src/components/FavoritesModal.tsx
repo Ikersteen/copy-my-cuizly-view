@@ -5,10 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Star, MapPin } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { supabase } from "@/integrations/supabase/client";
-import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
-import { useState, useEffect } from "react";
+import { RestaurantMenuModal } from "./RestaurantMenuModal";
 import { useTranslation } from 'react-i18next';
+import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useState, useEffect } from "react";
 
 interface FavoritesModalProps {
   open: boolean;
@@ -129,11 +130,11 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex flex-wrap gap-1">
-                      {restaurant.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          {cuisine}
-                        </Badge>
-                      ))}
+                       {restaurant.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
+                         <Badge key={idx} variant="outline" className="text-xs">
+                           {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
+                         </Badge>
+                       ))}
                     </div>
                     <Badge variant="secondary">{restaurant.price_range}</Badge>
                   </div>

@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Star, MapPin, ChefHat, Filter, Heart, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useFavorites } from "@/hooks/useFavorites";
-import { RestaurantMenuModal } from "@/components/RestaurantMenuModal";
-import { RestaurantFiltersModal, RestaurantFilterOptions } from "@/components/RestaurantFiltersModal";
-import { useTranslation } from "react-i18next";
-import { useLanguage } from '@/hooks/useLanguage';
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import LoadingSpinner from "./LoadingSpinner";
+import { RestaurantMenuModal } from "./RestaurantMenuModal";
+import { RestaurantFiltersModal, RestaurantFilterOptions } from "./RestaurantFiltersModal";
+import { useTranslation } from 'react-i18next';
+import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface Restaurant {
   id: string;
@@ -31,7 +32,7 @@ export const RecommendationCardsSection = () => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { preferences } = useUserPreferences();
-  const { toggleFavorite, isFavorite } = useFavorites();
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const [recommendedRestaurants, setRecommendedRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
@@ -409,7 +410,7 @@ export const RecommendationCardsSection = () => {
                         }`}
                       >
                         {isPreferred && <span className="text-xs">★</span>}
-                        <span>{cuisine}</span>
+                        <span>{CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}</span>
                       </Badge>
                     );
                   })}
