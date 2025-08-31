@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Star, ArrowRight, MapPin, Sparkles } from "lucide-react";
+import { Heart, Star, ArrowRight, MapPin } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { supabase } from "@/integrations/supabase/client";
@@ -35,33 +35,6 @@ export const SavedFavoritesSection = () => {
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
-  // Generate short, consistent reasons for favorite restaurants
-  const generateFavoriteReasons = (restaurant: Restaurant) => {
-    const reasons: string[] = [];
-
-    // Price range match (priority 1)
-    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push("Dans votre budget");
-    }
-
-    // Cuisine preferences match (priority 2)
-    if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
-      const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
-        preferences.cuisine_preferences.includes(cuisine)
-      ) || [];
-      if (matchingCuisines.length > 0) {
-        reasons.push("Cuisine appréciée");
-      }
-    }
-
-    // Default if no specific matches
-    if (reasons.length === 0) {
-      reasons.push("Près de vous");
-    }
-
-    // Limit to maximum 2 reasons for consistency
-    return reasons.slice(0, 2);
-  };
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
     try {
@@ -169,16 +142,12 @@ export const SavedFavoritesSection = () => {
       
       if (error) throw error;
       
-      // Filtrer les restaurants qui sont dans les favoris et forcer la régénération des raisons
+      // Filtrer les restaurants qui sont dans les favoris
       const favoriteRestaurantsData = data?.filter(restaurant => 
         favorites.includes(restaurant.id)
-      ).map(restaurant => ({
-        ...restaurant,
-        // Force regeneration of reasons with new consistent format
-        reasons: generateFavoriteReasons(restaurant)
-      })) || [];
+      ) || [];
       
-      console.log('✅ Loaded favorite restaurants with fresh reasons:', favoriteRestaurantsData);
+      console.log('✅ Loaded favorite restaurants:', favoriteRestaurantsData);
       setFavoriteRestaurants(favoriteRestaurantsData);
       
       // Charger les évaluations pour ces restaurants
@@ -350,28 +319,6 @@ export const SavedFavoritesSection = () => {
                   })}
                 </div>
 
-                {(() => {
-                  const reasons = generateFavoriteReasons(restaurant);
-                  return reasons.length > 0 && (
-                    <div className="bg-muted/50 rounded-lg p-3">
-                       <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-                         <Sparkles className="h-3 w-3" />
-                         {t('favorites.whyThisChoice')}
-                       </p>
-                      <div className="flex flex-wrap gap-1">
-                        {reasons.slice(0, 2).map((reason, idx) => (
-                          <Badge 
-                            key={idx} 
-                            variant="secondary" 
-                            className="text-xs bg-background/80"
-                          >
-                            {reason}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })()}
 
                 <Button 
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
