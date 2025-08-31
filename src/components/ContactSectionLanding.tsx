@@ -41,20 +41,20 @@ const ContactSectionLanding = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName" className="text-sm">{t('contact.form.firstName')}</Label>
-                      <Input id="firstName" name="firstName" placeholder={t('contact.form.firstNamePlaceholder')} required />
+                      <Input id="firstName" name="firstName" placeholder={t('contact.form.firstNamePlaceholder')} autoComplete="off" required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName" className="text-sm">{t('contact.form.lastName')}</Label>
-                      <Input id="lastName" name="lastName" placeholder={t('contact.form.lastNamePlaceholder')} required />
+                      <Input id="lastName" name="lastName" placeholder={t('contact.form.lastNamePlaceholder')} autoComplete="off" required />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm">{t('contact.form.email')}</Label>
-                    <Input id="email" name="email" type="email" placeholder={t('contact.form.emailPlaceholder')} required />
+                    <Input id="email" name="email" type="email" placeholder={t('contact.form.emailPlaceholder')} autoComplete="off" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="subject" className="text-sm">{t('contact.form.subject')}</Label>
-                    <Input id="subject" name="subject" placeholder={t('contact.form.subjectPlaceholder')} required />
+                    <Input id="subject" name="subject" placeholder={t('contact.form.subjectPlaceholder')} autoComplete="off" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="message" className="text-sm">{t('contact.form.message')}</Label>
