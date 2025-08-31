@@ -71,11 +71,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
   ];
 
   useEffect(() => {
-    if (restaurant && restaurant.id !== formData.id) {
-      setFormData({...restaurant});
-      loadChefEmoji();
+    if (restaurant && open) {
+      // Only update formData if we don't have unsaved changes or it's a different restaurant
+      const hasUnsavedChanges = JSON.stringify(formData) !== JSON.stringify(restaurant);
+      if (!hasUnsavedChanges || restaurant.id !== formData.id) {
+        setFormData({...restaurant});
+        loadChefEmoji();
+      }
     }
-  }, [restaurant?.id]);
+  }, [restaurant?.id, open]);
 
   const loadChefEmoji = async () => {
     try {
@@ -138,7 +142,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('No session');
+      if (!session || !restaurant) throw new Error('No session or restaurant');
 
       // Convert base64 to blob
       const base64Data = adjustedImageData.split(',')[1];
@@ -165,16 +169,35 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       const imageUrl = data.publicUrl;
       console.log('Image uploaded successfully:', imageUrl);
 
+      // Update formData
       if (adjustmentType === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: imageUrl }));
       } else {
         setFormData(prev => ({ ...prev, logo_url: imageUrl }));
       }
       
-      toast({
-        title: t('restaurantProfile.profileUpdated'),
-        description: t('restaurantProfile.profileUpdatedDesc')
-      });
+      // Auto-save the image to database immediately
+      const updateField = adjustmentType === 'cover' ? 'cover_image_url' : 'logo_url';
+      const { error: dbError } = await supabase
+        .from('restaurants')
+        .update({ [updateField]: imageUrl })
+        .eq('id', restaurant.id);
+
+      if (dbError) {
+        console.error('Error saving image to database:', dbError);
+        toast({
+          title: t('restaurantProfile.error'),
+          description: t('restaurantProfile.cannotSave'),
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: t('restaurantProfile.profileUpdated'),
+          description: adjustmentType === 'cover' ? t('restaurantProfile.coverUpdated') : t('restaurantProfile.logoUpdated')
+        });
+        // Trigger parent component update
+        onUpdate();
+      }
     } catch (error) {
       console.error('Error uploading file:', error);
       toast({
@@ -188,19 +211,52 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       } else {
         setUploading(false);
       }
+      setShowPhotoAdjustment(false);
     }
   };
 
-  const handleRemovePhoto = (type: 'logo' | 'cover') => {
-    if (type === 'cover') {
-      setFormData(prev => ({ ...prev, cover_image_url: null }));
-    } else {
-      setFormData(prev => ({ ...prev, logo_url: null }));
+  const handleRemovePhoto = async (type: 'logo' | 'cover') => {
+    if (!restaurant) return;
+    
+    try {
+      // Update formData immediately for UI
+      if (type === 'cover') {
+        setFormData(prev => ({ ...prev, cover_image_url: null }));
+      } else {
+        setFormData(prev => ({ ...prev, logo_url: null }));
+      }
+      
+      // Auto-save the removal to database
+      const updateField = type === 'cover' ? 'cover_image_url' : 'logo_url';
+      const { error } = await supabase
+        .from('restaurants')
+        .update({ [updateField]: null })
+        .eq('id', restaurant.id);
+
+      if (error) {
+        console.error('Error removing image from database:', error);
+        toast({
+          title: t('restaurantProfile.error'),
+          description: t('restaurantProfile.cannotSave'),
+          variant: "destructive"
+        });
+        // Revert the change on error
+        if (type === 'cover') {
+          setFormData(prev => ({ ...prev, cover_image_url: restaurant.cover_image_url }));
+        } else {
+          setFormData(prev => ({ ...prev, logo_url: restaurant.logo_url }));
+        }
+      } else {
+        toast({
+          title: t('restaurantProfile.profileUpdated'),
+          description: type === 'cover' ? t('restaurantProfile.coverRemoved') : t('restaurantProfile.logoRemoved')
+        });
+        // Trigger parent component update
+        onUpdate();
+      }
+    } catch (error) {
+      console.error('Error removing photo:', error);
     }
-    toast({
-      title: t('restaurantProfile.profileUpdated'),
-      description: t('restaurantProfile.profileUpdatedDesc')
-    });
   };
 
   const handleChefEmojiChange = async (emoji: string) => {
