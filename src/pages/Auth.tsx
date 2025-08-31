@@ -16,6 +16,7 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useEmailNotifications } from "@/hooks/useEmailNotifications";
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useDataPersistence } from "@/hooks/useDataPersistence";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +32,7 @@ const Auth = () => {
   const { sendWelcomeEmail } = useEmailNotifications();
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { restoreDataAfterAuth } = useDataPersistence();
 
   // Check URL parameters to set user type and active tab
   useEffect(() => {
@@ -107,6 +109,12 @@ const Auth = () => {
             }
 
             console.log("🟢 [Auth State Change] Redirection vers /dashboard");
+            
+            // Restore temporary data after successful authentication
+            setTimeout(() => {
+              restoreDataAfterAuth();
+            }, 500);
+            
             navigate('/dashboard');
           } catch (error) {
             console.error("🔴 [Auth State Change] Erreur dans la gestion de la connexion:", error);
@@ -133,6 +141,12 @@ const Auth = () => {
         
         if (session) {
           console.log("🟢 [Auth Effect] Session trouvée, redirection vers /dashboard");
+          
+          // Restore temporary data
+          setTimeout(() => {
+            restoreDataAfterAuth();
+          }, 500);
+          
           navigate('/dashboard');
         }
       } catch (error) {

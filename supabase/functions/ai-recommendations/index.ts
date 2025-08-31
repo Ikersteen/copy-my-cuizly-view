@@ -90,11 +90,11 @@ serve(async (req) => {
 
     // Log pour analytics
     if (userId) {
-      await logRecommendationInteraction(userId, sortedRestaurants.slice(0, 6));
+      await logRecommendationInteraction(userId, sortedRestaurants.slice(0, 7));
     }
 
     return new Response(JSON.stringify({
-      recommendations: sortedRestaurants.slice(0, 6),
+      recommendations: sortedRestaurants.slice(0, 7),
       total_analyzed: restaurants.length,
       ai_powered: true
     }), {

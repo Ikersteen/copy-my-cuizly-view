@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useDataPersistence } from "./useDataPersistence";
 
 export interface UserPreferences {
   id?: string;
@@ -38,6 +39,26 @@ export const useUserPreferences = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { saveTemporaryData, restoreDataAfterAuth } = useDataPersistence();
+
+  // Listen for data restoration after auth
+  useEffect(() => {
+    const handleRestorePreferences = (event: CustomEvent) => {
+      console.log('🔄 Restauration des préférences:', event.detail);
+      if (event.detail && preferences) {
+        const restoredPrefs = { ...preferences, ...event.detail };
+        setPreferences(restoredPrefs);
+        // Persist to database if user is authenticated
+        updatePreferences(event.detail);
+      }
+    };
+    
+    window.addEventListener('restorePreferences', handleRestorePreferences as EventListener);
+    
+    return () => {
+      window.removeEventListener('restorePreferences', handleRestorePreferences as EventListener);
+    };
+  }, [preferences]);
 
   useEffect(() => {
     const initPreferences = async () => {
@@ -169,11 +190,28 @@ export const useUserPreferences = () => {
   };
 
   const updatePreferences = async (updates: Partial<UserPreferences>) => {
-    if (!preferences?.id) return;
-
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      
+      if (!session) {
+        // Si pas connecté, sauvegarder temporairement
+        console.log('👤 Utilisateur non connecté, sauvegarde temporaire des préférences');
+        saveTemporaryData({ preferences: { ...preferences, ...updates } });
+        
+        // Update local state
+        if (preferences) {
+          const newPreferences = { ...preferences, ...updates };
+          setPreferences(newPreferences);
+        }
+        
+        toast({
+          title: t('toasts.preferencesUpdated'),
+          description: "Préférences sauvegardées temporairement",
+        });
+        return;
+      }
+
+      if (!preferences?.id) return;
 
       console.log('Updating preferences with:', updates);
 

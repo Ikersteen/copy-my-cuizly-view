@@ -233,7 +233,7 @@ export const RecommendationCardsSection = () => {
       // Sort by score and take top restaurants
       const topRestaurants = scoredRestaurants
         .sort((a, b) => b.score - a.score)
-        .slice(0, 12); // Limit to 12 restaurants
+        .slice(0, 7); // Limit to 7 restaurants matching user preferences
 
       // Load ratings for recommended restaurants
       const ratingsPromises = topRestaurants.map(async (restaurant) => {
@@ -302,8 +302,8 @@ export const RecommendationCardsSection = () => {
           <div className="flex flex-col items-center justify-center py-12">
             <LoadingSpinner size="lg" />
             <div className="mt-6 text-center">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Sparkles className="h-5 w-5 text-primary animate-pulse flex-shrink-0" />
                 <h2 className="text-lg font-semibold">{t('recommendations.generatingRecommendations')}</h2>
               </div>
               <p className="text-muted-foreground">{t('recommendations.analyzingPreferences')}</p>
