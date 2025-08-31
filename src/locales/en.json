@@ -410,7 +410,11 @@
     "title": "Share your experience with other food lovers",
     "ratingCount": "ratings",
     "placeholder": "Share your experience...",
-    "notAuthenticated": "Not authenticated"
+    "notAuthenticated": "Not authenticated",
+    "publishComment": "Publish Comment",
+    "clientComments": "Client Comments",
+    "added": "Comment added",
+    "addedSuccess": "Your comment has been added successfully"
   },
   "dateRange": {
     "label": "Valid period",

@@ -759,7 +759,11 @@
     "title": "Partagez votre expérience avec d'autres gourmets",
     "ratingCount": "évaluations",
     "placeholder": "Partagez votre expérience...",
-    "notAuthenticated": "Non authentifié"
+    "notAuthenticated": "Non authentifié",
+    "publishComment": "Publier le commentaire",
+    "clientComments": "Commentaires clients",
+    "added": "Commentaire ajouté",
+    "addedSuccess": "Votre commentaire a été ajouté avec succès"
   },
   "dateRange": {
     "label": "Période de validité",
