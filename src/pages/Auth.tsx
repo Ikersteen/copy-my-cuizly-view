@@ -583,7 +583,8 @@ const Auth = () => {
                         type="email"
                         placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="off"
+                        autoComplete="new-password"
+                        autoFocus={false}
                         required
                       />
                     </div>
@@ -599,7 +600,8 @@ const Auth = () => {
                         type={showSignInPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10 pr-10 text-sm"
-                        autoComplete="off"
+                        autoComplete="new-password"
+                        autoFocus={false}
                         required
                       />
                       <button
@@ -722,7 +724,8 @@ const Auth = () => {
                         name="fullName"
                         placeholder={t('auth.form.fullNamePlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="off"
+                        autoComplete="new-password"
+                        autoFocus={false}
                         required
                       />
                     </div>
@@ -738,7 +741,8 @@ const Auth = () => {
                           name="restaurantName"
                           placeholder={t('auth.form.restaurantNamePlaceholder')}
                           className="pl-10 text-sm"
-                          autoComplete="off"
+                          autoComplete="new-password"
+                          autoFocus={false}
                           required={userType === 'restaurant_owner'}
                         />
                       </div>
@@ -755,7 +759,8 @@ const Auth = () => {
                         type="email"
                         placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="off"
+                        autoComplete="new-password"
+                        autoFocus={false}
                         required
                       />
                     </div>
@@ -771,7 +776,8 @@ const Auth = () => {
                         type={showSignUpPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10 pr-10 text-sm"
-                        autoComplete="off"
+                        autoComplete="new-password"
+                        autoFocus={false}
                         required
                       />
                       <button
