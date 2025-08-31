@@ -407,8 +407,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full rounded-full bg-cuizly-surface flex items-center justify-center">
-                    <User className="h-8 w-8 text-cuizly-neutral" />
+                  <div className="w-full h-full rounded-full bg-muted flex items-center justify-center">
+                    <User className="h-8 w-8 text-muted-foreground" />
                   </div>
                 )}
               </div>
