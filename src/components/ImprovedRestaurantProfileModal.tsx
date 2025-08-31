@@ -169,7 +169,19 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       const imageUrl = data.publicUrl;
       console.log('Image uploaded successfully:', imageUrl);
 
-      // Update formData for UI only - no auto-save
+      // Save directly to database
+      const updateData = adjustmentType === 'cover' 
+        ? { cover_image_url: imageUrl }
+        : { logo_url: imageUrl };
+
+      const { error: dbError } = await supabase
+        .from('restaurants')
+        .update(updateData)
+        .eq('id', restaurant.id);
+
+      if (dbError) throw dbError;
+
+      // Update local state
       if (adjustmentType === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: imageUrl }));
       } else {
@@ -180,6 +192,8 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         title: t('restaurantProfile.profileUpdated'),
         description: t('restaurantProfile.profileUpdatedDesc')
       });
+
+      onUpdate(); // Refresh parent component
     } catch (error) {
       console.error('Error uploading file:', error);
       toast({
@@ -201,7 +215,19 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
     if (!restaurant) return;
     
     try {
-      // Update formData for UI only - no auto-save
+      // Save directly to database
+      const updateData = type === 'cover' 
+        ? { cover_image_url: null }
+        : { logo_url: null };
+
+      const { error: dbError } = await supabase
+        .from('restaurants')
+        .update(updateData)
+        .eq('id', restaurant.id);
+
+      if (dbError) throw dbError;
+
+      // Update local state
       if (type === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: null }));
       } else {
@@ -212,8 +238,15 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         title: t('restaurantProfile.profileUpdated'),
         description: t('restaurantProfile.profileUpdatedDesc')
       });
+
+      onUpdate(); // Refresh parent component
     } catch (error) {
       console.error('Error removing photo:', error);
+      toast({
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotSave'),
+        variant: "destructive"
+      });
     }
   };
 
