@@ -238,13 +238,13 @@ export const SavedFavoritesSection = () => {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                     ) : (
-                       <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 border-2 border-primary/20">
-                         <span className="text-primary font-semibold text-lg">
-                           🍽️
-                         </span>
-                       </div>
-                     )}
+                    ) : (
+                      <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 border-2 border-primary/20">
+                        <span className="text-primary font-semibold text-lg">
+                          {restaurant.name.charAt(0)}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-1 mt-1">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
