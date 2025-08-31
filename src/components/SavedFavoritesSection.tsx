@@ -276,28 +276,7 @@ export const SavedFavoritesSection = () => {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-3 gap-2">
-                  {restaurant.cuisine_type?.map((cuisine, idx) => {
-                    const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
-                    return (
-                      <Badge 
-                        key={idx} 
-                        variant={isPreferred ? "default" : "outline"}
-                        className={`text-xs text-center justify-center flex items-center gap-1 ${
-                          isPreferred
-                            ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
-                            : 'bg-muted/50 text-muted-foreground border-muted'
-                        }`}
-                      >
-                         {isPreferred && <span className="text-xs">★</span>}
-                         <span>{CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}</span>
-                      </Badge>
-                    );
-                  })}
-                </div>
-
-
-                <Button 
+                <Button
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
                   size="sm"
                   onClick={() => {
