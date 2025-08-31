@@ -55,26 +55,8 @@ export const useCookieConsent = () => {
     }
   }, []);
 
-  // Listen for user interactions to show banner
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      if (!userInteracted && hasConsented === null) {
-        setUserInteracted(true);
-        setShowBanner(true);
-      }
-    };
-
-    const events = ['click', 'scroll', 'mousemove', 'keydown'];
-    events.forEach(event => {
-      document.addEventListener(event, handleUserInteraction, { once: true });
-    });
-
-    return () => {
-      events.forEach(event => {
-        document.removeEventListener(event, handleUserInteraction);
-      });
-    };
-  }, [hasConsented, userInteracted]);
+  // Removed automatic user interaction detection
+  // Banner will only show when manually triggered
 
   const saveConsentData = (prefs: CookiePreferences) => {
     const consentData: CookieConsentData = {
@@ -124,6 +106,11 @@ export const useCookieConsent = () => {
       analytics: false,
       marketing: false
     });
+    // Don't automatically show banner on reset
+  };
+
+  // Manual function to show banner when needed
+  const showConsentBanner = () => {
     setShowBanner(true);
   };
 
@@ -134,6 +121,7 @@ export const useCookieConsent = () => {
     acceptCookies,
     declineCookies,
     saveCustomPreferences,
-    resetConsent
+    resetConsent,
+    showConsentBanner
   };
 };
