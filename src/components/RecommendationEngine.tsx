@@ -7,6 +7,7 @@ import { UserPreferences } from "@/hooks/useUserPreferences";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "react-i18next";
 
 interface Restaurant {
   id: string;
@@ -42,6 +43,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   const { currentLanguage } = useLanguage();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (preferences) {
@@ -167,7 +169,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
         
         if (distance <= maxRadius / 4) {
           score += 25;
-          if (!reasons.includes("Dans votre quartier")) reasons.push("Très proche");
+          if (!reasons.includes(t('recommendations.inYourNeighborhood'))) reasons.push(t('recommendations.veryClose'));
         } else if (distance <= maxRadius / 2) {
           score += 15;
           reasons.push("Proche de vous");
@@ -244,7 +246,7 @@ export const RecommendationEngine = ({ preferences }: RecommendationEngineProps)
 
       setRecommendations(sortedRestaurants);
     } catch (error) {
-      console.error('Erreur lors de la génération des recommandations:', error);
+      console.error(t('recommendations.generationError'), error);
       setRecommendations([]);
     } finally {
       setLoading(false);

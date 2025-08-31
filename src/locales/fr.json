@@ -364,6 +364,84 @@
     "stable": "Stable",
     "dataCollection": "Collecte de données"
   },
+  "recommendations": {
+    "fallbackError": "Fallback au système traditionnel",
+    "aiGeneratedCount": "Recommandations IA générées:",
+    "aiSystemUnavailable": "Système IA indisponible, utilisation du système traditionnel:",
+    "verifyForAllergies": "À vérifier pour allergies",
+    "excellentlyRated": "Excellemment noté",
+    "veryWellRated": "Très bien noté",
+    "generationError": "Erreur génération recommandations:",
+    "aiRecommends": "IA recommande",
+    "recommendedBecause": "Recommandé car",
+    "inYourNeighborhood": "Dans votre quartier",
+    "veryClose": "Très proche",
+    "confirmedExcellence": "Excellence confirmée",
+    "wellRated": "Bien évalué"
+  },
+  "mission": {
+    "personalized": {
+      "title": "Des recommandations personnalisées grâce à l'IA",
+      "description": "Notre intelligence artificielle analyse vos préférences pour vous suggérer les meilleurs restaurants selon vos goûts."
+    },
+    "ecosystem": {
+      "title": "Un écosystème gagnant-gagnant pour tous",
+      "description": "Les restaurants augmentent leur visibilité et leurs ventes, tandis que les clients découvrent de nouvelles saveurs."
+    },
+    "discovery": {
+      "title": "La découverte culinaire réinventée",
+      "description": "Explorez la scène culinaire montréalaise d'une façon complètement nouvelle et intuitive."
+    }
+  },
+  "ratings": {
+    "published": "Évaluation publiée",
+    "evaluation": "évaluation",
+    "evaluations": "évaluations",
+    "rate": "Évaluer",
+    "modify": "Modifier mon avis",
+    "rateRestaurant": "Évaluer ce restaurant",
+    "modifyRating": "Modifier votre évaluation",
+    "sharePlaceholder": "Partagez votre expérience..."
+  },
+  "favorites": {
+    "removed": "Retiré des favoris",
+    "added": "Ajouté aux favoris",
+    "quickAccess": "Accès rapide"
+  },
+  "profile": {
+    "logoutSuccess": "Déconnexion réussie",
+    "seeYouSoon": "À bientôt sur Cuizly !",
+    "deleteRequestRegistered": "Demande de suppression enregistrée",
+    "accountDeletedIn30Days": "Votre compte sera automatiquement supprimé dans 30 jours. Vous pouvez vous reconnecter avant cette échéance pour annuler la suppression.",
+    "passwordUpdated": "Mot de passe mis à jour",
+    "passwordUpdatedSuccess": "Votre mot de passe a été modifié avec succès"
+  },
+  "comments": {
+    "added": "Commentaire ajouté",
+    "addedSuccess": "Votre commentaire a été publié avec succès"
+  },
+  "menus": {
+    "downloadError": "Erreur lors du téléchargement:",
+    "preview": "Aperçu"
+  },
+  "addresses": {
+    "montreal": {
+      "streets": [
+        "Avenue du Mont-Royal", "Rue Sherbrooke", "Boulevard René-Lévesque",
+        "Rue Saint-Denis", "Avenue du Parc", "Boulevard Saint-Laurent",
+        "Rue Crescent", "Rue Peel", "Boulevard Décarie", "Rue Fleury"
+      ],
+      "neighborhoods": [
+        "Ville-Marie", "Le Plateau-Mont-Royal", "Rosemont–La Petite-Patrie",
+        "Mercier–Hochelaga-Maisonneuve", "Villeray–Saint-Michel–Parc-Extension",
+        "Ahuntsic-Cartierville", "Côte-des-Neiges–Notre-Dame-de-Grâce",
+        "Verdun", "Le Sud-Ouest", "Outremont", "LaSalle", "Lachine",
+        "L'Île-Bizard–Sainte-Geneviève", "Pierrefonds-Roxboro",
+        "Montréal-Nord", "Saint-Léonard", "Rivière-des-Prairies–Pointe-aux-Trembles"
+      ]
+    },
+    "placeholder": "Commencez à taper une adresse à Montréal..."
+  },
   "auth": {
     "title": "Rejoignez Cuizly",
     "subtitle": "Ton prochain coup de cœur culinaire en un swipe",

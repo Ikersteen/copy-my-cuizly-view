@@ -1,24 +1,29 @@
-import { Brain, Users, Search } from "lucide-react";
+import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Sparkles, Users, Search } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const MissionVisionSection = () => {
-  const features = [
+  const { t } = useTranslation();
+
+  const missions = [
     {
-      icon: Brain,
-      title: "Des recommandations personnalisées grâce à l'IA",
-      description: "Notre intelligence artificielle analyse vos préférences pour vous suggérer les meilleurs restaurants selon vos goûts.",
-      color: "text-cuizly-primary"
+      title: t('mission.personalized.title'),
+      description: t('mission.personalized.description'),
+      icon: Sparkles,
+      gradient: "from-purple-500 to-pink-500"
     },
     {
+      title: t('mission.ecosystem.title'),
+      description: t('mission.ecosystem.description'),
       icon: Users,
-      title: "Un écosystème gagnant-gagnant pour tous",
-      description: "Les restaurants augmentent leur visibilité et leurs ventes, tandis que les clients découvrent de nouvelles saveurs.",
-      color: "text-cuizly-accent"
+      gradient: "from-blue-500 to-cyan-500"
     },
     {
+      title: t('mission.discovery.title'),
+      description: t('mission.discovery.description'),
       icon: Search,
-      title: "La découverte culinaire réinventée",
-      description: "Explorez la scène culinaire montréalaise d'une façon complètement nouvelle et intuitive.",
-      color: "text-cuizly-secondary"
+      gradient: "from-green-500 to-emerald-500"
     }
   ];
 
@@ -36,19 +41,19 @@ const MissionVisionSection = () => {
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
-          {features.map((feature, index) => {
-            const IconComponent = feature.icon;
+          {missions.map((mission, index) => {
+            const IconComponent = mission.icon;
             return (
               <div key={index} className="bg-white/5 backdrop-blur-sm border border-cuizly-accent/10 rounded-xl p-6 sm:p-8 hover:shadow-lg transition-all duration-300 hover:border-cuizly-accent/20">
                 <div className="flex flex-col items-center text-center space-y-4">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 bg-cuizly-light/20 rounded-full flex items-center justify-center">
-                    <IconComponent className={`h-6 w-6 sm:h-8 sm:w-8 ${feature.color}`} />
+                    <IconComponent className={`h-6 w-6 sm:h-8 sm:w-8 bg-gradient-to-r ${mission.gradient} bg-clip-text text-transparent`} />
                   </div>
                   <h3 className="text-lg sm:text-xl font-semibold text-cuizly-primary leading-tight">
-                    {feature.title}
+                    {mission.title}
                   </h3>
                   <p className="text-cuizly-neutral leading-relaxed text-sm sm:text-base">
-                    {feature.description}
+                    {mission.description}
                   </p>
                 </div>
               </div>

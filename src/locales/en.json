@@ -428,6 +428,84 @@
     "stable": "Stable",
     "dataCollection": "Data collection"
   },
+  "recommendations": {
+    "fallbackError": "Fallback to traditional system",
+    "aiGeneratedCount": "AI recommendations generated:",
+    "aiSystemUnavailable": "AI system unavailable, using traditional system:",
+    "verifyForAllergies": "Check for allergies",
+    "excellentlyRated": "Excellently rated",
+    "veryWellRated": "Very well rated",
+    "generationError": "Recommendation generation error:",
+    "aiRecommends": "AI recommends",
+    "recommendedBecause": "Recommended because",
+    "inYourNeighborhood": "In your neighborhood",
+    "veryClose": "Very close",
+    "confirmedExcellence": "Confirmed excellence",
+    "wellRated": "Well rated"
+  },
+  "mission": {
+    "personalized": {
+      "title": "Personalized recommendations thanks to AI",
+      "description": "Our artificial intelligence analyzes your preferences to suggest the best restaurants according to your tastes."
+    },
+    "ecosystem": {
+      "title": "A win-win ecosystem for everyone",
+      "description": "Restaurants increase their visibility and sales, while customers discover new flavors."
+    },
+    "discovery": {
+      "title": "Culinary discovery reimagined",
+      "description": "Explore Montreal's culinary scene in a completely new and intuitive way."
+    }
+  },
+  "ratings": {
+    "published": "Rating published",
+    "evaluation": "evaluation",
+    "evaluations": "evaluations", 
+    "rate": "Rate",
+    "modify": "Modify my review",
+    "rateRestaurant": "Rate this restaurant",
+    "modifyRating": "Modify your rating",
+    "sharePlaceholder": "Share your experience..."
+  },
+  "favorites": {
+    "removed": "Removed from favorites",
+    "added": "Added to favorites", 
+    "quickAccess": "Quick access"
+  },
+  "profile": {
+    "logoutSuccess": "Successfully logged out",
+    "seeYouSoon": "See you soon on Cuizly!",
+    "deleteRequestRegistered": "Deletion request registered", 
+    "accountDeletedIn30Days": "Your account will be automatically deleted in 30 days. You can log back in before this deadline to cancel the deletion.",
+    "passwordUpdated": "Password updated",
+    "passwordUpdatedSuccess": "Your password has been successfully changed"
+  },
+  "comments": {
+    "added": "Comment added",
+    "addedSuccess": "Your comment has been published successfully"
+  },
+  "menus": {
+    "downloadError": "Download error:",
+    "preview": "Preview"
+  },
+  "addresses": {
+    "montreal": {
+      "streets": [
+        "Mount Royal Avenue", "Sherbrooke Street", "René-Lévesque Boulevard",
+        "Saint-Denis Street", "Park Avenue", "Saint-Laurent Boulevard", 
+        "Crescent Street", "Peel Street", "Décarie Boulevard", "Fleury Street"
+      ],
+      "neighborhoods": [
+        "Ville-Marie", "Le Plateau-Mont-Royal", "Rosemont–La Petite-Patrie",
+        "Mercier–Hochelaga-Maisonneuve", "Villeray–Saint-Michel–Parc-Extension",
+        "Ahuntsic-Cartierville", "Côte-des-Neiges–Notre-Dame-de-Grâce",
+        "Verdun", "Le Sud-Ouest", "Outremont", "LaSalle", "Lachine",
+        "L'Île-Bizard–Sainte-Geneviève", "Pierrefonds-Roxboro",
+        "Montréal-Nord", "Saint-Léonard", "Rivière-des-Prairies–Pointe-aux-Trembles"
+      ]
+    },
+    "placeholder": "Start typing a Montreal address..."
+  },
   "auth": {
     "title": "Join Cuizly",
     "subtitle": "Your next culinary crush in one swipe",

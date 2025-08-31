@@ -7,6 +7,7 @@ import { useRatings } from '@/hooks/useRatings';
 import { supabase } from '@/integrations/supabase/client';
 import { validateRatingComment } from '@/lib/validation';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface RatingComponentProps {
   restaurantId: string;
@@ -22,6 +23,7 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
   const [userRating, setUserRating] = useState<any>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -62,7 +64,7 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
       const updatedRating = await getUserRating();
       setUserRating(updatedRating);
       toast({
-        title: "Évaluation publiée",
+        title: t('ratings.published'),
         description: "Merci pour votre avis!"
       });
     }
@@ -100,20 +102,20 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
             <span className="font-semibold text-lg">{averageRating.toFixed(1)}</span>
           </div>
           <span className="text-muted-foreground">
-            ({totalRatings} {totalRatings === 1 ? 'évaluation' : 'évaluations'})
+            ({totalRatings} {totalRatings === 1 ? t('ratings.evaluation') : t('ratings.evaluations')})
           </span>
           
           {showAddRating && isAuthenticated && (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" className="ml-auto">
-                  {userRating ? 'Modifier mon avis' : 'Évaluer'}
+                  {userRating ? t('ratings.modify') : t('ratings.rate')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>
-                    {userRating ? 'Modifier votre évaluation' : 'Évaluer ce restaurant'}
+                    {userRating ? t('ratings.modifyRating') : t('ratings.rateRestaurant')}
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">

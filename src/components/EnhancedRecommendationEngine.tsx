@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { RatingComponent } from "@/components/RatingComponent";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
+import { useTranslation } from "react-i18next";
 
 interface Restaurant {
   id: string;
@@ -69,6 +70,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { ratings, addRating } = useRatings();
   const { currentLanguage } = useLanguage();
+  const { t } = useTranslation();
 
   // Fonction pour récupérer la vraie note d'un restaurant
   const getRealRating = async (restaurantId: string): Promise<number | null> => {
@@ -211,16 +213,16 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
 
         if (aiError) {
           console.error('Erreur IA:', aiError);
-          throw new Error('Fallback au système traditionnel');
+          throw new Error(t('recommendations.fallbackError'));
         }
 
         if (aiRecommendations?.recommendations) {
-          console.log('Recommandations IA générées:', aiRecommendations.recommendations.length);
+          console.log(t('recommendations.aiGeneratedCount'), aiRecommendations.recommendations.length);
           setRecommendations(aiRecommendations.recommendations);
           return;
         }
       } catch (aiError) {
-        console.error('Système IA indisponible, utilisation du système traditionnel:', aiError);
+        console.error(t('recommendations.aiSystemUnavailable'), aiError);
       }
 
       // Fallback au système de scoring traditionnel strict
@@ -282,7 +284,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
           // Pour le moment, on accepte avec prudence
           // Dans une version complète, il faudrait vérifier les menus
           hasStrictMatch = true;
-          reasons.push("À vérifier pour allergies");
+          reasons.push(t('recommendations.verifyForAllergies'));
         }
 
         // STRICT: Si aucun match strict n'a été trouvé, exclure le restaurant
@@ -343,7 +345,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
 
       setRecommendations(sortedRestaurants);
     } catch (error) {
-      console.error('Erreur génération recommandations:', error);
+      console.error(t('recommendations.generationError'), error);
       setRecommendations([]);
     } finally {
       setLoading(false);
@@ -513,7 +515,7 @@ export const EnhancedRecommendationEngine = ({ preferences }: EnhancedRecommenda
                 <div className="bg-muted/50 rounded-lg p-3">
                   <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
                     <Sparkles className="h-3 w-3" />
-                    {restaurant.ai_score ? 'IA recommande' : 'Recommandé car'}
+                    {restaurant.ai_score ? t('recommendations.aiRecommends') : t('recommendations.recommendedBecause')}
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {(restaurant.ai_reasons || restaurant.reasons).slice(0, 2).map((reason, idx) => (
