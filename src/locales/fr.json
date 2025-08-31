@@ -362,7 +362,16 @@
     "modify": "Modifier mon avis",
     "rateRestaurant": "Évaluer ce restaurant",
     "modifyRating": "Modifier votre évaluation",
-    "sharePlaceholder": "Partagez votre expérience..."
+    "sharePlaceholder": "Partagez votre expérience...",
+    "invalidComment": "Commentaire invalide",
+    "thankYouFeedback": "Merci pour votre avis !",
+    "rating": "Note",
+    "optionalComment": "Commentaire (optionnel)",
+    "cancel": "Annuler",
+    "inProgress": "En cours...",
+    "publish": "Publier",
+    "customerReviews": "Avis des clients",
+    "anonymousUser": "Utilisateur anonyme"
   },
   "favorites": {
     "removed": "Retiré des favoris",

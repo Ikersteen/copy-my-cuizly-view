@@ -46,7 +46,7 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
     const commentValidation = validateRatingComment(comment);
     if (!commentValidation.isValid) {
       toast({
-        title: "Commentaire invalide",
+        title: t('ratings.invalidComment'),
         description: commentValidation.error,
         variant: "destructive"
       });
@@ -65,7 +65,7 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
       setUserRating(updatedRating);
       toast({
         title: t('ratings.published'),
-        description: "Merci pour votre avis!"
+        description: t('ratings.thankYouFeedback')
       });
     }
     
@@ -120,27 +120,27 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Note</label>
+                    <label className="text-sm font-medium mb-2 block">{t('ratings.rating')}</label>
                     {renderStars(selectedRating, 'lg', true)}
                   </div>
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Commentaire (optionnel)</label>
+                    <label className="text-sm font-medium mb-2 block">{t('ratings.optionalComment')}</label>
                     <Textarea
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
-                      placeholder="Partagez votre expérience..."
+                      placeholder={t('ratings.sharePlaceholder')}
                       rows={3}
                     />
                   </div>
                   <div className="flex gap-2 justify-end">
                     <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                      Annuler
+                      {t('ratings.cancel')}
                     </Button>
                     <Button 
                       onClick={handleSubmitRating}
                       disabled={selectedRating === 0 || submitting}
                     >
-                      {submitting ? 'En cours...' : 'Publier'}
+                      {submitting ? t('ratings.inProgress') : t('ratings.publish')}
                     </Button>
                   </div>
                 </div>
@@ -153,7 +153,7 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
       {/* Existing Ratings */}
       {totalRatings > 0 && (
         <div className="space-y-3">
-          <h3 className="font-semibold">Avis des clients</h3>
+          <h3 className="font-semibold">{t('ratings.customerReviews')}</h3>
           {loading ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
@@ -171,8 +171,8 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
                     <div className="flex items-center gap-2">
                       {renderStars(rating.rating)}
                        <span className="text-sm text-muted-foreground">
-                         {rating.profiles?.display_name || 'Utilisateur anonyme'}
-                       </span>
+                          {rating.profiles?.display_name || t('ratings.anonymousUser')}
+                        </span>
                     </div>
                     <span className="text-xs text-muted-foreground">
                       {new Date(rating.created_at).toLocaleDateString('fr-CA')}
