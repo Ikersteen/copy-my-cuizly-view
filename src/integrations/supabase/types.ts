@@ -635,6 +635,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      validate_email_domain: {
+        Args: { email: string }
+        Returns: boolean
+      }
       validate_password_strength: {
         Args: { password: string }
         Returns: boolean
