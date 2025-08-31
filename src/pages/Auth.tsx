@@ -526,12 +526,12 @@ const Auth = () => {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-6">
             <img 
-              src="/lovable-uploads/e8fe9351-fe46-440d-914c-b9b28918fe73.png" 
+              src="/lovable-uploads/682c5e51-0d17-4441-8054-a2dc04e70342.png" 
               alt="Cuizly Logo" 
               className="h-16 object-contain dark:hidden"
             />
             <img 
-              src="/lovable-uploads/e7e97d69-a6d1-4978-8f05-560def81179e.png" 
+              src="/lovable-uploads/4b5fb4e2-d15a-4234-89cd-83d22982ea9a.png" 
               alt="Cuizly Logo" 
               className="h-16 object-contain hidden dark:block"
             />
