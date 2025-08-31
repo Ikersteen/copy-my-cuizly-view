@@ -154,7 +154,11 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       const byteArray = new Uint8Array(byteNumbers);
       const blob = new Blob([byteArray], { type: 'image/jpeg' });
       
-      const fileName = `${session.user.id}/${adjustmentType}-adjusted-${Date.now()}.jpeg`;
+      // Add timestamp for unique filename to avoid cache issues
+      const timestamp = Date.now();
+      const fileName = `${session.user.id}/${adjustmentType}-${timestamp}.jpeg`;
+      
+      console.log('🔄 Uploading image with filename:', fileName);
       
       const { error: uploadError } = await supabase.storage
         .from('restaurant-images')
@@ -166,13 +170,16 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
-      const imageUrl = data.publicUrl;
-      console.log('Image uploaded successfully:', imageUrl);
+      // Add cache busting parameter to URL
+      const imageUrl = `${data.publicUrl}?t=${timestamp}`;
+      console.log('📸 Generated image URL:', imageUrl);
 
       // Save directly to database
       const updateData = adjustmentType === 'cover' 
         ? { cover_image_url: imageUrl }
         : { logo_url: imageUrl };
+
+      console.log('💾 Saving to database:', updateData);
 
       const { error: dbError } = await supabase
         .from('restaurants')
@@ -182,6 +189,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
       if (dbError) throw dbError;
 
       // Update local state
+      console.log('🔄 Updating local state with URL:', imageUrl);
       if (adjustmentType === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: imageUrl }));
       } else {
@@ -195,7 +203,7 @@ export const RestaurantProfileModal = ({ open, onOpenChange, restaurant, onUpdat
 
       onUpdate(); // Refresh parent component
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('❌ Error uploading file:', error);
       toast({
         title: t('restaurantProfile.error'),
         description: t('restaurantProfile.cannotUpload'),
