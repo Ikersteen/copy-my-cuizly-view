@@ -127,26 +127,41 @@ async function analyzeRestaurantWithAI(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-4.1-mini-2025-04-14',
+      model: 'gpt-5-mini-2025-08-07',
       messages: [
         {
           role: 'system',
-          content: `Tu es un expert en recommandations de restaurants. Fournis un scoring simple en JSON.
+          content: `Tu es un expert en recommandations de restaurants qui analyse intelligemment les correspondances utilisateur-restaurant.
+
+          MISSION: Analyser la compatibilité entre un restaurant et les préférences utilisateur.
           
-          RÈGLES STRICTES:
-          - Raisons MAX 2-3 mots chacune
-          - Utilise SEULEMENT ces formats:
-            * "Dans votre budget" (si prix correspond)
-            * "Cuisine appréciée" (si cuisine correspond) 
-            * "Moment idéal" (si horaire correspond)
-            * "Près de vous" (par défaut)
-          - Maximum 2 raisons par restaurant
+          CRITÈRES D'ANALYSE (par ordre d'importance):
+          1. 🍽️ CUISINE (40%): Correspondance exacte avec préférences culinaires
+          2. 💰 BUDGET (25%): Prix dans la fourchette préférée
+          3. ⏰ TIMING (20%): Adéquation avec moment de repas actuel
+          4. 🌟 QUALITÉ (10%): Notes et popularité existantes
+          5. 🔍 DÉCOUVERTE (5%): Bonus pour diversité/nouveauté
+
+          RAISONS AUTORISÉES (maximum 2, courtes et impactantes):
+          - "Cuisine favorite" (si cuisine exactement préférée)
+          - "Prix idéal" (si budget correspond parfaitement)
+          - "Moment parfait" (si horaire optimal pour préférences)
+          - "Très populaire" (si excellentes notes/beaucoup de vues)
+          - "Nouvelle découverte" (si diversification recommandée)
           
-          Format JSON uniquement:
+          SCORING INTELLIGENT:
+          - Score base: 20 points
+          - Correspondance cuisine exacte: +30-40 points
+          - Budget parfait: +15-25 points  
+          - Timing optimal: +10-20 points
+          - Qualité prouvée: +5-15 points
+          - Bonus découverte: +5-10 points
+          
+          FORMAT JSON OBLIGATOIRE:
           {
             "score": number (0-100),
             "reasons": ["raison1", "raison2"],
-            "sentiment_analysis": "positive|neutral|negative", 
+            "sentiment_analysis": "positive|neutral|negative",
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
           }`
@@ -156,7 +171,7 @@ async function analyzeRestaurantWithAI(
           content: prompt
         }
       ],
-      max_tokens: 500
+      max_completion_tokens: 400
     }),
   });
 
@@ -179,45 +194,49 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
   const currentHour = new Date().getHours();
   const currentMealTime = getCurrentMealTime(currentHour);
   const isMealTimeMatch = preferences.favorite_meal_times?.includes(currentMealTime) || false;
+  
+  // Calculer les correspondances pour aide au scoring
+  const cuisineMatches = preferences.cuisine_preferences?.filter(pref => 
+    restaurant.cuisine_type?.includes(pref)
+  ) || [];
+  const budgetMatch = preferences.price_range === restaurant.price_range;
+  const popularityScore = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
 
   return `
-Analyse ce restaurant pour les recommandations:
+🎯 MISSION: Analyser la compatibilité restaurant-utilisateur
 
-Restaurant:
-- Nom: ${restaurant.name}
-- Description: ${restaurant.description || 'Non spécifiée'}
-- Types de cuisine: ${restaurant.cuisine_type?.join(', ') || 'Non spécifiés'}
-- Gamme de prix: ${restaurant.price_range || 'Non spécifiée'}
-- Note moyenne: ${restaurant.average_rating || 'Pas de note'}
-- Nombre de notes: ${restaurant.rating_count || 0}
-- Vues de profil: ${restaurant.profile_views || 0}
-- Vues de menu: ${restaurant.menu_views || 0}
+📊 RESTAURANT À ANALYSER:
+• Nom: ${restaurant.name}
+• Cuisine: ${restaurant.cuisine_type?.join(', ') || 'Non spécifié'}
+• Prix: ${restaurant.price_range || 'Non spécifié'}
+• Description: ${restaurant.description || 'Aucune'}
+• Popularité: ${popularityScore} vues totales
+• Notes: ${restaurant.rating_count || 0} avis (moyenne: ${restaurant.average_rating || 'N/A'})
 
-Préférences utilisateur:
-- Cuisines préférées: ${preferences.cuisine_preferences?.join(', ') || 'Aucune spécifiée'}
-- Budget: ${preferences.price_range || 'Non spécifié'}
-- Restrictions alimentaires: ${preferences.dietary_restrictions?.join(', ') || 'Aucune'}
-- Allergènes: ${preferences.allergens?.join(', ') || 'Aucun'}
-- Moments de repas favoris: ${preferences.favorite_meal_times?.join(', ') || 'Non spécifiés'}
-- Rayon de livraison: ${preferences.delivery_radius || 'Non spécifié'} km
+👤 PROFIL UTILISATEUR:
+• Cuisines préférées: ${preferences.cuisine_preferences?.join(', ') || 'Aucune préférence'}
+• Budget souhaité: ${preferences.price_range || 'Flexible'}
+• Restrictions: ${preferences.dietary_restrictions?.join(', ') || 'Aucune'}
+• Allergènes: ${preferences.allergens?.join(', ') || 'Aucun'}
+• Moments de repas favoris: ${preferences.favorite_meal_times?.join(', ') || 'Flexible'}
 
-Contexte temporel:
-- Heure actuelle: ${currentHour}h (${currentMealTime})
-- Correspond aux préférences de repas: ${isMealTimeMatch ? 'OUI' : 'NON'}
+⏰ CONTEXTE ACTUEL:
+• Heure: ${currentHour}h (période: ${currentMealTime})
+• Timing optimal: ${isMealTimeMatch ? '✅ OUI' : '❌ NON'}
 
-Analyse sémantique (pondération dynamique):
-1. Correspondance cuisine et préférences (30%)
-2. Adéquation avec le moment de repas actuel (25%)
-3. Qualité basée sur les notes et popularité (25%)
-4. Analyse de sentiment de la description (15%)
-5. Respect des restrictions alimentaires (5%)
+🔍 CORRESPONDANCES DÉTECTÉES:
+• Cuisine: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')}` : '❌ Aucune'}
+• Budget: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
+• Popularité: ${popularityScore > 50 ? '⭐ Populaire' : '🆕 À découvrir'}
 
-CRITÈRES SPÉCIAUX:
-- Si c'est un moment de repas favori: +15 points bonus
-- Si restrictions alimentaires respectées: +10 points bonus  
-- Si cuisine très appréciée: +10 points bonus
+🎯 INSTRUCTIONS FINALES:
+Calcule un score de compatibilité intelligent (0-100) en privilégiant:
+1. Les correspondances cuisine exactes (+40 max)
+2. Le budget compatible (+25 max)
+3. Le timing optimal (+20 max)
+4. La qualité/popularité (+15 max)
 
-Fournis un score total sur 100 et des raisons spécifiques incluant l'adéquation temporelle.
+Choisis 1-2 raisons courtes qui justifient le score calculé.
   `;
 }
 
@@ -231,38 +250,47 @@ function getCurrentMealTime(hour: number): string {
 }
 
 function calculateFallbackScore(restaurant: Restaurant, preferences: UserPreferences): number {
-  let score = 0;
+  let score = 20; // Score de base
   const currentHour = new Date().getHours();
   const currentMealTime = getCurrentMealTime(currentHour);
 
-  // Correspondance cuisine (30%)
+  // 1. Correspondance cuisine (40% - priorité maximale)
   if (preferences.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
-    const matches = restaurant.cuisine_type.filter(cuisine =>
+    const exactMatches = restaurant.cuisine_type.filter(cuisine =>
       preferences.cuisine_preferences!.includes(cuisine)
-    ).length;
-    score += (matches / preferences.cuisine_preferences.length) * 30;
+    );
+    if (exactMatches.length > 0) {
+      // Score progressif selon nombre de correspondances
+      score += Math.min(exactMatches.length * 15, 40);
+    }
   }
 
-  // Moment de repas (25%)
-  if (preferences.favorite_meal_times?.includes(currentMealTime)) {
+  // 2. Correspondance budget (25%)  
+  if (preferences.price_range === restaurant.price_range) {
     score += 25;
   }
 
-  // Prix (20%)
-  if (preferences.price_range === restaurant.price_range) {
+  // 3. Timing optimal (20%)
+  if (preferences.favorite_meal_times?.includes(currentMealTime)) {
     score += 20;
   }
 
-  // Qualité (15%)
-  if (restaurant.average_rating) {
-    score += (restaurant.average_rating / 5) * 15;
+  // 4. Qualité et notes (10%)
+  if (restaurant.average_rating && restaurant.rating_count) {
+    const qualityScore = (restaurant.average_rating / 5) * 8;
+    const trustScore = Math.min(restaurant.rating_count / 10, 2); // Bonus fiabilité
+    score += qualityScore + trustScore;
   }
 
-  // Popularité (10%)
+  // 5. Popularité et découverte (5%)
   const popularity = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
-  score += Math.min(popularity / 100, 1) * 10;
+  if (popularity > 100) {
+    score += 3; // Restaurant populaire
+  } else {
+    score += 2; // Bonus découverte
+  }
 
-  return Math.round(score);
+  return Math.min(Math.round(score), 100);
 }
 
 async function logRecommendationInteraction(userId: string, recommendations: any[]) {

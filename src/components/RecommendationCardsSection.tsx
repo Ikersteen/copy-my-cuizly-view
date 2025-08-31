@@ -173,13 +173,13 @@ export const RecommendationCardsSection = () => {
         return;
       }
 
-      // Score restaurants
+      // Score restaurants with improved algorithm
       const scoredRestaurants = restaurantsData.map(restaurant => {
-        let score = 0;
+        let score = 20; // Score de base
         const currentHour = new Date().getHours();
         const currentMealTime = getCurrentMealTime(currentHour);
         
-        // Cuisine preferences (25%)
+        // 1. Correspondance cuisine (40% - priorité maximale)
         if (preferences?.cuisine_preferences?.length) {
           const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
           const cuisineMatches = restaurant.cuisine_type?.filter(cuisine =>
@@ -191,30 +191,40 @@ export const RecommendationCardsSection = () => {
           );
 
           if (cuisineMatches.length > 0 || menuCuisineMatches.length > 0) {
-            score += 25 + (cuisineMatches.length + menuCuisineMatches.length) * 5;
+            // Score progressif selon correspondances exactes
+            score += Math.min((cuisineMatches.length + menuCuisineMatches.length) * 15, 40);
           }
         }
 
-        // Meal time preference (25%)
-        if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
+        // 2. Correspondance budget (25%)
+        if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
           score += 25;
         }
 
-        // Price range (20%)
-        if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
+        // 3. Timing optimal (20%)
+        if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
           score += 20;
         }
 
-        // Dietary restrictions (15%)
+        // 4. Restrictions alimentaires (10%)
         if (preferences?.dietary_restrictions?.length) {
-          score += 15;
+          const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
+          const hasCompatibleOptions = restaurantMenus.some(menu => 
+            preferences.dietary_restrictions.every(restriction =>
+              menu.dietary_restrictions?.includes(restriction)
+            )
+          );
+          if (hasCompatibleOptions) {
+            score += 10;
+          }
         }
 
-        score += 15; // Base score
+        // 5. Bonus découverte (5%)
+        score += 5;
 
         return {
           ...restaurant,
-          score,
+          score: Math.min(Math.round(score), 100),
           // Force regeneration of reasons with new format
           reasons: generateRecommendationReasons(restaurant)
         };

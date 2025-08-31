@@ -1614,8 +1614,14 @@
     "noRatingsYet": "Pas d'évaluations pour le moment",
     "whyThisChoice": "Pourquoi ce choix ?",
      "viewProfile": "Voir le profil",
-     "popularRestaurant": "Restaurant populaire",
-     "closeToYou": "Proche de vous",
-     "perfectMealTime": "Parfait pour ce moment de repas"
+      "popularRestaurant": "Restaurant populaire",
+      "closeToYou": "Proche de vous",
+      "perfectMealTime": "Parfait pour ce moment de repas",
+      "inYourBudget": "Prix idéal",
+      "cuisineMatches": "Cuisine favorite",
+      "perfectTiming": "Moment parfait",
+      "veryPopular": "Très populaire",
+      "newDiscovery": "Nouvelle découverte",
+      "nearYou": "Près de vous"
   }
 }

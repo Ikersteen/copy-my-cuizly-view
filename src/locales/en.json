@@ -1731,8 +1731,12 @@
     "noRatingsYet": "No ratings yet",
     "whyThisChoice": "Why this choice ?",
      "viewProfile": "View profile",
-     "popularRestaurant": "Popular restaurant",
-     "closeToYou": "Close to you",
-     "perfectMealTime": "Perfect for this meal time"
+      "popularRestaurant": "Popular restaurant",
+      "closeToYou": "Close to you",
+      "perfectMealTime": "Perfect for this meal time",
+      "perfectTiming": "Perfect timing",
+      "veryPopular": "Very popular",
+      "newDiscovery": "New discovery",
+      "nearYou": "Near you"
   }
 }
