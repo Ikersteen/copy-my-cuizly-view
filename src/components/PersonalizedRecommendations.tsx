@@ -217,16 +217,15 @@ export const PersonalizedRecommendations = () => {
         };
       });
 
-      // Trier et prendre le top 12
-      const topRestaurants = scoredRestaurants
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 12);
+      // Trier TOUS les restaurants par score (pas de limite)
+      const allRestaurants = scoredRestaurants
+        .sort((a, b) => b.score - a.score);
       
-      console.log('🏆 Top restaurants selected:', topRestaurants.length);
+      console.log('🏆 All restaurants selected:', allRestaurants.length);
 
       // Charger les ratings en batch
       const restaurantsWithRatings = await Promise.all(
-        topRestaurants.map(async (restaurant) => {
+        allRestaurants.map(async (restaurant) => {
           const ratingData = await getRealRating(restaurant.id);
           return {
             ...restaurant,
