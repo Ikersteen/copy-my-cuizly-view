@@ -413,20 +413,6 @@
     "popularRestaurant": "Restaurant populaire",
     "closeToYou": "Proche de vous"
   },
-  "mission": {
-    "personalized": {
-      "title": "Des recommandations personnalisées grâce à l'IA",
-      "description": "Notre intelligence artificielle analyse vos préférences pour vous suggérer les meilleurs restaurants selon vos goûts."
-    },
-    "ecosystem": {
-      "title": "Un écosystème gagnant-gagnant pour tous",
-      "description": "Les restaurants augmentent leur visibilité et leurs ventes, tandis que les clients découvrent de nouvelles saveurs."
-    },
-    "discovery": {
-      "title": "La découverte culinaire réinventée",
-      "description": "Explorez la scène culinaire montréalaise d'une façon complètement nouvelle et intuitive."
-    }
-  },
   "ratings": {
     "published": "Évaluation publiée",
     "evaluation": "évaluation",

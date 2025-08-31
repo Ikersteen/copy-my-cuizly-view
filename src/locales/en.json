@@ -487,20 +487,6 @@
     "popularRestaurant": "Popular restaurant",
     "closeToYou": "Close to you"
   },
-  "mission": {
-    "personalized": {
-      "title": "Personalized recommendations thanks to AI",
-      "description": "Our artificial intelligence analyzes your preferences to suggest the best restaurants according to your tastes."
-    },
-    "ecosystem": {
-      "title": "A win-win ecosystem for everyone",
-      "description": "Restaurants increase their visibility and sales, while customers discover new flavors."
-    },
-    "discovery": {
-      "title": "Culinary discovery reimagined",
-      "description": "Explore Montreal's culinary scene in a completely new and intuitive way."
-    }
-  },
   "ratings": {
     "published": "Rating published",
     "evaluation": "evaluation",
