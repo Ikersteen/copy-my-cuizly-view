@@ -1578,5 +1578,28 @@
       "captchaExpired": "La vérification de sécurité a expiré. Veuillez recommencer.",
       "captchaError": "Erreur lors de la vérification de sécurité. Veuillez réessayer."
     }
+  },
+  "favorites": {
+    "noFavorites": "Aucun favori pour l'instant",
+    "noFavoritesDescription": "Retrouvez vos restaurants favoris ici.",
+    "viewProfile": "Voir le profil",
+    "viewAllFavorites": "Voir tous mes favoris",
+    "whyThisChoice": "Pourquoi ce choix ?",
+    "matchingCuisines": "cuisine(s) correspondante(s)",
+    "inYourBudget": "Dans votre budget",
+    "inFavorites": "Dans vos favoris",
+    "quickAccess": "Accès rapide",
+    "evaluations": "évaluations",
+    "evaluation": "évaluation",
+    "noRatingsYet": "Pas d'évaluations pour le moment"
+  },
+  "restaurantMenu": {
+    "loadingError": "Erreur lors du chargement des menus:",
+    "ourMenus": "Nos menus",
+    "noMenusAvailable": "Aucun menu disponible",
+    "noMenusDescription": "Ce restaurant n'a pas encore ajouté de menus",
+    "comment": "Commentaire",
+    "addToFavorites": "Ajouter aux favoris",
+    "removeFromFavorites": "Retirer des favoris"
   }
 }

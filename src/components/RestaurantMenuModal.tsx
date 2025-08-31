@@ -150,7 +150,7 @@ export const RestaurantMenuModal = ({
       if (error) throw error;
       setMenus(data || []);
     } catch (error) {
-      console.error('Erreur lors du chargement des menus:', error);
+      console.error(t('restaurantMenu.loadingError'), error);
     } finally {
       setLoading(false);
     }
@@ -273,12 +273,12 @@ export const RestaurantMenuModal = ({
 
            {/* Menus Section */}
            <div className="space-y-4">
-             <div className="flex items-center justify-between">
-               <h3 className="text-xl font-semibold">Nos menus</h3>
-               {menus.length > 0 && (
-                 <Badge variant="outline">{menus.length} menu{menus.length > 1 ? 's' : ''}</Badge>
-               )}
-             </div>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold">{t('restaurantMenu.ourMenus')}</h3>
+                {menus.length > 0 && (
+                  <Badge variant="outline">{menus.length} menu{menus.length > 1 ? 's' : ''}</Badge>
+                )}
+              </div>
 
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -295,14 +295,14 @@ export const RestaurantMenuModal = ({
               </div>
             ) : menus.length === 0 ? (
               <Card>
-                <CardContent className="p-8 text-center">
-                  <h4 className="text-lg font-medium text-muted-foreground mb-2">
-                    Aucun menu disponible
-                  </h4>
-                  <p className="text-sm text-muted-foreground">
-                    Ce restaurant n'a pas encore ajouté de menus
-                  </p>
-                </CardContent>
+                 <CardContent className="p-8 text-center">
+                   <h4 className="text-lg font-medium text-muted-foreground mb-2">
+                     {t('restaurantMenu.noMenusAvailable')}
+                   </h4>
+                   <p className="text-sm text-muted-foreground">
+                     {t('restaurantMenu.noMenusDescription')}
+                   </p>
+                 </CardContent>
               </Card>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -353,16 +353,16 @@ export const RestaurantMenuModal = ({
             <Button 
               className="w-full"
               onClick={() => setShowCommentModal(true)}
-            >
-              <MessageSquare className="h-4 w-4 mr-2" />
-              Commentaire
-            </Button>
+             >
+               <MessageSquare className="h-4 w-4 mr-2" />
+               {t('restaurantMenu.comment')}
+             </Button>
             <Button className="w-full" variant="outline" onClick={handleToggleFavorite}>
               <Heart 
                 className={`h-4 w-4 mr-2 ${isFavorite(restaurant.id) ? 'fill-current text-red-500' : ''}`} 
-              />
-              {isFavorite(restaurant.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
-            </Button>
+               />
+               {isFavorite(restaurant.id) ? t('restaurantMenu.removeFromFavorites') : t('restaurantMenu.addToFavorites')}
+             </Button>
           </div>
         </div>
       </DialogContent>
