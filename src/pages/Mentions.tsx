@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import MissionSection from "@/components/MissionSection";
 import { useTranslation } from "react-i18next";
 
 const Mentions = () => {
@@ -77,6 +78,7 @@ const Mentions = () => {
           </section>
         </div>
       </div>
+      <MissionSection />
       <Footer />
     </div>
   );

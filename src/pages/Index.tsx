@@ -11,6 +11,7 @@ const Index = () => {
   return (
     <>
       <HeroSection />
+      <MissionSection />
       <FeaturesSectionLanding />
       <HowItWorksSection />
       <PricingSectionLanding />

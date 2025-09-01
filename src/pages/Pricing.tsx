@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import MissionSection from "@/components/MissionSection";
 import { useTranslation } from 'react-i18next';
 
 const Pricing = () => {
@@ -115,6 +116,7 @@ const Pricing = () => {
           ))}
         </div>
       </div>
+      <MissionSection />
       <Footer />
     </div>
   );
