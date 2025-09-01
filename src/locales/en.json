@@ -74,8 +74,8 @@
     "pro": {
       "title": "Cuizly Pro",
       "subtitle": "For restaurants that want to attract more customers",
-      "price": "$59 CAD/month *hors taxes",
-      "priceNote": "or $499 CAD/year *hors taxes (save 2 months!)",
+      "price": "$59 CAD/month",
+      "priceNote": "or $499 CAD/year (save 2 months!)",
       "features": [
         "Targeted advertising of your offers",
         "In-app promotion by location",
@@ -89,8 +89,8 @@
     "analytics": {
       "title": "Cuizly Analytics+",
       "subtitle": "To optimize your strategy with data",
-      "price": "$79 CAD/month *hors taxes",
-      "priceNote": "or $699/year *hors taxes (save 3 months!)",
+      "price": "$349 CAD/month",
+      "priceNote": "or $3,490 CAD/year (2 months free!)",
       "features": [
         "All Pro features",
         "Detailed anonymized reports",
