@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Phone, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
-import MissionSection from "@/components/MissionSection";
+import CTASection from "@/components/CTASection";
 import { useTranslation } from 'react-i18next';
 
 const Contact = () => {
@@ -136,7 +136,7 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      <MissionSection />
+      <CTASection />
       <Footer />
     </div>
   );
