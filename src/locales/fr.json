@@ -89,8 +89,8 @@
     "analytics": {
       "title": "Cuizly Analytics+",
       "subtitle": "Pour optimiser votre stratégie avec les données",
-      "price": "79$ CAD/mois *hors taxes",
-      "priceNote": "ou 699 $/an *hors taxes (économisez 3 mois !)",
+      "price": "79$ CAD/mois *HT",
+      "priceNote": "ou 699 $/an *HT (économisez 3 mois !)",
       "features": [
         "Toutes les fonctionnalités Pro",
         "Rapports anonymisés détaillés",
