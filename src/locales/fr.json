@@ -77,12 +77,11 @@
       "price": "59$ CAD/mois",
       "priceNote": "ou 499$ CAD/an (économisez 2 mois !)",
       "features": [
-        "Publicité ciblée de vos offres",
-        "Promotion dans l'app selon localisation",
-        "Ciblage par préférences utilisateur",
-        "Dashboard de performance en temps réel",
-        "Support prioritaire",
-        "Formation à l'utilisation incluse"
+        "Tableau de bord de suivi des performances en temps réel",
+        "Sytème de visibilité et de référncement avancées",
+        "Outils de gestion des offres et des menus",
+        "Gestion de relation client",
+        "Support client prioritaire",
       ],
       "cta": "Réserver une démo"
     },
@@ -96,8 +95,7 @@
         "Rapports anonymisés détaillés",
         "Analyses des tendances de consommation",
         "Aperçus précis sur les performances par segment",
-        "Recommandations IA pour votre business",
-        "Accès API pour intégrations avancées"
+        "Accès API pour des intégrations avancées"
       ],
       "cta": "Rejoindre la liste d'attente"
     }

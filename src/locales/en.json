@@ -77,12 +77,11 @@
       "price": "$59 CAD/month",
       "priceNote": "or $499 CAD/year (save 2 months!)",
       "features": [
-        "Targeted advertising of your offers",
-        "In-app promotion by location",
-        "Targeting by user preferences",
-        "Real-time performance dashboard",
-        "Priority support",
-        "Usage training included"
+        "Real-time performance tracking dashboard",
+        "Advanced visibility and referencing system",
+        "Offer and menu management tools",
+        "Customer relationship management",
+        "Priority customer support",
       ],
       "cta": "Book a demo"
     },
@@ -96,7 +95,6 @@
         "Detailed anonymized reports",
         "Consumer trend analysis",
         "Performance insights by segment",
-        "AI recommendations for your business",
         "API access for advanced integrations"
       ],
       "cta": "Join the waitlist"
