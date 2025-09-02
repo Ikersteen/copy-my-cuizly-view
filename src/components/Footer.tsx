@@ -66,6 +66,16 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
+                  to="/team" 
+                  className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  {t('footer.team')}
+                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              </li>
+              <li>
+                <Link 
                   to="/mentions" 
                   className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

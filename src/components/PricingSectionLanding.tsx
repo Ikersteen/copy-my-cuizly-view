@@ -28,7 +28,6 @@ const PricingSectionLanding = () => {
       subtitleKey: "pricing.pro.subtitle",
       priceKey: "pricing.pro.price",
       priceNoteKey: "pricing.pro.priceNote",
-      comingSoon: true,
       featuresKeys: [
         "pricing.pro.features.0",
         "pricing.pro.features.1",

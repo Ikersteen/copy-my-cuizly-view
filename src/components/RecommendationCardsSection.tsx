@@ -173,62 +173,76 @@ export const RecommendationCardsSection = () => {
         return;
       }
 
-      // Score restaurants with improved algorithm
+      // EXACT MATCHING ALGORITHM - Score restaurants with precise preference matching
       const scoredRestaurants = restaurantsData.map(restaurant => {
-        let score = 20; // Score de base
+        let score = 0; // Start from 0 for exact matching
         const currentHour = new Date().getHours();
         const currentMealTime = getCurrentMealTime(currentHour);
         
-        // 1. Correspondance cuisine (40% - priorité maximale)
+        // 1. EXACT CUISINE MATCHING (50% - Most Important)
+        let cuisineScore = 0;
         if (preferences?.cuisine_preferences?.length) {
           const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
-          const cuisineMatches = restaurant.cuisine_type?.filter(cuisine =>
+          const exactCuisineMatches = restaurant.cuisine_type?.filter(cuisine =>
             preferences.cuisine_preferences.includes(cuisine)
           ) || [];
           
-          const menuCuisineMatches = restaurantMenus.filter(menu =>
+          const exactMenuCuisineMatches = restaurantMenus.filter(menu =>
             preferences.cuisine_preferences.includes(menu.cuisine_type)
           );
 
-          if (cuisineMatches.length > 0 || menuCuisineMatches.length > 0) {
-            // Score progressif selon correspondances exactes
-            score += Math.min((cuisineMatches.length + menuCuisineMatches.length) * 15, 40);
+          // Only score if there are EXACT matches
+          if (exactCuisineMatches.length > 0 || exactMenuCuisineMatches.length > 0) {
+            cuisineScore = 50; // Full points only for exact matches
           }
+        } else {
+          // If no cuisine preferences set, give neutral score
+          cuisineScore = 25;
         }
+        score += cuisineScore;
 
-        // 2. Correspondance budget (25%)
+        // 2. EXACT PRICE RANGE MATCHING (30%)
+        let priceScore = 0;
         if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-          score += 25;
+          priceScore = 30; // Full points only for exact match
+        } else if (!preferences?.price_range) {
+          priceScore = 15; // Neutral if no preference set
         }
+        score += priceScore;
 
-        // 3. Timing optimal (20%)
+        // 3. EXACT MEAL TIME MATCHING (15%)
+        let timingScore = 0;
         if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-          score += 20;
+          timingScore = 15; // Full points only for exact match
+        } else if (!preferences?.favorite_meal_times?.length) {
+          timingScore = 8; // Neutral if no preference set
         }
+        score += timingScore;
 
-        // 4. Restrictions alimentaires (10%)
+        // 4. EXACT DIETARY RESTRICTIONS MATCHING (5%)
+        let dietaryScore = 0;
         if (preferences?.dietary_restrictions?.length) {
           const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
-          const hasCompatibleOptions = restaurantMenus.some(menu => 
+          const hasExactCompatibleOptions = restaurantMenus.some(menu => 
             preferences.dietary_restrictions.every(restriction =>
               menu.dietary_restrictions?.includes(restriction)
             )
           );
-          if (hasCompatibleOptions) {
-            score += 10;
+          if (hasExactCompatibleOptions) {
+            dietaryScore = 5; // Full points only for exact compatibility
           }
+        } else {
+          dietaryScore = 2; // Neutral if no restrictions
         }
+        score += dietaryScore;
 
-        // 5. Bonus découverte (5%)
-        score += 5;
-
+        // Only return restaurants with meaningful matches (score > 40)
         return {
           ...restaurant,
           score: Math.min(Math.round(score), 100),
-          // Force regeneration of reasons with new format
           reasons: generateRecommendationReasons(restaurant)
         };
-      });
+      }).filter(restaurant => restaurant.score > 40); // Filter out poor matches
 
       // Helper function for meal time calculation  
       function getCurrentMealTime(hour: number): string {
@@ -310,11 +324,13 @@ export const RecommendationCardsSection = () => {
       <section className="py-8 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-center py-12">
-            <LoadingSpinner size="lg" />
-            <div className="mt-6 text-center">
-              <div className="flex items-center justify-center gap-1 sm:gap-3 mb-3">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1 sm:gap-2 mb-4">
                 <Sparkles className="h-5 w-5 text-primary animate-pulse flex-shrink-0" />
                 <h2 className="text-lg font-semibold">{t('recommendations.generatingRecommendations')}</h2>
+              </div>
+              <div className="flex justify-center mb-4">
+                <LoadingSpinner size="lg" />
               </div>
               <p className="text-muted-foreground">{t('recommendations.analyzingPreferences')}</p>
             </div>

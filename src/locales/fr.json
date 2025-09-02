@@ -8,7 +8,7 @@
     "back_home": "Retour à l'accueil"
   },
   "hero": {
-    "badge": "Cuizly • Bêta 4",
+    "badge": "Cuizly • Bêta 5",
     "title": {
       "discover": "Découvrez vos prochains",
       "favorites": "coups de cœur culinaires",
@@ -747,6 +747,26 @@
     "selectEnd": "Sélectionnez la fin",
     "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
   },
+  "team": {
+    "badge": "Notre équipe",
+    "title": "L'équipe derrière Cuizly",
+    "subtitle": "Rencontrez la personne qui révolutionne la découverte culinaire à Montréal",
+    "meetFounder": "Rencontrez le fondateur",
+    "founderIntro": "La vision d'un étudiant passionné qui transforme l'expérience gastronomique montréalaise",
+    "founderName": "Iker Kiomba Landu",
+    "founderTitle": "PDG Fondateur de Cuizly",
+    "education": "Formation académique",
+    "educationDetails": "Résident permanent au Canada et 🎓 Étudiant congolais🇨🇩 en Baccalauréat de Sciences naturelles et formelles : option Informatique, à l'Université de Montréal.",
+    "journey": "Son parcours",
+    "journeyDetails": "Parti d'un simple constat en arrivant au Québec : trop de choix des restaurants, mais pas assez de repères pour bien manger selon son budget.",
+    "vision": "Sa vision",
+    "visionDetails": "Avec Cuizly, il construit un pont intelligent entre consommateurs et restaurateurs grâce à l'IA et au matching culinaire. Sa vision : transformer chaque donnée en expérience personnalisée et redéfinir la façon dont on découvre la gastronomie en ville.",
+    "location": "Montréal, QC",
+    "contact": "Contact",
+    "foundingYear": "Année de fondation",
+    "teamSize": "Membre fondateur",
+    "basedIn": "Basé au Canada"
+  },
   "footer": {
     "product": "Produit",
     "features": "Fonctionnalités",
@@ -754,6 +774,7 @@
     "support": "Support",
     "contactUs": "Contactez-nous",
     "company": "Entreprise",
+    "team": "Équipe",
     "legalNotices": "Mentions légales",
     "legal": "Légal",
     "privacyPolicy": "Politique de confidentialité",

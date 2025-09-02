@@ -8,7 +8,7 @@
     "back_home": "Back to Home"
   },
   "hero": {
-    "badge": "Cuizly • Beta 4",
+    "badge": "Cuizly • Beta 5",
     "title": {
       "discover": "Discover your next",
       "favorites": "culinary favorites",
@@ -749,11 +749,41 @@
     "title": "Error",
     "loadMenus": "Unable to load menus"
   },
+  "team": {
+    "badge": "Our team",
+    "title": "The team behind Cuizly",
+    "subtitle": "Meet the person revolutionizing culinary discovery in Montreal",
+    "meetFounder": "Meet the founder",
+    "founderIntro": "The vision of a passionate student transforming Montreal's gastronomic experience",
+    "founderName": "Iker Kiomba Landu",
+    "founderTitle": "CEO & Founder of Cuizly",
+    "education": "Academic background",
+    "educationDetails": "Permanent resident in Canada and 🎓 Congolese student🇨🇩 in Bachelor of Natural and Formal Sciences: Computer Science option, at the University of Montreal.",
+    "journey": "His journey",
+    "journeyDetails": "Started from a simple observation upon arriving in Quebec: too many restaurant choices, but not enough guidance to eat well within your budget.",
+    "vision": "His vision",
+    "visionDetails": "With Cuizly, he builds an intelligent bridge between consumers and restaurateurs through AI and culinary matching. His vision: transform every piece of data into a personalized experience and redefine how we discover gastronomy in the city.",
+    "location": "Montreal, QC",
+    "contact": "Contact",
+    "foundingYear": "Founding year",
+    "teamSize": "Founding member",
+    "basedIn": "Based in Canada"
+  },
   "footer": {
     "product": "Product",
+    "features": "Features",
     "rates": "Rates", 
+    "support": "Support",
+    "contactUs": "Contact us",
     "company": "Company",
+    "team": "Team",
     "legalNotices": "Legal notices",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy policy",
+    "termsOfUse": "Terms of use",
+    "cookiePolicy": "Cookie policy",
+    "tagline": "The culinary revolution is underway",
+    "allRightsReserved": "All rights reserved",
     "instagram": "Instagram"
   },
   "profile": {
