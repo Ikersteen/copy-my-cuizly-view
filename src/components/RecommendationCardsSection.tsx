@@ -485,6 +485,16 @@ export const RecommendationCardsSection = () => {
 
                 {(() => {
                   const reasons = restaurant.reasons || [];
+                  
+                  // Map French reasons to translation keys
+                  const reasonTranslationMap: { [key: string]: string } = {
+                    "Cuisine favorite": "reasonCuisineFavorite",
+                    "Prix idéal": "reasonPriceIdeal", 
+                    "Moment parfait": "reasonPerfectTiming",
+                    "Très populaire": "reasonVeryPopular",
+                    "Nouvelle découverte": "reasonNewDiscovery"
+                  };
+                  
                   return reasons.length > 0 && (
                     <div className="bg-muted/50 rounded-lg p-3">
                        <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
@@ -492,15 +502,19 @@ export const RecommendationCardsSection = () => {
                          {t('recommendations.whyThisChoice')}
                        </p>
                       <div className="flex flex-wrap gap-1">
-                        {reasons.slice(0, 2).map((reason, idx) => (
-                          <Badge 
-                            key={idx} 
-                            variant="secondary" 
-                            className="text-xs bg-background/80"
-                          >
-                            {reason}
-                          </Badge>
-                        ))}
+                        {reasons.slice(0, 2).map((reason, idx) => {
+                          const translationKey = reasonTranslationMap[reason];
+                          const displayReason = translationKey ? t(`recommendations.${translationKey}`) : reason;
+                          return (
+                            <Badge 
+                              key={idx} 
+                              variant="secondary" 
+                              className="text-xs bg-background/80 font-medium"
+                            >
+                              {displayReason}
+                            </Badge>
+                          );
+                        })}
                       </div>
                     </div>
                   );
