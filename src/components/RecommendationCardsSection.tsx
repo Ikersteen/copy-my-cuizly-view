@@ -575,21 +575,40 @@ export const RecommendationCardsSection = () => {
                   const aiReasons = restaurant.ai_reasons || [];
                   const fallbackReasons = restaurant.reasons || [];
                   const finalReasons = aiReasons.length > 0 ? aiReasons : fallbackReasons;
-                  const isAIRecommended = aiReasons.length > 0;
                   
                   return finalReasons.length > 0 && (
-                    <div className="bg-card border rounded-lg p-3 space-y-2">
-                      <span className="text-sm font-medium text-foreground">
-                        Pourquoi ce choix ?
-                      </span>
-                      
-                      <div className="space-y-1">
-                        {finalReasons.slice(0, 3).map((reason, idx) => (
-                          <p key={idx} className="text-sm text-muted-foreground leading-relaxed">
-                            {reason}
-                          </p>
-                        ))}
+                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-4 border border-primary/10">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="p-1.5 bg-primary/10 rounded-lg">
+                          <Sparkles className="h-3.5 w-3.5 text-primary" />
+                        </div>
+                        <p className="text-sm text-foreground font-semibold">
+                          {t('recommendations.whyThisChoice')}
+                        </p>
                       </div>
+                      <div className="flex flex-wrap gap-2">
+                        {finalReasons.slice(0, 3).map((reason, idx) => {
+                          return (
+                            <div
+                              key={idx}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-background/80 backdrop-blur-sm rounded-full border border-primary/20"
+                            >
+                              <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+                              <span className="text-xs font-medium text-foreground">
+                                {reason}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {aiReasons.length > 0 && (
+                        <div className="flex items-center gap-1 mt-2 pt-2 border-t border-primary/10">
+                          <div className="w-2 h-2 bg-gradient-to-r from-primary to-primary/60 rounded-full" />
+                          <span className="text-xs text-muted-foreground font-medium">
+                            Recommandé par l'IA
+                          </span>
+                        </div>
+                      )}
                     </div>
                   );
                 })()}
