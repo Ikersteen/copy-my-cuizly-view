@@ -11,13 +11,13 @@ const Team = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-background to-muted/30">
+      <section className="py-12 sm:py-16 bg-gradient-to-br from-background to-muted/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+          <div className="text-center space-y-3 sm:space-y-4">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
               {t('team.title')}
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Rencontrez la personne qui révolutionne la découverte culinaire à Montréal.
             </p>
           </div>
@@ -25,65 +25,65 @@ const Team = () => {
       </section>
 
       {/* Team Member Section */}
-      <section className="py-20 bg-background">
+      <section className="py-12 sm:py-16 lg:py-20 bg-background">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="max-w-3xl mx-auto shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
-            <CardHeader className="text-center pb-6">
-              <CardTitle className="text-2xl sm:text-3xl font-bold text-center mb-2">
+            <CardHeader className="text-center pb-4 sm:pb-6">
+              <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-center mb-2">
                 {t('team.founderName')}
               </CardTitle>
-              <CardDescription className="text-lg font-medium text-primary">
+              <CardDescription className="text-base sm:text-lg font-medium text-primary">
                 {t('team.founderTitle')}
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-8">
+            <CardContent className="space-y-6 sm:space-y-8">
               {/* Academic Background */}
-              <div className="bg-muted/30 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">🎓</span>
+              <div className="bg-muted/30 rounded-xl p-4 sm:p-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl sm:text-2xl">🎓</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">{t('team.education')}</h3>
-                    <p className="text-muted-foreground">{t('team.educationDetails')}</p>
+                    <h3 className="font-semibold text-base sm:text-lg mb-2">{t('team.education')}</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground">{t('team.educationDetails')}</p>
                   </div>
                 </div>
               </div>
 
               {/* Immigration Story */}
-              <div className="bg-muted/30 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-cuizly-pro/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">🛬</span>
+              <div className="bg-muted/30 rounded-xl p-4 sm:p-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-cuizly-pro/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl sm:text-2xl">🛬</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">{t('team.journey')}</h3>
-                    <p className="text-muted-foreground">{t('team.journeyDetails')}</p>
+                    <h3 className="font-semibold text-base sm:text-lg mb-2">{t('team.journey')}</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground">{t('team.journeyDetails')}</p>
                   </div>
                 </div>
               </div>
 
               {/* Vision & Mission */}
-              <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">🚀</span>
+              <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-4 sm:p-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl sm:text-2xl">🚀</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">{t('team.vision')}</h3>
-                    <p className="text-muted-foreground">{t('team.visionDetails')}</p>
+                    <h3 className="font-semibold text-base sm:text-lg mb-2">{t('team.vision')}</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground">{t('team.visionDetails')}</p>
                   </div>
                 </div>
               </div>
 
               {/* Location & Contact */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6">
+                <div className="flex items-center gap-2 text-muted-foreground justify-center sm:justify-start">
                   <MapPin className="h-4 w-4" />
                   <span className="text-sm">{t('team.location')}</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 justify-center sm:justify-start">
                   <Button 
                     variant="outline" 
                     size="sm" 
@@ -118,20 +118,20 @@ const Team = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-12 sm:py-16 bg-muted/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">2025</div>
-              <p className="text-muted-foreground">{t('team.foundingYear')}</p>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">2025</div>
+              <p className="text-sm sm:text-base text-muted-foreground">{t('team.foundingYear')}</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">1</div>
-              <p className="text-muted-foreground">{t('team.teamSize')}</p>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">1</div>
+              <p className="text-sm sm:text-base text-muted-foreground">{t('team.teamSize')}</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">🇨🇦</div>
-              <p className="text-muted-foreground">Basé au Québec, Canada</p>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">🇨🇦</div>
+              <p className="text-sm sm:text-base text-muted-foreground">Basé au Québec, Canada</p>
             </div>
           </div>
         </div>

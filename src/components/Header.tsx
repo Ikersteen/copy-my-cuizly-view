@@ -68,23 +68,23 @@ const Header = () => {
           </div>
 
           {/* Navigation Desktop - Centre */}
-          <nav className="hidden md:flex items-center justify-center flex-1">
-            <div className="flex items-center space-x-12">
+          <nav className="hidden lg:flex items-center justify-center flex-1">
+            <div className="flex items-center space-x-8">
               <button 
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
+                className="text-cuizly-neutral hover:text-foreground transition-colors text-sm font-medium px-2 py-2"
               >
                 {t('navigation.pricing')}
               </button>
               <button 
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
+                className="text-cuizly-neutral hover:text-foreground transition-colors text-sm font-medium px-2 py-2"
               >
                 {t('navigation.features')}
               </button>
               <button 
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-cuizly-neutral hover:text-foreground transition-colors text-base font-medium px-3 py-2"
+                className="text-cuizly-neutral hover:text-foreground transition-colors text-sm font-medium px-2 py-2"
               >
                 {t('navigation.contact')}
               </button>
@@ -92,11 +92,11 @@ const Header = () => {
           </nav>
 
           {/* Auth Actions Desktop - Extrême droite */}
-          <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+          <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
             {/* Theme Toggle */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
+                <Button variant="ghost" size="sm" className="gap-1 px-2">
                   {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
                 </Button>
               </DropdownMenuTrigger>
@@ -125,7 +125,7 @@ const Header = () => {
             {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
+                <Button variant="ghost" size="sm" className="gap-1 px-2">
                   <Globe className="h-4 w-4" />
                   <span className="uppercase text-xs font-medium">
                     {currentLanguage}
@@ -160,6 +160,41 @@ const Header = () => {
                   {t('navigation.login')}
                 </Button>
               </Link>
+            )}
+          </div>
+
+          {/* Tablet Navigation */}
+          <div className="hidden md:flex lg:hidden items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-1">
+                  {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setTheme('light')}>☀️ Clair</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('dark')}>🌙 Sombre</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('system')}>💻 Système</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-1">
+                  <Globe className="h-4 w-4" />
+                  <span className="uppercase text-xs">{currentLanguage}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => changeLanguage('fr')}>🇫🇷 FR</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('en')}>🇬🇧 EN</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            {user ? (
+              <Link to="/dashboard"><Button variant="ghost" size="sm">Dashboard</Button></Link>
+            ) : (
+              <Link to="/auth"><Button size="sm">Login</Button></Link>
             )}
           </div>
 
