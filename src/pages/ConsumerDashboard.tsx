@@ -19,7 +19,6 @@ import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
-import { SwipeRecommendations } from "@/components/SwipeRecommendations";
 import { RecommendationCardsSection } from "@/components/RecommendationCardsSection";
 import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
@@ -218,12 +217,8 @@ const ConsumerDashboard = () => {
         </div>
 
         {/* Main Tabs */}
-        <Tabs defaultValue="swipe" className="space-y-2">
-          <TabsList className="grid w-full grid-cols-4 h-11">
-            <TabsTrigger value="swipe" className="text-xs sm:text-sm px-2 py-2 gap-1">
-              <Heart className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">Swipe</span>
-            </TabsTrigger>
+        <Tabs defaultValue="recommendations" className="space-y-2">
+          <TabsList className="grid w-full grid-cols-3 h-11">
             <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2 gap-1">
               <Star className="h-4 w-4 flex-shrink-0" />
               <span className="truncate">{t('dashboard.recommendations')}</span>
@@ -237,10 +232,6 @@ const ConsumerDashboard = () => {
               <span className="truncate">{t('dashboard.offers')}</span>
             </TabsTrigger>
           </TabsList>
-
-          <TabsContent value="swipe" className="space-y-2 mt-2">
-            <SwipeRecommendations />
-          </TabsContent>
 
           <TabsContent value="recommendations" className="space-y-2 mt-2">
             <RecommendationCardsSection />
