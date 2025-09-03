@@ -107,7 +107,17 @@ export const RecommendationCardsSection = () => {
   };
 
   const generateRecommendations = useCallback(async () => {
-    console.log('🔍 Generating recommendations with preferences:', preferences);
+      console.log('🔍 Generating recommendations with preferences:', preferences);
+      
+      // DETAILED DEBUG - Show each preference value
+      console.log('🔍 DETAILED PREFERENCES CHECK:');
+      console.log('- cuisine_preferences:', preferences?.cuisine_preferences);
+      console.log('- cuisine_preferences length:', preferences?.cuisine_preferences?.length);
+      console.log('- price_range:', preferences?.price_range);
+      console.log('- favorite_meal_times:', preferences?.favorite_meal_times);
+      console.log('- favorite_meal_times length:', preferences?.favorite_meal_times?.length);
+      console.log('- dietary_restrictions:', preferences?.dietary_restrictions);
+      console.log('- dietary_restrictions length:', preferences?.dietary_restrictions?.length);
     setLoading(true);
     
     // Clear any cached data that might contain old recommendation formats
