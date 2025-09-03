@@ -23,26 +23,24 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.product')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-              <Link 
-                to="/features" 
-                className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-2 hover:scale-105 inline-block group"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              >
-                <span className="relative z-10">{t('footer.features')}</span>
-                <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full shadow-sm group-hover:shadow-cuizly-primary/50"></span>
-                <div className="absolute inset-0 -m-1 bg-cuizly-primary/5 rounded opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
-              </Link>
+                <Link 
+                  to="/features" 
+                  className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  {t('footer.features')}
+                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-              <Link 
-                to="/pricing" 
-                className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-2 hover:scale-105 inline-block group"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              >
-                <span className="relative z-10">{t('footer.rates')}</span>
-                <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full shadow-sm group-hover:shadow-cuizly-primary/50"></span>
-                <div className="absolute inset-0 -m-1 bg-cuizly-primary/5 rounded opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
-              </Link>
+                <Link 
+                  to="/pricing" 
+                  className="relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  {t('footer.rates')}
+                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
             </ul>
           </div>
@@ -131,22 +129,19 @@ const Footer = () => {
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
             <Link 
               to="/"
-              className="flex items-center space-x-3 group cursor-pointer relative"
+              className="flex items-center space-x-3 group cursor-pointer"
               onClick={() => window.location.href = '/'}
             >
-              <div className="relative">
-                <img 
-                  src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
-                  alt="Cuizly" 
-                  className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1 dark:hidden"
-                />
-                <img 
-                  src="/lovable-uploads/2ca03ecc-31e6-42ef-89bf-9532213d22eb.png" 
-                  alt="Cuizly" 
-                  className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1 hidden dark:block"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-cuizly-primary/20 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 blur-xl"></div>
-              </div>
+              <img 
+                src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
+                alt="Cuizly" 
+                className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:hidden"
+              />
+              <img 
+                src="/lovable-uploads/2ca03ecc-31e6-42ef-89bf-9532213d22eb.png" 
+                alt="Cuizly" 
+                className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 hidden dark:block"
+              />
             </Link>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
@@ -159,22 +154,20 @@ const Footer = () => {
                 href="https://www.instagram.com/cuizly"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-110 hover:-translate-y-1"
+                className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"
               >
                 <span className="relative z-10">{t('footer.instagram')}</span>
-                <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 shadow-lg group-hover:shadow-cuizly-primary/25"></div>
-                <div className="absolute inset-0 -m-1 bg-cuizly-primary/5 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 animate-pulse"></div>
+                <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
               <div className="w-px h-4 bg-border/50"></div>
               <a 
                 href="https://linkedin.com/company/cuizly"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-110 hover:-translate-y-1"
+                className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"
               >
                 <span className="relative z-10">LinkedIn</span>
-                <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/10 to-cuizly-accent/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 shadow-lg group-hover:shadow-cuizly-primary/25"></div>
-                <div className="absolute inset-0 -m-1 bg-cuizly-primary/5 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 animate-pulse"></div>
+                <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
             </div>
             
