@@ -602,7 +602,7 @@ const Auth = () => {
                         type="email"
                         placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="new-password"
+                        autoComplete="username"
                         autoFocus={false}
                         required
                       />
@@ -619,7 +619,7 @@ const Auth = () => {
                         type={showSignInPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10 pr-10 text-sm"
-                        autoComplete="new-password"
+                        autoComplete="current-password"
                         autoFocus={false}
                         required
                       />
@@ -778,7 +778,7 @@ const Auth = () => {
                         type="email"
                         placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="new-password"
+                        autoComplete="email"
                         autoFocus={false}
                         required
                       />
