@@ -140,61 +140,35 @@ export const RecommendationCardsSection = () => {
     setRestaurantRatings({});
     
     try {
-      // Check if user has defined any meaningful preferences FIRST
-      const hasPreferences = !!(
-        preferences?.cuisine_preferences?.length ||
-        preferences?.price_range ||
-        preferences?.favorite_meal_times?.length ||
-        preferences?.dietary_restrictions?.length
-      );
-
-      console.log('🔍 HAS PREFERENCES:', hasPreferences);
-
-      // If no preferences are defined, force show some restaurants anyway for demo
-      if (!hasPreferences) {
-        console.log('❌ No preferences - showing demo restaurants anyway');
-        
-        // Get some restaurants for demo
-        const { data: restaurantsResponse } = await supabase.rpc('get_public_restaurants');
-        const restaurantsData = restaurantsResponse || [];
-        
-        console.log('📊 Demo restaurants found:', restaurantsData.length);
-        
-        if (restaurantsData.length > 0) {
-          const demoRestaurants = restaurantsData.slice(0, 3).map(restaurant => ({
-            ...restaurant,
-            score: 50,
-            reasons: ["Restaurant populaire dans votre secteur", "Bonne réputation"]
-          }));
-          
-          // Get real ratings for demo restaurants
-          const ratingsPromises = demoRestaurants.map(async (restaurant) => {
-            const ratingData = await getRealRating(restaurant.id);
-            setRestaurantRatings(prev => ({
-              ...prev,
-              [restaurant.id]: ratingData
-            }));
-            return restaurant;
-          });
-
-          const finalDemoRestaurants = await Promise.all(ratingsPromises);
-          setRecommendedRestaurants(finalDemoRestaurants);
-          setLoading(false);
-          return;
-        }
-        
-        setRecommendedRestaurants([]);
-        setLoading(false);
-        return;
-      }
-
       // Try AI recommendations first
       try {
         console.log('🤖 Trying AI recommendations...');
         const { data: restaurantsResponse } = await supabase.rpc('get_public_restaurants');
         const restaurantsData = restaurantsResponse || [];
 
-        console.log('📊 Restaurants found for AI analysis:', restaurantsData.length);
+        // Check if user has defined any meaningful preferences BEFORE calling AI
+        const hasPreferences = !!(
+          preferences?.cuisine_preferences?.length ||
+          preferences?.price_range ||
+          preferences?.favorite_meal_times?.length ||
+          preferences?.dietary_restrictions?.length
+        );
+
+        console.log('🔍 AI DEBUG Preferences:', {
+          cuisine_preferences: preferences?.cuisine_preferences,
+          price_range: preferences?.price_range,
+          favorite_meal_times: preferences?.favorite_meal_times,
+          dietary_restrictions: preferences?.dietary_restrictions,
+          hasPreferences: hasPreferences
+        });
+
+        // If no preferences are defined, skip AI and return empty
+        if (!hasPreferences) {
+          console.log('❌ No preferences - skipping AI recommendations');
+          setRecommendedRestaurants([]);
+          setLoading(false);
+          return;
+        }
 
         if (restaurantsData.length > 0) {
           const { data: aiResult, error: aiError } = await supabase.functions.invoke('ai-recommendations', {
@@ -205,11 +179,8 @@ export const RecommendationCardsSection = () => {
             }
           });
 
-          console.log('🤖 AI Result:', aiResult);
-          console.log('🤖 AI Error:', aiError);
-
           if (!aiError && aiResult?.recommendations?.length > 0) {
-            console.log('✅ AI recommendations successful:', aiResult.recommendations.length);
+            console.log('✅ AI recommendations successful');
             
             // Get real ratings for AI recommendations and clear old reason format
             const ratingsPromises = aiResult.recommendations.map(async (restaurant: any) => {
@@ -229,16 +200,13 @@ export const RecommendationCardsSection = () => {
             setRecommendedRestaurants(aiRestaurantsWithRatings);
             setLoading(false);
             return;
-          } else {
-            console.log('🔄 AI failed, trying fallback...');
           }
         }
       } catch (aiError) {
-        console.log('🔄 AI not available, falling back to traditional scoring:', aiError);
+        console.log('🔄 AI not available, falling back to traditional scoring');
       }
 
       // Fallback to traditional scoring
-      console.log('📊 Starting traditional scoring...');
       const { data: restaurantsResponse } = await supabase.rpc('get_public_restaurants');
       const { data: menusData } = await supabase
         .from('menus')
@@ -248,17 +216,35 @@ export const RecommendationCardsSection = () => {
       const restaurantsData = restaurantsResponse || [];
       const menus = menusData || [];
 
-      console.log('📊 Restaurants for traditional scoring:', restaurantsData.length);
-      console.log('📊 Menus found:', menus.length);
-
       if (restaurantsData.length === 0) {
-        console.log('❌ No restaurants found in database');
         setRecommendedRestaurants([]);
         setLoading(false);
         return;
       }
 
-      // Continue with traditional scoring algorithm...
+      // Check if user has defined any meaningful preferences
+      const hasPreferences = !!(
+        preferences?.cuisine_preferences?.length ||
+        preferences?.price_range ||
+        preferences?.favorite_meal_times?.length ||
+        preferences?.dietary_restrictions?.length
+      );
+
+      console.log('🔍 DEBUG Preferences:', {
+        cuisine_preferences: preferences?.cuisine_preferences,
+        price_range: preferences?.price_range,
+        favorite_meal_times: preferences?.favorite_meal_times,
+        dietary_restrictions: preferences?.dietary_restrictions,
+        hasPreferences: hasPreferences
+      });
+
+      // If no preferences are defined, return empty recommendations
+      if (!hasPreferences) {
+        console.log('❌ No user preferences found - showing no recommendations');
+        setRecommendedRestaurants([]);
+        setLoading(false);
+        return;
+      }
 
       // EXACT MATCHING ALGORITHM - Score restaurants with precise preference matching
       const scoredRestaurants = restaurantsData.map(restaurant => {
