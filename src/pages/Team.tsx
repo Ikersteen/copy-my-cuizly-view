@@ -4,6 +4,7 @@ import { MapPin, Linkedin, Mail, User } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { Button } from "@/components/ui/button";
 import CTASection from "@/components/CTASection";
+import Footer from "@/components/Footer";
 
 const Team = () => {
   const { t } = useTranslation();
@@ -30,23 +31,8 @@ const Team = () => {
       {/* Team Member Section */}
       <section className="py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">{t('team.meetFounder')}</h2>
-            <p className="text-muted-foreground text-lg">{t('team.founderIntro')}</p>
-          </div>
-
           <Card className="max-w-4xl mx-auto shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
             <CardHeader className="text-center pb-6">
-              <div className="flex justify-center mb-6">
-                <div className="relative">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border-4 border-primary/20">
-                    <User className="h-16 w-16 text-primary" />
-                  </div>
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">🇨🇩</span>
-                  </div>
-                </div>
-              </div>
               <CardTitle className="text-2xl sm:text-3xl font-bold text-center">
                 {t('team.founderName')}
               </CardTitle>
@@ -102,13 +88,31 @@ const Team = () => {
                   <span className="text-sm">{t('team.location')}</span>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
-                    <Linkedin className="h-4 w-4" />
-                    LinkedIn
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex items-center gap-2"
+                    asChild
+                  >
+                    <a 
+                      href="https://www.linkedin.com/in/ikrlnd" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      <Linkedin className="h-4 w-4" />
+                      LinkedIn
+                    </a>
                   </Button>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                    {t('team.contact')}
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex items-center gap-2"
+                    asChild
+                  >
+                    <a href="mailto:Ikersteen@gmail.com">
+                      <Mail className="h-4 w-4" />
+                      {t('team.contact')}
+                    </a>
                   </Button>
                 </div>
               </div>
@@ -130,8 +134,8 @@ const Team = () => {
               <p className="text-muted-foreground">{t('team.teamSize')}</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">🇨🇦</div>
-              <p className="text-muted-foreground">{t('team.basedIn')}</p>
+              <div className="text-3xl font-bold text-primary mb-2">🇨🇦 🏴󠁣󠁡󠁱󠁣󠁿</div>
+              <p className="text-muted-foreground">Basé au Québec, Canada</p>
             </div>
           </div>
         </div>
@@ -139,6 +143,9 @@ const Team = () => {
 
       {/* CTA Section */}
       <CTASection />
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
