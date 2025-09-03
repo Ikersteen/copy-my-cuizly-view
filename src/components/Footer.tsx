@@ -26,6 +26,7 @@ const Footer = () => {
                 <Link 
                   to="/features" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   {t('footer.features')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
@@ -35,6 +36,7 @@ const Footer = () => {
                 <Link 
                   to="/pricing" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   {t('footer.rates')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
@@ -50,6 +52,7 @@ const Footer = () => {
                 <Link 
                   to="/contact" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   {t('footer.contactUs')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
@@ -65,6 +68,7 @@ const Footer = () => {
                 <Link 
                   to="/team" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   {t('footer.team')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
@@ -74,6 +78,7 @@ const Footer = () => {
                 <Link 
                   to="/mentions" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   {t('footer.legalNotices')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
@@ -89,6 +94,7 @@ const Footer = () => {
                 <Link 
                   to="/privacy" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   {t('footer.privacyPolicy')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
@@ -98,6 +104,7 @@ const Footer = () => {
                 <Link 
                   to="/terms" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   {t('footer.termsOfUse')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
@@ -107,6 +114,7 @@ const Footer = () => {
                 <Link 
                   to="/cookies" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   {t('footer.cookiePolicy')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
@@ -122,6 +130,7 @@ const Footer = () => {
             <Link 
               to="/"
               className="flex items-center space-x-3 group cursor-pointer"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <img 
                 src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
