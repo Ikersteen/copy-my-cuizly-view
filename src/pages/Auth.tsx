@@ -50,24 +50,24 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
-    console.log("🔵 [Auth Effect] Initialisation du listener d'authentification");
+    console.log("🔵 [Auth Effect] Initializing auth state listener");
     
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log("🔵 [Auth State Change] Event:", event);
-        console.log("🔵 [Auth State Change] Session présente:", !!session);
+        console.log("🔵 [Auth State Change] Session present:", !!session);
         
         if (session?.user) {
           console.log("🔵 [Auth State Change] User ID:", session.user.id);
           console.log("🔵 [Auth State Change] Email:", session.user.email);
           console.log("🔵 [Auth State Change] Provider:", session.user.app_metadata?.provider);
           console.log("🔵 [Auth State Change] User metadata:", session.user.user_metadata);
-          console.log("🔵 [Auth State Change] Email confirmé:", !!session.user.email_confirmed_at);
+          console.log("🔵 [Auth State Change] Email confirmed:", !!session.user.email_confirmed_at);
         }
         
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
-          console.log("🟢 [Auth State Change] Utilisateur connecté, vérification du profil...");
+          console.log("🟢 [Auth State Change] User connected, checking profile...");
           
           try {
             // Check if user has profile, create if needed
@@ -77,15 +77,15 @@ const Auth = () => {
               .eq('user_id', session.user.id)
               .single();
 
-            console.log("🔵 [Auth State Change] Profil existant:", !!profile);
+            console.log("🔵 [Auth State Change] Profile exists:", !!profile);
             
             if (profileError && profileError.code !== 'PGRST116') {
-              console.error("🔴 [Auth State Change] Erreur lors de la récupération du profil:", profileError);
+              console.error("🔴 [Auth State Change] Error fetching profile:", profileError);
             }
 
             // Si pas de profil, le créer automatiquement
             if (!profile) {
-              console.log("🔵 [Auth State Change] Création du profil utilisateur...");
+              console.log("🔵 [Auth State Change] Creating user profile...");
               
               // Si les métadonnées sont présentes, les utiliser
               if (session.user.user_metadata && Object.keys(session.user.user_metadata).length > 0) {
@@ -103,12 +103,12 @@ const Auth = () => {
                 });
 
                 if (createError) {
-                  console.error("🔴 [Auth State Change] Erreur création profil basique:", createError);
+                  console.error("🔴 [Auth State Change] Error creating basic profile:", createError);
                 }
               }
             }
 
-            console.log("🟢 [Auth State Change] Redirection vers /dashboard");
+            console.log("🟢 [Auth State Change] Redirecting to /dashboard");
             
             // Restore temporary data after successful authentication
             setTimeout(() => {
@@ -117,7 +117,7 @@ const Auth = () => {
             
             navigate('/dashboard');
           } catch (error) {
-            console.error("🔴 [Auth State Change] Erreur dans la gestion de la connexion:", error);
+            console.error("🔴 [Auth State Change] Error handling connection:", error);
             // Même en cas d'erreur, rediriger vers le dashboard
             navigate('/dashboard');
           }
@@ -127,20 +127,20 @@ const Auth = () => {
 
     // Check for existing session
     const checkAuth = async () => {
-      console.log("🔵 [Auth Effect] Vérification de la session existante");
+      console.log("🔵 [Auth Effect] Checking existing session");
       
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error("🔴 [Auth Effect] Erreur lors de la vérification de session:", error);
+          console.error("🔴 [Auth Effect] Error checking session:", error);
           return;
         }
         
-        console.log("🔵 [Auth Effect] Session existante:", !!session);
+        console.log("🔵 [Auth Effect] Existing session:", !!session);
         
         if (session) {
-          console.log("🟢 [Auth Effect] Session trouvée, redirection vers /dashboard");
+          console.log("🟢 [Auth Effect] Session found, redirecting to /dashboard");
           
           // Restore temporary data
           setTimeout(() => {
@@ -150,7 +150,7 @@ const Auth = () => {
           navigate('/dashboard');
         }
       } catch (error) {
-        console.error("🔴 [Auth Effect] Erreur dans checkAuth:", error);
+        console.error("🔴 [Auth Effect] Error in checkAuth:", error);
       }
     };
     
@@ -434,21 +434,21 @@ const Auth = () => {
   };
 
   const handleGoogleAuth = async () => {
-    console.log("🔵 [Google Auth] Début de la connexion Google");
+    console.log("🔵 [Google Auth] Starting Google connection");
     
     try {
       setIsLoading(true);
       
       // Log de l'URL de redirection
       const redirectUrl = `${window.location.origin}/dashboard`;
-      console.log("🔵 [Google Auth] URL de redirection configurée:", redirectUrl);
-      console.log("🔵 [Google Auth] Origin actuel:", window.location.origin);
+      console.log("🔵 [Google Auth] Configured redirect URL:", redirectUrl);
+      console.log("🔵 [Google Auth] Current origin:", window.location.origin);
       
       // Vérification préliminaire de la session actuelle
       const { data: currentSession } = await supabase.auth.getSession();
-      console.log("🔵 [Google Auth] Session actuelle avant OAuth:", currentSession?.session ? "Connecté" : "Déconnecté");
+      console.log("🔵 [Google Auth] Current session before OAuth:", currentSession?.session ? "Connected" : "Disconnected");
       
-      console.log("🔵 [Google Auth] Lancement de signInWithOAuth...");
+      console.log("🔵 [Google Auth] Launching signInWithOAuth...");
       
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -461,33 +461,33 @@ const Auth = () => {
         }
       });
       
-      console.log("🔵 [Google Auth] Réponse OAuth reçue");
+      console.log("🔵 [Google Auth] OAuth response received");
       console.log("🔵 [Google Auth] Data:", data);
       
       if (error) {
-        console.error("🔴 [Google Auth] Erreur OAuth:", error);
-        console.error("🔴 [Google Auth] Message d'erreur:", error.message);
+        console.error("🔴 [Google Auth] OAuth error:", error);
+        console.error("🔴 [Google Auth] Error message:", error.message);
         console.error("🔴 [Google Auth] Status:", error.status);
         throw error;
       }
       
-      console.log("🟢 [Google Auth] OAuth initié avec succès, redirection en cours...");
-      console.log("🟢 [Google Auth] URL générée:", data?.url);
+      console.log("🟢 [Google Auth] OAuth initiated successfully, redirecting...");
+      console.log("🟢 [Google Auth] Generated URL:", data?.url);
       
     } catch (error: any) {
-      console.error("🔴 [Google Auth] Erreur dans handleGoogleAuth:", error);
+      console.error("🔴 [Google Auth] Error in handleGoogleAuth:", error);
       
-      let errorMessage = "Impossible de se connecter avec Google";
+      let errorMessage = "Unable to connect with Google";
       
       if (error.message?.includes("provider is not enabled")) {
-        errorMessage = "Google OAuth n'est pas configuré pour cette application";
-        console.error("🔴 [Google Auth] Provider Google non activé");
+        errorMessage = "Google OAuth is not configured for this application";
+        console.error("🔴 [Google Auth] Google provider not enabled");
       } else if (error.message?.includes("invalid_request")) {
         errorMessage = t('auth.errors.oauthConfigInvalid');
-        console.error("🔴 [Google Auth] Configuration OAuth invalide");
+        console.error("🔴 [Google Auth] Invalid OAuth configuration");
       } else if (error.message?.includes("redirect_uri")) {
         errorMessage = t('auth.errors.redirectUriUnauthorized');
-        console.error("🔴 [Google Auth] Problème avec l'URL de redirection");
+        console.error("🔴 [Google Auth] Issue with redirect URL");
       }
 
       toast({
@@ -511,14 +511,14 @@ const Auth = () => {
       
       if (error) throw error;
     } catch (error: any) {
-      let errorMessage = "Impossible de se connecter avec Apple";
+      let errorMessage = "Unable to connect with Apple";
       
       if (error.message?.includes("provider is not enabled")) {
-        errorMessage = "Apple OAuth n'est pas configuré pour cette application";
+        errorMessage = "Apple OAuth is not configured for this application";
       }
 
       toast({
-        title: "Erreur OAuth",
+        title: "OAuth Error",
         description: errorMessage,
         variant: "destructive",
       });
