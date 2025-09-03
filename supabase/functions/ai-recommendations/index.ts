@@ -93,11 +93,14 @@ serve(async (req) => {
           };
         } catch (error) {
           console.error(`Error analyzing restaurant ${restaurant.id}:`, error);
-          // Fallback au scoring traditionnel
+          console.error('Error details:', error.message);
+          
+          // Fallback with personalized reasons instead of "Analyse traditionnelle"
+          const fallbackReasons = generateFallbackReasons(restaurant, preferences);
           return {
             ...restaurant,
             ai_score: calculateFallbackScore(restaurant, preferences),
-            ai_reasons: ['Analyse traditionnelle'],
+            ai_reasons: fallbackReasons,
             sentiment_analysis: 'neutral',
             preference_match: 0.5,
             quality_prediction: 0.6
@@ -355,6 +358,51 @@ function calculateFallbackScore(restaurant: Restaurant, preferences: UserPrefere
   }
 
   return Math.min(Math.round(score), 100);
+}
+
+function generateFallbackReasons(restaurant: Restaurant, preferences: UserPreferences): string[] {
+  const reasons: string[] = [];
+  const currentHour = new Date().getHours();
+  const currentMealTime = getCurrentMealTime(currentHour);
+
+  // Cuisine match
+  if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
+    const matchingCuisines = restaurant.cuisine_type.filter(cuisine =>
+      preferences.cuisine_preferences!.includes(cuisine)
+    );
+    if (matchingCuisines.length > 0) {
+      reasons.push(`Cuisine ${matchingCuisines[0]} appréciée`);
+    }
+  }
+
+  // Price match
+  if (preferences?.price_range === restaurant.price_range) {
+    const priceLabels = {
+      '$': 'Tarifs abordables',
+      '$$': 'Prix modérés', 
+      '$$$': 'Gamme élevée',
+      '$$$$': 'Haut de gamme'
+    };
+    reasons.push(priceLabels[restaurant.price_range as keyof typeof priceLabels] || 'Prix adaptés');
+  }
+
+  // Time match
+  if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
+    reasons.push('Moment parfait');
+  }
+
+  // Popularity
+  const popularity = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
+  if (popularity > 50) {
+    reasons.push('Très populaire');
+  }
+
+  // Default if no matches
+  if (reasons.length === 0) {
+    reasons.push('Découverte recommandée');
+  }
+
+  return reasons.slice(0, 2);
 }
 
 async function logRecommendationInteraction(userId: string, recommendations: any[]) {
