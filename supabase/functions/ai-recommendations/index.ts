@@ -203,10 +203,49 @@ async function analyzeRestaurantWithAI(
   const data = await response.json();
   const content = data.choices[0]?.message?.content;
 
+  if (!content) {
+    console.error('Empty AI response content');
+    throw new Error('Empty AI response');
+  }
+
+  // Log the raw content for debugging
+  console.log('Raw AI response:', content);
+
   try {
-    return JSON.parse(content);
+    // Clean the content to extract JSON if wrapped in markdown or extra text
+    let jsonContent = content.trim();
+    
+    // Remove markdown code blocks if present
+    if (jsonContent.startsWith('```json')) {
+      jsonContent = jsonContent.replace(/^```json\s*/, '').replace(/```\s*$/, '');
+    } else if (jsonContent.startsWith('```')) {
+      jsonContent = jsonContent.replace(/^```\s*/, '').replace(/```\s*$/, '');
+    }
+    
+    // Try to find JSON within the content
+    const jsonMatch = jsonContent.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      jsonContent = jsonMatch[0];
+    }
+
+    const parsed = JSON.parse(jsonContent);
+    
+    // Validate required fields
+    if (typeof parsed.score !== 'number' || !Array.isArray(parsed.reasons)) {
+      console.error('Invalid AI response structure:', parsed);
+      throw new Error('Missing required fields in AI response');
+    }
+
+    // Ensure score is within valid range
+    parsed.score = Math.max(0, Math.min(100, parsed.score));
+    
+    // Ensure reasons array has max 2 elements and they're strings
+    parsed.reasons = parsed.reasons.slice(0, 2).filter(r => typeof r === 'string');
+    
+    return parsed;
   } catch (parseError) {
     console.error('Error parsing AI response:', parseError);
+    console.error('Content that failed to parse:', content);
     throw new Error('Invalid AI response format');
   }
 }
