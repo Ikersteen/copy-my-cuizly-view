@@ -40,39 +40,82 @@ export const RecommendationCardsSection = () => {
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Generate short, consistent reasons for restaurant recommendations
+  // Generate detailed, explanatory reasons for restaurant recommendations
   const generateRecommendationReasons = (restaurant: Restaurant) => {
     const reasons: string[] = [];
     const currentHour = new Date().getHours();
     const currentMealTime = getCurrentMealTime(currentHour);
 
-    // Price range match (priority 1)
+    // Price range match (priority 1) - Detailed explanation
     if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push(t('recommendations.inYourBudget'));
+      const priceLabels = {
+        '$': 'abordable',
+        '$$': 'modéré', 
+        '$$$': 'élevé',
+        '$$$$': 'premium'
+      };
+      const priceLabel = priceLabels[restaurant.price_range as keyof typeof priceLabels] || restaurant.price_range;
+      reasons.push(`Prix ${priceLabel} comme vous le souhaitez`);
     }
 
-    // Cuisine preferences match (priority 2)
+    // Cuisine preferences match (priority 2) - Detailed explanation
     if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
       const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
         preferences.cuisine_preferences.includes(cuisine)
       ) || [];
       if (matchingCuisines.length > 0) {
-        reasons.push(t('recommendations.cuisineMatches'));
+        const cuisineNames = matchingCuisines.map(cuisine => 
+          CUISINE_TRANSLATIONS[cuisine] || cuisine
+        ).join(', ');
+        if (matchingCuisines.length === 1) {
+          reasons.push(`Spécialisé en cuisine ${cuisineNames} que vous aimez`);
+        } else {
+          reasons.push(`Propose ${cuisineNames}, vos cuisines préférées`);
+        }
       }
     }
 
-    // Meal time match (priority 3)
+    // Meal time match (priority 3) - Detailed explanation
     if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-      reasons.push("Moment idéal");
+      const timeLabels = {
+        'Déjeuner / Brunch': 'parfait pour votre brunch matinal',
+        'Déjeuner rapide': 'idéal pour votre pause déjeuner',
+        'Collation': 'parfait pour une pause gourmande',
+        'Dîner / Souper': 'excellent choix pour votre dîner',
+        'Repas tardif': 'ouvert tard comme vous le préférez',
+        'Détox': 'options saines disponibles'
+      };
+      const timeLabel = timeLabels[currentMealTime as keyof typeof timeLabels] || 'moment idéal';
+      reasons.push(`Timing ${timeLabel}`);
     }
 
-    // Default if no specific matches (keep it short)
+    // Dietary restrictions match - Detailed explanation
+    if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
+      const dietaryLabels = {
+        'vegetarian': 'végétariennes',
+        'vegan': 'véganes',
+        'gluten-free': 'sans gluten',
+        'halal': 'halal',
+        'kosher': 'casher'
+      };
+      const dietaryOptions = preferences.dietary_restrictions.map(restriction => 
+        dietaryLabels[restriction as keyof typeof dietaryLabels] || restriction
+      ).join(' et ');
+      reasons.push(`Options ${dietaryOptions} disponibles`);
+    }
+
+    // Quality indicators - Default explanations with more detail
     if (reasons.length === 0) {
-      reasons.push("Près de vous");
+      reasons.push("Établissement populaire dans votre secteur");
     }
 
-    // Limit to maximum 2 reasons for consistency
-    return reasons.slice(0, 2);
+    // Add location-based reason if we have space
+    if (reasons.length < 2 && restaurant.address) {
+      reasons.push("Facilement accessible depuis votre position");
+    }
+
+    // Limit to maximum 3 reasons for better explanations
+    return reasons.slice(0, 3);
   };
 
   // Helper function for meal time calculation (used in multiple places)
@@ -542,35 +585,29 @@ export const RecommendationCardsSection = () => {
                 {(() => {
                   const reasons = restaurant.reasons || [];
                   
-                  // Map French reasons to translation keys
-                  const reasonTranslationMap: { [key: string]: string } = {
-                    "Cuisine favorite": "reasonCuisineFavorite",
-                    "Prix idéal": "reasonPriceIdeal", 
-                    "Moment parfait": "reasonPerfectTiming",
-                    "Très populaire": "reasonVeryPopular",
-                    "Nouvelle découverte": "reasonNewDiscovery"
-                  };
-                  
                   return reasons.length > 0 && (
-                    <div className="bg-muted/50 rounded-lg p-3">
-                       <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-                         <Sparkles className="h-3 w-3" />
-                         {t('recommendations.whyThisChoice')}
-                       </p>
-                      <div className="flex flex-wrap gap-1">
-                        {reasons.slice(0, 2).map((reason, idx) => {
-                          const translationKey = reasonTranslationMap[reason];
-                          const displayReason = translationKey ? t(`recommendations.${translationKey}`) : reason;
-                          return (
-                            <Badge 
-                              key={idx} 
-                              variant="secondary" 
-                              className="text-xs bg-background/80 font-medium"
-                            >
-                              {displayReason}
-                            </Badge>
-                          );
-                        })}
+                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-3 border border-primary/20">
+                       <div className="flex items-center gap-2 mb-3">
+                         <div className="flex items-center gap-1.5">
+                           <Sparkles className="h-4 w-4 text-primary" />
+                           <p className="text-sm font-semibold text-foreground">
+                             {t('recommendations.whyThisChoice')}
+                           </p>
+                         </div>
+                       </div>
+                      <div className="space-y-2">
+                        {reasons.slice(0, 3).map((reason, idx) => (
+                          <div key={idx} className="flex items-center gap-2.5">
+                            <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                              idx === 0 ? 'bg-emerald-500' : 
+                              idx === 1 ? 'bg-blue-500' : 
+                              'bg-orange-500'
+                            }`} />
+                            <span className="text-xs text-foreground/80 leading-relaxed">
+                              {reason}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   );
