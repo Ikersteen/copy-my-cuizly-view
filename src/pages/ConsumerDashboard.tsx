@@ -114,10 +114,7 @@ const ConsumerDashboard = () => {
 
   const handleLogout = async () => {
     try {
-      // Clear local storage and session data first
-      localStorage.clear();
-      sessionStorage.clear();
-      
+      // Let Supabase handle auth token cleanup
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error('Logout error:', error);
@@ -143,8 +140,6 @@ const ConsumerDashboard = () => {
     } catch (error) {
       console.error('Error logging out:', error);
       // Force logout même en cas d'erreur
-      localStorage.clear();
-      sessionStorage.clear();
       setUser(null);
       navigate("/");
     }

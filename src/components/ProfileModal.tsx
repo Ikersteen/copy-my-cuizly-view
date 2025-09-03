@@ -189,10 +189,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
   const handleLogout = async () => {
     try {
-      // Clear local storage and session data first
-      localStorage.clear();
-      sessionStorage.clear();
-      
+      // Let Supabase handle auth token cleanup
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error('Logout error:', error);
@@ -214,8 +211,6 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     } catch (error) {
       console.error('Error logging out:', error);
       // Force logout even on error
-      localStorage.clear();
-      sessionStorage.clear();
       onOpenChange(false);
       navigate("/");
     }
