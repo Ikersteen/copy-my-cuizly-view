@@ -29,13 +29,16 @@ const CTASection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link to="/auth">
+          <Link to="/auth" className="group">
             <Button 
               size="lg" 
-              className="bg-white text-gray-900 hover:bg-gray-100 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-white/25"
+              className="bg-white text-gray-900 hover:bg-gray-100 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-white/25 transition-all duration-300 hover:scale-105 hover:-translate-y-1 animate-fade-in relative overflow-hidden"
             >
-              {t('cta.button')}
-              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="relative z-10 flex items-center">
+                {t('cta.button')}
+                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             </Button>
           </Link>
 
