@@ -313,7 +313,7 @@ const Waitlist = () => {
                   </Link>
                   <Button 
                     type="submit" 
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    className="flex-1 bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-white"
                     disabled={isSubmitting || !formData.email || !formData.name || !formData.company_name || !formData.phone || !formData.address || !formData.restaurant_type || !hcaptchaToken}
                   >
                     {isSubmitting ? t('waitlist.form.submitting') : t('waitlist.form.submit')}

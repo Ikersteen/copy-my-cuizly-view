@@ -107,7 +107,7 @@ const Pricing = () => {
                   ))}
                 </ul>
                 <Link to={index === 0 ? "/auth" : index === 1 ? "/auth?type=restaurant&tab=signup" : "/waitlist"}>
-                  <Button className={`w-full text-sm sm:text-base ${index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 'bg-sky-500 hover:bg-sky-600 text-white'}`}>
+                  <Button className={`w-full text-sm sm:text-base ${index === 0 ? 'bg-cuizly-accent hover:bg-cuizly-accent/90 text-white' : index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-white' : 'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-white'}`}>
                     {t(plan.ctaKey)}
                   </Button>
                 </Link>

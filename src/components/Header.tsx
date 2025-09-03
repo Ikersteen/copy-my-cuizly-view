@@ -163,43 +163,8 @@ const Header = () => {
             )}
           </div>
 
-          {/* Tablet Navigation */}
-          <div className="hidden md:flex lg:hidden items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-1">
-                  {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme('light')}>☀️ Clair</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>🌙 Sombre</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>💻 Système</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-1">
-                  <Globe className="h-4 w-4" />
-                  <span className="uppercase text-xs">{currentLanguage}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => changeLanguage('fr')}>🇫🇷 FR</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage('en')}>🇬🇧 EN</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            {user ? (
-              <Link to="/dashboard"><Button variant="ghost" size="sm">Dashboard</Button></Link>
-            ) : (
-              <Link to="/auth"><Button size="sm">Login</Button></Link>
-            )}
-          </div>
-
-          {/* Mobile Menu */}
-          <div className="md:hidden">
+          {/* Mobile Menu - Now shows for tablet and mobile */}
+          <div className="lg:hidden">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm" className="p-2">
