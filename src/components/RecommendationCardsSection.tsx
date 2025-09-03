@@ -579,14 +579,9 @@ export const RecommendationCardsSection = () => {
                   
                   return finalReasons.length > 0 && (
                     <div className="bg-card border rounded-lg p-3 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-foreground">
-                          Pourquoi ce choix ?
-                        </span>
-                        {isAIRecommended && (
-                          <span className="text-xs text-primary font-medium">IA</span>
-                        )}
-                      </div>
+                      <span className="text-sm font-medium text-foreground">
+                        Pourquoi ce choix ?
+                      </span>
                       
                       <div className="space-y-1">
                         {finalReasons.slice(0, 3).map((reason, idx) => (
