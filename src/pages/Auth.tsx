@@ -32,6 +32,9 @@ const Auth = () => {
   const { sendWelcomeEmail } = useEmailNotifications();
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  
+  // Map internal language codes to HCaptcha language codes
+  const hCaptchaLanguage = currentLanguage === 'fr' ? 'fr' : 'en';
   const { restoreDataAfterAuth } = useDataPersistence();
 
   // Check URL parameters to set user type and active tab
@@ -655,7 +658,7 @@ const Auth = () => {
                          }}
                          theme="light"
                          size="normal"
-                         languageOverride={currentLanguage}
+                          languageOverride={hCaptchaLanguage}
                        />
                     </div>
                     {captchaError && (
@@ -842,7 +845,7 @@ const Auth = () => {
                          }}
                          theme="light"
                          size="normal"
-                         languageOverride={currentLanguage}
+                         languageOverride={hCaptchaLanguage}
                        />
                     </div>
                     {captchaError && (
