@@ -55,6 +55,27 @@ serve(async (req) => {
       throw new Error('Restaurants array is required');
     }
 
+    // Check if user has any meaningful preferences defined
+    const hasPreferences = !!(
+      preferences?.cuisine_preferences?.length ||
+      preferences?.price_range ||
+      preferences?.favorite_meal_times?.length ||
+      preferences?.dietary_restrictions?.length
+    );
+
+    // If no preferences are defined, return empty recommendations
+    if (!hasPreferences) {
+      console.log('No user preferences found - returning empty AI recommendations');
+      return new Response(JSON.stringify({
+        recommendations: [],
+        total_analyzed: 0,
+        ai_powered: true,
+        message: 'No preferences defined'
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     console.log(`Processing AI recommendations for ${restaurants.length} restaurants`);
 
     // Analyse sémantique et scoring IA pour chaque restaurant
@@ -250,18 +271,30 @@ function getCurrentMealTime(hour: number): string {
 }
 
 function calculateFallbackScore(restaurant: Restaurant, preferences: UserPreferences): number {
-  let score = 20; // Score de base
+  // Check if user has any meaningful preferences defined
+  const hasPreferences = !!(
+    preferences?.cuisine_preferences?.length ||
+    preferences?.price_range ||
+    preferences?.favorite_meal_times?.length ||
+    preferences?.dietary_restrictions?.length
+  );
+
+  // If no preferences, return 0 score
+  if (!hasPreferences) {
+    return 0;
+  }
+
+  let score = 0; // Start from 0, only add points for matches
   const currentHour = new Date().getHours();
   const currentMealTime = getCurrentMealTime(currentHour);
 
-  // 1. Correspondance cuisine (40% - priorité maximale)
+  // 1. Correspondance cuisine (60% - priorité maximale)
   if (preferences.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
     const exactMatches = restaurant.cuisine_type.filter(cuisine =>
       preferences.cuisine_preferences!.includes(cuisine)
     );
     if (exactMatches.length > 0) {
-      // Score progressif selon nombre de correspondances
-      score += Math.min(exactMatches.length * 15, 40);
+      score += Math.min(exactMatches.length * 20, 60);
     }
   }
 
@@ -270,24 +303,16 @@ function calculateFallbackScore(restaurant: Restaurant, preferences: UserPrefere
     score += 25;
   }
 
-  // 3. Timing optimal (20%)
+  // 3. Timing optimal (10%)
   if (preferences.favorite_meal_times?.includes(currentMealTime)) {
-    score += 20;
+    score += 10;
   }
 
-  // 4. Qualité et notes (10%)
+  // 4. Qualité et notes (5%)
   if (restaurant.average_rating && restaurant.rating_count) {
-    const qualityScore = (restaurant.average_rating / 5) * 8;
-    const trustScore = Math.min(restaurant.rating_count / 10, 2); // Bonus fiabilité
+    const qualityScore = (restaurant.average_rating / 5) * 3;
+    const trustScore = Math.min(restaurant.rating_count / 10, 2);
     score += qualityScore + trustScore;
-  }
-
-  // 5. Popularité et découverte (5%)
-  const popularity = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
-  if (popularity > 100) {
-    score += 3; // Restaurant populaire
-  } else {
-    score += 2; // Bonus découverte
   }
 
   return Math.min(Math.round(score), 100);
