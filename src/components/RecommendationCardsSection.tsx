@@ -46,19 +46,19 @@ export const RecommendationCardsSection = () => {
     const currentHour = new Date().getHours();
     const currentMealTime = getCurrentMealTime(currentHour);
 
-    // Price range match (priority 1) - Detailed explanation
+    // Price range match - Clear and brief explanation
     if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
       const priceLabels = {
-        '$': 'abordable',
-        '$$': 'modéré', 
-        '$$$': 'élevé',
-        '$$$$': 'premium'
+        '$': 'Tarifs abordables',
+        '$$': 'Prix modérés', 
+        '$$$': 'Gamme élevée',
+        '$$$$': 'Restauration haut de gamme'
       };
-      const priceLabel = priceLabels[restaurant.price_range as keyof typeof priceLabels] || restaurant.price_range;
-      reasons.push(`Prix ${priceLabel} comme vous le souhaitez`);
+      const priceLabel = priceLabels[restaurant.price_range as keyof typeof priceLabels] || 'Prix adaptés';
+      reasons.push(`${priceLabel} selon vos préférences`);
     }
 
-    // Cuisine preferences match (priority 2) - Detailed explanation
+    // Cuisine preferences match - Clear and brief explanation
     if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
       const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
         preferences.cuisine_preferences.includes(cuisine)
@@ -66,56 +66,28 @@ export const RecommendationCardsSection = () => {
       if (matchingCuisines.length > 0) {
         const cuisineNames = matchingCuisines.map(cuisine => 
           CUISINE_TRANSLATIONS[cuisine] || cuisine
-        ).join(', ');
-        if (matchingCuisines.length === 1) {
-          reasons.push(`Spécialisé en cuisine ${cuisineNames} que vous aimez`);
-        } else {
-          reasons.push(`Propose ${cuisineNames}, vos cuisines préférées`);
-        }
+        ).join(' & ');
+        reasons.push(`Cuisine ${cuisineNames} que vous appréciez`);
       }
     }
 
-    // Meal time match (priority 3) - Detailed explanation
+    // Meal time match - Clear and brief explanation
     if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-      const timeLabels = {
-        'Déjeuner / Brunch': 'parfait pour votre brunch matinal',
-        'Déjeuner rapide': 'idéal pour votre pause déjeuner',
-        'Collation': 'parfait pour une pause gourmande',
-        'Dîner / Souper': 'excellent choix pour votre dîner',
-        'Repas tardif': 'ouvert tard comme vous le préférez',
-        'Détox': 'options saines disponibles'
-      };
-      const timeLabel = timeLabels[currentMealTime as keyof typeof timeLabels] || 'moment idéal';
-      reasons.push(`Timing ${timeLabel}`);
+      reasons.push(`Parfait pour ce moment de la journée`);
     }
 
-    // Dietary restrictions match - Detailed explanation
+    // Dietary restrictions match - Clear and brief explanation
     if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
-      const dietaryLabels = {
-        'vegetarian': 'végétariennes',
-        'vegan': 'véganes',
-        'gluten-free': 'sans gluten',
-        'halal': 'halal',
-        'kosher': 'casher'
-      };
-      const dietaryOptions = preferences.dietary_restrictions.map(restriction => 
-        dietaryLabels[restriction as keyof typeof dietaryLabels] || restriction
-      ).join(' et ');
-      reasons.push(`Options ${dietaryOptions} disponibles`);
+      reasons.push(`Options adaptées à votre régime alimentaire`);
     }
 
-    // Quality indicators - Default explanations with more detail
+    // Default reason if no specific matches
     if (reasons.length === 0) {
-      reasons.push("Établissement populaire dans votre secteur");
+      reasons.push("Restaurant populaire dans votre secteur");
     }
 
-    // Add location-based reason if we have space
-    if (reasons.length < 2 && restaurant.address) {
-      reasons.push("Facilement accessible depuis votre position");
-    }
-
-    // Limit to maximum 3 reasons for better explanations
-    return reasons.slice(0, 3);
+    // Limit to maximum 2 reasons for consistency
+    return reasons.slice(0, 2);
   };
 
   // Helper function for meal time calculation (used in multiple places)
