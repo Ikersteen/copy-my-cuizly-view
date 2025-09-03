@@ -1025,12 +1025,6 @@
       "turkish": "Turkish"
     }
   },
-  "favorites": {
-    "title": "My favorite restaurants",
-    "noFavorites": "No favorites yet",
-    "addFavorites": "Add restaurants to your favorites to find them here",
-    "viewProfile": "View profile"
-  },
   "history": {
     "title": "Searches",
     "clearAll": "Clear all",
@@ -1713,9 +1707,11 @@
     }
   },
   "favorites": {
+    "title": "My favorite restaurants",
     "added": "Added to favorites",
     "noFavorites": "No favorites yet",
     "noFavoritesDescription": "Find your favorite restaurants here.",
+    "addFavorites": "Add restaurants to your favorites to find them here",
     "viewProfile": "View profile",
     "viewAllFavorites": "View all my favorites",
     "whyThisChoice": "Why this choice ?",

@@ -649,6 +649,19 @@ export type Database = {
         Args: { password: string }
         Returns: boolean
       }
+      validate_waitlist_entry: {
+        Args: {
+          company_name_input?: string
+          email_input: string
+          name_input: string
+          phone_input?: string
+        }
+        Returns: boolean
+      }
+      verify_admin_access: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
