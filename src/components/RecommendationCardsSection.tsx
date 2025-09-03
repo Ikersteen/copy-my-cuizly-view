@@ -121,6 +121,30 @@ export const RecommendationCardsSection = () => {
         const { data: restaurantsResponse } = await supabase.rpc('get_public_restaurants');
         const restaurantsData = restaurantsResponse || [];
 
+        // Check if user has defined any meaningful preferences BEFORE calling AI
+        const hasPreferences = !!(
+          preferences?.cuisine_preferences?.length ||
+          preferences?.price_range ||
+          preferences?.favorite_meal_times?.length ||
+          preferences?.dietary_restrictions?.length
+        );
+
+        console.log('🔍 AI DEBUG Preferences:', {
+          cuisine_preferences: preferences?.cuisine_preferences,
+          price_range: preferences?.price_range,
+          favorite_meal_times: preferences?.favorite_meal_times,
+          dietary_restrictions: preferences?.dietary_restrictions,
+          hasPreferences: hasPreferences
+        });
+
+        // If no preferences are defined, skip AI and return empty
+        if (!hasPreferences) {
+          console.log('❌ No preferences - skipping AI recommendations');
+          setRecommendedRestaurants([]);
+          setLoading(false);
+          return;
+        }
+
         if (restaurantsData.length > 0) {
           const { data: aiResult, error: aiError } = await supabase.functions.invoke('ai-recommendations', {
             body: {
@@ -180,6 +204,14 @@ export const RecommendationCardsSection = () => {
         preferences?.favorite_meal_times?.length ||
         preferences?.dietary_restrictions?.length
       );
+
+      console.log('🔍 DEBUG Preferences:', {
+        cuisine_preferences: preferences?.cuisine_preferences,
+        price_range: preferences?.price_range,
+        favorite_meal_times: preferences?.favorite_meal_times,
+        dietary_restrictions: preferences?.dietary_restrictions,
+        hasPreferences: hasPreferences
+      });
 
       // If no preferences are defined, return empty recommendations
       if (!hasPreferences) {
