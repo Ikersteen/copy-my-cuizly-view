@@ -9,6 +9,7 @@ import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTheme } from "next-themes";
+import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -55,14 +56,9 @@ const Header = () => {
               onClick={() => window.location.href = '/'}
             >
               <img 
-                src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
+                src={cuizlyLogo} 
                 alt="Cuizly" 
-                className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:hidden"
-              />
-              <img 
-                src="/lovable-uploads/2ca03ecc-31e6-42ef-89bf-9532213d22eb.png" 
-                alt="Cuizly" 
-                className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 hidden dark:block"
+                className="h-[40px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </Link>
           </div>
