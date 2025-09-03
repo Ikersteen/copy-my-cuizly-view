@@ -44,11 +44,14 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
       setLoading(true);
       let query = supabase.from('offers').select(`
         *,
-        restaurants!inner(name)
+        restaurants(name)
       `);
 
       if (userType === 'restaurant' && restaurantId) {
         query = query.eq('restaurant_id', restaurantId);
+      } else if (userType === 'consumer') {
+        // Pour les consommateurs, afficher toutes les offres actives
+        query = query.eq('is_active', true);
       }
 
       const { data, error } = await query.order('created_at', { ascending: false });
