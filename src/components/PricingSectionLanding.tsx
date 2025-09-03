@@ -68,7 +68,11 @@ const PricingSectionLanding = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
           {plans.map((plan, index) => (
-            <Card key={index} className={`relative shadow-card border border-border ${plan.popular ? 'ring-2 ring-foreground' : ''} ${index < 2 ? 'h-fit' : ''} ${index === 2 ? 'md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto' : ''}`}>
+              <Card key={index} className={`relative shadow-card border ${
+                index === 1 ? 'border-cuizly-pro ring-2 ring-cuizly-pro/20' : 
+                index === 2 ? 'border-cuizly-analytics ring-2 ring-cuizly-analytics/20' : 
+                'border-border'
+              } ${plan.popular ? 'ring-2 ring-foreground' : ''} ${index < 2 ? 'h-fit' : ''} ${index === 2 ? 'md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto' : ''}`}>
               {plan.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-foreground text-background">
                   {t('pricingLanding.popular')}
@@ -97,7 +101,11 @@ const PricingSectionLanding = () => {
                   ))}
                 </ul>
                 <Link to={index === 0 ? "/auth" : index === 1 ? "/auth?type=restaurant&tab=signup" : "/waitlist"}>
-                  <Button className={`w-full text-sm sm:text-base ${index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 'bg-sky-500 hover:bg-sky-600 text-white'}`}>
+                  <Button className={`w-full text-sm sm:text-base ${
+                    index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
+                    index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground' :
+                    'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-cuizly-analytics-foreground'
+                  }`}>
                     {t(plan.ctaKey)}
                   </Button>
                 </Link>

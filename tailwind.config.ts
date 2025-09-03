@@ -60,7 +60,11 @@ export default {
 					primary: 'hsl(var(--cuizly-primary))',
 					accent: 'hsl(var(--cuizly-accent))',
 					neutral: 'hsl(var(--cuizly-neutral))',
-					surface: 'hsl(var(--cuizly-surface))'
+					surface: 'hsl(var(--cuizly-surface))',
+					pro: 'hsl(var(--cuizly-pro))',
+					'pro-foreground': 'hsl(var(--cuizly-pro-foreground))',
+					analytics: 'hsl(var(--cuizly-analytics))',
+					'analytics-foreground': 'hsl(var(--cuizly-analytics-foreground))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

@@ -54,7 +54,7 @@ const Team = () => {
               {/* Immigration Story */}
               <div className="bg-muted/30 rounded-xl p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-cuizly-pro/20 rounded-lg flex items-center justify-center flex-shrink-0">
                     <span className="text-2xl">🛬</span>
                   </div>
                   <div>

@@ -2,16 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";  
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, Moon, Sun } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTheme } from "next-themes";
 
 const Header = () => {
   const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
+  const { theme, setTheme } = useTheme();
   const [user, setUser] = useState<User | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const navigate = useNavigate();
@@ -91,6 +93,35 @@ const Header = () => {
 
           {/* Auth Actions Desktop - Extrême droite */}
           <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+            {/* Theme Toggle */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem 
+                  onClick={() => setTheme('light')}
+                  className={theme === 'light' ? 'bg-accent' : ''}
+                >
+                  ☀️ Clair
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setTheme('dark')}
+                  className={theme === 'dark' ? 'bg-accent' : ''}
+                >
+                  🌙 Sombre
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setTheme('system')}
+                  className={theme === 'system' ? 'bg-accent' : ''}
+                >
+                  💻 Système
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -162,6 +193,49 @@ const Header = () => {
                     {t('navigation.contact')}
                   </button>
                   
+                  {/* Mobile Theme Selector */}
+                  <div className="py-2 border-b border-border">
+                    <div className="flex items-center gap-2 mb-2">
+                      {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                      <span className="text-sm font-medium">Thème</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant={theme === 'light' ? 'default' : 'outline'}
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          setTheme('light');
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        ☀️
+                      </Button>
+                      <Button
+                        variant={theme === 'dark' ? 'default' : 'outline'}
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          setTheme('dark');
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        🌙
+                      </Button>
+                      <Button
+                        variant={theme === 'system' ? 'default' : 'outline'}
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          setTheme('system');
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        💻
+                      </Button>
+                    </div>
+                  </div>
+
                   {/* Mobile Language Selector */}
                   <div className="py-2 border-b border-border">
                     <div className="flex items-center gap-2 mb-2">
