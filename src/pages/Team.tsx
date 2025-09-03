@@ -18,7 +18,7 @@ const Team = () => {
               {t('team.title')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('team.subtitle')}
+              Rencontrez la personne qui révolutionne la découverte culinaire à Montréal.
             </p>
           </div>
         </div>
@@ -55,7 +55,7 @@ const Team = () => {
               <div className="bg-muted/30 rounded-xl p-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">🛫</span>
+                    <span className="text-2xl">🛬</span>
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">{t('team.journey')}</h3>
