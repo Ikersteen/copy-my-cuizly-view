@@ -65,6 +65,12 @@ const AppContent = () => {
             <Contact />
           </>
         } />
+        <Route path="/team" element={
+          <>
+            <Header />
+            <Team />
+          </>
+        } />
         <Route path="/legal" element={
           <>
             <Header />
