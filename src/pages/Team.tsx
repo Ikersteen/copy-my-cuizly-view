@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Linkedin, Mail, User } from "lucide-react";
+import { MapPin, Linkedin, Mail } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { Button } from "@/components/ui/button";
 import CTASection from "@/components/CTASection";
@@ -33,11 +33,6 @@ const Team = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="max-w-4xl mx-auto shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
             <CardHeader className="text-center pb-6">
-              <div className="flex justify-center mb-6">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border-4 border-primary/20">
-                  <User className="h-16 w-16 text-primary" />
-                </div>
-              </div>
               <CardTitle className="text-2xl sm:text-3xl font-bold text-center">
                 {t('team.founderName')}
               </CardTitle>
