@@ -1024,7 +1024,7 @@
   },
   "profile": {
     "generatingRecommendations": "Génération de recommandations personnalisées...",
-    "analyzingPreferences": "Analyse de vos préférences culinaires",
+    "analyzingPreferences": "Notre IA analyse vos préférences et votre historique pour vous proposer les meilleurs restaurants",
     "loadingTitle": "Chargement des recommandations...",
     "recommendedForYou": "Recommandé pour vous",
     "analysisRealTime": "Analyse temps réel",
@@ -1122,7 +1122,7 @@
     "availableRestaurant": "Restaurant disponible",
     "recommendedForYou": "Recommandé pour vous",
     "generatingRecommendations": "Génération de recommandations personnalisées...",
-    "analyzingPreferences": "Analyse de vos préférences culinaires",
+    "analyzingPreferences": "Notre IA analyse vos préférences et votre historique pour vous proposer les meilleurs restaurants",
     "noRecommendationsTitle": "Aucune recommandation trouvée",
     "popularRestaurant": "Restaurant populaire",
     "closeToYou": "Proche de vous"
@@ -1644,7 +1644,7 @@
     "recommendedForYou": "Recommandé pour vous",
     "basedOnPreferences": "Basé sur vos préférences",
     "generatingRecommendations": "Génération de recommandations personnalisées...",
-    "analyzingPreferences": "Analyse de vos préférences culinaires",
+    "analyzingPreferences": "Notre IA analyse vos préférences et votre historique pour vous proposer les meilleurs restaurants",
     "noRecommendationsTitle": "Aucune recommandation trouvée",
     "noRecommendationsDesc": "Nous n'avons trouvé aucun restaurant correspondant à vos préférences actuelles.",
     "modifyPreferences": "Modifier les préférences",
