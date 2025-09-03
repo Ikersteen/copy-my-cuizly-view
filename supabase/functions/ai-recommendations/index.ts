@@ -30,6 +30,20 @@ interface UserPreferences {
   allergens?: string[];
 }
 
+interface UserInteraction {
+  restaurant_id: string;
+  interaction_type: string;
+  context_data?: any;
+  created_at: string;
+}
+
+interface LearnedPreferences {
+  cuisine_weights?: Record<string, number>;
+  price_preferences?: Record<string, number>;
+  dietary_scores?: Record<string, number>;
+  context_preferences?: Record<string, number>;
+}
+
 interface AIScore {
   score: number;
   reasons: string[];
@@ -49,7 +63,7 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
-    const { restaurants, preferences, userId } = await req.json();
+    const { restaurants, preferences, userId, userInteractions, learnedPreferences } = await req.json();
 
     if (!restaurants || !Array.isArray(restaurants)) {
       throw new Error('Restaurants array is required');
@@ -61,7 +75,13 @@ serve(async (req) => {
     const aiScoredRestaurants = await Promise.all(
       restaurants.map(async (restaurant: Restaurant) => {
         try {
-          const aiScore = await analyzeRestaurantWithAI(restaurant, preferences, openAIApiKey);
+          const aiScore = await analyzeRestaurantWithAI(
+            restaurant, 
+            preferences, 
+            userInteractions || [], 
+            learnedPreferences || {}, 
+            openAIApiKey
+          );
           return {
             ...restaurant,
             ai_score: aiScore.score,
@@ -115,10 +135,12 @@ serve(async (req) => {
 
 async function analyzeRestaurantWithAI(
   restaurant: Restaurant, 
-  preferences: UserPreferences, 
+  preferences: UserPreferences,
+  userInteractions: UserInteraction[],
+  learnedPreferences: LearnedPreferences,
   apiKey: string
 ): Promise<AIScore> {
-  const prompt = createAnalysisPrompt(restaurant, preferences);
+  const prompt = createAnalysisPrompt(restaurant, preferences, userInteractions, learnedPreferences);
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -133,14 +155,14 @@ async function analyzeRestaurantWithAI(
           role: 'system',
           content: `Tu es un expert en recommandations de restaurants qui analyse intelligemment les correspondances utilisateur-restaurant.
 
-          MISSION: Analyser la compatibilité entre un restaurant et les préférences utilisateur.
+          MISSION: Analyser la compatibilité entre un restaurant et les préférences utilisateur en utilisant l'APPRENTISSAGE ADAPTATIF.
           
-          CRITÈRES D'ANALYSE (par ordre d'importance):
-          1. 🍽️ CUISINE (40%): Correspondance exacte avec préférences culinaires
-          2. 💰 BUDGET (25%): Prix dans la fourchette préférée
-          3. ⏰ TIMING (20%): Adéquation avec moment de repas actuel
-          4. 🌟 QUALITÉ (10%): Notes et popularité existantes
-          5. 🔍 DÉCOUVERTE (5%): Bonus pour diversité/nouveauté
+          CRITÈRES D'ANALYSE INTELLIGENT (ordre d'importance):
+          1. 🧠 APPRENTISSAGE (35%): Poids dynamiques basés sur interactions passées
+          2. 🍽️ CUISINE (30%): Correspondance avec préférences déclarées + apprises  
+          3. 💰 BUDGET (20%): Prix préféré + historique d'acceptation
+          4. ⏰ TIMING (10%): Moment optimal + habitudes apprises
+          5. 🌟 QUALITÉ (5%): Notes existantes pondérées par profil utilisateur
 
           RAISONS AUTORISÉES (maximum 2, courtes et impactantes):
           - "Cuisine favorite" (si cuisine exactement préférée)
@@ -149,13 +171,14 @@ async function analyzeRestaurantWithAI(
           - "Très populaire" (si excellentes notes/beaucoup de vues)
           - "Nouvelle découverte" (si diversification recommandée)
           
-          SCORING INTELLIGENT:
-          - Score base: 20 points
-          - Correspondance cuisine exacte: +30-40 points
-          - Budget parfait: +15-25 points  
-          - Timing optimal: +10-20 points
-          - Qualité prouvée: +5-15 points
-          - Bonus découverte: +5-10 points
+          SCORING ADAPTATIF INTELLIGENT:
+          - Score base: 15 points
+          - Apprentissage cuisine (poids dynamique): +20-35 points
+          - Préférences déclarées: +15-30 points  
+          - Historique budget compatible: +10-20 points
+          - Timing appris: +5-15 points
+          - Qualité personnalisée: +5-10 points
+          - Facteur découverte: +0-15 points (selon profil explorateur)
           
           FORMAT JSON OBLIGATOIRE:
           {
@@ -190,20 +213,53 @@ async function analyzeRestaurantWithAI(
   }
 }
 
-function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferences): string {
+function createAnalysisPrompt(
+  restaurant: Restaurant, 
+  preferences: UserPreferences, 
+  userInteractions: UserInteraction[], 
+  learnedPreferences: LearnedPreferences
+): string {
   const currentHour = new Date().getHours();
   const currentMealTime = getCurrentMealTime(currentHour);
   const isMealTimeMatch = preferences.favorite_meal_times?.includes(currentMealTime) || false;
   
-  // Calculer les correspondances pour aide au scoring
+  // Analyser l'historique d'interactions pour apprentissage
+  const restaurantInteractions = userInteractions.filter(i => i.restaurant_id === restaurant.id);
+  const likedInteractions = userInteractions.filter(i => 
+    i.interaction_type === 'swipe_right' || i.interaction_type === 'favorite'
+  );
+  const dislikedInteractions = userInteractions.filter(i => 
+    i.interaction_type === 'swipe_left'
+  );
+
+  // Calculer les poids appris pour ce type de restaurant
+  const learnedCuisineWeights = restaurant.cuisine_type?.map(cuisine => 
+    learnedPreferences.cuisine_weights?.[cuisine] || 0.5
+  ) || [];
+  
+  const learnedPriceWeight = learnedPreferences.price_preferences?.[restaurant.price_range || ''] || 0.5;
+  
+  // Correspondances traditionnelles + apprises
   const cuisineMatches = preferences.cuisine_preferences?.filter(pref => 
     restaurant.cuisine_type?.includes(pref)
   ) || [];
   const budgetMatch = preferences.price_range === restaurant.price_range;
   const popularityScore = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
 
+  // Analyser les tendances d'interactions similaires
+  const similarCuisineInteractions = likedInteractions.filter(i => {
+    const contextData = i.context_data || {};
+    const interactionCuisines = contextData.cuisine_type || [];
+    return restaurant.cuisine_type?.some(c => interactionCuisines.includes(c));
+  });
+
+  const similarPriceInteractions = likedInteractions.filter(i => {
+    const contextData = i.context_data || {};
+    return contextData.price_range === restaurant.price_range;
+  });
+
   return `
-🎯 MISSION: Analyser la compatibilité restaurant-utilisateur
+🎯 MISSION: Analyser la compatibilité restaurant-utilisateur avec APPRENTISSAGE ADAPTATIF
 
 📊 RESTAURANT À ANALYSER:
 • Nom: ${restaurant.name}
@@ -229,14 +285,38 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 • Budget: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
 • Popularité: ${popularityScore > 50 ? '⭐ Populaire' : '🆕 À découvrir'}
 
-🎯 INSTRUCTIONS FINALES:
-Calcule un score de compatibilité intelligent (0-100) en privilégiant:
-1. Les correspondances cuisine exactes (+40 max)
-2. Le budget compatible (+25 max)
-3. Le timing optimal (+20 max)
-4. La qualité/popularité (+15 max)
+🧠 DONNÉES D'APPRENTISSAGE:
+• Interactions totales: ${userInteractions.length}
+• Restaurants aimés similaires (cuisine): ${similarCuisineInteractions.length}
+• Restaurants aimés similaires (prix): ${similarPriceInteractions.length}
+• Interactions précédentes avec ce restaurant: ${restaurantInteractions.length}
+• Poids appris cuisine: ${learnedCuisineWeights.length > 0 ? learnedCuisineWeights.map(w => Math.round(w * 100) + '%').join(', ') : 'Aucun'}
+• Poids appris prix (${restaurant.price_range}): ${Math.round(learnedPriceWeight * 100)}%
 
-Choisis 1-2 raisons courtes qui justifient le score calculé.
+📈 TENDANCES COMPORTEMENTALES:
+• Total swipes droite: ${likedInteractions.length}
+• Total swipes gauche: ${dislikedInteractions.length}
+• Ratio exploration/exploitation: ${likedInteractions.length > 0 ? Math.round((dislikedInteractions.length / likedInteractions.length) * 100) + '%' : 'N/A'}
+
+🎯 INSTRUCTIONS FINALES:
+Calcule un score ADAPTATIF intelligent (0-100) en privilégiant dans cet ordre:
+
+1. 🧠 APPRENTISSAGE (35% max): Utilise les poids appris des cuisines et prix pour ajuster le score
+2. 🍽️ PRÉFÉRENCES DÉCLARÉES (30% max): Correspondances cuisine/restrictions explicites  
+3. 💰 HISTORIQUE BUDGET (20% max): Compatible + historique d'acceptation de ce prix
+4. ⏰ CONTEXTE TEMPOREL (10% max): Timing + habitudes apprises
+5. 🌟 QUALITÉ PERSONNALISÉE (5% max): Notes pondérées par profil utilisateur
+
+BONUS ADAPTATIFS:
+- Si beaucoup d'interactions similaires aimées: +10-15 points
+- Si utilisateur explorateur (ratio swipe élevé): bonus découverte +5-10 points  
+- Si restaurant jamais essayé mais profil compatible: bonus curiosité +5 points
+
+Choisis 1-2 raisons PERSONNALISÉES qui reflètent l'apprentissage:
+- "Correspond à vos goûts" (si poids appris élevé)
+- "Basé sur vos choix récents" (si interactions similaires)
+- "Nouveau style pour vous" (si diversification recommandée)
+- "Prix habituel" (si historique prix compatible)
   `;
 }
 
