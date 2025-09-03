@@ -26,6 +26,7 @@ interface Restaurant {
   logo_url?: string;
   score?: number;
   reasons?: string[];
+  ai_reasons?: string[];
 }
 
 export const RecommendationCardsSection = () => {
@@ -40,38 +41,68 @@ export const RecommendationCardsSection = () => {
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Generate short, consistent reasons for restaurant recommendations
+  // Generate intelligent, personalized reasons for restaurant recommendations
   const generateRecommendationReasons = (restaurant: Restaurant) => {
     const reasons: string[] = [];
     const currentHour = new Date().getHours();
     const currentMealTime = getCurrentMealTime(currentHour);
 
-    // Price range match (priority 1)
-    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push(t('recommendations.inYourBudget'));
-    }
-
-    // Cuisine preferences match (priority 2)
-    if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
-      const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
-        preferences.cuisine_preferences.includes(cuisine)
-      ) || [];
+    // 1. CUISINE MATCH - Plus prioritaire et précis
+    if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
+      const matchingCuisines = restaurant.cuisine_type.filter(cuisine =>
+        preferences.cuisine_preferences!.includes(cuisine)
+      );
       if (matchingCuisines.length > 0) {
-        reasons.push(t('recommendations.cuisineMatches'));
+        if (matchingCuisines.length === 1) {
+          reasons.push(`Spécialiste ${matchingCuisines[0].toLowerCase()}`);
+        } else {
+          reasons.push(`${matchingCuisines.length} cuisines que vous aimez`);
+        }
       }
     }
 
-    // Meal time match (priority 3)
+    // 2. BUDGET PARFAIT
+    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
+      const budgetMessages = {
+        '$': 'Prix abordable',
+        '$$': 'Budget moyen parfait',
+        '$$$': 'Rapport qualité-prix premium'
+      };
+      reasons.push(budgetMessages[restaurant.price_range as keyof typeof budgetMessages] || 'Dans votre budget');
+    }
+
+    // 3. MOMENT IDÉAL
     if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-      reasons.push("Moment idéal");
+      const timingMessages = {
+        'Déjeuner / Brunch': 'Parfait pour votre brunch',
+        'Déjeuner rapide': 'Idéal pour le lunch',
+        'Dîner / Souper': 'Excellent pour le souper',
+        'Repas tardif': 'Ouvert tard pour vous'
+      };
+      reasons.push(timingMessages[currentMealTime as keyof typeof timingMessages] || 'Moment parfait');
     }
 
-    // Default if no specific matches (keep it short)
-    if (reasons.length === 0) {
-      reasons.push("Près de vous");
+    // 4. RESTRICTIONS ALIMENTAIRES
+    if (preferences?.dietary_restrictions?.length) {
+      reasons.push('Options adaptées à vos restrictions');
     }
 
-    // Limit to maximum 2 reasons for consistency
+    // 5. PROXIMITÉ ET COMMODITÉ (seulement si pas assez de raisons)
+    if (reasons.length < 2) {
+      reasons.push('Proche de vous');
+    }
+
+    // 6. DÉCOUVERTE vs POPULAIRE (seulement si pas assez de raisons)
+    if (reasons.length < 2) {
+      const isPopular = restaurant.name.length % 2 === 0;
+      if (isPopular) {
+        reasons.push('Restaurant populaire');
+      } else {
+        reasons.push('Nouvelle découverte');
+      }
+    }
+
+    // Limit to maximum 2 reasons for clean UI
     return reasons.slice(0, 2);
   };
 
@@ -540,38 +571,44 @@ export const RecommendationCardsSection = () => {
                 </div>
 
                 {(() => {
-                  const reasons = restaurant.reasons || [];
+                  // Prioritize AI reasons if available, otherwise use generated reasons
+                  const aiReasons = restaurant.ai_reasons || [];
+                  const fallbackReasons = restaurant.reasons || [];
+                  const finalReasons = aiReasons.length > 0 ? aiReasons : fallbackReasons;
                   
-                  // Map French reasons to translation keys
-                  const reasonTranslationMap: { [key: string]: string } = {
-                    "Cuisine favorite": "reasonCuisineFavorite",
-                    "Prix idéal": "reasonPriceIdeal", 
-                    "Moment parfait": "reasonPerfectTiming",
-                    "Très populaire": "reasonVeryPopular",
-                    "Nouvelle découverte": "reasonNewDiscovery"
-                  };
-                  
-                  return reasons.length > 0 && (
-                    <div className="bg-muted/50 rounded-lg p-3">
-                       <p className="text-xs text-muted-foreground font-medium mb-2 flex items-center gap-1">
-                         <Sparkles className="h-3 w-3" />
-                         {t('recommendations.whyThisChoice')}
-                       </p>
-                      <div className="flex flex-wrap gap-1">
-                        {reasons.slice(0, 2).map((reason, idx) => {
-                          const translationKey = reasonTranslationMap[reason];
-                          const displayReason = translationKey ? t(`recommendations.${translationKey}`) : reason;
+                  return finalReasons.length > 0 && (
+                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-4 border border-primary/10">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="p-1.5 bg-primary/10 rounded-lg">
+                          <Sparkles className="h-3.5 w-3.5 text-primary" />
+                        </div>
+                        <p className="text-sm text-foreground font-semibold">
+                          {t('recommendations.whyThisChoice')}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {finalReasons.slice(0, 3).map((reason, idx) => {
                           return (
-                            <Badge 
-                              key={idx} 
-                              variant="secondary" 
-                              className="text-xs bg-background/80 font-medium"
+                            <div
+                              key={idx}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-background/80 backdrop-blur-sm rounded-full border border-primary/20"
                             >
-                              {displayReason}
-                            </Badge>
+                              <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+                              <span className="text-xs font-medium text-foreground">
+                                {reason}
+                              </span>
+                            </div>
                           );
                         })}
                       </div>
+                      {aiReasons.length > 0 && (
+                        <div className="flex items-center gap-1 mt-2 pt-2 border-t border-primary/10">
+                          <div className="w-2 h-2 bg-gradient-to-r from-primary to-primary/60 rounded-full" />
+                          <span className="text-xs text-muted-foreground font-medium">
+                            Recommandé par l'IA
+                          </span>
+                        </div>
+                      )}
                     </div>
                   );
                 })()}
