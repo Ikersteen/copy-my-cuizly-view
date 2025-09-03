@@ -605,7 +605,7 @@ const Auth = () => {
                         type="email"
                         placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="new-password"
+                        autoComplete="email"
                         autoFocus={false}
                         required
                       />
@@ -622,7 +622,7 @@ const Auth = () => {
                         type={showSignInPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10 pr-10 text-sm"
-                        autoComplete="new-password"
+                        autoComplete="current-password"
                         autoFocus={false}
                         required
                       />
@@ -746,7 +746,7 @@ const Auth = () => {
                         name="fullName"
                         placeholder={t('auth.form.fullNamePlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="new-password"
+                        autoComplete="name"
                         autoFocus={false}
                         required
                       />
@@ -763,7 +763,7 @@ const Auth = () => {
                           name="restaurantName"
                           placeholder={t('auth.form.restaurantNamePlaceholder')}
                           className="pl-10 text-sm"
-                          autoComplete="new-password"
+                          autoComplete="organization"
                           autoFocus={false}
                           required={userType === 'restaurant_owner'}
                         />
@@ -781,7 +781,7 @@ const Auth = () => {
                         type="email"
                         placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="new-password"
+                        autoComplete="email"
                         autoFocus={false}
                         required
                       />
@@ -799,6 +799,7 @@ const Auth = () => {
                         placeholder="••••••••"
                         className="pl-10 pr-10 text-sm"
                         autoComplete="new-password"
+                        inputMode="text"
                         autoFocus={false}
                         required
                       />
