@@ -27,7 +27,7 @@ const Auth = () => {
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('signin');
   
-  // SMS verification states
+  // SMS verification states pour inscription
   const [smsVerificationStep, setSmsVerificationStep] = useState<'phone' | 'code' | 'completed'>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [smsSessionToken, setSmsSessionToken] = useState<string | null>(null);
@@ -35,6 +35,15 @@ const Auth = () => {
   const [smsLoading, setSmsLoading] = useState(false);
   const [smsError, setSmsError] = useState<string | null>(null);
   const [phoneVerified, setPhoneVerified] = useState(false);
+  
+  // SMS verification states pour connexion
+  const [signinSmsVerificationStep, setSigninSmsVerificationStep] = useState<'phone' | 'code' | 'completed'>('phone');
+  const [signinPhoneNumber, setSigninPhoneNumber] = useState('');
+  const [signinSmsSessionToken, setSigninSmsSessionToken] = useState<string | null>(null);
+  const [signinVerificationCode, setSigninVerificationCode] = useState('');
+  const [signinSmsLoading, setSigninSmsLoading] = useState(false);
+  const [signinSmsError, setSigninSmsError] = useState<string | null>(null);
+  const [signinPhoneVerified, setSigninPhoneVerified] = useState(false);
   
   const hcaptchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
@@ -590,6 +599,84 @@ const Auth = () => {
     setPhoneVerified(false);
   };
 
+  // SMS verification functions pour la connexion
+  const sendSigninSMSVerification = async () => {
+    setSigninSmsLoading(true);
+    setSigninSmsError(null);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('send-sms-verification', {
+        body: {
+          phone: signinPhoneNumber,
+          language: currentLanguage
+        }
+      });
+
+      if (error) throw error;
+
+      setSigninSmsSessionToken(data.sessionToken);
+      setSigninSmsVerificationStep('code');
+      
+      toast({
+        title: t('auth.smsVerification.smsSent'),
+        description: t('auth.smsVerification.checkPhoneForCode'),
+      });
+    } catch (error: any) {
+      setSigninSmsError(error.message || t('auth.smsVerification.cannotSendSms'));
+      toast({
+        title: t('auth.smsVerification.smsError'),
+        description: error.message || t('auth.smsVerification.cannotSendSms'),
+        variant: "destructive"
+      });
+    } finally {
+      setSigninSmsLoading(false);
+    }
+  };
+
+  const verifySigninSMSCode = async () => {
+    setSigninSmsLoading(true);
+    setSigninSmsError(null);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('verify-sms-code', {
+        body: {
+          sessionToken: signinSmsSessionToken,
+          code: signinVerificationCode
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.verified) {
+        setSigninPhoneVerified(true);
+        setSigninSmsVerificationStep('completed');
+        
+        toast({
+          title: t('auth.smsVerification.phoneVerified'),
+          description: t('auth.smsVerification.phoneVerifiedSuccess'),
+        });
+      }
+    } catch (error: any) {
+      setSigninSmsError(error.message || t('auth.smsVerification.incorrectCode'));
+      toast({
+        title: t('auth.smsVerification.verificationError'),
+        description: error.message || t('auth.smsVerification.incorrectCode'),
+        variant: "destructive"
+      });
+    } finally {
+      setSigninSmsLoading(false);
+    }
+  };
+
+  const resetSigninSMSVerification = () => {
+    setSigninSmsVerificationStep('phone');
+    setSigninPhoneNumber('');
+    setSigninSmsSessionToken(null);
+    setSigninVerificationCode('');
+    setSigninSmsError(null);
+    setSigninPhoneVerified(false);
+  };
+
   const handleAppleAuth = async () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -650,32 +737,36 @@ const Auth = () => {
           <CardContent className="p-8 flex items-center justify-center">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-sm">
               <TabsList className="grid w-full grid-cols-2 mb-8 h-12 rounded-lg p-1">
-                <TabsTrigger 
-                  value="signin" 
-                  className="text-sm font-medium rounded-md" 
-                  translate="no"
-                  onSelect={() => {
-                    setHcaptchaToken(null);
-                    setCaptchaError(null);
-                    setShowSignInPassword(false);
-                    setShowSignUpPassword(false);
-                    hcaptchaRef.current?.resetCaptcha();
-                  }}
-                >
+                 <TabsTrigger 
+                   value="signin" 
+                   className="text-sm font-medium rounded-md" 
+                   translate="no"
+                   onSelect={() => {
+                     setHcaptchaToken(null);
+                     setCaptchaError(null);
+                     setShowSignInPassword(false);
+                     setShowSignUpPassword(false);
+                     // Reset SMS states pour connexion
+                     resetSigninSMSVerification();
+                     hcaptchaRef.current?.resetCaptcha();
+                   }}
+                 >
                   {t('auth.tabs.signin')}
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="signup" 
-                  className="text-sm font-medium rounded-md" 
-                  translate="no"
-                  onSelect={() => {
-                    setHcaptchaToken(null);
-                    setCaptchaError(null);
-                    setShowSignInPassword(false);
-                    setShowSignUpPassword(false);
-                    hcaptchaRef.current?.resetCaptcha();
-                  }}
-                >
+                 <TabsTrigger 
+                   value="signup" 
+                   className="text-sm font-medium rounded-md" 
+                   translate="no"
+                   onSelect={() => {
+                     setHcaptchaToken(null);
+                     setCaptchaError(null);
+                     setShowSignInPassword(false);
+                     setShowSignUpPassword(false);
+                     // Reset SMS states pour inscription
+                     resetSMSVerification();
+                     hcaptchaRef.current?.resetCaptcha();
+                   }}
+                 >
                   {t('auth.tabs.signup')}
                 </TabsTrigger>
               </TabsList>
@@ -766,11 +857,117 @@ const Auth = () => {
                         {t('auth.form.verified')}
                       </div>
                     )}
-                  </div>
+                   </div>
 
-                  <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
-                    {isLoading ? t('auth.form.signingIn') : t('auth.form.signin')}
-                  </Button>
+                   {/* Section de vérification SMS après hCaptcha pour connexion */}
+                   {hcaptchaToken && !signinPhoneVerified && (
+                     <div className="space-y-4 border-t pt-4">
+                       <div className="text-center">
+                         <MessageCircle className="mx-auto h-8 w-8 text-cuizly-primary mb-2" />
+                         <h3 className="text-lg font-medium">{t('auth.smsVerification.title')}</h3>
+                         <p className="text-sm text-cuizly-neutral">
+                           {t('auth.smsVerification.subtitle')}
+                         </p>
+                       </div>
+
+                       {signinSmsVerificationStep === 'phone' && (
+                         <div className="space-y-3">
+                           <div className="space-y-2">
+                             <Label htmlFor="signin-phone" className="text-sm">{t('auth.smsVerification.phoneNumber')}</Label>
+                             <div className="relative">
+                               <Phone className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
+                               <Input
+                                 id="signin-phone"
+                                 type="tel"
+                                 placeholder="+1 (555) 123-4567"
+                                 value={signinPhoneNumber}
+                                 onChange={(e) => setSigninPhoneNumber(e.target.value)}
+                                 className="pl-10 text-sm"
+                                 required
+                               />
+                             </div>
+                           </div>
+                           
+                           {signinSmsError && (
+                             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+                               <p className="text-xs text-destructive">{signinSmsError}</p>
+                             </div>
+                           )}
+                           
+                           <Button
+                             type="button"
+                             onClick={sendSigninSMSVerification}
+                             disabled={signinSmsLoading || !signinPhoneNumber.trim()}
+                             className="w-full"
+                           >
+                             {signinSmsLoading ? t('auth.smsVerification.sending') : t('auth.smsVerification.sendCode')}
+                           </Button>
+                         </div>
+                       )}
+
+                       {signinSmsVerificationStep === 'code' && (
+                         <div className="space-y-3">
+                           <div className="space-y-2">
+                             <Label htmlFor="signin-verification-code" className="text-sm">{t('auth.smsVerification.verificationCode')}</Label>
+                             <Input
+                               id="signin-verification-code"
+                               type="text"
+                               placeholder="123456"
+                               value={signinVerificationCode}
+                               onChange={(e) => setSigninVerificationCode(e.target.value)}
+                               className="text-center text-lg tracking-widest"
+                               maxLength={6}
+                               required
+                             />
+                             <p className="text-xs text-cuizly-neutral text-center">
+                               {t('auth.smsVerification.codeSentTo')} {signinPhoneNumber}
+                             </p>
+                           </div>
+                           
+                           {signinSmsError && (
+                             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+                               <p className="text-xs text-destructive">{signinSmsError}</p>
+                             </div>
+                           )}
+                           
+                           <div className="flex space-x-2">
+                             <Button
+                               type="button"
+                               variant="outline"
+                               onClick={resetSigninSMSVerification}
+                               className="flex-1"
+                             >
+                               {t('auth.smsVerification.changeNumber')}
+                             </Button>
+                             <Button
+                               type="button"
+                               onClick={verifySigninSMSCode}
+                               disabled={signinSmsLoading || signinVerificationCode.length !== 6}
+                               className="flex-1"
+                             >
+                               {signinSmsLoading ? t('auth.smsVerification.verifying') : t('auth.smsVerification.verify')}
+                             </Button>
+                           </div>
+                         </div>
+                       )}
+
+                       {signinSmsVerificationStep === 'completed' && signinPhoneVerified && (
+                         <div className="text-center space-y-2">
+                           <div className="flex items-center justify-center text-green-600">
+                             <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                             </svg>
+                             {t('auth.smsVerification.phoneVerified')}
+                           </div>
+                           <p className="text-xs text-cuizly-neutral">{signinPhoneNumber}</p>
+                         </div>
+                       )}
+                     </div>
+                   )}
+
+                   <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken || !signinPhoneVerified}>
+                     {isLoading ? t('auth.form.signingIn') : t('auth.form.signin')}
+                   </Button>
                 </form>
 
                 <div className="relative">
