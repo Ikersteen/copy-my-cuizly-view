@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowLeft, Mail, Lock, User, Building, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Mail, Lock, User, Building, Eye, EyeOff, Phone, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +26,16 @@ const Auth = () => {
   const [showSignInPassword, setShowSignInPassword] = useState(false);
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('signin');
+  
+  // SMS verification states
+  const [smsVerificationStep, setSmsVerificationStep] = useState<'phone' | 'code' | 'completed'>('phone');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [smsSessionToken, setSmsSessionToken] = useState<string | null>(null);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [smsLoading, setSmsLoading] = useState(false);
+  const [smsError, setSmsError] = useState<string | null>(null);
+  const [phoneVerified, setPhoneVerified] = useState(false);
+  
   const hcaptchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -500,6 +510,84 @@ const Auth = () => {
     }
   };
 
+  // SMS verification functions
+  const sendSMSVerification = async () => {
+    setSmsLoading(true);
+    setSmsError(null);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('send-sms-verification', {
+        body: {
+          phone: phoneNumber,
+          language: currentLanguage
+        }
+      });
+
+      if (error) throw error;
+
+      setSmsSessionToken(data.sessionToken);
+      setSmsVerificationStep('code');
+      
+      toast({
+        title: "SMS envoyé",
+        description: "Vérifiez votre téléphone pour le code de vérification",
+      });
+    } catch (error: any) {
+      setSmsError(error.message || "Erreur lors de l'envoi du SMS");
+      toast({
+        title: "Erreur SMS",
+        description: error.message || "Impossible d'envoyer le code SMS",
+        variant: "destructive"
+      });
+    } finally {
+      setSmsLoading(false);
+    }
+  };
+
+  const verifySMSCode = async () => {
+    setSmsLoading(true);
+    setSmsError(null);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('verify-sms-code', {
+        body: {
+          sessionToken: smsSessionToken,
+          code: verificationCode
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.verified) {
+        setPhoneVerified(true);
+        setSmsVerificationStep('completed');
+        
+        toast({
+          title: "Téléphone vérifié",
+          description: "Votre numéro de téléphone a été vérifié avec succès",
+        });
+      }
+    } catch (error: any) {
+      setSmsError(error.message || "Code de vérification incorrect");
+      toast({
+        title: "Erreur de vérification",
+        description: error.message || "Code de vérification incorrect",
+        variant: "destructive"
+      });
+    } finally {
+      setSmsLoading(false);
+    }
+  };
+
+  const resetSMSVerification = () => {
+    setSmsVerificationStep('phone');
+    setPhoneNumber('');
+    setSmsSessionToken(null);
+    setVerificationCode('');
+    setSmsError(null);
+    setPhoneVerified(false);
+  };
+
   const handleAppleAuth = async () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -865,6 +953,112 @@ const Auth = () => {
                     )}
                   </div>
 
+                  {/* Section de vérification SMS après hCaptcha */}
+                  {hcaptchaToken && !phoneVerified && (
+                    <div className="space-y-4 border-t pt-4">
+                      <div className="text-center">
+                        <MessageCircle className="mx-auto h-8 w-8 text-cuizly-primary mb-2" />
+                        <h3 className="text-lg font-medium">Vérification SMS</h3>
+                        <p className="text-sm text-cuizly-neutral">
+                          Vérifiez votre numéro de téléphone pour continuer
+                        </p>
+                      </div>
+
+                      {smsVerificationStep === 'phone' && (
+                        <div className="space-y-3">
+                          <div className="space-y-2">
+                            <Label htmlFor="phone" className="text-sm">Numéro de téléphone</Label>
+                            <div className="relative">
+                              <Phone className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
+                              <Input
+                                id="phone"
+                                type="tel"
+                                placeholder="+1 (555) 123-4567"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                className="pl-10 text-sm"
+                                required
+                              />
+                            </div>
+                          </div>
+                          
+                          {smsError && (
+                            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+                              <p className="text-xs text-destructive">{smsError}</p>
+                            </div>
+                          )}
+                          
+                          <Button
+                            type="button"
+                            onClick={sendSMSVerification}
+                            disabled={smsLoading || !phoneNumber.trim()}
+                            className="w-full"
+                          >
+                            {smsLoading ? "Envoi en cours..." : "Envoyer le code SMS"}
+                          </Button>
+                        </div>
+                      )}
+
+                      {smsVerificationStep === 'code' && (
+                        <div className="space-y-3">
+                          <div className="space-y-2">
+                            <Label htmlFor="verification-code" className="text-sm">Code de vérification</Label>
+                            <Input
+                              id="verification-code"
+                              type="text"
+                              placeholder="123456"
+                              value={verificationCode}
+                              onChange={(e) => setVerificationCode(e.target.value)}
+                              className="text-center text-lg tracking-widest"
+                              maxLength={6}
+                              required
+                            />
+                            <p className="text-xs text-cuizly-neutral text-center">
+                              Code envoyé au {phoneNumber}
+                            </p>
+                          </div>
+                          
+                          {smsError && (
+                            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+                              <p className="text-xs text-destructive">{smsError}</p>
+                            </div>
+                          )}
+                          
+                          <div className="flex space-x-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={resetSMSVerification}
+                              className="flex-1"
+                            >
+                              Modifier le numéro
+                            </Button>
+                            <Button
+                              type="button"
+                              onClick={verifySMSCode}
+                              disabled={smsLoading || verificationCode.length !== 6}
+                              className="flex-1"
+                            >
+                              {smsLoading ? "Vérification..." : "Vérifier"}
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+
+                      {smsVerificationStep === 'completed' && phoneVerified && (
+                        <div className="text-center space-y-2">
+                          <div className="flex items-center justify-center text-green-600">
+                            <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Téléphone vérifié
+                          </div>
+                          <p className="text-xs text-cuizly-neutral">{phoneNumber}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {userType === 'restaurant_owner' ? (
                     <div className="space-y-3">
                       <Button 
@@ -883,7 +1077,11 @@ const Auth = () => {
                       </Button>
                     </div>
                   ) : (
-                    <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken}>
+                    <Button 
+                      type="submit" 
+                      className="w-full text-sm" 
+                      disabled={isLoading || !hcaptchaToken || !phoneVerified}
+                    >
                       {isLoading ? t('auth.creatingAccount') : t('auth.createAccount')}
                     </Button>
                   )}
