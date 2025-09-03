@@ -32,9 +32,6 @@ const Auth = () => {
   const { sendWelcomeEmail } = useEmailNotifications();
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  
-  // Map internal language codes to HCaptcha language codes
-  const hCaptchaLanguage = currentLanguage === 'fr' ? 'fr' : 'en';
   const { restoreDataAfterAuth } = useDataPersistence();
 
   // Check URL parameters to set user type and active tab
@@ -605,7 +602,7 @@ const Auth = () => {
                         type="email"
                         placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="email"
+                        autoComplete="new-password"
                         autoFocus={false}
                         required
                       />
@@ -622,7 +619,7 @@ const Auth = () => {
                         type={showSignInPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10 pr-10 text-sm"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
                         autoFocus={false}
                         required
                       />
@@ -658,7 +655,7 @@ const Auth = () => {
                          }}
                          theme="light"
                          size="normal"
-                          languageOverride={hCaptchaLanguage}
+                         languageOverride={currentLanguage}
                        />
                     </div>
                     {captchaError && (
@@ -746,7 +743,7 @@ const Auth = () => {
                         name="fullName"
                         placeholder={t('auth.form.fullNamePlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="name"
+                        autoComplete="new-password"
                         autoFocus={false}
                         required
                       />
@@ -763,7 +760,7 @@ const Auth = () => {
                           name="restaurantName"
                           placeholder={t('auth.form.restaurantNamePlaceholder')}
                           className="pl-10 text-sm"
-                          autoComplete="organization"
+                          autoComplete="new-password"
                           autoFocus={false}
                           required={userType === 'restaurant_owner'}
                         />
@@ -781,7 +778,7 @@ const Auth = () => {
                         type="email"
                         placeholder={t('auth.form.emailPlaceholder')}
                         className="pl-10 text-sm"
-                        autoComplete="email"
+                        autoComplete="new-password"
                         autoFocus={false}
                         required
                       />
@@ -799,7 +796,6 @@ const Auth = () => {
                         placeholder="••••••••"
                         className="pl-10 pr-10 text-sm"
                         autoComplete="new-password"
-                        inputMode="text"
                         autoFocus={false}
                         required
                       />
@@ -846,7 +842,7 @@ const Auth = () => {
                          }}
                          theme="light"
                          size="normal"
-                         languageOverride={hCaptchaLanguage}
+                         languageOverride={currentLanguage}
                        />
                     </div>
                     {captchaError && (
