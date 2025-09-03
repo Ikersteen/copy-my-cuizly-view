@@ -11,7 +11,7 @@ const Team = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-8 sm:py-12 bg-gradient-to-br from-background to-muted/30">
+      <section className="py-6 sm:py-8 bg-gradient-to-br from-background to-muted/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-3 sm:space-y-4">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
@@ -25,7 +25,7 @@ const Team = () => {
       </section>
 
       {/* Team Member Section */}
-      <section className="py-8 sm:py-12 lg:py-16 bg-background">
+      <section className="py-6 sm:py-8 lg:py-12 bg-background">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="max-w-3xl mx-auto shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
             <CardHeader className="text-center pb-4 sm:pb-6">
@@ -118,7 +118,7 @@ const Team = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-8 sm:py-12 bg-muted/30">
+      <section className="py-6 sm:py-8 bg-muted/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <div className="text-center">
