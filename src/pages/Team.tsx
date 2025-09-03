@@ -46,9 +46,7 @@ const Team = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-base sm:text-lg mb-2">{t('team.education')}</h3>
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      {t('team.educationDetails').replace('option Informatique', 'option\u00A0Informatique')}
-                    </p>
+                    <p className="text-sm sm:text-base text-muted-foreground">{t('team.educationDetails')}</p>
                   </div>
                 </div>
               </div>
