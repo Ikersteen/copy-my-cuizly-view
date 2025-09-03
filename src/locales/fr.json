@@ -737,14 +737,6 @@
       "cancel": "Annuler"
     }
   },
-  "dateRangePicker": {
-    "validityPeriod": "Période de validité",
-    "selectDates": "Sélectionner les dates",
-    "from": "Du",
-    "to": "au",
-    "selectEnd": "Sélectionnez la fin",
-    "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
-  },
   "team": {
     "badge": "Notre équipe",
     "title": "L'équipe derrière Cuizly",
