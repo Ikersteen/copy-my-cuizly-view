@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { MapPin, Linkedin, Mail } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { Button } from "@/components/ui/button";
@@ -14,10 +13,7 @@ const Team = () => {
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-br from-background to-muted/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-6">
-            <Badge variant="outline" className="mx-auto">
-              {t('team.badge')}
-            </Badge>
+          <div className="text-center space-y-4">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
               {t('team.title')}
             </h1>
@@ -33,7 +29,7 @@ const Team = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="max-w-4xl mx-auto shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
             <CardHeader className="text-center pb-6">
-              <CardTitle className="text-2xl sm:text-3xl font-bold text-center">
+              <CardTitle className="text-2xl sm:text-3xl font-bold text-center mb-2">
                 {t('team.founderName')}
               </CardTitle>
               <CardDescription className="text-lg font-medium text-primary">
