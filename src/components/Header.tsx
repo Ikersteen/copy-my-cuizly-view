@@ -52,9 +52,14 @@ const Header = () => {
               className="flex items-center py-2 cursor-pointer"
             >
               <img 
-                src="/lovable-uploads/e7e97d69-a6d1-4978-8f05-560def81179e.png" 
+                src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
                 alt="Cuizly" 
-                className="h-[50px] w-auto"
+                className="h-[50px] w-auto dark:hidden"
+              />
+              <img 
+                src="/lovable-uploads/2ca03ecc-31e6-42ef-89bf-9532213d22eb.png" 
+                alt="Cuizly" 
+                className="h-[50px] w-auto hidden dark:block"
               />
             </Link>
           </div>
