@@ -567,6 +567,26 @@
       "bookDemo": "Réserver une démo",
       "createAccountInvitation": "Créer mon compte (Invitation requise)"
     },
+    "smsVerification": {
+      "title": "Vérification SMS",
+      "subtitle": "Vérifiez votre numéro de téléphone pour continuer",
+      "phoneNumber": "Numéro de téléphone",
+      "verificationCode": "Code de vérification",
+      "sendCode": "Envoyer le code SMS",
+      "sending": "Envoi en cours...",
+      "verify": "Vérifier",
+      "verifying": "Vérification...",
+      "phoneVerified": "Téléphone vérifié",
+      "smsSent": "SMS envoyé",
+      "checkPhoneForCode": "Vérifiez votre téléphone pour le code de vérification",
+      "smsError": "Erreur SMS",
+      "cannotSendSms": "Impossible d'envoyer le code SMS",
+      "phoneVerifiedSuccess": "Votre numéro de téléphone a été vérifié avec succès",
+      "incorrectCode": "Code de vérification incorrect",
+      "verificationError": "Erreur de vérification",
+      "codeSentTo": "Code envoyé au",
+      "changeNumber": "Modifier le numéro"
+    },
     "createAccount": "Créer mon compte",
     "creatingAccount": "Création du compte...",
     "termsText": {

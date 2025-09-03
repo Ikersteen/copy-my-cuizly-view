@@ -531,14 +531,14 @@ const Auth = () => {
       setSmsVerificationStep('code');
       
       toast({
-        title: "SMS envoyé",
-        description: "Vérifiez votre téléphone pour le code de vérification",
+        title: t('auth.smsVerification.smsSent'),
+        description: t('auth.smsVerification.checkPhoneForCode'),
       });
     } catch (error: any) {
-      setSmsError(error.message || "Erreur lors de l'envoi du SMS");
+      setSmsError(error.message || t('auth.smsVerification.cannotSendSms'));
       toast({
-        title: "Erreur SMS",
-        description: error.message || "Impossible d'envoyer le code SMS",
+        title: t('auth.smsVerification.smsError'),
+        description: error.message || t('auth.smsVerification.cannotSendSms'),
         variant: "destructive"
       });
     } finally {
@@ -565,15 +565,15 @@ const Auth = () => {
         setSmsVerificationStep('completed');
         
         toast({
-          title: "Téléphone vérifié",
-          description: "Votre numéro de téléphone a été vérifié avec succès",
+          title: t('auth.smsVerification.phoneVerified'),
+          description: t('auth.smsVerification.phoneVerifiedSuccess'),
         });
       }
     } catch (error: any) {
-      setSmsError(error.message || "Code de vérification incorrect");
+      setSmsError(error.message || t('auth.smsVerification.incorrectCode'));
       toast({
-        title: "Erreur de vérification",
-        description: error.message || "Code de vérification incorrect",
+        title: t('auth.smsVerification.verificationError'),
+        description: error.message || t('auth.smsVerification.incorrectCode'),
         variant: "destructive"
       });
     } finally {
@@ -960,16 +960,16 @@ const Auth = () => {
                     <div className="space-y-4 border-t pt-4">
                       <div className="text-center">
                         <MessageCircle className="mx-auto h-8 w-8 text-cuizly-primary mb-2" />
-                        <h3 className="text-lg font-medium">Vérification SMS</h3>
+                        <h3 className="text-lg font-medium">{t('auth.smsVerification.title')}</h3>
                         <p className="text-sm text-cuizly-neutral">
-                          Vérifiez votre numéro de téléphone pour continuer
+                          {t('auth.smsVerification.subtitle')}
                         </p>
                       </div>
 
                       {smsVerificationStep === 'phone' && (
                         <div className="space-y-3">
                           <div className="space-y-2">
-                            <Label htmlFor="phone" className="text-sm">Numéro de téléphone</Label>
+                            <Label htmlFor="phone" className="text-sm">{t('auth.smsVerification.phoneNumber')}</Label>
                             <div className="relative">
                               <Phone className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                               <Input
@@ -996,7 +996,7 @@ const Auth = () => {
                             disabled={smsLoading || !phoneNumber.trim()}
                             className="w-full"
                           >
-                            {smsLoading ? "Envoi en cours..." : "Envoyer le code SMS"}
+                            {smsLoading ? t('auth.smsVerification.sending') : t('auth.smsVerification.sendCode')}
                           </Button>
                         </div>
                       )}
@@ -1004,7 +1004,7 @@ const Auth = () => {
                       {smsVerificationStep === 'code' && (
                         <div className="space-y-3">
                           <div className="space-y-2">
-                            <Label htmlFor="verification-code" className="text-sm">Code de vérification</Label>
+                            <Label htmlFor="verification-code" className="text-sm">{t('auth.smsVerification.verificationCode')}</Label>
                             <Input
                               id="verification-code"
                               type="text"
@@ -1016,7 +1016,7 @@ const Auth = () => {
                               required
                             />
                             <p className="text-xs text-cuizly-neutral text-center">
-                              Code envoyé au {phoneNumber}
+                              {t('auth.smsVerification.codeSentTo')} {phoneNumber}
                             </p>
                           </div>
                           
@@ -1033,7 +1033,7 @@ const Auth = () => {
                               onClick={resetSMSVerification}
                               className="flex-1"
                             >
-                              Modifier le numéro
+                              {t('auth.smsVerification.changeNumber')}
                             </Button>
                             <Button
                               type="button"
@@ -1041,7 +1041,7 @@ const Auth = () => {
                               disabled={smsLoading || verificationCode.length !== 6}
                               className="flex-1"
                             >
-                              {smsLoading ? "Vérification..." : "Vérifier"}
+                              {smsLoading ? t('auth.smsVerification.verifying') : t('auth.smsVerification.verify')}
                             </Button>
                           </div>
                         </div>
@@ -1053,7 +1053,7 @@ const Auth = () => {
                             <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            Téléphone vérifié
+                            {t('auth.smsVerification.phoneVerified')}
                           </div>
                           <p className="text-xs text-cuizly-neutral">{phoneNumber}</p>
                         </div>
