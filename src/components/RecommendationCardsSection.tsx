@@ -242,7 +242,7 @@ export const RecommendationCardsSection = () => {
           score: Math.min(Math.round(score), 100),
           reasons: generateRecommendationReasons(restaurant)
         };
-      }).filter(restaurant => restaurant.score > 40); // Filter out poor matches
+      }).filter(restaurant => restaurant.score > 60); // Only show restaurants with good matches
 
       // Helper function for meal time calculation  
       function getCurrentMealTime(hour: number): string {
@@ -252,6 +252,13 @@ export const RecommendationCardsSection = () => {
         if (hour >= 17 && hour < 22) return 'Dîner / Souper';
         if (hour >= 22 || hour < 2) return 'Repas tardif';
         return 'Détox';
+      }
+
+      // Only proceed if we have good matches
+      if (scoredRestaurants.length === 0) {
+        setRecommendedRestaurants([]);
+        setLoading(false);
+        return;
       }
 
       // Sort by score and take top restaurants
