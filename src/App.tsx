@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { useTranslation } from "react-i18next";
-import { useScrollOnNavigation } from "@/hooks/useScrollOnNavigation";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Header from "@/components/Header";
 import CookieBanner from "@/components/CookieBanner";
@@ -31,9 +30,6 @@ const AppContent = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard');
-  
-  // Navigation fluide avec scroll automatique
-  useScrollOnNavigation();
 
   return (
     <div className="min-h-screen bg-background">
