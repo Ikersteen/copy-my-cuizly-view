@@ -239,12 +239,6 @@ const ConsumerDashboard = () => {
           </TabsList>
 
           <TabsContent value="swipe" className="space-y-2 mt-2">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold mb-2">🔥 Découverte Cuizly</h2>
-              <p className="text-muted-foreground">
-                Swipe pour découvrir des restaurants personnalisés selon vos goûts !
-              </p>
-            </div>
             <SwipeRecommendations />
           </TabsContent>
 
