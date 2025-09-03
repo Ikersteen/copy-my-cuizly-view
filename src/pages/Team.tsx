@@ -131,7 +131,7 @@ const Team = () => {
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">🇨🇦</div>
-              <p className="text-sm sm:text-base text-muted-foreground">Basé au Québec, Canada</p>
+              <p className="text-sm sm:text-base text-muted-foreground">{t('team.location')}</p>
             </div>
           </div>
         </div>

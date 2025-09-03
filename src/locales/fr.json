@@ -5,7 +5,8 @@
     "contact": "Contact",
     "dashboard": "Tableau de bord",
     "login": "Se connecter",
-    "back_home": "Retour à l'accueil"
+    "back_home": "Retour à l'accueil",
+    "theme": "Thème"
   },
   "hero": {
     "badge": "Cuizly • Bêta 5",
@@ -653,6 +654,11 @@
   },
   "common": {
     "error": "Erreur"
+  },
+  "theme": {
+    "light": "Clair",
+    "dark": "Sombre", 
+    "system": "Système"
   },
   "cookieBanner": {
     "title": "Nous utilisons des cookies",

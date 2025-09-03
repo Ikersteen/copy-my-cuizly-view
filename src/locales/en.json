@@ -5,7 +5,8 @@
     "contact": "Contact", 
     "dashboard": "Dashboard",
     "login": "Sign In",
-    "back_home": "Back to Home"
+    "back_home": "Back to Home",
+    "theme": "Theme"
   },
   "hero": {
     "badge": "Cuizly • Beta 5",
@@ -742,6 +743,11 @@
   },
   "common": {
     "error": "Error"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   },
   "errors": {
     "title": "Error",

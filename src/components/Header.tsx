@@ -105,19 +105,19 @@ const Header = () => {
                   onClick={() => setTheme('light')}
                   className={theme === 'light' ? 'bg-accent' : ''}
                 >
-                  ☀️ Clair
+                  ☀️ {t('theme.light')}
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => setTheme('dark')}
                   className={theme === 'dark' ? 'bg-accent' : ''}
                 >
-                  🌙 Sombre
+                  🌙 {t('theme.dark')}
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => setTheme('system')}
                   className={theme === 'system' ? 'bg-accent' : ''}
                 >
-                  💻 Système
+                  💻 {t('theme.system')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -197,7 +197,7 @@ const Header = () => {
                   <div className="py-2 border-b border-border">
                     <div className="flex items-center gap-2 mb-2">
                       {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                      <span className="text-sm font-medium">Thème</span>
+                      <span className="text-sm font-medium">{t('navigation.theme')}</span>
                     </div>
                     <div className="flex gap-2">
                       <Button
