@@ -108,18 +108,24 @@ const Auth = () => {
               }
             }
 
-            console.log("🟢 [Auth State Change] Redirection vers /dashboard");
+            console.log("🟢 [Auth State Change] Planification de la redirection vers /dashboard");
             
-            // Restore temporary data after successful authentication
+            // Redirection contrôlée avec vérification pour éviter les conflits
             setTimeout(() => {
               restoreDataAfterAuth();
-            }, 500);
-            
-            navigate('/dashboard');
+              // Vérifier qu'on n'est pas déjà sur la page dashboard
+              if (window.location.pathname !== '/dashboard') {
+                navigate('/dashboard');
+              }
+            }, 100);
           } catch (error) {
             console.error("🔴 [Auth State Change] Erreur dans la gestion de la connexion:", error);
-            // Même en cas d'erreur, rediriger vers le dashboard
-            navigate('/dashboard');
+            // En cas d'erreur, rediriger quand même mais avec un délai plus long
+            setTimeout(() => {
+              if (window.location.pathname !== '/dashboard') {
+                navigate('/dashboard');
+              }
+            }, 200);
           }
         }
       }
@@ -140,14 +146,15 @@ const Auth = () => {
         console.log("🔵 [Auth Effect] Session existante:", !!session);
         
         if (session) {
-          console.log("🟢 [Auth Effect] Session trouvée, redirection vers /dashboard");
+          console.log("🟢 [Auth Effect] Session trouvée, planification de la redirection vers /dashboard");
           
-          // Restore temporary data
+          // Redirection contrôlée pour éviter les conflits avec auth state change
           setTimeout(() => {
             restoreDataAfterAuth();
-          }, 500);
-          
-          navigate('/dashboard');
+            if (window.location.pathname !== '/dashboard') {
+              navigate('/dashboard');
+            }
+          }, 50);
         }
       } catch (error) {
         console.error("🔴 [Auth Effect] Erreur dans checkAuth:", error);
@@ -291,7 +298,10 @@ const Auth = () => {
           userType: userType,
         });
         
-        navigate('/dashboard');
+        // Redirection contrôlée après création du profil
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 100);
       }
     } catch (error: any) {
       let errorMessage = t('auth.errors.genericError');
@@ -406,7 +416,10 @@ const Auth = () => {
       if (error) throw error;
 
       if (data.user) {
-        navigate('/dashboard');
+        // Redirection contrôlée après connexion
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 100);
       }
     } catch (error: any) {
       let errorMessage = t('auth.errors.incorrectCredentials');
