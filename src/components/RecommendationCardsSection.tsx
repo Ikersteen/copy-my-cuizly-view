@@ -173,13 +173,29 @@ export const RecommendationCardsSection = () => {
         return;
       }
 
+      // Check if user has defined any meaningful preferences
+      const hasPreferences = !!(
+        preferences?.cuisine_preferences?.length ||
+        preferences?.price_range ||
+        preferences?.favorite_meal_times?.length ||
+        preferences?.dietary_restrictions?.length
+      );
+
+      // If no preferences are defined, return empty recommendations
+      if (!hasPreferences) {
+        console.log('❌ No user preferences found - showing no recommendations');
+        setRecommendedRestaurants([]);
+        setLoading(false);
+        return;
+      }
+
       // EXACT MATCHING ALGORITHM - Score restaurants with precise preference matching
       const scoredRestaurants = restaurantsData.map(restaurant => {
         let score = 0; // Start from 0 for exact matching
         const currentHour = new Date().getHours();
         const currentMealTime = getCurrentMealTime(currentHour);
         
-        // 1. EXACT CUISINE MATCHING (50% - Most Important)
+        // 1. EXACT CUISINE MATCHING (60% - Most Important)
         let cuisineScore = 0;
         if (preferences?.cuisine_preferences?.length) {
           const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
@@ -193,29 +209,22 @@ export const RecommendationCardsSection = () => {
 
           // Only score if there are EXACT matches
           if (exactCuisineMatches.length > 0 || exactMenuCuisineMatches.length > 0) {
-            cuisineScore = 50; // Full points only for exact matches
+            cuisineScore = 60; // Full points only for exact matches
           }
-        } else {
-          // If no cuisine preferences set, give neutral score
-          cuisineScore = 25;
         }
         score += cuisineScore;
 
-        // 2. EXACT PRICE RANGE MATCHING (30%)
+        // 2. EXACT PRICE RANGE MATCHING (25%)
         let priceScore = 0;
         if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-          priceScore = 30; // Full points only for exact match
-        } else if (!preferences?.price_range) {
-          priceScore = 15; // Neutral if no preference set
+          priceScore = 25; // Full points only for exact match
         }
         score += priceScore;
 
-        // 3. EXACT MEAL TIME MATCHING (15%)
+        // 3. EXACT MEAL TIME MATCHING (10%)
         let timingScore = 0;
         if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-          timingScore = 15; // Full points only for exact match
-        } else if (!preferences?.favorite_meal_times?.length) {
-          timingScore = 8; // Neutral if no preference set
+          timingScore = 10; // Full points only for exact match
         }
         score += timingScore;
 
@@ -231,8 +240,6 @@ export const RecommendationCardsSection = () => {
           if (hasExactCompatibleOptions) {
             dietaryScore = 5; // Full points only for exact compatibility
           }
-        } else {
-          dietaryScore = 2; // Neutral if no restrictions
         }
         score += dietaryScore;
 
