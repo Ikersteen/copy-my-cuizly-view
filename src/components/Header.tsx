@@ -49,17 +49,18 @@ const Header = () => {
           <div className="flex-shrink-0">
             <Link 
               to="/"
-              className="flex items-center py-2 cursor-pointer"
+              className="flex items-center py-2 cursor-pointer group"
+              onClick={() => window.location.href = '/'}
             >
               <img 
                 src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
                 alt="Cuizly" 
-                className="h-[50px] w-auto dark:hidden"
+                className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:hidden"
               />
               <img 
                 src="/lovable-uploads/2ca03ecc-31e6-42ef-89bf-9532213d22eb.png" 
                 alt="Cuizly" 
-                className="h-[50px] w-auto hidden dark:block"
+                className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 hidden dark:block"
               />
             </Link>
           </div>
