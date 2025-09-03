@@ -578,37 +578,21 @@ export const RecommendationCardsSection = () => {
                   const isAIRecommended = aiReasons.length > 0;
                   
                   return finalReasons.length > 0 && (
-                    <div className="bg-card border rounded-xl p-4 space-y-3">
-                      {/* Header with recommendation type */}
+                    <div className="bg-card border rounded-lg p-3 space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="p-1.5 bg-primary/10 rounded-lg">
-                            <Sparkles className="h-3.5 w-3.5 text-primary" />
-                          </div>
-                          <span className="text-sm font-semibold text-foreground">
-                            Pourquoi ce choix ?
-                          </span>
-                        </div>
-                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          isAIRecommended 
-                            ? 'bg-primary/10 text-primary border border-primary/20' 
-                            : 'bg-muted text-muted-foreground'
-                        }`}>
-                          {isAIRecommended ? 'Recommandé par l\'IA' : 'Analyse traditionnelle'}
-                        </div>
+                        <span className="text-sm font-medium text-foreground">
+                          Pourquoi ce choix ?
+                        </span>
+                        {isAIRecommended && (
+                          <span className="text-xs text-primary font-medium">IA</span>
+                        )}
                       </div>
-
-                      {/* Reasons list */}
-                      <div className="space-y-2">
+                      
+                      <div className="space-y-1">
                         {finalReasons.slice(0, 3).map((reason, idx) => (
-                          <div key={idx} className="flex items-start gap-3">
-                            <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${
-                              isAIRecommended ? 'bg-primary' : 'bg-muted-foreground'
-                            }`} />
-                            <span className="text-sm text-foreground leading-relaxed">
-                              {reason}
-                            </span>
-                          </div>
+                          <p key={idx} className="text-sm text-muted-foreground leading-relaxed">
+                            {reason}
+                          </p>
                         ))}
                       </div>
                     </div>
