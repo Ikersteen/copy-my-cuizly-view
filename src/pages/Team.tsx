@@ -18,7 +18,7 @@ const Team = () => {
               {t('team.title')}
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Rencontrez la personne qui révolutionne la découverte culinaire à Montréal.
+              {t('team.subtitle')}
             </p>
           </div>
         </div>
