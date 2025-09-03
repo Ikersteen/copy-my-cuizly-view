@@ -259,7 +259,8 @@ const Auth = () => {
           data: {
             full_name: nameValidation.sanitized,
             user_type: userType,
-            restaurant_name: userType === 'restaurant_owner' ? validateTextInput(restaurantName, INPUT_LIMITS.NAME).sanitized : null
+            restaurant_name: userType === 'restaurant_owner' ? validateTextInput(restaurantName, INPUT_LIMITS.NAME).sanitized : null,
+            phone_number: phoneVerified ? phoneNumber : null
           }
         }
       });
@@ -335,7 +336,8 @@ const Auth = () => {
         first_name: user.user_metadata.full_name?.split(' ')[0] || '',
         last_name: user.user_metadata.full_name?.split(' ').slice(1).join(' ') || '',
         user_type: user.user_metadata.user_type || 'consumer',
-        restaurant_name: user.user_metadata.restaurant_name || null
+        restaurant_name: user.user_metadata.restaurant_name || null,
+        phone: user.user_metadata.phone_number || null
       });
 
       if (error) {
