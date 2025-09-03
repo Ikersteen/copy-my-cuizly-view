@@ -26,8 +26,8 @@ const Team = () => {
 
       {/* Team Member Section */}
       <section className="py-20 bg-background">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="max-w-4xl mx-auto shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Card className="max-w-3xl mx-auto shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl sm:text-3xl font-bold text-center mb-2">
                 {t('team.founderName')}
