@@ -149,7 +149,7 @@ export const RecommendationCardsSection = () => {
         // Check if user has defined any meaningful preferences BEFORE calling AI
         const hasPreferences = !!(
           preferences?.cuisine_preferences?.length ||
-          preferences?.price_range ||
+          (preferences?.price_range && preferences?.price_range !== '$') ||
           preferences?.favorite_meal_times?.length ||
           preferences?.dietary_restrictions?.length
         );

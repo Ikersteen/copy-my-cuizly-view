@@ -60,10 +60,9 @@ serve(async (req) => {
     // Check if user has meaningful preferences for better recommendations
     const hasPreferences = !!(
       preferences?.cuisine_preferences?.length ||
-      preferences?.price_range ||
+      (preferences?.price_range && preferences?.price_range !== '$') ||
       preferences?.favorite_meal_times?.length ||
-      preferences?.dietary_restrictions?.length ||
-      preferences?.street
+      preferences?.dietary_restrictions?.length
     );
 
     console.log(`Processing AI recommendations for ${restaurants.length} restaurants${hasPreferences ? ' with user preferences' : ' without specific preferences'}`);
