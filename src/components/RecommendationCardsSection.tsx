@@ -412,45 +412,7 @@ export const RecommendationCardsSection = () => {
   }
 
   if (recommendedRestaurants.length === 0) {
-    return (
-      <section className="py-8 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-8">
-            <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
-              <div className="flex flex-col items-center space-y-6">
-                <div className="p-4 rounded-full bg-muted/50">
-                  <ChefHat className="h-12 w-12 text-muted-foreground" />
-                </div>
-                <div className="space-y-4 text-center">
-                  <h3 className="text-2xl font-bold whitespace-nowrap">{t('recommendations.noRecommendationsTitle')}</h3>
-                  <p className="text-muted-foreground max-w-md">
-                    {t('recommendations.noRecommendationsDesc')}
-                  </p>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                  <Button 
-                    onClick={() => setShowFilters(true)}
-                    className="flex items-center gap-2"
-                  >
-                    <Filter className="h-4 w-4" />
-                    {t('recommendations.modifyPreferences')}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={generateRecommendations}
-                    disabled={loading}
-                    className="flex items-center gap-2"
-                  >
-                    <Sparkles className="h-4 w-4" />
-                    {t('recommendations.refreshRecommendations')}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   return (
