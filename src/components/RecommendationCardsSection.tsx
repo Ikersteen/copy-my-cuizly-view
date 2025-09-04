@@ -460,7 +460,7 @@ export const RecommendationCardsSection = () => {
             <div className="text-center">
               <div className="flex items-center justify-center gap-0 sm:gap-2 mb-4">
                 <Sparkles className="h-5 w-5 text-primary animate-pulse flex-shrink-0" />
-                <h2 className="text-lg font-semibold">{t('recommendations.generatingRecommendations')}</h2>
+                <h2 className="text-lg font-semibold m-0 -ml-1 sm:ml-0">{t('recommendations.generatingRecommendations')}</h2>
               </div>
               <div className="flex justify-center mb-4">
                 <LoadingSpinner size="lg" />
