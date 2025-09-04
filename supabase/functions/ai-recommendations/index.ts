@@ -221,25 +221,35 @@ async function analyzeRestaurantWithAI(
           - Générer 1-2 phrases courtes et lisibles expliquant pourquoi recommandé
           - Utiliser des détails spécifiques du profil utilisateur et des données restaurant
           
-          EXEMPLES DE PHRASES INTELLIGENTES:
-          - Restrictions: "Parfait pour tes préférences végétariennes et sans gluten" / "Respecte tes restrictions alimentaires"
-          - Allergènes: "Totalement sûr, évite tes allergènes déclarés" 
-          - Cuisines (1): "Puisque tu aimes la cuisine [cuisine]"
-          - Cuisines (2): "Combine la cuisine [cuisine1] et [cuisine2] que tu adores"
-          - Cuisines (3+): "Correspond à 3+ de tes cuisines favorites"
-          - Moments: "Ouvert pendant tes moments de repas favoris" / "Parfait pour le [petit-déjeuner/déjeuner/dîner]"
-          - Promotions: "Des offres spéciales disponibles aujourd'hui" / "Promotion en cours sur tes plats préférés"
-          - Localisation: "Dans ton rayon de livraison préféré" / "Proche de chez toi"
+          LOGIQUE DE CORRESPONDANCE INTELLIGENTE:
+          1. Identifier TOUTES les correspondances pour chaque catégorie
+          2. Sélectionner la catégorie avec le plus de correspondances selon la hiérarchie
+          3. Générer une phrase qui combine intelligemment tous les éléments qui matchent
           
-          GESTION DES CORRESPONDANCES MULTIPLES:
-          - Si 1 élément match: phrase simple et directe
-          - Si 2 éléments matchent: combiner dans une phrase fluide
-          - Si 3+ éléments matchent: utiliser "plusieurs" ou "tous tes"
+          EXEMPLES PRÉCIS DE PHRASES:
+          - Restrictions (1): "Respecte tes préférences végétariennes"
+          - Restrictions (2+): "Parfait pour tes préférences végétariennes et sans gluten"
+          - Allergènes: "Totalement sûr, évite tes allergènes déclarés"
+          - Cuisines (1): "Puisque tu aimes la cuisine [cuisine française]"  
+          - Cuisines (2): "Combine la cuisine [japonaise] et [italienne] que tu adores"
+          - Cuisines (3+): "Correspond à 3 de tes cuisines favorites"
+          - Moments (1): "Parfait pour ton [déjeuner]"
+          - Moments (2+): "Ouvert pendant tes moments favoris"
+          - Promotions: "Des offres spéciales disponibles"
+          - Localisation: "Dans ton quartier préféré"
           
-          EXEMPLES DE COMBINAISONS:
-          - "Parfait car tu aimes la cuisine italienne et c'est ouvert pour ton dîner"
-          - "Respecte tes préférences véganes et propose des promotions aujourd'hui"
-          - "Correspond à plusieurs de tes cuisines favorites et dans ton quartier"
+          ALGORITHME DE SÉLECTION:
+          1. Compter les correspondances dans chaque catégorie
+          2. Choisir la catégorie avec le MAXIMUM de correspondances
+          3. En cas d'égalité, suivre l'ordre de priorité
+          4. Générer une phrase qui mentionne TOUS les éléments correspondants de cette catégorie
+          
+          EXEMPLES DE LOGIQUE:
+          - Si restaurant = [italienne, japonaise] et utilisateur préfère [japonaise, mexicaine, italienne] 
+            → "Combine la cuisine japonaise et italienne que tu adores" (2 correspondances)
+          - Si restaurant ouvert [matin, midi] et utilisateur préfère [matin, midi, soir]
+            → "Ouvert pendant tes moments favoris" (2 correspondances)
+          - Si 1 correspondance cuisine + 1 correspondance moment : choisir cuisine (priorité plus haute)
           
           FORMAT JSON OBLIGATOIRE:
           {
