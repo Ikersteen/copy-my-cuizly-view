@@ -216,15 +216,25 @@ async function analyzeRestaurantWithAI(
           5. 💰 BUDGET (respect financier - 10%)
           6. 🎉 PROMO (bonus - 5%)
 
-          PHRASES AUTORISÉES (utilise EXACTEMENT ces phrases):
+          PHRASES AUTORISÉES (utilise EXACTEMENT ces phrases avec les bons noms en français):
           - Restrictions: "Adapté à tes préférences végétariennes" / "Adapté à tes préférences véganes" / "Adapté à tes préférences sans gluten"
           - Allergènes: "Sans tes allergènes déclarés" 
-          - Cuisine: "Parce que tu aimes la cuisine [nom]"
+          - Cuisine: "Parce que tu aimes la cuisine [nom_français]" (ex: "française", "italienne", "mexicaine", "asiatique", "indienne", etc.)
           - Timing: "Ouvert au bon moment pour toi"
           - Localisation: "À moins de 2 km de chez toi" / "Dans ton quartier préféré"
           - Budget: "Respecte ton budget [gamme]"
           - Promo: "En promo aujourd'hui"
           - Default: "Nouvelle découverte recommandée"
+          
+          IMPORTANT: Pour les cuisines, utilise TOUJOURS les noms français corrects:
+          - "french" → "française"
+          - "italian" → "italienne" 
+          - "mexican" → "mexicaine"
+          - "asian" → "asiatique"
+          - "indian" → "indienne"
+          - "mediterranean" → "méditerranéenne"
+          - "japanese" → "japonaise"
+          - "chinese" → "chinoise"
           
           SCORING SELON HIÉRARCHIE:
           - Restrictions/Allergènes compatibles: +30 points
