@@ -120,7 +120,7 @@ serve(async (req) => {
     }
 
     return new Response(JSON.stringify({
-      recommendations: sortedRestaurants.slice(0, 5),
+      recommendations: sortedRestaurants.slice(0, 5), // Maximum 5 recommandations
       total_analyzed: restaurants.length,
       ai_powered: true
     }), {
@@ -306,8 +306,8 @@ async function analyzeRestaurantWithAI(
     // Ensure score is within valid range
     parsed.score = Math.max(0, Math.min(100, parsed.score));
     
-    // Ensure reasons array has max 2 elements for new case logic (1-2 phrases)
-    parsed.reasons = parsed.reasons.slice(0, 2).filter(r => typeof r === 'string');
+    // Ensure reasons array has max 5 elements if needed for comprehensive explanations
+    parsed.reasons = parsed.reasons.slice(0, 5).filter(r => typeof r === 'string');
     
     return parsed;
   } catch (parseError) {
