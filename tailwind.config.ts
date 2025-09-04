@@ -64,7 +64,8 @@ export default {
 					pro: 'hsl(var(--cuizly-pro))',
 					'pro-foreground': 'hsl(var(--cuizly-pro-foreground))',
 					analytics: 'hsl(var(--cuizly-analytics))',
-					'analytics-foreground': 'hsl(var(--cuizly-analytics-foreground))'
+					'analytics-foreground': 'hsl(var(--cuizly-analytics-foreground))',
+					allergen: 'hsl(var(--cuizly-allergen))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

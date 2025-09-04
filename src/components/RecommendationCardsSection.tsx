@@ -611,7 +611,7 @@ export const RecommendationCardsSection = () => {
                             return (
                               <div key={idx} className="flex items-center gap-2.5">
                                 <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                  isAllergens ? 'bg-red-500' : 
+                                  isAllergens ? 'bg-cuizly-allergen' : 
                                   reasonObj.type === 'dietary' ? 'bg-emerald-500' :
                                   reasonObj.type === 'price' ? 'bg-emerald-500' : 
                                   reasonObj.type === 'cuisine' ? 'bg-blue-500' : 
