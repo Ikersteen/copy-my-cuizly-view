@@ -123,7 +123,10 @@ export const RestaurantMobileMenu = ({
                     variant={theme === 'light' ? 'default' : 'outline'}
                     size="sm"
                     className="flex-1"
-                    onClick={() => setTheme('light')}
+                    onClick={() => {
+                      setTheme('light');
+                      setIsOpen(false);
+                    }}
                   >
                     ☀️
                   </Button>
@@ -131,7 +134,10 @@ export const RestaurantMobileMenu = ({
                     variant={theme === 'dark' ? 'default' : 'outline'}
                     size="sm"
                     className="flex-1"
-                    onClick={() => setTheme('dark')}
+                    onClick={() => {
+                      setTheme('dark');
+                      setIsOpen(false);
+                    }}
                   >
                     🌙
                   </Button>
@@ -139,7 +145,10 @@ export const RestaurantMobileMenu = ({
                     variant={theme === 'system' ? 'default' : 'outline'}
                     size="sm"
                     className="flex-1"
-                    onClick={() => setTheme('system')}
+                    onClick={() => {
+                      setTheme('system');
+                      setIsOpen(false);
+                    }}
                   >
                     💻
                   </Button>
@@ -159,7 +168,10 @@ export const RestaurantMobileMenu = ({
                     variant={currentLanguage === 'fr' ? 'default' : 'outline'}
                     size="sm"
                     className="flex-1"
-                    onClick={() => changeLanguage('fr')}
+                    onClick={() => {
+                      changeLanguage('fr');
+                      setIsOpen(false);
+                    }}
                   >
                     🇫🇷 FR
                   </Button>
@@ -167,7 +179,10 @@ export const RestaurantMobileMenu = ({
                     variant={currentLanguage === 'en' ? 'default' : 'outline'}
                     size="sm"
                     className="flex-1"
-                    onClick={() => changeLanguage('en')}
+                    onClick={() => {
+                      changeLanguage('en');
+                      setIsOpen(false);
+                    }}
                   >
                     🇬🇧 EN
                   </Button>
