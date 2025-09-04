@@ -60,7 +60,11 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
 
       const { data, error } = await query.order('created_at', { ascending: false });
 
-      console.log('📊 Offers query result:', { data, error });
+      console.log('📊 Offers query result:', { 
+        dataLength: data?.length, 
+        error, 
+        rawData: JSON.stringify(data, null, 2)
+      });
 
       if (error) throw error;
 
@@ -77,8 +81,9 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
         total: data?.length, 
         current: current.length, 
         past: past.length,
-        currentOffers: current,
-        pastOffers: past
+        now: now.toISOString(),
+        currentOffersDetails: JSON.stringify(current, null, 2),
+        pastOffersDetails: JSON.stringify(past, null, 2)
       });
 
       setCurrentOffers(current);
