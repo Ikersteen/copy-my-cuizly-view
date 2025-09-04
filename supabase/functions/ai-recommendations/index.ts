@@ -57,28 +57,16 @@ serve(async (req) => {
       throw new Error('Restaurants array is required');
     }
 
-    // Check if user has any meaningful preferences defined
+    // Check if user has meaningful preferences for better recommendations
     const hasPreferences = !!(
       preferences?.cuisine_preferences?.length ||
       preferences?.price_range ||
       preferences?.favorite_meal_times?.length ||
-      preferences?.dietary_restrictions?.length
+      preferences?.dietary_restrictions?.length ||
+      preferences?.street
     );
 
-    // If no preferences are defined, return empty recommendations
-    if (!hasPreferences) {
-      console.log('No user preferences found - returning empty AI recommendations');
-      return new Response(JSON.stringify({
-        recommendations: [],
-        total_analyzed: 0,
-        ai_powered: true,
-        message: 'No preferences defined'
-      }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    console.log(`Processing AI recommendations for ${restaurants.length} restaurants`);
+    console.log(`Processing AI recommendations for ${restaurants.length} restaurants${hasPreferences ? ' with user preferences' : ' without specific preferences'}`);
 
     // Analyse sémantique et scoring IA pour chaque restaurant
     const aiScoredRestaurants = await Promise.all(
@@ -382,6 +370,7 @@ function checkSafetyCompatibility(restaurant: Restaurant, preferences: UserPrefe
       restaurant.dietary_restrictions!.includes(restriction)
     );
     if (compatible) return '✅ Restrictions respectées';
+    else return '⚠️ Restrictions non respectées';
   }
   
   // Check allergens safety
@@ -393,7 +382,22 @@ function checkSafetyCompatibility(restaurant: Restaurant, preferences: UserPrefe
     else return '⚠️ Allergènes présents';
   }
   
-  return '❌ Sécurité non vérifiable';
+  // Si pas de restrictions/allergènes = PARFAIT (plus de choix disponibles)
+  if (!preferences?.dietary_restrictions?.length && !preferences?.allergens?.length) {
+    return '✅ AUCUNE restriction = Tous les plats disponibles';
+  }
+  
+  // Si utilisateur a des restrictions mais restaurant ne les spécifie pas
+  if (preferences?.dietary_restrictions?.length && !restaurant.dietary_restrictions?.length) {
+    return '⚠️ Restrictions utilisateur non confirmées par restaurant';
+  }
+  
+  // Si utilisateur a des allergènes mais restaurant ne les spécifie pas
+  if (preferences?.allergens?.length && !restaurant.allergens?.length) {
+    return '⚠️ Allergènes utilisateur non confirmés par restaurant';
+  }
+  
+  return '✅ Sécurité alimentaire OK';
 }
 
 function getCurrentMealTime(hour: number): string {
@@ -406,48 +410,52 @@ function getCurrentMealTime(hour: number): string {
 }
 
 function calculateFallbackScore(restaurant: Restaurant, preferences: UserPreferences): number {
-  // Check if user has any meaningful preferences defined
-  const hasPreferences = !!(
-    preferences?.cuisine_preferences?.length ||
-    preferences?.price_range ||
-    preferences?.favorite_meal_times?.length ||
-    preferences?.dietary_restrictions?.length
-  );
-
-  // If no preferences, return 0 score
-  if (!hasPreferences) {
-    return 0;
-  }
-
-  let score = 0; // Start from 0, only add points for matches
+  let score = 40; // Score de base plus élevé - tous les restaurants ont une valeur
   const currentHour = new Date().getHours();
   const currentMealTime = getCurrentMealTime(currentHour);
 
-  // 1. Correspondance cuisine (60% - priorité maximale)
+  // 1. Bonus sécurité alimentaire (pas de restrictions = plus de choix)
+  if (!preferences?.dietary_restrictions?.length && !preferences?.allergens?.length) {
+    score += 20; // Bonus pour flexibilité alimentaire
+  }
+
+  // 2. Correspondance cuisine (30 points max)
   if (preferences.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
     const exactMatches = restaurant.cuisine_type.filter(cuisine =>
       preferences.cuisine_preferences!.includes(cuisine)
     );
     if (exactMatches.length > 0) {
-      score += Math.min(exactMatches.length * 20, 60);
+      score += Math.min(exactMatches.length * 15, 30);
     }
   }
 
-  // 2. Correspondance budget (25%)  
-  if (preferences.price_range === restaurant.price_range) {
-    score += 25;
+  // 3. Correspondance budget (20 points)  
+  if (preferences.price_range && restaurant.price_range) {
+    if (preferences.price_range === restaurant.price_range) {
+      score += 20;
+    } else {
+      // Bonus partiel si budget compatible (restaurant moins cher)
+      const priceOrder = ['$', '$$', '$$$', '$$$$'];
+      const userIndex = priceOrder.indexOf(preferences.price_range);
+      const restaurantIndex = priceOrder.indexOf(restaurant.price_range);
+      
+      if (restaurantIndex !== -1 && userIndex !== -1 && restaurantIndex <= userIndex) {
+        score += 10; // Demi-points pour compatible mais pas exact
+      }
+    }
   }
 
-  // 3. Timing optimal (10%)
+  // 4. Timing optimal (10 points)
   if (preferences.favorite_meal_times?.includes(currentMealTime)) {
     score += 10;
   }
 
-  // 4. Qualité et notes (5%)
+  // 5. Qualité et popularité (10 points max)
   if (restaurant.average_rating && restaurant.rating_count) {
-    const qualityScore = (restaurant.average_rating / 5) * 3;
-    const trustScore = Math.min(restaurant.rating_count / 10, 2);
-    score += qualityScore + trustScore;
+    const qualityScore = (restaurant.average_rating / 5) * 5;
+    const trustScore = Math.min(restaurant.rating_count / 10, 3);
+    const popularityScore = Math.min((restaurant.profile_views || 0) / 100, 2);
+    score += Math.min(qualityScore + trustScore + popularityScore, 10);
   }
 
   return Math.min(Math.round(score), 100);
