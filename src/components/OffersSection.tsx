@@ -42,6 +42,8 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
   const loadOffers = async () => {
     try {
       setLoading(true);
+      console.log('🎁 Loading offers for userType:', userType, 'restaurantId:', restaurantId);
+      
       let query = supabase.from('offers').select(`
         *,
         restaurants(name)
@@ -49,12 +51,16 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
 
       if (userType === 'restaurant' && restaurantId) {
         query = query.eq('restaurant_id', restaurantId);
+        console.log('🏪 Filtering for restaurant:', restaurantId);
       } else if (userType === 'consumer') {
         // Pour les consommateurs, afficher toutes les offres actives
         query = query.eq('is_active', true);
+        console.log('👤 Loading all active offers for consumer');
       }
 
       const { data, error } = await query.order('created_at', { ascending: false });
+
+      console.log('📊 Offers query result:', { data, error });
 
       if (error) throw error;
 
@@ -66,6 +72,14 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
       const past = data?.filter(offer => 
         new Date(offer.valid_until) <= now || !offer.is_active
       ) || [];
+
+      console.log('📅 Offers categorized:', { 
+        total: data?.length, 
+        current: current.length, 
+        past: past.length,
+        currentOffers: current,
+        pastOffers: past
+      });
 
       setCurrentOffers(current);
       setPastOffers(past);
