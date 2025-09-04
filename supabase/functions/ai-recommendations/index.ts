@@ -316,6 +316,7 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 Suis STRICTEMENT la hiérarchie de priorités pour choisir UNE SEULE phrase d'explication.
 Calcule le score selon les points définis dans le système prompt.
   `;
+}
 
 function checkSafetyCompatibility(restaurant: Restaurant, preferences: UserPreferences): string {
   // Check dietary restrictions compatibility
