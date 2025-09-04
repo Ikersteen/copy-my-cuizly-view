@@ -10,7 +10,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import { RestaurantMenuModal } from "./RestaurantMenuModal";
 import { RestaurantFiltersModal, RestaurantFilterOptions } from "./RestaurantFiltersModal";
 import { useTranslation } from 'react-i18next';
-import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_TRANSLATIONS, CUISINE_OPTIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
 
@@ -571,7 +571,11 @@ export const RecommendationCardsSection = () => {
 
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-2">
-                  {restaurant.cuisine_type?.map((cuisine, idx) => {
+                  {restaurant.cuisine_type?.sort((a, b) => {
+                    const indexA = CUISINE_OPTIONS.indexOf(a);
+                    const indexB = CUISINE_OPTIONS.indexOf(b);
+                    return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+                  }).map((cuisine, idx) => {
                     const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
                     return (
                        <Badge 
