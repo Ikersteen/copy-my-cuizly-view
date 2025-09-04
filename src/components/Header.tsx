@@ -232,19 +232,28 @@ const Header = () => {
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                   <div className="flex flex-col space-y-4 mt-8">
                     <button 
-                      onClick={() => handleNavigate("/pricing")}
+                      onClick={() => {
+                        document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                        setIsSheetOpen(false);
+                      }}
                       className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                     >
                       {t('navigation.pricing')}
                     </button>
                     <button 
-                      onClick={() => handleNavigate("/features")}
+                      onClick={() => {
+                        document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                        setIsSheetOpen(false);
+                      }}
                       className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                     >
                       {t('navigation.features')}
                     </button>
                     <button 
-                      onClick={() => handleNavigate("/contact")}
+                      onClick={() => {
+                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                        setIsSheetOpen(false);
+                      }}
                       className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
                     >
                       {t('navigation.contact')}
