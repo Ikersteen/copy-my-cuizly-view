@@ -28,6 +28,9 @@ interface UserPreferences {
   dietary_restrictions?: string[];
   delivery_radius?: number;
   street?: string;
+  full_address?: string;
+  neighborhood?: string;
+  postal_code?: string;
   favorite_meal_times?: string[];
   allergens?: string[];
 }
@@ -62,7 +65,9 @@ serve(async (req) => {
       preferences?.cuisine_preferences?.length ||
       (preferences?.price_range && preferences?.price_range !== '$') ||
       preferences?.favorite_meal_times?.length ||
-      preferences?.dietary_restrictions?.length
+      preferences?.dietary_restrictions?.length ||
+      preferences?.full_address ||
+      preferences?.street
     );
 
     console.log(`Processing AI recommendations for ${restaurants.length} restaurants${hasPreferences ? ' with user preferences' : ' without specific preferences'}`);
@@ -335,6 +340,9 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 • Restrictions alimentaires: ${preferences.dietary_restrictions?.join(', ') || 'Aucune'}
 • Allergènes à éviter: ${preferences.allergens?.join(', ') || 'Aucun'}
 • Moments de repas favoris: ${preferences.favorite_meal_times?.join(', ') || 'Flexible'}
+• Adresse complète: ${preferences.full_address || 'Non spécifiée'}
+• Quartier: ${preferences.neighborhood || 'Non spécifié'}
+• Code postal: ${preferences.postal_code || 'Non spécifié'}
 • Rayon de livraison: ${preferences.delivery_radius || 'Non spécifié'} km
 
 ⏰ CONTEXTE ACTUEL:
@@ -346,7 +354,7 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 1. 🔒 RESTRICTIONS/ALLERGÈNES: ${checkSafetyCompatibility(restaurant, preferences)}
 2. 🍽️ CUISINES: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')} (${cuisineMatches.length} correspondance${cuisineMatches.length > 1 ? 's' : ''})` : '❌ Aucune'}
 3. ⏰ MOMENTS: ${isMealTimeMatch ? '✅ Compatible avec tes horaires' : '❌ Pas optimal'}
-4. 📍 LOCALISATION: ${preferences.delivery_radius ? '🔍 À analyser selon rayon' : '❌ Non définie'}
+4. 📍 LOCALISATION: ${checkLocationCompatibility(restaurant, preferences)}
 5. 💰 BUDGET: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
 6. 🎉 PROMOTIONS: 🔍 À vérifier
 
@@ -397,6 +405,42 @@ function checkSafetyCompatibility(restaurant: Restaurant, preferences: UserPrefe
   }
   
   return '✅ Sécurité alimentaire OK';
+}
+
+function checkLocationCompatibility(restaurant: Restaurant, preferences: UserPreferences): string {
+  // Si l'utilisateur a une adresse complète
+  if (preferences.full_address) {
+    const userNeighborhood = preferences.neighborhood?.toLowerCase() || '';
+    const userStreet = preferences.street?.toLowerCase() || '';
+    const restaurantAddress = restaurant.address?.toLowerCase() || '';
+    
+    // Vérifier si même rue (score très élevé)
+    if (userStreet && restaurantAddress.includes(userStreet)) {
+      return '✅ Même rue que vous';
+    }
+    
+    // Vérifier si même quartier (score élevé)
+    if (userNeighborhood && restaurantAddress.includes(userNeighborhood)) {
+      return '✅ Dans votre quartier';
+    }
+    
+    // Vérifier dans le rayon de livraison
+    if (preferences.delivery_radius) {
+      return `🔍 À analyser dans votre rayon de ${preferences.delivery_radius} km`;
+    }
+    
+    return '📍 Localisation à Montréal';
+  }
+  
+  // Si seulement une rue basique
+  if (preferences.street) {
+    const restaurantAddress = restaurant.address?.toLowerCase() || '';
+    if (restaurantAddress.includes(preferences.street.toLowerCase())) {
+      return '✅ Sur votre rue préférée';
+    }
+  }
+  
+  return '❌ Localisation non définie';
 }
 
 function getCurrentMealTime(hour: number): string {
@@ -457,7 +501,33 @@ function calculateFallbackScore(restaurant: Restaurant, preferences: UserPrefere
     score += Math.min(qualityScore + trustScore + popularityScore, 10);
   }
 
+  // 6. Bonus localisation (15 points max)
+  score += calculateLocationScore(restaurant, preferences);
+
   return Math.min(Math.round(score), 100);
+}
+
+function calculateLocationScore(restaurant: Restaurant, preferences: UserPreferences): number {
+  let locationScore = 0;
+  
+  if (!restaurant.address || !preferences) return locationScore;
+  
+  const restaurantAddress = restaurant.address.toLowerCase();
+  
+  // Même rue = score maximal (15 points)
+  if (preferences.street && restaurantAddress.includes(preferences.street.toLowerCase())) {
+    locationScore += 15;
+  }
+  // Même quartier = score élevé (10 points)
+  else if (preferences.neighborhood && restaurantAddress.includes(preferences.neighborhood.toLowerCase())) {
+    locationScore += 10;
+  }
+  // Dans Montréal = score de base (5 points)
+  else if (restaurantAddress.includes('montréal') || restaurantAddress.includes('montreal')) {
+    locationScore += 5;
+  }
+  
+  return locationScore;
 }
 
 // Phrases prédéfinies pour les explications - TOUTES LES PRÉFÉRENCES
@@ -490,11 +560,12 @@ const EXPLANATION_PHRASES = {
     
     // 5. LOCALISATION (rue + distance)
     location_same_street: "Sur votre rue à Montréal",
-    location_neighborhood: "Dans votre quartier à Montréal",
+    location_neighborhood: "Dans votre quartier à Montréal", 
     location_main_artery: "Sur la même artère principale",
-    location_close: "À moins de 2 km de chez toi",
-    location_within_radius: (radius: number) => `Dans ton rayon de ${radius} km`,
-    location_delivery_zone: "Dans ta zone de livraison préférée",
+    location_close: "À moins de 2 km de chez vous",
+    location_within_radius: (radius: number) => `Dans votre rayon de ${radius} km`,
+    location_delivery_zone: "Dans votre zone de livraison préférée",
+    location_montreal: "Situé à Montréal",
     
     // 6. BUDGET (gamme de prix)
     budget_perfect: (range: string) => `Respecte ton budget ${range}`,

@@ -1125,6 +1125,8 @@
       "luxury": "$$$$ - Luxury"
     },
     "street": "Your street in Montreal",
+    "fullAddress": "Your full address in Montreal",
+    "addressSelected": "Address selected",
     "deliveryRadius": "Delivery radius (km)",
     "mealTimes": "Favorite meal times",
     "mealTimesDesc": "When do you usually order?",

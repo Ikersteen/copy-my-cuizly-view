@@ -12,6 +12,9 @@ export interface UserPreferences {
   allergens: string[];
   price_range: string;
   street?: string;
+  full_address?: string;
+  neighborhood?: string;
+  postal_code?: string;
   delivery_radius: number;
   favorite_meal_times: string[];
   notification_preferences: {
@@ -26,6 +29,9 @@ const defaultPreferences: Omit<UserPreferences, 'user_id'> = {
   allergens: [],
   price_range: "",
   street: "",
+  full_address: "",
+  neighborhood: "",
+  postal_code: "",
   delivery_radius: 1,
   favorite_meal_times: [],
   notification_preferences: {

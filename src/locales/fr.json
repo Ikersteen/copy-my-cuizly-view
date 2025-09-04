@@ -956,6 +956,8 @@
       "luxury": "$$$$ - Luxueux"
     },
     "street": "Votre rue à Montréal",
+    "fullAddress": "Votre adresse complète à Montréal",
+    "addressSelected": "Adresse sélectionnée",
     "deliveryRadius": "Rayon de livraison (km)",
     "mealTimes": "Moments de repas favoris",
     "mealTimesDesc": "Quand commandez-vous habituellement ?",

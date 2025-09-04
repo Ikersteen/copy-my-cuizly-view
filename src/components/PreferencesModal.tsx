@@ -12,6 +12,7 @@ import { X, Plus, ChevronDown } from "lucide-react";
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks/useLanguage';
+import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
 
 interface PreferencesModalProps {
   open: boolean;
@@ -107,6 +108,9 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         allergens: preferences.allergens || [],
         price_range: preferences.price_range || "",
         street: preferences.street || "",
+        full_address: preferences.full_address || "",
+        neighborhood: preferences.neighborhood || "",
+        postal_code: preferences.postal_code || "",
         delivery_radius: preferences.delivery_radius || 1,
         favorite_meal_times: preferences.favorite_meal_times || [],
         notification_preferences: preferences.notification_preferences || { push: false, email: false }
@@ -276,21 +280,32 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Sélection de rue */}
+          {/* Adresse complète */}
           <div>
-            <Label className="text-sm font-medium mb-3 block">{t('preferences.street')}</Label>
-            <div className="grid grid-cols-2 gap-2">
-              {montrealStreets.map(street => (
-                <Badge
-                  key={street}
-                  variant={localPrefs.street === street ? "default" : "outline"}
-                  className="cursor-pointer justify-center text-xs py-1"
-                  onClick={() => setLocalPrefs(prev => ({ ...prev, street }))}
-                >
-                  {street}
-                </Badge>
-              ))}
-            </div>
+            <MontrealAddressSelector
+              value={localPrefs.full_address || ""}
+              onChange={(address) => {
+                const addressParts = address.split(',');
+                const streetAddress = addressParts[0]?.trim() || "";
+                const neighborhood = addressParts[1]?.trim() || "";
+                const postal = addressParts[2]?.match(/[A-Z]\d[A-Z] ?\d[A-Z]\d/)?.[0] || "";
+                
+                setLocalPrefs(prev => ({
+                  ...prev,
+                  full_address: address,
+                  street: streetAddress.replace(/^\d+\s+/, ''), // Enlever le numéro pour garder juste le nom de rue
+                  neighborhood: neighborhood,
+                  postal_code: postal
+                }));
+              }}
+              label={t('preferences.fullAddress')}
+              placeholder="Commencez à taper votre adresse à Montréal..."
+            />
+            {localPrefs.full_address && (
+              <p className="text-xs text-muted-foreground mt-2">
+                📍 {t('preferences.addressSelected')}: {localPrefs.full_address}
+              </p>
+            )}
           </div>
 
           <Separator />

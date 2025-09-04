@@ -425,6 +425,39 @@ export type Database = {
           },
         ]
       }
+      user_learned_preferences: {
+        Row: {
+          context_preferences: Json | null
+          created_at: string | null
+          cuisine_weights: Json | null
+          dietary_scores: Json | null
+          id: string
+          last_updated: string | null
+          price_preferences: Json | null
+          user_id: string
+        }
+        Insert: {
+          context_preferences?: Json | null
+          created_at?: string | null
+          cuisine_weights?: Json | null
+          dietary_scores?: Json | null
+          id?: string
+          last_updated?: string | null
+          price_preferences?: Json | null
+          user_id: string
+        }
+        Update: {
+          context_preferences?: Json | null
+          created_at?: string | null
+          cuisine_weights?: Json | null
+          dietary_scores?: Json | null
+          id?: string
+          last_updated?: string | null
+          price_preferences?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           allergens: string[] | null
@@ -433,8 +466,11 @@ export type Database = {
           delivery_radius: number | null
           dietary_restrictions: string[] | null
           favorite_meal_times: string[] | null
+          full_address: string | null
           id: string
+          neighborhood: string | null
           notification_preferences: Json | null
+          postal_code: string | null
           price_range: string | null
           street: string | null
           updated_at: string
@@ -447,8 +483,11 @@ export type Database = {
           delivery_radius?: number | null
           dietary_restrictions?: string[] | null
           favorite_meal_times?: string[] | null
+          full_address?: string | null
           id?: string
+          neighborhood?: string | null
           notification_preferences?: Json | null
+          postal_code?: string | null
           price_range?: string | null
           street?: string | null
           updated_at?: string
@@ -461,11 +500,41 @@ export type Database = {
           delivery_radius?: number | null
           dietary_restrictions?: string[] | null
           favorite_meal_times?: string[] | null
+          full_address?: string | null
           id?: string
+          neighborhood?: string | null
           notification_preferences?: Json | null
+          postal_code?: string | null
           price_range?: string | null
           street?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_restaurant_interactions: {
+        Row: {
+          context_data: Json | null
+          created_at: string | null
+          id: string
+          interaction_type: string
+          restaurant_id: string
+          user_id: string
+        }
+        Insert: {
+          context_data?: Json | null
+          created_at?: string | null
+          id?: string
+          interaction_type: string
+          restaurant_id: string
+          user_id: string
+        }
+        Update: {
+          context_data?: Json | null
+          created_at?: string | null
+          id?: string
+          interaction_type?: string
+          restaurant_id?: string
           user_id?: string
         }
         Relationships: []
@@ -638,6 +707,15 @@ export type Database = {
           p_offer_clicks?: number
           p_profile_views?: number
           p_restaurant_id: string
+        }
+        Returns: undefined
+      }
+      update_learned_preferences: {
+        Args: {
+          p_interaction_type: string
+          p_restaurant_data?: Json
+          p_restaurant_id: string
+          p_user_id: string
         }
         Returns: undefined
       }
