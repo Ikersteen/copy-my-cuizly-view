@@ -3,6 +3,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { validateSession, secureLogout } from '@/lib/security';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface AuthState {
   user: User | null;
@@ -19,6 +20,7 @@ export const useSecureAuth = () => {
     isAuthenticated: false,
   });
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -101,8 +103,8 @@ export const useSecureAuth = () => {
           isAuthenticated: false,
         });
         toast({
-          title: "Session Expired",
-          description: "Please sign in again",
+          title: t('toasts.sessionExpired'),
+          description: t('toasts.pleaseSignInAgain'),
           variant: "destructive",
         });
       }

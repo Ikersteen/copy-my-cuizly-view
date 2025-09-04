@@ -316,7 +316,9 @@
     "confirm": "Confirmer",
     "edit": "Modifier",
     "delete": "Supprimer",
-    "view": "Voir"
+    "view": "Voir",
+    "validationError": "Erreur de validation",
+    "fixErrors": "Veuillez corriger les erreurs avant de sauvegarder"
   },
   "language": {
     "french": "Français",
@@ -518,7 +520,14 @@
     "cannotAddRating": "Impossible d'ajouter l'évaluation",
     "preferencesUpdated": "Préférences mises à jour",
     "preferencesUpdateError": "Impossible de sauvegarder vos préférences",
-    "preferencesSavedSuccessfully": "Vos préférences ont été sauvegardées avec succès"
+    "preferencesSavedSuccessfully": "Vos préférences ont été sauvegardées avec succès",
+    "preferencesSavedTemporarily": "Préférences sauvegardées temporairement",
+    "connectionProblem": "Problème de connexion",
+    "cannotLoadProfile": "Impossible de charger le profil. Veuillez rafraîchir la page.",
+    "sessionExpired": "Session expirée",
+    "pleaseSignInAgain": "Veuillez vous reconnecter",
+    "cannotLoadPreferences": "Impossible de charger les préférences. Veuillez rafraîchir la page.",
+    "oauthError": "Erreur OAuth"
   },
   "montreal": {
     "streets": [

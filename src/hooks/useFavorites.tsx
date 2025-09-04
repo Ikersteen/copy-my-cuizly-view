@@ -108,7 +108,7 @@ export const useFavorites = () => {
           .eq('restaurant_id', restaurantId);
 
         if (error) throw error;
-        toast({ title: "Retiré des favoris" });
+        toast({ title: t('favorites.removed') });
       } else {
         const { error } = await supabase
           .from('user_favorites')

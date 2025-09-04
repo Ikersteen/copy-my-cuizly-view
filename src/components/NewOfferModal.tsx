@@ -82,8 +82,8 @@ export const NewOfferModal = ({
 
     if (!validateForm()) {
       toast({
-        title: "Validation Error",
-        description: "Please fix the validation errors before saving",
+        title: t('common.validationError'),
+        description: t('common.fixErrors'),
         variant: "destructive"
       });
       return;

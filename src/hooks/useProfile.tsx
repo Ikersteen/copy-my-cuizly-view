@@ -70,8 +70,8 @@ export const useProfile = () => {
           console.error(`Profile load error (attempt ${retryCount + 1}):`, error);
           if (retryCount === maxRetries - 1) {
             toast({
-              title: "Problème de connexion",
-              description: "Impossible de charger le profil. Veuillez rafraîchir la page.",
+              title: t('toasts.connectionProblem'),
+              description: t('toasts.cannotLoadProfile'),
               variant: "destructive"
             });
           }

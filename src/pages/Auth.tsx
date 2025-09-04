@@ -695,7 +695,7 @@ const Auth = () => {
       }
 
       toast({
-        title: "OAuth Error",
+        title: t('toasts.oauthError'),
         description: errorMessage,
         variant: "destructive",
       });

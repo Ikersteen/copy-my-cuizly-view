@@ -197,8 +197,8 @@ export const useUserPreferences = () => {
           console.error(`Preferences load error (attempt ${retryCount + 1}):`, error);
           if (retryCount === maxRetries - 1) {
             toast({
-              title: "Problème de connexion",
-              description: "Impossible de charger les préférences. Veuillez rafraîchir la page.",
+              title: t('toasts.connectionProblem'),
+              description: t('toasts.cannotLoadPreferences'),
               variant: "destructive"
             });
           }
@@ -233,7 +233,7 @@ export const useUserPreferences = () => {
         
         toast({
           title: t('toasts.preferencesUpdated'),
-          description: "Préférences sauvegardées temporairement",
+          description: t('toasts.preferencesSavedTemporarily'),
         });
         return;
       }

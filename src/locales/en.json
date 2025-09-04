@@ -414,7 +414,9 @@
     "confirm": "Confirm",
     "edit": "Edit",
     "delete": "Delete",
-    "view": "View"
+    "view": "View",
+    "validationError": "Validation Error",
+    "fixErrors": "Please fix the validation errors before saving"
   },
   "language": {
     "french": "Français",
@@ -607,7 +609,14 @@
     "cannotAddRating": "Cannot add rating",
     "preferencesUpdated": "Preferences updated",
     "preferencesUpdateError": "Cannot save your preferences",
-    "preferencesSavedSuccessfully": "Your preferences have been saved successfully"
+    "preferencesSavedSuccessfully": "Your preferences have been saved successfully",
+    "preferencesSavedTemporarily": "Preferences saved temporarily",
+    "connectionProblem": "Connection problem",
+    "cannotLoadProfile": "Cannot load profile. Please refresh the page.",
+    "sessionExpired": "Session Expired",
+    "pleaseSignInAgain": "Please sign in again",
+    "cannotLoadPreferences": "Cannot load preferences. Please refresh the page.",
+    "oauthError": "OAuth Error"
   },
   "montreal": {
     "streets": [
