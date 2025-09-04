@@ -47,6 +47,11 @@ export const RecommendationCardsSection = () => {
     const currentMealTime = getCurrentMealTime(currentHour);
 
     // Check for allergen matches - Highest priority with red indicator
+    console.log('🔍 ALLERGEN CHECK:', {
+      userAllergens: preferences?.allergens,
+      hasUserAllergens: preferences?.allergens && preferences.allergens.length > 0
+    });
+
     if (preferences?.allergens && preferences.allergens.length > 0) {
       const restaurantMenus = menus.filter((menu: any) => menu.restaurant_id === restaurant.id);
       const identifiedAllergens = restaurantMenus.reduce((allergens: string[], menu: any) => {
@@ -55,12 +60,22 @@ export const RecommendationCardsSection = () => {
       }, []);
       const uniqueAllergens = [...new Set(identifiedAllergens)];
       
+      console.log('🔍 ALLERGEN DETECTION:', {
+        restaurantId: restaurant.id,
+        restaurantName: restaurant.name,
+        restaurantMenus: restaurantMenus.length,
+        identifiedAllergens,
+        uniqueAllergens
+      });
+      
       if (uniqueAllergens.length > 0) {
         const translationKey = uniqueAllergens.length === 1 ? 'reasonAllergenIdentified' : 'reasonAllergensIdentified';
-        reasons.push({
+        const allergenReason = {
           text: t(`recommendations.${translationKey}`),
           type: 'allergens'
-        });
+        };
+        console.log('🔍 ADDING ALLERGEN REASON:', allergenReason);
+        reasons.push(allergenReason);
       }
     }
 
