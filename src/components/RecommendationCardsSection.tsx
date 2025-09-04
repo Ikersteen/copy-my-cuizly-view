@@ -634,18 +634,34 @@ export const RecommendationCardsSection = () => {
                          </div>
                        </div>
                        <div className="space-y-2">
-                           {reasons.slice(0, 3).map((reason, idx) => {
-                             const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
-                             const isAllergens = reasonObj.type === 'allergens';
-                             
-                             // Debug logging
-                             console.log('🔍 REASON DEBUG:', {
-                               reason,
-                               reasonObj,
-                               type: reasonObj.type,
-                               isAllergens: isAllergens,
-                               text: reasonObj.text
-                             });
+                            {reasons.slice(0, 3).map((reason, idx) => {
+                              const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
+                              
+                              // Auto-detect reason type based on content for AI-generated reasons
+                              if (reasonObj.type === 'default' && typeof reason === 'string') {
+                                if (reason.toLowerCase().includes('allergène') || reason.toLowerCase().includes('allergen')) {
+                                  reasonObj.type = 'allergens';
+                                } else if (reason.toLowerCase().includes('restriction') || reason.toLowerCase().includes('dietary')) {
+                                  reasonObj.type = 'dietary';
+                                } else if (reason.toLowerCase().includes('cuisine') || reason.toLowerCase().includes('aimez')) {
+                                  reasonObj.type = 'cuisine';
+                                } else if (reason.toLowerCase().includes('prix') || reason.toLowerCase().includes('price')) {
+                                  reasonObj.type = 'price';
+                                } else if (reason.toLowerCase().includes('proche') || reason.toLowerCase().includes('distance') || reason.toLowerCase().includes('location')) {
+                                  reasonObj.type = 'timing';
+                                }
+                              }
+                              
+                              const isAllergens = reasonObj.type === 'allergens';
+                              
+                              // Debug logging
+                              console.log('🔍 REASON DEBUG:', {
+                                reason,
+                                reasonObj,
+                                type: reasonObj.type,
+                                isAllergens: isAllergens,
+                                text: reasonObj.text
+                              });
                              
                              return (
                                <div key={idx} className="flex items-center gap-2.5">
