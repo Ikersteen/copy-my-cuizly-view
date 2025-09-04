@@ -199,8 +199,15 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
             ) : (
               <div className="space-y-3">
                 {currentOffers.map((offer) => (
-                  <div key={offer.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div key={offer.id} className="flex items-center justify-between p-4 border rounded-lg bg-gradient-to-r from-background to-muted/20">
                     <div className="flex-1">
+                      {userType === 'consumer' && offer.restaurant && (
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="text-xs font-medium text-primary border-primary/20">
+                            📍 {offer.restaurant.name}
+                          </Badge>
+                        </div>
+                      )}
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-medium text-sm">{offer.title}</h4>
                         <Badge variant="default" className="text-xs">
@@ -216,11 +223,6 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
                       <p className="text-xs text-muted-foreground">
                         {t('offers.validUntil')} {formatDate(offer.valid_until)}
                       </p>
-                      {userType === 'consumer' && offer.restaurant && (
-                        <p className="text-xs font-medium text-primary mt-1">
-                          {offer.restaurant.name}
-                        </p>
-                      )}
                     </div>
                     {userType === 'restaurant' && (
                       <div className="flex gap-1 ml-2">
@@ -253,8 +255,15 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
             ) : (
               <div className="space-y-3">
                 {pastOffers.map((offer) => (
-                  <div key={offer.id} className="flex items-center justify-between p-3 border rounded-lg opacity-75">
+                  <div key={offer.id} className="flex items-center justify-between p-4 border rounded-lg opacity-75 bg-muted/10">
                     <div className="flex-1">
+                      {userType === 'consumer' && offer.restaurant && (
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="text-xs font-medium text-muted-foreground border-muted-foreground/20">
+                            📍 {offer.restaurant.name}
+                          </Badge>
+                        </div>
+                      )}
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-medium text-sm">{offer.title}</h4>
                         <Badge variant="outline" className="text-xs">
@@ -273,11 +282,6 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
                       <p className="text-xs text-muted-foreground">
                         {!offer.is_active ? t('offers.deactivatedOn') : t('offers.expiredOn')} {formatDate(offer.valid_until)}
                       </p>
-                      {userType === 'consumer' && offer.restaurant && (
-                        <p className="text-xs font-medium text-muted-foreground mt-1">
-                          {offer.restaurant.name}
-                        </p>
-                      )}
                     </div>
                   </div>
                 ))}
