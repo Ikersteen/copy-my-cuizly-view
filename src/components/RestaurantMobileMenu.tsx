@@ -57,7 +57,7 @@ export const RestaurantMobileMenu = ({
         <SheetTrigger asChild>
           <Button variant="ghost" size="sm" className="p-2">
             <Menu className="h-5 w-5" />
-            <span className="sr-only">Menu Restaurateur</span>
+            <span className="sr-only">{t('navigation.restaurantMenu')}</span>
           </Button>
         </SheetTrigger>
         <SheetContent side="right" className="w-[300px] sm:w-[350px]">
@@ -65,7 +65,7 @@ export const RestaurantMobileMenu = ({
             {/* Header */}
             <div className="py-4 border-b border-border">
               <h2 className="text-lg font-semibold text-cuizly-primary">
-                Menu Restaurateur
+                {t('navigation.restaurantMenu')}
               </h2>
             </div>
 
@@ -77,7 +77,7 @@ export const RestaurantMobileMenu = ({
                 onClick={() => handleMenuClick(onNewOfferClick)}
               >
                 <Plus className="h-5 w-5 mr-3" />
-                <span className="text-base">Nouvelle offre</span>
+                <span className="text-base">{t('dashboard.newOffer')}</span>
               </Button>
 
               <Button
@@ -86,7 +86,7 @@ export const RestaurantMobileMenu = ({
                 onClick={() => handleMenuClick(onRestaurantProfileClick)}
               >
                 <ChefHat className="h-5 w-5 mr-3" />
-                <span className="text-base">Profil restaurant</span>
+                <span className="text-base">{t('dashboard.restaurantProfile')}</span>
               </Button>
 
               <Button
@@ -95,7 +95,7 @@ export const RestaurantMobileMenu = ({
                 onClick={() => handleMenuClick(onManageMenusClick)}
               >
                 <BookOpen className="h-5 w-5 mr-3" />
-                <span className="text-base">Gérer les menus</span>
+                <span className="text-base">{t('dashboard.manageMenus')}</span>
               </Button>
 
               <Button
@@ -104,7 +104,7 @@ export const RestaurantMobileMenu = ({
                 onClick={handleLogout}
               >
                 <LogOut className="h-5 w-5 mr-3" />
-                <span className="text-base">Déconnexion</span>
+                <span className="text-base">{t('dashboard.logout')}</span>
               </Button>
             </div>
 
@@ -151,7 +151,7 @@ export const RestaurantMobileMenu = ({
                 <div className="flex items-center gap-2">
                   <Globe className="h-4 w-4" />
                   <span className="text-sm font-medium text-muted-foreground">
-                    Langue / Language
+                    {t('navigation.languageSelector')}
                   </span>
                 </div>
                 <div className="flex gap-2">

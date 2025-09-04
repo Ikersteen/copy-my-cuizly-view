@@ -202,7 +202,7 @@ export const AllMenusSection = () => {
                   >
                     <img
                       src={menu.image_url}
-                      alt="Menu"
+                      alt={t('menus.menuImage')}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </div>

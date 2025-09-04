@@ -6,7 +6,10 @@
     "dashboard": "Dashboard",
     "login": "Sign In",
     "back_home": "Back to Home",
-    "theme": "Theme"
+    "theme": "Theme",
+    "languageSelector": "Langue / Language",
+    "consumerMenu": "Consumer Menu",
+    "restaurantMenu": "Restaurant Menu"
   },
   "hero": {
     "badge": "Cuizly • Beta 5",
@@ -429,7 +432,8 @@
     "unknownRestaurant": "Unknown restaurant",
     "comment": "Comment",
     "dietaryRestrictions": "Dietary restrictions:",
-    "allergens": "Allergens:"
+    "allergens": "Allergens:",
+    "menuImage": "Menu image"
   },
   "analytics": {
     "title": "Real-time Performance Dashboard",

@@ -297,7 +297,7 @@ const Header = () => {
                     <div className="py-2 border-b border-border">
                       <div className="flex items-center gap-2 mb-2">
                         <Globe className="h-4 w-4" />
-                        <span className="text-sm font-medium">Langue / Language</span>
+                        <span className="text-sm font-medium">{t('navigation.languageSelector')}</span>
                       </div>
                       <div className="flex gap-2">
                         <Button

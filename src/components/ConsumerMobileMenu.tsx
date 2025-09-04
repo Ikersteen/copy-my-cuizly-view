@@ -57,7 +57,7 @@ export const ConsumerMobileMenu = ({
         <SheetTrigger asChild>
           <Button variant="ghost" size="sm" className="p-2">
             <Menu className="h-5 w-5" />
-            <span className="sr-only">Menu Consommateur</span>
+            <span className="sr-only">{t('navigation.consumerMenu')}</span>
           </Button>
         </SheetTrigger>
         <SheetContent side="right" className="w-[300px] sm:w-[350px]">
@@ -65,7 +65,7 @@ export const ConsumerMobileMenu = ({
             {/* Header */}
             <div className="py-4 border-b border-border">
               <h2 className="text-lg font-semibold text-cuizly-primary">
-                Menu Consommateur
+                {t('navigation.consumerMenu')}
               </h2>
             </div>
 
@@ -77,7 +77,7 @@ export const ConsumerMobileMenu = ({
                 onClick={() => handleMenuClick(onProfileClick)}
               >
                 <User className="h-5 w-5 mr-3" />
-                <span className="text-base">Profil</span>
+                <span className="text-base">{t('dashboard.profile')}</span>
               </Button>
 
               <Button
@@ -86,7 +86,7 @@ export const ConsumerMobileMenu = ({
                 onClick={() => handleMenuClick(onPreferencesClick)}
               >
                 <Settings className="h-5 w-5 mr-3" />
-                <span className="text-base">Préférences</span>
+                <span className="text-base">{t('dashboard.preferences')}</span>
               </Button>
 
               <Button
@@ -95,7 +95,7 @@ export const ConsumerMobileMenu = ({
                 onClick={() => handleMenuClick(onOffersClick)}
               >
                 <Gift className="h-5 w-5 mr-3" />
-                <span className="text-base">Offres</span>
+                <span className="text-base">{t('dashboard.offers')}</span>
               </Button>
 
               <Button
@@ -104,7 +104,7 @@ export const ConsumerMobileMenu = ({
                 onClick={handleLogout}
               >
                 <LogOut className="h-5 w-5 mr-3" />
-                <span className="text-base">Déconnexion</span>
+                <span className="text-base">{t('dashboard.logout')}</span>
               </Button>
             </div>
 
@@ -151,7 +151,7 @@ export const ConsumerMobileMenu = ({
                 <div className="flex items-center gap-2">
                   <Globe className="h-4 w-4" />
                   <span className="text-sm font-medium text-muted-foreground">
-                    Langue / Language
+                    {t('navigation.languageSelector')}
                   </span>
                 </div>
                 <div className="flex gap-2">

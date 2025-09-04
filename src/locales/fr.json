@@ -6,7 +6,10 @@
     "dashboard": "Tableau de bord",
     "login": "Se connecter",
     "back_home": "Retour à l'accueil",
-    "theme": "Thème"
+    "theme": "Thème",
+    "languageSelector": "Langue / Language",
+    "consumerMenu": "Menu Consommateur",
+    "restaurantMenu": "Menu Restaurateur"
   },
   "hero": {
     "badge": "Cuizly • Bêta 5",
@@ -331,7 +334,8 @@
     "unknownRestaurant": "Restaurant inconnu",
     "comment": "Commentaire",
     "dietaryRestrictions": "Restrictions alimentaires :",
-    "allergens": "Allergènes :"
+    "allergens": "Allergènes :",
+    "menuImage": "Image du menu"
   },
   "analytics": {
     "title": "Tableau de performance en temps réel",
