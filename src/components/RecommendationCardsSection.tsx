@@ -25,7 +25,7 @@ interface Restaurant {
   address: string;
   logo_url?: string;
   score?: number;
-  reasons?: string[];
+  reasons?: (string | { text: string; type: string })[];
 }
 
 export const RecommendationCardsSection = () => {
@@ -42,20 +42,16 @@ export const RecommendationCardsSection = () => {
 
   // Generate detailed, explanatory reasons for restaurant recommendations
   const generateRecommendationReasons = (restaurant: Restaurant) => {
-    const reasons: string[] = [];
+    const reasons: { text: string; type: string }[] = [];
     const currentHour = new Date().getHours();
     const currentMealTime = getCurrentMealTime(currentHour);
 
     // Price range match - Clear and brief explanation
     if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      const priceLabels = {
-        '$': 'Tarifs abordables',
-        '$$': 'Prix modérés', 
-        '$$$': 'Gamme élevée',
-        '$$$$': 'Restauration haut de gamme'
-      };
-      const priceLabel = priceLabels[restaurant.price_range as keyof typeof priceLabels] || 'Prix adaptés';
-      reasons.push(`${priceLabel} selon vos préférences`);
+      reasons.push({
+        text: t('recommendations.reasonPriceIdeal'),
+        type: 'price'
+      });
     }
 
     // Cuisine preferences match - Clear and brief explanation
@@ -64,26 +60,35 @@ export const RecommendationCardsSection = () => {
         preferences.cuisine_preferences.includes(cuisine)
       ) || [];
       if (matchingCuisines.length > 0) {
-        const cuisineNames = matchingCuisines.map(cuisine => 
-          CUISINE_TRANSLATIONS[cuisine] || cuisine
-        ).join(' & ');
-        reasons.push(`Cuisine ${cuisineNames} que vous appréciez`);
+        reasons.push({
+          text: t('recommendations.reasonCuisineFavorite'),
+          type: 'cuisine'
+        });
       }
     }
 
     // Meal time match - Clear and brief explanation
     if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-      reasons.push(`Parfait pour ce moment de la journée`);
+      reasons.push({
+        text: t('recommendations.reasonPerfectTiming'),
+        type: 'timing'
+      });
     }
 
-    // Dietary restrictions match - Clear and brief explanation
+    // Dietary restrictions match - Clear and brief explanation with warning indicator
     if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
-      reasons.push(`Options adaptées à votre régime alimentaire`);
+      reasons.push({
+        text: t('recommendations.reasonDietaryOptions'),
+        type: 'dietary'
+      });
     }
 
     // Default reason if no specific matches
     if (reasons.length === 0) {
-      reasons.push("Restaurant populaire dans votre secteur");
+      reasons.push({
+        text: t('recommendations.reasonPopularRestaurant'),
+        type: 'default'
+      });
     }
 
     // Limit to maximum 2 reasons for consistency
@@ -567,20 +572,26 @@ export const RecommendationCardsSection = () => {
                            </p>
                          </div>
                        </div>
-                      <div className="space-y-2">
-                        {reasons.slice(0, 3).map((reason, idx) => (
-                          <div key={idx} className="flex items-center gap-2.5">
-                            <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                              idx === 0 ? 'bg-emerald-500' : 
-                              idx === 1 ? 'bg-blue-500' : 
-                              'bg-orange-500'
-                            }`} />
-                            <span className="text-xs text-foreground/80 leading-relaxed">
-                              {reason}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
+                       <div className="space-y-2">
+                         {reasons.slice(0, 3).map((reason, idx) => {
+                           const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
+                           const isDietary = reasonObj.type === 'dietary';
+                           
+                           return (
+                             <div key={idx} className="flex items-center gap-2.5">
+                               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                                 isDietary ? 'bg-red-500' : 
+                                 idx === 0 ? 'bg-emerald-500' : 
+                                 idx === 1 ? 'bg-blue-500' : 
+                                 'bg-orange-500'
+                               }`} />
+                               <span className="text-xs text-foreground/80 leading-relaxed">
+                                 {reasonObj.text}
+                               </span>
+                             </div>
+                           );
+                         })}
+                       </div>
                     </div>
                   );
                 })()}

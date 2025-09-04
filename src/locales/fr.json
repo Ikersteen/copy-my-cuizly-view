@@ -1121,6 +1121,8 @@
     "reasonPerfectTiming": "Moment parfait",
     "reasonVeryPopular": "Très populaire",
     "reasonNewDiscovery": "Nouvelle découverte",
+    "reasonDietaryOptions": "Options adaptées à votre régime alimentaire",
+    "reasonPopularRestaurant": "Restaurant populaire dans votre secteur",
     "viewProfile": "Voir le profil",
     "filters": "Filtres",
     "noRecommendationsDesc": "Nous n'avons trouvé aucun restaurant correspondant exactement à vos préférences actuelles.",
