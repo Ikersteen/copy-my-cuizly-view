@@ -480,9 +480,9 @@ export const RecommendationCardsSection = () => {
   if (recommendedRestaurants.length === 0) {
     return (
       <section className="py-8 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
           <div className="text-center space-y-8">
-            <div className="bg-card border rounded-2xl p-8 sm:p-12 max-w-2xl mx-auto shadow-sm">
+            <div className="bg-card border rounded-2xl p-6 sm:p-8 md:p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
                 <div className="p-4 rounded-full bg-muted/50">
                   <ChefHat className="h-12 w-12 text-muted-foreground" />
