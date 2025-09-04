@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { parseAddress, formatAddress } from "@/lib/addressUtils";
 
-interface MontrealAddressSelectorProps {
+interface AddressSelectorProps {
   value?: string;
   onChange: (address: string) => void;
   placeholder?: string;
   label?: string;
+  className?: string;
+  required?: boolean;
 }
 
 // Liste de rues populaires de Montréal pour l'autocomplete
@@ -76,12 +80,14 @@ const MONTREAL_NEIGHBORHOODS = [
   "Rivière-des-Prairies–Pointe-aux-Trembles"
 ];
 
-export const MontrealAddressSelector = ({
+export const AddressSelector = ({
   value = "",
   onChange,
   placeholder = "Commencez à taper une adresse à Montréal...",
-  label = "Adresse"
-}: MontrealAddressSelectorProps) => {
+  label = "Adresse",
+  className,
+  required = false
+}: AddressSelectorProps) => {
   const [inputValue, setInputValue] = useState(value);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -184,8 +190,8 @@ export const MontrealAddressSelector = ({
   };
 
   return (
-    <div className="relative space-y-2">
-      <Label>{label}</Label>
+    <div className={cn("relative space-y-2", className)}>
+      <Label>{label}{required && " *"}</Label>
       <div className="relative">
         <Input
           value={inputValue}
@@ -195,6 +201,7 @@ export const MontrealAddressSelector = ({
           onFocus={() => inputValue.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
           placeholder={placeholder}
           className="pr-10"
+          required={required}
         />
         <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
       </div>
@@ -239,3 +246,6 @@ export const MontrealAddressSelector = ({
     </div>
   );
 };
+
+// Legacy export for backward compatibility
+export const MontrealAddressSelector = AddressSelector;

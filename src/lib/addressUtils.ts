@@ -1,0 +1,201 @@
+import type { ParsedAddress, AddressInput } from '@/types/address';
+
+/**
+ * Parse a formatted address string into components
+ * Handles Montreal-specific address formats like:
+ * "1234 Rue Sainte-Catherine, Plateau-Mont-Royal, Montréal, QC H2X 3A5"
+ * "Plateau-Mont-Royal, Montréal, QC"
+ */
+export function parseAddress(formattedAddress: string): ParsedAddress {
+  const parts = formattedAddress.split(',').map(part => part.trim());
+  
+  const result: ParsedAddress = {
+    city: 'Montréal',
+    province: 'QC',
+    country: 'Canada'
+  };
+
+  if (parts.length === 0) return result;
+
+  // Last part usually contains province and postal code
+  const lastPart = parts[parts.length - 1];
+  const provincePostalMatch = lastPart.match(/([A-Z]{2})(?:\s+([A-Z]\d[A-Z]\s?\d[A-Z]\d))?/);
+  if (provincePostalMatch) {
+    result.province = provincePostalMatch[1];
+    if (provincePostalMatch[2]) {
+      result.postal_code = provincePostalMatch[2].replace(/\s/g, '');
+    }
+  }
+
+  // Second to last is usually the city
+  if (parts.length >= 2) {
+    const cityPart = parts[parts.length - 2];
+    if (cityPart && !cityPart.match(/^[A-Z]{2}/)) {
+      result.city = cityPart;
+    }
+  }
+
+  // Process remaining parts
+  const addressParts = parts.slice(0, -2);
+  
+  if (addressParts.length >= 2) {
+    // First part: street address, Second part: neighborhood
+    const streetPart = addressParts[0];
+    result.neighborhood = addressParts[1];
+    
+    // Parse street address for number and name
+    const streetMatch = streetPart.match(/^(\d+)\s+(.+)$/);
+    if (streetMatch) {
+      result.street_number = streetMatch[1];
+      result.street_name = streetMatch[2];
+    } else {
+      result.street_name = streetPart;
+    }
+  } else if (addressParts.length === 1) {
+    // Could be just neighborhood or just street
+    const part = addressParts[0];
+    const streetMatch = part.match(/^(\d+)\s+(.+)$/);
+    if (streetMatch) {
+      result.street_number = streetMatch[1];
+      result.street_name = streetMatch[2];
+    } else {
+      // Assume it's a neighborhood if no number
+      result.neighborhood = part;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Format address components into a readable string
+ */
+export function formatAddress(address: Partial<ParsedAddress>): string {
+  const parts: string[] = [];
+
+  // Street address
+  if (address.street_number && address.street_name) {
+    parts.push(`${address.street_number} ${address.street_name}`);
+  } else if (address.street_name) {
+    parts.push(address.street_name);
+  }
+
+  // Apartment/unit
+  if (address.apartment_unit) {
+    if (parts.length > 0) {
+      parts[parts.length - 1] += `, App. ${address.apartment_unit}`;
+    } else {
+      parts.push(`App. ${address.apartment_unit}`);
+    }
+  }
+
+  // Neighborhood
+  if (address.neighborhood) {
+    parts.push(address.neighborhood);
+  }
+
+  // City
+  if (address.city) {
+    parts.push(address.city);
+  }
+
+  // Province and postal code
+  const provincePart = address.province || 'QC';
+  const postalPart = address.postal_code ? ` ${address.postal_code}` : '';
+  parts.push(provincePart + postalPart);
+
+  return parts.join(', ');
+}
+
+/**
+ * Validate Montreal postal code format
+ */
+export function isValidMontrealPostalCode(postalCode: string): boolean {
+  const cleanCode = postalCode.replace(/\s/g, '').toUpperCase();
+  
+  // Montreal postal codes start with H
+  const montrealPattern = /^H[0-9][A-Z][0-9][A-Z][0-9]$/;
+  return montrealPattern.test(cleanCode);
+}
+
+/**
+ * Clean and format postal code
+ */
+export function formatPostalCode(postalCode: string): string {
+  const clean = postalCode.replace(/\s/g, '').toUpperCase();
+  if (clean.length === 6) {
+    return `${clean.slice(0, 3)} ${clean.slice(3)}`;
+  }
+  return clean;
+}
+
+/**
+ * Validate address input
+ */
+export function validateAddressInput(address: Partial<AddressInput>): {
+  isValid: boolean;
+  errors: Record<string, string>;
+} {
+  const errors: Record<string, string> = {};
+
+  if (!address.formatted_address?.trim()) {
+    errors.formatted_address = 'L\'adresse complète est requise';
+  }
+
+  if (address.postal_code && !isValidMontrealPostalCode(address.postal_code)) {
+    errors.postal_code = 'Code postal invalide pour Montréal (format: H1A 1A1)';
+  }
+
+  if (address.street_name && address.street_name.length < 2) {
+    errors.street_name = 'Le nom de rue doit contenir au moins 2 caractères';
+  }
+
+  if (address.street_number && !/^\d+[A-Z]?$/i.test(address.street_number)) {
+    errors.street_number = 'Numéro de rue invalide';
+  }
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors
+  };
+}
+
+/**
+ * Create AddressInput from formatted address string
+ */
+export function createAddressInput(
+  formattedAddress: string,
+  addressType: AddressInput['address_type'],
+  isPrimary = true
+): AddressInput {
+  const parsed = parseAddress(formattedAddress);
+  
+  return {
+    address_type: addressType,
+    formatted_address: formattedAddress,
+    street_number: parsed.street_number,
+    street_name: parsed.street_name,
+    apartment_unit: parsed.apartment_unit,
+    neighborhood: parsed.neighborhood,
+    city: parsed.city,
+    province: parsed.province,
+    postal_code: parsed.postal_code,
+    country: parsed.country,
+    is_primary: isPrimary
+  };
+}
+
+/**
+ * Check if two addresses are the same
+ */
+export function areAddressesEqual(addr1: Partial<ParsedAddress>, addr2: Partial<ParsedAddress>): boolean {
+  return (
+    addr1.street_number === addr2.street_number &&
+    addr1.street_name === addr2.street_name &&
+    addr1.apartment_unit === addr2.apartment_unit &&
+    addr1.neighborhood === addr2.neighborhood &&
+    addr1.city === addr2.city &&
+    addr1.province === addr2.province &&
+    addr1.postal_code === addr2.postal_code
+  );
+}

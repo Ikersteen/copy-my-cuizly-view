@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          address_type: string
+          apartment_unit: string | null
+          city: string
+          country: string
+          created_at: string
+          formatted_address: string
+          id: string
+          is_active: boolean
+          is_primary: boolean
+          latitude: number | null
+          longitude: number | null
+          neighborhood: string | null
+          postal_code: string | null
+          province: string
+          street_name: string | null
+          street_number: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address_type: string
+          apartment_unit?: string | null
+          city?: string
+          country?: string
+          created_at?: string
+          formatted_address: string
+          id?: string
+          is_active?: boolean
+          is_primary?: boolean
+          latitude?: number | null
+          longitude?: number | null
+          neighborhood?: string | null
+          postal_code?: string | null
+          province?: string
+          street_name?: string | null
+          street_number?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address_type?: string
+          apartment_unit?: string | null
+          city?: string
+          country?: string
+          created_at?: string
+          formatted_address?: string
+          id?: string
+          is_active?: boolean
+          is_primary?: boolean
+          latitude?: number | null
+          longitude?: number | null
+          neighborhood?: string | null
+          postal_code?: string | null
+          province?: string
+          street_name?: string | null
+          street_number?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           comment_text: string | null
@@ -678,6 +741,23 @@ export type Database = {
           restaurant_row: Database["public"]["Tables"]["restaurants"]["Row"]
         }
         Returns: string
+      }
+      get_user_primary_address: {
+        Args: { p_address_type: string; p_user_id: string }
+        Returns: {
+          apartment_unit: string
+          city: string
+          country: string
+          formatted_address: string
+          id: string
+          latitude: number
+          longitude: number
+          neighborhood: string
+          postal_code: string
+          province: string
+          street_name: string
+          street_number: string
+        }[]
       }
       has_role: {
         Args: {
