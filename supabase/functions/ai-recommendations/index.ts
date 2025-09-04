@@ -204,54 +204,51 @@ async function analyzeRestaurantWithAI(
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
           }` :
-          `Tu es un expert en recommandations qui génère des explications détaillées selon une logique hiérarchique stricte.
+          `Tu es un expert en recommandations qui génère des explications selon deux cas distincts : une seule ou plusieurs préférences par catégorie.
 
-          MISSION: Créer des phrases d'explication qui combinent intelligemment TOUS les critères qui matchent selon la priorité.
+          MISSION: Analyser les préférences utilisateur et générer des phrases adaptées selon le nombre de critères qui matchent.
           
-          HIÉRARCHIE DE PRIORITÉS ABSOLUE:
-          1. 🔒 RESTRICTIONS ALIMENTAIRES & ALLERGÈNES (priorité absolue - toujours en premier)
-          2. 🍽️ CUISINES PRÉFÉRÉES (plaisir principal)
-          3. ⏰ MOMENTS PRÉFÉRÉS (pertinence temporelle) 
-          4. 🎉 PROMOTIONS EN COURS (bonus si disponible)
-          5. 📍 LOCALISATION/RAYON (proximité)
+          ORDRE DE PRIORITÉS STRICT:
+          1. 🔒 RESTRICTIONS + ALLERGÈNES (priorité absolue - toujours en premier)
+          2. 🍽️ CUISINES PRÉFÉRÉES 
+          3. ⏰ MOMENTS FAVORIS
+          4. 📍 LOCALISATION/BUDGET  
+          5. 🎁 PROMOTIONS
 
-          RÈGLES DE GÉNÉRATION STRICTES:
-          
-          1. RESTRICTIONS & ALLERGÈNES (PRIORITÉ ABSOLUE):
-          - TOUJOURS afficher en premier si correspondance
-          - Lister jusqu'à 2 éléments max, ajouter "et autres" si plus
-          - Format: "Adapté à tes préférences [Végétarien], [Halal] et sans [Arachides]"
-          - Si allergènes sûrs: "Sans tes allergènes déclarés ([Noix], [Gluten])"
-          
-          2. CUISINES PRÉFÉRÉES:
-          - Lister maximum 2 cuisines qui matchent
-          - Format: "Parce que tu aimes la cuisine [Japonaise] et [Italienne]"
-          - Si 3+: "Parce que tu aimes la cuisine [Japonaise], [Italienne] et autres"
-          
-          3. MOMENTS PRÉFÉRÉS:
-          - Afficher max 2 moments qui correspondent
-          - Format: "Ouvert pour le [Déjeuner] et le [Souper] que tu as choisis"
-          - Si plusieurs: "Ouvert aux moments que tu préfères"
-          
-          4. PROMOTIONS:
-          - SEULEMENT si promotion réellement active/disponible
-          - Format: "En plus, une promotion spéciale est disponible aujourd'hui !"
-          
-          5. LOCALISATION:
-          - Si pertinent ou peu d'autres critères matchent
-          - Format: "Situé à moins de [X] km de toi"
-          
-          LOGIQUE DE COMBINAISON:
-          - Commencer par le critère de plus haute priorité qui matche
-          - Ajouter les autres critères par ordre de priorité
-          - Maximum 2-3 phrases courtes et fluides
-          - Toujours mentionner TOUS les éléments correspondants dans chaque catégorie
+          🔹 CAS 1 : UNE SEULE PRÉFÉRENCE PAR CATÉGORIE
+          Génère une phrase simple et directe par critère qui matche :
+
+          • Cuisine : "Parce que vous aimez la cuisine japonaise."
+          • Restriction alimentaire : "Adapté à votre restriction : Végétarien."
+          • Allergène : "Allergène identifié : Arachides."
+          • Localisation : 
+            - Si < 2 km → "À moins de 2 km de chez vous."
+            - Si > 2 km → "À plus de 2 km de chez vous."
+            - Zone livraison → "Vous êtes dans la zone de livraison."
+            - Même rue → "Vous êtes proche du restaurant."
+          • Budget : "Respecte votre budget $$"
+          • Promotion : "En cours promo aujourd'hui."
+
+          🔹 CAS 2 : PLUSIEURS PRÉFÉRENCES PAR CATÉGORIE
+          Regroupe et condense (max 3 par catégorie) :
+
+          • Cuisines : "Parce que vous aimez la cuisine Japonaise, Italienne et Mexicaine."
+          • Restrictions : "Adapté à vos restrictions : Végétarien, Halal et Sans gluten."
+          • Allergènes : "Allergènes pris en compte : Arachides, Lait et Fruits de mer."
+          • Moments : "Ouvert pour vos moments favoris : Déjeuner et Souper."
+          • Promotions : "Des promotions spéciales sont disponibles aujourd'hui."
+
+          RÈGLES STRICTES:
+          - Toujours afficher restrictions + allergènes EN PREMIER
+          - Limiter à 3 items max par catégorie, sinon "et autres"
+          - Générer 1 à 2 phrases maximum par recommandation
+          - Ton simple, fluide, naturel (pas robotique)
           
           FORMAT JSON OBLIGATOIRE:
           {
             "score": number (0-100),
-            "reasons": ["1-2 phrases spécifiques et lisibles"],
-            "sentiment_analysis": "positive|neutral|negative",
+            "reasons": ["1-2 phrases selon cas détecté"],
+            "sentiment_analysis": "positive|neutral|negative", 
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
           }`
@@ -309,8 +306,8 @@ async function analyzeRestaurantWithAI(
     // Ensure score is within valid range
     parsed.score = Math.max(0, Math.min(100, parsed.score));
     
-    // Ensure reasons array has max 1 element according to hierarchy
-    parsed.reasons = parsed.reasons.slice(0, 1).filter(r => typeof r === 'string');
+    // Ensure reasons array has max 2 elements for new case logic (1-2 phrases)
+    parsed.reasons = parsed.reasons.slice(0, 2).filter(r => typeof r === 'string');
     
     return parsed;
   } catch (parseError) {
@@ -357,17 +354,24 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 • Heure: ${currentHour}h (période: ${currentMealTime})
 • Timing optimal: ${isMealTimeMatch ? '✅ OUI' : '❌ NON'}
 
-🔍 CORRESPONDANCES DÉTECTÉES SELON HIÉRARCHIE:
+🔍 CORRESPONDANCES DÉTECTÉES PAR CATÉGORIE:
+
 1. 🔒 RESTRICTIONS/ALLERGÈNES: ${checkSafetyCompatibility(restaurant, preferences)}
-2. 🍽️ CUISINE: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')}` : '❌ Aucune'}
-3. ⏰ TIMING: ${isMealTimeMatch ? '✅ Compatible' : '❌ Pas optimal'}
-4. 📍 LOCALISATION: ${preferences.delivery_radius ? '🔍 À vérifier' : '❌ Non définie'}
+2. 🍽️ CUISINES: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')} (${cuisineMatches.length} correspondance${cuisineMatches.length > 1 ? 's' : ''})` : '❌ Aucune'}
+3. ⏰ MOMENTS: ${isMealTimeMatch ? '✅ Compatible avec tes horaires' : '❌ Pas optimal'}
+4. 📍 LOCALISATION: ${preferences.delivery_radius ? '🔍 À analyser selon rayon' : '❌ Non définie'}
 5. 💰 BUDGET: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
-6. 🎉 PROMO: 🔍 À vérifier
+6. 🎉 PROMOTIONS: 🔍 À vérifier
+
+🎯 DÉTECTION DE CAS:
+- Nombre de cuisines matchant: ${cuisineMatches.length}
+- Nombre de restrictions: ${preferences.dietary_restrictions?.length || 0}
+- Nombre d'allergènes: ${preferences.allergens?.length || 0}
+- Nombre de moments favoris: ${preferences.favorite_meal_times?.length || 0}
 
 🎯 INSTRUCTIONS FINALES:
-Suis STRICTEMENT la hiérarchie de priorités pour choisir UNE SEULE phrase d'explication.
-Calcule le score selon les points définis dans le système prompt.
+Applique la logique CAS 1 ou CAS 2 selon le nombre de critères par catégorie.
+Respecte l'ordre de priorité strict et les phrases exactes définies.
   `;
 }
 
