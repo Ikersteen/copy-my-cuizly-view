@@ -190,7 +190,8 @@ export const RecommendationCardsSection = () => {
           preferences?.cuisine_preferences?.length ||
           (preferences?.price_range && preferences?.price_range !== '$') ||
           preferences?.favorite_meal_times?.length ||
-          preferences?.dietary_restrictions?.length
+          preferences?.dietary_restrictions?.length ||
+          preferences?.allergens?.length
         );
 
         console.log('🔍 AI DEBUG Preferences:', {
@@ -210,6 +211,14 @@ export const RecommendationCardsSection = () => {
         }
 
         if (restaurantsData.length > 0) {
+          // Get menus data for reason generation
+          const { data: menusData } = await supabase
+            .from('menus')
+            .select('restaurant_id, cuisine_type, dietary_restrictions, allergens')
+            .eq('is_active', true);
+
+          const menus = menusData || [];
+
           const { data: aiResult, error: aiError } = await supabase.functions.invoke('ai-recommendations', {
             body: {
               restaurants: restaurantsData.slice(0, 20),
@@ -230,8 +239,8 @@ export const RecommendationCardsSection = () => {
               }));
               return {
                 ...restaurant,
-                // Force use of new reason format, ignore any old cached reasons
-                reasons: restaurant.ai_reasons?.length > 0 ? restaurant.ai_reasons : generateRecommendationReasons(restaurant)
+                // Force use of new reason format with menus data for allergen detection
+                reasons: restaurant.ai_reasons?.length > 0 ? restaurant.ai_reasons : generateRecommendationReasons(restaurant, menus)
               };
             });
 
@@ -266,7 +275,8 @@ export const RecommendationCardsSection = () => {
         preferences?.cuisine_preferences?.length ||
         preferences?.price_range ||
         preferences?.favorite_meal_times?.length ||
-        preferences?.dietary_restrictions?.length
+        preferences?.dietary_restrictions?.length ||
+        preferences?.allergens?.length
       );
 
       console.log('🔍 DEBUG Preferences:', {
