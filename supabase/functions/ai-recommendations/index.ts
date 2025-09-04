@@ -51,7 +51,7 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
-    const { restaurants, preferences, userId } = await req.json();
+    const { restaurants, preferences, userId, language = 'fr' } = await req.json();
 
     if (!restaurants || !Array.isArray(restaurants)) {
       throw new Error('Restaurants array is required');
@@ -84,7 +84,7 @@ serve(async (req) => {
     const aiScoredRestaurants = await Promise.all(
       restaurants.map(async (restaurant: Restaurant) => {
         try {
-          const aiScore = await analyzeRestaurantWithAI(restaurant, preferences, openAIApiKey);
+          const aiScore = await analyzeRestaurantWithAI(restaurant, preferences, openAIApiKey, language);
           return {
             ...restaurant,
             ai_score: aiScore.score,
@@ -98,7 +98,7 @@ serve(async (req) => {
           console.error('Error details:', error.message);
           
           // Fallback with personalized reasons instead of "Analyse traditionnelle"
-          const fallbackReasons = generateFallbackReasons(restaurant, preferences);
+          const fallbackReasons = generateFallbackReasons(restaurant, preferences, language);
           return {
             ...restaurant,
             ai_score: calculateFallbackScore(restaurant, preferences),
@@ -116,11 +116,11 @@ serve(async (req) => {
 
     // Log pour analytics
     if (userId) {
-      await logRecommendationInteraction(userId, sortedRestaurants.slice(0, 7));
+      await logRecommendationInteraction(userId, sortedRestaurants.slice(0, 5));
     }
 
     return new Response(JSON.stringify({
-      recommendations: sortedRestaurants.slice(0, 7),
+      recommendations: sortedRestaurants.slice(0, 5),
       total_analyzed: restaurants.length,
       ai_powered: true
     }), {
@@ -142,9 +142,10 @@ serve(async (req) => {
 async function analyzeRestaurantWithAI(
   restaurant: Restaurant, 
   preferences: UserPreferences, 
-  apiKey: string
+  apiKey: string,
+  language: string = 'fr'
 ): Promise<AIScore> {
-  const prompt = createAnalysisPrompt(restaurant, preferences);
+  const prompt = createAnalysisPrompt(restaurant, preferences, language);
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -157,7 +158,53 @@ async function analyzeRestaurantWithAI(
       messages: [
         {
           role: 'system',
-          content: `Tu es un expert en recommandations de restaurants qui analyse intelligemment les correspondances utilisateur-restaurant selon une hiérarchie de priorités stricte.
+          content: language === 'en' ? 
+          `You are a restaurant recommendation expert who intelligently analyzes user-restaurant matches according to a strict priority hierarchy.
+
+          MISSION: Analyze compatibility between a restaurant and user preferences according to priority hierarchy.
+          
+          PRIORITY HIERARCHY (MANDATORY - in this exact order):
+          1. 🔒 RESTRICTIONS / ALLERGENS (safety first - 30%)
+          2. 🍽️ PREFERRED CUISINE (main pleasure - 25%) 
+          3. ⏰ TIMING (temporal relevance - 20%)
+          4. 📍 LOCATION (distance - 15%)
+          5. 💰 BUDGET (financial respect - 10%)
+          6. 🎉 PROMO (bonus - 5%)
+
+          AUTHORIZED PHRASES (use EXACTLY these phrases):
+          - Restrictions: "Fits your vegetarian preferences" / "Fits your vegan preferences" / "Fits your gluten-free preferences"
+          - Allergens: "Safe from your declared allergens" 
+          - Cuisine: "Because you love [name] cuisine"
+          - Timing: "Open at the right time for you"
+          - Location: "Less than 2 km from you" / "In your favorite neighborhood"
+          - Budget: "Fits your [range] budget"
+          - Promo: "On sale today"
+          - Default: "New discovery recommended"
+          
+          SCORING ACCORDING TO HIERARCHY:
+          - Compatible restrictions/allergens: +30 points
+          - Exactly preferred cuisine: +25 points
+          - Optimal timing: +20 points  
+          - Close location: +15 points
+          - Compatible budget: +10 points
+          - Active promo: +5 points
+          - Base score: 20 points
+          
+          STRICT RULES:
+          - One reason per restaurant according to hierarchy
+          - Choose the FIRST applicable rule in priority order
+          - Use EXACTLY the predefined phrases
+          - Score from 0-100
+          
+          MANDATORY JSON FORMAT:
+          {
+            "score": number (0-100),
+            "reasons": ["exact phrase according to hierarchy"],
+            "sentiment_analysis": "positive|neutral|negative",
+            "preference_match": number (0-1),
+            "quality_prediction": number (0-1)
+          }` :
+          `Tu es un expert en recommandations de restaurants qui analyse intelligemment les correspondances utilisateur-restaurant selon une hiérarchie de priorités stricte.
 
           MISSION: Analyser la compatibilité entre un restaurant et les préférences utilisateur selon la hiérarchie de priorités.
           
@@ -267,7 +314,7 @@ async function analyzeRestaurantWithAI(
   }
 }
 
-function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferences): string {
+function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): string {
   const currentHour = new Date().getHours();
   const currentMealTime = getCurrentMealTime(currentHour);
   const isMealTimeMatch = preferences.favorite_meal_times?.includes(currentMealTime) || false;
