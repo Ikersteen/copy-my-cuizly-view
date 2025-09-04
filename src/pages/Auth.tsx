@@ -703,7 +703,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back to home */}
         <div className="mb-6">
@@ -733,7 +733,7 @@ const Auth = () => {
           </p>
         </div>
 
-        <Card className="shadow-card border border-border max-w-md mx-auto">
+        <Card className="shadow-card border border-border">
           <CardContent className="p-8 flex items-center justify-center">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-sm">
               <TabsList className="grid w-full grid-cols-2 mb-8 h-12 rounded-lg p-1">
