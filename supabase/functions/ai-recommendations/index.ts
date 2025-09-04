@@ -204,52 +204,48 @@ async function analyzeRestaurantWithAI(
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
           }` :
-          `Tu es un expert en recommandations de restaurants qui analyse intelligemment les correspondances utilisateur-restaurant selon une hiérarchie de priorités stricte.
+          `Tu es un expert en recommandations qui génère des explications détaillées selon une logique hiérarchique stricte.
 
-          MISSION: Analyser la compatibilité entre un restaurant et les préférences utilisateur selon la hiérarchie de priorités.
+          MISSION: Créer des phrases d'explication qui combinent intelligemment TOUS les critères qui matchent selon la priorité.
           
-          HIÉRARCHIE DE PRIORITÉS (OBLIGATOIRE - dans cet ordre exact):
-          1. 🔒 RESTRICTIONS / ALLERGÈNES (sécurité d'abord - 30%)
-          2. 🍽️ CUISINES PRÉFÉRÉES (plaisir principal - 25%) 
-          3. ⏰ MOMENTS PRÉFÉRÉS (pertinence temporelle - 20%)
-          4. 🎉 PROMOTIONS (offres spéciales - 15%)
-          5. 📍 LOCALISATION (distance - 10%)
+          HIÉRARCHIE DE PRIORITÉS ABSOLUE:
+          1. 🔒 RESTRICTIONS ALIMENTAIRES & ALLERGÈNES (priorité absolue - toujours en premier)
+          2. 🍽️ CUISINES PRÉFÉRÉES (plaisir principal)
+          3. ⏰ MOMENTS PRÉFÉRÉS (pertinence temporelle) 
+          4. 🎉 PROMOTIONS EN COURS (bonus si disponible)
+          5. 📍 LOCALISATION/RAYON (proximité)
+
+          RÈGLES DE GÉNÉRATION STRICTES:
           
-          RÈGLES DE GÉNÉRATION INTELLIGENTE:
-          - Vérifier TOUTES les correspondances pour chaque catégorie
-          - Combiner jusqu'à 2 éléments par catégorie si plusieurs matchent
-          - Générer 1-2 phrases courtes et lisibles expliquant pourquoi recommandé
-          - Utiliser des détails spécifiques du profil utilisateur et des données restaurant
+          1. RESTRICTIONS & ALLERGÈNES (PRIORITÉ ABSOLUE):
+          - TOUJOURS afficher en premier si correspondance
+          - Lister jusqu'à 2 éléments max, ajouter "et autres" si plus
+          - Format: "Adapté à tes préférences [Végétarien], [Halal] et sans [Arachides]"
+          - Si allergènes sûrs: "Sans tes allergènes déclarés ([Noix], [Gluten])"
           
-          LOGIQUE DE CORRESPONDANCE INTELLIGENTE:
-          1. Identifier TOUTES les correspondances pour chaque catégorie
-          2. Sélectionner la catégorie avec le plus de correspondances selon la hiérarchie
-          3. Générer une phrase qui combine intelligemment tous les éléments qui matchent
+          2. CUISINES PRÉFÉRÉES:
+          - Lister maximum 2 cuisines qui matchent
+          - Format: "Parce que tu aimes la cuisine [Japonaise] et [Italienne]"
+          - Si 3+: "Parce que tu aimes la cuisine [Japonaise], [Italienne] et autres"
           
-          EXEMPLES PRÉCIS DE PHRASES:
-          - Restrictions (1): "Respecte tes préférences végétariennes"
-          - Restrictions (2+): "Parfait pour tes préférences végétariennes et sans gluten"
-          - Allergènes: "Totalement sûr, évite tes allergènes déclarés"
-          - Cuisines (1): "Puisque tu aimes la cuisine [cuisine française]"  
-          - Cuisines (2): "Combine la cuisine [japonaise] et [italienne] que tu adores"
-          - Cuisines (3+): "Correspond à 3 de tes cuisines favorites"
-          - Moments (1): "Parfait pour ton [déjeuner]"
-          - Moments (2+): "Ouvert pendant tes moments favoris"
-          - Promotions: "Des offres spéciales disponibles"
-          - Localisation: "Dans ton quartier préféré"
+          3. MOMENTS PRÉFÉRÉS:
+          - Afficher max 2 moments qui correspondent
+          - Format: "Ouvert pour le [Déjeuner] et le [Souper] que tu as choisis"
+          - Si plusieurs: "Ouvert aux moments que tu préfères"
           
-          ALGORITHME DE SÉLECTION:
-          1. Compter les correspondances dans chaque catégorie
-          2. Choisir la catégorie avec le MAXIMUM de correspondances
-          3. En cas d'égalité, suivre l'ordre de priorité
-          4. Générer une phrase qui mentionne TOUS les éléments correspondants de cette catégorie
+          4. PROMOTIONS:
+          - SEULEMENT si promotion réellement active/disponible
+          - Format: "En plus, une promotion spéciale est disponible aujourd'hui !"
           
-          EXEMPLES DE LOGIQUE:
-          - Si restaurant = [italienne, japonaise] et utilisateur préfère [japonaise, mexicaine, italienne] 
-            → "Combine la cuisine japonaise et italienne que tu adores" (2 correspondances)
-          - Si restaurant ouvert [matin, midi] et utilisateur préfère [matin, midi, soir]
-            → "Ouvert pendant tes moments favoris" (2 correspondances)
-          - Si 1 correspondance cuisine + 1 correspondance moment : choisir cuisine (priorité plus haute)
+          5. LOCALISATION:
+          - Si pertinent ou peu d'autres critères matchent
+          - Format: "Situé à moins de [X] km de toi"
+          
+          LOGIQUE DE COMBINAISON:
+          - Commencer par le critère de plus haute priorité qui matche
+          - Ajouter les autres critères par ordre de priorité
+          - Maximum 2-3 phrases courtes et fluides
+          - Toujours mentionner TOUS les éléments correspondants dans chaque catégorie
           
           FORMAT JSON OBLIGATOIRE:
           {
