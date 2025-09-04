@@ -204,55 +204,48 @@ async function analyzeRestaurantWithAI(
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
           }` :
-          `Tu es un expert en recommandations personnalisées qui crée des explications parfaitement adaptées aux préférences utilisateur.
+          `Tu es un expert en recommandations qui génère des explications détaillées selon une logique hiérarchique stricte.
 
-          MISSION: Générer une explication complète et engageante qui combine INTELLIGEMMENT tous les critères correspondants selon une hiérarchie stricte.
+          MISSION: Créer des phrases d'explication qui combinent intelligemment TOUS les critères qui matchent selon la priorité.
           
-          HIÉRARCHIE DE PRIORITÉS ABSOLUE (ordre non négociable):
-          1. 🔒 SÉCURITÉ ALIMENTAIRE (Restrictions & Allergènes) - PRIORITÉ VITALE
-          2. 🍽️ PLAISIR CULINAIRE (Cuisines préférées) - SATISFACTION PRINCIPALE  
-          3. ⏰ TIMING OPTIMAL (Moments préférés) - PERTINENCE TEMPORELLE
-          4. 🎁 PROMOTIONS ACTIVES (Offres spéciales) - BONUS ÉCONOMIQUE
-          5. 📍 PROXIMITÉ (Distance/Localisation) - PRATICITÉ
+          HIÉRARCHIE DE PRIORITÉS ABSOLUE:
+          1. 🔒 RESTRICTIONS ALIMENTAIRES & ALLERGÈNES (priorité absolue - toujours en premier)
+          2. 🍽️ CUISINES PRÉFÉRÉES (plaisir principal)
+          3. ⏰ MOMENTS PRÉFÉRÉS (pertinence temporelle) 
+          4. 🎉 PROMOTIONS EN COURS (bonus si disponible)
+          5. 📍 LOCALISATION/RAYON (proximité)
 
-          ═══ RÈGLES DE GÉNÉRATION AVANCÉES ═══
+          RÈGLES DE GÉNÉRATION STRICTES:
           
-          🔒 SÉCURITÉ ALIMENTAIRE (TOUJOURS EN PREMIER):
-          ✅ Si restrictions matchent: "Parfaitement adapté à tes préférences [Végétarien] et [Halal]"
-          ✅ Si allergènes sûrs: "Totalement sécuritaire - évite tes allergènes [Noix] et [Gluten]"  
-          ✅ Combiné: "Respecte tes choix [Végétarien] et évite tes allergènes [Arachides]"
-          ⚠️ Si 3+ éléments: "[Végétarien], [Sans gluten] et autres restrictions respectées"
-
-          🍽️ PLAISIR CULINAIRE:
-          ✅ 1 cuisine: "Parce que tu adores la cuisine [Japonaise]"
-          ✅ 2 cuisines: "Combine parfaitement la cuisine [Japonaise] et [Italienne] que tu aimes"
-          ✅ 3+ cuisines: "Propose la cuisine [Japonaise], [Italienne] et d'autres que tu apprécies"
-
-          ⏰ TIMING OPTIMAL:
-          ✅ 1 moment: "Ouvert exactement pour ton [Déjeuner] préféré"
-          ✅ 2 moments: "Disponible pour le [Déjeuner] et [Souper] que tu privilégies"
-          ✅ 3+ moments: "Ouvert à tous tes moments favoris"
-
-          🎁 PROMOTIONS (uniquement si réellement disponibles):
-          ✅ "En bonus : une promotion exceptionnelle est active aujourd'hui !"
-          ✅ "Et en plus, des offres spéciales t'attendent !"
-
-          📍 PROXIMITÉ:
-          ✅ "Idéalement situé à [X] km de toi"
-          ✅ "Dans ton rayon de livraison préféré"
-
-          ═══ ALGORITHME DE GÉNÉRATION INTELLIGENT ═══
+          1. RESTRICTIONS & ALLERGÈNES (PRIORITÉ ABSOLUE):
+          - TOUJOURS afficher en premier si correspondance
+          - Lister jusqu'à 2 éléments max, ajouter "et autres" si plus
+          - Format: "Adapté à tes préférences [Végétarien], [Halal] et sans [Arachides]"
+          - Si allergènes sûrs: "Sans tes allergènes déclarés ([Noix], [Gluten])"
           
-          ÉTAPE 1: Scanner TOUS les critères et identifier les correspondances
-          ÉTAPE 2: Commencer par le critère de plus haute priorité qui matche
-          ÉTAPE 3: Ajouter les autres critères dans l'ordre hiérarchique
-          ÉTAPE 4: Créer 1-2 phrases fluides et naturelles
-          ÉTAPE 5: S'assurer que CHAQUE élément correspondant est mentionné
-
-          EXEMPLES DE COMBINAISONS PARFAITES:
-          💎 "Parfaitement adapté à tes préférences Végétarien et Sans gluten, propose la cuisine Japonaise et Italienne que tu adores, ouvert pour ton Déjeuner préféré."
-          💎 "Totalement sécuritaire pour tes allergènes Noix, combine les cuisines Mexicaine et Thaï que tu aimes. En bonus : promotion active !"
-          💎 "Respecte ton choix Halal, parfait pour la cuisine Libanaise que tu adores, ouvert aux moments que tu préfères."
+          2. CUISINES PRÉFÉRÉES:
+          - Lister maximum 2 cuisines qui matchent
+          - Format: "Parce que tu aimes la cuisine [Japonaise] et [Italienne]"
+          - Si 3+: "Parce que tu aimes la cuisine [Japonaise], [Italienne] et autres"
+          
+          3. MOMENTS PRÉFÉRÉS:
+          - Afficher max 2 moments qui correspondent
+          - Format: "Ouvert pour le [Déjeuner] et le [Souper] que tu as choisis"
+          - Si plusieurs: "Ouvert aux moments que tu préfères"
+          
+          4. PROMOTIONS:
+          - SEULEMENT si promotion réellement active/disponible
+          - Format: "En plus, une promotion spéciale est disponible aujourd'hui !"
+          
+          5. LOCALISATION:
+          - Si pertinent ou peu d'autres critères matchent
+          - Format: "Situé à moins de [X] km de toi"
+          
+          LOGIQUE DE COMBINAISON:
+          - Commencer par le critère de plus haute priorité qui matche
+          - Ajouter les autres critères par ordre de priorité
+          - Maximum 2-3 phrases courtes et fluides
+          - Toujours mentionner TOUS les éléments correspondants dans chaque catégorie
           
           FORMAT JSON OBLIGATOIRE:
           {
@@ -316,8 +309,8 @@ async function analyzeRestaurantWithAI(
     // Ensure score is within valid range
     parsed.score = Math.max(0, Math.min(100, parsed.score));
     
-    // Ensure reasons array can have up to 2 elements for combined explanations
-    parsed.reasons = parsed.reasons.slice(0, 2).filter(r => typeof r === 'string' && r.length > 0);
+    // Ensure reasons array has max 1 element according to hierarchy
+    parsed.reasons = parsed.reasons.slice(0, 1).filter(r => typeof r === 'string');
     
     return parsed;
   } catch (parseError) {
