@@ -957,6 +957,7 @@
     },
     "street": "Votre rue à Montréal",
     "fullAddress": "Votre adresse complète à Montréal",
+    "deliveryAddress": "Votre adresse",
     "addressSelected": "Adresse sélectionnée",
     "deliveryRadius": "Rayon de livraison (km)",
     "mealTimes": "Moments de repas favoris",

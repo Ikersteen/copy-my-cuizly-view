@@ -1126,6 +1126,7 @@
     },
     "street": "Your street in Montreal",
     "fullAddress": "Your full address in Montreal",
+    "deliveryAddress": "Your address",
     "addressSelected": "Address selected",
     "deliveryRadius": "Delivery radius (km)",
     "mealTimes": "Favorite meal times",
