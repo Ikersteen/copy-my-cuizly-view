@@ -609,25 +609,34 @@ export const RecommendationCardsSection = () => {
                          </div>
                        </div>
                        <div className="space-y-2">
-                          {reasons.slice(0, 3).map((reason, idx) => {
-                            const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
-                            const isAllergens = reasonObj.type === 'allergens';
-                            
-                            return (
-                              <div key={idx} className="flex items-center gap-2.5">
-                                <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                  isAllergens ? 'bg-red-500' : 
-                                  reasonObj.type === 'dietary' ? 'bg-emerald-500' :
-                                  reasonObj.type === 'price' ? 'bg-emerald-500' : 
-                                  reasonObj.type === 'cuisine' ? 'bg-blue-500' : 
-                                  reasonObj.type === 'timing' ? 'bg-purple-500' :
-                                  'bg-orange-500'
-                                }`} />
-                                <span className="text-xs text-foreground/80 leading-relaxed">
-                                  {reasonObj.text}
-                                </span>
-                              </div>
-                            );
+                           {reasons.slice(0, 3).map((reason, idx) => {
+                             const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
+                             const isAllergens = reasonObj.type === 'allergens';
+                             
+                             // Debug logging
+                             console.log('🔍 REASON DEBUG:', {
+                               reason,
+                               reasonObj,
+                               type: reasonObj.type,
+                               isAllergens: isAllergens,
+                               text: reasonObj.text
+                             });
+                             
+                             return (
+                               <div key={idx} className="flex items-center gap-2.5">
+                                 <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                                   isAllergens ? 'bg-red-500' : 
+                                   reasonObj.type === 'dietary' ? 'bg-emerald-500' :
+                                   reasonObj.type === 'price' ? 'bg-emerald-500' : 
+                                   reasonObj.type === 'cuisine' ? 'bg-blue-500' : 
+                                   reasonObj.type === 'timing' ? 'bg-purple-500' :
+                                   'bg-orange-500'
+                                 }`} />
+                                 <span className="text-xs text-foreground/80 leading-relaxed">
+                                   {reasonObj.text}
+                                 </span>
+                               </div>
+                             );
                           })}
                        </div>
                     </div>
