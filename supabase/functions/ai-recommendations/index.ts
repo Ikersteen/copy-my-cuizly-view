@@ -536,10 +536,10 @@ function generateFallbackReasons(restaurant: Restaurant, preferences: UserPrefer
     return [phrases.timing_perfect];
   }
 
-  // 4. LOCALISATION (distance - à implémenter avec les données de distance)
-  // Pour l'instant, on utilise une logique basique
-  if (preferences?.delivery_radius && preferences.delivery_radius <= 2) {
-    return [phrases.location_close];
+  // 4. LOCALISATION (distance - matching basé sur les rues de Montréal)
+  const locationMatch = calculateLocationMatch(restaurant, preferences);
+  if (locationMatch.match) {
+    return [locationMatch.phrase];
   }
 
   // 5. BUDGET (respect financier)
@@ -554,6 +554,117 @@ function generateFallbackReasons(restaurant: Restaurant, preferences: UserPrefer
 
   // Default si aucune correspondance
   return [phrases.discovery];
+}
+
+// Fonction pour calculer le matching géographique basé sur les rues de Montréal
+function calculateLocationMatch(restaurant: Restaurant, preferences: UserPreferences): { match: boolean, phrase: string } {
+  const phrases = EXPLANATION_PHRASES.fr; // Par défaut français
+  
+  // Si pas d'adresse ou de préférence de rue, pas de match
+  if (!restaurant.address || !preferences.street) {
+    return { match: false, phrase: '' };
+  }
+
+  // Extraire les noms de rues des adresses
+  const restaurantStreet = extractStreetName(restaurant.address);
+  const userStreet = extractStreetName(preferences.street);
+  
+  if (!restaurantStreet || !userStreet) {
+    return { match: false, phrase: '' };
+  }
+
+  // Match exact de rue
+  if (restaurantStreet === userStreet) {
+    return { match: true, phrase: "Sur votre rue à Montréal" };
+  }
+
+  // Match de quartier/proximité pour rues populaires de Montréal
+  const proximityMatch = checkMontrealProximity(restaurantStreet, userStreet);
+  if (proximityMatch.isClose) {
+    return { match: true, phrase: proximityMatch.phrase };
+  }
+
+  // Rayon de livraison générique
+  if (preferences.delivery_radius && preferences.delivery_radius <= 2) {
+    return { match: true, phrase: phrases.location_close };
+  }
+
+  return { match: false, phrase: '' };
+}
+
+// Fonction pour extraire le nom de la rue d'une adresse complète
+function extractStreetName(address: string): string | null {
+  if (!address) return null;
+  
+  // Patterns pour extraire les rues de Montréal
+  const streetPatterns = [
+    /(\d+\s+)?(Rue\s+[^,]+)/i,
+    /(\d+\s+)?(Boulevard\s+[^,]+)/i,
+    /(\d+\s+)?(Avenue\s+[^,]+)/i,
+    /(\d+\s+)?(Place\s+[^,]+)/i,
+    /(\d+\s+)?(Chemin\s+[^,]+)/i
+  ];
+
+  for (const pattern of streetPatterns) {
+    const match = address.match(pattern);
+    if (match && match[2]) {
+      return match[2].trim();
+    }
+  }
+
+  // Fallback: prendre la première partie avant la virgule (sans numéro)
+  const parts = address.split(',')[0].trim();
+  const withoutNumber = parts.replace(/^\d+\s+/, '');
+  return withoutNumber || null;
+}
+
+// Fonction pour vérifier la proximité entre rues de Montréal
+function checkMontrealProximity(street1: string, street2: string): { isClose: boolean, phrase: string } {
+  const phrases = EXPLANATION_PHRASES.fr;
+  
+  // Normaliser les noms de rues
+  const normalize = (str: string) => str.toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const norm1 = normalize(street1);
+  const norm2 = normalize(street2);
+
+  // Quartiers et groupes de rues proches
+  const proximityGroups = [
+    // Plateau Mont-Royal
+    ['rue saint-denis', 'boulevard saint-laurent', 'avenue du parc', 'rue rachel', 'rue duluth', 'avenue mont-royal'],
+    // Centre-ville
+    ['rue sainte-catherine', 'boulevard de maisonneuve', 'rue sherbrooke', 'rue peel', 'rue guy', 'rue crescent'],
+    // Mile End
+    ['rue saint-viateur', 'avenue fairmount', 'rue bernard', 'avenue laurier ouest', 'rue van horne'],
+    // Rosemont
+    ['rue beaubien', 'rue masson', 'boulevard pie-ix', 'avenue papineau'],
+    // Outremont
+    ['avenue laurier', 'rue bernard', 'avenue du parc', 'rue hutchison']
+  ];
+
+  // Vérifier si les deux rues sont dans le même groupe de proximité
+  for (const group of proximityGroups) {
+    const street1InGroup = group.some(street => norm1.includes(normalize(street)));
+    const street2InGroup = group.some(street => norm2.includes(normalize(street)));
+    
+    if (street1InGroup && street2InGroup) {
+      return { isClose: true, phrase: "Dans votre quartier à Montréal" };
+    }
+  }
+
+  // Vérifier si c'est la même rue principale (ex: Sherbrooke Est vs Sherbrooke Ouest)
+  const mainStreets = ['sherbrooke', 'saint-denis', 'saint-laurent', 'notre-dame', 'sainte-catherine'];
+  for (const mainStreet of mainStreets) {
+    if (norm1.includes(mainStreet) && norm2.includes(mainStreet)) {
+      return { isClose: true, phrase: "Sur la même artère principale" };
+    }
+  }
+
+  return { isClose: false, phrase: '' };
 }
 
 async function logRecommendationInteraction(userId: string, recommendations: any[]) {
