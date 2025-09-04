@@ -459,9 +459,11 @@ export const RecommendationCardsSection = () => {
           <div className="flex flex-col items-center justify-center py-12">
             <div className="text-center">
               <div className="mb-4">
-                <h2 className="text-lg sm:text-xl font-semibold text-center flex items-center justify-center gap-2">
-                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse flex-shrink-0" />
-                  <span>{t('recommendations.generatingRecommendations')}</span>
+                <h2 className="text-lg sm:text-xl font-semibold text-center">
+                  <span className="inline-flex items-center justify-center gap-2">
+                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse" />
+                    <span>{t('recommendations.generatingRecommendations')}</span>
+                  </span>
                 </h2>
               </div>
               <div className="flex justify-center mb-4">
