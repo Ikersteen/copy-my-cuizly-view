@@ -37,6 +37,7 @@ const defaultPreferences: Omit<UserPreferences, 'user_id'> = {
 export const useUserPreferences = () => {
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
   const { toast } = useToast();
   const { t } = useTranslation();
   const { saveTemporaryData, restoreDataAfterAuth } = useDataPersistence();
@@ -61,7 +62,11 @@ export const useUserPreferences = () => {
   }, [preferences]);
 
   useEffect(() => {
+    // Éviter les chargements multiples
+    if (isInitialized) return;
+    
     const initPreferences = async () => {
+      setIsInitialized(true);
       await loadPreferences();
       
       // Synchronisation en temps réél des préférences utilisateur
@@ -97,11 +102,17 @@ export const useUserPreferences = () => {
     };
 
     initPreferences();
-  }, []);
+  }, [isInitialized]);
 
   const loadPreferences = async () => {
+    // Éviter les chargements redondants si déjà en cours
+    if (loading && preferences) {
+      console.log('⚠️ Preferences already loading or loaded, skipping...');
+      return;
+    }
+
     try {
-      console.log('Loading preferences...');
+      console.log('🔄 Loading preferences...');
       
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
@@ -112,6 +123,7 @@ export const useUserPreferences = () => {
       
       if (!session) {
         console.log('No session found');
+        setLoading(false);
         return;
       }
 
@@ -134,7 +146,7 @@ export const useUserPreferences = () => {
           }
 
           if (data) {
-            console.log('Preferences loaded from database:', data);
+            console.log('✅ Preferences loaded from database:', data);
             setPreferences({
               ...data,
               notification_preferences: data.notification_preferences as any || {
@@ -143,7 +155,7 @@ export const useUserPreferences = () => {
               }
             });
           } else {
-            console.log('No preferences found, creating default preferences...');
+            console.log('Creating default preferences...');
             // Create default preferences with upsert to avoid conflicts
             const newPreferences = {
               ...defaultPreferences,
