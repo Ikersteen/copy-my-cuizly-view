@@ -163,11 +163,11 @@ async function analyzeRestaurantWithAI(
 
           MISSION: Analyze compatibility between a restaurant and user preferences according to priority hierarchy.
           
-          PRIORITY HIERARCHY (MANDATORY - in this exact order):
+          PRIORITY HIERARCHY (MANDATORY - check ALL criteria in this exact order):
           1. 🔒 RESTRICTIONS / ALLERGENS (safety first - 30%)
           2. 🍽️ PREFERRED CUISINE (main pleasure - 25%) 
           3. ⏰ TIMING (temporal relevance - 20%)
-          4. 📍 LOCATION (distance - 15%)
+          4. 📍 LOCATION (distance/delivery zone - 15%)
           5. 💰 BUDGET (financial respect - 10%)
           6. 🎉 PROMO (bonus - 5%)
 
@@ -176,7 +176,7 @@ async function analyzeRestaurantWithAI(
           - Allergens: "Safe from your declared allergens" 
           - Cuisine: "Because you love [name] cuisine"
           - Timing: "Open at the right time for you"
-          - Location: "Less than 2 km from you" / "In your favorite neighborhood"
+          - Location: "Less than 2 km from you" / "In your favorite neighborhood" / "Within your delivery zone"
           - Budget: "Fits your [range] budget"
           - Promo: "On sale today"
           - Default: "New discovery recommended"
@@ -185,14 +185,15 @@ async function analyzeRestaurantWithAI(
           - Compatible restrictions/allergens: +30 points
           - Exactly preferred cuisine: +25 points
           - Optimal timing: +20 points  
-          - Close location: +15 points
+          - Close location/delivery zone: +15 points
           - Compatible budget: +10 points
           - Active promo: +5 points
           - Base score: 20 points
           
           STRICT RULES:
-          - One reason per restaurant according to hierarchy
-          - Choose the FIRST applicable rule in priority order
+          - ALWAYS check ALL criteria in hierarchy order
+          - Choose the HIGHEST PRIORITY applicable rule (first match in hierarchy)
+          - If no specific preferences exist, look at location, budget, timing
           - Use EXACTLY the predefined phrases
           - Score from 0-100
           
@@ -349,29 +350,27 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 • Allergènes à éviter: ${preferences.allergens?.join(', ') || 'Aucun'}
 • Moments de repas favoris: ${preferences.favorite_meal_times?.join(', ') || 'Flexible'}
 • Rayon de livraison: ${preferences.delivery_radius || 'Non spécifié'} km
+• Localisation: ${preferences.street || 'Non spécifiée'}
 
 ⏰ CONTEXTE ACTUEL:
 • Heure: ${currentHour}h (période: ${currentMealTime})
 • Timing optimal: ${isMealTimeMatch ? '✅ OUI' : '❌ NON'}
 
-🔍 CORRESPONDANCES DÉTECTÉES PAR CATÉGORIE:
+🔍 ANALYSE OBLIGATOIRE DE TOUS LES CRITÈRES (dans l'ordre de priorité):
 
 1. 🔒 RESTRICTIONS/ALLERGÈNES: ${checkSafetyCompatibility(restaurant, preferences)}
-2. 🍽️ CUISINES: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')} (${cuisineMatches.length} correspondance${cuisineMatches.length > 1 ? 's' : ''})` : '❌ Aucune'}
-3. ⏰ MOMENTS: ${isMealTimeMatch ? '✅ Compatible avec tes horaires' : '❌ Pas optimal'}
-4. 📍 LOCALISATION: ${preferences.delivery_radius ? '🔍 À analyser selon rayon' : '❌ Non définie'}
-5. 💰 BUDGET: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
+2. 🍽️ CUISINES: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')} (${cuisineMatches.length} correspondance${cuisineMatches.length > 1 ? 's' : ''})` : '❌ Aucune préférence spécifique'}
+3. ⏰ MOMENTS: ${isMealTimeMatch ? '✅ Compatible avec tes horaires favoris' : preferences.favorite_meal_times?.length > 0 ? '❌ Pas dans tes créneaux favoris' : '⚪ Flexible'}
+4. 📍 LOCALISATION/LIVRAISON: ${preferences.delivery_radius && preferences.street ? `🔍 Rayon ${preferences.delivery_radius}km depuis ${preferences.street}` : '❌ Non définie'}
+5. 💰 BUDGET: ${budgetMatch ? `✅ Compatible ${preferences.price_range}` : preferences.price_range ? `❌ Budget ${preferences.price_range} vs restaurant ${restaurant.price_range}` : '⚪ Flexible'}
 6. 🎉 PROMOTIONS: 🔍 À vérifier
 
-🎯 DÉTECTION DE CAS:
-- Nombre de cuisines matchant: ${cuisineMatches.length}
-- Nombre de restrictions: ${preferences.dietary_restrictions?.length || 0}
-- Nombre d'allergènes: ${preferences.allergens?.length || 0}
-- Nombre de moments favoris: ${preferences.favorite_meal_times?.length || 0}
-
-🎯 INSTRUCTIONS FINALES:
-Applique la logique CAS 1 ou CAS 2 selon le nombre de critères par catégorie.
-Respecte l'ordre de priorité strict et les phrases exactes définies.
+🎯 INSTRUCTIONS CRITIQUES:
+- OBLIGATOIRE: Examiner TOUS les critères dans l'ordre
+- Choisir le PREMIER critère applicable de la hiérarchie
+- Si aucune cuisine/restriction spécifique → analyser timing, localisation, budget
+- Utilisateur a: Budget ${preferences.price_range}, Zone ${preferences.delivery_radius}km, Lieu ${preferences.street}
+- TOUJOURS donner une raison basée sur les données disponibles
   `;
 }
 
