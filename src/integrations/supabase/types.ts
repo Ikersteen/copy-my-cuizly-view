@@ -611,6 +611,26 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      get_offers_with_restaurant_names: {
+        Args: { category_filter?: string }
+        Returns: {
+          category: string
+          created_at: string
+          cuisine_type: string
+          description: string
+          discount_amount: number
+          discount_percentage: number
+          id: string
+          is_active: boolean
+          restaurant_cuisine_type: string[]
+          restaurant_id: string
+          restaurant_name: string
+          restaurant_price_range: string
+          title: string
+          updated_at: string
+          valid_until: string
+        }[]
+      }
       get_public_restaurants: {
         Args: Record<PropertyKey, never>
         Returns: {
