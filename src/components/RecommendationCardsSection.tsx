@@ -41,10 +41,33 @@ export const RecommendationCardsSection = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   // Generate detailed, explanatory reasons for restaurant recommendations
-  const generateRecommendationReasons = (restaurant: Restaurant) => {
+  const generateRecommendationReasons = (restaurant: Restaurant, menus: any[] = []) => {
     const reasons: { text: string; type: string }[] = [];
     const currentHour = new Date().getHours();
     const currentMealTime = getCurrentMealTime(currentHour);
+
+    // Check for allergen matches - Highest priority with red indicator
+    if (preferences?.allergens && preferences.allergens.length > 0) {
+      const restaurantMenus = menus.filter((menu: any) => menu.restaurant_id === restaurant.id);
+      const hasIdentifiedAllergens = restaurantMenus.some((menu: any) => 
+        menu.allergens?.some((allergen: string) => preferences.allergens.includes(allergen))
+      );
+      
+      if (hasIdentifiedAllergens) {
+        reasons.push({
+          text: t('recommendations.reasonAllergensIdentified'),
+          type: 'allergens'
+        });
+      }
+    }
+
+    // Dietary restrictions match - Clear and brief explanation with warning indicator
+    if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
+      reasons.push({
+        text: t('recommendations.reasonDietaryOptions'),
+        type: 'dietary'
+      });
+    }
 
     // Price range match - Clear and brief explanation
     if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
@@ -72,14 +95,6 @@ export const RecommendationCardsSection = () => {
       reasons.push({
         text: t('recommendations.reasonPerfectTiming'),
         type: 'timing'
-      });
-    }
-
-    // Dietary restrictions match - Clear and brief explanation with warning indicator
-    if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
-      reasons.push({
-        text: t('recommendations.reasonDietaryOptions'),
-        type: 'dietary'
       });
     }
 
@@ -257,6 +272,19 @@ export const RecommendationCardsSection = () => {
         const currentHour = new Date().getHours();
         const currentMealTime = getCurrentMealTime(currentHour);
         
+        // 0. ALLERGENS IDENTIFIED MATCHING (HIGHEST PRIORITY - 50 points bonus)
+        let allergenBonus = 0;
+        if (preferences?.allergens?.length) {
+          const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
+          const hasIdentifiedAllergens = restaurantMenus.some(menu => 
+            menu.allergens?.some((allergen: string) => preferences.allergens.includes(allergen))
+          );
+          if (hasIdentifiedAllergens) {
+            allergenBonus = 50; // Highest priority bonus for allergen identification
+          }
+        }
+        score += allergenBonus;
+        
         // 1. EXACT CUISINE MATCHING (60% - Most Important)
         let cuisineScore = 0;
         if (preferences?.cuisine_preferences?.length) {
@@ -308,8 +336,8 @@ export const RecommendationCardsSection = () => {
         // Only return restaurants with meaningful matches (score > 40)
         return {
           ...restaurant,
-          score: Math.min(Math.round(score), 100),
-          reasons: generateRecommendationReasons(restaurant)
+          score: Math.min(Math.round(score), 150), // Increase max score to accommodate allergen bonus
+          reasons: generateRecommendationReasons(restaurant, menus)
         };
       }).filter(restaurant => restaurant.score > 60); // Only show restaurants with good matches
 
@@ -573,24 +601,25 @@ export const RecommendationCardsSection = () => {
                          </div>
                        </div>
                        <div className="space-y-2">
-                         {reasons.slice(0, 3).map((reason, idx) => {
-                           const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
-                           const isDietary = reasonObj.type === 'dietary';
-                           
-                           return (
-                             <div key={idx} className="flex items-center gap-2.5">
-                               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                 isDietary ? 'bg-red-500' : 
-                                 idx === 0 ? 'bg-emerald-500' : 
-                                 idx === 1 ? 'bg-blue-500' : 
-                                 'bg-orange-500'
-                               }`} />
-                               <span className="text-xs text-foreground/80 leading-relaxed">
-                                 {reasonObj.text}
-                               </span>
-                             </div>
-                           );
-                         })}
+                          {reasons.slice(0, 3).map((reason, idx) => {
+                            const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
+                            const isDietary = reasonObj.type === 'dietary';
+                            const isAllergens = reasonObj.type === 'allergens';
+                            
+                            return (
+                              <div key={idx} className="flex items-center gap-2.5">
+                                <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                                  isDietary || isAllergens ? 'bg-red-500' : 
+                                  idx === 0 ? 'bg-emerald-500' : 
+                                  idx === 1 ? 'bg-blue-500' : 
+                                  'bg-orange-500'
+                                }`} />
+                                <span className="text-xs text-foreground/80 leading-relaxed">
+                                  {reasonObj.text}
+                                </span>
+                              </div>
+                            );
+                          })}
                        </div>
                     </div>
                   );
