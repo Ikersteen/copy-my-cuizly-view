@@ -14,6 +14,11 @@ import { AuthenticatedConsumerHeader } from "@/components/AuthenticatedConsumerH
 import { AuthenticatedRestaurantHeader } from "@/components/AuthenticatedRestaurantHeader";
 import { ConsumerMobileMenu } from "@/components/ConsumerMobileMenu";
 import { RestaurantMobileMenu } from "@/components/RestaurantMobileMenu";
+import { PreferencesModal } from "@/components/PreferencesModal";
+import { ProfileModal } from "@/components/ProfileModal";
+import { NewOfferModal } from "@/components/NewOfferModal";
+import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
+import { MenusModal } from "@/components/MenusModal";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -21,6 +26,11 @@ const Header = () => {
   const { theme, setTheme } = useTheme();
   const { user, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [showPreferences, setShowPreferences] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showNewOffer, setShowNewOffer] = useState(false);
+  const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
+  const [showMenus, setShowMenus] = useState(false);
   const navigate = useNavigate();
 
   const handleNavigate = (path: string) => {
@@ -197,16 +207,16 @@ const Header = () => {
               <>
                 {isConsumer && (
                   <ConsumerMobileMenu 
-                    onProfileClick={() => navigate("/dashboard")}
-                    onPreferencesClick={() => navigate("/dashboard")}
+                    onProfileClick={() => setShowProfile(true)}
+                    onPreferencesClick={() => setShowPreferences(true)}
                     onOffersClick={() => navigate("/dashboard")}
                   />
                 )}
                 {isRestaurant && (
                   <RestaurantMobileMenu 
-                    onNewOfferClick={() => navigate("/dashboard")}
-                    onRestaurantProfileClick={() => navigate("/dashboard")}
-                    onManageMenusClick={() => navigate("/dashboard")}
+                    onNewOfferClick={() => setShowNewOffer(true)}
+                    onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
+                    onManageMenusClick={() => setShowMenus(true)}
                   />
                 )}
               </>
@@ -330,6 +340,46 @@ const Header = () => {
           </div>
         </div>
       </div>
+      
+      {/* Modals - Only show when authenticated */}
+      {isAuthenticated && (
+        <>
+          {isConsumer && (
+            <>
+              <PreferencesModal 
+                open={showPreferences} 
+                onOpenChange={setShowPreferences}
+              />
+              <ProfileModal 
+                open={showProfile} 
+                onOpenChange={setShowProfile}
+              />
+            </>
+          )}
+          {isRestaurant && (
+            <>
+              <NewOfferModal 
+                open={showNewOffer}
+                onOpenChange={setShowNewOffer}
+                restaurantId={null}
+                onSuccess={() => {}}
+              />
+              <RestaurantProfileModal 
+                open={showRestaurantProfile}
+                onOpenChange={setShowRestaurantProfile}
+                restaurant={null}
+                onUpdate={() => {}}
+              />
+              <MenusModal 
+                open={showMenus}
+                onOpenChange={setShowMenus}
+                restaurantId={null}
+                onSuccess={() => {}}
+              />
+            </>
+          )}
+        </>
+      )}
     </header>
   );
 };

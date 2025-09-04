@@ -3,10 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Edit3, MapPin, ChefHat, LogOut } from "lucide-react";
-import { RestaurantMobileMenu } from "@/components/RestaurantMobileMenu";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
-import { NewOfferModal } from "@/components/NewOfferModal";
 import { MenusModal } from "@/components/MenusModal";
 
 import { OffersSection } from "@/components/OffersSection";
@@ -45,7 +43,6 @@ const RestaurantDashboard = () => {
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(true);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showOfferModal, setShowOfferModal] = useState(false);
   const [showMenusModal, setShowMenusModal] = useState(false);
   
   const { toast } = useToast();
@@ -146,9 +143,6 @@ const RestaurantDashboard = () => {
     console.log('Action clicked:', action);
     console.log('Restaurant ID:', restaurant?.id);
     switch (action) {
-      case t('dashboard.newOffer'):
-        setShowOfferModal(true);
-        break;
       case t('dashboard.restaurantProfile'):
         setShowProfileModal(true);
         break;
@@ -254,28 +248,17 @@ const RestaurantDashboard = () => {
                 )}
               </div>
             </div>
-            
-            <div className="flex gap-2 self-start sm:self-auto">
-              {/* Menu unifié pour tous les écrans */}
-              <RestaurantMobileMenu 
-                onNewOfferClick={() => setShowOfferModal(true)}
-                onRestaurantProfileClick={() => setShowProfileModal(true)}
-                onManageMenusClick={() => handleActionClick(t('dashboard.manageMenus'))}
-              />
-            </div>
           </div>
         </div>
 
-        {/* Actions rapides */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {[
-          { icon: Plus, label: t('dashboard.newOffer'), primary: true },
           { icon: Edit3, label: t('dashboard.restaurantProfile') },
           { icon: ChefHat, label: t('dashboard.manageMenus') }
           ].map((action, index) => (
             <Button 
               key={index}
-              variant={action.primary ? "default" : "outline"} 
+              variant="outline"
               className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 text-xs sm:text-sm"
               onClick={() => handleActionClick(action.label)}
             >
@@ -391,12 +374,6 @@ const RestaurantDashboard = () => {
             loadData();
           }, 500);
         }}
-      />
-      <NewOfferModal 
-        open={showOfferModal}
-        onOpenChange={setShowOfferModal}
-        restaurantId={restaurant?.id || null}
-        onSuccess={loadData}
       />
       <MenusModal 
         open={showMenusModal}

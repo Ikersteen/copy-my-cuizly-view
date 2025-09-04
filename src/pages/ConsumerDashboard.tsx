@@ -7,7 +7,6 @@ import {
   MapPin, Clock, Star, Heart, Settings, 
   TrendingUp, Zap, Gift, History, User as UserIcon, LogOut
 } from "lucide-react";
-import { ConsumerMobileMenu } from "@/components/ConsumerMobileMenu";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useOffers } from "@/hooks/useOffers";
@@ -16,8 +15,6 @@ import { useProfile } from "@/hooks/useProfile";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { PreferencesModal } from "@/components/PreferencesModal";
-import { ProfileModal } from "@/components/ProfileModal";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
 import { RecommendationCardsSection } from "@/components/RecommendationCardsSection";
@@ -31,8 +28,6 @@ import type { User } from "@supabase/supabase-js";
 const ConsumerDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showPreferences, setShowPreferences] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -129,8 +124,6 @@ const ConsumerDashboard = () => {
       });
       
       // Close any open modals
-      setShowProfile(false);
-      setShowPreferences(false);
       setShowFavorites(false);
       setShowHistory(false);
       
@@ -181,15 +174,6 @@ const ConsumerDashboard = () => {
                 <UserAddressDisplay className="mt-1" />
               </div>
             </div>
-            
-            <div className="flex gap-2 self-start sm:self-auto">
-              {/* Menu unifié pour tous les écrans */}
-              <ConsumerMobileMenu 
-                onProfileClick={() => setShowProfile(true)}
-                onPreferencesClick={() => setShowPreferences(true)}
-                onOffersClick={() => {/* Focus on offers tab */}}
-              />
-            </div>
           </div>
         </div>
 
@@ -225,14 +209,6 @@ const ConsumerDashboard = () => {
       </div>
 
       {/* Modals */}
-      <PreferencesModal 
-        open={showPreferences} 
-        onOpenChange={setShowPreferences}
-      />
-      <ProfileModal 
-        open={showProfile} 
-        onOpenChange={setShowProfile}
-      />
       <FavoritesModal 
         open={showFavorites} 
         onOpenChange={setShowFavorites}
