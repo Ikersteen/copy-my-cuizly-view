@@ -18,6 +18,8 @@ interface Restaurant {
   rating_count?: number;
   profile_views?: number;
   menu_views?: number;
+  dietary_restrictions?: string[];
+  allergens?: string[];
 }
 
 interface UserPreferences {
@@ -155,36 +157,47 @@ async function analyzeRestaurantWithAI(
       messages: [
         {
           role: 'system',
-          content: `Tu es un expert en recommandations de restaurants qui analyse intelligemment les correspondances utilisateur-restaurant.
+          content: `Tu es un expert en recommandations de restaurants qui analyse intelligemment les correspondances utilisateur-restaurant selon une hiérarchie de priorités stricte.
 
-          MISSION: Analyser la compatibilité entre un restaurant et les préférences utilisateur.
+          MISSION: Analyser la compatibilité entre un restaurant et les préférences utilisateur selon la hiérarchie de priorités.
           
-          CRITÈRES D'ANALYSE (par ordre d'importance):
-          1. 🍽️ CUISINE (40%): Correspondance exacte avec préférences culinaires
-          2. 💰 BUDGET (25%): Prix dans la fourchette préférée
-          3. ⏰ TIMING (20%): Adéquation avec moment de repas actuel
-          4. 🌟 QUALITÉ (10%): Notes et popularité existantes
-          5. 🔍 DÉCOUVERTE (5%): Bonus pour diversité/nouveauté
+          HIÉRARCHIE DE PRIORITÉS (OBLIGATOIRE - dans cet ordre exact):
+          1. 🔒 RESTRICTIONS / ALLERGÈNES (sécurité d'abord - 30%)
+          2. 🍽️ CUISINE PRÉFÉRÉE (plaisir principal - 25%) 
+          3. ⏰ MOMENT CHOISI (pertinence temporelle - 20%)
+          4. 📍 LOCALISATION (distance - 15%)
+          5. 💰 BUDGET (respect financier - 10%)
+          6. 🎉 PROMO (bonus - 5%)
 
-          RAISONS AUTORISÉES (maximum 2, courtes et impactantes):
-          - "Cuisine favorite" (si cuisine exactement préférée)
-          - "Prix idéal" (si budget correspond parfaitement)
-          - "Moment parfait" (si horaire optimal pour préférences)
-          - "Très populaire" (si excellentes notes/beaucoup de vues)
-          - "Nouvelle découverte" (si diversification recommandée)
+          PHRASES AUTORISÉES (utilise EXACTEMENT ces phrases):
+          - Restrictions: "Adapté à tes préférences végétariennes" / "Adapté à tes préférences véganes" / "Adapté à tes préférences sans gluten"
+          - Allergènes: "Sans tes allergènes déclarés" 
+          - Cuisine: "Parce que tu aimes la cuisine [nom]"
+          - Timing: "Ouvert au bon moment pour toi"
+          - Localisation: "À moins de 2 km de chez toi" / "Dans ton quartier préféré"
+          - Budget: "Respecte ton budget [gamme]"
+          - Promo: "En promo aujourd'hui"
+          - Default: "Nouvelle découverte recommandée"
           
-          SCORING INTELLIGENT:
+          SCORING SELON HIÉRARCHIE:
+          - Restrictions/Allergènes compatibles: +30 points
+          - Cuisine exactement préférée: +25 points
+          - Timing optimal: +20 points  
+          - Localisation proche: +15 points
+          - Budget compatible: +10 points
+          - Promo active: +5 points
           - Score base: 20 points
-          - Correspondance cuisine exacte: +30-40 points
-          - Budget parfait: +15-25 points  
-          - Timing optimal: +10-20 points
-          - Qualité prouvée: +5-15 points
-          - Bonus découverte: +5-10 points
+          
+          RÈGLES STRICTES:
+          - Une seule raison par restaurant selon la hiérarchie
+          - Choisis la PREMIÈRE règle applicable dans l'ordre de priorité
+          - Utilise EXACTEMENT les phrases prédéfinies
+          - Score de 0-100
           
           FORMAT JSON OBLIGATOIRE:
           {
             "score": number (0-100),
-            "reasons": ["raison1", "raison2"],
+            "reasons": ["phrase exacte selon hiérarchie"],
             "sentiment_analysis": "positive|neutral|negative",
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
@@ -243,8 +256,8 @@ async function analyzeRestaurantWithAI(
     // Ensure score is within valid range
     parsed.score = Math.max(0, Math.min(100, parsed.score));
     
-    // Ensure reasons array has max 2 elements and they're strings
-    parsed.reasons = parsed.reasons.slice(0, 2).filter(r => typeof r === 'string');
+    // Ensure reasons array has max 1 element according to hierarchy
+    parsed.reasons = parsed.reasons.slice(0, 1).filter(r => typeof r === 'string');
     
     return parsed;
   } catch (parseError) {
@@ -267,41 +280,62 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
   const popularityScore = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
 
   return `
-🎯 MISSION: Analyser la compatibilité restaurant-utilisateur
+🎯 MISSION: Analyser la compatibilité restaurant-utilisateur selon la hiérarchie de priorités
 
 📊 RESTAURANT À ANALYSER:
 • Nom: ${restaurant.name}
 • Cuisine: ${restaurant.cuisine_type?.join(', ') || 'Non spécifié'}
 • Prix: ${restaurant.price_range || 'Non spécifié'}
 • Description: ${restaurant.description || 'Aucune'}
+• Restrictions acceptées: ${restaurant.dietary_restrictions?.join(', ') || 'Non spécifié'}
+• Allergènes présents: ${restaurant.allergens?.join(', ') || 'Non spécifié'}
 • Popularité: ${popularityScore} vues totales
 • Notes: ${restaurant.rating_count || 0} avis (moyenne: ${restaurant.average_rating || 'N/A'})
 
 👤 PROFIL UTILISATEUR:
 • Cuisines préférées: ${preferences.cuisine_preferences?.join(', ') || 'Aucune préférence'}
 • Budget souhaité: ${preferences.price_range || 'Flexible'}
-• Restrictions: ${preferences.dietary_restrictions?.join(', ') || 'Aucune'}
-• Allergènes: ${preferences.allergens?.join(', ') || 'Aucun'}
+• Restrictions alimentaires: ${preferences.dietary_restrictions?.join(', ') || 'Aucune'}
+• Allergènes à éviter: ${preferences.allergens?.join(', ') || 'Aucun'}
 • Moments de repas favoris: ${preferences.favorite_meal_times?.join(', ') || 'Flexible'}
+• Rayon de livraison: ${preferences.delivery_radius || 'Non spécifié'} km
 
 ⏰ CONTEXTE ACTUEL:
 • Heure: ${currentHour}h (période: ${currentMealTime})
 • Timing optimal: ${isMealTimeMatch ? '✅ OUI' : '❌ NON'}
 
-🔍 CORRESPONDANCES DÉTECTÉES:
-• Cuisine: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')}` : '❌ Aucune'}
-• Budget: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
-• Popularité: ${popularityScore > 50 ? '⭐ Populaire' : '🆕 À découvrir'}
+🔍 CORRESPONDANCES DÉTECTÉES SELON HIÉRARCHIE:
+1. 🔒 RESTRICTIONS/ALLERGÈNES: ${checkSafetyCompatibility(restaurant, preferences)}
+2. 🍽️ CUISINE: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')}` : '❌ Aucune'}
+3. ⏰ TIMING: ${isMealTimeMatch ? '✅ Compatible' : '❌ Pas optimal'}
+4. 📍 LOCALISATION: ${preferences.delivery_radius ? '🔍 À vérifier' : '❌ Non définie'}
+5. 💰 BUDGET: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
+6. 🎉 PROMO: 🔍 À vérifier
 
 🎯 INSTRUCTIONS FINALES:
-Calcule un score de compatibilité intelligent (0-100) en privilégiant:
-1. Les correspondances cuisine exactes (+40 max)
-2. Le budget compatible (+25 max)
-3. Le timing optimal (+20 max)
-4. La qualité/popularité (+15 max)
-
-Choisis 1-2 raisons courtes qui justifient le score calculé.
+Suis STRICTEMENT la hiérarchie de priorités pour choisir UNE SEULE phrase d'explication.
+Calcule le score selon les points définis dans le système prompt.
   `;
+
+function checkSafetyCompatibility(restaurant: Restaurant, preferences: UserPreferences): string {
+  // Check dietary restrictions compatibility
+  if (preferences?.dietary_restrictions?.length && restaurant.dietary_restrictions?.length) {
+    const compatible = preferences.dietary_restrictions.some(restriction =>
+      restaurant.dietary_restrictions!.includes(restriction)
+    );
+    if (compatible) return '✅ Restrictions respectées';
+  }
+  
+  // Check allergens safety
+  if (preferences?.allergens?.length && restaurant.allergens?.length) {
+    const hasConflict = preferences.allergens.some(allergen =>
+      restaurant.allergens!.includes(allergen)
+    );
+    if (!hasConflict) return '✅ Sécuritaire (allergènes)';
+    else return '⚠️ Allergènes présents';
+  }
+  
+  return '❌ Sécurité non vérifiable';
 }
 
 function getCurrentMealTime(hour: number): string {
@@ -361,49 +395,107 @@ function calculateFallbackScore(restaurant: Restaurant, preferences: UserPrefere
   return Math.min(Math.round(score), 100);
 }
 
-function generateFallbackReasons(restaurant: Restaurant, preferences: UserPreferences): string[] {
-  const reasons: string[] = [];
+// Phrases prédéfinies pour les explications
+const EXPLANATION_PHRASES = {
+  fr: {
+    dietary_restrictions: "Adapté à tes préférences végétariennes",
+    dietary_restrictions_vegan: "Adapté à tes préférences véganes", 
+    dietary_restrictions_glutenfree: "Adapté à tes préférences sans gluten",
+    allergens_safe: "Sans tes allergènes déclarés",
+    cuisine_favorite: (cuisine: string) => `Parce que tu aimes la cuisine ${cuisine.toLowerCase()}`,
+    timing_perfect: "Ouvert au bon moment pour toi",
+    location_close: "À moins de 2 km de chez toi",
+    location_neighborhood: "Dans ton quartier préféré",
+    budget_perfect: (range: string) => `Respecte ton budget ${range}`,
+    promo_active: "En promo aujourd'hui",
+    discovery: "Nouvelle découverte recommandée"
+  },
+  en: {
+    dietary_restrictions: "Fits your vegetarian preferences",
+    dietary_restrictions_vegan: "Fits your vegan preferences",
+    dietary_restrictions_glutenfree: "Fits your gluten-free preferences", 
+    allergens_safe: "Safe from your declared allergens",
+    cuisine_favorite: (cuisine: string) => `Because you love ${cuisine.toLowerCase()} cuisine`,
+    timing_perfect: "Open at the right time for you",
+    location_close: "Less than 2 km from you",
+    location_neighborhood: "In your favorite neighborhood",
+    budget_perfect: (range: string) => `Fits your ${range} budget`,
+    promo_active: "On sale today",
+    discovery: "New discovery recommended"
+  }
+};
+
+function generateFallbackReasons(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): string[] {
   const currentHour = new Date().getHours();
   const currentMealTime = getCurrentMealTime(currentHour);
+  const phrases = EXPLANATION_PHRASES[language as keyof typeof EXPLANATION_PHRASES] || EXPLANATION_PHRASES.fr;
 
-  // Cuisine match
+  // Hiérarchie de priorités selon les spécifications
+  
+  // 1. RESTRICTIONS / ALLERGÈNES (sécurité d'abord)
+  if (preferences?.dietary_restrictions?.length && restaurant.dietary_restrictions?.length) {
+    const hasCompatibleRestrictions = preferences.dietary_restrictions.some(restriction =>
+      restaurant.dietary_restrictions!.includes(restriction)
+    );
+    if (hasCompatibleRestrictions) {
+      if (preferences.dietary_restrictions.includes('Végétarien')) {
+        return [phrases.dietary_restrictions];
+      } else if (preferences.dietary_restrictions.includes('Végan')) {
+        return [phrases.dietary_restrictions_vegan];
+      } else if (preferences.dietary_restrictions.includes('Sans gluten')) {
+        return [phrases.dietary_restrictions_glutenfree];
+      } else {
+        return [phrases.dietary_restrictions];
+      }
+    }
+  }
+
+  // Vérifier les allergènes
+  if (preferences?.allergens?.length && restaurant.allergens?.length) {
+    const hasConflictingAllergens = preferences.allergens.some(allergen =>
+      restaurant.allergens!.includes(allergen)
+    );
+    if (!hasConflictingAllergens) {
+      return [phrases.allergens_safe];
+    }
+  }
+
+  // 2. CUISINE PRÉFÉRÉE (plaisir principal)
   if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
     const matchingCuisines = restaurant.cuisine_type.filter(cuisine =>
       preferences.cuisine_preferences!.includes(cuisine)
     );
     if (matchingCuisines.length > 0) {
-      reasons.push(`Cuisine ${matchingCuisines[0]} appréciée`);
+      const cuisineName = matchingCuisines[0];
+      return [typeof phrases.cuisine_favorite === 'function' 
+        ? phrases.cuisine_favorite(cuisineName) 
+        : `Cuisine ${cuisineName} appréciée`];
     }
   }
 
-  // Price match
-  if (preferences?.price_range === restaurant.price_range) {
-    const priceLabels = {
-      '$': 'Tarifs abordables',
-      '$$': 'Prix modérés', 
-      '$$$': 'Gamme élevée',
-      '$$$$': 'Haut de gamme'
-    };
-    reasons.push(priceLabels[restaurant.price_range as keyof typeof priceLabels] || 'Prix adaptés');
-  }
-
-  // Time match
+  // 3. MOMENT CHOISI (pertinence temporelle)
   if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-    reasons.push('Moment parfait');
+    return [phrases.timing_perfect];
   }
 
-  // Popularity
-  const popularity = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
-  if (popularity > 50) {
-    reasons.push('Très populaire');
+  // 4. LOCALISATION (distance - à implémenter avec les données de distance)
+  // Pour l'instant, on utilise une logique basique
+  if (preferences?.delivery_radius && preferences.delivery_radius <= 2) {
+    return [phrases.location_close];
   }
 
-  // Default if no matches
-  if (reasons.length === 0) {
-    reasons.push('Découverte recommandée');
+  // 5. BUDGET (respect financier)
+  if (preferences?.price_range === restaurant.price_range && restaurant.price_range) {
+    return [typeof phrases.budget_perfect === 'function' 
+      ? phrases.budget_perfect(restaurant.price_range) 
+      : `Budget ${restaurant.price_range} respecté`];
   }
 
-  return reasons.slice(0, 2);
+  // 6. PROMO (bonus - à implémenter avec les données d'offres)
+  // Cette logique sera ajoutée quand les données de promotions seront disponibles
+
+  // Default si aucune correspondance
+  return [phrases.discovery];
 }
 
 async function logRecommendationInteraction(userId: string, recommendations: any[]) {
