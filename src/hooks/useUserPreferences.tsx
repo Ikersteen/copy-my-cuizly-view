@@ -38,6 +38,7 @@ export const useUserPreferences = () => {
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
   const [loading, setLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isLoadingInProgress, setIsLoadingInProgress] = useState(false);
   const { toast } = useToast();
   const { t } = useTranslation();
   const { saveTemporaryData, restoreDataAfterAuth } = useDataPersistence();
@@ -105,11 +106,13 @@ export const useUserPreferences = () => {
   }, [isInitialized]);
 
   const loadPreferences = async () => {
-    // Éviter les chargements redondants si déjà en cours
-    if (loading && preferences) {
+    // Éviter les chargements redondants
+    if (isLoadingInProgress || (preferences && !loading)) {
       console.log('⚠️ Preferences already loading or loaded, skipping...');
       return;
     }
+
+    setIsLoadingInProgress(true);
 
     try {
       console.log('🔄 Loading preferences...');
@@ -198,6 +201,7 @@ export const useUserPreferences = () => {
       console.error('Critical error loading preferences:', error);
     } finally {
       setLoading(false);
+      setIsLoadingInProgress(false);
     }
   };
 
