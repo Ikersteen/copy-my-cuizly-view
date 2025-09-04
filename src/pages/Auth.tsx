@@ -733,7 +733,7 @@ const Auth = () => {
           </p>
         </div>
 
-        <Card className="shadow-card border border-border">
+        <Card className="shadow-card border border-border w-full max-w-full sm:max-w-md mx-auto">
           <CardContent className="p-8 flex items-center justify-center">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-sm">
               <TabsList className="grid w-full grid-cols-2 mb-8 h-12 rounded-lg p-1">
