@@ -66,8 +66,9 @@ export const RecommendationCardsSection = () => {
 
     // Dietary restrictions match - Clear and brief explanation with warning indicator
     if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
+      const translationKey = preferences.dietary_restrictions.length === 1 ? 'reasonDietaryRestrictionFound' : 'reasonDietaryRestrictionsFound';
       reasons.push({
-        text: t('recommendations.reasonDietaryOptions'),
+        text: t(`recommendations.${translationKey}`),
         type: 'dietary'
       });
     }
