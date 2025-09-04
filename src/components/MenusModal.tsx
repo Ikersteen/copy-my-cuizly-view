@@ -487,17 +487,20 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                                </div>
                             </div>
                           )}
-                          {menu.allergens?.length > 0 && (
-                             <div>
-                               <p className="text-xs font-medium text-muted-foreground mb-1">{t('menusModal.allergens')}</p>
-                               <div className="flex flex-wrap gap-1">
-                                 {menu.allergens.map(allergen => (
-                                   <Badge key={allergen} variant="destructive" className="text-xs">
-                                     {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || allergen}
-                                   </Badge>
-                                 ))}
-                               </div>
-                            </div>
+                           {menu.allergens?.length > 0 && (
+                              <div>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                                  <p className="text-xs font-medium text-muted-foreground">{t('menusModal.allergens')}</p>
+                                </div>
+                                <div className="flex flex-wrap gap-1">
+                                  {menu.allergens.map(allergen => (
+                                    <Badge key={allergen} variant="destructive" className="text-xs">
+                                      {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || allergen}
+                                    </Badge>
+                                  ))}
+                                </div>
+                             </div>
                           )}
                         </div>
                       )}

@@ -331,11 +331,14 @@ export const RestaurantMenuModal = ({
                                 <span className="font-medium">{t('menus.dietaryRestrictions')}</span> {menu.dietary_restrictions.join(', ')}
                               </div>
                             )}
-                            {menu.allergens && menu.allergens.length > 0 && (
-                              <div className="text-xs text-muted-foreground">
-                                <span className="font-medium">{t('menus.allergens')}</span> {menu.allergens.join(', ')}
-                              </div>
-                            )}
+                             {menu.allergens && menu.allergens.length > 0 && (
+                               <div className="text-xs text-muted-foreground">
+                                 <div className="flex items-center gap-2">
+                                   <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                                   <span className="font-medium">{t('menus.allergens')}</span> {menu.allergens.join(', ')}
+                                 </div>
+                               </div>
+                             )}
                           </div>
                         </div>
                         <p className="text-sm text-foreground line-clamp-3">
