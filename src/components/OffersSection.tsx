@@ -21,6 +21,7 @@ interface Offer {
   restaurant?: {
     name: string;
   };
+  restaurant_name?: string; // Pour les données venant de la fonction RPC
 }
 
 interface OffersSectionProps {
@@ -42,29 +43,25 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
   const loadOffers = async () => {
     try {
       setLoading(true);
-      console.log('🎁 Loading offers for userType:', userType, 'restaurantId:', restaurantId);
       
-      let query = supabase.from('offers').select(`
-        *,
-        restaurants(name)
-      `);
+      let data, error;
 
       if (userType === 'restaurant' && restaurantId) {
-        query = query.eq('restaurant_id', restaurantId);
-        console.log('🏪 Filtering for restaurant:', restaurantId);
+        // Pour les restaurants, utiliser la requête directe avec RLS
+        const query = supabase.from('offers').select(`
+          *,
+          restaurants(name)
+        `).eq('restaurant_id', restaurantId);
+        
+        const result = await query.order('created_at', { ascending: false });
+        data = result.data;
+        error = result.error;
       } else if (userType === 'consumer') {
-        // Pour les consommateurs, afficher toutes les offres actives
-        query = query.eq('is_active', true);
-        console.log('👤 Loading all active offers for consumer');
+        // Pour les consommateurs, utiliser la fonction qui bypasse RLS
+        const result = await supabase.rpc('get_offers_with_restaurant_names');
+        data = result.data;
+        error = result.error;
       }
-
-      const { data, error } = await query.order('created_at', { ascending: false });
-
-      console.log('📊 Offers query result:', { 
-        dataLength: data?.length, 
-        error, 
-        rawData: JSON.stringify(data, null, 2)
-      });
 
       if (error) throw error;
 
@@ -76,15 +73,6 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
       const past = data?.filter(offer => 
         new Date(offer.valid_until) <= now || !offer.is_active
       ) || [];
-
-      console.log('📅 Offers categorized:', { 
-        total: data?.length, 
-        current: current.length, 
-        past: past.length,
-        now: now.toISOString(),
-        currentOffersDetails: JSON.stringify(current, null, 2),
-        pastOffersDetails: JSON.stringify(past, null, 2)
-      });
 
       setCurrentOffers(current);
       setPastOffers(past);
@@ -220,13 +208,13 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
                 {currentOffers.map((offer) => (
                   <div key={offer.id} className="flex items-center justify-between p-4 border rounded-lg bg-gradient-to-r from-background to-muted/20">
                     <div className="flex-1">
-                      {userType === 'consumer' && offer.restaurant && (
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs font-medium text-primary border-primary/20">
-                            📍 {offer.restaurant.name}
-                          </Badge>
-                        </div>
-                      )}
+                       {userType === 'consumer' && (offer.restaurant?.name || offer.restaurant_name) && (
+                         <div className="flex items-center gap-2 mb-2">
+                           <Badge variant="outline" className="text-xs font-medium text-primary border-primary/20">
+                             📍 {offer.restaurant?.name || offer.restaurant_name}
+                           </Badge>
+                         </div>
+                       )}
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-medium text-sm">{offer.title}</h4>
                         <Badge variant="default" className="text-xs">
@@ -276,13 +264,13 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
                 {pastOffers.map((offer) => (
                   <div key={offer.id} className="flex items-center justify-between p-4 border rounded-lg opacity-75 bg-muted/10">
                     <div className="flex-1">
-                      {userType === 'consumer' && offer.restaurant && (
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs font-medium text-muted-foreground border-muted-foreground/20">
-                            📍 {offer.restaurant.name}
-                          </Badge>
-                        </div>
-                      )}
+                       {userType === 'consumer' && (offer.restaurant?.name || offer.restaurant_name) && (
+                         <div className="flex items-center gap-2 mb-2">
+                           <Badge variant="outline" className="text-xs font-medium text-muted-foreground border-muted-foreground/20">
+                             📍 {offer.restaurant?.name || offer.restaurant_name}
+                           </Badge>
+                         </div>
+                       )}
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-medium text-sm">{offer.title}</h4>
                         <Badge variant="outline" className="text-xs">
