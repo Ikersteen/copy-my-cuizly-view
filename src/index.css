@@ -47,7 +47,7 @@ All colors MUST be HSL.
     --cuizly-pro-foreground: 0 0% 100%;
     --cuizly-analytics: 142 71% 45%;
     --cuizly-analytics-foreground: 0 0% 100%;
-    --cuizly-allergen: 0 100% 59%;
+    --cuizly-allergen: 0 100% 60%;
 
     /* Minimal gradients */
     --gradient-hero: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%));
@@ -111,6 +111,7 @@ All colors MUST be HSL.
     --cuizly-pro-foreground: 0 0% 100%;
     --cuizly-analytics: 142 71% 45%;
     --cuizly-analytics-foreground: 0 0% 100%;
+    --cuizly-allergen: 0 100% 60%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
