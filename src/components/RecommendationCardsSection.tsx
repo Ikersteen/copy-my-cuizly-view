@@ -49,13 +49,16 @@ export const RecommendationCardsSection = () => {
     // Check for allergen matches - Highest priority with red indicator
     if (preferences?.allergens && preferences.allergens.length > 0) {
       const restaurantMenus = menus.filter((menu: any) => menu.restaurant_id === restaurant.id);
-      const hasIdentifiedAllergens = restaurantMenus.some((menu: any) => 
-        menu.allergens?.some((allergen: string) => preferences.allergens.includes(allergen))
-      );
+      const identifiedAllergens = restaurantMenus.reduce((allergens: string[], menu: any) => {
+        const menuAllergens = menu.allergens?.filter((allergen: string) => preferences.allergens.includes(allergen)) || [];
+        return [...allergens, ...menuAllergens];
+      }, []);
+      const uniqueAllergens = [...new Set(identifiedAllergens)];
       
-      if (hasIdentifiedAllergens) {
+      if (uniqueAllergens.length > 0) {
+        const translationKey = uniqueAllergens.length === 1 ? 'reasonAllergenIdentified' : 'reasonAllergensIdentified';
         reasons.push({
-          text: t('recommendations.reasonAllergensIdentified'),
+          text: t(`recommendations.${translationKey}`),
           type: 'allergens'
         });
       }
