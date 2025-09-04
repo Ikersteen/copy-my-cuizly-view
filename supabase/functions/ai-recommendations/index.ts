@@ -614,11 +614,16 @@ function generateFallbackReasons(restaurant: Restaurant, preferences: UserPrefer
     return [locationMatch.phrase];
   }
 
-  // 5. BUDGET (respect financier)
-  if (preferences?.price_range === restaurant.price_range && restaurant.price_range) {
-    return [typeof phrases.budget_perfect === 'function' 
-      ? phrases.budget_perfect(restaurant.price_range) 
-      : `Budget ${restaurant.price_range} respecté`];
+  // 5. BUDGET (respect financier) - LOGIQUE AMÉLIORÉE
+  const budgetMatch = calculateBudgetMatch(restaurant, preferences);
+  if (budgetMatch.match) {
+    return [budgetMatch.phrase];
+  }
+
+  // 6. ZONE DE LIVRAISON (rayon optimisé) - LOGIQUE AMÉLIORÉE  
+  const deliveryMatch = calculateDeliveryMatch(restaurant, preferences);
+  if (deliveryMatch.match) {
+    return [deliveryMatch.phrase];
   }
 
   // 6. PROMO (bonus - à implémenter avec les données d'offres)
@@ -659,6 +664,76 @@ function calculateLocationMatch(restaurant: Restaurant, preferences: UserPrefere
   // Rayon de livraison générique
   if (preferences.delivery_radius && preferences.delivery_radius <= 2) {
     return { match: true, phrase: phrases.location_close };
+  }
+  
+  // Vérifier le rayon de livraison étendu
+  if (preferences.delivery_radius && preferences.delivery_radius > 2) {
+    return { 
+      match: true, 
+      phrase: typeof phrases.location_within_radius === 'function' 
+        ? phrases.location_within_radius(preferences.delivery_radius)
+        : `Dans votre rayon de ${preferences.delivery_radius} km`
+    };
+  }
+
+  return { match: false, phrase: '' };
+}
+
+// Fonction pour calculer le matching budgétaire intelligent
+function calculateBudgetMatch(restaurant: Restaurant, preferences: UserPreferences): { match: boolean, phrase: string } {
+  const phrases = EXPLANATION_PHRASES.fr;
+  
+  if (!preferences.price_range || !restaurant.price_range) {
+    return { match: false, phrase: '' };
+  }
+
+  // Match exact de prix
+  if (preferences.price_range === restaurant.price_range) {
+    return { 
+      match: true, 
+      phrase: typeof phrases.budget_perfect === 'function' 
+        ? phrases.budget_perfect(restaurant.price_range) 
+        : `Respecte votre budget ${restaurant.price_range}`
+    };
+  }
+
+  // Match de compatibilité budgétaire (restaurant moins cher que préférence)
+  const priceOrder = ['$', '$$', '$$$', '$$$$'];
+  const userIndex = priceOrder.indexOf(preferences.price_range);
+  const restaurantIndex = priceOrder.indexOf(restaurant.price_range);
+
+  if (restaurantIndex !== -1 && userIndex !== -1 && restaurantIndex <= userIndex) {
+    return { 
+      match: true, 
+      phrase: phrases.budget_affordable || "Dans vos moyens financiers"
+    };
+  }
+
+  return { match: false, phrase: '' };
+}
+
+// Fonction pour calculer le matching de zone de livraison
+function calculateDeliveryMatch(restaurant: Restaurant, preferences: UserPreferences): { match: boolean, phrase: string } {
+  const phrases = EXPLANATION_PHRASES.fr;
+  
+  if (!preferences.delivery_radius || !restaurant.delivery_radius) {
+    return { match: false, phrase: '' };
+  }
+
+  // Vérifier si l'utilisateur est dans la zone de livraison du restaurant
+  if (preferences.delivery_radius <= restaurant.delivery_radius) {
+    if (preferences.delivery_radius <= 1) {
+      return { match: true, phrase: "Dans votre zone de livraison immédiate" };
+    } else if (preferences.delivery_radius <= 3) {
+      return { match: true, phrase: phrases.location_delivery_zone || "Dans votre zone de livraison" };
+    } else {
+      return { 
+        match: true, 
+        phrase: typeof phrases.location_within_radius === 'function' 
+          ? phrases.location_within_radius(preferences.delivery_radius)
+          : `Livraison possible dans votre rayon de ${preferences.delivery_radius} km`
+      };
+    }
   }
 
   return { match: false, phrase: '' };
