@@ -663,21 +663,21 @@ export const RecommendationCardsSection = () => {
                                 text: reasonObj.text
                               });
                              
-                             return (
-                               <div key={idx} className="flex items-center gap-2.5">
-                                 <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                   isAllergens ? 'bg-red-500' : 
-                                   reasonObj.type === 'dietary' ? 'bg-emerald-500' :
-                                   reasonObj.type === 'price' ? 'bg-emerald-500' : 
-                                   reasonObj.type === 'cuisine' ? 'bg-blue-500' : 
-                                   reasonObj.type === 'timing' ? 'bg-purple-500' :
-                                   'bg-orange-500'
-                                 }`} />
-                                 <span className="text-xs text-foreground/80 leading-relaxed">
-                                   {reasonObj.text}
-                                 </span>
-                               </div>
-                             );
+                              return (
+                                <div key={idx} className="flex items-center gap-2.5">
+                                  <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                                    isAllergens ? 'bg-red-500' : 
+                                    reasonObj.type === 'dietary' ? 'bg-emerald-500' :
+                                    reasonObj.type === 'price' ? 'bg-orange-500' : 
+                                    reasonObj.type === 'cuisine' ? 'bg-blue-500' : 
+                                    reasonObj.type === 'timing' ? 'bg-purple-500' :
+                                    'bg-gray-400'
+                                  }`} />
+                                  <span className="text-xs text-foreground/80 leading-relaxed">
+                                    {reasonObj.text}
+                                  </span>
+                                </div>
+                              );
                           })}
                        </div>
                     </div>
