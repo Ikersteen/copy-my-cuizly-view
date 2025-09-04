@@ -13,7 +13,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Camera, X, Upload, LogOut, Trash2, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
-import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
+import { AddressSelector } from "@/components/MontrealAddressSelector";
+import { useAddresses } from "@/hooks/useAddresses";
+import { createAddressInput } from "@/lib/addressUtils";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
@@ -32,6 +34,8 @@ interface Restaurant {
   chef_emoji_color?: string;
   delivery_radius?: number;
   restaurant_specialties?: string[];
+  dietary_restrictions?: string[];
+  allergens?: string[];
 }
 
 interface RestaurantProfileModalProps {
@@ -50,6 +54,7 @@ export const RestaurantProfileModal = ({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { updateProfile } = useProfile();
+  const { primaryAddress: restaurantAddress, createAddress, updateAddress: updateAddressHook } = useAddresses('restaurant');
   const [formData, setFormData] = useState<Partial<Restaurant>>({});
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -73,7 +78,7 @@ export const RestaurantProfileModal = ({
       setFormData({
         name: restaurant.name || "",
         description: restaurant.description || "",
-        address: restaurant.address || "",
+        address: restaurantAddress?.formatted_address || restaurant.address || "",
         phone: restaurant.phone || "",
         email: restaurant.email || "",
         cuisine_type: restaurant.cuisine_type || [],
@@ -133,23 +138,36 @@ export const RestaurantProfileModal = ({
     
     setLoading(true);
     try {
-      // Sanitize form data before saving
-      const sanitizedData = {
+      // Update restaurant data (excluding address)
+      const { address, ...restaurantData } = {
         ...formData,
         name: formData.name ? validateTextInput(formData.name, INPUT_LIMITS.NAME).sanitized : formData.name,
         description: formData.description ? validateTextInput(formData.description, INPUT_LIMITS.DESCRIPTION).sanitized : formData.description,
-        address: formData.address ? validateTextInput(formData.address, INPUT_LIMITS.ADDRESS).sanitized : formData.address,
         phone: formData.phone ? validateTextInput(formData.phone, INPUT_LIMITS.PHONE).sanitized : formData.phone,
         email: formData.email ? formData.email.trim().toLowerCase() : formData.email,
-        cuisine_type: formData.cuisine_type ? sanitizeStringArray(formData.cuisine_type) : formData.cuisine_type
+        cuisine_type: formData.cuisine_type ? sanitizeStringArray(formData.cuisine_type) : formData.cuisine_type,
+        dietary_restrictions: formData.dietary_restrictions || [],
+        allergens: formData.allergens || [],
+        restaurant_specialties: formData.restaurant_specialties || []
       };
 
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from('restaurants')
-        .update(sanitizedData)
+        .update(restaurantData)
         .eq('id', restaurant.id);
 
-      if (error) throw error;
+      if (updateError) throw updateError;
+
+      // Handle address update separately
+      if (address && address !== restaurantAddress?.formatted_address) {
+        if (restaurantAddress) {
+          await updateAddressHook(restaurantAddress.id!, { 
+            formatted_address: address 
+          });
+        } else {
+          await createAddress(createAddressInput(address, 'restaurant', true));
+        }
+      }
 
       // Update the profile with chef_emoji_color if it changed using the hook
       if (formData.chef_emoji_color !== restaurant.chef_emoji_color) {
@@ -445,7 +463,7 @@ export const RestaurantProfileModal = ({
             </div>
 
             <div>
-              <MontrealAddressSelector
+              <AddressSelector
                 value={formData.address || ""}
                 onChange={(address) => setFormData(prev => ({ ...prev, address }))}
                 label={t('restaurantProfile.address')}

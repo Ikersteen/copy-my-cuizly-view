@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useDataPersistence } from "./useDataPersistence";
+import { useAddresses } from "./useAddresses";
 
 export interface UserPreferences {
   id?: string;
@@ -11,16 +12,17 @@ export interface UserPreferences {
   dietary_restrictions: string[];
   allergens: string[];
   price_range: string;
-  street?: string;
-  full_address?: string;
-  neighborhood?: string;
-  postal_code?: string;
   delivery_radius: number;
   favorite_meal_times: string[];
   notification_preferences: {
     push: boolean;
     email: boolean;
   };
+  // Legacy address fields - now handled by addresses table
+  street?: string;
+  full_address?: string;
+  neighborhood?: string;
+  postal_code?: string;
 }
 
 const defaultPreferences: Omit<UserPreferences, 'user_id'> = {
@@ -28,10 +30,6 @@ const defaultPreferences: Omit<UserPreferences, 'user_id'> = {
   dietary_restrictions: [],
   allergens: [],
   price_range: "",
-  street: "",
-  full_address: "",
-  neighborhood: "",
-  postal_code: "",
   delivery_radius: 1,
   favorite_meal_times: [],
   notification_preferences: {
@@ -48,6 +46,13 @@ export const useUserPreferences = () => {
   const { toast } = useToast();
   const { t } = useTranslation();
   const { saveTemporaryData, restoreDataAfterAuth } = useDataPersistence();
+  
+  // Use the new addresses hook for delivery addresses
+  const { 
+    getPrimaryAddressByType, 
+    createAddress, 
+    updateAddress: updateAddressHook 
+  } = useAddresses('user_delivery');
 
   // Listen for data restoration after auth
   useEffect(() => {
@@ -278,10 +283,34 @@ export const useUserPreferences = () => {
     }
   };
 
+  // Address helper methods
+  const getDeliveryAddress = () => {
+    return getPrimaryAddressByType('user_delivery');
+  };
+
+  const updateDeliveryAddress = async (formattedAddress: string) => {
+    const existingAddress = getDeliveryAddress();
+    
+    if (existingAddress) {
+      return updateAddressHook(existingAddress.id!, { 
+        formatted_address: formattedAddress 
+      });
+    } else {
+      return createAddress({
+        address_type: 'user_delivery',
+        formatted_address: formattedAddress,
+        is_primary: true
+      });
+    }
+  };
+
   return {
     preferences,
     loading,
     updatePreferences,
-    loadPreferences
+    loadPreferences,
+    // Address methods
+    getDeliveryAddress,
+    updateDeliveryAddress
   };
 };

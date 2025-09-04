@@ -12,7 +12,9 @@ import { X, Plus, ChevronDown } from "lucide-react";
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks/useLanguage';
-import { MontrealAddressSelector } from "@/components/MontrealAddressSelector";
+import { AddressSelector } from "@/components/MontrealAddressSelector";
+import { useAddresses } from "@/hooks/useAddresses";
+import { useToast } from "@/hooks/use-toast";
 
 interface PreferencesModalProps {
   open: boolean;
@@ -33,7 +35,9 @@ const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const { preferences, updatePreferences } = useUserPreferences();
+  const { preferences, updatePreferences, getDeliveryAddress, updateDeliveryAddress } = useUserPreferences();
+  const { primaryAddress: deliveryAddress } = useAddresses('user_delivery');
+  const { toast } = useToast();
   const [localPrefs, setLocalPrefs] = useState<Partial<UserPreferences>>({});
 
   // Function to get translated cuisine name
@@ -107,10 +111,6 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         dietary_restrictions: preferences.dietary_restrictions || [],
         allergens: preferences.allergens || [],
         price_range: preferences.price_range || "",
-        street: preferences.street || "",
-        full_address: preferences.full_address || "",
-        neighborhood: preferences.neighborhood || "",
-        postal_code: preferences.postal_code || "",
         delivery_radius: preferences.delivery_radius || 1,
         favorite_meal_times: preferences.favorite_meal_times || [],
         notification_preferences: preferences.notification_preferences || { push: false, email: false }
@@ -121,14 +121,31 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
   const handleSave = async () => {
     try {
       console.log('Saving preferences:', localPrefs);
-      await updatePreferences(localPrefs);
       
-      // L'événement preferencesUpdated est déjà émis par updatePreferences()
-      // Pas besoin de le réémettre ici pour éviter les doublons
+      // Update main preferences (excluding legacy address fields)
+      const { street, full_address, neighborhood, postal_code, ...prefsToSave } = localPrefs;
+      await updatePreferences(prefsToSave);
+      
+      // Update delivery address if it was provided
+      const currentAddress = deliveryAddress?.formatted_address || "";
+      const newAddress = (localPrefs as any).full_address || "";
+      
+      if (newAddress && newAddress !== currentAddress) {
+        await updateDeliveryAddress(newAddress);
+      }
       
       onOpenChange(false);
+      toast({
+        title: t('toasts.success'),
+        description: t('preferences.saved')
+      });
     } catch (error) {
       console.error('Error saving preferences:', error);
+      toast({
+        title: t('toasts.error'),
+        description: t('preferences.saveError'),
+        variant: "destructive"
+      });
     }
   };
 
@@ -280,30 +297,22 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Adresse complète */}
+          {/* Adresse de livraison */}
           <div>
-            <MontrealAddressSelector
-              value={localPrefs.full_address || ""}
+            <AddressSelector
+              value={deliveryAddress?.formatted_address || ""}
               onChange={(address) => {
-                const addressParts = address.split(',');
-                const streetAddress = addressParts[0]?.trim() || "";
-                const neighborhood = addressParts[1]?.trim() || "";
-                const postal = addressParts[2]?.match(/[A-Z]\d[A-Z] ?\d[A-Z]\d/)?.[0] || "";
-                
                 setLocalPrefs(prev => ({
                   ...prev,
-                  full_address: address,
-                  street: streetAddress.replace(/^\d+\s+/, ''), // Enlever le numéro pour garder juste le nom de rue
-                  neighborhood: neighborhood,
-                  postal_code: postal
+                  full_address: address
                 }));
               }}
-              label={t('preferences.fullAddress')}
-              placeholder="Commencez à taper votre adresse à Montréal..."
+              label={t('preferences.deliveryAddress')}
+              placeholder="Commencez à taper votre adresse de livraison à Montréal..."
             />
-            {localPrefs.full_address && (
+            {deliveryAddress?.formatted_address && (
               <p className="text-xs text-muted-foreground mt-2">
-                📍 {t('preferences.addressSelected')}: {localPrefs.full_address}
+                📍 {t('preferences.addressSelected')}: {deliveryAddress.formatted_address}
               </p>
             )}
           </div>
