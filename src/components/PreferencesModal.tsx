@@ -136,8 +136,8 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
       
       onOpenChange(false);
       toast({
-        title: t('toasts.success'),
-        description: t('preferences.saved')
+        title: t('toasts.preferencesUpdated'),
+        description: t('toasts.preferencesSavedSuccessfully')
       });
     } catch (error) {
       console.error('Error saving preferences:', error);
