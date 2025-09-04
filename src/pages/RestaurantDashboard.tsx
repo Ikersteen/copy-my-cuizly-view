@@ -256,25 +256,12 @@ const RestaurantDashboard = () => {
             </div>
             
             <div className="flex gap-2 self-start sm:self-auto">
-              {/* Mobile Menu - Only visible on mobile and tablet */}
+              {/* Menu unifié pour tous les écrans */}
               <RestaurantMobileMenu 
                 onNewOfferClick={() => setShowOfferModal(true)}
                 onRestaurantProfileClick={() => setShowProfileModal(true)}
                 onManageMenusClick={() => handleActionClick(t('dashboard.manageMenus'))}
               />
-              
-              {/* Desktop Button - Hidden on mobile/tablet */}
-              <div className="hidden lg:flex">
-                <Button 
-                  variant="outline"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="min-h-[44px] text-destructive hover:text-destructive hover:bg-destructive/10"
-                >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  <span>{t('dashboard.logout')}</span>
-                </Button>
-              </div>
             </div>
           </div>
         </div>

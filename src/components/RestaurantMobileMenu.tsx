@@ -52,7 +52,7 @@ export const RestaurantMobileMenu = ({
   };
 
   return (
-    <div className="lg:hidden">
+    <div>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="sm" className="p-2">

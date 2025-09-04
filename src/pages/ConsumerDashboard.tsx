@@ -183,43 +183,12 @@ const ConsumerDashboard = () => {
             </div>
             
             <div className="flex gap-2 self-start sm:self-auto">
-              {/* Mobile Menu - Only visible on mobile and tablet */}
+              {/* Menu unifié pour tous les écrans */}
               <ConsumerMobileMenu 
                 onProfileClick={() => setShowProfile(true)}
                 onPreferencesClick={() => setShowPreferences(true)}
                 onOffersClick={() => {/* Focus on offers tab */}}
               />
-              
-              {/* Desktop Buttons - Hidden on mobile/tablet */}
-              <div className="hidden lg:flex gap-2">
-                <Button 
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowProfile(true)}
-                  className="px-3 py-2 h-10"
-                >
-                  <UserIcon className="h-4 w-4 mr-1 sm:mr-2" />
-                  <span className="text-xs sm:text-sm">{t('dashboard.profile')}</span>
-                </Button>
-                <Button 
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowPreferences(true)}
-                  className="px-3 py-2 h-10"
-                >
-                  <Settings className="h-4 w-4 mr-1 sm:mr-2" />
-                  <span className="text-xs sm:text-sm">{t('dashboard.preferences')}</span>
-                </Button>
-                <Button 
-                  variant="outline"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="px-3 py-2 h-10 text-destructive hover:text-destructive hover:bg-destructive/10"
-                >
-                  <LogOut className="h-4 w-4 mr-1 sm:mr-2" />
-                  <span className="text-xs sm:text-sm">{t('dashboard.logout')}</span>
-                </Button>
-              </div>
             </div>
           </div>
         </div>
