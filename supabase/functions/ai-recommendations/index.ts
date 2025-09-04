@@ -210,51 +210,41 @@ async function analyzeRestaurantWithAI(
           
           HIÉRARCHIE DE PRIORITÉS (OBLIGATOIRE - dans cet ordre exact):
           1. 🔒 RESTRICTIONS / ALLERGÈNES (sécurité d'abord - 30%)
-          2. 🍽️ CUISINE PRÉFÉRÉE (plaisir principal - 25%) 
-          3. ⏰ MOMENT CHOISI (pertinence temporelle - 20%)
-          4. 📍 LOCALISATION (distance - 15%)
-          5. 💰 BUDGET (respect financier - 10%)
-          6. 🎉 PROMO (bonus - 5%)
-
-          PHRASES AUTORISÉES (utilise EXACTEMENT ces phrases avec les bons noms en français):
-          - Restrictions: "Adapté à tes préférences végétariennes" / "Adapté à tes préférences véganes" / "Adapté à tes préférences sans gluten"
-          - Allergènes: "Sans tes allergènes déclarés" 
-          - Cuisine: "Parce que tu aimes la cuisine [nom_français]" (ex: "française", "italienne", "mexicaine", "asiatique", "indienne", etc.)
-          - Timing: "Ouvert au bon moment pour toi"
-          - Localisation: "À moins de 2 km de chez toi" / "Dans ton quartier préféré"
-          - Budget: "Respecte ton budget [gamme]"
-          - Promo: "En promo aujourd'hui"
-          - Default: "Nouvelle découverte recommandée"
+          2. 🍽️ CUISINES PRÉFÉRÉES (plaisir principal - 25%) 
+          3. ⏰ MOMENTS PRÉFÉRÉS (pertinence temporelle - 20%)
+          4. 🎉 PROMOTIONS (offres spéciales - 15%)
+          5. 📍 LOCALISATION (distance - 10%)
           
-          IMPORTANT: Pour les cuisines, utilise TOUJOURS les noms français corrects:
-          - "french" → "française"
-          - "italian" → "italienne" 
-          - "mexican" → "mexicaine"
-          - "asian" → "asiatique"
-          - "indian" → "indienne"
-          - "mediterranean" → "méditerranéenne"
-          - "japanese" → "japonaise"
-          - "chinese" → "chinoise"
+          RÈGLES DE GÉNÉRATION INTELLIGENTE:
+          - Vérifier TOUTES les correspondances pour chaque catégorie
+          - Combiner jusqu'à 2 éléments par catégorie si plusieurs matchent
+          - Générer 1-2 phrases courtes et lisibles expliquant pourquoi recommandé
+          - Utiliser des détails spécifiques du profil utilisateur et des données restaurant
           
-          SCORING SELON HIÉRARCHIE:
-          - Restrictions/Allergènes compatibles: +30 points
-          - Cuisine exactement préférée: +25 points
-          - Timing optimal: +20 points  
-          - Localisation proche: +15 points
-          - Budget compatible: +10 points
-          - Promo active: +5 points
-          - Score base: 20 points
+          EXEMPLES DE PHRASES INTELLIGENTES:
+          - Restrictions: "Parfait pour tes préférences végétariennes et sans gluten" / "Respecte tes restrictions alimentaires"
+          - Allergènes: "Totalement sûr, évite tes allergènes déclarés" 
+          - Cuisines (1): "Puisque tu aimes la cuisine [cuisine]"
+          - Cuisines (2): "Combine la cuisine [cuisine1] et [cuisine2] que tu adores"
+          - Cuisines (3+): "Correspond à 3+ de tes cuisines favorites"
+          - Moments: "Ouvert pendant tes moments de repas favoris" / "Parfait pour le [petit-déjeuner/déjeuner/dîner]"
+          - Promotions: "Des offres spéciales disponibles aujourd'hui" / "Promotion en cours sur tes plats préférés"
+          - Localisation: "Dans ton rayon de livraison préféré" / "Proche de chez toi"
           
-          RÈGLES STRICTES:
-          - Une seule raison par restaurant selon la hiérarchie
-          - Choisis la PREMIÈRE règle applicable dans l'ordre de priorité
-          - Utilise EXACTEMENT les phrases prédéfinies
-          - Score de 0-100
+          GESTION DES CORRESPONDANCES MULTIPLES:
+          - Si 1 élément match: phrase simple et directe
+          - Si 2 éléments matchent: combiner dans une phrase fluide
+          - Si 3+ éléments matchent: utiliser "plusieurs" ou "tous tes"
+          
+          EXEMPLES DE COMBINAISONS:
+          - "Parfait car tu aimes la cuisine italienne et c'est ouvert pour ton dîner"
+          - "Respecte tes préférences véganes et propose des promotions aujourd'hui"
+          - "Correspond à plusieurs de tes cuisines favorites et dans ton quartier"
           
           FORMAT JSON OBLIGATOIRE:
           {
             "score": number (0-100),
-            "reasons": ["phrase exacte selon hiérarchie"],
+            "reasons": ["1-2 phrases spécifiques et lisibles"],
             "sentiment_analysis": "positive|neutral|negative",
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
