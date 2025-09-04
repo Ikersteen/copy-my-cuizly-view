@@ -200,8 +200,8 @@ const Header = () => {
             </>
           )}
 
-          {/* Mobile Menu */}
-          <div className="lg:hidden">
+          {/* Menu - Always visible */}
+          <div className="flex items-center">
             {isAuthenticated ? (
               // Authenticated mobile menu - role specific
               <>
