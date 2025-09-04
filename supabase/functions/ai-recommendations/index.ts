@@ -453,33 +453,105 @@ function calculateFallbackScore(restaurant: Restaurant, preferences: UserPrefere
   return Math.min(Math.round(score), 100);
 }
 
-// Phrases prédéfinies pour les explications
+// Phrases prédéfinies pour les explications - TOUTES LES PRÉFÉRENCES
 const EXPLANATION_PHRASES = {
   fr: {
+    // 1. RESTRICTIONS ALIMENTAIRES (priorité santé)
     dietary_restrictions: "Adapté à tes préférences végétariennes",
     dietary_restrictions_vegan: "Adapté à tes préférences véganes", 
     dietary_restrictions_glutenfree: "Adapté à tes préférences sans gluten",
+    dietary_restrictions_halal: "Adapté à tes préférences halal",
+    dietary_restrictions_kosher: "Adapté à tes préférences casher",
+    
+    // 2. ALLERGÈNES (sécurité alimentaire)
     allergens_safe: "Sans tes allergènes déclarés",
+    allergens_nuts: "Sans arachides comme tu le souhaites",
+    allergens_dairy: "Sans produits laitiers pour toi",
+    allergens_seafood: "Sans fruits de mer selon tes besoins",
+    allergens_gluten: "Sans gluten pour ta santé",
+    
+    // 3. CUISINES PRÉFÉRÉES 
     cuisine_favorite: (cuisine: string) => `Parce que tu aimes la cuisine ${cuisine.toLowerCase()}`,
-    timing_perfect: "Ouvert au bon moment pour toi",
+    cuisine_multiple: (cuisines: string[]) => `Parce que tu aimes la cuisine ${cuisines.slice(0, 3).join(', ')}`,
+    
+    // 4. MOMENTS FAVORIS (timing)
+    timing_perfect: "Ouvert pour tes moments favoris",
+    timing_breakfast: "Ouvert pour le déjeuner/brunch",
+    timing_lunch: "Ouvert pour le dîner rapide", 
+    timing_dinner: "Ouvert pour le souper",
+    timing_late: "Ouvert pour les repas tardifs",
+    
+    // 5. LOCALISATION (rue + distance)
+    location_same_street: "Sur votre rue à Montréal",
+    location_neighborhood: "Dans votre quartier à Montréal",
+    location_main_artery: "Sur la même artère principale",
     location_close: "À moins de 2 km de chez toi",
-    location_neighborhood: "Dans ton quartier préféré",
+    location_within_radius: (radius: number) => `Dans ton rayon de ${radius} km`,
+    location_delivery_zone: "Dans ta zone de livraison préférée",
+    
+    // 6. BUDGET (gamme de prix)
     budget_perfect: (range: string) => `Respecte ton budget ${range}`,
+    budget_affordable: "Dans tes moyens financiers",
+    budget_premium: "Correspond à ton budget premium",
+    
+    // 7. PROMOTIONS (bonus)
     promo_active: "En promo aujourd'hui",
-    discovery: "Nouvelle découverte recommandée"
+    promo_special: "Offre spéciale disponible",
+    promo_discount: (percent: number) => `${percent}% de réduction active`,
+    
+    // 8. DÉCOUVERTE (fallback)
+    discovery: "Nouvelle découverte recommandée",
+    discovery_popular: "Populaire dans ton secteur",
+    discovery_trending: "Tendance du moment"
   },
   en: {
+    // 1. DIETARY RESTRICTIONS
     dietary_restrictions: "Fits your vegetarian preferences",
     dietary_restrictions_vegan: "Fits your vegan preferences",
-    dietary_restrictions_glutenfree: "Fits your gluten-free preferences", 
+    dietary_restrictions_glutenfree: "Fits your gluten-free preferences",
+    dietary_restrictions_halal: "Fits your halal preferences", 
+    dietary_restrictions_kosher: "Fits your kosher preferences",
+    
+    // 2. ALLERGENS
     allergens_safe: "Safe from your declared allergens",
+    allergens_nuts: "Nut-free as you requested",
+    allergens_dairy: "Dairy-free for you",
+    allergens_seafood: "Seafood-free as needed",
+    allergens_gluten: "Gluten-free for your health",
+    
+    // 3. PREFERRED CUISINES
     cuisine_favorite: (cuisine: string) => `Because you love ${cuisine.toLowerCase()} cuisine`,
-    timing_perfect: "Open at the right time for you",
+    cuisine_multiple: (cuisines: string[]) => `Because you love ${cuisines.slice(0, 3).join(', ')} cuisine`,
+    
+    // 4. FAVORITE MEAL TIMES
+    timing_perfect: "Open for your favorite times",
+    timing_breakfast: "Open for breakfast/brunch",
+    timing_lunch: "Open for quick lunch",
+    timing_dinner: "Open for dinner",
+    timing_late: "Open for late meals",
+    
+    // 5. LOCATION
+    location_same_street: "On your street in Montreal",
+    location_neighborhood: "In your Montreal neighborhood", 
+    location_main_artery: "On the same main artery",
     location_close: "Less than 2 km from you",
-    location_neighborhood: "In your favorite neighborhood",
+    location_within_radius: (radius: number) => `Within your ${radius} km radius`,
+    location_delivery_zone: "In your preferred delivery zone",
+    
+    // 6. BUDGET
     budget_perfect: (range: string) => `Fits your ${range} budget`,
+    budget_affordable: "Within your price range",
+    budget_premium: "Matches your premium budget",
+    
+    // 7. PROMOTIONS
     promo_active: "On sale today",
-    discovery: "New discovery recommended"
+    promo_special: "Special offer available",
+    promo_discount: (percent: number) => `${percent}% discount active`,
+    
+    // 8. DISCOVERY
+    discovery: "New discovery recommended",
+    discovery_popular: "Popular in your area",
+    discovery_trending: "Currently trending"
   }
 };
 
