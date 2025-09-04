@@ -610,8 +610,9 @@ export const RecommendationCardsSection = () => {
                               <div key={idx} className="flex items-center gap-2.5">
                                 <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
                                   isDietary || isAllergens ? 'bg-red-500' : 
-                                  idx === 0 ? 'bg-emerald-500' : 
-                                  idx === 1 ? 'bg-blue-500' : 
+                                  reasonObj.type === 'price' ? 'bg-emerald-500' : 
+                                  reasonObj.type === 'cuisine' ? 'bg-blue-500' : 
+                                  reasonObj.type === 'timing' ? 'bg-purple-500' :
                                   'bg-orange-500'
                                 }`} />
                                 <span className="text-xs text-foreground/80 leading-relaxed">
