@@ -603,13 +603,13 @@ export const RecommendationCardsSection = () => {
                        <div className="space-y-2">
                           {reasons.slice(0, 3).map((reason, idx) => {
                             const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
-                            const isDietary = reasonObj.type === 'dietary';
                             const isAllergens = reasonObj.type === 'allergens';
                             
                             return (
                               <div key={idx} className="flex items-center gap-2.5">
                                 <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                  isDietary || isAllergens ? 'bg-red-500' : 
+                                  isAllergens ? 'bg-red-500' : 
+                                  reasonObj.type === 'dietary' ? 'bg-emerald-500' :
                                   reasonObj.type === 'price' ? 'bg-emerald-500' : 
                                   reasonObj.type === 'cuisine' ? 'bg-blue-500' : 
                                   reasonObj.type === 'timing' ? 'bg-purple-500' :
