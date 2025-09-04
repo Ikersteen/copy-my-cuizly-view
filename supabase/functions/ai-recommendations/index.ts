@@ -609,19 +609,19 @@ function generateFallbackReasons(restaurant: Restaurant, preferences: UserPrefer
   }
 
   // 4. LOCALISATION (distance - matching basé sur les rues de Montréal)
-  const locationMatch = calculateLocationMatch(restaurant, preferences);
+  const locationMatch = calculateLocationMatch(restaurant, preferences, language);
   if (locationMatch.match) {
     return [locationMatch.phrase];
   }
 
   // 5. BUDGET (respect financier) - LOGIQUE AMÉLIORÉE
-  const budgetMatch = calculateBudgetMatch(restaurant, preferences);
+  const budgetMatch = calculateBudgetMatch(restaurant, preferences, language);
   if (budgetMatch.match) {
     return [budgetMatch.phrase];
   }
 
   // 6. ZONE DE LIVRAISON (rayon optimisé) - LOGIQUE AMÉLIORÉE  
-  const deliveryMatch = calculateDeliveryMatch(restaurant, preferences);
+  const deliveryMatch = calculateDeliveryMatch(restaurant, preferences, language);
   if (deliveryMatch.match) {
     return [deliveryMatch.phrase];
   }
@@ -634,8 +634,8 @@ function generateFallbackReasons(restaurant: Restaurant, preferences: UserPrefer
 }
 
 // Fonction pour calculer le matching géographique basé sur les rues de Montréal
-function calculateLocationMatch(restaurant: Restaurant, preferences: UserPreferences): { match: boolean, phrase: string } {
-  const phrases = EXPLANATION_PHRASES.fr; // Par défaut français
+function calculateLocationMatch(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): { match: boolean, phrase: string } {
+  const phrases = EXPLANATION_PHRASES[language as keyof typeof EXPLANATION_PHRASES] || EXPLANATION_PHRASES.fr;
   
   // Si pas d'adresse ou de préférence de rue, pas de match
   if (!restaurant.address || !preferences.street) {
@@ -652,11 +652,14 @@ function calculateLocationMatch(restaurant: Restaurant, preferences: UserPrefere
 
   // Match exact de rue
   if (restaurantStreet === userStreet) {
-    return { match: true, phrase: "Sur votre rue à Montréal" };
+    return { 
+      match: true, 
+      phrase: language === 'en' ? "On your street in Montreal" : "Sur votre rue à Montréal" 
+    };
   }
 
   // Match de quartier/proximité pour rues populaires de Montréal
-  const proximityMatch = checkMontrealProximity(restaurantStreet, userStreet);
+  const proximityMatch = checkMontrealProximity(restaurantStreet, userStreet, language);
   if (proximityMatch.isClose) {
     return { match: true, phrase: proximityMatch.phrase };
   }
@@ -672,7 +675,9 @@ function calculateLocationMatch(restaurant: Restaurant, preferences: UserPrefere
       match: true, 
       phrase: typeof phrases.location_within_radius === 'function' 
         ? phrases.location_within_radius(preferences.delivery_radius)
-        : `Dans votre rayon de ${preferences.delivery_radius} km`
+        : (language === 'en' 
+            ? `Within your ${preferences.delivery_radius} km radius`
+            : `Dans votre rayon de ${preferences.delivery_radius} km`)
     };
   }
 
@@ -680,8 +685,8 @@ function calculateLocationMatch(restaurant: Restaurant, preferences: UserPrefere
 }
 
 // Fonction pour calculer le matching budgétaire intelligent
-function calculateBudgetMatch(restaurant: Restaurant, preferences: UserPreferences): { match: boolean, phrase: string } {
-  const phrases = EXPLANATION_PHRASES.fr;
+function calculateBudgetMatch(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): { match: boolean, phrase: string } {
+  const phrases = EXPLANATION_PHRASES[language as keyof typeof EXPLANATION_PHRASES] || EXPLANATION_PHRASES.fr;
   
   if (!preferences.price_range || !restaurant.price_range) {
     return { match: false, phrase: '' };
@@ -693,7 +698,9 @@ function calculateBudgetMatch(restaurant: Restaurant, preferences: UserPreferenc
       match: true, 
       phrase: typeof phrases.budget_perfect === 'function' 
         ? phrases.budget_perfect(restaurant.price_range) 
-        : `Respecte votre budget ${restaurant.price_range}`
+        : (language === 'en' 
+            ? `Fits your ${restaurant.price_range} budget`
+            : `Respecte votre budget ${restaurant.price_range}`)
     };
   }
 
@@ -705,7 +712,7 @@ function calculateBudgetMatch(restaurant: Restaurant, preferences: UserPreferenc
   if (restaurantIndex !== -1 && userIndex !== -1 && restaurantIndex <= userIndex) {
     return { 
       match: true, 
-      phrase: phrases.budget_affordable || "Dans vos moyens financiers"
+      phrase: phrases.budget_affordable || (language === 'en' ? "Within your price range" : "Dans vos moyens financiers")
     };
   }
 
@@ -713,8 +720,8 @@ function calculateBudgetMatch(restaurant: Restaurant, preferences: UserPreferenc
 }
 
 // Fonction pour calculer le matching de zone de livraison
-function calculateDeliveryMatch(restaurant: Restaurant, preferences: UserPreferences): { match: boolean, phrase: string } {
-  const phrases = EXPLANATION_PHRASES.fr;
+function calculateDeliveryMatch(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): { match: boolean, phrase: string } {
+  const phrases = EXPLANATION_PHRASES[language as keyof typeof EXPLANATION_PHRASES] || EXPLANATION_PHRASES.fr;
   
   if (!preferences.delivery_radius || !restaurant.delivery_radius) {
     return { match: false, phrase: '' };
@@ -723,15 +730,23 @@ function calculateDeliveryMatch(restaurant: Restaurant, preferences: UserPrefere
   // Vérifier si l'utilisateur est dans la zone de livraison du restaurant
   if (preferences.delivery_radius <= restaurant.delivery_radius) {
     if (preferences.delivery_radius <= 1) {
-      return { match: true, phrase: "Dans votre zone de livraison immédiate" };
+      return { 
+        match: true, 
+        phrase: language === 'en' ? "In your immediate delivery zone" : "Dans votre zone de livraison immédiate" 
+      };
     } else if (preferences.delivery_radius <= 3) {
-      return { match: true, phrase: phrases.location_delivery_zone || "Dans votre zone de livraison" };
+      return { 
+        match: true, 
+        phrase: phrases.location_delivery_zone || (language === 'en' ? "In your delivery zone" : "Dans votre zone de livraison")
+      };
     } else {
       return { 
         match: true, 
         phrase: typeof phrases.location_within_radius === 'function' 
           ? phrases.location_within_radius(preferences.delivery_radius)
-          : `Livraison possible dans votre rayon de ${preferences.delivery_radius} km`
+          : (language === 'en' 
+              ? `Delivery available within your ${preferences.delivery_radius} km radius`
+              : `Livraison possible dans votre rayon de ${preferences.delivery_radius} km`)
       };
     }
   }
@@ -766,8 +781,8 @@ function extractStreetName(address: string): string | null {
 }
 
 // Fonction pour vérifier la proximité entre rues de Montréal
-function checkMontrealProximity(street1: string, street2: string): { isClose: boolean, phrase: string } {
-  const phrases = EXPLANATION_PHRASES.fr;
+function checkMontrealProximity(street1: string, street2: string, language: string = 'fr'): { isClose: boolean, phrase: string } {
+  const phrases = EXPLANATION_PHRASES[language as keyof typeof EXPLANATION_PHRASES] || EXPLANATION_PHRASES.fr;
   
   // Normaliser les noms de rues
   const normalize = (str: string) => str.toLowerCase()
@@ -799,7 +814,10 @@ function checkMontrealProximity(street1: string, street2: string): { isClose: bo
     const street2InGroup = group.some(street => norm2.includes(normalize(street)));
     
     if (street1InGroup && street2InGroup) {
-      return { isClose: true, phrase: "Dans votre quartier à Montréal" };
+      return { 
+        isClose: true, 
+        phrase: language === 'en' ? "In your Montreal neighborhood" : "Dans votre quartier à Montréal" 
+      };
     }
   }
 
@@ -807,7 +825,10 @@ function checkMontrealProximity(street1: string, street2: string): { isClose: bo
   const mainStreets = ['sherbrooke', 'saint-denis', 'saint-laurent', 'notre-dame', 'sainte-catherine'];
   for (const mainStreet of mainStreets) {
     if (norm1.includes(mainStreet) && norm2.includes(mainStreet)) {
-      return { isClose: true, phrase: "Sur la même artère principale" };
+      return { 
+        isClose: true, 
+        phrase: language === 'en' ? "On the same main artery" : "Sur la même artère principale" 
+      };
     }
   }
 
