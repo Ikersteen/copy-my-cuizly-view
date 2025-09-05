@@ -669,7 +669,7 @@
     "myRestaurant": "Mon Restaurant",
     "newOffer": "Nouvelle Offre",
     "restaurantProfile": "Profil Restaurant",
-    "manageMenus": "Gérer les Menus",
+    "manageMenus": "Menus",
     "filters": "Filtres",
     "welcomeMessage": "Bienvenue sur votre tableau de bord !",
     "welcomeDesc": "Gérez vos offres, analysez vos performances et développez votre clientèle.",
@@ -1278,7 +1278,7 @@
     "myRestaurant": "Mon Restaurant",
     "newOffer": "Nouvelle Offre",
     "restaurantProfile": "Profil Restaurant",
-    "manageMenus": "Gérer les Menus",
+    "manageMenus": "Menus",
     "filters": "Filtres",
     "welcomeMessage": "Bienvenue sur votre tableau de bord !",
     "welcomeDesc": "Gérez vos offres, analysez vos performances et développez votre clientèle.",
@@ -1351,7 +1351,7 @@
   "filters": {
     "newOffer": "Nouvelle offre",
     "restaurantProfile": "Profil du restaurant",
-    "manageMenus": "Gérer vos menus",
+    "manageMenus": "Menus",
     "welcomeMessage": "Bienvenue dans votre espace restaurateur !",
     "welcomeDesc": "Gérez votre restaurant, vos offres et vos menus en toute simplicité.",
     "logout": "Déconnexion",
@@ -1408,7 +1408,7 @@
     "edit": "Modifier",
     "editMenu": "Modifier le menu",
     "saveChanges": "Sauvegarder les modifications",
-    "manageMenus": "Gérer vos menus",
+    "manageMenus": "Menus",
     "addUpToFive": "Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions"
   },
   "errors": {

@@ -758,7 +758,7 @@
     "myRestaurant": "My Restaurant",
     "newOffer": "New Offer",
     "restaurantProfile": "Restaurant Profile",
-    "manageMenus": "Manage Menus",
+    "manageMenus": "Menus",
     "filters": "Filters",
     "welcomeMessage": "Welcome to your dashboard!",
     "welcomeDesc": "Manage your offers, analyze your performance and grow your clientele.",
@@ -1407,7 +1407,7 @@
     "myRestaurant": "My Restaurant",
     "newOffer": "New offer",
     "restaurantProfile": "Restaurant profile",
-    "manageMenus": "Manage your menus",
+    "manageMenus": "Menus",
     "filters": "Filters",
     "welcomeMessage": "Welcome to your restaurant space!",
     "welcomeDesc": "Manage your restaurant, offers and menus with ease.",
@@ -1597,7 +1597,7 @@
     "edit": "Edit",
     "editMenu": "Edit menu",
     "saveChanges": "Save changes",
-    "manageMenus": "Manage your menus",
+    "manageMenus": "Menus",
     "addUpToFive": "Add up to 5 photos of your menus with their descriptions"
   },
   "profile": {
