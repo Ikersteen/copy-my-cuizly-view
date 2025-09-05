@@ -8,8 +8,8 @@
     "back_home": "Back to Home",
     "theme": "Theme",
     "languageSelector": "Langue / Language",
-    "consumerMenu": "Consumer Menu",
-    "restaurantMenu": "Restaurant Menu"
+    "consumerMenu": "Consumer Profile",
+    "restaurantMenu": "Restaurant Profile"
   },
   "hero": {
     "badge": "Cuizly • Beta 6",
