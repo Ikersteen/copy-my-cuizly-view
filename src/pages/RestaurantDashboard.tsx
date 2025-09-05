@@ -6,6 +6,7 @@ import { Plus, Edit3, MapPin, ChefHat, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 import { MenusModal } from "@/components/MenusModal";
+import { AuthenticatedRestaurantHeader } from "@/components/AuthenticatedRestaurantHeader";
 
 import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
@@ -139,25 +140,26 @@ const RestaurantDashboard = () => {
   };
 
 
-  const handleActionClick = (action: string) => {
-    console.log('Action clicked:', action);
-    console.log('Restaurant ID:', restaurant?.id);
-    switch (action) {
-      case t('dashboard.restaurantProfile'):
-        setShowProfileModal(true);
-        break;
-      case t('dashboard.manageMenus'):
-        if (!restaurant?.id) {
-          toast({
-            title: t('common.error'),
-            description: t('dashboard.completeProfile'),
-            variant: "destructive"
-          });
-          return;
-        }
-        setShowMenusModal(true);
-        break;
+  const handleRestaurantProfileClick = () => {
+    setShowProfileModal(true);
+  };
+
+  const handleManageMenusClick = () => {
+    if (!restaurant?.id) {
+      toast({
+        title: t('common.error'),
+        description: t('dashboard.completeProfile'),
+        variant: "destructive"
+      });
+      return;
     }
+    setShowMenusModal(true);
+  };
+
+  const handleNewOfferClick = () => {
+    // For now, just scroll to offers section - can implement modal later
+    const offersSection = document.querySelector('[data-section="offers"]');
+    offersSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
 
@@ -184,6 +186,13 @@ const RestaurantDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Header with burger menu */}
+      <AuthenticatedRestaurantHeader
+        onNewOfferClick={handleNewOfferClick}
+        onRestaurantProfileClick={handleRestaurantProfileClick}
+        onManageMenusClick={handleManageMenusClick}
+      />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* Cover Image Facebook-style */}
@@ -251,23 +260,6 @@ const RestaurantDashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-          {[
-          { icon: Edit3, label: t('dashboard.restaurantProfile') },
-          { icon: ChefHat, label: t('dashboard.manageMenus') }
-          ].map((action, index) => (
-            <Button 
-              key={index}
-              variant="outline"
-              className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 text-xs sm:text-sm"
-              onClick={() => handleActionClick(action.label)}
-            >
-              <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span>{action.label}</span>
-            </Button>
-          ))}
-        </div>
-
         {/* Message de bienvenue */}
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
           <CardContent className="p-6">
@@ -283,7 +275,9 @@ const RestaurantDashboard = () => {
         </Card>
 
         {/* Section des offres */}
-        <OffersSection userType="restaurant" restaurantId={restaurant?.id} />
+        <div data-section="offers">
+          <OffersSection userType="restaurant" restaurantId={restaurant?.id} />
+        </div>
 
         {/* Section analytics */}
         <AnalyticsSection restaurantId={restaurant?.id} />

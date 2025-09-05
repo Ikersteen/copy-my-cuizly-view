@@ -1,12 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Plus, ChefHat, BookOpen, LogOut, Globe, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useLanguage } from "@/hooks/useLanguage";
-import { useTranslation } from "react-i18next";
-import { supabase } from "@/integrations/supabase/client";
+import { RestaurantMobileMenu } from "@/components/RestaurantMobileMenu";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import cuizlyLogo from "@/assets/cuizly-logo.png";
 
 interface AuthenticatedRestaurantHeaderProps {
   onNewOfferClick?: () => void;
@@ -19,38 +13,40 @@ export const AuthenticatedRestaurantHeader = ({
   onRestaurantProfileClick,
   onManageMenusClick,
 }: AuthenticatedRestaurantHeaderProps) => {
-  const { theme, setTheme } = useTheme();
-  const { currentLanguage, changeLanguage } = useLanguage();
-  const { t } = useTranslation();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      navigate("/");
-      toast({
-        title: t('dashboard.logoutSuccess'),
-        description: t('dashboard.logoutSuccessDesc'),
-      });
-    } catch (error) {
-      console.error('Logout error:', error);
-      toast({
-        title: t('dashboard.logoutError'),
-        description: t('dashboard.logoutErrorDesc'),
-        variant: "destructive",
-      });
-    }
+  const handleLogoClick = () => {
+    navigate("/restaurant-dashboard");
   };
 
-  const handleAction = (action?: () => void) => {
-    if (action) {
-      action();
-    } else {
-      // Navigate to dashboard if no specific action
-      navigate("/dashboard");
-    }
-  };
+  return (
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <button
+              onClick={handleLogoClick}
+              className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+            >
+              <img 
+                src={cuizlyLogo} 
+                alt="Cuizly" 
+                className="h-8 w-auto"
+              />
+            </button>
+          </div>
 
-  return null;
+          {/* Menu burger */}
+          <div className="flex items-center">
+            <RestaurantMobileMenu
+              onNewOfferClick={onNewOfferClick || (() => {})}
+              onRestaurantProfileClick={onRestaurantProfileClick || (() => {})}
+              onManageMenusClick={onManageMenusClick || (() => {})}
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+  );
 };
