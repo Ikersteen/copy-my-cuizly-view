@@ -4,31 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { useUserProfile } from "@/hooks/useUserProfile";
-import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const PricingSectionLanding = () => {
   const { t } = useTranslation();
-  const { isAuthenticated, profile } = useUserProfile();
-  const [showProfileSwitch, setShowProfileSwitch] = useState(false);
-  const navigate = useNavigate();
-
-  const handleCTAClick = (e: React.MouseEvent, planIndex: number) => {
-    if (isAuthenticated && planIndex < 2) { // Only for consumer and pro plans
-      e.preventDefault();
-      setShowProfileSwitch(true);
-    }
-  };
-
-  const handleSwitchToRestaurant = () => {
-    navigate('/auth');
-  };
-
-  const handleSwitchToConsumer = () => {
-    navigate('/auth');
-  };
   
   const plans = [
     {
@@ -122,41 +100,19 @@ const PricingSectionLanding = () => {
                     </li>
                   ))}
                 </ul>
-                {isAuthenticated && index < 2 ? (
-                  <Button 
-                    className={`w-full text-sm sm:text-base ${
-                      index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
-                      index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground' :
-                      'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-cuizly-analytics-foreground'
-                    }`}
-                    onClick={(e) => handleCTAClick(e, index)}
-                  >
+                <Link to={index === 0 ? "/auth" : index === 1 ? "/auth?type=restaurant&tab=signup" : "/waitlist"}>
+                  <Button className={`w-full text-sm sm:text-base ${
+                    index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
+                    index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground' :
+                    'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-cuizly-analytics-foreground'
+                  }`}>
                     {t(plan.ctaKey)}
                   </Button>
-                ) : (
-                  <Link to={index === 0 ? "/auth" : index === 1 ? "/auth?type=restaurant&tab=signup" : "/waitlist"}>
-                    <Button className={`w-full text-sm sm:text-base ${
-                      index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
-                      index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground' :
-                      'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-cuizly-analytics-foreground'
-                    }`}>
-                      {t(plan.ctaKey)}
-                    </Button>
-                  </Link>
-                )}
+                </Link>
               </CardContent>
             </Card>
           ))}
         </div>
-
-        {/* Profile Switch Modal */}
-        {isAuthenticated && (
-          <ProfileSwitchModal
-            open={showProfileSwitch}
-            onOpenChange={setShowProfileSwitch}
-            currentProfile={profile?.user_type || 'consumer'}
-          />
-        )}
       </div>
     </section>
   );

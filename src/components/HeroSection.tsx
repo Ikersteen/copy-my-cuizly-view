@@ -2,31 +2,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useUserProfile } from "@/hooks/useUserProfile";
-import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const { t } = useTranslation();
-  const { isAuthenticated, profile } = useUserProfile();
-  const [showProfileSwitch, setShowProfileSwitch] = useState(false);
-  const navigate = useNavigate();
-
-  const handleCTAClick = (e: React.MouseEvent) => {
-    if (isAuthenticated) {
-      e.preventDefault();
-      setShowProfileSwitch(true);
-    }
-  };
-
-  const handleSwitchToRestaurant = () => {
-    navigate('/auth');
-  };
-
-  const handleSwitchToConsumer = () => {
-    navigate('/auth');
-  };
   
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-12 sm:py-16 md:py-20">
@@ -55,33 +33,13 @@ const HeroSection = () => {
 
         {/* CTA */}
         <div className="animate-fade-in">
-          {isAuthenticated ? (
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device"
-              onClick={handleCTAClick}
-            >
+          <Link to="/auth">
+            <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
               {t('hero.cta')}
               <ArrowRight className="ml-3 h-5 w-5" />
             </Button>
-          ) : (
-            <Link to="/auth">
-              <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
-                {t('hero.cta')}
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </Button>
-            </Link>
-          )}
+          </Link>
         </div>
-
-        {/* Profile Switch Modal */}
-        {isAuthenticated && (
-          <ProfileSwitchModal
-            open={showProfileSwitch}
-            onOpenChange={setShowProfileSwitch}
-            currentProfile={profile?.user_type || 'consumer'}
-          />
-        )}
       </div>
     </section>
   );
