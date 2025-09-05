@@ -12,7 +12,6 @@ import CookieBanner from "@/components/CookieBanner";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
-import ManageMenus from "./pages/ManageMenus";
 import Pricing from "./pages/Pricing";
 import Features from "./pages/Features";
 import Contact from "./pages/Contact";
@@ -46,12 +45,6 @@ const AppContent = () => {
           <>
             <Header />
             <Dashboard />
-          </>
-        } />
-        <Route path="/manage-menus" element={
-          <>
-            <Header />
-            <ManageMenus />
           </>
         } />
         <Route path="/pricing" element={
