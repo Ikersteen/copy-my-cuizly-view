@@ -18,8 +18,8 @@ import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
-import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 import { MenusModal } from "@/components/MenusModal";
+import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -31,8 +31,8 @@ const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [showNewOffer, setShowNewOffer] = useState(false);
   const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
-  const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const [showMenus, setShowMenus] = useState(false);
+  const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
 
   const handleNavigate = (path: string) => {
@@ -225,7 +225,7 @@ const Header = () => {
                   <RestaurantMobileMenu 
                     onNewOfferClick={() => setShowNewOffer(true)}
                     onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
-                    onMenusClick={() => setShowMenus(true)}
+                    onManageMenusClick={() => setShowMenus(true)}
                   />
                 )}
               </>
