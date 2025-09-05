@@ -85,8 +85,6 @@ const CTASection = () => {
             open={showProfileSwitch}
             onOpenChange={setShowProfileSwitch}
             currentProfile={profile?.user_type || 'consumer'}
-            onSwitchToRestaurant={handleSwitchToRestaurant}
-            onSwitchToConsumer={handleSwitchToConsumer}
           />
         )}
 
