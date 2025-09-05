@@ -19,6 +19,7 @@ import { ProfileModal } from "@/components/ProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 
+import { MenusModal } from "@/components/MenusModal";
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 
 const Header = () => {
@@ -32,6 +33,7 @@ const Header = () => {
   const [showNewOffer, setShowNewOffer] = useState(false);
   const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
   
+  const [showMenus, setShowMenus] = useState(false);
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
 
@@ -225,6 +227,7 @@ const Header = () => {
                   <RestaurantMobileMenu 
                     onNewOfferClick={() => setShowNewOffer(true)}
                     onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
+                    onManageMenusClick={() => setShowMenus(true)}
                   />
                 )}
               </>
@@ -394,6 +397,12 @@ const Header = () => {
                 onOpenChange={setShowRestaurantProfile}
                 restaurant={null}
                 onUpdate={() => {}}
+              />
+              <MenusModal 
+                open={showMenus}
+                onOpenChange={setShowMenus}
+                restaurantId={null}
+                onSuccess={() => {}}
               />
             </>
           )}
