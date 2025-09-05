@@ -101,7 +101,10 @@ export const RestaurantMobileMenu = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(() => navigate('/dashboard'))}
+                onClick={() => handleMenuClick(() => {
+                  console.log('Clicking dashboard button, navigating to /dashboard');
+                  navigate('/dashboard');
+                })}
               >
                 <LayoutDashboard className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('navigation.dashboard')}</span>
