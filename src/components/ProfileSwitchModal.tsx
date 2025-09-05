@@ -2,32 +2,28 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { User } from "lucide-react";
+import { useSecureAuth } from "@/hooks/useSecureAuth";
+import { useNavigate } from "react-router-dom";
 
 interface ProfileSwitchModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentProfile: 'consumer' | 'restaurant_owner';
-  onSwitchToRestaurant: () => void;
-  onSwitchToConsumer: () => void;
 }
 
 export const ProfileSwitchModal = ({
   open,
   onOpenChange,
-  currentProfile,
-  onSwitchToRestaurant,
-  onSwitchToConsumer
+  currentProfile
 }: ProfileSwitchModalProps) => {
   const { t } = useTranslation();
+  const { logout } = useSecureAuth();
+  const navigate = useNavigate();
 
-  const handleSwitchToRestaurant = () => {
-    onSwitchToRestaurant();
+  const handleSwitchProfile = async () => {
+    await logout();
     onOpenChange(false);
-  };
-
-  const handleSwitchToConsumer = () => {
-    onSwitchToConsumer();
-    onOpenChange(false);
+    navigate('/auth');
   };
 
   return (
@@ -54,21 +50,15 @@ export const ProfileSwitchModal = ({
           >
             {t('common.cancel')}
           </Button>
-          {currentProfile === 'consumer' ? (
-            <Button
-              onClick={handleSwitchToRestaurant}
-              className="w-full sm:w-auto"
-            >
-              {t('profileSwitch.switchToRestaurant')}
-            </Button>
-          ) : (
-            <Button
-              onClick={handleSwitchToConsumer}
-              className="w-full sm:w-auto"
-            >
-              {t('profileSwitch.switchToConsumer')}
-            </Button>
-          )}
+          <Button
+            onClick={handleSwitchProfile}
+            className="w-full sm:w-auto"
+          >
+            {currentProfile === 'consumer' 
+              ? t('profileSwitch.switchToRestaurant')
+              : t('profileSwitch.switchToConsumer')
+            }
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
