@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTheme } from "next-themes";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { useToast } from "@/hooks/use-toast";
 import { AuthenticatedConsumerHeader } from "@/components/AuthenticatedConsumerHeader";
 import { AuthenticatedRestaurantHeader } from "@/components/AuthenticatedRestaurantHeader";
 import { ConsumerMobileMenu } from "@/components/ConsumerMobileMenu";
@@ -26,6 +27,7 @@ const Header = () => {
   const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
+  const { toast } = useToast();
   const { user, profile, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
@@ -33,9 +35,46 @@ const Header = () => {
   const [showNewOffer, setShowNewOffer] = useState(false);
   const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
   const [showMenus, setShowMenus] = useState(false);
+  const [restaurant, setRestaurant] = useState(null);
   
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
+
+  // Load restaurant data when user is a restaurant owner
+  const loadRestaurantData = async (userId: string) => {
+    try {
+      const { data: restaurantData, error } = await supabase
+        .from('restaurants')
+        .select('*')
+        .eq('owner_id', userId)
+        .maybeSingle();
+
+      if (!error && restaurantData) {
+        setRestaurant(restaurantData);
+      }
+    } catch (error) {
+      console.error('Error loading restaurant data:', error);
+    }
+  };
+
+  // Load restaurant data when isRestaurant changes
+  useEffect(() => {
+    if (isRestaurant && user?.id) {
+      loadRestaurantData(user.id);
+    }
+  }, [isRestaurant, user?.id]);
+
+  const handleMenusClick = () => {
+    if (!restaurant?.id) {
+      toast({
+        title: t('common.error'),
+        description: t('dashboard.completeProfile'),
+        variant: "destructive"
+      });
+      return;
+    }
+    setShowMenus(true);
+  };
 
   const handleNavigate = (path: string) => {
     setIsSheetOpen(false);
@@ -227,7 +266,7 @@ const Header = () => {
                   <RestaurantMobileMenu 
                     onNewOfferClick={() => setShowNewOffer(true)}
                     onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
-                    onMenusClick={() => setShowMenus(true)}
+                    onMenusClick={handleMenusClick}
                   />
                 )}
               </>
@@ -401,8 +440,12 @@ const Header = () => {
               <MenusModal 
                 open={showMenus}
                 onOpenChange={setShowMenus}
-                restaurantId={null}
-                onSuccess={() => {}}
+                restaurantId={restaurant?.id || null}
+                onSuccess={() => {
+                  if (restaurant?.id && user?.id) {
+                    loadRestaurantData(user.id);
+                  }
+                }}
               />
             </>
           )}
