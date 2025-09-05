@@ -644,7 +644,7 @@
   },
   "profileSwitch": {
     "title": "Changer de profil",
-    "consumerMessage": "Vous êtes actuellement connecté en tant que Consommateur. Souhaitez-vous passer en mode Cuizly Pro\u00A0?",
+    "consumerMessage": "Vous êtes actuellement connecté en tant que Consommateur.\nSouhaitez-vous passer en mode Cuizly Pro\u00A0?",
     "restaurantMessage": "Vous êtes actuellement connecté en tant que Restaurateur. Souhaitez-vous passer en mode Consommateur ?",
     "switchToRestaurant": "Passer à Cuizly Pro",
     "switchToConsumer": "Passer à Consommateur"
