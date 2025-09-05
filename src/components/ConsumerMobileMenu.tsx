@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, User, Settings, Gift, LayoutDashboard, LogOut, Sun, Moon, Globe } from "lucide-react";
@@ -26,6 +26,11 @@ export const ConsumerMobileMenu = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Debug logging
+  useEffect(() => {
+    console.log('ConsumerMenu translation:', t('navigation.consumerMenu'));
+  }, [t]);
 
   const handleLogout = async () => {
     try {
