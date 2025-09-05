@@ -251,6 +251,22 @@ const RestaurantDashboard = () => {
           </div>
         </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          {[
+          { icon: Edit3, label: t('dashboard.restaurantProfile') },
+          { icon: ChefHat, label: t('dashboard.manageMenus') }
+          ].map((action, index) => (
+            <Button 
+              key={index}
+              variant="outline"
+              className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 text-xs sm:text-sm"
+              onClick={() => handleActionClick(action.label)}
+            >
+              <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span>{action.label}</span>
+            </Button>
+          ))}
+        </div>
 
         {/* Message de bienvenue */}
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
