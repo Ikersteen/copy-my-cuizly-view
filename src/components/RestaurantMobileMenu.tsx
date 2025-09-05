@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Plus, ChefHat, BookOpen, LayoutDashboard, LogOut, Sun, Moon, Globe } from "lucide-react";
+import { Menu, Plus, Edit, BookOpen, LayoutDashboard, LogOut, Sun, Moon, Globe } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
@@ -85,7 +85,7 @@ export const RestaurantMobileMenu = ({
                 className="w-full justify-start text-left h-auto py-3"
                 onClick={() => handleMenuClick(onRestaurantProfileClick)}
               >
-                <ChefHat className="h-5 w-5 mr-3" />
+                <Edit className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('dashboard.restaurantProfile')}</span>
               </Button>
 
