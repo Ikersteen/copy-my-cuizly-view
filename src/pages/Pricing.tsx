@@ -6,9 +6,39 @@ import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
 import { useTranslation } from 'react-i18next';
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
   const { t } = useTranslation();
+  const { isAuthenticated, profile } = useUserProfile();
+  const [showProfileSwitch, setShowProfileSwitch] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCTAClick = (e: React.MouseEvent, planIndex: number) => {
+    if (isAuthenticated) {
+      // Consumer plan: show modal only if user is restaurant_owner profile
+      if (planIndex === 0 && profile?.user_type === 'restaurant_owner') {
+        e.preventDefault();
+        setShowProfileSwitch(true);
+      }
+      // Pro plan: show modal only if user is consumer profile  
+      else if (planIndex === 1 && profile?.user_type === 'consumer') {
+        e.preventDefault();
+        setShowProfileSwitch(true);
+      }
+    }
+  };
+
+  const handleSwitchToRestaurant = () => {
+    navigate('/auth');
+  };
+
+  const handleSwitchToConsumer = () => {
+    navigate('/auth');
+  };
   
   const plans = [
     {
@@ -109,19 +139,47 @@ const Pricing = () => {
                     </li>
                   ))}
                 </ul>
-                <Link to={index === 0 ? "/auth" : index === 1 ? "/auth?type=restaurant&tab=signup" : "/waitlist"}>
-                  <Button className={`w-full text-sm sm:text-base ${
-                    index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
-                    index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground' :
-                    'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-cuizly-analytics-foreground'
-                  }`}>
+                {/* Consumer plan: show modal if authenticated and on restaurant_owner profile */}
+                {isAuthenticated && index === 0 && profile?.user_type === 'restaurant_owner' ? (
+                  <Button 
+                    className="w-full text-sm sm:text-base bg-foreground hover:bg-foreground/90 text-background"
+                    onClick={(e) => handleCTAClick(e, index)}
+                  >
                     {t(plan.ctaKey)}
                   </Button>
-                </Link>
+                ) : 
+                /* Pro plan: show modal if authenticated and on consumer profile */
+                isAuthenticated && index === 1 && profile?.user_type === 'consumer' ? (
+                  <Button 
+                    className="w-full text-sm sm:text-base bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground"
+                    onClick={(e) => handleCTAClick(e, index)}
+                  >
+                    {t(plan.ctaKey)}
+                  </Button>
+                ) : (
+                  <Link to={index === 0 ? "/auth" : index === 1 ? "/auth?type=restaurant&tab=signup" : "/waitlist"}>
+                    <Button className={`w-full text-sm sm:text-base ${
+                      index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
+                      index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground' :
+                      'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-cuizly-analytics-foreground'
+                    }`}>
+                      {t(plan.ctaKey)}
+                    </Button>
+                  </Link>
+                )}
               </CardContent>
             </Card>
           ))}
         </div>
+
+        {/* Profile Switch Modal */}
+        {isAuthenticated && (
+          <ProfileSwitchModal
+            open={showProfileSwitch}
+            onOpenChange={setShowProfileSwitch}
+            currentProfile={profile?.user_type || 'consumer'}
+          />
+        )}
       </div>
       <CTASection />
       <Footer />

@@ -71,9 +71,12 @@ const PricingSection = () => {
                 ))}
               </ul>
               
-              <Button className="w-full bg-cuizly-accent hover:bg-cuizly-accent/90 text-white">
-                {plans[0].cta}
-              </Button>
+                <Button 
+                  className="w-full bg-cuizly-accent hover:bg-cuizly-accent/90 text-white"
+                  onClick={() => window.location.href = '/auth'}
+                >
+                  {plans[0].cta}
+                </Button>
             </div>
           </Card>
         </div>
@@ -108,7 +111,10 @@ const PricingSection = () => {
                   ))}
                 </ul>
                 
-                <Button className="w-full bg-cuizly-primary hover:bg-cuizly-primary/90 text-white">
+                <Button 
+                  className="w-full bg-cuizly-primary hover:bg-cuizly-primary/90 text-white"
+                  onClick={() => window.location.href = plan.type === 'pro' ? '/auth?type=restaurant&tab=signup' : '/waitlist'}
+                >
                   {plan.cta}
                 </Button>
               </Card>
