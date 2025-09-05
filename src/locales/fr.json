@@ -692,9 +692,6 @@
     "systemError": "Erreur système",
     "unexpectedError": "Une erreur inattendue s'est produite"
   },
-  "common": {
-    "error": "Erreur"
-  },
   "theme": {
     "light": "Clair",
     "dark": "Sombre", 

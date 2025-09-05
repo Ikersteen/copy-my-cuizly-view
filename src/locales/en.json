@@ -781,9 +781,6 @@
     "systemError": "System error",
     "unexpectedError": "An unexpected error occurred"
   },
-  "common": {
-    "error": "Error"
-  },
   "theme": {
     "light": "Light",
     "dark": "Dark",

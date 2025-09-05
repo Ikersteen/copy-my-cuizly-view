@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Plus, ChefHat, BookOpen, LayoutDashboard, LogOut, Sun, Moon, Globe } from "lucide-react";
@@ -26,11 +26,6 @@ export const RestaurantMobileMenu = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  // Debug logging
-  useEffect(() => {
-    console.log('RestaurantMenu translation:', t('navigation.restaurantMenu'));
-  }, [t]);
 
   const handleLogout = async () => {
     try {

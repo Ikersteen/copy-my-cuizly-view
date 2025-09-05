@@ -16,14 +16,9 @@ export const ProfileSwitchModal = ({
   onOpenChange,
   currentProfile
 }: ProfileSwitchModalProps) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { logout } = useSecureAuth();
   const navigate = useNavigate();
-
-  // Debug the translation
-  console.log('Translation for common.cancel:', t('common.cancel'));
-  console.log('Current language:', i18n.language);
-  console.log('Is i18n initialized:', i18n.isInitialized);
 
   const handleSwitchProfile = async () => {
     await logout();
