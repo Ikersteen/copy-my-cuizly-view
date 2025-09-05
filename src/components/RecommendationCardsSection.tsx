@@ -228,7 +228,7 @@ export const RecommendationCardsSection = () => {
           });
 
           if (!aiError && aiResult?.recommendations?.length > 0) {
-            console.log('✅ AI recommendations successful');
+            console.log('✅ AI recommendations successful - restaurants passed security filtering');
             
             // Get real ratings for AI recommendations and clear old reason format
             const ratingsPromises = aiResult.recommendations.map(async (restaurant: any) => {

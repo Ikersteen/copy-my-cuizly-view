@@ -72,9 +72,52 @@ serve(async (req) => {
 
     console.log(`Processing AI recommendations for ${restaurants.length} restaurants${hasPreferences ? ' with user preferences' : ' without specific preferences'}`);
 
-    // Analyse sémantique et scoring IA pour chaque restaurant
+    // 🔒 ÉTAPE 2: FILTRAGE STRICT DE SÉCURITÉ (avant IA)
+    const safeRestaurants = restaurants.filter(restaurant => {
+      // Exclure COMPLÈTEMENT si allergènes dangereux détectés
+      if (preferences?.allergens?.length && restaurant.allergens?.length) {
+        const hasConflict = preferences.allergens.some(allergen =>
+          restaurant.allergens!.includes(allergen)
+        );
+        if (hasConflict) {
+          console.log(`🚫 SÉCURITÉ: Restaurant ${restaurant.name} exclu - allergènes: ${restaurant.allergens.filter(a => preferences.allergens!.includes(a)).join(', ')}`);
+          return false; // EXCLUSION TOTALE
+        }
+      }
+      
+      // Exclure si restrictions alimentaires non respectées (strict)
+      if (preferences?.dietary_restrictions?.length && restaurant.dietary_restrictions?.length) {
+        const compatible = preferences.dietary_restrictions.some(restriction =>
+          restaurant.dietary_restrictions!.includes(restriction)
+        );
+        if (!compatible) {
+          console.log(`🚫 SÉCURITÉ: Restaurant ${restaurant.name} exclu - restrictions non compatibles`);
+          return false; // EXCLUSION TOTALE
+        }
+      }
+      
+      return true; // Restaurant sécuritaire ✅
+    });
+
+    console.log(`🔒 FILTRAGE SÉCURITÉ: ${restaurants.length} restaurants → ${safeRestaurants.length} restaurants sécuritaires`);
+
+    if (safeRestaurants.length === 0) {
+      console.log('❌ Aucun restaurant sécuritaire trouvé après filtrage');
+      return new Response(
+        JSON.stringify({ 
+          recommendations: [],
+          message: 'Aucun restaurant compatible avec vos restrictions de sécurité' 
+        }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // Analyse sémantique et scoring IA pour chaque restaurant SÉCURITAIRE uniquement
     const aiScoredRestaurants = await Promise.all(
-      restaurants.map(async (restaurant: Restaurant) => {
+      safeRestaurants.map(async (restaurant: Restaurant) => {
         try {
           const aiScore = await analyzeRestaurantWithAI(restaurant, preferences, openAIApiKey, language);
           return {
