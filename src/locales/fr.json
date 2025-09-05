@@ -642,6 +642,13 @@
     "creatingAccount": "Création du compte...",
     "createAccount": "Créer mon compte"
   },
+  "profileSwitch": {
+    "title": "Changer de profil",
+    "consumerMessage": "Vous êtes actuellement connecté en tant que Consommateur. Souhaitez-vous passer en mode Cuizly Pro ?",
+    "restaurantMessage": "Vous êtes actuellement connecté en tant que Restaurateur. Souhaitez-vous passer en mode Consommateur ?",
+    "switchToRestaurant": "Passer à Pro",
+    "switchToConsumer": "Passer à Consommateur"
+  },
   "dashboard": {
     "hello": "Bonjour",
     "profile": "Profil",
