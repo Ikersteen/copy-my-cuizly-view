@@ -12,13 +12,11 @@ import { useToast } from "@/hooks/use-toast";
 interface RestaurantMobileMenuProps {
   onNewOfferClick: () => void;
   onRestaurantProfileClick: () => void;
-  onManageMenusClick: () => void;
 }
 
 export const RestaurantMobileMenu = ({
   onNewOfferClick,
   onRestaurantProfileClick,
-  onManageMenusClick,
 }: RestaurantMobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -92,7 +90,7 @@ export const RestaurantMobileMenu = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(onManageMenusClick)}
+                onClick={() => handleMenuClick(() => navigate('/manage-menus'))}
               >
                 <BookOpen className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('dashboard.manageMenus')}</span>
