@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Plus, ChefHat, BookOpen, LayoutDashboard, LogOut, Sun, Moon, Globe } from "lucide-react";
+import { Menu, Plus, ChefHat, LayoutDashboard, LogOut, Sun, Moon, Globe, BookOpen } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";

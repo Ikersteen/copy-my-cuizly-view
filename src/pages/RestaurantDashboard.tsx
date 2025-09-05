@@ -251,7 +251,7 @@ const RestaurantDashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-1 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {[
           { icon: Edit3, label: t('dashboard.restaurantProfile') }
           ].map((action, index) => (

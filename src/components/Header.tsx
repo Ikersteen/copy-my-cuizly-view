@@ -18,9 +18,9 @@ import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
-import { MenusModal } from "@/components/MenusModal";
 
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
+import { MenusModal } from "@/components/MenusModal";
 
 const Header = () => {
   const { t } = useTranslation();
