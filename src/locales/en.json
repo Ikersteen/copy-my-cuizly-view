@@ -735,7 +735,7 @@
     "title": "Switch Profile",
     "consumerMessage": "You are currently logged in as a Consumer. Would you like to switch to Cuizly Pro mode?",
     "restaurantMessage": "You are currently logged in as a Restaurant Owner. Would you like to switch to Consumer mode?",
-    "switchToRestaurant": "Switch to Pro",
+    "switchToRestaurant": "Switch to Cuizly Pro",
     "switchToConsumer": "Switch to Consumer"
   },
   "dashboard": {
