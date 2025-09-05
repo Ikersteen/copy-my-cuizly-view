@@ -225,6 +225,7 @@ const Header = () => {
                   <RestaurantMobileMenu
                     onNewOfferClick={() => setShowNewOffer(true)}
                     onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
+                    onManageMenusClick={() => setShowMenus(true)}
                   />
                 )}
               </>
