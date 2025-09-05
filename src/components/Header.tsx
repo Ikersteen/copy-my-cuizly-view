@@ -35,13 +35,9 @@ const Header = () => {
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogoClick = (e: React.MouseEvent) => {
-    if (isAuthenticated) {
-      e.preventDefault();
-      setShowProfileSwitch(true);
-    } else {
-      navigate('/');
-    }
+  const handleNavigate = (path: string) => {
+    setIsSheetOpen(false);
+    navigate(path);
   };
 
   const handleSwitchToRestaurant = () => {
@@ -50,11 +46,6 @@ const Header = () => {
 
   const handleSwitchToConsumer = () => {
     navigate('/auth');
-  };
-
-  const handleNavigate = (path: string) => {
-    setIsSheetOpen(false);
-    navigate(path);
   };
 
   // Don't render anything while loading user profile
@@ -97,9 +88,9 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo - Extrême gauche */}
           <div className="flex-shrink-0">
-            <div 
+            <Link 
+              to="/"
               className="flex items-center py-2 cursor-pointer group"
-              onClick={handleLogoClick}
             >
               <img 
                 src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
@@ -111,7 +102,7 @@ const Header = () => {
                 alt="Cuizly" 
                 className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 hidden dark:block"
               />
-            </div>
+            </Link>
           </div>
 
           {/* Navigation/Menu based on authentication status */}
