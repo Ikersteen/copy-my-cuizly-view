@@ -289,9 +289,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t('menus.manageMenus')}</DialogTitle>
+          <DialogTitle>{t('menus.manageMenus') || 'Menus'}</DialogTitle>
           <DialogDescription>
-            {t('menus.addUpToFive')}
+            {t('menus.addUpToFive') || 'Ajoutez jusqu\'à 5 photos de vos menus avec leurs descriptions'}
           </DialogDescription>
         </DialogHeader>
 
