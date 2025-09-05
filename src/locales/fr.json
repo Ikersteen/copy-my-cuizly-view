@@ -481,7 +481,9 @@
     "restrictions": "Restrictions",
     "allergens": "Allergènes",
     "menuAddedDesc": "Votre menu a été ajouté avec succès",
-    "changesDesc": "Les modifications ont été sauvegardées"
+    "changesDesc": "Les modifications ont été sauvegardées",
+    "deactivate": "Désactiver",
+    "activate": "Activer"
   },
   "cuisines": {
     "typeLabel": "Type de cuisine",
