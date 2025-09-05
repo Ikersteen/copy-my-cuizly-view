@@ -253,7 +253,8 @@ const RestaurantDashboard = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {[
-          { icon: Edit3, label: t('dashboard.restaurantProfile') }
+          { icon: Edit3, label: t('dashboard.restaurantProfile') },
+          { icon: ChefHat, label: t('dashboard.manageMenus') }
           ].map((action, index) => (
             <Button 
               key={index}
