@@ -478,8 +478,6 @@
     "active": "actif",
     "activeStatus": "Actif",
     "inactiveStatus": "Inactif",
-    "activate": "Activer",
-    "deactivate": "Désactiver",
     "restrictions": "Restrictions",
     "allergens": "Allergènes",
     "menuAddedDesc": "Votre menu a été ajouté avec succès",
@@ -504,13 +502,7 @@
   },
   "menus": {
     "downloadError": "Erreur lors du téléchargement:",
-    "preview": "Aperçu",
-    "statusChanged": "Statut modifié",
-    "menuActivated": "activé",
-    "menuDeactivated": "désactivé",
-    "statusChangedSuccessfully": "avec succès",
-    "cannotChangeStatus": "Impossible de modifier le statut du menu",
-    "edit": "Modifier"
+    "preview": "Aperçu"
   },
   "toasts": {
     "error": "Erreur",
@@ -663,9 +655,6 @@
     "preferences": "Préférences",
     "logout": "Déconnexion",
     "logoutSuccess": "Déconnexion réussie",
-    "logoutError": "Erreur de déconnexion",
-    "logoutSuccessDesc": "Vous avez été déconnecté avec succès",
-    "logoutErrorDesc": "Une erreur est survenue lors de la déconnexion",
     "seeYouSoon": "À bientôt !",
     "recommendations": "Recommandations",
     "favorites": "Favoris",
@@ -745,7 +734,6 @@
     "title": "Prêt à révolutionner votre expérience culinaire ?",
     "description": "Rejoignez dès maintenant la communauté Cuizly et soyez parmi les premiers à découvrir les meilleures offres de Montréal.",
     "button": "Créer mon compte",
-    "disclaimer": "En créant votre compte, vous rejoignez la révolution culinaire montréalaise",
     "imageAlt": "Restaurant moderne à Montréal"
   },
   "contactForm": {
@@ -1282,6 +1270,28 @@
     "logoutSuccessDesc": "À bientôt sur Cuizly !",
     "logoutError": "Impossible de se déconnecter",
     "logoutErrorDesc": "Une erreur est survenue lors de la déconnexion",
+    "recommendations": "Recommandations",
+    "favorites": "Favoris",
+    "offers": "Offres",
+    "loadingPersonalizedExperience": "Chargement de votre expérience personnalisée...",
+    "loadingDashboard": "Chargement du tableau de bord...",
+    "myRestaurant": "Mon Restaurant",
+    "newOffer": "Nouvelle Offre",
+    "restaurantProfile": "Profil Restaurant",
+    "manageMenus": "Gérer les Menus",
+    "filters": "Filtres",
+    "welcomeMessage": "Bienvenue sur votre tableau de bord !",
+    "welcomeDesc": "Gérez vos offres, analysez vos performances et développez votre clientèle.",
+    "restaurantInfo": "Informations du Restaurant",
+    "restaurantDetails": "Détails de votre établissement",
+    "completeProfile": "Veuillez d'abord compléter votre profil de restaurant",
+    "name": "Nom",
+    "address": "Adresse",
+    "notSpecified": "Non spécifié",
+    "cuisineType": "Type de cuisine",
+    "notDefined": "Non défini",
+    "restaurantSpecialty": "Spécialité du restaurant",
+    "description": "Description",
     "noMoreEndlesssearches": "Fini les recherches interminables :"
   },
   "offers": {
@@ -1673,42 +1683,16 @@
     "evaluations": "évaluations",
     "evaluation": "évaluation",
     "noRatingsYet": "Pas d'évaluations pour le moment",
-     "whyThisChoice": "Pourquoi ce choix ?",
+    "whyThisChoice": "Pourquoi ce choix ?",
      "viewProfile": "Voir le profil",
-     "popularRestaurant": "Restaurant populaire",
-     "closeToYou": "Proche de vous",
-     "perfectMealTime": "Parfait pour ce moment de repas",
-     "inYourBudget": "Prix idéal",
-     "cuisineMatches": "Cuisine favorite",
-     "perfectTiming": "Moment parfait",
-     "veryPopular": "Très populaire",
-     "newDiscovery": "Nouvelle découverte",
-     "nearYou": "Près de vous"
-  },
-  "googleMap": {
-    "loadingError": "Erreur lors du chargement de la carte",
-    "mapError": "Erreur lors de l'initialisation de la carte",
-    "apiKeyError": "Erreur de clé API Google Maps"
-  },
-  "restaurantProfile": {
-    "error": "Erreur",
-    "saveError": "Impossible de sauvegarder le profil",
-    "validationError": "Erreur de validation",
-    "validationErrorDesc": "Veuillez corriger les erreurs avant de sauvegarder",
-    "confirmationError": "Erreur de confirmation"
-  },
-  "preferences": {
-    "saveError": "Impossible de sauvegarder les préférences"
-  },
-  "newOffer": {
-    "validPeriod": "Période de validité",
-    "selectPeriod": "Sélectionner la période",
-    "activateImmediately": "Activer immédiatement"
-  },
-  "offers": {
-    "deactivated": "Désactivée",
-    "expired": "Expirée",
-    "deactivatedOn": "Désactivée le",
-    "expiredOn": "Expirée le"
+      "popularRestaurant": "Restaurant populaire",
+      "closeToYou": "Proche de vous",
+      "perfectMealTime": "Parfait pour ce moment de repas",
+      "inYourBudget": "Prix idéal",
+      "cuisineMatches": "Cuisine favorite",
+      "perfectTiming": "Moment parfait",
+      "veryPopular": "Très populaire",
+      "newDiscovery": "Nouvelle découverte",
+      "nearYou": "Près de vous"
   }
 }

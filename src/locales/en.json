@@ -465,16 +465,7 @@
     "modify": "Modify my review",
     "rateRestaurant": "Rate this restaurant",
     "modifyRating": "Modify your rating",
-    "sharePlaceholder": "Share your experience...",
-    "invalidComment": "Invalid comment",
-    "thankYouFeedback": "Thank you for your feedback!",
-    "rating": "Rating",
-    "optionalComment": "Comment (optional)",
-    "cancel": "Cancel",
-    "inProgress": "In progress...",
-    "publish": "Publish",
-    "customerReviews": "Customer reviews",
-    "anonymousUser": "Anonymous user"
+    "sharePlaceholder": "Share your experience..."
   },
   "favorites": {
     "removed": "Removed from favorites",
@@ -575,9 +566,7 @@
     "yourMenus": "Your menus",
     "active": "active",
     "activeStatus": "Active",
-    "inactiveStatus": "Inactive",
-    "activate": "Activate",
-    "deactivate": "Deactivate",
+    "inactiveStatus": "Inactive", 
     "restrictions": "Restrictions",
     "allergens": "Allergens",
     "menuAddedDesc": "Your menu has been added successfully",
@@ -602,13 +591,7 @@
   },
   "menus": {
     "downloadError": "Download error:",
-    "preview": "Preview",
-    "statusChanged": "Status changed",
-    "menuActivated": "activated",
-    "menuDeactivated": "deactivated",
-    "statusChangedSuccessfully": "successfully",
-    "cannotChangeStatus": "Cannot change menu status",
-    "edit": "Edit"
+    "preview": "Preview"
   },
   "toasts": {
     "error": "Error",
@@ -761,9 +744,6 @@
     "preferences": "Preferences", 
     "logout": "Logout",
     "logoutSuccess": "Successfully logged out",
-    "logoutError": "Logout error",
-    "logoutSuccessDesc": "You have been successfully logged out",
-    "logoutErrorDesc": "An error occurred during logout",
     "seeYouSoon": "See you soon!",
     "recommendations": "Recommendations",
     "favorites": "Favorites",
@@ -1843,31 +1823,5 @@
     "veryPopular": "Very popular",
     "newDiscovery": "New discovery",
     "nearYou": "Near you"
-  },
-  "googleMap": {
-    "loadingError": "Error loading map",
-    "mapError": "Error initializing map", 
-    "apiKeyError": "Google Maps API key error"
-  },
-  "restaurantProfile": {
-    "error": "Error",
-    "saveError": "Cannot save profile",
-    "validationError": "Validation error",
-    "validationErrorDesc": "Please correct errors before saving", 
-    "confirmationError": "Confirmation error"
-  },
-  "preferences": {
-    "saveError": "Cannot save preferences"
-  },
-  "newOffer": {
-    "validPeriod": "Valid period",
-    "selectPeriod": "Select period",
-    "activateImmediately": "Activate immediately"
-  },
-  "offers": {
-    "deactivated": "Deactivated",
-    "expired": "Expired",
-    "deactivatedOn": "Deactivated on",
-    "expiredOn": "Expired on"
   }
 }
