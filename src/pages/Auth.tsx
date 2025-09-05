@@ -703,7 +703,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6 sm:p-8 md:p-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-6 sm:px-8 md:px-12 lg:px-8 py-8">
       <div className="w-full max-w-md sm:max-w-lg md:max-w-xl mx-auto">
         {/* Back to home */}
         <div className="mb-6">
