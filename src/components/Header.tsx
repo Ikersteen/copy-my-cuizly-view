@@ -46,9 +46,10 @@ const Header = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <div className="flex-shrink-0">
-            <Link 
+              <Link 
                 to="/"
                 className="flex items-center py-2 cursor-pointer group"
+                onClick={() => window.location.href = '/'}
               >
                 <img 
                   src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
@@ -78,8 +79,9 @@ const Header = () => {
           {/* Logo - Extrême gauche */}
           <div className="flex-shrink-0">
             <Link 
-              to={isAuthenticated ? "/dashboard" : "/"}
+              to="/"
               className="flex items-center py-2 cursor-pointer group"
+              onClick={() => window.location.href = '/'}
             >
               <img 
                 src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
