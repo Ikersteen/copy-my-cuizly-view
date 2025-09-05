@@ -1767,6 +1767,12 @@
     "inYourBudget": "Within your budget",
     "inFavorites": "In favorites",
     "quickAccess": "Quick access",
+    "popularRestaurant": "Popular restaurant",
+    "closeToYou": "Close to you", 
+    "perfectMealTime": "Perfect for this meal time",
+    "perfectTiming": "Perfect timing",
+    "veryPopular": "Very popular",
+    "newDiscovery": "New discovery",
     "evaluations": "ratings",
     "evaluation": "rating",
     "noRatingsYet": "No ratings yet"
