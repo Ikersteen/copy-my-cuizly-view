@@ -184,7 +184,7 @@ const RestaurantDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-8 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* Cover Image Facebook-style */}
         {restaurant?.cover_image_url && (
