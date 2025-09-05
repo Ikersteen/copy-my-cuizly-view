@@ -21,9 +21,29 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log('SMS verification request for phone:', phone);
 
-    // Validate phone number format
-    const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/;
-    if (!phoneRegex.test(phone)) {
+    // Normalize phone number - remove all non-digits except leading +
+    let normalizedPhone = phone.replace(/[\s\-\(\)]/g, '');
+    
+    // Add country code if missing (assume North America +1)
+    if (!normalizedPhone.startsWith('+')) {
+      if (normalizedPhone.length === 10) {
+        normalizedPhone = '+1' + normalizedPhone;
+      } else if (normalizedPhone.length === 11 && normalizedPhone.startsWith('1')) {
+        normalizedPhone = '+' + normalizedPhone;
+      } else {
+        return new Response(
+          JSON.stringify({ error: 'Format de numéro de téléphone invalide' }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+    }
+    
+    // Validate normalized phone (should be +1XXXXXXXXXX format)
+    const phoneRegex = /^\+1\d{10}$/;
+    if (!phoneRegex.test(normalizedPhone)) {
       return new Response(
         JSON.stringify({ error: 'Format de numéro de téléphone invalide' }),
         {
@@ -39,7 +59,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Store verification code with expiration (you might want to use a database for this)
     const codeData = {
       code: verificationCode,
-      phone: phone,
+      phone: normalizedPhone, // Use normalized phone
       expires: Date.now() + (5 * 60 * 1000), // 5 minutes
       verified: false
     };
@@ -80,7 +100,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: new URLSearchParams({
         From: fromNumber,
-        To: phone,
+        To: normalizedPhone, // Use normalized phone
         Body: message,
       }),
     });
