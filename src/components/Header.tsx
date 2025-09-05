@@ -259,7 +259,6 @@ const Header = () => {
                   <ConsumerMobileMenu 
                     onProfileClick={() => setShowProfile(true)}
                     onPreferencesClick={() => setShowPreferences(true)}
-                    onOffersClick={() => navigate("/dashboard")}
                   />
                 )}
                 {isRestaurant && (

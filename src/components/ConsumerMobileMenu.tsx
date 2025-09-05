@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, User, Settings, Gift, LayoutDashboard, LogOut, Sun, Moon, Globe } from "lucide-react";
+import { Menu, User, Settings, LayoutDashboard, LogOut, Sun, Moon, Globe } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
@@ -12,13 +12,11 @@ import { useToast } from "@/hooks/use-toast";
 interface ConsumerMobileMenuProps {
   onProfileClick: () => void;
   onPreferencesClick: () => void;
-  onOffersClick: () => void;
 }
 
 export const ConsumerMobileMenu = ({
   onProfileClick,
   onPreferencesClick,
-  onOffersClick,
 }: ConsumerMobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -87,15 +85,6 @@ export const ConsumerMobileMenu = ({
               >
                 <Settings className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('dashboard.preferences')}</span>
-              </Button>
-
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(onOffersClick)}
-              >
-                <Gift className="h-5 w-5 mr-3" />
-                <span className="text-base">{t('dashboard.offers')}</span>
               </Button>
 
               <Button
