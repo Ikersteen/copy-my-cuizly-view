@@ -62,8 +62,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Prepare SMS message based on language
     const messages = {
-      fr: `Votre code de vérification Cuizly : ${verificationCode}. Code valide pendant 5 minutes.`,
-      en: `Your Cuizly verification code: ${verificationCode}. Valid for 5 minutes.`
+      fr: `Votre code de vérification Cuizly est le : ${verificationCode}. Code valide pendant 5 minutes.`,
+      en: `Your Cuizly verification code is: ${verificationCode}. Valid for 5 minutes.`
     };
 
     const message = messages[language as keyof typeof messages] || messages.fr;
