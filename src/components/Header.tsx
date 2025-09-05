@@ -113,8 +113,20 @@ const Header = () => {
               <div className="flex-1"></div>
               
               {/* Desktop: Show role-specific header */}
-              {isConsumer && <AuthenticatedConsumerHeader />}
-              {isRestaurant && <AuthenticatedRestaurantHeader />}
+              {isConsumer && (
+                <AuthenticatedConsumerHeader 
+                  onProfileClick={() => setShowProfile(true)}
+                  onPreferencesClick={() => setShowPreferences(true)}
+                  onOffersClick={() => navigate("/dashboard")}
+                />
+              )}
+              {isRestaurant && (
+                <AuthenticatedRestaurantHeader 
+                  onNewOfferClick={() => setShowNewOffer(true)}
+                  onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
+                  onManageMenusClick={() => setShowMenus(true)}
+                />
+              )}
             </>
           ) : (
             // Public navigation - show for non-authenticated users
