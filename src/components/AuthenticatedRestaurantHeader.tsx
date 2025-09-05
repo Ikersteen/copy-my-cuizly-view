@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Plus, ChefHat, BookOpen, LogOut, Globe, Moon, Sun } from "lucide-react";
+import { Plus, LogOut, Globe, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
@@ -11,13 +11,11 @@ import { useToast } from "@/hooks/use-toast";
 interface AuthenticatedRestaurantHeaderProps {
   onNewOfferClick?: () => void;
   onRestaurantProfileClick?: () => void;
-  onManageMenusClick?: () => void;
 }
 
 export const AuthenticatedRestaurantHeader = ({
   onNewOfferClick,
   onRestaurantProfileClick,
-  onManageMenusClick,
 }: AuthenticatedRestaurantHeaderProps) => {
   const { theme, setTheme } = useTheme();
   const { currentLanguage, changeLanguage } = useLanguage();
