@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, LogOut } from "lucide-react";
+import { Plus, Edit3, MapPin, ChefHat, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
+import { MenusModal } from "@/components/MenusModal";
 
 import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
@@ -42,6 +43,7 @@ const RestaurantDashboard = () => {
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(true);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showMenusModal, setShowMenusModal] = useState(false);
   
   const { toast } = useToast();
   const { profile, updateProfile } = useProfile();
@@ -144,6 +146,17 @@ const RestaurantDashboard = () => {
       case t('dashboard.restaurantProfile'):
         setShowProfileModal(true);
         break;
+      case t('dashboard.manageMenus'):
+        if (!restaurant?.id) {
+          toast({
+            title: t('common.error'),
+            description: t('dashboard.completeProfile'),
+            variant: "destructive"
+          });
+          return;
+        }
+        setShowMenusModal(true);
+        break;
     }
   };
 
@@ -240,7 +253,8 @@ const RestaurantDashboard = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {[
-          { icon: Edit3, label: t('dashboard.restaurantProfile') }
+          { icon: Edit3, label: t('dashboard.restaurantProfile') },
+          { icon: ChefHat, label: t('dashboard.manageMenus') }
           ].map((action, index) => (
             <Button 
               key={index}
@@ -360,6 +374,12 @@ const RestaurantDashboard = () => {
             loadData();
           }, 500);
         }}
+      />
+      <MenusModal 
+        open={showMenusModal}
+        onOpenChange={setShowMenusModal}
+        restaurantId={restaurant?.id || null}
+        onSuccess={loadData}
       />
     </div>
   );
