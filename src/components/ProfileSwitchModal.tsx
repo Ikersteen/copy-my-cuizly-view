@@ -34,11 +34,15 @@ export const ProfileSwitchModal = ({
             <User className="h-5 w-5" />
             {t('profileSwitch.title')}
           </DialogTitle>
-          <DialogDescription>
-            {currentProfile === 'consumer' 
-              ? t('profileSwitch.consumerMessage')
-              : t('profileSwitch.restaurantMessage')
-            }
+          <DialogDescription className="space-y-1">
+            {currentProfile === 'consumer' ? (
+              <>
+                <div>Vous êtes actuellement connecté en tant que Consommateur.</div>
+                <div>Souhaitez-vous passer en mode Cuizly Pro&nbsp;?</div>
+              </>
+            ) : (
+              t('profileSwitch.restaurantMessage')
+            )}
           </DialogDescription>
         </DialogHeader>
         
