@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, ChefHat, LogOut } from "lucide-react";
+import { Plus, Edit3, MapPin, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
+
 
 import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
@@ -41,7 +41,6 @@ const RestaurantDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showProfileModal, setShowProfileModal] = useState(false);
   
   const { toast } = useToast();
   const { profile, updateProfile } = useProfile();
@@ -137,15 +136,7 @@ const RestaurantDashboard = () => {
   };
 
 
-  const handleActionClick = (action: string) => {
-    console.log('Action clicked:', action);
-    console.log('Restaurant ID:', restaurant?.id);
-    switch (action) {
-      case t('dashboard.restaurantProfile'):
-        setShowProfileModal(true);
-        break;
-    }
-  };
+  // handleActionClick function removed as no longer needed
 
 
 
@@ -238,21 +229,7 @@ const RestaurantDashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-          {[
-          { icon: Edit3, label: t('dashboard.restaurantProfile') }
-          ].map((action, index) => (
-            <Button 
-              key={index}
-              variant="outline"
-              className="h-16 sm:h-20 flex flex-col space-y-1 sm:space-y-2 text-xs sm:text-sm"
-              onClick={() => handleActionClick(action.label)}
-            >
-              <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span>{action.label}</span>
-            </Button>
-          ))}
-        </div>
+        {/* Buttons section removed - functionality moved to mobile menu */}
 
         {/* Message de bienvenue */}
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
@@ -350,17 +327,7 @@ const RestaurantDashboard = () => {
       </div>
 
       {/* Modals */}
-      <RestaurantProfileModal 
-        open={showProfileModal}
-        onOpenChange={setShowProfileModal}
-        restaurant={restaurant as any}
-        onUpdate={() => {
-          loadData();
-          setTimeout(() => {
-            loadData();
-          }, 500);
-        }}
-      />
+      {/* Modals removed - functionality moved to Header component */}
     </div>
   );
 };
