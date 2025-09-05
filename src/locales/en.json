@@ -570,9 +570,7 @@
     "restrictions": "Restrictions",
     "allergens": "Allergens",
     "menuAddedDesc": "Your menu has been added successfully",
-    "changesDesc": "Changes have been saved",
-    "deactivate": "Deactivate",
-    "activate": "Activate"
+    "changesDesc": "Changes have been saved"
   },
   "cuisines": {
     "typeLabel": "Cuisine type",
@@ -1018,8 +1016,7 @@
     "menuActivated": "activated",
     "menuDeactivated": "deactivated", 
     "statusChangeSuccess": "Menu {{status}} successfully",
-    "statusChangedSuccessfully": "successfully",
-    "cannotChangeStatus": "Unable to change status",
+    "errorCannotModifyStatus": "Unable to modify status",
     "menuModified": "Menu modified",
     "changesSaved": "Changes have been saved",
     "errorCannotModify": "Unable to modify menu"
@@ -1579,6 +1576,10 @@
     "deletedSuccessfully": "Menu has been successfully deleted",
     "errorDeleting": "Error deleting",
     "cannotDelete": "Unable to delete menu",
+    "statusChanged": "Status changed",
+    "menuActivated": "activated",
+    "menuDeactivated": "deactivated",
+    "statusChangedSuccessfully": "successfully",
     "errorChangingStatus": "Error changing status",
     "cannotChangeStatus": "Unable to change status",
     "menuModified": "Menu modified",
