@@ -52,57 +52,5 @@ export const AuthenticatedRestaurantHeader = ({
     }
   };
 
-  return (
-    <div className="hidden lg:flex items-center gap-4">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => navigate("/dashboard")}
-        className="gap-2"
-      >
-        <ChefHat className="h-4 w-4" />
-        {t('navigation.dashboard')}
-      </Button>
-      
-      {/* Restaurant Actions Menu */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="gap-1 px-2">
-            <Plus className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuItem onClick={() => handleAction(onNewOfferClick)}>
-            <Plus className="h-4 w-4" />
-            {t('restaurant.newOffer')}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleAction(onRestaurantProfileClick)}>
-            <ChefHat className="h-4 w-4" />
-            {t('restaurant.profile')}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleAction(onManageMenusClick)}>
-            <BookOpen className="h-4 w-4" />
-            {t('restaurant.manageMenus')}
-          </DropdownMenuItem>
-          
-          {/* Theme Toggle */}
-          <DropdownMenuItem onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            {theme === 'dark' ? t('theme.light') : t('theme.dark')}
-          </DropdownMenuItem>
-          
-          {/* Language Toggle */}
-          <DropdownMenuItem onClick={() => changeLanguage(currentLanguage === 'fr' ? 'en' : 'fr')}>
-            <Globe className="h-4 w-4" />
-            {currentLanguage === 'fr' ? 'English' : 'Français'}
-          </DropdownMenuItem>
-          
-          <DropdownMenuItem onClick={handleLogout} className="text-destructive">
-            <LogOut className="h-4 w-4" />
-            {t('navigation.logout')}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
+  return null;
 };
