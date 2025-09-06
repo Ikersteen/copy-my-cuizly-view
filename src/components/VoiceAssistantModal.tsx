@@ -193,41 +193,60 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     onClose();
   };
 
-  // Audio Visualizer Component with enhanced animations
+  // Audio Visualizer Component with beautiful animations
   const AudioVisualizer = () => {
-    const [animationPhase, setAnimationPhase] = useState(0);
+    const [wavePhase, setWavePhase] = useState(0);
+    const [pulsePhase, setPulsePhase] = useState(0);
 
     useEffect(() => {
+      let waveInterval: NodeJS.Timeout;
+      let pulseInterval: NodeJS.Timeout;
+      
       if (isSpeaking || isUserSpeaking) {
-        const interval = setInterval(() => {
-          setAnimationPhase(prev => prev + 1);
+        waveInterval = setInterval(() => {
+          setWavePhase(prev => prev + 0.2);
+        }, 50);
+        
+        pulseInterval = setInterval(() => {
+          setPulsePhase(prev => prev + 0.1);
         }, 100);
-        return () => clearInterval(interval);
       }
+      
+      return () => {
+        clearInterval(waveInterval);
+        clearInterval(pulseInterval);
+      };
     }, [isSpeaking, isUserSpeaking]);
 
     return (
-      <div className="relative h-40 bg-gradient-to-br from-cuizly-surface/80 to-muted/50 rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden group">
-        {/* Background glow effect */}
+      <div className="relative h-40 bg-gradient-to-br from-background via-cuizly-surface/20 to-background rounded-3xl border border-cuizly-primary/10 backdrop-blur-xl overflow-hidden shadow-2xl shadow-cuizly-primary/5">
+        {/* Animated background gradient */}
         <div className={cn(
-          "absolute inset-0 transition-all duration-1000",
+          "absolute inset-0 transition-all duration-1000 ease-out opacity-60",
           isConnected 
-            ? "bg-gradient-to-r from-cuizly-primary/5 via-cuizly-accent/10 to-cuizly-primary/5 animate-pulse" 
-            : "bg-gradient-to-r from-transparent via-cuizly-primary/3 to-transparent"
-        )} />
+            ? "bg-gradient-to-r from-cuizly-primary/8 via-cuizly-accent/12 to-cuizly-primary/8" 
+            : "bg-gradient-to-r from-cuizly-primary/2 via-cuizly-accent/4 to-cuizly-primary/2"
+        )}>
+          <div className={cn(
+            "absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-transparent transition-opacity duration-1000",
+            isConnected && "animate-pulse"
+          )} />
+        </div>
         
-        {/* Floating particles effect when connected */}
+        {/* Floating orbs */}
         {isConnected && (
-          <div className="absolute inset-0">
-            {[...Array(8)].map((_, i) => (
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 bg-cuizly-primary/30 rounded-full animate-ping"
+                className="absolute w-2 h-2 bg-gradient-to-r from-cuizly-primary/40 to-cuizly-accent/40 rounded-full shadow-lg"
                 style={{
-                  left: `${20 + (i * 10)}%`,
-                  top: `${30 + Math.sin(i) * 20}%`,
-                  animationDelay: `${i * 200}ms`,
-                  animationDuration: '2s'
+                  left: `${15 + (i * 15)}%`,
+                  top: `${25 + Math.sin(pulsePhase + i) * 15}%`,
+                  transform: `scale(${0.5 + Math.sin(pulsePhase + i * 0.5) * 0.3})`,
+                  animation: `float-${i} 3s ease-in-out infinite`,
+                  animationDelay: `${i * 0.5}s`,
+                  filter: 'blur(0.5px)'
                 }}
               />
             ))}
@@ -236,88 +255,120 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         
         <div className="relative h-full flex items-center justify-center">
           {isConnected ? (
-            <div className="flex items-end gap-1">
-              {[...Array(25)].map((_, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    "w-1 rounded-full transition-all duration-150 ease-out transform",
-                    (isSpeaking || isUserSpeaking)
-                      ? "bg-gradient-to-t from-cuizly-primary via-cuizly-accent to-cuizly-primary shadow-lg shadow-cuizly-primary/50" 
-                      : "bg-cuizly-neutral/40 hover:bg-cuizly-primary/60"
-                  )}
-                  style={{
-                    height: (isSpeaking || isUserSpeaking)
-                      ? `${Math.abs(Math.sin((animationPhase * 0.1) + i * 0.3)) * 35 + 15}px` 
-                      : '6px',
-                    animationDelay: `${i * 20}ms`,
-                    transform: (isSpeaking || isUserSpeaking) 
-                      ? `scaleY(${0.8 + Math.abs(Math.sin((animationPhase * 0.05) + i * 0.2)) * 0.4})` 
-                      : 'scaleY(1)'
-                  }}
-                />
-              ))}
+            <div className="flex items-end gap-1.5 px-4">
+              {[...Array(20)].map((_, i) => {
+                const baseHeight = 8;
+                const maxHeight = 45;
+                const waveHeight = (isSpeaking || isUserSpeaking) 
+                  ? baseHeight + Math.abs(Math.sin(wavePhase + i * 0.4)) * maxHeight
+                  : baseHeight + Math.random() * 3;
+                
+                return (
+                  <div
+                    key={i}
+                    className={cn(
+                      "w-1.5 rounded-full transition-all duration-200 ease-out shadow-sm",
+                      (isSpeaking || isUserSpeaking)
+                        ? "bg-gradient-to-t from-cuizly-primary via-cuizly-accent to-cuizly-primary/80 shadow-cuizly-primary/30" 
+                        : "bg-gradient-to-t from-cuizly-neutral/30 to-cuizly-neutral/60 hover:from-cuizly-primary/50 hover:to-cuizly-accent/50"
+                    )}
+                    style={{
+                      height: `${waveHeight}px`,
+                      transform: (isSpeaking || isUserSpeaking) 
+                        ? `scaleY(${0.9 + Math.sin(wavePhase + i * 0.3) * 0.2})` 
+                        : 'scaleY(1)',
+                      filter: (isSpeaking || isUserSpeaking) ? 'drop-shadow(0 0 8px rgba(var(--cuizly-primary), 0.3))' : 'none'
+                    }}
+                  />
+                );
+              })}
             </div>
           ) : (
-            <div className="text-center space-y-3 animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
+            <div className="text-center space-y-4 animate-in fade-in-0 slide-in-from-bottom-6 duration-700 ease-out">
               <div className={cn(
-                "w-16 h-16 rounded-full flex items-center justify-center mx-auto transition-all duration-500",
+                "w-20 h-20 rounded-full flex items-center justify-center mx-auto relative transition-all duration-700 ease-out",
                 keywordDetected 
-                  ? "bg-cuizly-primary/20 scale-110 shadow-lg shadow-cuizly-primary/30" 
-                  : "bg-cuizly-primary/10 hover:bg-cuizly-primary/15 hover:scale-105"
+                  ? "bg-gradient-to-br from-cuizly-primary/20 to-cuizly-accent/30 scale-110 shadow-2xl shadow-cuizly-primary/40" 
+                  : "bg-gradient-to-br from-cuizly-primary/10 to-cuizly-accent/15 hover:scale-105 hover:shadow-xl hover:shadow-cuizly-primary/20"
               )}>
+                {/* Pulsing ring */}
+                <div className={cn(
+                  "absolute inset-0 rounded-full border-2 transition-all duration-1000",
+                  keywordDetected 
+                    ? "border-cuizly-primary/50 animate-ping" 
+                    : "border-cuizly-primary/20"
+                )} />
+                
                 <img 
                   src={chefIconUrl} 
                   alt="Chef" 
                   className={cn(
-                    "w-8 h-8 transition-all duration-300",
-                    keywordDetected && "animate-bounce"
+                    "w-10 h-10 transition-all duration-500 relative z-10",
+                    keywordDetected ? "animate-bounce filter drop-shadow-lg" : "hover:scale-110"
                   )} 
                 />
               </div>
-              <p className={cn(
-                "text-sm transition-all duration-300",
-                keywordDetected ? "text-cuizly-primary font-medium" : "text-cuizly-neutral"
-              )}>
-                {isConnecting ? (
-                  <span className="flex items-center gap-2 justify-center">
-                    <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-pulse" />
-                    Connexion en cours...
-                  </span>
-                ) : keywordDetected ? (
-                  <span className="text-cuizly-primary">Détecté!</span>
-                ) : isListening ? (
-                  'Dites "Hey Cuizly"'
-                ) : (
-                  'Prêt'
+              
+              <div className="space-y-2">
+                <p className={cn(
+                  "text-base font-medium transition-all duration-500",
+                  keywordDetected ? "text-cuizly-primary scale-105" : "text-foreground"
+                )}>
+                  {isConnecting ? (
+                    <span className="flex items-center gap-3 justify-center">
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                      Connexion...
+                    </span>
+                  ) : keywordDetected ? (
+                    <span className="text-cuizly-primary animate-pulse text-lg font-semibold">Activé !</span>
+                  ) : isListening ? (
+                    'Dites "Hey Cuizly"'
+                  ) : (
+                    'Prêt à converser'
+                  )}
+                </p>
+                
+                {!isConnecting && !keywordDetected && (
+                  <p className="text-sm text-cuizly-neutral/70 animate-in fade-in-0 duration-1000 delay-300">
+                    {isListening ? 'Assistant en écoute...' : 'Cliquez pour commencer'}
+                  </p>
                 )}
-              </p>
+              </div>
             </div>
           )}
         </div>
         
-        {/* Enhanced speaking indicator */}
+        {/* Enhanced speaking indicator with ripple effect */}
         {(isSpeaking || isUserSpeaking) && (
-          <div className="absolute top-4 right-4 animate-in fade-in-0 scale-in-0 duration-300">
-            <div className="relative">
-              <Volume2 className="w-5 h-5 text-cuizly-primary animate-pulse" />
-              <div className="absolute inset-0 w-5 h-5 bg-cuizly-primary/20 rounded-full animate-ping" />
+          <div className="absolute top-4 right-4 animate-in fade-in-0 scale-in-0 duration-500">
+            <div className="relative flex items-center justify-center">
+              <div className="absolute w-8 h-8 bg-cuizly-primary/20 rounded-full animate-ping" />
+              <div className="absolute w-6 h-6 bg-cuizly-primary/30 rounded-full animate-ping animation-delay-75" />
+              <Volume2 className="w-5 h-5 text-cuizly-primary relative z-10 animate-pulse" />
             </div>
           </div>
         )}
 
-        {/* Status indicator */}
-        <div className="absolute bottom-4 left-4">
+        {/* Elegant status indicator */}
+        <div className="absolute bottom-4 left-4 animate-in slide-in-from-left-4 fade-in-0 duration-700">
           <div className={cn(
-            "flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-sm transition-all duration-300",
-            isConnected ? "bg-green-500/10 border border-green-500/20" : "bg-gray-500/10 border border-gray-500/20"
+            "flex items-center gap-3 px-4 py-2 rounded-full backdrop-blur-md transition-all duration-500 border",
+            isConnected 
+              ? "bg-green-50/80 border-green-200/50 text-green-700" 
+              : "bg-gray-50/80 border-gray-200/50 text-gray-600"
           )}>
             <div className={cn(
-              "w-2 h-2 rounded-full transition-all duration-300",
-              isConnected ? "bg-green-500 animate-pulse" : "bg-gray-400"
+              "w-2.5 h-2.5 rounded-full transition-all duration-500 shadow-sm",
+              isConnected 
+                ? "bg-green-500 animate-pulse shadow-green-500/50" 
+                : "bg-gray-400"
             )} />
             <span className="text-xs font-medium">
-              {isConnected ? 'En ligne' : 'Hors ligne'}
+              {isConnected ? 'Connecté' : 'Déconnecté'}
             </span>
           </div>
         </div>
@@ -381,50 +432,78 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] p-0 gap-0 bg-background/95 backdrop-blur-xl border-border/50">
-        {/* Enhanced Header with animations */}
-        <div className="flex items-center justify-between p-6 pb-4 border-b border-border/50 bg-gradient-to-r from-background via-cuizly-surface/20 to-background">
-          <div className="flex items-center gap-3 group">
+        {/* Modern Header with fluid animations */}
+        <div className="flex items-center justify-between p-6 pb-4 border-b border-border/30 bg-gradient-to-r from-background/50 via-cuizly-surface/10 to-background/50 backdrop-blur-sm">
+          <div className="flex items-center gap-4 group">
             <div className={cn(
-              "w-10 h-10 rounded-full flex items-center justify-center relative transition-all duration-300",
-              "bg-gradient-to-br from-cuizly-primary to-cuizly-accent shadow-lg",
-              isConnected ? "animate-pulse shadow-cuizly-primary/30" : "group-hover:scale-110"
+              "w-12 h-12 rounded-2xl flex items-center justify-center relative transition-all duration-500 ease-out",
+              "bg-gradient-to-br from-cuizly-primary via-cuizly-accent to-cuizly-primary shadow-xl",
+              isConnected 
+                ? "shadow-cuizly-primary/40 scale-105" 
+                : "group-hover:scale-110 group-hover:shadow-cuizly-primary/30"
             )}>
-              <img src={chefIconUrl} alt="Chef" className="w-6 h-6 relative z-10" />
-              {/* Animated ring for connected state */}
+              <img src={chefIconUrl} alt="Chef" className="w-7 h-7 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+              
+              {/* Multi-layer animated rings */}
               {isConnected && (
-                <div className="absolute inset-0 rounded-full border-2 border-cuizly-primary/30 animate-ping" />
+                <>
+                  <div className="absolute inset-0 rounded-2xl border-2 border-cuizly-primary/40 animate-ping" />
+                  <div className="absolute inset-[-4px] rounded-2xl border border-cuizly-accent/30 animate-pulse" />
+                </>
               )}
+              
+              {/* Background glow */}
+              <div className={cn(
+                "absolute inset-[-8px] rounded-3xl transition-all duration-500",
+                isConnected 
+                  ? "bg-gradient-to-br from-cuizly-primary/20 to-cuizly-accent/20 blur-md animate-pulse" 
+                  : "bg-gradient-to-br from-cuizly-primary/10 to-cuizly-accent/10 blur-sm opacity-0 group-hover:opacity-100"
+              )} />
             </div>
-            <div className="transition-all duration-300 group-hover:translate-x-1">
-              <p className="font-semibold text-foreground flex items-center gap-2">
-                Assistant Vocal Cuizly
+            
+            <div className="transition-all duration-300 group-hover:translate-x-2">
+              <div className="flex items-center gap-3">
+                <h2 className="font-bold text-lg text-foreground">Assistant Vocal Cuizly</h2>
                 {keywordDetected && (
-                  <span className="text-xs bg-cuizly-primary/10 text-cuizly-primary px-2 py-1 rounded-full animate-bounce">
-                    Activé!
-                  </span>
+                  <div className="px-3 py-1 bg-gradient-to-r from-cuizly-primary to-cuizly-accent text-white text-xs font-medium rounded-full animate-bounce shadow-lg">
+                    ✨ Activé !
+                  </div>
                 )}
-              </p>
-              <div className="flex items-center gap-2">
+              </div>
+              
+              <div className="flex items-center gap-3 mt-1">
                 <div className={cn(
-                  "w-2 h-2 rounded-full transition-all duration-500",
-                  isConnected ? "bg-green-500 shadow-lg shadow-green-500/50 animate-pulse" : "bg-gray-400"
-                )} />
+                  "w-3 h-3 rounded-full transition-all duration-500 relative",
+                  isConnected ? "bg-green-500 shadow-lg shadow-green-500/60" : "bg-gray-400"
+                )}>
+                  {isConnected && (
+                    <>
+                      <div className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-75" />
+                      <div className="absolute inset-[-2px] bg-green-300 rounded-full animate-pulse opacity-50" />
+                    </>
+                  )}
+                </div>
+                
                 <p className={cn(
-                  "text-xs transition-all duration-300",
-                  isConnected ? "text-green-600 font-medium" : "text-cuizly-neutral"
+                  "text-sm font-medium transition-all duration-300",
+                  isConnected ? "text-green-600" : "text-cuizly-neutral"
                 )}>
                   {isConnected ? (
-                    <span className="flex items-center gap-1">
-                      En ligne
-                      <div className="w-1 h-1 bg-green-500 rounded-full animate-ping" />
+                    <span className="flex items-center gap-2">
+                      Connecté et prêt
+                      <div className="flex gap-1">
+                        <div className="w-1 h-1 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-1 h-1 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-1 h-1 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
                     </span>
                   ) : isListening ? (
-                    <span className="flex items-center gap-1">
-                      <div className="w-1 h-1 bg-cuizly-primary rounded-full animate-pulse" />
-                      Écoute "Hey Cuizly"
+                    <span className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-pulse" />
+                      En écoute de "Hey Cuizly"
                     </span>
                   ) : (
-                    'Hors ligne'
+                    'Déconnecté'
                   )}
                 </p>
               </div>
@@ -509,28 +588,32 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                   disabled={isConnecting}
                   size="lg"
                   className={cn(
-                    "relative overflow-hidden group transition-all duration-300 transform hover:scale-105",
-                    "bg-gradient-to-r from-cuizly-primary via-cuizly-accent to-cuizly-primary bg-size-200 bg-pos-0 hover:bg-pos-100",
-                    "text-white px-8 py-3 shadow-lg hover:shadow-xl hover:shadow-cuizly-primary/30",
-                    "border border-cuizly-primary/20 hover:border-cuizly-primary/40"
+                    "relative overflow-hidden group transition-all duration-500 ease-out transform hover:scale-110 active:scale-95",
+                    "bg-gradient-to-r from-cuizly-primary via-cuizly-accent to-cuizly-primary",
+                    "text-white px-10 py-4 shadow-2xl hover:shadow-3xl shadow-cuizly-primary/30 hover:shadow-cuizly-primary/50",
+                    "border-2 border-white/20 hover:border-white/40 rounded-2xl font-semibold text-base",
+                    "before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/0 before:via-white/20 before:to-white/0",
+                    "before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700"
                   )}
                 >
-                  {/* Background animation overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                  
                   {isConnecting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                      <span className="animate-pulse">Connexion...</span>
-                    </>
+                    <div className="flex items-center gap-3">
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                      <span className="animate-pulse">Connexion en cours...</span>
+                    </div>
                   ) : (
-                    <>
+                    <div className="flex items-center gap-3 relative z-10">
                       <Mic className={cn(
-                        "w-5 h-5 mr-2 transition-all duration-300",
-                        keywordDetected && "animate-bounce"
+                        "w-6 h-6 transition-all duration-300",
+                        keywordDetected ? "animate-bounce scale-110" : "group-hover:scale-110"
                       )} />
-                      <span className="font-medium">Démarrer la conversation</span>
-                    </>
+                      <span>Démarrer la conversation</span>
+                      <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse" />
+                    </div>
                   )}
                 </Button>
               ) : (
@@ -539,14 +622,20 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                   variant="outline"
                   size="lg"
                   className={cn(
-                    "relative overflow-hidden group transition-all duration-300 transform hover:scale-105",
-                    "border-2 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 px-8 py-3",
-                    "shadow-sm hover:shadow-lg hover:shadow-red-200/50"
+                    "relative overflow-hidden group transition-all duration-500 ease-out transform hover:scale-105 active:scale-95",
+                    "border-2 border-red-300/60 text-red-600 hover:text-red-700 bg-red-50/50 hover:bg-red-100/80",
+                    "px-10 py-4 rounded-2xl font-semibold text-base backdrop-blur-sm",
+                    "shadow-lg hover:shadow-xl shadow-red-200/30 hover:shadow-red-300/50",
+                    "hover:border-red-400/80 transition-all duration-300"
                   )}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-50 to-red-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <MicOff className="w-5 h-5 mr-2 relative z-10 group-hover:animate-pulse" />
-                  <span className="font-medium relative z-10">Terminer</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-100/0 via-red-200/30 to-red-100/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                  
+                  <div className="flex items-center gap-3 relative z-10">
+                    <MicOff className="w-6 h-6 transition-all duration-300 group-hover:scale-110" />
+                    <span>Terminer la conversation</span>
+                    <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
+                  </div>
                 </Button>
               )}
             </div>
