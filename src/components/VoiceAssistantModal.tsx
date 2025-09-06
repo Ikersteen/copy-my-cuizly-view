@@ -431,15 +431,44 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
             </div>
           </div>
           
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleClose}
-            className="rounded-full hover:bg-red-50 hover:text-red-500"
-          >
-            <X className="w-4 h-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowSettings(!showSettings)}
+              className={cn(
+                "rounded-full hover:bg-muted/80",
+                showSettings ? "bg-cuizly-primary/10 text-cuizly-primary" : ""
+              )}
+            >
+              <Settings className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
+
+        {/* Settings Panel */}
+        {showSettings && (
+          <div className="p-6 pb-4 border-b border-border/50 bg-muted/30">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-xs text-cuizly-neutral">Voix de l'assistant</label>
+                <Select value={selectedVoice} onValueChange={setSelectedVoice}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="alloy">Alloy (Neutre)</SelectItem>
+                    <SelectItem value="echo">Echo (Masculin)</SelectItem>
+                    <SelectItem value="fable">Fable (Britannique)</SelectItem>
+                    <SelectItem value="onyx">Onyx (Profond)</SelectItem>
+                    <SelectItem value="nova">Nova (Féminin)</SelectItem>
+                    <SelectItem value="shimmer">Shimmer (Doux)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col h-[70vh]">
           {/* Audio Visualizer */}
