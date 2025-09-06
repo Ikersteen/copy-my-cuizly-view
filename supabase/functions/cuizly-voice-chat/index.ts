@@ -43,7 +43,7 @@ serve(async (req) => {
     
     try {
       // Connect to OpenAI Realtime API with the correct model
-      openAISocket = new WebSocket("wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17", [
+      openAISocket = new WebSocket("wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01", [
         "realtime",
         `Bearer.${openaiKey}`
       ]);
