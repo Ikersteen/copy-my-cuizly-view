@@ -11,6 +11,7 @@ const Index = () => {
   return (
     <>
       <HeroSection />
+      <MissionSection />
       
       {/* Démo Interface Vocale */}
       <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-20">
@@ -123,8 +124,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-      
-      <MissionSection />
       <FeaturesSectionLanding />
       <HowItWorksSection />
       <PricingSectionLanding />
