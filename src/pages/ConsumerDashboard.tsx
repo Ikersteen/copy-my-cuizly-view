@@ -17,7 +17,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
-import VoiceAssistantModal from "@/components/VoiceAssistantModal";
 import { RecommendationCardsSection } from "@/components/RecommendationCardsSection";
 import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
@@ -31,7 +30,7 @@ const ConsumerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const [showVoiceModal, setShowVoiceModal] = useState(false);
+  // showVoiceModal removed - now redirects to /voice page
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [forceLoaded, setForceLoaded] = useState(false);
   
@@ -128,7 +127,7 @@ const ConsumerDashboard = () => {
       // Close any open modals
       setShowFavorites(false);
       setShowHistory(false);
-      setShowVoiceModal(false);
+      // setShowVoiceModal removed - now redirects to /voice page
       
       // Clear user state
       setUser(null);
@@ -220,14 +219,11 @@ const ConsumerDashboard = () => {
         open={showHistory} 
         onOpenChange={setShowHistory}
       />
-      <VoiceAssistantModal 
-        isOpen={showVoiceModal} 
-        onClose={() => setShowVoiceModal(false)} 
-      />
+      {/* VoiceAssistantModal removed - now redirects to /voice page */}
 
-      {/* Floating Voice Assistant Button */}
+      {/* Floating Voice Assistant Button - Redirects to new interface */}
       <Button
-        onClick={() => setShowVoiceModal(true)}
+        onClick={() => navigate('/voice')}
         className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 z-50"
         aria-label="Assistant vocal"
       >
