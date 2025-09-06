@@ -4,10 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/components/ui/use-toast';
-import { X, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
+import { X, Mic, MicOff, Volume2, VolumeX, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import VoiceWaveAnimation from './VoiceWaveAnimation';
-import { AudioRecorder, AudioQueue, encodeAudioForAPI, calculateAudioLevel } from '@/utils/audioUtils';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useAddresses } from '@/hooks/useAddresses';
@@ -44,12 +43,9 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { getPrimaryAddressByType } = useAddresses('user_delivery');
   
-  // Connection state
-  const [isConnected, setIsConnected] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-  
-  // Audio state
+  // State
   const [isRecording, setIsRecording] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
@@ -60,559 +56,437 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
   const [recommendations, setRecommendations] = useState<RecommendationResult[]>([]);
   
   // Refs
-  const wsRef = useRef<WebSocket | null>(null);
-  const recorderRef = useRef<AudioRecorder | null>(null);
-  const audioQueueRef = useRef<AudioQueue | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
-  // Initialize audio context and queue
-  useEffect(() => {
-    if (!open) return;
+  // Analyser pour le niveau audio
+  const updateAudioLevel = useCallback(() => {
+    if (!analyserRef.current) return;
+
+    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+    analyserRef.current.getByteFrequencyData(dataArray);
     
-    const initAudio = async () => {
-      try {
-        audioContextRef.current = new AudioContext({ sampleRate: 24000 });
-        audioQueueRef.current = new AudioQueue(audioContextRef.current);
-        console.log("Audio system initialized");
-      } catch (error) {
-        console.error("Failed to initialize audio:", error);
-      }
-    };
-
-    initAudio();
-
-    return () => {
-      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
-        audioContextRef.current.close();
-      }
-    };
-  }, [open]);
-
-  // Handle audio data from microphone
-  const handleAudioData = useCallback((audioData: Float32Array) => {
-    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
-
-    // Calculate audio level for visual feedback
-    const level = calculateAudioLevel(audioData);
-    setAudioLevel(level);
-
-    // Encode and send to WebSocket
-    const encodedAudio = encodeAudioForAPI(audioData);
-    wsRef.current.send(JSON.stringify({
-      type: 'input_audio_buffer.append',
-      audio: encodedAudio
-    }));
-  }, []);
-
-  // Connect to voice service
-  const connectToVoice = async () => {
-    if (isConnecting || isConnected) return;
+    const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+    setAudioLevel(average / 255);
     
-    setIsConnecting(true);
-    console.log("Starting voice assistant connection...");
-    
+    if (isRecording) {
+      animationFrameRef.current = requestAnimationFrame(updateAudioLevel);
+    }
+  }, [isRecording]);
+
+  // Initialiser le microphone
+  const initializeMicrophone = useCallback(async () => {
     try {
-      // Request microphone permission
-      console.log("Requesting microphone access...");
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-      console.log("Microphone access granted");
+      console.log('Requesting microphone access...');
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          sampleRate: 16000,
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true
+        } 
+      });
       
-      // Get user context for better recommendations
+      streamRef.current = stream;
+      
+      // Setup audio context pour l'analyse
+      audioContextRef.current = new AudioContext();
+      analyserRef.current = audioContextRef.current.createAnalyser();
+      const source = audioContextRef.current.createMediaStreamSource(stream);
+      source.connect(analyserRef.current);
+      
+      console.log('Microphone access granted');
+      return stream;
+    } catch (error) {
+      console.error('Microphone access denied:', error);
+      toast({
+        title: "Erreur microphone",
+        description: "Impossible d'accéder au microphone. Veuillez autoriser l'accès.",
+        variant: "destructive"
+      });
+      throw error;
+    }
+  }, [toast]);
+
+  // Commencer l'enregistrement
+  const startRecording = useCallback(async () => {
+    try {
+      const stream = streamRef.current || await initializeMicrophone();
+      
+      audioChunksRef.current = [];
+      mediaRecorderRef.current = new MediaRecorder(stream, {
+        mimeType: 'audio/webm;codecs=opus'
+      });
+
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorderRef.current.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        await processAudio(audioBlob);
+      };
+
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+      updateAudioLevel();
+      
+      console.log('Recording started');
+    } catch (error) {
+      console.error('Failed to start recording:', error);
+      toast({
+        title: "Erreur d'enregistrement",
+        description: "Impossible de démarrer l'enregistrement audio.",
+        variant: "destructive"
+      });
+    }
+  }, [initializeMicrophone, updateAudioLevel, toast]);
+
+  // Arrêter l'enregistrement
+  const stopRecording = useCallback(() => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      setAudioLevel(0);
+      
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      
+      console.log('Recording stopped');
+    }
+  }, [isRecording]);
+
+  // Traiter l'audio avec la nouvelle fonction ElevenLabs
+  const processAudio = useCallback(async (audioBlob: Blob) => {
+    try {
+      setIsProcessing(true);
+      
+      // Convertir l'audio en base64
+      const arrayBuffer = await audioBlob.arrayBuffer();
+      const base64Audio = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+      
+      // Préparer le contexte utilisateur
       const userAddress = getPrimaryAddressByType('user_delivery');
       const userContext = {
         preferences: preferences,
-        address: userAddress?.formatted_address,
-        favorites: favorites
-      };
-      
-      // Connect to WebSocket with user context
-      const wsUrl = 'wss://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/cuizly-voice-chat';
-      console.log("Connecting to WebSocket at:", wsUrl);
-      console.log("Attempting WebSocket connection...");
-      wsRef.current = new WebSocket(wsUrl);
-
-      wsRef.current.onopen = () => {
-        console.log("WebSocket connection established successfully");
-        setIsConnected(true);
-        setIsConnecting(false);
-        
-        // Send user context after connection
-        if (wsRef.current) {
-          console.log("Sending user context:", userContext);
-          wsRef.current.send(JSON.stringify({
-            type: 'user_context',
-            context: userContext
-          }));
-        }
-        
-        toast({
-          title: "Assistant vocal activé",
-          description: "Bonjour ! Je suis votre assistant culinaire Cuizly. Comment puis-je vous aider ?",
-        });
+        address: userAddress?.formatted_address || 'Montréal',
+        favorites: favorites // favorites are already strings (restaurant IDs)
       };
 
-      wsRef.current.onmessage = async (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          console.log("Received:", data.type);
+      console.log('Processing audio with ElevenLabs...', { userContext });
 
-          switch (data.type) {
-            case 'session.created':
-              console.log("Voice session created");
-              break;
-
-            case 'response.audio.delta':
-              // Play audio response
-              if (audioQueueRef.current && !isMuted) {
-                const binaryString = atob(data.delta);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                  bytes[i] = binaryString.charCodeAt(i);
-                }
-                await audioQueueRef.current.addToQueue(bytes);
-                setIsSpeaking(true);
-              }
-              break;
-
-            case 'response.audio.done':
-              setIsSpeaking(false);
-              break;
-
-            case 'response.audio_transcript.delta':
-              // Update assistant message transcript
-              if (data.delta) {
-                setCurrentTranscript(prev => prev + data.delta);
-              }
-              break;
-
-            case 'response.audio_transcript.done':
-              // Finalize assistant message
-              if (currentTranscript) {
-                const newMessage: VoiceMessage = {
-                  id: Date.now().toString(),
-                  type: 'assistant',
-                  content: currentTranscript,
-                  timestamp: new Date()
-                };
-                setMessages(prev => [...prev, newMessage]);
-                setCurrentTranscript('');
-              }
-              break;
-
-            case 'conversation.item.input_audio_transcription.completed':
-              // User speech transcription completed
-              if (data.transcript) {
-                const userMessage: VoiceMessage = {
-                  id: Date.now().toString(),
-                  type: 'user',
-                  content: data.transcript,
-                  timestamp: new Date()
-                };
-                setMessages(prev => [...prev, userMessage]);
-              }
-              break;
-
-            case 'cuizly_action':
-              // Handle Cuizly-specific actions
-              await handleCuizlyAction(data.action, data.data);
-              break;
-
-            case 'error':
-              console.error("Voice service error:", data.message);
-              toast({
-                title: "Erreur",
-                description: data.message,
-                variant: "destructive",
-              });
-              break;
-          }
-        } catch (error) {
-          console.error("Error processing message:", error);
-        }
-      };
-
-      wsRef.current.onerror = (error) => {
-        console.error("WebSocket error details:", error);
-        console.error("WebSocket readyState:", wsRef.current?.readyState);
-        console.error("WebSocket URL:", wsUrl);
-        setIsConnected(false);
-        setIsConnecting(false);
-        
-        toast({
-          title: "Erreur de connexion",
-          description: "Impossible de se connecter au service vocal. Vérifiez votre connexion internet.",
-          variant: "destructive",
-        });
-      };
-
-      wsRef.current.onclose = (closeEvent) => {
-        console.log("WebSocket connection closed");
-        console.log("Close code:", closeEvent.code);
-        console.log("Close reason:", closeEvent.reason);
-        console.log("Clean close:", closeEvent.wasClean);
-        setIsConnected(false);
-        setIsConnecting(false);
-        setIsRecording(false);
-        setIsSpeaking(false);
-        
-        // Show different messages based on close code
-        if (closeEvent.code === 1006) {
-          toast({
-            title: "Connexion fermée",
-            description: "Le service vocal n'est pas disponible actuellement.",
-            variant: "destructive",
-          });
-        }
-      };
-
-    } catch (error) {
-      console.error("Failed to connect:", error);
-      setIsConnecting(false);
-      
-      let errorMessage = "Erreur inconnue";
-      if (error.name === 'NotAllowedError') {
-        errorMessage = "Accès au microphone requis pour utiliser l'assistant vocal";
-      } else if (error.name === 'NotFoundError') {
-        errorMessage = "Aucun microphone détecté sur votre appareil";
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-      
-      toast({
-        title: "Erreur",
-        description: errorMessage,
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Handle Cuizly actions from the voice assistant
-  const handleCuizlyAction = async (action: string, data: any) => {
-    console.log("Handling Cuizly action:", action, data);
-    
-    try {
-      switch (action) {
-        case 'get_recommendations':
-          await getRecommendations(data);
-          break;
-        case 'add_to_favorites':
-          if (data.restaurantId) {
-            await toggleFavorite(data.restaurantId);
-            toast({
-              title: "Favori ajouté",
-              description: `${data.restaurantName || 'Restaurant'} ajouté à vos favoris`,
-            });
-          }
-          break;
-        case 'show_favorites':
-          // This would trigger the favorites modal in the parent component
-          toast({
-            title: "Favoris",
-            description: `Vous avez ${favorites.length} restaurants favoris`,
-          });
-          break;
-        case 'get_user_preferences':
-          return {
-            preferences: preferences,
-            address: getPrimaryAddressByType('user_delivery')?.formatted_address,
-            favorites_count: favorites.length
-          };
-        default:
-          console.log("Unknown action:", action);
-      }
-    } catch (error) {
-      console.error("Error handling Cuizly action:", error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de traiter votre demande",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Get recommendations using existing AI system
-  const getRecommendations = async (searchParams: any) => {
-    try {
-      // Simulate restaurant data - in real app, this would come from your restaurant database
-      const mockRestaurants = [
-        {
-          id: '1',
-          name: 'Sushi Zen',
-          cuisine_type: ['japonaise'],
-          price_range: '$$',
-          description: 'Authentique restaurant japonais',
-          average_rating: 4.5
-        },
-        {
-          id: '2',
-          name: 'Pasta Bella',
-          cuisine_type: ['italienne'],
-          price_range: '$',
-          description: 'Délicieuses pâtes maison',
-          average_rating: 4.2
-        }
-      ];
-
-      // Use existing AI recommendations system
-      const { data, error } = await supabase.functions.invoke('ai-recommendations', {
+      // Appeler la fonction ElevenLabs
+      const { data, error } = await supabase.functions.invoke<{
+        success: boolean;
+        transcription: string;
+        response: string;
+        audioContent: string;
+        error?: string;
+      }>('cuizly-voice-elevenlabs', {
         body: {
-          restaurants: mockRestaurants,
-          preferences: preferences,
-          language: 'fr'
+          audio: base64Audio,
+          userContext
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        throw new Error(error.message);
+      }
 
-      const recs = data.recommendations || [];
-      setRecommendations(recs);
+      if (!data?.success) {
+        throw new Error(data?.error || 'Erreur de traitement vocal');
+      }
 
-      toast({
-        title: "Recommandations trouvées",
-        description: `${recs.length} restaurants correspondent à vos critères`,
-      });
+      // Ajouter les messages à la conversation
+      const userMessage: VoiceMessage = {
+        id: Date.now().toString(),
+        type: 'user',
+        content: data.transcription,
+        timestamp: new Date()
+      };
+
+      const assistantMessage: VoiceMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'assistant',
+        content: data.response,
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, userMessage, assistantMessage]);
+      setCurrentTranscript(data.transcription);
+
+      // Jouer la réponse audio si non muté
+      if (!isMuted && data.audioContent) {
+        await playAudioResponse(data.audioContent);
+      }
+
+      console.log('Voice processing completed successfully');
 
     } catch (error) {
-      console.error("Error getting recommendations:", error);
+      console.error('Failed to process audio:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'obtenir les recommandations",
-        variant: "destructive",
+        title: "Erreur de traitement",
+        description: "Impossible de traiter votre message vocal. Veuillez réessayer.",
+        variant: "destructive"
       });
+    } finally {
+      setIsProcessing(false);
     }
-  };
+  }, [preferences, favorites, getPrimaryAddressByType, isMuted, toast]);
 
-  // Disconnect from voice service
-  const disconnectFromVoice = () => {
-    if (recorderRef.current) {
-      recorderRef.current.stop();
-      recorderRef.current = null;
-    }
-    
-    if (wsRef.current) {
-      wsRef.current.close();
-      wsRef.current = null;
-    }
-    
-    audioQueueRef.current?.clear();
-    setIsConnected(false);
-    setIsRecording(false);
-    setIsSpeaking(false);
-    setAudioLevel(0);
-  };
-
-  // Toggle recording
-  const toggleRecording = async () => {
-    if (!isConnected) return;
-
-    if (isRecording) {
-      // Stop recording
-      if (recorderRef.current) {
-        recorderRef.current.stop();
-        recorderRef.current = null;
+  // Jouer la réponse audio
+  const playAudioResponse = useCallback(async (base64Audio: string) => {
+    try {
+      setIsSpeaking(true);
+      
+      // Convertir base64 en ArrayBuffer
+      const binaryString = atob(base64Audio);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
       }
-      setIsRecording(false);
-      setAudioLevel(0);
-    } else {
-      // Start recording
-      try {
-        recorderRef.current = new AudioRecorder(handleAudioData);
-        await recorderRef.current.start();
-        setIsRecording(true);
-      } catch (error) {
-        console.error("Failed to start recording:", error);
-        toast({
-          title: "Erreur",
-          description: "Impossible d'accéder au microphone",
-          variant: "destructive",
-        });
-      }
-    }
-  };
 
-  // Toggle mute
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-    if (!isMuted) {
-      audioQueueRef.current?.clear();
+      // Créer un blob audio et le jouer
+      const audioBlob = new Blob([bytes], { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      
+      audio.onended = () => {
+        setIsSpeaking(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+      
+      await audio.play();
+      
+    } catch (error) {
+      console.error('Failed to play audio response:', error);
       setIsSpeaking(false);
     }
-  };
+  }, []);
 
-  // Cleanup on close
+  // Toggle recording
+  const toggleRecording = useCallback(() => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  }, [isRecording, startRecording, stopRecording]);
+
+  // Toggle mute
+  const toggleMute = useCallback(() => {
+    setIsMuted(!isMuted);
+    toast({
+      title: isMuted ? "Audio activé" : "Audio désactivé",
+      description: isMuted ? "Vous entendrez maintenant les réponses vocales." : "Les réponses vocales sont désactivées.",
+    });
+  }, [isMuted, toast]);
+
+  // Nettoyage à la fermeture
   useEffect(() => {
     if (!open) {
-      disconnectFromVoice();
+      // Arrêter l'enregistrement si en cours
+      if (isRecording) {
+        stopRecording();
+      }
+      
+      // Nettoyer les ressources
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+      }
+      
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close();
+      }
+      
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      
+      // Reset state
       setMessages([]);
-      setRecommendations([]);
       setCurrentTranscript('');
+      setRecommendations([]);
+      setIsProcessing(false);
+      setIsSpeaking(false);
+      setAudioLevel(0);
     }
-  }, [open]);
+  }, [open, isRecording, stopRecording]);
+
+  const addToFavorites = useCallback(async (restaurantId: string) => {
+    try {
+      await toggleFavorite(restaurantId);
+      toast({
+        title: "Favori ajouté",
+        description: "Le restaurant a été ajouté à vos favoris.",
+      });
+    } catch (error) {
+      console.error('Failed to add to favorites:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter le restaurant aux favoris.",
+        variant: "destructive"
+      });
+    }
+  }, [toggleFavorite, toast]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl h-[90vh] p-0 gap-0">
-        <DialogHeader className="px-6 py-4 border-b">
-          <DialogTitle className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-              </div>
-            </div>
-            Assistant Vocal Cuizly
+      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
+          <DialogTitle className="flex items-center justify-between">
+            <span>Assistant Vocal Cuizly</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onOpenChange(false)}
+              className="h-6 w-6 p-0"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex-1 flex overflow-hidden">
-          {/* Zone centrale - Interface vocale */}
-          <div className="flex-1 flex flex-col p-6">
-            {/* Status */}
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <div className={cn(
-                  "w-3 h-3 rounded-full",
-                  isConnected ? "bg-green-500" : "bg-gray-400"
-                )} />
-                <span className="text-sm font-medium">
-                  {isConnected ? "Connecté" : "Déconnecté"}
-                </span>
+        <div className="flex-1 flex gap-4 overflow-hidden">
+          {/* Section principale */}
+          <div className="flex-1 flex flex-col">
+            {/* État de connexion et animation */}
+            <div className="flex-shrink-0 flex flex-col items-center p-6 bg-muted/50 rounded-lg mb-4">
+              <div className="mb-4">
+                <VoiceWaveAnimation 
+                  isActive={isRecording || isSpeaking}
+                  audioLevel={audioLevel}
+                />
               </div>
-              <p className="text-sm text-muted-foreground">
-                {isConnected 
-                  ? (isRecording 
-                    ? "🎤 En écoute... Parlez maintenant"
-                    : isSpeaking 
-                    ? "🔊 Assistant en train de répondre..."
-                    : "Appuyez sur le micro pour parler")
-                  : "Cliquez sur 'Démarrer' pour activer l'assistant vocal"
-                }
-              </p>
-            </div>
-
-            {/* Voice Wave Animation */}
-            <div className="flex-1 flex items-center justify-center mb-6">
-              <VoiceWaveAnimation 
-                isActive={isRecording || isSpeaking} 
-                audioLevel={audioLevel}
-                className="h-32 max-w-md"
-              />
-            </div>
-
-            {/* Controls */}
-            <div className="flex items-center justify-center gap-4">
-              {!isConnected ? (
-                <Button
-                  onClick={connectToVoice}
-                  disabled={isConnecting}
-                  className="flex-1 max-w-xs bg-primary hover:bg-primary/90"
-                >
-                  {isConnecting ? "Connexion..." : "Démarrer l'assistant vocal"}
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={toggleMute}
-                    className={cn(
-                      "w-12 h-12 rounded-full",
-                      isMuted ? "bg-destructive/10 text-destructive" : "bg-muted"
-                    )}
-                  >
-                    {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-                  </Button>
-
-                  <Button
-                    size="icon"
-                    onClick={toggleRecording}
-                    className={cn(
-                      "w-16 h-16 rounded-full transition-all duration-200",
-                      isRecording 
-                        ? "bg-destructive hover:bg-destructive/90 scale-110" 
-                        : "bg-primary hover:bg-primary/90"
-                    )}
-                  >
-                    {isRecording ? (
-                      <MicOff className="w-6 h-6" />
-                    ) : (
-                      <Mic className="w-6 h-6" />
-                    )}
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    onClick={disconnectFromVoice}
-                    className="px-4"
-                  >
-                    Arrêter
-                  </Button>
-                </>
-              )}
-            </div>
-
-            {/* Recent Messages */}
-            {messages.length > 0 && (
-              <Card className="mt-6">
-                <CardContent className="p-4">
-                  <h4 className="text-sm font-medium mb-3 text-muted-foreground">Conversation</h4>
-                  <div className="space-y-3 max-h-32 overflow-y-auto">
-                    {messages.slice(-3).map((message) => (
-                      <div key={message.id} className="flex items-start gap-2">
-                        <Badge variant={message.type === 'user' ? 'default' : 'secondary'} className="text-xs">
-                          {message.type === 'user' ? 'Vous' : 'Assistant'}
-                        </Badge>
-                        <p className="text-sm flex-1">{message.content}</p>
-                      </div>
-                    ))}
-                    {currentTranscript && (
-                      <div className="flex items-start gap-2">
-                        <Badge variant="secondary" className="text-xs">Assistant</Badge>
-                        <p className="text-sm flex-1 italic">{currentTranscript}...</p>
-                      </div>
-                    )}
+              
+              <div className="text-center mb-4">
+                {isProcessing && (
+                  <div className="flex items-center gap-2 text-primary">
+                    <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+                    <span>Traitement en cours...</span>
                   </div>
-                </CardContent>
-              </Card>
+                )}
+                {isRecording && !isProcessing && (
+                  <p className="text-primary font-medium">🎤 À l'écoute...</p>
+                )}
+                {isSpeaking && (
+                  <p className="text-primary font-medium">🔊 Réponse en cours...</p>
+                )}
+                {!isRecording && !isProcessing && !isSpeaking && (
+                  <p className="text-muted-foreground">Appuyez sur le microphone pour parler</p>
+                )}
+              </div>
+
+              {/* Contrôles */}
+              <div className="flex gap-2">
+                <Button
+                  onClick={toggleRecording}
+                  disabled={isProcessing}
+                  size="lg"
+                  variant={isRecording ? "destructive" : "default"}
+                  className={cn(
+                    "transition-all duration-200",
+                    isRecording && "animate-pulse"
+                  )}
+                >
+                  {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+                  {isRecording ? "Arrêter" : "Parler"}
+                </Button>
+                
+                <Button
+                  onClick={toggleMute}
+                  variant="outline"
+                  size="lg"
+                >
+                  {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                </Button>
+              </div>
+            </div>
+
+            {/* Messages de conversation */}
+            {messages.length > 0 && (
+              <div className="flex-1 overflow-y-auto">
+                <h3 className="font-semibold mb-3">Conversation récente</h3>
+                <div className="space-y-3">
+                  {messages.slice(-6).map((message) => (
+                    <Card key={message.id} className={cn(
+                      "p-3",
+                      message.type === 'user' ? "bg-primary/10 ml-8" : "bg-muted mr-8"
+                    )}>
+                      <div className="flex items-start gap-2">
+                        <div className={cn(
+                          "text-xs px-2 py-1 rounded-full flex-shrink-0",
+                          message.type === 'user' ? "bg-primary text-primary-foreground" : "bg-secondary"
+                        )}>
+                          {message.type === 'user' ? 'Vous' : 'Cuizly'}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm">{message.content}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {message.timestamp.toLocaleTimeString()}
+                          </p>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
 
-          {/* Sidebar - Résultats */}
+          {/* Section recommandations */}
           {recommendations.length > 0 && (
-            <div className="w-80 border-l bg-muted/20 p-4 overflow-y-auto">
-              <h3 className="font-semibold mb-4">Recommandations</h3>
+            <div className="w-80 flex-shrink-0 overflow-y-auto">
+              <h3 className="font-semibold mb-3">Recommandations</h3>
               <div className="space-y-3">
                 {recommendations.map((restaurant) => (
                   <Card key={restaurant.id} className="p-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1">
-                        <h4 className="font-medium text-sm">{restaurant.name}</h4>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {restaurant.cuisine_type.join(', ')} • {restaurant.price_range}
-                        </p>
-                        {restaurant.ai_reasons && (
-                          <p className="text-xs text-primary mt-1">
-                            {restaurant.ai_reasons[0]}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex flex-col items-end gap-1">
-                        {restaurant.average_rating && (
-                          <Badge variant="secondary" className="text-xs">
-                            ⭐ {restaurant.average_rating}
+                    <CardContent className="p-0">
+                      <h4 className="font-medium mb-1">{restaurant.name}</h4>
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        {restaurant.cuisine_type.map((cuisine, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {cuisine}
                           </Badge>
-                        )}
+                        ))}
+                        <Badge variant="outline" className="text-xs">
+                          {restaurant.price_range}
+                        </Badge>
+                      </div>
+                      {restaurant.description && (
+                        <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
+                          {restaurant.description}
+                        </p>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-muted-foreground">
+                          Score: {Math.round(restaurant.ai_score * 100)}%
+                        </div>
                         <Button
-                          variant="ghost"
                           size="sm"
-                          onClick={() => toggleFavorite(restaurant.id)}
-                          className="p-1 h-auto"
+                          variant="outline"
+                          onClick={() => addToFavorites(restaurant.id)}
+                          disabled={isFavorite(restaurant.id)}
                         >
-                          <span className={isFavorite(restaurant.id) ? "text-red-500" : "text-muted-foreground"}>
-                            ♥
-                          </span>
+                          {isFavorite(restaurant.id) ? "Favoris ✓" : "Ajouter"}
                         </Button>
                       </div>
-                    </div>
+                      {restaurant.ai_reasons && (
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          {restaurant.ai_reasons.slice(0, 2).map((reason, index) => (
+                            <div key={index}>• {reason}</div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
                   </Card>
                 ))}
               </div>
