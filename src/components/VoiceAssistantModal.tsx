@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, X, Volume2 } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
-import cuizlyIcon from '@/assets/cuizly-icon.png';
 
 // Type declarations for Speech Recognition
 declare global {
@@ -40,6 +39,8 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
   
   const voiceClientRef = useRef<RealtimeVoiceClient | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const chefIconUrl = '/lovable-uploads/97e26fec-7714-4a4d-b4da-dcdbf84f3800.png';
 
   useEffect(() => {
     const getUser = async () => {
@@ -204,7 +205,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         ) : (
           <div className="text-center space-y-2">
             <div className="w-16 h-16 rounded-full bg-cuizly-primary/10 flex items-center justify-center mx-auto">
-              <img src={cuizlyIcon} alt="Cuizly" className="w-8 h-8" />
+              <img src={chefIconUrl} alt="Chef" className="w-8 h-8" />
             </div>
             <p className="text-sm text-cuizly-neutral">
               {isConnecting ? 'Connexion en cours...' : 
@@ -224,40 +225,55 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     </div>
   );
 
-  // Message Bubble Component
+  // Message Bubble Component - Horizontal Layout
   const MessageBubble = ({ message, index }: { message: Message; index: number }) => (
     <div 
       className={cn(
-        "flex gap-3 animate-in fade-in-0 slide-in-from-bottom-2",
-        message.role === 'system' && "justify-center"
+        "animate-in fade-in-0 slide-in-from-bottom-2",
+        message.role === 'system' ? "text-center" : "mb-4"
       )}
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      {message.role !== 'system' && (
+      {message.role === 'system' ? (
+        <div className="bg-muted/50 text-cuizly-neutral text-center italic text-xs py-2 px-4 rounded-full inline-block">
+          {message.text}
+        </div>
+      ) : (
         <div className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0",
-          message.role === 'assistant' 
-            ? "bg-cuizly-primary text-white" 
-            : "bg-cuizly-surface border border-border"
+          "flex items-start gap-3",
+          message.role === 'user' && "flex-row-reverse"
         )}>
-          {message.role === 'assistant' ? (
-            <img src={cuizlyIcon} alt="Assistant" className="w-5 h-5" />
-          ) : (
-            '👤'
-          )}
+          {/* Avatar */}
+          <div className={cn(
+            "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0",
+            message.role === 'assistant' 
+              ? "bg-cuizly-primary text-white" 
+              : "bg-cuizly-surface border border-border"
+          )}>
+            {message.role === 'assistant' ? (
+              <img src={chefIconUrl} alt="Chef" className="w-5 h-5" />
+            ) : (
+              '👤'
+            )}
+          </div>
+          
+          {/* Message Content */}
+          <div className={cn(
+            "max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
+            message.role === 'assistant'
+              ? "bg-cuizly-surface border border-border text-foreground rounded-tl-sm"
+              : "bg-cuizly-primary text-white rounded-tr-sm"
+          )}>
+            <p className="mb-0">{message.text}</p>
+            <p className="text-xs opacity-70 mt-1">
+              {message.timestamp.toLocaleTimeString('fr-FR', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              })}
+            </p>
+          </div>
         </div>
       )}
-      
-      <div className={cn(
-        "max-w-[85%] rounded-2xl px-4 py-2 text-sm leading-relaxed",
-        message.role === 'system' 
-          ? "bg-muted/50 text-cuizly-neutral text-center italic text-xs" 
-          : message.role === 'assistant'
-          ? "bg-cuizly-surface border border-border text-foreground"
-          : "bg-cuizly-primary text-white ml-auto"
-      )}>
-        {message.text}
-      </div>
     </div>
   );
 
@@ -268,7 +284,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         <div className="flex items-center justify-between p-6 pb-4 border-b border-border/50">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cuizly-primary to-cuizly-accent flex items-center justify-center">
-              <img src={cuizlyIcon} alt="Cuizly" className="w-6 h-6" />
+              <img src={chefIconUrl} alt="Chef" className="w-6 h-6" />
             </div>
             <div>
               <p className="font-semibold text-foreground">Assistant Vocal Cuizly</p>
@@ -305,7 +321,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
           {/* Messages */}
           <div className="flex-1 overflow-hidden px-6">
             {messages.length > 0 ? (
-              <div className="h-full overflow-y-auto space-y-4 pr-2">
+              <div className="h-full overflow-y-auto space-y-2 pr-2">
                 {messages.map((message, index) => (
                   <MessageBubble key={index} message={message} index={index} />
                 ))}
