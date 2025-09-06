@@ -55,21 +55,33 @@ serve(async (req) => {
             type: 'session.update',
             session: {
               modalities: ["text", "audio"],
-              instructions: `Tu es l'assistant vocal de Cuizly, l'application de recommandations de restaurants à Montréal. Tu peux aider les utilisateurs à:
+              instructions: `Tu es l'assistant vocal de Cuizly, une application de recommandations de restaurants à Montréal.
 
-1. Rechercher des restaurants par cuisine, prix, localisation
-2. Naviguer dans l'application Cuizly
-3. Gérer leurs favoris et préférences
-4. Obtenir des recommandations personnalisées
+Ton rôle : Aider les utilisateurs à découvrir des restaurants selon leurs préférences, gérer leurs favoris, et répondre aux questions sur la cuisine montréalaise.
 
-Commandes que tu peux comprendre:
-- "Trouve-moi un restaurant italien pas cher"
-- "Quelles sont les offres du jour?"
-- "Montre mes favoris"
-- "Ajoute ce restaurant à ma liste"
-- "Change mes préférences"
+Personnalité :
+- Convivial et enthousiaste pour la gastronomie
+- Parle en français avec un ton chaleureux
+- Expert de la scène culinaire montréalaise
+- Pratique et efficace dans tes recommandations
 
-Réponds toujours en français et sois naturel et amical. Si tu ne peux pas effectuer une action, explique ce que l'utilisateur peut faire.`,
+Capacités principales avec outils :
+1. Rechercher des restaurants avec get_recommendations
+2. Ajouter aux favoris avec add_to_favorites
+3. Consulter les préférences avec get_user_preferences
+4. Afficher les favoris avec show_favorites
+
+Directives importantes :
+- Réponds toujours en français
+- Sois concis mais informatif
+- Utilise les outils pour réaliser les actions demandées
+- Confirme les actions effectuées
+
+Exemples d'interactions :
+- "Trouve-moi un bon restaurant italien pas cher" → utilise get_recommendations
+- "Ajoute ce restaurant à mes favoris" → utilise add_to_favorites
+- "Quelles sont mes préférences ?" → utilise get_user_preferences
+- "Montre mes favoris" → utilise show_favorites`,
               voice: "alloy",
               input_audio_format: "pcm16",
               output_audio_format: "pcm16",
@@ -85,21 +97,54 @@ Réponds toujours en français et sois naturel et amical. Si tu ne peux pas effe
               tools: [
                 {
                   type: "function",
-                  name: "search_restaurants",
-                  description: "Rechercher des restaurants avec des critères spécifiques",
+                  name: "get_recommendations",
+                  description: "Obtenir des recommandations de restaurants selon des critères spécifiques",
                   parameters: {
                     type: "object",
                     properties: {
-                      cuisine: { type: "string", description: "Type de cuisine" },
-                      price_range: { type: "string", description: "Gamme de prix (low, medium, high)" },
-                      location: { type: "string", description: "Localisation ou quartier" }
+                      cuisine: { 
+                        type: "string", 
+                        description: "Type de cuisine recherché (ex: italienne, japonaise, française)" 
+                      },
+                      price_range: { 
+                        type: "string", 
+                        description: "Gamme de prix ($, $$, $$$, $$$$)" 
+                      },
+                      dietary_restrictions: {
+                        type: "array",
+                        items: { type: "string" },
+                        description: "Restrictions alimentaires (ex: végétarien, végan, sans gluten)"
+                      },
+                      location_preference: {
+                        type: "string",
+                        description: "Préférence de localisation ou quartier"
+                      }
                     }
                   }
                 },
                 {
                   type: "function", 
-                  name: "show_favorites",
-                  description: "Afficher les restaurants favoris de l'utilisateur",
+                  name: "add_to_favorites",
+                  description: "Ajouter un restaurant aux favoris de l'utilisateur",
+                  parameters: {
+                    type: "object",
+                    properties: {
+                      restaurantId: { 
+                        type: "string", 
+                        description: "ID du restaurant à ajouter" 
+                      },
+                      restaurantName: {
+                        type: "string",
+                        description: "Nom du restaurant pour confirmation"
+                      }
+                    },
+                    required: ["restaurantId"]
+                  }
+                },
+                {
+                  type: "function",
+                  name: "get_user_preferences", 
+                  description: "Consulter les préférences alimentaires et critères de l'utilisateur",
                   parameters: {
                     type: "object",
                     properties: {}
@@ -107,20 +152,8 @@ Réponds toujours en français et sois naturel et amical. Si tu ne peux pas effe
                 },
                 {
                   type: "function",
-                  name: "add_to_favorites", 
-                  description: "Ajouter un restaurant aux favoris",
-                  parameters: {
-                    type: "object",
-                    properties: {
-                      restaurant_name: { type: "string", description: "Nom du restaurant" }
-                    },
-                    required: ["restaurant_name"]
-                  }
-                },
-                {
-                  type: "function",
-                  name: "show_offers",
-                  description: "Afficher les offres et promotions disponibles",
+                  name: "show_favorites",
+                  description: "Afficher la liste des restaurants favoris de l'utilisateur",
                   parameters: {
                     type: "object", 
                     properties: {}
@@ -140,12 +173,12 @@ Réponds toujours en français et sois naturel et amical. Si tu ne peux pas effe
           
           let result = "";
           switch (data.name) {
-            case 'search_restaurants':
+            case 'get_recommendations':
               const args = JSON.parse(data.arguments);
-              result = `Je vais chercher des restaurants ${args.cuisine || ''} ${args.price_range ? 'dans la gamme ' + args.price_range : ''} ${args.location ? 'à ' + args.location : ''}. Voici mes recommandations...`;
+              result = `Je recherche des restaurants ${args.cuisine || 'variés'} ${args.price_range ? 'dans la gamme ' + args.price_range : ''} ${args.location_preference ? 'à ' + args.location_preference : ''}...`;
               socket.send(JSON.stringify({
                 type: 'cuizly_action',
-                action: 'search_restaurants',
+                action: 'get_recommendations',
                 data: args
               }));
               break;
@@ -160,7 +193,7 @@ Réponds toujours en français et sois naturel et amical. Si tu ne peux pas effe
               
             case 'add_to_favorites':
               const favArgs = JSON.parse(data.arguments);
-              result = `J'ai ajouté ${favArgs.restaurant_name} à vos favoris!`;
+              result = `J'ajoute ${favArgs.restaurantName || 'ce restaurant'} à vos favoris!`;
               socket.send(JSON.stringify({
                 type: 'cuizly_action',
                 action: 'add_to_favorites',
@@ -168,11 +201,11 @@ Réponds toujours en français et sois naturel et amical. Si tu ne peux pas effe
               }));
               break;
               
-            case 'show_offers':
-              result = "Voici les meilleures offres disponibles aujourd'hui...";
+            case 'get_user_preferences':
+              result = "Voici vos préférences actuelles...";
               socket.send(JSON.stringify({
                 type: 'cuizly_action',
-                action: 'show_offers'
+                action: 'get_user_preferences'
               }));
               break;
               

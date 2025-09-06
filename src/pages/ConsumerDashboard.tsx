@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { FavoritesModal } from "@/components/FavoritesModal";
 import { HistoryModal } from "@/components/HistoryModal";
+import VoiceAssistantModal from "@/components/VoiceAssistantModal";
 import { RecommendationCardsSection } from "@/components/RecommendationCardsSection";
 import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
@@ -30,6 +31,7 @@ const ConsumerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showVoiceAssistant, setShowVoiceAssistant] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [forceLoaded, setForceLoaded] = useState(false);
   
@@ -217,6 +219,24 @@ const ConsumerDashboard = () => {
         open={showHistory} 
         onOpenChange={setShowHistory}
       />
+      <VoiceAssistantModal
+        open={showVoiceAssistant}
+        onOpenChange={setShowVoiceAssistant}
+      />
+
+      {/* Floating Voice Assistant Button */}
+      <Button
+        onClick={() => setShowVoiceAssistant(true)}
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 z-50"
+        size="icon"
+      >
+        <div className="relative">
+          <div className="w-6 h-6 bg-white rounded-sm flex items-center justify-center">
+            <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
+          </div>
+          <span className="sr-only">Assistant vocal Cuizly</span>
+        </div>
+      </Button>
     </div>
   );
 };
