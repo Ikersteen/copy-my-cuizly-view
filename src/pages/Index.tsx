@@ -18,11 +18,11 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              🎙️ Interface Vocale Cuizly
+              Cuizly Voice System
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Découvrez notre assistant vocal intelligent qui vous aide à trouver le restaurant parfait 
-              simplement en parlant. Powered by ChatGPT & ElevenLabs.
+              simplement en parlant.
             </p>
           </div>
           
@@ -57,9 +57,9 @@ const Index = () => {
                   <span className="text-xl">🗣️</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Conversation Naturelle</h3>
+                  <h3 className="text-lg font-semibold mb-2">Conversation naturelle</h3>
                   <p className="text-muted-foreground">
-                    "Je cherche un restaurant italien près de chez moi" - Cuizly comprend et répond instantanément
+                    "Je cherche un restaurant congolais près de chez moi" - Cuizly comprend et répond instantanément par texte.
                   </p>
                 </div>
               </div>
@@ -69,9 +69,9 @@ const Index = () => {
                   <span className="text-xl">🎯</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Recommandations Précises</h3>
+                  <h3 className="text-lg font-semibold mb-2">Recommandations précises</h3>
                   <p className="text-muted-foreground">
-                    IA alimentée par ChatGPT pour des suggestions personnalisées selon vos goûts et localisation
+                    Un système de recommandation propulsé par l'IA alimentée pour des suggestions culinaires personnalisées.
                   </p>
                 </div>
               </div>
@@ -81,14 +81,14 @@ const Index = () => {
                   <span className="text-xl">🔊</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Réponses Vocales</h3>
+                  <h3 className="text-lg font-semibold mb-2">Réponses vocales <span className="text-red-500">(Bientôt)</span></h3>
                   <p className="text-muted-foreground">
-                    Voix naturelle powered by ElevenLabs - écoutez les recommandations comme une vraie conversation
+                    Discuter naturellement avec cuizly comme dans une vraie conversation.
                   </p>
                 </div>
               </div>
               
-              <div className="pt-6">
+              <div className="pt-6 text-center">
                 <a 
                   href="/voice" 
                   className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
@@ -105,20 +105,20 @@ const Index = () => {
           <div className="mt-16 bg-card rounded-2xl p-8 border shadow-lg">
             <h3 className="text-xl font-semibold text-center mb-6">Exemples de questions que vous pouvez poser :</h3>
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-primary/5 rounded-xl p-4 text-center">
+              <div className="bg-secondary/5 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-2">🍝</div>
                 <p className="font-medium mb-1">"Restaurant italien"</p>
-                <p className="text-sm text-muted-foreground">Je cherche un bon restaurant italien à Montréal</p>
+                <p className="text-sm text-muted-foreground">Je cherche un bon restaurant italien à Montréal.</p>
               </div>
-              <div className="bg-secondary/5 rounded-xl p-4 text-center">
+              <div className="bg-primary/5 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-2">🌍</div>
-                <p className="font-medium mb-1">"Cuisine du monde"</p>
-                <p className="text-sm text-muted-foreground">Tu peux me recommander de la cuisine africaine?</p>
+                <p className="font-medium mb-1">"Cuisine Africaine"</p>
+                <p className="text-sm text-muted-foreground">Tu peux me recommander un restau où je peux manger des bons Alocos et du poulet Mayo ?</p>
               </div>
               <div className="bg-accent/5 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-2">💰</div>
                 <p className="font-medium mb-1">"Budget spécifique"</p>
-                <p className="text-sm text-muted-foreground">Un restaurant pas cher pour ce soir</p>
+                <p className="text-sm text-muted-foreground">Cuizly, recommande moi un restaurant pas cher pour ce soir à Montréal.</p>
               </div>
             </div>
           </div>
