@@ -18,20 +18,28 @@ serve(async (req) => {
     return new Response("Expected WebSocket connection", { status: 400 });
   }
 
-  // Check if OpenAI API key is available
-  const openaiKey = Deno.env.get('OPENAI_API_KEY');
-  if (!openaiKey) {
-    console.error('OpenAI API key not found');
-    return new Response("OpenAI API key not configured", { status: 500 });
-  }
-
+  // Always upgrade to WebSocket first
   const { socket, response } = Deno.upgradeWebSocket(req);
+  
+  // Check if OpenAI API key is available after WebSocket upgrade
+  const openaiKey = Deno.env.get('OPENAI_API_KEY');
   
   let openAISocket: WebSocket | null = null;
   let sessionId: string | null = null;
 
   socket.onopen = () => {
     console.log("Client WebSocket connection opened");
+    
+    // Check if OpenAI API key is available
+    if (!openaiKey) {
+      console.error('OpenAI API key not found');
+      socket.send(JSON.stringify({
+        type: 'error',
+        message: 'Clé API OpenAI non configurée. Contactez le support.'
+      }));
+      socket.close(1011, 'OpenAI API key not configured');
+      return;
+    }
     
     try {
       // Connect to OpenAI Realtime API with the correct model
