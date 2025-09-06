@@ -238,14 +238,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             <div className="flex-shrink-0">
               <div className="flex items-center gap-3">
                 <img 
-                  src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
+                  src="/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png" 
                   alt="Cuizly" 
-                  className="h-[50px] w-auto dark:hidden"
-                />
-                <img 
-                  src="/lovable-uploads/2ca03ecc-31e6-42ef-89bf-9532213d22eb.png" 
-                  alt="Cuizly" 
-                  className="h-[50px] w-auto hidden dark:block"
+                  className="h-[50px] w-auto dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
                 />
                 <span className="text-lg font-medium text-foreground hidden sm:inline">Assistant Vocal</span>
               </div>

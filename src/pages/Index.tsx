@@ -6,7 +6,7 @@ import PricingSectionLanding from "@/components/PricingSectionLanding";
 import ContactSectionLanding from "@/components/ContactSectionLanding";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
-import cuizlyLogo from "/lovable-uploads/32af23ad-63a0-4cf3-8577-2657bd4b18f1.png";
+import cuizlyLogo from "/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png";
 
 const Index = () => {
   return (
