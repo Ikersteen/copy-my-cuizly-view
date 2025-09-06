@@ -327,27 +327,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                 ))}
                 <div ref={messagesEndRef} />
               </div>
-            ) : (
-              <div className="h-full flex items-center justify-center">
-                <div className="text-center space-y-4 max-w-md">
-                  <div className="text-2xl">💬</div>
-                  <div className="space-y-2">
-                    <h3 className="font-medium text-foreground">Commencez une conversation</h3>
-                    <p className="text-sm text-cuizly-neutral">
-                      Dites "Hey Cuizly" ou cliquez sur le bouton pour commencer. Je peux vous aider à trouver des restaurants et gérer vos préférences.
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    <div className="px-3 py-1 bg-muted/50 rounded-full text-xs text-cuizly-neutral">
-                      "Trouve-moi un resto italien"
-                    </div>
-                    <div className="px-3 py-1 bg-muted/50 rounded-full text-xs text-cuizly-neutral">
-                      "Mes préférences"
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+            ) : null}
           </div>
 
           {/* Controls */}
