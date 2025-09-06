@@ -1,11 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Mic, MicOff, X, Sparkles, Volume2 } from 'lucide-react';
+import { Mic, MicOff, X, Volume2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import cuizlyIcon from '@/assets/cuizly-icon.png';
+
+// Type declarations for Speech Recognition
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any;
+    SpeechRecognition: any;
+  }
+}
 
 interface VoiceAssistantModalProps {
   isOpen: boolean;
@@ -26,6 +35,8 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isListening, setIsListening] = useState(false);
+  const [keywordDetected, setKeywordDetected] = useState(false);
   
   const voiceClientRef = useRef<RealtimeVoiceClient | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -43,6 +54,54 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Keyword detection effect
+  useEffect(() => {
+    let keywordRecognition: any = null;
+    
+    if ((window.webkitSpeechRecognition || window.SpeechRecognition) && !isConnected) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      keywordRecognition = new SpeechRecognition();
+      keywordRecognition.continuous = true;
+      keywordRecognition.interimResults = true;
+      keywordRecognition.lang = 'fr-FR';
+      
+      keywordRecognition.onresult = (event: any) => {
+        const last = event.results.length - 1;
+        const text = event.results[last][0].transcript.toLowerCase();
+        
+        if (text.includes('hey cuizly') || text.includes('hé cuizly')) {
+          setKeywordDetected(true);
+          keywordRecognition?.stop();
+          setTimeout(() => {
+            startConversation();
+            setKeywordDetected(false);
+          }, 500);
+        }
+      };
+      
+      keywordRecognition.onerror = (event: any) => {
+        console.log('Keyword detection error:', event.error);
+      };
+      
+      if (isListening) {
+        keywordRecognition.start();
+      }
+    }
+    
+    return () => {
+      keywordRecognition?.stop();
+    };
+  }, [isListening, isConnected]);
+
+  // Start keyword detection when modal opens
+  useEffect(() => {
+    if (isOpen && !isConnected) {
+      setIsListening(true);
+    } else {
+      setIsListening(false);
+    }
+  }, [isOpen, isConnected]);
 
   const handleMessage = (message: any) => {
     if (message.type === 'transcript' && message.text) {
@@ -71,9 +130,10 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
       await voiceClientRef.current.init(userId);
       
       setIsConnected(true);
+      setIsListening(false);
       setMessages([{
         type: 'system',
-        text: '🎙️ Assistant vocal activé - Parlez maintenant!',
+        text: 'Assistant vocal activé - Parlez maintenant!',
         role: 'system',
         timestamp: new Date()
       }]);
@@ -98,9 +158,10 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     voiceClientRef.current?.disconnect();
     setIsConnected(false);
     setIsSpeaking(false);
+    setIsListening(true);
     setMessages(prev => [...prev, {
       type: 'system',
-      text: '🔌 Conversation terminée',
+      text: 'Conversation terminée',
       role: 'system',
       timestamp: new Date()
     }]);
@@ -110,6 +171,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     if (isConnected) {
       endConversation();
     }
+    setIsListening(false);
     onClose();
   };
 
@@ -142,10 +204,13 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         ) : (
           <div className="text-center space-y-2">
             <div className="w-16 h-16 rounded-full bg-cuizly-primary/10 flex items-center justify-center mx-auto">
-              <Sparkles className="w-8 h-8 text-cuizly-primary" />
+              <img src={cuizlyIcon} alt="Cuizly" className="w-8 h-8" />
             </div>
             <p className="text-sm text-cuizly-neutral">
-              {isConnecting ? 'Connexion en cours...' : 'Prêt à converser'}
+              {isConnecting ? 'Connexion en cours...' : 
+               keywordDetected ? 'Hey Cuizly détecté!' :
+               isListening ? 'Dites "Hey Cuizly" pour commencer' : 
+               'Prêt à converser'}
             </p>
           </div>
         )}
@@ -170,12 +235,16 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     >
       {message.role !== 'system' && (
         <div className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium",
+          "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0",
           message.role === 'assistant' 
             ? "bg-cuizly-primary text-white" 
             : "bg-cuizly-surface border border-border"
         )}>
-          {message.role === 'assistant' ? '🤖' : '👤'}
+          {message.role === 'assistant' ? (
+            <img src={cuizlyIcon} alt="Assistant" className="w-5 h-5" />
+          ) : (
+            '👤'
+          )}
         </div>
       )}
       
@@ -199,13 +268,21 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         <div className="flex items-center justify-between p-6 pb-4 border-b border-border/50">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cuizly-primary to-cuizly-accent flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+              <img src={cuizlyIcon} alt="Cuizly" className="w-6 h-6" />
             </div>
             <div>
               <p className="font-semibold text-foreground">Assistant Vocal Cuizly</p>
-              <p className="text-xs text-cuizly-neutral">
-                {isConnected ? 'En ligne' : 'Hors ligne'}
-              </p>
+              <div className="flex items-center gap-2">
+                <div className={cn(
+                  "w-2 h-2 rounded-full",
+                  isConnected ? "bg-green-500" : "bg-gray-400"
+                )} />
+                <p className="text-xs text-cuizly-neutral">
+                  {isConnected ? 'En ligne' : 
+                   isListening ? 'Écoute "Hey Cuizly"' :
+                   'Hors ligne'}
+                </p>
+              </div>
             </div>
           </div>
           
@@ -241,7 +318,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                   <div className="space-y-2">
                     <h3 className="font-medium text-foreground">Commencez une conversation</h3>
                     <p className="text-sm text-cuizly-neutral">
-                      Demandez-moi de trouver des restaurants, de gérer vos préférences, ou posez-moi des questions sur Cuizly.
+                      Dites "Hey Cuizly" ou cliquez sur le bouton pour commencer. Je peux vous aider à trouver des restaurants et gérer vos préférences.
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2 justify-center">
