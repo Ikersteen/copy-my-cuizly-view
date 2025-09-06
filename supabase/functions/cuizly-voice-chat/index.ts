@@ -18,6 +18,13 @@ serve(async (req) => {
     return new Response("Expected WebSocket connection", { status: 400 });
   }
 
+  // Check if OpenAI API key is available
+  const openaiKey = Deno.env.get('OPENAI_API_KEY');
+  if (!openaiKey) {
+    console.error('OpenAI API key not found');
+    return new Response("OpenAI API key not configured", { status: 500 });
+  }
+
   const { socket, response } = Deno.upgradeWebSocket(req);
   
   let openAISocket: WebSocket | null = null;
@@ -26,19 +33,20 @@ serve(async (req) => {
   socket.onopen = () => {
     console.log("Client WebSocket connection opened");
     
-    // Connect to OpenAI Realtime API
-    openAISocket = new WebSocket("wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01", [
-      "realtime",
-      `Bearer.${Deno.env.get('OPENAI_API_KEY')}`
-    ]);
+    try {
+      // Connect to OpenAI Realtime API with the correct model
+      openAISocket = new WebSocket("wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17", [
+        "realtime",
+        `Bearer.${openaiKey}`
+      ]);
 
-    openAISocket.onopen = () => {
-      console.log("Connected to OpenAI Realtime API");
-      socket.send(JSON.stringify({
-        type: 'connection',
-        status: 'connected'
-      }));
-    };
+      openAISocket.onopen = () => {
+        console.log("Connected to OpenAI Realtime API");
+        socket.send(JSON.stringify({
+          type: 'connection',
+          status: 'connected'
+        }));
+      };
 
     openAISocket.onmessage = (event) => {
       try {
@@ -232,21 +240,28 @@ Exemples d'interactions :
       }
     };
 
-    openAISocket.onerror = (error) => {
-      console.error("OpenAI WebSocket error:", error);
+      openAISocket.onerror = (error) => {
+        console.error("OpenAI WebSocket error:", error);
+        socket.send(JSON.stringify({
+          type: 'error',
+          message: 'Erreur de connexion avec le service vocal OpenAI'
+        }));
+      };
+
+      openAISocket.onclose = (closeEvent) => {
+        console.log("OpenAI WebSocket connection closed", closeEvent.code, closeEvent.reason);
+        socket.send(JSON.stringify({
+          type: 'connection',
+          status: 'disconnected'
+        }));
+      };
+    } catch (error) {
+      console.error("Failed to connect to OpenAI:", error);
       socket.send(JSON.stringify({
         type: 'error',
-        message: 'Erreur de connexion avec le service vocal'
+        message: 'Impossible de se connecter au service OpenAI'
       }));
-    };
-
-    openAISocket.onclose = () => {
-      console.log("OpenAI WebSocket connection closed");
-      socket.send(JSON.stringify({
-        type: 'connection',
-        status: 'disconnected'
-      }));
-    };
+    }
   };
 
   socket.onmessage = (event) => {
