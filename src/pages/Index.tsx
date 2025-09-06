@@ -19,7 +19,11 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-4 mb-4">
-              <img src={cuizlyLogo} alt="Cuizly" className="h-12 w-auto" />
+              <img 
+                src={cuizlyLogo} 
+                alt="Cuizly" 
+                className="h-12 w-auto dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)] transition-all duration-300" 
+              />
               <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 Assistant Vocal
               </h2>
