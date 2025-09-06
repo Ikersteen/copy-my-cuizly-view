@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Header from "@/components/Header";
 import CookieBanner from "@/components/CookieBanner";
+import VoiceInterface from "@/components/VoiceInterface";
 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -102,6 +103,23 @@ const AppContent = () => {
           </>
         } />
         <Route path="/waitlist" element={<Waitlist />} />
+        <Route path="/voice" element={
+          <>
+            <Header />
+            <div className="min-h-screen bg-background py-8">
+              <div className="container mx-auto px-4">
+                <div className="text-center mb-8">
+                  <h1 className="text-3xl font-bold mb-2">Assistant Vocal Cuizly</h1>
+                  <p className="text-muted-foreground">Votre assistant culinaire personnel</p>
+                </div>
+                <VoiceInterface onAction={(action, data) => {
+                  console.log("Voice action:", action, data);
+                  // Handle Cuizly-specific actions here
+                }} />
+              </div>
+            </div>
+          </>
+        } />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}

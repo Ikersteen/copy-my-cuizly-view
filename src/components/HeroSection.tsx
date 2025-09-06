@@ -54,7 +54,7 @@ const HeroSection = () => {
         />
 
         {/* CTA */}
-        <div className="animate-fade-in">
+        <div className="animate-fade-in space-y-4">
           {isAuthenticated ? (
             <Button 
               size="lg" 
@@ -72,6 +72,19 @@ const HeroSection = () => {
               </Button>
             </Link>
           )}
+          
+          {/* Voice Assistant Link */}
+          <div className="flex justify-center">
+            <Link to="/voice">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="bg-background/50 backdrop-blur-sm border-primary/20 hover:bg-primary/5 px-8 py-3 text-base font-medium shadow-lg hover:shadow-primary/15 transition-all duration-200"
+              >
+                🎤 Essayer l'assistant vocal
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Profile Switch Modal */}
