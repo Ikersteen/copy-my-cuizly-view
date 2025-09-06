@@ -41,15 +41,20 @@ serve(async (req) => {
       return;
     }
     
+    console.log("OpenAI API key found, connecting to OpenAI...");
+    
     try {
       // Connect to OpenAI Realtime API with the correct model
-      openAISocket = new WebSocket("wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01", [
+      const openAIUrl = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01";
+      console.log("Connecting to OpenAI at:", openAIUrl);
+      
+      openAISocket = new WebSocket(openAIUrl, [
         "realtime",
         `Bearer.${openaiKey}`
       ]);
 
       openAISocket.onopen = () => {
-        console.log("Connected to OpenAI Realtime API");
+        console.log("Connected to OpenAI Realtime API successfully");
         socket.send(JSON.stringify({
           type: 'connection',
           status: 'connected'
@@ -250,6 +255,7 @@ Exemples d'interactions :
 
       openAISocket.onerror = (error) => {
         console.error("OpenAI WebSocket error:", error);
+        console.error("Error event:", JSON.stringify(error));
         socket.send(JSON.stringify({
           type: 'error',
           message: 'Erreur de connexion avec le service vocal OpenAI'
@@ -257,7 +263,10 @@ Exemples d'interactions :
       };
 
       openAISocket.onclose = (closeEvent) => {
-        console.log("OpenAI WebSocket connection closed", closeEvent.code, closeEvent.reason);
+        console.log("OpenAI WebSocket connection closed");
+        console.log("Close code:", closeEvent.code);
+        console.log("Close reason:", closeEvent.reason);
+        console.log("Was clean:", closeEvent.wasClean);
         socket.send(JSON.stringify({
           type: 'connection',
           status: 'disconnected'
@@ -265,9 +274,11 @@ Exemples d'interactions :
       };
     } catch (error) {
       console.error("Failed to connect to OpenAI:", error);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
       socket.send(JSON.stringify({
         type: 'error',
-        message: 'Impossible de se connecter au service OpenAI'
+        message: 'Impossible de se connecter au service OpenAI: ' + error.message
       }));
     }
   };
