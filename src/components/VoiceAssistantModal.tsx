@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Mic, MicOff, X } from 'lucide-react';
+import { Mic, MicOff, X, Sparkles, Volume2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { supabase } from '@/integrations/supabase/client';
+import { cn } from '@/lib/utils';
 
 interface VoiceAssistantModalProps {
   isOpen: boolean;
@@ -112,103 +113,184 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     onClose();
   };
 
+  // Audio Visualizer Component
+  const AudioVisualizer = () => (
+    <div className="relative h-40 bg-gradient-to-br from-cuizly-surface/80 to-muted/50 rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cuizly-primary/5 to-transparent animate-pulse" />
+      
+      <div className="relative h-full flex items-center justify-center">
+        {isConnected ? (
+          <div className="flex items-end gap-1">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className={cn(
+                  "w-1 rounded-full transition-all duration-300 ease-out",
+                  isSpeaking 
+                    ? "bg-gradient-to-t from-cuizly-primary to-cuizly-accent animate-pulse" 
+                    : "bg-cuizly-neutral/40"
+                )}
+                style={{
+                  height: isSpeaking 
+                    ? `${Math.random() * 40 + 20}px` 
+                    : '8px',
+                  animationDelay: `${i * 50}ms`
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center space-y-2">
+            <div className="w-16 h-16 rounded-full bg-cuizly-primary/10 flex items-center justify-center mx-auto">
+              <Sparkles className="w-8 h-8 text-cuizly-primary" />
+            </div>
+            <p className="text-sm text-cuizly-neutral">
+              {isConnecting ? 'Connexion en cours...' : 'Prêt à converser'}
+            </p>
+          </div>
+        )}
+      </div>
+      
+      {isSpeaking && (
+        <div className="absolute top-4 right-4">
+          <Volume2 className="w-5 h-5 text-cuizly-primary animate-pulse" />
+        </div>
+      )}
+    </div>
+  );
+
+  // Message Bubble Component
+  const MessageBubble = ({ message, index }: { message: Message; index: number }) => (
+    <div 
+      className={cn(
+        "flex gap-3 animate-in fade-in-0 slide-in-from-bottom-2",
+        message.role === 'system' && "justify-center"
+      )}
+      style={{ animationDelay: `${index * 100}ms` }}
+    >
+      {message.role !== 'system' && (
+        <div className={cn(
+          "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium",
+          message.role === 'assistant' 
+            ? "bg-cuizly-primary text-white" 
+            : "bg-cuizly-surface border border-border"
+        )}>
+          {message.role === 'assistant' ? '🤖' : '👤'}
+        </div>
+      )}
+      
+      <div className={cn(
+        "max-w-[85%] rounded-2xl px-4 py-2 text-sm leading-relaxed",
+        message.role === 'system' 
+          ? "bg-muted/50 text-cuizly-neutral text-center italic text-xs" 
+          : message.role === 'assistant'
+          ? "bg-cuizly-surface border border-border text-foreground"
+          : "bg-cuizly-primary text-white ml-auto"
+      )}>
+        {message.text}
+      </div>
+    </div>
+  );
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            🎙️ Assistant Vocal Cuizly
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleClose}
-              className="ml-auto"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-4">
-          {/* Audio Visualizer */}
-          <div className="flex justify-center items-center h-32 bg-background/50 rounded-lg border-2 border-dashed border-border">
-            <div className="flex items-center gap-2">
-              {isConnected ? (
-                <>
-                  <div className={`w-4 h-4 rounded-full transition-all duration-300 ${
-                    isSpeaking ? 'bg-cuizly-primary animate-pulse' : 'bg-cuizly-neutral'
-                  }`} />
-                  <div className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                    isSpeaking ? 'bg-cuizly-primary animate-pulse' : 'bg-cuizly-neutral/60'
-                  }`} style={{ animationDelay: '0.1s' }} />
-                  <div className={`w-2 h-2 rounded-full transition-all duration-700 ${
-                    isSpeaking ? 'bg-cuizly-primary animate-pulse' : 'bg-cuizly-neutral/40'
-                  }`} style={{ animationDelay: '0.2s' }} />
-                </>
-              ) : (
-                <div className="text-cuizly-neutral text-sm">
-                  {isConnecting ? 'Connexion...' : 'Prêt à se connecter'}
-                </div>
-              )}
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] p-0 gap-0 bg-background/95 backdrop-blur-xl border-border/50">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 pb-4 border-b border-border/50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cuizly-primary to-cuizly-accent flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <p className="font-semibold text-foreground">Assistant Vocal Cuizly</p>
+              <p className="text-xs text-cuizly-neutral">
+                {isConnected ? 'En ligne' : 'Hors ligne'}
+              </p>
             </div>
           </div>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleClose}
+            className="rounded-full hover:bg-muted/80"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
 
-          {/* Connection Controls */}
-          <div className="flex justify-center">
-            {!isConnected ? (
-              <Button 
-                onClick={startConversation}
-                disabled={isConnecting}
-                className="bg-cuizly-primary hover:bg-cuizly-primary/90 text-white"
-              >
-                {isConnecting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                    Connexion...
-                  </>
-                ) : (
-                  <>
-                    <Mic className="w-4 h-4 mr-2" />
-                    Démarrer la conversation
-                  </>
-                )}
-              </Button>
-            ) : (
-              <Button 
-                onClick={endConversation}
-                variant="secondary"
-                className="bg-red-500 hover:bg-red-600 text-white"
-              >
-                <MicOff className="w-4 h-4 mr-2" />
-                Terminer
-              </Button>
-            )}
+        <div className="flex flex-col h-[70vh]">
+          {/* Audio Visualizer */}
+          <div className="p-6 pb-4">
+            <AudioVisualizer />
           </div>
 
           {/* Messages */}
-          {messages.length > 0 && (
-            <div className="max-h-48 overflow-y-auto space-y-2 bg-muted/30 rounded-lg p-3">
-              {messages.map((message, index) => (
-                <div key={index} className={`text-sm ${
-                  message.role === 'system' 
-                    ? 'text-cuizly-neutral text-center italic' 
-                    : message.role === 'assistant'
-                    ? 'text-cuizly-primary font-medium'
-                    : 'text-foreground'
-                }`}>
-                  {message.role === 'assistant' && '🤖 '}
-                  {message.role === 'user' && '👤 '}
-                  {message.text}
+          <div className="flex-1 overflow-hidden px-6">
+            {messages.length > 0 ? (
+              <div className="h-full overflow-y-auto space-y-4 pr-2">
+                {messages.map((message, index) => (
+                  <MessageBubble key={index} message={message} index={index} />
+                ))}
+                <div ref={messagesEndRef} />
+              </div>
+            ) : (
+              <div className="h-full flex items-center justify-center">
+                <div className="text-center space-y-4 max-w-md">
+                  <div className="text-2xl">💬</div>
+                  <div className="space-y-2">
+                    <h3 className="font-medium text-foreground">Commencez une conversation</h3>
+                    <p className="text-sm text-cuizly-neutral">
+                      Demandez-moi de trouver des restaurants, de gérer vos préférences, ou posez-moi des questions sur Cuizly.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    <div className="px-3 py-1 bg-muted/50 rounded-full text-xs text-cuizly-neutral">
+                      "Trouve-moi un resto italien"
+                    </div>
+                    <div className="px-3 py-1 bg-muted/50 rounded-full text-xs text-cuizly-neutral">
+                      "Mes préférences"
+                    </div>
+                  </div>
                 </div>
-              ))}
-              <div ref={messagesEndRef} />
-            </div>
-          )}
+              </div>
+            )}
+          </div>
 
-          {/* Instructions */}
-          <div className="text-xs text-cuizly-neutral text-center space-y-1">
-            <p>💡 <strong>Essayez:</strong> "Trouve-moi un resto italien" ou "Quelles sont mes préférences?"</p>
-            <p>🎯 L'assistant peut chercher des recommandations et répondre à vos questions sur Cuizly</p>
+          {/* Controls */}
+          <div className="p-6 pt-4 border-t border-border/50">
+            <div className="flex justify-center">
+              {!isConnected ? (
+                <Button 
+                  onClick={startConversation}
+                  disabled={isConnecting}
+                  size="lg"
+                  className="bg-gradient-to-r from-cuizly-primary to-cuizly-accent hover:shadow-lg transition-all duration-300 text-white px-8"
+                >
+                  {isConnecting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                      Connexion...
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="w-5 h-5 mr-2" />
+                      Démarrer la conversation
+                    </>
+                  )}
+                </Button>
+              ) : (
+                <Button 
+                  onClick={endConversation}
+                  variant="outline"
+                  size="lg"
+                  className="border-red-200 text-red-600 hover:bg-red-50 px-8"
+                >
+                  <MicOff className="w-5 h-5 mr-2" />
+                  Terminer
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </DialogContent>
