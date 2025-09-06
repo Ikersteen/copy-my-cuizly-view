@@ -21,7 +21,7 @@ const Index = () => {
               Cuizly Voice System
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Découvrez notre assistant vocal intelligent qui vous aide à trouver le restaurant parfait 
+              Découvrez notre <span className="text-sky-400 font-semibold">assistant vocal intelligent</span> qui vous aide à trouver le restaurant parfait 
               simplement en parlant.
             </p>
           </div>
