@@ -424,23 +424,14 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl h-[90vh] p-0 gap-0">
         <DialogHeader className="px-6 py-4 border-b">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                </div>
+          <DialogTitle className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+              <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
               </div>
-              Assistant Vocal Cuizly
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onOpenChange(false)}
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
+            </div>
+            Assistant Vocal Cuizly
+          </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 flex overflow-hidden">
