@@ -128,15 +128,17 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
       // Connect to WebSocket with user context
       const wsUrl = 'wss://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/cuizly-voice-chat';
       console.log("Connecting to WebSocket at:", wsUrl);
+      console.log("Attempting WebSocket connection...");
       wsRef.current = new WebSocket(wsUrl);
 
       wsRef.current.onopen = () => {
-        console.log("Connected to Cuizly Voice Assistant");
+        console.log("WebSocket connection established successfully");
         setIsConnected(true);
         setIsConnecting(false);
         
         // Send user context after connection
         if (wsRef.current) {
+          console.log("Sending user context:", userContext);
           wsRef.current.send(JSON.stringify({
             type: 'user_context',
             context: userContext
@@ -230,23 +232,37 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
       };
 
       wsRef.current.onerror = (error) => {
-        console.error("WebSocket error:", error);
+        console.error("WebSocket error details:", error);
+        console.error("WebSocket readyState:", wsRef.current?.readyState);
+        console.error("WebSocket URL:", wsUrl);
         setIsConnected(false);
         setIsConnecting(false);
         
         toast({
           title: "Erreur de connexion",
-          description: "Service vocal indisponible. Veuillez configurer l'API OpenAI.",
+          description: "Impossible de se connecter au service vocal. Vérifiez votre connexion internet.",
           variant: "destructive",
         });
       };
 
-      wsRef.current.onclose = () => {
+      wsRef.current.onclose = (closeEvent) => {
         console.log("WebSocket connection closed");
+        console.log("Close code:", closeEvent.code);
+        console.log("Close reason:", closeEvent.reason);
+        console.log("Clean close:", closeEvent.wasClean);
         setIsConnected(false);
         setIsConnecting(false);
         setIsRecording(false);
         setIsSpeaking(false);
+        
+        // Show different messages based on close code
+        if (closeEvent.code === 1006) {
+          toast({
+            title: "Connexion fermée",
+            description: "Le service vocal n'est pas disponible actuellement.",
+            variant: "destructive",
+          });
+        }
       };
 
     } catch (error) {
