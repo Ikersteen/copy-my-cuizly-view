@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Mic, MicOff, Send, Menu, Settings, User, MessageSquare, History, Star } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Zap, Brain } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { supabase } from '@/integrations/supabase/client';
 import cuizlyLogo from '@/assets/cuizly-logo.png';
 
@@ -14,6 +12,7 @@ interface Message {
   content: string;
   timestamp: Date;
   isAudio?: boolean;
+  isProcessing?: boolean;
 }
 
 interface VoiceChatInterfaceProps {
@@ -23,18 +22,17 @@ interface VoiceChatInterfaceProps {
 const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputText, setInputText] = useState('');
-  const [isConnected, setIsConnected] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   
-  const voiceClientRef = useRef<RealtimeVoiceClient | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const initUser = async () => {
@@ -57,213 +55,248 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleMessage = (message: any) => {
-    if (message.type === 'transcript' && message.text) {
-      setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        type: message.role === 'user' ? 'user' : 'assistant',
-        content: message.text,
-        timestamp: new Date(),
-        isAudio: true
-      }]);
-    }
-  };
-
-  const startVoiceSession = async () => {
-    if (!userId) {
-      toast({
-        title: "Erreur",
-        description: "Vous devez être connecté",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsConnecting(true);
+  // Audio recording functions
+  const startRecording = async () => {
     try {
-      voiceClientRef.current = new RealtimeVoiceClient(handleMessage, setIsSpeaking);
-      await voiceClientRef.current.init(userId);
-      
-      setIsConnected(true);
-      setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        type: 'system',
-        content: '🎙️ Assistant vocal Cuizly activé! Vous pouvez maintenant parler ou taper votre message.',
-        timestamp: new Date()
-      }]);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        await processVoiceInput(audioBlob);
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
       
       toast({
-        title: "Connecté",
-        description: "L'assistant vocal est prêt!",
+        title: "Écoute en cours...",
+        description: "Parlez maintenant, cliquez pour arrêter",
       });
     } catch (error) {
-      console.error('❌ Error starting voice session:', error);
+      console.error('Erreur microphone:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de démarrer l'assistant vocal",
+        description: "Impossible d'accéder au microphone",
         variant: "destructive",
       });
-    } finally {
-      setIsConnecting(false);
     }
   };
 
-  const endVoiceSession = () => {
-    voiceClientRef.current?.disconnect();
-    setIsConnected(false);
-    setIsSpeaking(false);
-    setIsListening(false);
-    setMessages(prev => [...prev, {
-      id: Date.now().toString(),
-      type: 'system',
-      content: '🔌 Session vocale terminée',
-      timestamp: new Date()
-    }]);
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
   };
 
-  const sendTextMessage = () => {
-    if (!inputText.trim()) return;
-
-    const newMessage: Message = {
-      id: Date.now().toString(),
+  // Process voice input with hybrid AI system
+  const processVoiceInput = async (audioBlob: Blob) => {
+    setIsProcessing(true);
+    
+    // Add user message (processing)
+    const userMessageId = Date.now().toString();
+    setMessages(prev => [...prev, {
+      id: userMessageId,
       type: 'user',
-      content: inputText,
-      timestamp: new Date()
-    };
+      content: 'Traitement de l\'audio...',
+      timestamp: new Date(),
+      isAudio: true,
+      isProcessing: true
+    }]);
 
-    setMessages(prev => [...prev, newMessage]);
-    setInputText('');
+    try {
+      // Step 1: Speech-to-Text (Whisper)
+      const audioBase64 = await blobToBase64(audioBlob);
+      
+      const transcriptionResponse = await supabase.functions.invoke('voice-to-text', {
+        body: { audio: audioBase64.split(',')[1] }
+      });
 
-    // Here you would send to your AI processing
-    // For now, just add a dummy response
-    setTimeout(() => {
+      if (transcriptionResponse.error) throw new Error('Transcription failed');
+      
+      const transcription = transcriptionResponse.data?.text;
+      if (!transcription) throw new Error('No transcription received');
+
+      // Update user message with transcription
+      setMessages(prev => prev.map(msg => 
+        msg.id === userMessageId 
+          ? { ...msg, content: transcription, isProcessing: false }
+          : msg
+      ));
+
+      // Step 2: ChatGPT Processing (Brain)
+      const chatResponse = await supabase.functions.invoke('cuizly-voice-chat', {
+        body: { 
+          message: transcription,
+          userId,
+          conversationHistory: messages.slice(-5) // Last 5 messages for context
+        }
+      });
+
+      if (chatResponse.error) throw new Error('AI processing failed');
+
+      const aiResponse = chatResponse.data?.response;
+      if (!aiResponse) throw new Error('No AI response received');
+
+      // Add AI text response
+      const aiMessageId = (Date.now() + 1).toString();
       setMessages(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
+        id: aiMessageId,
         type: 'assistant',
-        content: `Je cherche des recommandations pour "${inputText}"...`,
+        content: aiResponse,
         timestamp: new Date()
       }]);
-    }, 1000);
+
+      // Step 3: Text-to-Speech (ElevenLabs)
+      const ttsResponse = await supabase.functions.invoke('cuizly-voice-elevenlabs', {
+        body: { text: aiResponse }
+      });
+
+      if (ttsResponse.data?.audioContent) {
+        const audioUrl = `data:audio/mp3;base64,${ttsResponse.data.audioContent}`;
+        setAudioUrl(audioUrl);
+        playAudio(audioUrl);
+      }
+
+    } catch (error) {
+      console.error('Erreur traitement vocal:', error);
+      toast({
+        title: "Erreur",
+        description: "Problème lors du traitement vocal",
+        variant: "destructive",
+      });
+      
+      // Remove processing message on error
+      setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendTextMessage();
+  const blobToBase64 = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  const playAudio = (audioUrl: string) => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    
+    const audio = new Audio(audioUrl);
+    audioRef.current = audio;
+    
+    audio.onplay = () => setIsSpeaking(true);
+    audio.onended = () => setIsSpeaking(false);
+    audio.onerror = () => {
+      setIsSpeaking(false);
+      toast({
+        title: "Erreur audio",
+        description: "Impossible de lire la réponse vocale",
+        variant: "destructive",
+      });
+    };
+    
+    audio.play();
+  };
+
+  const toggleRecording = () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  };
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsSpeaking(false);
     }
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'w-80' : 'w-0'} overflow-hidden bg-muted/30 border-r`}>
-        <div className="p-4 h-full flex flex-col">
-          <div className="flex items-center gap-3 mb-6">
+    <div className="min-h-screen bg-white">
+      {/* Ultra-minimal header inspired by April */}
+      <header className="border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <img src={cuizlyLogo} alt="Cuizly" className="w-8 h-8" />
-            <h2 className="font-semibold text-lg">Assistant Cuizly</h2>
+            <span className="text-xl font-medium text-gray-900">Cuizly Voice</span>
           </div>
           
-          <div className="space-y-4 flex-1">
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <History className="w-4 h-4" />
-                Historique
-              </h3>
-              <div className="space-y-1">
-                <Button variant="ghost" size="sm" className="w-full justify-start text-left">
-                  Resto italien près de moi
-                </Button>
-                <Button variant="ghost" size="sm" className="w-full justify-start text-left">
-                  Mes préférences alimentaires
-                </Button>
-                <Button variant="ghost" size="sm" className="w-full justify-start text-left">
-                  Réservation pour ce soir
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <Star className="w-4 h-4" />
-                Outils
-              </h3>
-              <div className="space-y-1">
-                <Button variant="ghost" size="sm" className="w-full justify-start">
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Recommandations
-                </Button>
-                <Button variant="ghost" size="sm" className="w-full justify-start">
-                  <User className="w-4 h-4 mr-2" />
-                  Mes préférences
-                </Button>
-                <Button variant="ghost" size="sm" className="w-full justify-start">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Paramètres
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              <Menu className="w-5 h-5" />
-            </Button>
-            <img src={cuizlyLogo} alt="Cuizly" className="w-8 h-8" />
-            <h1 className="text-xl font-semibold">Assistant Vocal Cuizly</h1>
-          </div>
-          
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              {isConnected && (
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  Connecté
+          <div className="flex items-center gap-4">
+            {/* AI Status indicators */}
+            <div className="flex items-center gap-2">
+              {isProcessing && (
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Brain className="w-4 h-4 animate-pulse text-blue-600" />
+                  <span>Traitement...</span>
+                </div>
+              )}
+              {isSpeaking && (
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Volume2 className="w-4 h-4 animate-pulse text-green-600" />
+                  <span>Parle...</span>
                 </div>
               )}
             </div>
-            <Avatar className="w-8 h-8">
+            
+            <Avatar className="w-9 h-9">
               <AvatarImage src={userProfile?.avatar_url} />
-              <AvatarFallback>
+              <AvatarFallback className="bg-gray-100 text-gray-700">
                 {userProfile?.display_name?.charAt(0) || 'U'}
               </AvatarFallback>
             </Avatar>
           </div>
-        </header>
+        </div>
+      </header>
 
+      {/* Main conversation area - April style */}
+      <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6">
           {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <Mic className="w-8 h-8 text-primary" />
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-8 py-20">
+              <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center">
+                <Mic className="w-10 h-10 text-gray-400" />
               </div>
-              <div className="space-y-2">
-                <h3 className="text-lg font-medium">Bonjour! Comment puis-je vous aider?</h3>
-                <p className="text-muted-foreground max-w-md">
-                  Parlez ou tapez votre message pour commencer. Je peux vous aider à trouver des restaurants, 
-                  gérer vos préférences, et bien plus!
+              <div className="space-y-4 max-w-lg">
+                <h1 className="text-4xl font-light text-gray-900">
+                  Trouvez des restaurants
+                  <br />
+                  <span className="text-blue-600">en parlant</span>
+                </h1>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  Cuizly Voice - votre assistant culinaire IA qui comprend vos préférences
+                  et trouve les meilleurs restaurants près de vous.
                 </p>
               </div>
-              <div className="flex flex-wrap gap-2 max-w-md">
-                <Button variant="outline" size="sm">
-                  "Trouve-moi un resto italien"
-                </Button>
-                <Button variant="outline" size="sm">
-                  "Mes préférences alimentaires"
-                </Button>
-                <Button variant="outline" size="sm">
-                  "Réserver une table"
-                </Button>
+              
+              {/* Architecture showcase */}
+              <div className="flex items-center gap-6 text-sm text-gray-500 mt-8">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-4 h-4" />
+                  <span>ChatGPT Memory</span>
+                </div>
+                <div className="w-px h-4 bg-gray-300"></div>
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4" />
+                  <span>ElevenLabs Voice</span>
+                </div>
               </div>
             </div>
           )}
@@ -273,33 +306,37 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               key={message.id}
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`flex items-start gap-3 max-w-[70%] ${
+              <div className={`flex items-start gap-4 max-w-[85%] ${
                 message.type === 'user' ? 'flex-row-reverse' : 'flex-row'
               }`}>
-                {message.type !== 'system' && (
-                  <Avatar className="w-8 h-8 flex-shrink-0">
-                    {message.type === 'assistant' ? (
-                      <AvatarImage src={cuizlyLogo} />
-                    ) : (
-                      <AvatarImage src={userProfile?.avatar_url} />
-                    )}
-                    <AvatarFallback>
-                      {message.type === 'assistant' ? '🤖' : userProfile?.display_name?.charAt(0) || 'U'}
-                    </AvatarFallback>
-                  </Avatar>
-                )}
+                <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
+                  {message.type === 'assistant' ? (
+                    <AvatarImage src={cuizlyLogo} />
+                  ) : (
+                    <AvatarImage src={userProfile?.avatar_url} />
+                  )}
+                  <AvatarFallback className="bg-gray-100 text-gray-700">
+                    {message.type === 'assistant' ? 'AI' : userProfile?.display_name?.charAt(0) || 'U'}
+                  </AvatarFallback>
+                </Avatar>
                 
-                <div className={`rounded-2xl px-4 py-2 ${
+                <div className={`rounded-3xl px-6 py-4 ${
                   message.type === 'user' 
-                    ? 'bg-primary text-primary-foreground' 
-                    : message.type === 'system'
-                    ? 'bg-muted text-muted-foreground text-center italic text-sm'
-                    : 'bg-muted'
-                }`}>
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-50 text-gray-900'
+                } ${message.isProcessing ? 'animate-pulse' : ''}`}>
+                  <p className="text-base leading-relaxed">{message.content}</p>
                   {message.isAudio && (
-                    <div className="text-xs opacity-60 mt-1">
-                      🎙️ Audio
+                    <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
+                      <Volume2 className="w-3 h-3" />
+                      <span>Message vocal</span>
+                    </div>
+                  )}
+                  {message.isProcessing && (
+                    <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
+                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" />
+                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                     </div>
                   )}
                 </div>
@@ -309,13 +346,17 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           
           {isSpeaking && (
             <div className="flex justify-start">
-              <div className="flex items-center gap-2 bg-muted rounded-2xl px-4 py-2">
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                </div>
-                <span className="text-sm text-muted-foreground">L'assistant parle...</span>
+              <div className="flex items-center gap-3 bg-green-50 text-green-700 rounded-3xl px-6 py-4">
+                <Volume2 className="w-5 h-5 animate-pulse" />
+                <span className="text-sm font-medium">Assistant vocal en cours...</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={stopAudio}
+                  className="text-green-700 hover:bg-green-100"
+                >
+                  <VolumeX className="w-4 h-4" />
+                </Button>
               </div>
             </div>
           )}
@@ -323,73 +364,46 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
-        <div className="border-t bg-background/95 backdrop-blur p-4">
-          <div className="flex items-center gap-3 max-w-4xl mx-auto">
-            <div className="flex-1 relative">
-              <Input
-                ref={inputRef}
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Tapez votre message ou utilisez le micro..."
-                className="pr-12 rounded-full"
-                disabled={isConnecting}
-              />
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={sendTextMessage}
-                disabled={!inputText.trim() || isConnecting}
-                className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full"
-              >
-                <Send className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            <div className="relative">
-              {!isConnected ? (
-                <Button
-                  onClick={startVoiceSession}
-                  disabled={isConnecting}
-                  size="icon"
-                  className="rounded-full w-12 h-12"
-                >
-                  {isConnecting ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-                  ) : (
-                    <Mic className="w-5 h-5" />
-                  )}
-                </Button>
+        {/* Ultra-clean input area */}
+        <div className="border-t border-gray-100 bg-white px-6 py-6">
+          <div className="flex items-center justify-center">
+            <Button
+              onClick={toggleRecording}
+              disabled={isProcessing}
+              className={`w-16 h-16 rounded-full transition-all duration-200 ${
+                isRecording 
+                  ? 'bg-red-500 hover:bg-red-600 animate-pulse' 
+                  : isProcessing
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
+              }`}
+            >
+              {isRecording ? (
+                <MicOff className="w-8 h-8 text-white" />
+              ) : isProcessing ? (
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white" />
               ) : (
-                <Button
-                  onClick={endVoiceSession}
-                  size="icon"
-                  variant="destructive"
-                  className="rounded-full w-12 h-12"
-                >
-                  <MicOff className="w-5 h-5" />
-                </Button>
+                <Mic className="w-8 h-8 text-white" />
               )}
-              
-              {/* Audio Visualizer */}
-              {isConnected && (isSpeaking || isListening) && (
-                <div className="absolute -top-1 -right-1 w-4 h-4">
-                  <div className={`w-full h-full rounded-full ${
-                    isSpeaking ? 'bg-green-500' : 'bg-blue-500'
-                  } animate-pulse`} />
-                </div>
-              )}
-            </div>
+            </Button>
           </div>
           
-          <div className="text-center mt-2">
-            <p className="text-xs text-muted-foreground">
-              💡 Essayez: "Trouve-moi un resto italien" • "Mes préférences" • "Réserve une table"
-            </p>
+          <div className="text-center mt-4 space-y-1">
+            {isRecording ? (
+              <p className="text-red-600 font-medium">🎙️ Écoute en cours... Cliquez pour arrêter</p>
+            ) : isProcessing ? (
+              <p className="text-blue-600 font-medium">🧠 Traitement en cours...</p>
+            ) : (
+              <div className="space-y-1">
+                <p className="text-gray-700 font-medium">Cliquez pour parler</p>
+                <p className="text-sm text-gray-500">
+                  "Trouve un restaurant italien" • "Mes préférences" • "Réserve une table"
+                </p>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
