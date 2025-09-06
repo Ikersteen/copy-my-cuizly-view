@@ -22,6 +22,7 @@ import Terms from "./pages/Terms";
 import Mentions from "./pages/Mentions";
 import Cookies from "./pages/Cookies";
 import Waitlist from "./pages/Waitlist";
+import VoiceChat from "./pages/VoiceChat";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -101,8 +102,9 @@ const AppContent = () => {
             <Cookies />
           </>
         } />
-        <Route path="/waitlist" element={<Waitlist />} />
-        <Route path="*" element={<NotFound />} />
+            <Route path="/waitlist" element={<Waitlist />} />
+            <Route path="/voice" element={<VoiceChat />} />
+            <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
       <CookieBanner />
