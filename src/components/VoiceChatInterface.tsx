@@ -229,74 +229,73 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Ultra-minimal header inspired by April */}
-      <header className="border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={cuizlyLogo} alt="Cuizly" className="w-8 h-8" />
-            <span className="text-xl font-medium text-gray-900">Cuizly Voice</span>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            {/* AI Status indicators */}
-            <div className="flex items-center gap-2">
-              {isProcessing && (
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Brain className="w-4 h-4 animate-pulse text-blue-600" />
-                  <span>Traitement...</span>
-                </div>
-              )}
-              {isSpeaking && (
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Volume2 className="w-4 h-4 animate-pulse text-green-600" />
-                  <span>Parle...</span>
-                </div>
-              )}
+    <div className="min-h-screen bg-background">
+      {/* Header avec navigation du dashboard consumer */}
+      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm border-b border-border">
+        <div className="w-full px-6 sm:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/lovable-uploads/9727855b-56d5-4c89-93e2-8d3e2e8eae1e.png" 
+                  alt="Cuizly" 
+                  className="h-[50px] w-auto dark:hidden"
+                />
+                <img 
+                  src="/lovable-uploads/2ca03ecc-31e6-42ef-89bf-9532213d22eb.png" 
+                  alt="Cuizly" 
+                  className="h-[50px] w-auto hidden dark:block"
+                />
+                <span className="text-lg font-medium text-foreground hidden sm:inline">Assistant Vocal</span>
+              </div>
             </div>
             
-            <Avatar className="w-9 h-9">
-              <AvatarImage src={userProfile?.avatar_url} />
-              <AvatarFallback className="bg-gray-100 text-gray-700">
-                {userProfile?.display_name?.charAt(0) || 'U'}
-              </AvatarFallback>
-            </Avatar>
+            <div className="flex items-center gap-4">
+              {/* AI Status indicators */}
+              <div className="flex items-center gap-2">
+                {isProcessing && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Brain className="w-4 h-4 animate-pulse text-blue-600" />
+                    <span className="hidden sm:inline">Traitement...</span>
+                  </div>
+                )}
+                {isSpeaking && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Volume2 className="w-4 h-4 animate-pulse text-green-600" />
+                    <span className="hidden sm:inline">Parle...</span>
+                  </div>
+                )}
+              </div>
+              
+              <Avatar className="w-10 h-10">
+                <AvatarImage src={userProfile?.avatar_url} />
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  {userProfile?.first_name?.charAt(0) || userProfile?.display_name?.charAt(0) || 'U'}
+                </AvatarFallback>
+              </Avatar>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Main conversation area - April style */}
-      <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
+      {/* Zone de conversation intégrée au dashboard */}
+      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6">
+        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-200px)]">
           {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center h-full text-center space-y-8 py-20">
-              <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center">
-                <Mic className="w-10 h-10 text-gray-400" />
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <Mic className="w-8 h-8 text-primary" />
               </div>
-              <div className="space-y-4 max-w-lg">
-                <h1 className="text-4xl font-light text-gray-900">
-                  Trouvez des restaurants
-                  <br />
-                  <span className="text-blue-600">en parlant</span>
+              <div className="space-y-3 max-w-lg">
+                <h1 className="text-2xl font-semibold text-foreground">
+                  Assistant Vocal Cuizly
                 </h1>
-                <p className="text-lg text-gray-600 leading-relaxed">
-                  Cuizly Voice - votre assistant culinaire IA qui comprend vos préférences
-                  et trouve les meilleurs restaurants près de vous.
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  Parlez naturellement pour trouver des restaurants, consulter vos préférences 
+                  ou découvrir de nouvelles saveurs.
                 </p>
-              </div>
-              
-              {/* Architecture showcase */}
-              <div className="flex items-center gap-6 text-sm text-gray-500 mt-8">
-                <div className="flex items-center gap-2">
-                  <Brain className="w-4 h-4" />
-                  <span>ChatGPT Memory</span>
-                </div>
-                <div className="w-px h-4 bg-gray-300"></div>
-                <div className="flex items-center gap-2">
-                  <Zap className="w-4 h-4" />
-                  <span>ElevenLabs Voice</span>
-                </div>
               </div>
             </div>
           )}
@@ -311,19 +310,23 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               }`}>
                 <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
                   {message.type === 'assistant' ? (
-                    <AvatarImage src={cuizlyLogo} />
+                    <AvatarFallback className="bg-orange-100 text-orange-700">
+                      {userProfile?.chef_emoji_color || '🧑‍🍳'}
+                    </AvatarFallback>
                   ) : (
-                    <AvatarImage src={userProfile?.avatar_url} />
+                    <>
+                      <AvatarImage src={userProfile?.avatar_url} />
+                      <AvatarFallback className="bg-primary text-primary-foreground">
+                        {userProfile?.first_name?.charAt(0) || userProfile?.display_name?.charAt(0) || 'U'}
+                      </AvatarFallback>
+                    </>
                   )}
-                  <AvatarFallback className="bg-gray-100 text-gray-700">
-                    {message.type === 'assistant' ? 'AI' : userProfile?.display_name?.charAt(0) || 'U'}
-                  </AvatarFallback>
                 </Avatar>
                 
                 <div className={`rounded-3xl px-6 py-4 ${
                   message.type === 'user' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-50 text-gray-900'
+                    ? 'bg-primary text-primary-foreground' 
+                    : 'bg-muted text-foreground'
                 } ${message.isProcessing ? 'animate-pulse' : ''}`}>
                   <p className="text-base leading-relaxed">{message.content}</p>
                   {message.isAudio && (
@@ -364,8 +367,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Ultra-clean input area */}
-        <div className="border-t border-gray-100 bg-white px-6 py-6">
+        {/* Zone d'entrée vocale */}
+        <div className="border-t border-border bg-background px-6 py-6">
           <div className="flex items-center justify-center">
             <Button
               onClick={toggleRecording}
@@ -374,16 +377,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 isRecording 
                   ? 'bg-red-500 hover:bg-red-600 animate-pulse' 
                   : isProcessing
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
+                  ? 'bg-muted cursor-not-allowed'
+                  : 'bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl'
               }`}
             >
               {isRecording ? (
                 <MicOff className="w-8 h-8 text-white" />
               ) : isProcessing ? (
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white" />
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-foreground" />
               ) : (
-                <Mic className="w-8 h-8 text-white" />
+                <Mic className="w-8 h-8 text-primary-foreground" />
               )}
             </Button>
           </div>
@@ -392,12 +395,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             {isRecording ? (
               <p className="text-red-600 font-medium">🎙️ Écoute en cours... Cliquez pour arrêter</p>
             ) : isProcessing ? (
-              <p className="text-blue-600 font-medium">🧠 Traitement en cours...</p>
+              <p className="text-primary font-medium">🧠 Traitement en cours...</p>
             ) : (
               <div className="space-y-1">
-                <p className="text-gray-700 font-medium">Cliquez pour parler</p>
-                <p className="text-sm text-gray-500">
-                  "Trouve un restaurant italien" • "Mes préférences" • "Réserve une table"
+                <p className="text-foreground font-medium">Cliquez pour parler</p>
+                <p className="text-sm text-muted-foreground">
+                  Demandez des recommandations de restaurants ou posez vos questions culinaires
                 </p>
               </div>
             )}
