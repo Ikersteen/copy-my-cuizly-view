@@ -109,10 +109,13 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
     if (isConnecting || isConnected) return;
     
     setIsConnecting(true);
+    console.log("Starting voice assistant connection...");
     
     try {
       // Request microphone permission
+      console.log("Requesting microphone access...");
       await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log("Microphone access granted");
       
       // Get user context for better recommendations
       const userAddress = getPrimaryAddressByType('user_delivery');
@@ -124,6 +127,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
       
       // Connect to WebSocket with user context
       const wsUrl = 'wss://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/cuizly-voice-chat';
+      console.log("Connecting to WebSocket at:", wsUrl);
       wsRef.current = new WebSocket(wsUrl);
 
       wsRef.current.onopen = () => {
@@ -232,7 +236,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
         
         toast({
           title: "Erreur de connexion",
-          description: "Impossible de se connecter au service vocal",
+          description: "Service vocal indisponible. Veuillez configurer l'API OpenAI.",
           variant: "destructive",
         });
       };
@@ -249,9 +253,18 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ open, onOpenC
       console.error("Failed to connect:", error);
       setIsConnecting(false);
       
+      let errorMessage = "Erreur inconnue";
+      if (error.name === 'NotAllowedError') {
+        errorMessage = "Accès au microphone requis pour utiliser l'assistant vocal";
+      } else if (error.name === 'NotFoundError') {
+        errorMessage = "Aucun microphone détecté sur votre appareil";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       toast({
         title: "Erreur",
-        description: "Accès au microphone requis pour utiliser l'assistant vocal",
+        description: errorMessage,
         variant: "destructive",
       });
     }
