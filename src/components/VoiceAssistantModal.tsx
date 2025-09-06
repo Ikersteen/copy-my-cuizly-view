@@ -2,20 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Mic, MicOff, Settings, History, Send, User, Menu } from 'lucide-react';
+import { Settings, Send, User, Menu } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
-
-// Type declarations for Speech Recognition
-declare global {
-  interface Window {
-    webkitSpeechRecognition: any;
-    SpeechRecognition: any;
-  }
-}
 
 interface VoiceAssistantModalProps {
   isOpen: boolean;
@@ -24,7 +14,6 @@ interface VoiceAssistantModalProps {
 
 interface Message {
   id: string;
-  type: 'text' | 'audio';
   content: string;
   role: 'user' | 'assistant';
   timestamp: Date;
@@ -38,21 +27,16 @@ interface Conversation {
 
 const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
-  const [isConnected, setIsConnected] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [userId, setUserId] = useState<string | null>(null);
-  const [selectedVoice, setSelectedVoice] = useState('alloy');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [conversations] = useState<Conversation[]>([
     { id: '1', title: 'Conversation précédente', lastMessage: new Date() }
   ]);
 
-  const voiceClientRef = useRef<RealtimeVoiceClient | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -72,63 +56,11 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleMessage = (message: any) => {
-    if (message.type === 'transcript' && message.text) {
-      const newMessage: Message = {
-        id: Date.now().toString(),
-        type: 'text',
-        content: message.text,
-        role: message.role,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, newMessage]);
-    }
-  };
-
-  const startConversation = async () => {
-    if (!userId) {
-      toast({
-        title: "Erreur",
-        description: "Utilisateur non connecté",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsConnecting(true);
-    try {
-      voiceClientRef.current = new RealtimeVoiceClient(handleMessage, setIsSpeaking);
-      await voiceClientRef.current.init(userId);
-      setIsConnected(true);
-      
-      toast({
-        title: "Connecté",
-        description: "L'assistant vocal est prêt!",
-      });
-    } catch (error) {
-      console.error('❌ Error starting conversation:', error);
-      toast({
-        title: "Erreur",
-        description: error instanceof Error ? error.message : 'Impossible de démarrer la conversation',
-        variant: "destructive",
-      });
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
-  const endConversation = () => {
-    voiceClientRef.current?.disconnect();
-    setIsConnected(false);
-    setIsSpeaking(false);
-  };
-
-  const sendTextMessage = () => {
-    if (!inputText.trim() || !isConnected) return;
+  const sendTextMessage = async () => {
+    if (!inputText.trim()) return;
     
     const newMessage: Message = {
       id: Date.now().toString(),
-      type: 'text',
       content: inputText,
       role: 'user',
       timestamp: new Date()
@@ -136,33 +68,19 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     
     setMessages(prev => [...prev, newMessage]);
     setInputText('');
+    setIsLoading(true);
     
     // Simulate AI response
     setTimeout(() => {
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        type: 'text',
-        content: "Je comprends votre message. Comment puis-je vous aider davantage?",
+        content: "Je comprends votre message. Comment puis-je vous aider davantage avec vos besoins culinaires?",
         role: 'assistant',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiMessage]);
+      setIsLoading(false);
     }, 1000);
-  };
-
-  const toggleRecording = () => {
-    if (!isConnected) {
-      startConversation();
-      return;
-    }
-    setIsRecording(!isRecording);
-  };
-
-  const handleClose = () => {
-    if (isConnected) {
-      endConversation();
-    }
-    onClose();
   };
 
   // Header Component
@@ -182,9 +100,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         </div>
         <div>
           <h1 className="font-semibold text-foreground">Assistant Cuizly</h1>
-          <p className="text-xs text-muted-foreground">
-            {isConnected ? 'En ligne' : 'Hors ligne'}
-          </p>
+          <p className="text-xs text-muted-foreground">Chat en ligne</p>
         </div>
       </div>
       
@@ -278,22 +194,19 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     </div>
   );
 
-  // Audio Visualizer
-  const AudioVisualizer = () => (
-    <div className="flex items-center justify-center gap-1 h-8">
-      {[...Array(5)].map((_, i) => (
-        <div
-          key={i}
-          className={cn(
-            "w-1 rounded-full transition-all duration-300",
-            (isSpeaking || isRecording) ? "bg-primary animate-pulse" : "bg-muted"
-          )}
-          style={{
-            height: (isSpeaking || isRecording) ? `${Math.random() * 16 + 8}px` : '4px',
-            animationDelay: `${i * 0.1}s`
-          }}
-        />
-      ))}
+  // Loading Component
+  const LoadingMessage = () => (
+    <div className="flex gap-3 p-4">
+      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+        <img src={chefIconUrl} alt="AI" className="w-4 h-4" />
+      </div>
+      <div className="bg-muted rounded-2xl px-4 py-3">
+        <div className="flex gap-1">
+          <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+          <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+        </div>
+      </div>
     </div>
   );
 
@@ -303,17 +216,10 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
       {showSettings && (
         <div className="mb-4 p-4 bg-muted/30 rounded-lg">
           <div className="space-y-3">
-            <label className="text-sm font-medium">Voix de l'assistant</label>
-            <Select value={selectedVoice} onValueChange={setSelectedVoice}>
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="alloy">Alloy</SelectItem>
-                <SelectItem value="echo">Echo</SelectItem>
-                <SelectItem value="nova">Nova</SelectItem>
-              </SelectContent>
-            </Select>
+            <h3 className="text-sm font-medium">Paramètres</h3>
+            <p className="text-xs text-muted-foreground">
+              Interface de chat optimisée pour vos questions culinaires
+            </p>
           </div>
         </div>
       )}
@@ -324,7 +230,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
             ref={inputRef}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder="Tapez votre message..."
+            placeholder="Posez votre question culinaire..."
             className="pr-12 min-h-[44px] resize-none rounded-full"
             onKeyPress={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
@@ -332,45 +238,20 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                 sendTextMessage();
               }
             }}
-            disabled={!isConnected}
+            disabled={isLoading}
           />
           {inputText && (
             <Button
               size="icon"
               onClick={sendTextMessage}
+              disabled={isLoading}
               className="absolute right-1 top-1 h-8 w-8 rounded-full"
             >
               <Send className="w-4 h-4" />
             </Button>
           )}
         </div>
-        
-        <Button
-          size="icon"
-          onClick={toggleRecording}
-          className={cn(
-            "h-11 w-11 rounded-full transition-all duration-200",
-            isRecording || isSpeaking
-              ? "bg-red-500 hover:bg-red-600 text-white"
-              : "bg-primary hover:bg-primary/90"
-          )}
-          disabled={isConnecting}
-        >
-          {isConnecting ? (
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          ) : isRecording ? (
-            <MicOff className="w-5 h-5" />
-          ) : (
-            <Mic className="w-5 h-5" />
-          )}
-        </Button>
       </div>
-      
-      {(isSpeaking || isRecording) && (
-        <div className="mt-3 flex justify-center">
-          <AudioVisualizer />
-        </div>
-      )}
     </div>
   );
 
@@ -382,6 +263,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
           {messages.map((message) => (
             <MessageComponent key={message.id} message={message} />
           ))}
+          {isLoading && <LoadingMessage />}
           <div ref={messagesEndRef} />
         </div>
       ) : (
@@ -395,7 +277,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                 Bonjour ! Comment puis-je vous aider ?
               </h3>
               <p className="text-sm text-muted-foreground">
-                Vous pouvez me parler ou m'écrire pour commencer une conversation.
+                Posez-moi vos questions sur la cuisine, les recettes ou les restaurants à Montréal.
               </p>
             </div>
           </div>
@@ -405,7 +287,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
   );
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl w-full h-[90vh] p-0 gap-0 bg-background">
         <div className="flex h-full relative">
           <Sidebar />
