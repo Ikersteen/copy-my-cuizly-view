@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   MapPin, Clock, Star, Heart, Settings, 
-  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut
+  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut, Mic
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -31,7 +31,7 @@ const ConsumerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const [showVoiceAssistant, setShowVoiceAssistant] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [forceLoaded, setForceLoaded] = useState(false);
   
@@ -128,6 +128,7 @@ const ConsumerDashboard = () => {
       // Close any open modals
       setShowFavorites(false);
       setShowHistory(false);
+      setShowVoiceModal(false);
       
       // Clear user state
       setUser(null);
@@ -219,23 +220,18 @@ const ConsumerDashboard = () => {
         open={showHistory} 
         onOpenChange={setShowHistory}
       />
-      <VoiceAssistantModal
-        open={showVoiceAssistant}
-        onOpenChange={setShowVoiceAssistant}
+      <VoiceAssistantModal 
+        isOpen={showVoiceModal} 
+        onClose={() => setShowVoiceModal(false)} 
       />
 
       {/* Floating Voice Assistant Button */}
       <Button
-        onClick={() => setShowVoiceAssistant(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 z-50"
-        size="icon"
+        onClick={() => setShowVoiceModal(true)}
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 z-50"
+        aria-label="Assistant vocal"
       >
-        <div className="relative">
-          <div className="w-6 h-6 bg-white rounded-sm flex items-center justify-center">
-            <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
-          </div>
-          <span className="sr-only">Assistant vocal Cuizly</span>
-        </div>
+        <Mic className="w-6 h-6" />
       </Button>
     </div>
   );

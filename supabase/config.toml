@@ -91,9 +91,3 @@ verify_jwt = false
 
 [functions.send-waitlist-confirmation]
 verify_jwt = false
-
-[functions.cuizly-voice-chat]
-verify_jwt = false
-
-[functions.cuizly-voice-elevenlabs]
-verify_jwt = false

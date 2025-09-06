@@ -54,7 +54,7 @@ const HeroSection = () => {
         />
 
         {/* CTA */}
-        <div className="animate-fade-in space-y-4">
+        <div className="animate-fade-in">
           {isAuthenticated ? (
             <Button 
               size="lg" 
