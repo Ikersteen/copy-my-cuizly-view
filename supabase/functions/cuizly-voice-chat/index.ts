@@ -47,14 +47,25 @@ serve(async (req) => {
       // Connect to OpenAI Realtime API with the correct model
       const openAIUrl = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01";
       console.log("Connecting to OpenAI at:", openAIUrl);
+      console.log("Using API key (first 10 chars):", openaiKey.substring(0, 10) + "...");
       
-      openAISocket = new WebSocket(openAIUrl, [
-        "realtime",
-        `Bearer.${openaiKey}`
-      ]);
+      openAISocket = new WebSocket(openAIUrl, ["realtime", `Bearer.${openaiKey}`]);
+
+      // Set a timeout for the connection
+      const connectionTimeout = setTimeout(() => {
+        if (openAISocket && openAISocket.readyState !== WebSocket.OPEN) {
+          console.error("OpenAI connection timeout");
+          openAISocket.close();
+          socket.send(JSON.stringify({
+            type: 'error',
+            message: 'Timeout de connexion avec OpenAI'
+          }));
+        }
+      }, 10000); // 10 second timeout
 
       openAISocket.onopen = () => {
         console.log("Connected to OpenAI Realtime API successfully");
+        clearTimeout(connectionTimeout); // Clear the timeout
         socket.send(JSON.stringify({
           type: 'connection',
           status: 'connected'
@@ -254,11 +265,18 @@ Exemples d'interactions :
     };
 
       openAISocket.onerror = (error) => {
-        console.error("OpenAI WebSocket error:", error);
-        console.error("Error event:", JSON.stringify(error));
+        console.error("OpenAI WebSocket error occurred");
+        console.error("Error type:", error.constructor.name);
+        clearTimeout(connectionTimeout); // Clear the timeout
+        
+        let errorMessage = 'Erreur de connexion avec OpenAI';
+        if (error.message) {
+          errorMessage += ': ' + error.message;
+        }
+        
         socket.send(JSON.stringify({
           type: 'error',
-          message: 'Erreur de connexion avec le service vocal OpenAI'
+          message: errorMessage
         }));
       };
 
