@@ -148,7 +148,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
       setIsListening(false);
       setMessages([{
         type: 'system',
-        text: 'Assistant vocal activé - Parlez maintenant!',
+        text: 'Activé',
         role: 'system',
         timestamp: new Date()
       }]);
@@ -176,7 +176,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     setIsListening(true);
     setMessages(prev => [...prev, {
       type: 'system',
-      text: 'Conversation terminée',
+      text: 'Terminé',
       role: 'system',
       timestamp: new Date()
     }]);
@@ -282,11 +282,11 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                     Connexion en cours...
                   </span>
                 ) : keywordDetected ? (
-                  <span className="animate-pulse text-cuizly-primary">Hey Cuizly détecté!</span>
+                  <span className="text-cuizly-primary">Détecté!</span>
                 ) : isListening ? (
-                  'Dites "Hey Cuizly" pour commencer'
+                  'Dites "Hey Cuizly"'
                 ) : (
-                  'Prêt à converser'
+                  'Prêt'
                 )}
               </p>
             </div>
@@ -428,27 +428,17 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowSettings(!showSettings)}
-              className={cn(
-                "rounded-full hover:bg-muted/80 transition-all duration-300 transform hover:scale-110",
-                showSettings ? "bg-cuizly-primary/10 text-cuizly-primary rotate-180" : "hover:rotate-12"
-              )}
-            >
-              <Settings className="w-4 h-4 transition-transform duration-300" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleClose}
-              className="rounded-full hover:bg-red-50 hover:text-red-500 transition-all duration-300 transform hover:scale-110 hover:rotate-90"
-            >
-              <X className="w-4 h-4 transition-transform duration-300" />
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowSettings(!showSettings)}
+            className={cn(
+              "rounded-full hover:bg-muted/80",
+              showSettings ? "bg-cuizly-primary/10 text-cuizly-primary" : ""
+            )}
+          >
+            <Settings className="w-4 h-4" />
+          </Button>
         </div>
 
         {/* Settings Panel */}
