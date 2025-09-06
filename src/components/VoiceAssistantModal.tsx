@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Mic, MicOff, X, Volume2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Mic, MicOff, X, Volume2, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { supabase } from '@/integrations/supabase/client';
@@ -36,6 +37,9 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
   const [userId, setUserId] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
   const [keywordDetected, setKeywordDetected] = useState(false);
+  const [selectedVoice, setSelectedVoice] = useState('alloy');
+  const [isUserSpeaking, setIsUserSpeaking] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   
   const voiceClientRef = useRef<RealtimeVoiceClient | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -81,8 +85,17 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         }
       };
       
+      keywordRecognition.onspeechstart = () => {
+        setIsUserSpeaking(true);
+      };
+      
+      keywordRecognition.onspeechend = () => {
+        setIsUserSpeaking(false);
+      };
+      
       keywordRecognition.onerror = (event: any) => {
         console.log('Keyword detection error:', event.error);
+        setIsUserSpeaking(false);
       };
       
       if (isListening) {
@@ -92,6 +105,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     
     return () => {
       keywordRecognition?.stop();
+      setIsUserSpeaking(false);
     };
   }, [isListening, isConnected]);
 
@@ -184,20 +198,20 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
       <div className="relative h-full flex items-center justify-center">
         {isConnected ? (
           <div className="flex items-end gap-1">
-            {[...Array(12)].map((_, i) => (
+            {[...Array(20)].map((_, i) => (
               <div
                 key={i}
                 className={cn(
-                  "w-1 rounded-full transition-all duration-300 ease-out",
-                  isSpeaking 
-                    ? "bg-gradient-to-t from-cuizly-primary to-cuizly-accent animate-pulse" 
+                  "w-1 rounded-full transition-all duration-200 ease-out",
+                  (isSpeaking || isUserSpeaking)
+                    ? "bg-gradient-to-t from-cuizly-primary to-cuizly-accent" 
                     : "bg-cuizly-neutral/40"
                 )}
                 style={{
-                  height: isSpeaking 
-                    ? `${Math.random() * 40 + 20}px` 
+                  height: (isSpeaking || isUserSpeaking)
+                    ? `${Math.sin((Date.now() / 100) + i * 0.5) * 20 + 30}px` 
                     : '8px',
-                  animationDelay: `${i * 50}ms`
+                  animationDelay: `${i * 30}ms`
                 }}
               />
             ))}
@@ -217,7 +231,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         )}
       </div>
       
-      {isSpeaking && (
+      {(isSpeaking || isUserSpeaking) && (
         <div className="absolute top-4 right-4">
           <Volume2 className="w-5 h-5 text-cuizly-primary animate-pulse" />
         </div>
@@ -225,12 +239,12 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     </div>
   );
 
-  // Message Bubble Component - Horizontal Layout
-  const MessageBubble = ({ message, index }: { message: Message; index: number }) => (
+  // Message Component - Simple SMS style
+  const MessageComponent = ({ message, index }: { message: Message; index: number }) => (
     <div 
       className={cn(
-        "animate-in fade-in-0 slide-in-from-bottom-2",
-        message.role === 'system' ? "text-center" : "mb-4"
+        "animate-in fade-in-0 slide-in-from-bottom-2 mb-2",
+        message.role === 'system' ? "text-center" : ""
       )}
       style={{ animationDelay: `${index * 100}ms` }}
     >
@@ -240,37 +254,22 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
         </div>
       ) : (
         <div className={cn(
-          "flex items-start gap-3",
-          message.role === 'user' && "flex-row-reverse"
+          "flex flex-col gap-1",
+          message.role === 'user' ? "items-end" : "items-start"
         )}>
-          {/* Avatar */}
-          <div className={cn(
-            "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0",
-            message.role === 'assistant' 
-              ? "bg-cuizly-primary text-white" 
-              : "bg-cuizly-surface border border-border"
-          )}>
-            {message.role === 'assistant' ? (
-              <img src={chefIconUrl} alt="Chef" className="w-5 h-5" />
-            ) : (
-              '👤'
-            )}
+          <div className="text-xs text-cuizly-neutral/70 px-2">
+            {message.role === 'assistant' ? 'Cuizly' : 'Vous'} • {message.timestamp.toLocaleTimeString('fr-FR', { 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            })}
           </div>
-          
-          {/* Message Content */}
           <div className={cn(
-            "max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
+            "max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed",
             message.role === 'assistant'
-              ? "bg-cuizly-surface border border-border text-foreground rounded-tl-sm"
-              : "bg-cuizly-primary text-white rounded-tr-sm"
+              ? "bg-cuizly-surface border border-border text-foreground"
+              : "bg-cuizly-primary text-white"
           )}>
-            <p className="mb-0">{message.text}</p>
-            <p className="text-xs opacity-70 mt-1">
-              {message.timestamp.toLocaleTimeString('fr-FR', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-              })}
-            </p>
+            {message.text}
           </div>
         </div>
       )}
@@ -302,15 +301,50 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
             </div>
           </div>
           
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleClose}
-            className="rounded-full hover:bg-muted/80"
-          >
-            <X className="w-4 h-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowSettings(!showSettings)}
+              className="rounded-full hover:bg-muted/80"
+            >
+              <Settings className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleClose}
+              className="rounded-full hover:bg-muted/80"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
+
+        {/* Settings Panel */}
+        {showSettings && (
+          <div className="p-6 pb-4 border-b border-border/50 bg-muted/30">
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-foreground">Paramètres</h3>
+              <div className="space-y-2">
+                <label className="text-xs text-cuizly-neutral">Voix de l'assistant</label>
+                <Select value={selectedVoice} onValueChange={setSelectedVoice}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="alloy">Alloy (Neutre)</SelectItem>
+                    <SelectItem value="echo">Echo (Masculin)</SelectItem>
+                    <SelectItem value="fable">Fable (Britannique)</SelectItem>
+                    <SelectItem value="onyx">Onyx (Profond)</SelectItem>
+                    <SelectItem value="nova">Nova (Féminin)</SelectItem>
+                    <SelectItem value="shimmer">Shimmer (Doux)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col h-[70vh]">
           {/* Audio Visualizer */}
@@ -323,7 +357,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
             {messages.length > 0 ? (
               <div className="h-full overflow-y-auto space-y-2 pr-2">
                 {messages.map((message, index) => (
-                  <MessageBubble key={index} message={message} index={index} />
+                  <MessageComponent key={index} message={message} index={index} />
                 ))}
                 <div ref={messagesEndRef} />
               </div>
