@@ -23,6 +23,7 @@ import Mentions from "./pages/Mentions";
 import Cookies from "./pages/Cookies";
 import Waitlist from "./pages/Waitlist";
 import NotFound from "./pages/NotFound";
+import ThemePreview from "./pages/ThemePreview";
 
 const queryClient = new QueryClient();
 
@@ -102,6 +103,7 @@ const AppContent = () => {
           </>
         } />
         <Route path="/waitlist" element={<Waitlist />} />
+        <Route path="/theme-preview" element={<ThemePreview />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
