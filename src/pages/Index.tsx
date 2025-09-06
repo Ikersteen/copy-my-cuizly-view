@@ -6,7 +6,6 @@ import PricingSectionLanding from "@/components/PricingSectionLanding";
 import ContactSectionLanding from "@/components/ContactSectionLanding";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
-import cuizlyLogo from "@/assets/cuizly-logo-new.png";
 
 const Index = () => {
   return (
@@ -18,8 +17,7 @@ const Index = () => {
       <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-20">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="flex items-center justify-center gap-4 text-3xl md:text-4xl font-bold text-foreground mb-4">
-              <img src={cuizlyLogo} alt="Cuizly" className="h-10 md:h-12" />
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Assistant Vocal
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
