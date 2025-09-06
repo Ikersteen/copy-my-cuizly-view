@@ -54,7 +54,7 @@ const HeroSection = () => {
         />
 
         {/* CTA */}
-        <div className="animate-fade-in">
+        <div className="animate-fade-in space-y-4">
           {isAuthenticated ? (
             <Button 
               size="lg" 
@@ -72,6 +72,15 @@ const HeroSection = () => {
               </Button>
             </Link>
           )}
+          
+          {/* Theme Preview Button */}
+          <div className="pt-2">
+            <Link to="/theme-preview">
+              <Button variant="outline" size="lg" className="px-8 py-4 text-base font-medium">
+                🎨 Voir les thèmes proposés
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Profile Switch Modal */}
