@@ -38,16 +38,12 @@ const Index = () => {
             {/* Démo Vidéo */}
             <div className="relative">
               <div className="bg-card rounded-2xl shadow-xl p-8 border">
-                <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center mb-6">
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-3xl">🎥</span>
-                    </div>
-                    <p className="text-muted-foreground font-medium">Démo Vidéo à venir</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Interface vocale en action
-                    </p>
-                  </div>
+                <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl overflow-hidden mb-6">
+                  <img 
+                    src="/lovable-uploads/d3bed81b-6186-40b7-ac20-a25957e3fa8c.png" 
+                    alt="Interface vocale Cuizly en action" 
+                    className="w-full h-full object-cover rounded-xl"
+                  />
                 </div>
                 <div className="text-center">
                   <h3 className="text-lg font-semibold mb-2">Comment ça marche ?</h3>
