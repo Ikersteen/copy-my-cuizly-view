@@ -190,86 +190,185 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     onClose();
   };
 
-  // Audio Visualizer Component
-  const AudioVisualizer = () => (
-    <div className="relative h-40 bg-gradient-to-br from-cuizly-surface/80 to-muted/50 rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cuizly-primary/5 to-transparent animate-pulse" />
-      
-      <div className="relative h-full flex items-center justify-center">
-        {isConnected ? (
-          <div className="flex items-end gap-1">
-            {[...Array(20)].map((_, i) => (
+  // Audio Visualizer Component with enhanced animations
+  const AudioVisualizer = () => {
+    const [animationPhase, setAnimationPhase] = useState(0);
+
+    useEffect(() => {
+      if (isSpeaking || isUserSpeaking) {
+        const interval = setInterval(() => {
+          setAnimationPhase(prev => prev + 1);
+        }, 100);
+        return () => clearInterval(interval);
+      }
+    }, [isSpeaking, isUserSpeaking]);
+
+    return (
+      <div className="relative h-40 bg-gradient-to-br from-cuizly-surface/80 to-muted/50 rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden group">
+        {/* Background glow effect */}
+        <div className={cn(
+          "absolute inset-0 transition-all duration-1000",
+          isConnected 
+            ? "bg-gradient-to-r from-cuizly-primary/5 via-cuizly-accent/10 to-cuizly-primary/5 animate-pulse" 
+            : "bg-gradient-to-r from-transparent via-cuizly-primary/3 to-transparent"
+        )} />
+        
+        {/* Floating particles effect when connected */}
+        {isConnected && (
+          <div className="absolute inset-0">
+            {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className={cn(
-                  "w-1 rounded-full transition-all duration-200 ease-out",
-                  (isSpeaking || isUserSpeaking)
-                    ? "bg-gradient-to-t from-cuizly-primary to-cuizly-accent" 
-                    : "bg-cuizly-neutral/40"
-                )}
+                className="absolute w-1 h-1 bg-cuizly-primary/30 rounded-full animate-ping"
                 style={{
-                  height: (isSpeaking || isUserSpeaking)
-                    ? `${Math.sin((Date.now() / 100) + i * 0.5) * 20 + 30}px` 
-                    : '8px',
-                  animationDelay: `${i * 30}ms`
+                  left: `${20 + (i * 10)}%`,
+                  top: `${30 + Math.sin(i) * 20}%`,
+                  animationDelay: `${i * 200}ms`,
+                  animationDuration: '2s'
                 }}
               />
             ))}
           </div>
-        ) : (
-          <div className="text-center space-y-2">
-            <div className="w-16 h-16 rounded-full bg-cuizly-primary/10 flex items-center justify-center mx-auto">
-              <img src={chefIconUrl} alt="Chef" className="w-8 h-8" />
+        )}
+        
+        <div className="relative h-full flex items-center justify-center">
+          {isConnected ? (
+            <div className="flex items-end gap-1">
+              {[...Array(25)].map((_, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "w-1 rounded-full transition-all duration-150 ease-out transform",
+                    (isSpeaking || isUserSpeaking)
+                      ? "bg-gradient-to-t from-cuizly-primary via-cuizly-accent to-cuizly-primary shadow-lg shadow-cuizly-primary/50" 
+                      : "bg-cuizly-neutral/40 hover:bg-cuizly-primary/60"
+                  )}
+                  style={{
+                    height: (isSpeaking || isUserSpeaking)
+                      ? `${Math.abs(Math.sin((animationPhase * 0.1) + i * 0.3)) * 35 + 15}px` 
+                      : '6px',
+                    animationDelay: `${i * 20}ms`,
+                    transform: (isSpeaking || isUserSpeaking) 
+                      ? `scaleY(${0.8 + Math.abs(Math.sin((animationPhase * 0.05) + i * 0.2)) * 0.4})` 
+                      : 'scaleY(1)'
+                  }}
+                />
+              ))}
             </div>
-            <p className="text-sm text-cuizly-neutral">
-              {isConnecting ? 'Connexion en cours...' : 
-               keywordDetected ? 'Hey Cuizly détecté!' :
-               isListening ? 'Dites "Hey Cuizly" pour commencer' : 
-               'Prêt à converser'}
-            </p>
+          ) : (
+            <div className="text-center space-y-3 animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
+              <div className={cn(
+                "w-16 h-16 rounded-full flex items-center justify-center mx-auto transition-all duration-500",
+                keywordDetected 
+                  ? "bg-cuizly-primary/20 scale-110 shadow-lg shadow-cuizly-primary/30" 
+                  : "bg-cuizly-primary/10 hover:bg-cuizly-primary/15 hover:scale-105"
+              )}>
+                <img 
+                  src={chefIconUrl} 
+                  alt="Chef" 
+                  className={cn(
+                    "w-8 h-8 transition-all duration-300",
+                    keywordDetected && "animate-bounce"
+                  )} 
+                />
+              </div>
+              <p className={cn(
+                "text-sm transition-all duration-300",
+                keywordDetected ? "text-cuizly-primary font-medium" : "text-cuizly-neutral"
+              )}>
+                {isConnecting ? (
+                  <span className="flex items-center gap-2 justify-center">
+                    <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-pulse" />
+                    Connexion en cours...
+                  </span>
+                ) : keywordDetected ? (
+                  <span className="animate-pulse text-cuizly-primary">Hey Cuizly détecté!</span>
+                ) : isListening ? (
+                  'Dites "Hey Cuizly" pour commencer'
+                ) : (
+                  'Prêt à converser'
+                )}
+              </p>
+            </div>
+          )}
+        </div>
+        
+        {/* Enhanced speaking indicator */}
+        {(isSpeaking || isUserSpeaking) && (
+          <div className="absolute top-4 right-4 animate-in fade-in-0 scale-in-0 duration-300">
+            <div className="relative">
+              <Volume2 className="w-5 h-5 text-cuizly-primary animate-pulse" />
+              <div className="absolute inset-0 w-5 h-5 bg-cuizly-primary/20 rounded-full animate-ping" />
+            </div>
           </div>
         )}
-      </div>
-      
-      {(isSpeaking || isUserSpeaking) && (
-        <div className="absolute top-4 right-4">
-          <Volume2 className="w-5 h-5 text-cuizly-primary animate-pulse" />
-        </div>
-      )}
-    </div>
-  );
 
-  // Message Component - Simple SMS style
+        {/* Status indicator */}
+        <div className="absolute bottom-4 left-4">
+          <div className={cn(
+            "flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-sm transition-all duration-300",
+            isConnected ? "bg-green-500/10 border border-green-500/20" : "bg-gray-500/10 border border-gray-500/20"
+          )}>
+            <div className={cn(
+              "w-2 h-2 rounded-full transition-all duration-300",
+              isConnected ? "bg-green-500 animate-pulse" : "bg-gray-400"
+            )} />
+            <span className="text-xs font-medium">
+              {isConnected ? 'En ligne' : 'Hors ligne'}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Enhanced Message Component with better animations
   const MessageComponent = ({ message, index }: { message: Message; index: number }) => (
     <div 
       className={cn(
-        "animate-in fade-in-0 slide-in-from-bottom-2 mb-2",
+        "animate-in fade-in-0 slide-in-from-bottom-2 mb-3 transition-all duration-300",
         message.role === 'system' ? "text-center" : ""
       )}
-      style={{ animationDelay: `${index * 100}ms` }}
+      style={{ 
+        animationDelay: `${index * 150}ms`,
+        animationDuration: '0.5s'
+      }}
     >
       {message.role === 'system' ? (
-        <div className="bg-muted/50 text-cuizly-neutral text-center italic text-xs py-2 px-4 rounded-full inline-block">
+        <div className="bg-muted/50 text-cuizly-neutral text-center italic text-xs py-2 px-4 rounded-full inline-block backdrop-blur-sm border border-border/30 animate-in fade-in-0 scale-in-95 duration-300">
           {message.text}
         </div>
       ) : (
         <div className={cn(
-          "flex flex-col gap-1",
+          "flex flex-col gap-1 group",
           message.role === 'user' ? "items-end" : "items-start"
         )}>
-          <div className="text-xs text-cuizly-neutral/70 px-2">
-            {message.role === 'assistant' ? 'Cuizly' : 'Vous'} • {message.timestamp.toLocaleTimeString('fr-FR', { 
+          <div className="text-xs text-cuizly-neutral/70 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            {message.role === 'assistant' ? (
+              <span className="flex items-center gap-1">
+                <img src={chefIconUrl} alt="Chef" className="w-3 h-3" />
+                Cuizly
+              </span>
+            ) : (
+              'Vous'
+            )} • {message.timestamp.toLocaleTimeString('fr-FR', { 
               hour: '2-digit', 
               minute: '2-digit' 
             })}
           </div>
           <div className={cn(
-            "max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed",
+            "max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg",
             message.role === 'assistant'
-              ? "bg-cuizly-surface border border-border text-foreground"
-              : "bg-cuizly-primary text-white"
+              ? "bg-gradient-to-br from-cuizly-surface to-cuizly-surface/80 border border-border/50 text-foreground shadow-sm hover:shadow-cuizly-primary/10 hover:border-cuizly-primary/20"
+              : "bg-gradient-to-br from-cuizly-primary to-cuizly-accent text-white shadow-sm hover:shadow-cuizly-primary/30"
           )}>
-            {message.text}
+            <div className="relative">
+              {message.text}
+              {/* Subtle typing animation for new messages */}
+              {index === messages.length - 1 && message.role === 'assistant' && (
+                <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-cuizly-primary/50 rounded-full animate-pulse" />
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -279,23 +378,51 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] p-0 gap-0 bg-background/95 backdrop-blur-xl border-border/50">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 pb-4 border-b border-border/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cuizly-primary to-cuizly-accent flex items-center justify-center">
-              <img src={chefIconUrl} alt="Chef" className="w-6 h-6" />
+        {/* Enhanced Header with animations */}
+        <div className="flex items-center justify-between p-6 pb-4 border-b border-border/50 bg-gradient-to-r from-background via-cuizly-surface/20 to-background">
+          <div className="flex items-center gap-3 group">
+            <div className={cn(
+              "w-10 h-10 rounded-full flex items-center justify-center relative transition-all duration-300",
+              "bg-gradient-to-br from-cuizly-primary to-cuizly-accent shadow-lg",
+              isConnected ? "animate-pulse shadow-cuizly-primary/30" : "group-hover:scale-110"
+            )}>
+              <img src={chefIconUrl} alt="Chef" className="w-6 h-6 relative z-10" />
+              {/* Animated ring for connected state */}
+              {isConnected && (
+                <div className="absolute inset-0 rounded-full border-2 border-cuizly-primary/30 animate-ping" />
+              )}
             </div>
-            <div>
-              <p className="font-semibold text-foreground">Assistant Vocal Cuizly</p>
+            <div className="transition-all duration-300 group-hover:translate-x-1">
+              <p className="font-semibold text-foreground flex items-center gap-2">
+                Assistant Vocal Cuizly
+                {keywordDetected && (
+                  <span className="text-xs bg-cuizly-primary/10 text-cuizly-primary px-2 py-1 rounded-full animate-bounce">
+                    Activé!
+                  </span>
+                )}
+              </p>
               <div className="flex items-center gap-2">
                 <div className={cn(
-                  "w-2 h-2 rounded-full",
-                  isConnected ? "bg-green-500" : "bg-gray-400"
+                  "w-2 h-2 rounded-full transition-all duration-500",
+                  isConnected ? "bg-green-500 shadow-lg shadow-green-500/50 animate-pulse" : "bg-gray-400"
                 )} />
-                <p className="text-xs text-cuizly-neutral">
-                  {isConnected ? 'En ligne' : 
-                   isListening ? 'Écoute "Hey Cuizly"' :
-                   'Hors ligne'}
+                <p className={cn(
+                  "text-xs transition-all duration-300",
+                  isConnected ? "text-green-600 font-medium" : "text-cuizly-neutral"
+                )}>
+                  {isConnected ? (
+                    <span className="flex items-center gap-1">
+                      En ligne
+                      <div className="w-1 h-1 bg-green-500 rounded-full animate-ping" />
+                    </span>
+                  ) : isListening ? (
+                    <span className="flex items-center gap-1">
+                      <div className="w-1 h-1 bg-cuizly-primary rounded-full animate-pulse" />
+                      Écoute "Hey Cuizly"
+                    </span>
+                  ) : (
+                    'Hors ligne'
+                  )}
                 </p>
               </div>
             </div>
@@ -306,17 +433,20 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
               variant="ghost"
               size="icon"
               onClick={() => setShowSettings(!showSettings)}
-              className="rounded-full hover:bg-muted/80"
+              className={cn(
+                "rounded-full hover:bg-muted/80 transition-all duration-300 transform hover:scale-110",
+                showSettings ? "bg-cuizly-primary/10 text-cuizly-primary rotate-180" : "hover:rotate-12"
+              )}
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-4 h-4 transition-transform duration-300" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={handleClose}
-              className="rounded-full hover:bg-muted/80"
+              className="rounded-full hover:bg-red-50 hover:text-red-500 transition-all duration-300 transform hover:scale-110 hover:rotate-90"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 transition-transform duration-300" />
             </Button>
           </div>
         </div>
@@ -384,25 +514,36 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
             )}
           </div>
 
-          {/* Controls */}
-          <div className="p-6 pt-4 border-t border-border/50">
+          {/* Controls with enhanced animations */}
+          <div className="p-6 pt-4 border-t border-border/50 bg-gradient-to-t from-background/50 to-transparent">
             <div className="flex justify-center">
               {!isConnected ? (
                 <Button 
                   onClick={startConversation}
                   disabled={isConnecting}
                   size="lg"
-                  className="bg-gradient-to-r from-cuizly-primary to-cuizly-accent hover:shadow-lg transition-all duration-300 text-white px-8"
+                  className={cn(
+                    "relative overflow-hidden group transition-all duration-300 transform hover:scale-105",
+                    "bg-gradient-to-r from-cuizly-primary via-cuizly-accent to-cuizly-primary bg-size-200 bg-pos-0 hover:bg-pos-100",
+                    "text-white px-8 py-3 shadow-lg hover:shadow-xl hover:shadow-cuizly-primary/30",
+                    "border border-cuizly-primary/20 hover:border-cuizly-primary/40"
+                  )}
                 >
+                  {/* Background animation overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                  
                   {isConnecting ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                      Connexion...
+                      <span className="animate-pulse">Connexion...</span>
                     </>
                   ) : (
                     <>
-                      <Mic className="w-5 h-5 mr-2" />
-                      Démarrer la conversation
+                      <Mic className={cn(
+                        "w-5 h-5 mr-2 transition-all duration-300",
+                        keywordDetected && "animate-bounce"
+                      )} />
+                      <span className="font-medium">Démarrer la conversation</span>
                     </>
                   )}
                 </Button>
@@ -411,10 +552,15 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                   onClick={endConversation}
                   variant="outline"
                   size="lg"
-                  className="border-red-200 text-red-600 hover:bg-red-50 px-8"
+                  className={cn(
+                    "relative overflow-hidden group transition-all duration-300 transform hover:scale-105",
+                    "border-2 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 px-8 py-3",
+                    "shadow-sm hover:shadow-lg hover:shadow-red-200/50"
+                  )}
                 >
-                  <MicOff className="w-5 h-5 mr-2" />
-                  Terminer
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-50 to-red-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <MicOff className="w-5 h-5 mr-2 relative z-10 group-hover:animate-pulse" />
+                  <span className="font-medium relative z-10">Terminer</span>
                 </Button>
               )}
             </div>
