@@ -33,7 +33,7 @@ const HowItWorksSection = () => {
           <div className="mb-12 max-w-4xl mx-auto">
             <div className="bg-card rounded-2xl shadow-xl p-6 border">
               <img 
-                src="/lovable-uploads/445208fa-be94-455a-a45d-46fe6bf37d41.png" 
+                src="/lovable-uploads/1d140305-65ec-41f2-9f80-b1f332a56fe6.png" 
                 alt="Interface Assistant Vocal Cuizly" 
                 className="w-full h-auto object-cover rounded-xl"
               />
