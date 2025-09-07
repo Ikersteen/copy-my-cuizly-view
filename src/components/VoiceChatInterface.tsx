@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Mic, MicOff, Volume2, VolumeX, Zap, Brain, ChefHat } from 'lucide-react';
@@ -28,6 +28,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [micEnabled, setMicEnabled] = useState(false); // Nouveau état pour le toggle du micro
+  const [isListening, setIsListening] = useState(false); // Détection de la voix
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -36,6 +38,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const silenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const vadCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const initUser = async () => {
@@ -99,6 +106,175 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setIsRecording(false);
     }
   };
+
+  // Voice Activity Detection (VAD)
+  const setupVoiceDetection = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
+      
+      const audioContext = new AudioContext();
+      audioContextRef.current = audioContext;
+      
+      const analyser = audioContext.createAnalyser();
+      analyserRef.current = analyser;
+      analyser.fftSize = 256;
+      
+      const microphone = audioContext.createMediaStreamSource(stream);
+      microphone.connect(analyser);
+      
+      startVoiceActivityDetection();
+    } catch (error) {
+      console.error('Erreur configuration détection vocale:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'accéder au microphone",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const startVoiceActivityDetection = () => {
+    const checkAudioLevel = () => {
+      if (!analyserRef.current) return;
+      
+      const bufferLength = analyserRef.current.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      analyserRef.current.getByteFrequencyData(dataArray);
+      
+      // Calculer le niveau audio moyen
+      const average = dataArray.reduce((a, b) => a + b) / bufferLength;
+      const threshold = 20; // Seuil de détection de la voix
+      
+      if (average > threshold && !isRecording && !isProcessing) {
+        // Voix détectée - démarrer l'enregistrement
+        setIsListening(true);
+        startAutoRecording();
+      } else if (average <= threshold && isRecording) {
+        // Silence détecté - programmer l'arrêt
+        if (!silenceTimeoutRef.current) {
+          silenceTimeoutRef.current = setTimeout(() => {
+            if (isRecording) {
+              stopAutoRecording();
+            }
+          }, 1500); // Arrêter après 1.5 secondes de silence
+        }
+      } else if (average > threshold && silenceTimeoutRef.current) {
+        // Annuler l'arrêt si la voix reprend
+        clearTimeout(silenceTimeoutRef.current);
+        silenceTimeoutRef.current = null;
+      }
+    };
+
+    vadCheckIntervalRef.current = setInterval(checkAudioLevel, 100);
+  };
+
+  const startAutoRecording = async () => {
+    if (!streamRef.current || isRecording) return;
+    
+    try {
+      const mediaRecorder = new MediaRecorder(streamRef.current);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        await processVoiceInput(audioBlob);
+        setIsListening(false);
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      
+      // Annuler tout timeout de silence en cours
+      if (silenceTimeoutRef.current) {
+        clearTimeout(silenceTimeoutRef.current);
+        silenceTimeoutRef.current = null;
+      }
+    } catch (error) {
+      console.error('Erreur enregistrement auto:', error);
+    }
+  };
+
+  const stopAutoRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+    if (silenceTimeoutRef.current) {
+      clearTimeout(silenceTimeoutRef.current);
+      silenceTimeoutRef.current = null;
+    }
+  };
+
+  const toggleMic = async () => {
+    if (micEnabled) {
+      // Désactiver le micro
+      setMicEnabled(false);
+      setIsListening(false);
+      
+      // Arrêter l'enregistrement en cours
+      if (isRecording) {
+        stopAutoRecording();
+      }
+      
+      // Nettoyer la détection vocale
+      if (vadCheckIntervalRef.current) {
+        clearInterval(vadCheckIntervalRef.current);
+      }
+      if (silenceTimeoutRef.current) {
+        clearTimeout(silenceTimeoutRef.current);
+      }
+      
+      // Fermer le stream audio
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+      }
+      
+      // Fermer le contexte audio
+      if (audioContextRef.current) {
+        await audioContextRef.current.close();
+        audioContextRef.current = null;
+      }
+      
+      toast({
+        title: "Micro désactivé",
+        description: "Cliquez pour réactiver la détection vocale",
+      });
+    } else {
+      // Activer le micro
+      setMicEnabled(true);
+      await setupVoiceDetection();
+      
+      toast({
+        title: "Micro activé",
+        description: "Parlez naturellement, je vous écoute",
+      });
+    }
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (vadCheckIntervalRef.current) {
+        clearInterval(vadCheckIntervalRef.current);
+      }
+      if (silenceTimeoutRef.current) {
+        clearTimeout(silenceTimeoutRef.current);
+      }
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
 
   // Process voice input with hybrid AI system
   const processVoiceInput = async (audioBlob: Blob) => {
@@ -216,11 +392,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   };
 
   const toggleRecording = () => {
-    if (isRecording) {
-      stopRecording();
-    } else {
-      startRecording();
-    }
+    // Cette fonction est maintenant remplacée par toggleMic
+    // Gardée pour compatibilité mais redirige vers toggleMic
+    toggleMic();
   };
 
   const stopAudio = () => {
@@ -354,32 +528,51 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         <div className="border-t border-border bg-background px-6 py-6">
           <div className="flex items-center justify-center">
             <div className="relative">
-              {/* Animation circles pour l'enregistrement */}
+              {/* Animation circles pour l'état micro activé */}
+              {micEnabled && (
+                <>
+                  <div className={`absolute inset-0 rounded-full ${
+                    isListening ? 'bg-green-500/20 animate-ping' : 'bg-blue-500/20 animate-pulse'
+                  }`} />
+                  <div className={`absolute inset-0 rounded-full ${
+                    isListening ? 'bg-green-500/30 animate-pulse' : 'bg-blue-500/30'
+                  }`} style={{ animationDelay: '0.5s' }} />
+                </>
+              )}
+              
+              {/* Animation pour l'enregistrement actif */}
               {isRecording && (
                 <>
                   <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
                   <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
                 </>
               )}
+              
               <Button
-                onClick={toggleRecording}
+                onClick={toggleMic}
                 disabled={isProcessing}
                 className={`w-16 h-16 rounded-full transition-all duration-300 relative z-10 ${
-                  isRecording 
-                    ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25' 
+                  isRecording
+                    ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25'
+                    : micEnabled
+                    ? isListening
+                      ? 'bg-green-500 hover:bg-green-600 shadow-xl shadow-green-500/25'
+                      : 'bg-blue-500 hover:bg-blue-600 shadow-lg shadow-blue-500/25'
                     : isProcessing
                     ? 'bg-muted cursor-not-allowed'
-                    : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
+                    : 'bg-gradient-to-br from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 shadow-lg shadow-gray-500/25 hover:shadow-xl hover:shadow-gray-500/30 hover:scale-105'
                 }`}
               >
-                {isRecording ? (
-                  <MicOff className="w-8 h-8 text-white" />
-                ) : isProcessing ? (
+                {isProcessing ? (
                   <div className="relative">
                     <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary-foreground border-t-transparent" />
                   </div>
+                ) : micEnabled ? (
+                  <Mic className={`w-8 h-8 text-white transition-transform duration-200 ${
+                    isListening || isRecording ? 'animate-pulse' : ''
+                  }`} />
                 ) : (
-                  <Mic className="w-8 h-8 text-white transition-transform duration-200" />
+                  <MicOff className="w-8 h-8 text-white" />
                 )}
               </Button>
             </div>
@@ -390,11 +583,23 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               <p className="text-red-600 font-medium">{t('voiceChat.recording')}</p>
             ) : isProcessing ? (
               <p className="text-primary font-medium">{t('voiceChat.processing')}</p>
+            ) : micEnabled ? (
+              isListening ? (
+                <div className="space-y-1">
+                  <p className="text-green-600 font-medium">🎤 En écoute...</p>
+                  <p className="text-sm text-muted-foreground">Parlez naturellement</p>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <p className="text-blue-600 font-medium">🎤 Micro activé</p>
+                  <p className="text-sm text-muted-foreground">Parlez naturellement, je vous écoute</p>
+                </div>
+              )
             ) : (
               <div className="space-y-1">
-                <p className="text-foreground font-medium">{t('voiceChat.clickToSpeak')}</p>
+                <p className="text-foreground font-medium">Cliquez pour activer le micro</p>
                 <p className="text-sm text-muted-foreground">
-                  {t('voiceChat.askRecommendations')}
+                  Mode conversation continue comme ChatGPT
                 </p>
               </div>
             )}
