@@ -686,37 +686,49 @@ export type Database = {
       waitlist_analytics: {
         Row: {
           address: string | null
+          address_encrypted: string | null
           company_name: string | null
           created_at: string
           email: string
+          email_encrypted: string | null
+          email_hash: string | null
           id: string
           message: string | null
           name: string
           phone: string | null
+          phone_encrypted: string | null
           restaurant_type: string | null
           updated_at: string
         }
         Insert: {
           address?: string | null
+          address_encrypted?: string | null
           company_name?: string | null
           created_at?: string
           email: string
+          email_encrypted?: string | null
+          email_hash?: string | null
           id?: string
           message?: string | null
           name: string
           phone?: string | null
+          phone_encrypted?: string | null
           restaurant_type?: string | null
           updated_at?: string
         }
         Update: {
           address?: string | null
+          address_encrypted?: string | null
           company_name?: string | null
           created_at?: string
           email?: string
+          email_encrypted?: string | null
+          email_hash?: string | null
           id?: string
           message?: string | null
           name?: string
           phone?: string | null
+          phone_encrypted?: string | null
           restaurant_type?: string | null
           updated_at?: string
         }
@@ -731,9 +743,26 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      decrypt_pii: {
+        Args: { encrypted_data: string; secret_key?: string }
+        Returns: string
+      }
       detect_suspicious_admin_activity: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      emergency_decrypt_customer_data: {
+        Args: { justification: string; record_id: string }
+        Returns: {
+          access_justification: string
+          decrypted_address: string
+          decrypted_email: string
+          decrypted_phone: string
+        }[]
+      }
+      encrypt_pii: {
+        Args: { data: string; secret_key?: string }
+        Returns: string
       }
       get_offers_with_restaurant_names: {
         Args: { category_filter?: string }
@@ -854,6 +883,22 @@ export type Database = {
           restaurant_type: string
         }[]
       }
+      get_waitlist_maximum_security: {
+        Args: { page_offset?: number; page_size?: number; search_term?: string }
+        Returns: {
+          access_level: string
+          address_region: string
+          company_name: string
+          created_at: string
+          email_masked: string
+          id: string
+          message_preview: string
+          name: string
+          phone_masked: string
+          restaurant_type: string
+          total_count: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -890,6 +935,10 @@ export type Database = {
       log_unauthorized_access_attempt: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      mask_sensitive_data: {
+        Args: { data: string; mask_type?: string; security_level?: string }
+        Returns: string
       }
       track_profile_view: {
         Args: { p_restaurant_id: string }
