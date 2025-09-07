@@ -236,7 +236,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       {/* Overlay pour afficher "Assistant Vocal" à côté du logo */}
       <div className="fixed top-0 left-0 z-[60] pointer-events-none">
         <div className="flex items-center h-20 px-6 sm:px-8">
-          <div className="flex items-center gap-3 ml-[calc(50px+24px)]">
+          <div className="flex items-center gap-3 ml-[calc(120px+16px)]">
             <span className="text-lg font-medium text-foreground">Assistant Vocal</span>
           </div>
         </div>
