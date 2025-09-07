@@ -101,7 +101,6 @@ const Index = () => {
                   href="/voice" 
                   className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-full transition-colors font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
                 >
-                  <span className="mr-3">🎙️</span>
                   {t('voiceAssistant.cta')}
                   <span className="ml-3">→</span>
                 </a>
