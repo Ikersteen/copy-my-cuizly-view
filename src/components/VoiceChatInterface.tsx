@@ -4,6 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Mic, MicOff, Volume2, VolumeX, Zap, Brain } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import Header from '@/components/Header';
 import cuizlyLogo from '@/assets/cuizly-logo.png';
 
 interface Message {
@@ -230,25 +231,17 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header avec navigation du dashboard consumer */}
-      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm border-b border-border">
+      <Header />
+      
+      {/* Barre de statut AI pour la page voice chat */}
+      <div className="sticky top-20 z-40 w-full bg-background/90 backdrop-blur-sm border-b border-border/50">
         <div className="w-full px-6 sm:px-8">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <div className="flex items-center gap-3">
-                <img 
-                  src="/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png" 
-                  alt="Cuizly" 
-                  className="h-[50px] w-auto dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
-                />
-                <span className="text-lg font-medium text-foreground hidden sm:inline">Assistant Vocal</span>
-              </div>
-            </div>
-            
+          <div className="flex items-center justify-center h-12">
             <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-foreground">Assistant Vocal</span>
+              
               {/* AI Status indicators */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 {isProcessing && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Brain className="w-4 h-4 animate-pulse text-blue-600" />
@@ -262,22 +255,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   </div>
                 )}
               </div>
-              
-              <Avatar className="w-10 h-10">
-                <AvatarImage src={userProfile?.avatar_url} />
-                <AvatarFallback className="bg-primary text-primary-foreground">
-                  {userProfile?.first_name?.charAt(0) || userProfile?.display_name?.charAt(0) || 'U'}
-                </AvatarFallback>
-              </Avatar>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Zone de conversation intégrée au dashboard */}
       <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-200px)]">
+        {/* Messages Area - ajuster pour le nouveau header */}
+        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-232px)]">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
