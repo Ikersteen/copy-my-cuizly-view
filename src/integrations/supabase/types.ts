@@ -724,7 +724,23 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      secure_waitlist_view: {
+        Row: {
+          address: string | null
+          company_name: string | null
+          created_at: string | null
+          email: string | null
+          id: string | null
+          masked_email: string | null
+          masked_phone: string | null
+          message: string | null
+          name: string | null
+          phone: string | null
+          restaurant_type: string | null
+          updated_at: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       allow_public_restaurant_data: {
@@ -923,6 +939,10 @@ export type Database = {
       }
       verify_secure_admin_access: {
         Args: { max_hourly_accesses?: number }
+        Returns: boolean
+      }
+      verify_waitlist_admin_context: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
     }
