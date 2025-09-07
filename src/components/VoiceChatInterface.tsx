@@ -571,9 +571,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <p className="text-primary font-medium">Mode Conversation Québécoise</p>
+                  <p className="text-primary font-medium">Mode Conversation Naturelle</p>
                   <p className="text-sm text-muted-foreground">
-                    Clique pour jaser comme des chums! 🇫🇷
+                    Cliquez pour démarrer une conversation fluide
                   </p>
                 </div>
               )
