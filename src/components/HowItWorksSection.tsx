@@ -29,6 +29,17 @@ const HowItWorksSection = () => {
             {t('howItWorks.subtitle')}
           </p>
 
+          {/* Demo Image */}
+          <div className="mb-12 max-w-4xl mx-auto">
+            <div className="bg-card rounded-2xl shadow-xl p-6 border">
+              <img 
+                src="/lovable-uploads/445208fa-be94-455a-a45d-46fe6bf37d41.png" 
+                alt="Interface Assistant Vocal Cuizly" 
+                className="w-full h-auto object-cover rounded-xl"
+              />
+            </div>
+          </div>
+
           <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
             {steps.map((step, index) => {
               return (
