@@ -372,14 +372,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
                 }`}
               >
-                {isRecording ? (
-                  <MicOff className="w-8 h-8 text-white" />
-                ) : isProcessing ? (
+                {isProcessing && (
                   <div className="relative">
                     <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary-foreground border-t-transparent" />
                   </div>
-                ) : (
-                  <Mic className="w-8 h-8 text-white transition-transform duration-200" />
                 )}
               </Button>
             </div>
