@@ -825,6 +825,10 @@ export type Database = {
           phone: string
         }[]
       }
+      get_security_status: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       get_translated_description: {
         Args: {
           language?: string
@@ -962,6 +966,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: undefined
+      }
+      validate_admin_session: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       validate_email_domain: {
         Args: { email: string }
