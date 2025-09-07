@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Mic, MicOff, Volume2, VolumeX, Zap, Brain } from 'lucide-react';
+import chefHatIcon from "@/assets/chef-hat.png";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
@@ -270,7 +271,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <span className="text-2xl">👨‍🍳</span>
+                <img src={chefHatIcon} alt="Chef hat" className="w-8 h-8" />
               </div>
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-2xl font-semibold text-foreground">
