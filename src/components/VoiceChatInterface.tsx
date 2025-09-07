@@ -236,9 +236,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       {/* Overlay pour afficher "Assistant Vocal" à côté du logo */}
       <div className="fixed top-0 left-0 z-[60] pointer-events-none">
         <div className="flex items-center h-20 px-6 sm:px-8">
-          <div className="flex items-center gap-3 ml-[calc(120px+16px)]">
-            <span className="text-lg font-medium text-foreground">Assistant Vocal</span>
-          </div>
+            <div className="flex items-center gap-3 ml-[calc(120px+16px)]">
+              <span className="text-lg font-medium text-blue-600 dark:text-blue-400">Assistant Vocal</span>
+            </div>
         </div>
       </div>
 
@@ -352,25 +352,36 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         {/* Zone d'entrée vocale */}
         <div className="border-t border-border bg-background px-6 py-6">
           <div className="flex items-center justify-center">
-            <Button
-              onClick={toggleRecording}
-              disabled={isProcessing}
-              className={`w-16 h-16 rounded-full transition-all duration-200 ${
-                isRecording 
-                  ? 'bg-red-500 hover:bg-red-600 animate-pulse' 
-                  : isProcessing
-                  ? 'bg-muted cursor-not-allowed'
-                  : 'bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl'
-              }`}
-            >
-              {isRecording ? (
-                <MicOff className="w-8 h-8 text-white" />
-              ) : isProcessing ? (
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-foreground" />
-              ) : (
-                <Mic className="w-8 h-8 text-primary-foreground" />
+            <div className="relative">
+              {/* Animation circles pour l'enregistrement */}
+              {isRecording && (
+                <>
+                  <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
+                  <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                </>
               )}
-            </Button>
+              <Button
+                onClick={toggleRecording}
+                disabled={isProcessing}
+                className={`w-16 h-16 rounded-full transition-all duration-300 relative z-10 ${
+                  isRecording 
+                    ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25' 
+                    : isProcessing
+                    ? 'bg-muted cursor-not-allowed'
+                    : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
+                }`}
+              >
+                {isRecording ? (
+                  <MicOff className="w-8 h-8 text-white" />
+                ) : isProcessing ? (
+                  <div className="relative">
+                    <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary-foreground border-t-transparent" />
+                  </div>
+                ) : (
+                  <Mic className="w-8 h-8 text-white transition-transform duration-200" />
+                )}
+              </Button>
+            </div>
           </div>
           
           <div className="text-center mt-4 space-y-1">
