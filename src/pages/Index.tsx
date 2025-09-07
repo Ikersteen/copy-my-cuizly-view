@@ -42,7 +42,7 @@ const Index = () => {
               <div className="bg-card rounded-2xl shadow-xl p-8 border">
                 <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl overflow-hidden mb-6">
                   <img 
-                    src="/lovable-uploads/dec0e4aa-2309-4c60-a322-479ecbf16cff.png" 
+                    src="/lovable-uploads/6f7cb4c8-65ad-4d17-8773-ca603d754f03.png" 
                     alt="Interface vocale Cuizly en action" 
                     className="w-full h-full object-cover rounded-xl"
                   />
