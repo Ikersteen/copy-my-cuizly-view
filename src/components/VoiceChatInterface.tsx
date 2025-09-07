@@ -415,10 +415,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-2xl font-semibold text-foreground">
-                  ⚡ {t('voiceChat.mainTitle')} Instantané
+                  Assistant Vocal Cuizly
                 </h1>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  Conversation ultra-rapide avec l'IA culinaire de Montréal
+                  Parlez naturellement pour trouver des restaurants, consulter vos préférences ou découvrir de nouvelles saveurs.
                 </p>
               </div>
             </div>
@@ -496,7 +496,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           {/* Mode toggle */}
           <div className="flex items-center justify-center gap-4 mb-6">
             <span className="text-sm font-medium text-muted-foreground">
-              Mode Standard
+              Mode Normal
             </span>
             <Switch
               checked={isNaturalMode}
@@ -504,7 +504,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               disabled={isProcessing}
             />
             <span className="text-sm font-medium text-primary">
-              ⚡ Mode Instantané
+              Conversation Naturelle
             </span>
           </div>
 
@@ -580,9 +580,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 <p className="text-primary font-medium">{t('voiceChat.processing')}</p>
               ) : (
                 <div className="space-y-1">
-                  <p className="text-foreground font-medium">{t('voiceChat.clickToSpeak')}</p>
+                  <p className="text-foreground font-medium">Cliquez pour parler</p>
                   <p className="text-sm text-muted-foreground">
-                    {t('voiceChat.askRecommendations')}
+                    Demandez des recommandations de restaurants ou posez vos questions culinaires
                   </p>
                 </div>
               )
