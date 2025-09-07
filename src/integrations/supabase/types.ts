@@ -751,6 +751,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      emergency_admin_verification: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       emergency_decrypt_customer_data: {
         Args: { justification: string; record_id: string }
         Returns: {
@@ -887,6 +891,23 @@ export type Database = {
           restaurant_type: string
         }[]
       }
+      get_waitlist_fortress_access: {
+        Args: {
+          admin_justification?: string
+          page_offset?: number
+          page_size?: number
+        }
+        Returns: {
+          access_level: string
+          business_type: string
+          contact_masked: string
+          name_first: string
+          record_id: string
+          region_masked: string
+          security_clearance: string
+          signup_date: string
+        }[]
+      }
       get_waitlist_maximum_security: {
         Args: { page_offset?: number; page_size?: number; search_term?: string }
         Returns: {
@@ -1003,6 +1024,10 @@ export type Database = {
       verify_waitlist_admin_context: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      verify_waitlist_security_status: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
     }
     Enums: {
