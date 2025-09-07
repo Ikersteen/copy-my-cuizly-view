@@ -270,11 +270,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       realtimeClientRef.current = client;
       setIsConnected(true);
       
-      toast({
-        title: "🇫🇷 Assistant Québécois Activé",
-        description: "Jase naturellement, j'écoute comme un chum!",
-        duration: 2000,
-      });
+      // Notification removed
     } catch (error) {
       console.error('Error starting quebecois conversation:', error);
       toast({
