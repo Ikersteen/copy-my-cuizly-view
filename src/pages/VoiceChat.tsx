@@ -1,8 +1,12 @@
 import React from 'react';
-import VoiceChatInterface from '@/components/VoiceChatInterface';
+import HybridChatInterface from '@/components/HybridChatInterface';
 
 const VoiceChat = () => {
-  return <VoiceChatInterface />;
+  return (
+    <div className="min-h-screen bg-background">
+      <HybridChatInterface />
+    </div>
+  );
 };
 
 export default VoiceChat;
