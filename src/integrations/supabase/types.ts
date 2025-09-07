@@ -724,23 +724,7 @@ export type Database = {
       }
     }
     Views: {
-      secure_waitlist_view: {
-        Row: {
-          address: string | null
-          company_name: string | null
-          created_at: string | null
-          email: string | null
-          id: string | null
-          masked_email: string | null
-          masked_phone: string | null
-          message: string | null
-          name: string | null
-          phone: string | null
-          restaurant_type: string | null
-          updated_at: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       allow_public_restaurant_data: {
