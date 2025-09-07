@@ -35,7 +35,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   
   // New state for natural conversation mode
-  const [isNaturalMode, setIsNaturalMode] = useState(false);
+  const [isNaturalMode, setIsNaturalMode] = useState(true); // Start in natural mode by default
   const [isConnected, setIsConnected] = useState(false);
   const [currentTranscript, setCurrentTranscript] = useState('');
   
@@ -57,6 +57,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           .eq('user_id', session.user.id)
           .single();
         setUserProfile(profile);
+        
+        // Auto-start natural conversation mode
+        if (profile) {
+          setTimeout(() => {
+            startNaturalConversation();
+          }, 500);
+        }
       }
     };
     initUser();
@@ -264,8 +271,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setIsConnected(true);
       
       toast({
-        title: "Mode Conversation Activé",
-        description: "Parlez naturellement, l'IA vous écoute!",
+        title: "🚀 Mode Instantané Activé",
+        description: "Parlez naturellement, je vous écoute!",
+        duration: 2000,
       });
     } catch (error) {
       console.error('Error starting natural conversation:', error);
@@ -289,8 +297,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     setCurrentTranscript('');
     
     toast({
-      title: "Conversation Terminée",
-      description: "Retour au mode normal",
+      title: "💬 Conversation Instantanée",
+      description: "Mode rapide activé",
+      duration: 1500,
     });
   };
 
@@ -310,6 +319,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             isAudio: true
           };
           setMessages(prev => [...prev, userMessage]);
+          setCurrentTranscript(''); // Clear after adding message
         }
       } else if (message.role === 'assistant') {
         // Update or create assistant message
@@ -334,7 +344,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         });
       }
     } else if (message.type === 'user_speaking_started') {
-      setCurrentTranscript('');
+      setCurrentTranscript('🎤 Écoute...');
+    } else if (message.type === 'user_speaking_stopped') {
+      // Keep transcript visible until we get the final transcription
     }
   };
 
@@ -372,19 +384,25 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         {/* Messages Area - ajuster pour le header standard */}
         <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-200px)]">
           {/* Indicateurs AI intégrés dans la zone de messages */}
-          {(isProcessing || isSpeaking) && (
+          {(isProcessing || isSpeaking || currentTranscript) && (
             <div className="flex justify-center mb-4">
               <div className="flex items-center gap-3 bg-muted rounded-full px-4 py-2 text-sm">
                 {isProcessing && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Brain className="w-4 h-4 animate-pulse text-blue-600" />
-                    <span>Traitement...</span>
+                    <span>⚡ Traitement ultra-rapide...</span>
                   </div>
                 )}
                 {isSpeaking && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Volume2 className="w-4 h-4 animate-pulse text-green-600" />
-                    <span>Parle...</span>
+                    <span>🗣️ Assistant répond...</span>
+                  </div>
+                )}
+                {currentTranscript && (
+                  <div className="flex items-center gap-2 text-primary">
+                    <Mic className="w-4 h-4 animate-pulse" />
+                    <span className="text-primary font-medium">{currentTranscript}</span>
                   </div>
                 )}
               </div>
@@ -397,10 +415,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-2xl font-semibold text-foreground">
-                  {t('voiceChat.mainTitle')}
+                  ⚡ {t('voiceChat.mainTitle')} Instantané
                 </h1>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  {t('voiceChat.description')}
+                  Conversation ultra-rapide avec l'IA culinaire de Montréal
                 </p>
               </div>
             </div>
@@ -478,15 +496,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           {/* Mode toggle */}
           <div className="flex items-center justify-center gap-4 mb-6">
             <span className="text-sm font-medium text-muted-foreground">
-              Mode Normal
+              Mode Standard
             </span>
             <Switch
               checked={isNaturalMode}
               onCheckedChange={toggleNaturalMode}
               disabled={isProcessing}
             />
-            <span className="text-sm font-medium text-muted-foreground">
-              Conversation Naturelle
+            <span className="text-sm font-medium text-primary">
+              ⚡ Mode Instantané
             </span>
           </div>
 

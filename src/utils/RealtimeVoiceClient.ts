@@ -25,7 +25,7 @@ export class AudioRecorder {
       });
       
       this.source = this.audioContext.createMediaStreamSource(this.stream);
-      this.processor = this.audioContext.createScriptProcessor(4096, 1, 1);
+      this.processor = this.audioContext.createScriptProcessor(2048, 1, 1);
       
       this.processor.onaudioprocess = (e) => {
         const inputData = e.inputBuffer.getChannelData(0);
@@ -241,7 +241,7 @@ PERSONNALITÉ:
 - Parle en français québécois naturel et chaleureux
 - Sois enthousiaste pour la bouffe et découvertes culinaires
 - Utilise un ton amical et décontracté
-- Sois bref mais informatif (max 2-3 phrases par réponse)
+- RÉPONSES ULTRA COURTES: max 1-2 phrases, sois direct
 
 FONCTIONNALITÉS:
 - Tu peux chercher des recommandations de restaurants avec get_recommendations
@@ -249,11 +249,11 @@ FONCTIONNALITÉS:
 - Tu peux aider avec les préférences alimentaires
 
 RÉPONSES:
-- Garde tes réponses courtes pour la conversation vocale
-- Pose des questions pour mieux comprendre
-- Suggère toujours d'utiliser les fonctions si pertinent
+- IMPORTANT: Garde tes réponses hyper courtes pour conversation instantanée
+- Pose UNE question simple si tu as besoin de clarification
+- Suggère rapidement les fonctions si pertinent
 
-Exemple: "Salut! Je suis ton assistant Cuizly. Qu'est-ce qui te ferait plaisir de manger aujourd'hui?"`,
+Exemple: "Salut! Qu'est-ce qui te tente?"`,
         voice: "alloy",
         input_audio_format: "pcm16",
         output_audio_format: "pcm16",
@@ -262,9 +262,13 @@ Exemple: "Salut! Je suis ton assistant Cuizly. Qu'est-ce qui te ferait plaisir d
         },
         turn_detection: {
           type: "server_vad",
-          threshold: 0.5,
-          prefix_padding_ms: 300,
-          silence_duration_ms: 1000
+          threshold: 0.3,
+          prefix_padding_ms: 150,
+          silence_duration_ms: 400
+        },
+        response: {
+          modalities: ["audio", "text"],
+          instructions: "Réponds de façon très brève et naturelle en français."
         },
         tools: [
           {
@@ -283,8 +287,8 @@ Exemple: "Salut! Je suis ton assistant Cuizly. Qu'est-ce qui te ferait plaisir d
           }
         ],
         tool_choice: "auto",
-        temperature: 0.8,
-        max_response_output_tokens: "inf"
+        temperature: 0.9,
+        max_response_output_tokens: 150
       }
     };
 
