@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Switch } from '@/components/ui/switch';
-import { Mic, MicOff, Volume2, VolumeX, Zap, Brain, ChefHat, Phone, PhoneOff } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
-import cuizlyLogo from '@/assets/cuizly-logo.png';
 import { useTranslation } from 'react-i18next';
-import { QuebecoisVoiceClient } from '@/utils/QuebecoisVoiceClient';
 
 interface Message {
   id: string;
@@ -33,17 +30,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  
-  // New state for natural conversation mode
-  const [isNaturalMode, setIsNaturalMode] = useState(true); // Start in natural mode by default
-  const [isConnected, setIsConnected] = useState(false);
-  const [currentTranscript, setCurrentTranscript] = useState('');
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const realtimeClientRef = useRef<QuebecoisVoiceClient | null>(null);
 
   useEffect(() => {
     const initUser = async () => {
@@ -57,25 +48,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           .eq('user_id', session.user.id)
           .single();
         setUserProfile(profile);
-        
-        // Auto-start natural conversation mode
-        if (profile) {
-          setTimeout(() => {
-            startNaturalConversation();
-          }, 500);
-        }
       }
     };
     initUser();
-  }, []);
-
-  // Cleanup realtime client on unmount
-  useEffect(() => {
-    return () => {
-      if (realtimeClientRef.current) {
-        realtimeClientRef.current.disconnect();
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -255,117 +230,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }
   };
 
-  // Natural conversation mode functions
-  const startNaturalConversation = async () => {
-    if (!userId) return;
-    
-    try {
-      setIsProcessing(true);
-      const client = new QuebecoisVoiceClient(
-        (message) => handleRealtimeMessage(message),
-        (speaking) => setIsSpeaking(speaking)
-      );
-      
-      await client.init(userId);
-      realtimeClientRef.current = client;
-      setIsConnected(true);
-      
-      // Notification removed
-    } catch (error) {
-      console.error('Error starting quebecois conversation:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de démarrer l'assistant québécois",
-        variant: "destructive",
-      });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const stopNaturalConversation = () => {
-    if (realtimeClientRef.current) {
-      realtimeClientRef.current.disconnect();
-      realtimeClientRef.current = null;
-    }
-    setIsConnected(false);
-    setIsSpeaking(false);
-    setCurrentTranscript('');
-    
-    toast({
-      title: "🎙️ Mode Standard",
-      description: "Conversation par clic activée",
-      duration: 1500,
-    });
-  };
-
-  const handleRealtimeMessage = (message: any) => {
-    console.log('Realtime message:', message);
-    
-    if (message.type === 'transcript') {
-      if (message.role === 'user') {
-        setCurrentTranscript(message.text);
-        // Add user message when transcript is complete
-        if (message.text && message.text.trim()) {
-          const userMessage: Message = {
-            id: Date.now().toString(),
-            type: 'user',
-            content: message.text,
-            timestamp: new Date(),
-            isAudio: true
-          };
-          setMessages(prev => [...prev, userMessage]);
-          setCurrentTranscript(''); // Clear after adding message
-        }
-      } else if (message.role === 'assistant') {
-        // Update or create assistant message
-        setMessages(prev => {
-          const lastMessage = prev[prev.length - 1];
-          if (lastMessage && lastMessage.type === 'assistant' && lastMessage.isProcessing) {
-            return prev.map((msg, index) => 
-              index === prev.length - 1 
-                ? { ...msg, content: msg.content + message.text, isProcessing: false }
-                : msg
-            );
-          } else {
-            const aiMessage: Message = {
-              id: (Date.now() + 1).toString(),
-              type: 'assistant',
-              content: message.text,
-              timestamp: new Date(),
-              isProcessing: false
-            };
-            return [...prev, aiMessage];
-          }
-        });
-      }
-    } else if (message.type === 'user_speaking_started') {
-      setCurrentTranscript('🎤 Écoute...');
-    } else if (message.type === 'user_speaking_stopped') {
-      // Keep transcript visible until we get the final transcription
-    } else if (message.type === 'interruption') {
-      // Afficher feedback d'interruption
-      setCurrentTranscript('🚨 Interruption - Mode écoute');
-      setTimeout(() => setCurrentTranscript(''), 1500);
-    }
-  };
-
-  const toggleNaturalMode = async () => {
-    if (isNaturalMode) {
-      // Switching to normal mode
-      if (isConnected) {
-        stopNaturalConversation();
-      }
-      setIsNaturalMode(false);
-    } else {
-      // Switching to natural mode
-      setIsNaturalMode(true);
-      if (userId) {
-        await startNaturalConversation();
-      }
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -384,7 +248,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         {/* Messages Area - ajuster pour le header standard */}
         <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-200px)]">
           {/* Indicateurs AI intégrés dans la zone de messages */}
-          {(isProcessing || isSpeaking || currentTranscript) && (
+          {(isProcessing || isSpeaking) && (
             <div className="flex justify-center mb-4">
               <div className="flex items-center gap-3 bg-muted rounded-full px-4 py-2 text-sm">
                 {isProcessing && (
@@ -399,15 +263,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     <span>🗣️ Assistant répond...</span>
                   </div>
                 )}
-                {currentTranscript && (
-                  <div className="flex items-center gap-2 text-primary">
-                    <Mic className="w-4 h-4 animate-pulse" />
-                    <span className="text-primary font-medium">{currentTranscript}</span>
-                  </div>
-                )}
               </div>
             </div>
           )}
+          
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
@@ -493,21 +352,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
         {/* Zone d'entrée vocale */}
         <div className="border-t border-border bg-background px-6 py-6">
-          {/* Mode toggle */}
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <span className="text-sm font-medium text-muted-foreground">
-              Mode Normal
-            </span>
-            <Switch
-              checked={isNaturalMode}
-              onCheckedChange={toggleNaturalMode}
-              disabled={isProcessing}
-            />
-            <span className="text-sm font-medium text-primary">
-              Conversation Naturelle
-            </span>
-          </div>
-
           <div className="flex items-center justify-center">
             <div className="relative">
               {/* Animation circles pour l'enregistrement */}
@@ -518,60 +362,41 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 </>
               )}
               <Button
-                onClick={isNaturalMode && isConnected ? stopNaturalConversation : toggleRecording}
-                disabled={isProcessing && !isNaturalMode}
+                onClick={toggleRecording}
+                disabled={isProcessing}
                 className={`w-16 h-16 rounded-full transition-all duration-300 relative z-10 ${
-                  isNaturalMode && isConnected
-                    ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25'
-                    : isRecording 
+                  isRecording 
                     ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25' 
                     : isProcessing
                     ? 'bg-muted cursor-not-allowed'
-                    : isNaturalMode && !isConnected
-                    ? 'bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-lg shadow-green-500/25 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105'
                     : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
                 }`}
               >
-                {isNaturalMode && isConnected ? (
-                  <PhoneOff className="w-8 h-8 text-white" />
-                ) : isRecording ? (
+                {isRecording ? (
                   <MicOff className="w-8 h-8 text-white" />
                 ) : isProcessing ? (
                   <div className="relative">
                     <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary-foreground border-t-transparent" />
                   </div>
                 ) : (
-                  isNaturalMode ? (
-                    <Phone className="w-8 h-8 text-white transition-transform duration-200" />
-                  ) : (
-                    <Mic className="w-8 h-8 text-white transition-transform duration-200" />
-                  )
+                  <Mic className="w-8 h-8 text-white transition-transform duration-200" />
                 )}
               </Button>
             </div>
           </div>
           
           <div className="text-center mt-4 space-y-1">
-            {isNaturalMode ? (
+            {isRecording ? (
+              <p className="text-red-600 font-medium">{t('voiceChat.recording')}</p>
+            ) : isProcessing ? (
+              <p className="text-primary font-medium">{t('voiceChat.processing')}</p>
+            ) : (
               <div className="space-y-1">
-                <p className="text-primary font-medium">Mode Conversation Naturelle</p>
+                <p className="text-foreground font-medium">Cliquez pour parler</p>
                 <p className="text-sm text-muted-foreground">
-                  Cliquez pour démarrer une conversation fluide
+                  Demandez des recommandations de restaurants ou posez vos questions culinaires
                 </p>
               </div>
-            ) : (
-              isRecording ? (
-                <p className="text-red-600 font-medium">{t('voiceChat.recording')}</p>
-              ) : isProcessing ? (
-                <p className="text-primary font-medium">{t('voiceChat.processing')}</p>
-              ) : (
-                <div className="space-y-1">
-                  <p className="text-foreground font-medium">Cliquez pour parler</p>
-                  <p className="text-sm text-muted-foreground">
-                    Demandez des recommandations de restaurants ou posez vos questions culinaires
-                  </p>
-                </div>
-              )
             )}
           </div>
         </div>
