@@ -66,11 +66,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
 
     setIsConnecting(true);
     try {
-      voiceClientRef.current = new RealtimeVoiceClient(
-        handleMessage, 
-        setIsConnected, 
-        setIsSpeaking
-      );
+      voiceClientRef.current = new RealtimeVoiceClient(handleMessage, setIsSpeaking);
       await voiceClientRef.current.init(userId);
       
       setIsConnected(true);
