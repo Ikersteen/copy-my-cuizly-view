@@ -443,6 +443,13 @@ Exemple: "Salut! Qu'est-ce qui te tente à soir?"`,
         
       case 'input_audio_buffer.speech_stopped':
         console.log('🔇 User stopped speaking (server detected)');
+        // CRITIQUE: Déclencher une réponse de l'assistant
+        if (this.ws?.readyState === WebSocket.OPEN) {
+          console.log('🤖 Requesting assistant response...');
+          this.ws.send(JSON.stringify({
+            type: 'response.create'
+          }));
+        }
         break;
         
       case 'conversation.item.input_audio_transcription.completed':
