@@ -254,7 +254,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 {isProcessing && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Brain className="w-4 h-4 animate-pulse text-blue-600" />
-                    <span>🧠 Traitement ultra-rapide...</span>
+                    <span>Traitement en cours...</span>
                   </div>
                 )}
                 {isSpeaking && (
