@@ -27,21 +27,32 @@ serve(async (req) => {
     // Build conversation context with memory
     const systemPrompt = `Tu es l'assistant vocal Cuizly, un expert en recommandations culinaires à Montréal. 
 
-Tes capacités :
-- Recommander des restaurants basés sur les préférences utilisateur
-- Suggérer des plats et cuisines
+Tes capacités principales :
+- Recommander des restaurants avec ADRESSES COMPLÈTES et informations détaillées
+- Suggérer des plats et cuisines spécifiques 
+- Aider à faire les courses : listes d'ingrédients, où les acheter, meilleurs prix
+- Donner des adresses précises de restaurants, marchés, épiceries
+- Fournir des informations sur les heures d'ouverture et moyens de contact
 - Aider avec les réservations et commandes
-- Donner des conseils culinaires personnalisés
+- Donner des conseils culinaires personnalisés et recettes
+- Recommander des marchés locaux et épiceries spécialisées
 - Mémoriser les préférences utilisateur pour de meilleures recommandations
+
+Instructions importantes :
+- TOUJOURS inclure les adresses complètes quand tu recommandes un endroit
+- Pour les courses, suggère des endroits spécifiques où acheter chaque ingrédient
+- Donne des informations pratiques : horaires, téléphone, prix approximatifs
+- Sois précis sur les quartiers et transports pour s'y rendre
+- Propose des alternatives selon le budget et les préférences
 
 Ton style :
 - Répond de manière naturelle et conversationnelle
-- Sois concis mais informatif (max 2-3 phrases par réponse)
+- Sois informatif et précis avec les détails pratiques
 - Utilise un ton amical et expert
 - Pose des questions de clarification si nécessaire
-- Mémorise les préférences mentionnées pour les futures interactions
+- Structure tes réponses : nom, adresse, description, prix/horaires
 
-Contexte Cuizly : Tu as accès à une base de données de restaurants montréalais avec leurs menus, prix, avis et offres spéciales.`;
+Base de données Cuizly : Tu as accès aux restaurants montréalais, leurs menus, prix, avis, adresses, et aux épiceries/marchés locaux avec leurs spécialités.`;
 
     // Build message history for context
     const messages = [
@@ -63,7 +74,57 @@ Contexte Cuizly : Tu as accès à une base de données de restaurants montréala
       body: JSON.stringify({
         model: 'gpt-4.1-2025-04-14',
         messages,
-        max_completion_tokens: 500,
+        max_completion_tokens: 800,
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "get_restaurant_recommendations",
+              description: "Obtenir des recommandations de restaurants avec adresses complètes",
+              parameters: {
+                type: "object",
+                properties: {
+                  cuisine: { type: "string", description: "Type de cuisine recherché" },
+                  neighborhood: { type: "string", description: "Quartier de Montréal" },
+                  budget: { type: "string", enum: ["économique", "moyen", "élevé"] },
+                  dietary_restrictions: { type: "string", description: "Restrictions alimentaires" }
+                }
+              }
+            }
+          },
+          {
+            type: "function",
+            function: {
+              name: "get_grocery_shopping_help",
+              description: "Aider avec les courses : ingrédients et où les acheter",
+              parameters: {
+                type: "object",
+                properties: {
+                  recipe_type: { type: "string", description: "Type de plat ou recette" },
+                  ingredients: { type: "array", items: { type: "string" }, description: "Liste d'ingrédients nécessaires" },
+                  neighborhood: { type: "string", description: "Quartier pour faire les courses" },
+                  budget: { type: "string", enum: ["économique", "moyen", "élevé"] }
+                }
+              }
+            }
+          },
+          {
+            type: "function", 
+            function: {
+              name: "get_market_locations",
+              description: "Trouver des marchés, épiceries et magasins spécialisés avec adresses",
+              parameters: {
+                type: "object",
+                properties: {
+                  store_type: { type: "string", enum: ["marché", "épicerie", "boucherie", "poissonnerie", "boulangerie"] },
+                  specialty: { type: "string", description: "Spécialité recherchée" },
+                  neighborhood: { type: "string", description: "Quartier préféré" }
+                }
+              }
+            }
+          }
+        ],
+        tool_choice: "auto",
         user: userId || 'anonymous'
       }),
     });
@@ -75,13 +136,85 @@ Contexte Cuizly : Tu as accès à une base de données de restaurants montréala
     }
 
     const data = await response.json();
-    const aiResponse = data.choices[0].message.content;
+    let finalResponse = '';
+
+    // Handle tool calls if present
+    if (data.choices[0].message.tool_calls) {
+      console.log('Tool calls detected:', data.choices[0].message.tool_calls);
+      
+      const toolCalls = data.choices[0].message.tool_calls;
+      const toolResults = [];
+      
+      // Process each tool call
+      for (const toolCall of toolCalls) {
+        try {
+          const toolResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/voice-tools-handler`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              toolName: toolCall.function.name,
+              arguments: JSON.parse(toolCall.function.arguments),
+              userId
+            })
+          });
+          
+          const toolResult = await toolResponse.json();
+          toolResults.push({
+            tool_call_id: toolCall.id,
+            role: "tool",
+            content: JSON.stringify(toolResult)
+          });
+          
+          console.log(`Tool ${toolCall.function.name} result:`, toolResult);
+        } catch (error) {
+          console.error(`Error calling tool ${toolCall.function.name}:`, error);
+          toolResults.push({
+            tool_call_id: toolCall.id,
+            role: "tool", 
+            content: JSON.stringify({ error: "Tool execution failed" })
+          });
+        }
+      }
+      
+      // Send tool results back to OpenAI for final response
+      const finalMessages = [
+        ...messages,
+        data.choices[0].message,
+        ...toolResults
+      ];
+      
+      const finalResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4.1-2025-04-14',
+          messages: finalMessages,
+          max_completion_tokens: 800,
+          user: userId || 'anonymous'
+        }),
+      });
+      
+      if (finalResponse.ok) {
+        const finalData = await finalResponse.json();
+        finalResponse = finalData.choices[0].message.content;
+      } else {
+        finalResponse = "Désolé, j'ai eu un problème pour traiter votre demande avec les outils.";
+      }
+    } else {
+      finalResponse = data.choices[0].message.content;
+    }
 
     console.log('ChatGPT processed message:', message);
-    console.log('ChatGPT response:', aiResponse);
+    console.log('Final response:', finalResponse);
 
     return new Response(
-      JSON.stringify({ response: aiResponse }),
+      JSON.stringify({ response: finalResponse }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       },
