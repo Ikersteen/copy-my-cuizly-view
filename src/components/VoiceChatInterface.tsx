@@ -553,26 +553,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           
           <div className="text-center mt-4 space-y-1">
             {isNaturalMode ? (
-              isConnected ? (
-                <div className="space-y-1">
-                  <p className="text-green-600 font-medium">🎙️ Conversation Active - Mode Québécois</p>
-                  <p className="text-sm text-muted-foreground">
-                    Parle naturellement, je comprends français et anglais! 🇫🇷🇬🇧
-                  </p>
-                  {currentTranscript && (
-                    <p className="text-xs text-blue-600 italic">
-                      "{currentTranscript}"
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <div className="space-y-1">
-                  <p className="text-primary font-medium">Mode Conversation Naturelle</p>
-                  <p className="text-sm text-muted-foreground">
-                    Cliquez pour démarrer une conversation fluide
-                  </p>
-                </div>
-              )
+              <div className="space-y-1">
+                <p className="text-primary font-medium">Mode Conversation Naturelle</p>
+                <p className="text-sm text-muted-foreground">
+                  Cliquez pour démarrer une conversation fluide
+                </p>
+              </div>
             ) : (
               isRecording ? (
                 <p className="text-red-600 font-medium">{t('voiceChat.recording')}</p>
