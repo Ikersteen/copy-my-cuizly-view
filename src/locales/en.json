@@ -336,6 +336,67 @@
     "declineAll": "Decline all",
     "saveChoices": "Save my choices"
   },
+  "voiceAssistant": {
+    "title": "Voice Assistant",
+    "subtitle": "Discover our intelligent voice assistant that helps you find the perfect restaurant simply by speaking.",
+    "demo": {
+      "title": "How does it work?",
+      "subtitle": "Speak naturally to Cuizly and get personalized recommendations"
+    },
+    "features": {
+      "naturalConversation": {
+        "title": "Natural conversation",
+        "description": "\"I'm looking for a Congolese restaurant near me\" - Cuizly understands and responds instantly by text."
+      },
+      "preciseRecommendations": {
+        "title": "Precise recommendations",
+        "description": "A recommendation system powered by AI for personalized culinary suggestions."
+      },
+      "voiceResponses": {
+        "title": "Voice responses",
+        "comingSoon": "(Coming Soon)",
+        "description": "Chat naturally with Cuizly like in a real conversation."
+      }
+    },
+    "cta": "Try the Voice Assistant",
+    "examples": {
+      "title": "Examples of questions you can ask:",
+      "italian": {
+        "title": "Italian restaurant",
+        "question": "I'm looking for a good Italian restaurant in Montreal."
+      },
+      "african": {
+        "title": "African cuisine",
+        "question": "Can you recommend a restaurant where I can eat good Alocos and chicken Mayo?"
+      },
+      "budget": {
+        "title": "Specific budget",
+        "question": "Cuizly, recommend me a cheap restaurant for tonight in Montreal."
+      }
+    }
+  },
+  "voiceChat": {
+    "title": "Voice Assistant",
+    "mainTitle": "Cuizly Voice Assistant",
+    "description": "Speak naturally to find restaurants, check your preferences or discover new flavors.",
+    "clickToSpeak": "Click to speak",
+    "askRecommendations": "Ask for restaurant recommendations or ask your culinary questions",
+    "recording": "🎤 Recording...",
+    "processing": "🧠 Processing...",
+    "voiceMessage": "Voice message",
+    "assistantSpeaking": "Voice assistant speaking...",
+    "stopSpeech": "Stop",
+    "errors": {
+      "voiceProcessing": {
+        "title": "Error",
+        "description": "Problem during voice processing"
+      },
+      "audioPlayback": {
+        "title": "Audio error",
+        "description": "Unable to play voice response"
+      }
+    }
+  },
   "cta": {
     "title": "Ready to revolutionize your culinary experience?",
     "description": "Join the Cuizly community now and be among the first to discover the best offers in Montreal.",

@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import cuizlyLogo from '@/assets/cuizly-logo.png';
+import { useTranslation } from 'react-i18next';
 
 interface Message {
   id: string;
@@ -22,6 +23,7 @@ interface VoiceChatInterfaceProps {
 
 const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -170,8 +172,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     } catch (error) {
       console.error('Erreur traitement vocal:', error);
       toast({
-        title: "Erreur",
-        description: "Problème lors du traitement vocal",
+        title: t('voiceChat.errors.voiceProcessing.title'),
+        description: t('voiceChat.errors.voiceProcessing.description'),
         variant: "destructive",
       });
       
@@ -204,8 +206,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     audio.onerror = () => {
       setIsSpeaking(false);
       toast({
-        title: "Erreur audio",
-        description: "Impossible de lire la réponse vocale",
+        title: t('voiceChat.errors.audioPlayback.title'),
+        description: t('voiceChat.errors.audioPlayback.description'),
         variant: "destructive",
       });
     };
@@ -237,7 +239,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       <div className="fixed top-0 left-0 z-[60] pointer-events-none">
         <div className="flex items-center h-20 px-6 sm:px-8">
             <div className="flex items-center gap-3 ml-[calc(120px+16px)]">
-              <span className="text-lg font-medium text-blue-600 dark:text-blue-400">Assistant Vocal</span>
+              <span className="text-lg font-medium text-blue-600 dark:text-blue-400">{t('voiceChat.title')}</span>
             </div>
         </div>
       </div>
@@ -272,11 +274,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-2xl font-semibold text-foreground">
-                  Assistant Vocal Cuizly
+                  {t('voiceChat.mainTitle')}
                 </h1>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  Parlez naturellement pour trouver des restaurants, consulter vos préférences 
-                  ou découvrir de nouvelles saveurs.
+                  {t('voiceChat.description')}
                 </p>
               </div>
             </div>
@@ -314,7 +315,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   {message.isAudio && (
                     <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
                       <Volume2 className="w-3 h-3" />
-                      <span>Message vocal</span>
+                      <span>{t('voiceChat.voiceMessage')}</span>
                     </div>
                   )}
                   {message.isProcessing && (
@@ -333,7 +334,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             <div className="flex justify-start">
               <div className="flex items-center gap-3 bg-green-50 text-green-700 rounded-3xl px-6 py-4">
                 <Volume2 className="w-5 h-5 animate-pulse" />
-                <span className="text-sm font-medium">Assistant vocal en cours...</span>
+                <span className="text-sm font-medium">{t('voiceChat.assistantSpeaking')}</span>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -386,14 +387,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           
           <div className="text-center mt-4 space-y-1">
             {isRecording ? (
-              <p className="text-red-600 font-medium">🎙️ Écoute en cours... Cliquez pour arrêter</p>
+              <p className="text-red-600 font-medium">{t('voiceChat.recording')}</p>
             ) : isProcessing ? (
-              <p className="text-primary font-medium">🧠 Traitement en cours...</p>
+              <p className="text-primary font-medium">{t('voiceChat.processing')}</p>
             ) : (
               <div className="space-y-1">
-                <p className="text-foreground font-medium">Cliquez pour parler</p>
+                <p className="text-foreground font-medium">{t('voiceChat.clickToSpeak')}</p>
                 <p className="text-sm text-muted-foreground">
-                  Demandez des recommandations de restaurants ou posez vos questions culinaires
+                  {t('voiceChat.askRecommendations')}
                 </p>
               </div>
             )}

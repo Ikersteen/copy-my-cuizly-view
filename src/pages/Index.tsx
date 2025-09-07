@@ -7,8 +7,11 @@ import ContactSectionLanding from "@/components/ContactSectionLanding";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import cuizlyLogo from "/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png";
+import { useTranslation } from "react-i18next";
 
 const Index = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <HeroSection />
@@ -25,12 +28,11 @@ const Index = () => {
                 className="h-12 w-auto dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)] transition-all duration-300" 
               />
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              <span className="text-blue-600 dark:text-blue-400">Assistant Vocal</span>
+              <span className="text-blue-600 dark:text-blue-400">{t('voiceAssistant.title')}</span>
             </h2>
             </div>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Découvrez notre <span className="text-blue-600 dark:text-blue-400 font-semibold">assistant vocal intelligent</span> qui vous aide à trouver le restaurant parfait 
-              simplement en parlant.
+              {t('voiceAssistant.subtitle')}
             </p>
           </div>
           
@@ -46,9 +48,9 @@ const Index = () => {
                   />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold mb-2">Comment ça marche ?</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t('voiceAssistant.demo.title')}</h3>
                   <p className="text-muted-foreground text-sm">
-                    Parlez naturellement à Cuizly et obtenez des recommandations personnalisées
+                    {t('voiceAssistant.demo.subtitle')}
                   </p>
                 </div>
               </div>
@@ -61,9 +63,9 @@ const Index = () => {
                   <span className="text-xl">🗣️</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Conversation naturelle</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t('voiceAssistant.features.naturalConversation.title')}</h3>
                   <p className="text-muted-foreground">
-                    "Je cherche un restaurant congolais près de chez moi" - Cuizly comprend et répond instantanément par texte.
+                    {t('voiceAssistant.features.naturalConversation.description')}
                   </p>
                 </div>
               </div>
@@ -73,9 +75,9 @@ const Index = () => {
                   <span className="text-xl">🎯</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Recommandations précises</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t('voiceAssistant.features.preciseRecommendations.title')}</h3>
                   <p className="text-muted-foreground">
-                    Un système de recommandation propulsé par l'IA alimentée pour des suggestions culinaires personnalisées.
+                    {t('voiceAssistant.features.preciseRecommendations.description')}
                   </p>
                 </div>
               </div>
@@ -85,9 +87,11 @@ const Index = () => {
                   <span className="text-xl">🔊</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Réponses vocales <span className="text-red-500">(Bientôt)</span></h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    {t('voiceAssistant.features.voiceResponses.title')} <span className="text-red-500">{t('voiceAssistant.features.voiceResponses.comingSoon')}</span>
+                  </h3>
                   <p className="text-muted-foreground">
-                    Discuter naturellement avec cuizly comme dans une vraie conversation.
+                    {t('voiceAssistant.features.voiceResponses.description')}
                   </p>
                 </div>
               </div>
@@ -98,7 +102,7 @@ const Index = () => {
                   className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-full transition-colors font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
                 >
                   <span className="mr-3">🎙️</span>
-                  Essayer l'Assistant Vocal
+                  {t('voiceAssistant.cta')}
                   <span className="ml-3">→</span>
                 </a>
               </div>
@@ -107,22 +111,22 @@ const Index = () => {
           
           {/* Exemples de Questions */}
           <div className="mt-16 bg-card rounded-2xl p-8 border shadow-lg">
-            <h3 className="text-xl font-semibold text-center mb-6">Exemples de questions que vous pouvez poser :</h3>
+            <h3 className="text-xl font-semibold text-center mb-6">{t('voiceAssistant.examples.title')}</h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-secondary/5 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-2">🍝</div>
-                <p className="font-medium mb-1">"Restaurant italien"</p>
-                <p className="text-sm text-muted-foreground">Je cherche un bon restaurant italien à Montréal.</p>
+                <p className="font-medium mb-1">{t('voiceAssistant.examples.italian.title')}</p>
+                <p className="text-sm text-muted-foreground">{t('voiceAssistant.examples.italian.question')}</p>
               </div>
               <div className="bg-primary/5 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-2">🌍</div>
-                <p className="font-medium mb-1">"Cuisine Africaine"</p>
-                <p className="text-sm text-muted-foreground">Tu peux me recommander un restau où je peux manger des bons Alocos et du poulet Mayo ?</p>
+                <p className="font-medium mb-1">{t('voiceAssistant.examples.african.title')}</p>
+                <p className="text-sm text-muted-foreground">{t('voiceAssistant.examples.african.question')}</p>
               </div>
               <div className="bg-accent/5 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-2">💰</div>
-                <p className="font-medium mb-1">"Budget spécifique"</p>
-                <p className="text-sm text-muted-foreground">Cuizly, recommande moi un restaurant pas cher pour ce soir à Montréal.</p>
+                <p className="font-medium mb-1">{t('voiceAssistant.examples.budget.title')}</p>
+                <p className="text-sm text-muted-foreground">{t('voiceAssistant.examples.budget.question')}</p>
               </div>
             </div>
           </div>
