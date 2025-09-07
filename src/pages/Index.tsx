@@ -24,12 +24,12 @@ const Index = () => {
                 alt="Cuizly" 
                 className="h-12 w-auto dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)] transition-all duration-300" 
               />
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-                Assistant Vocal
-              </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <span className="text-blue-600 dark:text-blue-400">Assistant Vocal</span>
+            </h2>
             </div>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Découvrez notre <span className="text-sky-400 font-semibold">assistant vocal intelligent</span> qui vous aide à trouver le restaurant parfait 
+              Découvrez notre <span className="text-blue-600 dark:text-blue-400 font-semibold">assistant vocal intelligent</span> qui vous aide à trouver le restaurant parfait 
               simplement en parlant.
             </p>
           </div>
@@ -95,7 +95,7 @@ const Index = () => {
               <div className="pt-6 text-center">
                 <a 
                   href="/voice" 
-                  className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
+                  className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-full transition-colors font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
                 >
                   <span className="mr-3">🎙️</span>
                   Essayer l'Assistant Vocal
