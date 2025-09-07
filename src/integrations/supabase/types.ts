@@ -77,6 +77,30 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_rate_limits: {
+        Row: {
+          access_count: number | null
+          access_window: string
+          admin_user_id: string
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          access_count?: number | null
+          access_window: string
+          admin_user_id: string
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          access_count?: number | null
+          access_window?: string
+          admin_user_id?: string
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           comment_text: string | null
@@ -626,6 +650,39 @@ export type Database = {
         }
         Relationships: []
       }
+      waitlist_access_log: {
+        Row: {
+          access_details: Json | null
+          access_type: string
+          admin_user_id: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          records_accessed: number | null
+          user_agent: string | null
+        }
+        Insert: {
+          access_details?: Json | null
+          access_type: string
+          admin_user_id: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          records_accessed?: number | null
+          user_agent?: string | null
+        }
+        Update: {
+          access_details?: Json | null
+          access_type?: string
+          admin_user_id?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          records_accessed?: number | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       waitlist_analytics: {
         Row: {
           address: string | null
@@ -673,6 +730,10 @@ export type Database = {
       allow_public_restaurant_data: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      detect_suspicious_admin_activity: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       get_offers_with_restaurant_names: {
         Args: { category_filter?: string }
@@ -759,6 +820,26 @@ export type Database = {
           street_number: string
         }[]
       }
+      get_waitlist_entries_secure: {
+        Args: {
+          page_offset?: number
+          page_size?: number
+          search_filter?: string
+        }
+        Returns: {
+          address: string
+          company_name: string
+          created_at: string
+          email: string
+          id: string
+          masked_email: string
+          masked_phone: string
+          message: string
+          name: string
+          phone: string
+          restaurant_type: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -838,6 +919,10 @@ export type Database = {
       }
       verify_admin_access: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      verify_secure_admin_access: {
+        Args: { max_hourly_accesses?: number }
         Returns: boolean
       }
     }
