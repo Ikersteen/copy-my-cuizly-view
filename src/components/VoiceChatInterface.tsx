@@ -270,7 +270,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <Mic className="w-8 h-8 text-primary" />
+                <span className="text-2xl">👨‍🍳</span>
               </div>
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-2xl font-semibold text-foreground">
