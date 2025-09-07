@@ -35,7 +35,7 @@ export class AudioRecorder {
       this.source.connect(this.processor);
       this.processor.connect(this.audioContext.destination);
     } catch (error) {
-      console.error('❌ Error accessing microphone:', error);
+      console.error('Error accessing microphone:', error);
       throw error;
     }
   }
@@ -60,7 +60,7 @@ export class AudioRecorder {
   }
 }
 
-class AudioQueue {
+export class AudioQueue {
   private queue: Uint8Array[] = [];
   private isPlaying = false;
   private audioContext: AudioContext;
@@ -96,7 +96,7 @@ class AudioQueue {
       source.onended = () => this.playNext();
       source.start(0);
     } catch (error) {
-      console.error('❌ Error playing audio:', error);
+      console.error('Error playing audio:', error);
       this.playNext(); // Continue with next segment even if current fails
     }
   }
@@ -150,118 +150,110 @@ class AudioQueue {
 }
 
 export class RealtimeVoiceClient {
-  private pc: RTCPeerConnection | null = null;
-  private dc: RTCDataChannel | null = null;
-  private audioEl: HTMLAudioElement;
+  private ws: WebSocket | null = null;
   private recorder: AudioRecorder | null = null;
-  private audioQueue: AudioQueue | null = null;
   private audioContext: AudioContext | null = null;
+  private audioQueue: AudioQueue | null = null;
+  private onMessage: (message: any) => void;
+  private onSpeakingChange: (speaking: boolean) => void;
 
   constructor(
-    private onMessage: (message: any) => void,
-    private onSpeakingChange: (speaking: boolean) => void
+    onMessage: (message: any) => void,
+    onSpeakingChange: (speaking: boolean) => void
   ) {
-    this.audioEl = document.createElement("audio");
-    this.audioEl.autoplay = true;
+    this.onMessage = onMessage;
+    this.onSpeakingChange = onSpeakingChange;
   }
 
   async init(userId: string) {
     try {
-      console.log('🎙️ Initializing voice client...');
+      console.log('🎙️ Initializing realtime voice client...');
       
-      // Get ephemeral token from our Edge Function
-      const { data: tokenData, error: tokenError } = await supabase.functions.invoke("voice-token-generator");
+      // Get ephemeral token from our edge function
+      const tokenResponse = await supabase.functions.invoke('realtime-voice-token');
       
-      if (tokenError || !tokenData?.client_secret?.value) {
-        throw new Error("Failed to get ephemeral token");
+      if (tokenResponse.error || !tokenResponse.data?.client_secret?.value) {
+        throw new Error('Failed to get ephemeral token');
       }
 
-      const EPHEMERAL_KEY = tokenData.client_secret.value;
-      console.log('✅ Got ephemeral token');
+      const ephemeralKey = tokenResponse.data.client_secret.value;
 
-      // Initialize audio context and queue
+      // Create WebSocket connection to OpenAI Realtime API
+      this.ws = new WebSocket("wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17", [
+        "realtime",
+        `openai-insecure-api-key.${ephemeralKey}`,
+        "openai-beta.realtime-v1"
+      ]);
+
+      this.ws.onopen = () => {
+        console.log('✅ WebSocket connected to OpenAI Realtime API');
+        this.sendSessionUpdate(userId);
+      };
+
+      this.ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        this.handleRealtimeEvent(data, userId);
+      };
+
+      this.ws.onerror = (error) => {
+        console.error('❌ WebSocket error:', error);
+      };
+
+      this.ws.onclose = () => {
+        console.log('🔌 WebSocket connection closed');
+        this.cleanup();
+      };
+
+      // Initialize audio context and recorder
       this.audioContext = new AudioContext({ sampleRate: 24000 });
       this.audioQueue = new AudioQueue(this.audioContext);
-
-      // Create peer connection
-      this.pc = new RTCPeerConnection();
-
-      // Set up remote audio
-      this.pc.ontrack = (e) => {
-        console.log('🎵 Remote audio track received');
-        this.audioEl.srcObject = e.streams[0];
-      };
-
-      // Add local audio track
-      const ms = await navigator.mediaDevices.getUserMedia({ 
-        audio: {
-          sampleRate: 24000,
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true
-        }
-      });
-      this.pc.addTrack(ms.getTracks()[0]);
-
-      // Set up data channel
-      this.dc = this.pc.createDataChannel("oai-events");
-      this.dc.addEventListener("message", (e) => {
-        const event = JSON.parse(e.data);
-        this.handleRealtimeEvent(event, userId);
-      });
-
-      // Create and set local description
-      const offer = await this.pc.createOffer();
-      await this.pc.setLocalDescription(offer);
-
-      // Connect to OpenAI's Realtime API
-      const baseUrl = "https://api.openai.com/v1/realtime";
-      const model = "gpt-4o-realtime-preview-2024-12-17";
-      const sdpResponse = await fetch(`${baseUrl}?model=${model}`, {
-        method: "POST",
-        body: offer.sdp,
-        headers: {
-          Authorization: `Bearer ${EPHEMERAL_KEY}`,
-          "Content-Type": "application/sdp"
-        },
-      });
-
-      const answer = {
-        type: "answer" as RTCSdpType,
-        sdp: await sdpResponse.text(),
-      };
       
-      await this.pc.setRemoteDescription(answer);
-      console.log('✅ WebRTC connection established');
-
-      // Wait for data channel to be open
-      await new Promise((resolve) => {
-        if (this.dc?.readyState === 'open') {
-          resolve(true);
-        } else {
-          this.dc!.addEventListener('open', () => resolve(true));
+      // Start recording
+      this.recorder = new AudioRecorder((audioData) => {
+        if (this.ws?.readyState === WebSocket.OPEN) {
+          const encodedAudio = this.encodeAudioForAPI(audioData);
+          this.ws.send(JSON.stringify({
+            type: 'input_audio_buffer.append',
+            audio: encodedAudio
+          }));
         }
       });
-
-      // Send session update with tools
-      this.sendSessionUpdate(userId);
-
-      console.log('🎙️ Voice client ready!');
+      
+      await this.recorder.start();
+      console.log('🎤 Audio recording started');
 
     } catch (error) {
-      console.error("❌ Error initializing voice client:", error);
+      console.error('❌ Error initializing realtime voice client:', error);
       throw error;
     }
   }
 
   private sendSessionUpdate(userId: string) {
-    if (!this.dc || this.dc.readyState !== 'open') return;
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
 
-    const sessionUpdate = {
+    const sessionConfig = {
       type: "session.update",
       session: {
         modalities: ["text", "audio"],
-        instructions: `Tu es l'assistant vocal de Cuizly pour l'utilisateur ${userId}. Parle en français québécois naturel et chaleureux.`,
+        instructions: `Tu es l'assistant vocal Cuizly, l'expert en recommandations culinaires de Montréal. 
+
+PERSONNALITÉ:
+- Parle en français québécois naturel et chaleureux
+- Sois enthousiaste pour la bouffe et découvertes culinaires
+- Utilise un ton amical et décontracté
+- Sois bref mais informatif (max 2-3 phrases par réponse)
+
+FONCTIONNALITÉS:
+- Tu peux chercher des recommandations de restaurants avec get_recommendations
+- Tu peux expliquer les fonctionnalités de l'app
+- Tu peux aider avec les préférences alimentaires
+
+RÉPONSES:
+- Garde tes réponses courtes pour la conversation vocale
+- Pose des questions pour mieux comprendre
+- Suggère toujours d'utiliser les fonctions si pertinent
+
+Exemple: "Salut! Je suis ton assistant Cuizly. Qu'est-ce qui te ferait plaisir de manger aujourd'hui?"`,
         voice: "alloy",
         input_audio_format: "pcm16",
         output_audio_format: "pcm16",
@@ -278,125 +270,122 @@ export class RealtimeVoiceClient {
           {
             type: "function",
             name: "get_recommendations",
-            description: "Cherche des recommandations de restaurants selon les critères de l'utilisateur",
+            description: "Obtenir des recommandations de restaurants basées sur les préférences utilisateur",
             parameters: {
               type: "object",
               properties: {
-                cuisine_types: { 
-                  type: "array", 
-                  items: { type: "string" },
-                  description: "Types de cuisine recherchés"
-                },
-                budget_range: { 
-                  type: "string", 
-                  description: "Budget: low, moderate, high"
-                },
-                location: { 
-                  type: "string", 
-                  description: "Localisation à Montréal"
-                }
-              }
-            }
-          },
-          {
-            type: "function",
-            name: "get_user_preferences",
-            description: "Récupère les préférences alimentaires de l'utilisateur",
-            parameters: {
-              type: "object",
-              properties: {}
+                cuisine: { type: "string", description: "Type de cuisine demandée" },
+                location: { type: "string", description: "Quartier ou zone à Montréal" },
+                budget: { type: "string", description: "Budget approximatif (bas, moyen, élevé)" }
+              },
+              required: []
             }
           }
         ],
         tool_choice: "auto",
-        temperature: 0.8
+        temperature: 0.8,
+        max_response_output_tokens: "inf"
       }
     };
 
-    console.log('📤 Sending session update with tools');
-    this.dc.send(JSON.stringify(sessionUpdate));
+    console.log('📤 Sending session update');
+    this.ws.send(JSON.stringify(sessionConfig));
   }
 
   private async handleRealtimeEvent(event: any, userId: string) {
-    console.log('📨 Realtime event:', event.type);
+    console.log('📥 Received event:', event.type);
     
     switch (event.type) {
+      case 'session.created':
+        console.log('✅ Session created');
+        break;
+        
+      case 'session.updated':
+        console.log('✅ Session updated');
+        break;
+        
+      case 'input_audio_buffer.speech_started':
+        console.log('🎤 User started speaking');
+        this.onMessage({ type: 'user_speaking_started' });
+        break;
+        
+      case 'input_audio_buffer.speech_stopped':
+        console.log('🔇 User stopped speaking');
+        this.onMessage({ type: 'user_speaking_stopped' });
+        break;
+        
+      case 'conversation.item.input_audio_transcription.completed':
+        console.log('📝 Transcription:', event.transcript);
+        this.onMessage({ 
+          type: 'transcript', 
+          text: event.transcript, 
+          role: 'user' 
+        });
+        break;
+        
       case 'response.audio.delta':
-        if (event.delta) {
-          this.onSpeakingChange(true);
+        if (this.audioQueue && event.delta) {
           const binaryString = atob(event.delta);
           const bytes = new Uint8Array(binaryString.length);
           for (let i = 0; i < binaryString.length; i++) {
             bytes[i] = binaryString.charCodeAt(i);
           }
-          if (this.audioQueue) {
-            await this.audioQueue.addToQueue(bytes);
-          }
+          await this.audioQueue.addToQueue(bytes);
+          this.onSpeakingChange(true);
         }
         break;
-
+        
       case 'response.audio.done':
         this.onSpeakingChange(false);
         break;
-
+        
+      case 'response.audio_transcript.delta':
+        this.onMessage({ 
+          type: 'transcript', 
+          text: event.delta, 
+          role: 'assistant' 
+        });
+        break;
+        
       case 'response.function_call_arguments.done':
         await this.handleToolCall(event, userId);
         break;
-
-      case 'response.audio_transcript.delta':
-        this.onMessage({
-          type: 'transcript',
-          text: event.delta,
-          role: 'assistant'
-        });
-        break;
-
+        
       default:
-        this.onMessage(event);
+        console.log('🔍 Unhandled event:', event.type);
     }
   }
 
   private async handleToolCall(event: any, userId: string) {
+    console.log('🔧 Tool call:', event.name, event.arguments);
+    
     try {
-      const { name, arguments: argsStr } = event;
-      const args = JSON.parse(argsStr);
-      
-      console.log('🔧 Tool call:', name, args);
-
-      // Call our voice tools handler
-      const { data: result, error } = await supabase.functions.invoke('voice-tools-handler', {
+      // Call our Supabase function to handle the tool call
+      const response = await supabase.functions.invoke('voice-tools-handler', {
         body: {
-          tool_name: name,
-          arguments: args,
-          user_id: userId
+          toolName: event.name,
+          arguments: JSON.parse(event.arguments),
+          userId
         }
       });
 
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      // Send tool response back to OpenAI
-      if (this.dc && this.dc.readyState === 'open') {
-        this.dc.send(JSON.stringify({
-          type: 'conversation.item.create',
+      // Send the result back to OpenAI
+      if (this.ws?.readyState === WebSocket.OPEN) {
+        this.ws.send(JSON.stringify({
+          type: "conversation.item.create",
           item: {
-            type: 'function_call_output',
+            type: "function_call_output",
             call_id: event.call_id,
-            output: JSON.stringify(result)
+            output: JSON.stringify(response.data || { result: "Tool executed" })
           }
         }));
-
-        // Trigger response generation
-        this.dc.send(JSON.stringify({ type: 'response.create' }));
       }
-
     } catch (error) {
       console.error('❌ Tool call error:', error);
     }
   }
 
-  private encodeAudioData(float32Array: Float32Array): string {
+  private encodeAudioForAPI(float32Array: Float32Array): string {
     const int16Array = new Int16Array(float32Array.length);
     for (let i = 0; i < float32Array.length; i++) {
       const s = Math.max(-1, Math.min(1, float32Array[i]));
@@ -416,11 +405,23 @@ export class RealtimeVoiceClient {
   }
 
   disconnect() {
-    console.log('🔌 Disconnecting voice client');
-    this.recorder?.stop();
-    this.dc?.close();
-    this.pc?.close();
-    this.audioContext?.close();
-    this.onSpeakingChange(false);
+    console.log('🔌 Disconnecting realtime voice client');
+    this.cleanup();
+  }
+
+  private cleanup() {
+    if (this.recorder) {
+      this.recorder.stop();
+      this.recorder = null;
+    }
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null;
+    }
+    if (this.audioContext) {
+      this.audioContext.close();
+      this.audioContext = null;
+    }
+    this.audioQueue = null;
   }
 }
