@@ -240,151 +240,221 @@ const Header = () => {
             </>
           )}
 
-          {/* Menu - Always visible */}
+          {/* Menu - Always visible - unified for all users */}
           <div className="flex items-center">
-            {isAuthenticated ? (
-              // Authenticated mobile menu - role specific
-              <>
-                {isConsumer && (
-                  <ConsumerMobileMenu 
-                    onProfileClick={() => setShowProfile(true)}
-                    onPreferencesClick={() => setShowPreferences(true)}
-                  />
-                )}
-                {isRestaurant && (
-                  <RestaurantMobileMenu 
-                    onNewOfferClick={() => setShowNewOffer(true)}
-                    onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
-                    onMenusClick={handleMenusClick}
-                  />
-                )}
-              </>
-            ) : (
-              // Public mobile menu
-              <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Menu className="h-5 w-5" />
-                    <span className="sr-only">Menu</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                  <div className="flex flex-col space-y-4 mt-8">
-                    <button 
-                      onClick={() => {
-                        document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
-                        setIsSheetOpen(false);
-                      }}
-                      className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
-                    >
-                      {t('navigation.pricing')}
-                    </button>
-                    <button 
-                      onClick={() => {
-                        document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-                        setIsSheetOpen(false);
-                      }}
-                      className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
-                    >
-                      {t('navigation.features')}
-                    </button>
-                    <button 
-                      onClick={() => {
-                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                        setIsSheetOpen(false);
-                      }}
-                      className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
-                    >
-                      {t('navigation.contact')}
-                    </button>
-                    
-                    {/* Mobile Theme Selector */}
-                    <div className="py-2 border-b border-border">
-                      <div className="flex items-center gap-2 mb-2">
-                        {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                        <span className="text-sm font-medium">{t('navigation.theme')}</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant={theme === 'light' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            setTheme('light');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          ☀️
-                        </Button>
-                        <Button
-                          variant={theme === 'dark' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            setTheme('dark');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          🌙
-                        </Button>
-                        <Button
-                          variant={theme === 'system' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            setTheme('system');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          💻
-                        </Button>
-                      </div>
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="p-2">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <div className="flex flex-col space-y-4 mt-8">
+                  {!isAuthenticated ? (
+                    <>
+                      <button 
+                        onClick={() => {
+                          document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                          setIsSheetOpen(false);
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('navigation.pricing')}
+                      </button>
+                      <button 
+                        onClick={() => {
+                          document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                          setIsSheetOpen(false);
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('navigation.features')}
+                      </button>
+                      <button 
+                        onClick={() => {
+                          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                          setIsSheetOpen(false);
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('navigation.contact')}
+                      </button>
+                    </>
+                  ) : isRestaurant ? (
+                    <>
+                      <button 
+                        onClick={() => {
+                          setShowNewOffer(true);
+                          setIsSheetOpen(false);
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('dashboard.newOffer')}
+                      </button>
+                      <button 
+                        onClick={() => {
+                          setShowRestaurantProfile(true);
+                          setIsSheetOpen(false);
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('dashboard.restaurantProfile')}
+                      </button>
+                      <button 
+                        onClick={() => {
+                          handleMenusClick();
+                          setIsSheetOpen(false);
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('dashboard.manageMenus')}
+                      </button>
+                      <button 
+                        onClick={() => {
+                          handleNavigate('/dashboard');
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('navigation.dashboard')}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        onClick={() => {
+                          setShowProfile(true);
+                          setIsSheetOpen(false);
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('navigation.profile')}
+                      </button>
+                      <button 
+                        onClick={() => {
+                          setShowPreferences(true);
+                          setIsSheetOpen(false);
+                        }}
+                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
+                      >
+                        {t('navigation.preferences')}
+                      </button>
+                    </>
+                  )}
+                  
+                  {/* Mobile Theme Selector */}
+                  <div className="py-2 border-b border-border">
+                    <div className="flex items-center gap-2 mb-2">
+                      {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                      <span className="text-sm font-medium">{t('navigation.theme')}</span>
                     </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant={theme === 'light' ? 'default' : 'outline'}
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          setTheme('light');
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        ☀️
+                      </Button>
+                      <Button
+                        variant={theme === 'dark' ? 'default' : 'outline'}
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          setTheme('dark');
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        🌙
+                      </Button>
+                      <Button
+                        variant={theme === 'system' ? 'default' : 'outline'}
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          setTheme('system');
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        💻
+                      </Button>
+                    </div>
+                  </div>
 
-                    {/* Mobile Language Selector */}
-                    <div className="py-2 border-b border-border">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Globe className="h-4 w-4" />
-                        <span className="text-sm font-medium">{t('navigation.languageSelector')}</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant={currentLanguage === 'fr' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            changeLanguage('fr');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          🇫🇷 FR
-                        </Button>
-                        <Button
-                          variant={currentLanguage === 'en' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            changeLanguage('en');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          🇬🇧 EN
-                        </Button>
-                      </div>
+                  {/* Mobile Language Selector */}
+                  <div className="py-2 border-b border-border">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Globe className="h-4 w-4" />
+                      <span className="text-sm font-medium">{t('navigation.languageSelector')}</span>
                     </div>
-                    
-                    <div className="pt-4">
+                    <div className="flex gap-2">
+                      <Button
+                        variant={currentLanguage === 'fr' ? 'default' : 'outline'}
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          changeLanguage('fr');
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        🇫🇷 FR
+                      </Button>
+                      <Button
+                        variant={currentLanguage === 'en' ? 'default' : 'outline'}
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => {
+                          changeLanguage('en');
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        🇬🇧 EN
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Bottom Actions */}
+                  <div className="pt-4">
+                    {!isAuthenticated ? (
                       <Button 
                         className="w-full bg-foreground hover:bg-foreground/90 text-background text-lg"
                         onClick={() => handleNavigate("/auth")}
                       >
                         {t('navigation.login')}
                       </Button>
-                    </div>
+                    ) : (
+                      <Button 
+                        variant="destructive"
+                        className="w-full text-lg"
+                        onClick={async () => {
+                          try {
+                            await supabase.auth.signOut();
+                            handleNavigate("/");
+                            toast({
+                              title: t('dashboard.logoutSuccess'),
+                              description: t('dashboard.logoutSuccessDesc'),
+                            });
+                          } catch (error) {
+                            console.error('Logout error:', error);
+                            toast({
+                              title: t('dashboard.logoutError'),
+                              description: t('dashboard.logoutErrorDesc'),
+                              variant: "destructive",
+                            });
+                          }
+                        }}
+                      >
+                        {t('dashboard.logout')}
+                      </Button>
+                    )}
                   </div>
-                </SheetContent>
-              </Sheet>
-            )}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
@@ -412,6 +482,7 @@ const Header = () => {
               />
             </>
           )}
+          
           {isRestaurant && (
             <>
               <NewOfferModal 
