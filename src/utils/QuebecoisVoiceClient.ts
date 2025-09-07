@@ -351,7 +351,7 @@ INTERRUPTIONS:
 - Pas de monologue, conversation dynamique
 
 Exemple: "Salut! Qu'est-ce qui te tente à soir?"`,
-        voice: "alloy", // On utilisera ElevenLabs pour le québécois
+        voice: "alloy", // Utiliser directement OpenAI audio pour éviter ElevenLabs
         input_audio_format: "pcm16",
         output_audio_format: "pcm16",
         input_audio_transcription: {
