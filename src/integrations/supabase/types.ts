@@ -836,6 +836,20 @@ export type Database = {
           street_number: string
         }[]
       }
+      get_waitlist_data_ultra_secure: {
+        Args: { page_offset?: number; page_size?: number; search_term?: string }
+        Returns: {
+          address_masked: string
+          company_name: string
+          created_at: string
+          email_masked: string
+          id: string
+          name: string
+          phone_masked: string
+          restaurant_type: string
+          total_count: number
+        }[]
+      }
       get_waitlist_entries_secure: {
         Args: {
           page_offset?: number
@@ -939,6 +953,10 @@ export type Database = {
       }
       verify_secure_admin_access: {
         Args: { max_hourly_accesses?: number }
+        Returns: boolean
+      }
+      verify_ultra_secure_waitlist_access: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       verify_waitlist_admin_context: {
