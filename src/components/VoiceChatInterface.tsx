@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, Save, Archive } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import { useTranslation } from 'react-i18next';
+import { useConversations } from '@/hooks/useConversations';
+import ConversationHistory from '@/components/ConversationHistory';
 
 interface Message {
   id: string;
@@ -30,6 +32,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [showHistory, setShowHistory] = useState(false);
+  const [isSavingConversation, setIsSavingConversation] = useState(false);
+  const [hasUnsavedMessages, setHasUnsavedMessages] = useState(false);
+
+  const { createConversation, saveMessage, loadConversationMessages, setCurrentConversation } = useConversations();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -55,6 +62,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  useEffect(() => {
+    setHasUnsavedMessages(messages.length > 0);
   }, [messages]);
 
   // Audio recording functions
@@ -230,16 +241,108 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }
   };
 
+  // Sauvegarder la conversation actuelle
+  const saveCurrentConversation = async () => {
+    if (messages.length === 0) {
+      toast({
+        title: "Aucun message",
+        description: "Pas de messages à sauvegarder",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSavingConversation(true);
+    try {
+      const conversationId = await createConversation('voice');
+      if (conversationId) {
+        // Sauvegarder tous les messages
+        for (const message of messages) {
+          if (!message.isProcessing) {
+            await saveMessage(
+              conversationId,
+              message.type as 'user' | 'assistant' | 'system',
+              message.content,
+              message.isAudio ? 'audio' : 'text'
+            );
+          }
+        }
+        
+        setHasUnsavedMessages(false);
+        toast({
+          title: "Conversation sauvegardée",
+          description: "Vous pouvez la retrouver dans l'historique",
+        });
+      }
+    } catch (error) {
+      console.error('Error saving conversation:', error);
+    } finally {
+      setIsSavingConversation(false);
+    }
+  };
+
+  // Charger une conversation depuis l'historique
+  const loadConversationFromHistory = async (conversation: any) => {
+    try {
+      const loadedConv = await loadConversationMessages(conversation.id);
+      if (loadedConv?.messages) {
+        const formattedMessages = loadedConv.messages.map(msg => ({
+          id: msg.id,
+          type: msg.role as 'user' | 'assistant' | 'system',
+          content: msg.content,
+          timestamp: new Date(msg.created_at),
+          isAudio: msg.message_type === 'audio'
+        }));
+        setMessages(formattedMessages);
+        setHasUnsavedMessages(false);
+        setShowHistory(false);
+        toast({
+          title: "Conversation chargée",
+          description: loadedConv.title || "Conversation restaurée",
+        });
+      }
+    } catch (error) {
+      console.error('Error loading conversation:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
       {/* Overlay pour afficher "Assistant Vocal" à côté du logo */}
       <div className="fixed top-0 left-0 z-[60] pointer-events-none">
-        <div className="flex items-center h-20 px-6 sm:px-8">
-            <div className="flex items-center gap-3 ml-[calc(120px+16px)]">
-              <span className="text-lg font-medium text-blue-600 dark:text-blue-400">{t('voiceChat.title')}</span>
-            </div>
+        <div className="flex items-center justify-between h-20 px-6 sm:px-8 w-full">
+          <div className="flex items-center gap-3 ml-[calc(120px+16px)]">
+            <span className="text-lg font-medium text-blue-600 dark:text-blue-400">{t('voiceChat.title')}</span>
+          </div>
+          <div className="flex items-center gap-2 pointer-events-auto">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowHistory(true)}
+              className="flex items-center gap-2"
+            >
+              <Archive className="w-4 h-4" />
+              Historique
+            </Button>
+            {hasUnsavedMessages && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={saveCurrentConversation}
+                disabled={isSavingConversation}
+                className="flex items-center gap-2 bg-primary/10 border-primary/20"
+              >
+                {isSavingConversation ? (
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                Sauvegarder
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -401,6 +504,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           </div>
         </div>
       </main>
+
+      <ConversationHistory
+        isOpen={showHistory}
+        onClose={() => setShowHistory(false)}
+        onSelectConversation={loadConversationFromHistory}
+      />
     </div>
   );
 };
