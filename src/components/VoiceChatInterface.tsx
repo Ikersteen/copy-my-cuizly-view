@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import cuizlyLogo from '@/assets/cuizly-logo.png';
 import { useTranslation } from 'react-i18next';
-import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
+import { QuebecoisVoiceClient } from '@/utils/QuebecoisVoiceClient';
 
 interface Message {
   id: string;
@@ -43,7 +43,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const realtimeClientRef = useRef<RealtimeVoiceClient | null>(null);
+  const realtimeClientRef = useRef<QuebecoisVoiceClient | null>(null);
 
   useEffect(() => {
     const initUser = async () => {
@@ -261,7 +261,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     
     try {
       setIsProcessing(true);
-      const client = new RealtimeVoiceClient(
+      const client = new QuebecoisVoiceClient(
         (message) => handleRealtimeMessage(message),
         (speaking) => setIsSpeaking(speaking)
       );
@@ -271,15 +271,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setIsConnected(true);
       
       toast({
-        title: "🚀 Mode Instantané Activé",
-        description: "Parlez naturellement, je vous écoute!",
+        title: "🇫🇷 Assistant Québécois Activé",
+        description: "Jase naturellement, j'écoute comme un chum!",
         duration: 2000,
       });
     } catch (error) {
-      console.error('Error starting natural conversation:', error);
+      console.error('Error starting quebecois conversation:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de démarrer la conversation naturelle",
+        description: "Impossible de démarrer l'assistant québécois",
         variant: "destructive",
       });
     } finally {
@@ -297,8 +297,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     setCurrentTranscript('');
     
     toast({
-      title: "💬 Conversation Instantanée",
-      description: "Mode rapide activé",
+      title: "🎙️ Mode Standard",
+      description: "Conversation par clic activée",
       duration: 1500,
     });
   };
@@ -347,6 +347,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setCurrentTranscript('🎤 Écoute...');
     } else if (message.type === 'user_speaking_stopped') {
       // Keep transcript visible until we get the final transcription
+    } else if (message.type === 'interruption') {
+      // Afficher feedback d'interruption
+      setCurrentTranscript('🚨 Interruption - Mode écoute');
+      setTimeout(() => setCurrentTranscript(''), 1500);
     }
   };
 
@@ -390,7 +394,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 {isProcessing && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Brain className="w-4 h-4 animate-pulse text-blue-600" />
-                    <span>⚡ Traitement ultra-rapide...</span>
+                    <span>🧠 Traitement ultra-rapide...</span>
                   </div>
                 )}
                 {isSpeaking && (
@@ -555,9 +559,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             {isNaturalMode ? (
               isConnected ? (
                 <div className="space-y-1">
-                  <p className="text-green-600 font-medium">🎙️ Conversation Active</p>
+                  <p className="text-green-600 font-medium">🎙️ Conversation Active - Mode Québécois</p>
                   <p className="text-sm text-muted-foreground">
-                    Parlez naturellement, l'IA vous écoute en continu
+                    Parle naturellement, je comprends français et anglais! 🇫🇷🇬🇧
                   </p>
                   {currentTranscript && (
                     <p className="text-xs text-blue-600 italic">
@@ -567,9 +571,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <p className="text-primary font-medium">Mode Conversation Naturelle</p>
+                  <p className="text-primary font-medium">Mode Conversation Québécoise</p>
                   <p className="text-sm text-muted-foreground">
-                    Cliquez pour démarrer une conversation fluide
+                    Clique pour jaser comme des chums! 🇫🇷
                   </p>
                 </div>
               )

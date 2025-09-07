@@ -13,13 +13,93 @@ serve(async (req) => {
   }
 
   try {
-    const { toolName, arguments: toolArgs, userId } = await req.json();
+    const { toolName, arguments: toolArgs, userId, language = 'fr' } = await req.json();
     
-    console.log(`🔧 Tool call: ${toolName}`, toolArgs);
+    console.log(`🔧 Tool call: ${toolName} (Language: ${language})`, toolArgs);
 
     let result = { message: "Tool executed successfully" };
 
+    // Messages selon la langue détectée
+    const messages = {
+      fr: {
+        recommendations: "Voici des restos parfaits pour toi",
+        shopping: "Voici où faire tes courses",
+        markets: "Voici les meilleurs spots"
+      },
+      en: {
+        recommendations: "Here are perfect restaurants for you",
+        shopping: "Here's where to shop",
+        markets: "Here are the best spots"
+      }
+    };
+
+    const msg = messages[language as keyof typeof messages] || messages.fr;
+
     switch (toolName) {
+      case 'get_recommendations':
+        const { cuisine, location, budget } = toolArgs;
+        result = {
+          message: `${msg.recommendations}${cuisine ? ` - ${cuisine}` : ''}${location ? ` dans ${location}` : ''} :`,
+          restaurants: [
+            {
+              name: "Joe Beef",
+              address: "2491 Rue Notre-Dame Ouest, Montréal",
+              cuisine: cuisine || (language === 'en' ? "French bistro" : "Bistro français"),
+              neighborhood: location || "Little Burgundy", 
+              budget: budget || (language === 'en' ? "High (60-90$ per person)" : "Élevé (60-90$ par personne)"),
+              rating: 4.7,
+              description: language === 'en' ? 
+                "Creative cuisine with quality local products. Reservations strongly recommended." :
+                "Cuisine créative avec produits locaux de qualité. Réservation fortement recommandée."
+            },
+            {
+              name: "Schwartz's Deli", 
+              address: "3895 Boulevard Saint-Laurent, Montréal",
+              cuisine: cuisine || (language === 'en' ? "Traditional deli" : "Deli traditionnel"),
+              neighborhood: location || "Plateau-Mont-Royal",
+              budget: budget || (language === 'en' ? "Budget (15-25$ per person)" : "Économique (15-25$ par personne)"),
+              rating: 4.3,
+              description: language === 'en' ?
+                "Legendary smoked meat since 1928. Authentic atmosphere, generous portions." :
+                "Légendaire smoked meat depuis 1928. Ambiance authentique, portions généreuses."
+            },
+            {
+              name: "Toqué!",
+              address: "900 Place Jean-Paul-Riopelle, Montréal", 
+              cuisine: cuisine || (language === 'en' ? "Fine dining" : "Haute gastronomie"),
+              neighborhood: location || "Centre-ville",
+              budget: budget || (language === 'en' ? "Premium (100-150$ per person)" : "Premium (100-150$ par personne)"),
+              rating: 4.8,
+              description: language === 'en' ?
+                "Montreal's top fine dining restaurant. Innovative Quebec cuisine." :
+                "Restaurant gastronomique de référence à Montréal. Cuisine québécoise innovante."
+            }
+          ]
+        };
+        break;
+
+      case 'detect_language':
+        const { text } = toolArgs;
+        // Analyse simple de la langue
+        const frenchWords = ['le', 'la', 'les', 'un', 'une', 'des', 'je', 'tu', 'est', 'sont', 'avec', 'dans'];
+        const englishWords = ['the', 'a', 'an', 'is', 'are', 'and', 'in', 'on', 'at', 'with'];
+        
+        const words = text.toLowerCase().split(/\s+/);
+        let frScore = 0;
+        let enScore = 0;
+        
+        words.forEach(word => {
+          if (frenchWords.includes(word)) frScore++;
+          if (englishWords.includes(word)) enScore++;
+        });
+        
+        const detectedLang = frScore > enScore ? 'fr' : 'en';
+        result = {
+          language: detectedLang,
+          confidence: Math.max(frScore, enScore) / words.length,
+          message: `Language detected: ${detectedLang === 'fr' ? 'Français' : 'English'}`
+        };
+        break;
       case 'get_restaurant_recommendations':
         const { cuisine, neighborhood, budget, dietary_restrictions } = toolArgs;
         result = {
@@ -142,7 +222,11 @@ serve(async (req) => {
         break;
 
       default:
-        result = { message: `Outil ${toolName} non reconnu` };
+        result = { 
+          message: language === 'en' ? 
+            `Tool ${toolName} not recognized` : 
+            `Outil ${toolName} non reconnu` 
+        };
     }
 
     return new Response(JSON.stringify(result), {
