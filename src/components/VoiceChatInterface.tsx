@@ -292,7 +292,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               }`}>
                 <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
                   {message.type === 'assistant' ? (
-                    <AvatarFallback className="bg-orange-100 text-orange-700">
+                    <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
                       {userProfile?.chef_emoji_color || '🧑‍🍳'}
                     </AvatarFallback>
                   ) : (
