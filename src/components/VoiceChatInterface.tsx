@@ -235,14 +235,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Overlay pour afficher "Assistant Vocal" à côté du logo */}
-      <div className="fixed top-0 left-0 z-[60] pointer-events-none">
-        <div className="flex items-center justify-between h-20 px-6 sm:px-8 w-full">
-          <div className="flex items-center gap-3 ml-[calc(120px+16px)]">
-            <span className="text-lg font-medium text-blue-600 dark:text-blue-400">{t('voiceChat.title')}</span>
-          </div>
-        </div>
-      </div>
 
       {/* Zone de conversation */}
       <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
