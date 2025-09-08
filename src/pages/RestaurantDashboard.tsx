@@ -274,19 +274,19 @@ const RestaurantDashboard = () => {
                       <p className="text-foreground text-sm">{restaurant.address || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Téléphone</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.phone')}</p>
                       <p className="text-foreground text-sm">{restaurant.phone || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Email</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.email')}</p>
                       <p className="text-foreground text-sm">{restaurant.email || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Gamme de prix</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.priceRange')}</p>
                       <p className="text-foreground text-sm">{restaurant.price_range || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Rayon de livraison</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.deliveryRadius')}</p>
                       <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
@@ -338,7 +338,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Restrictions alimentaires</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.dietaryRestrictions')}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.dietary_restrictions?.length > 0 ? (
                           restaurant.dietary_restrictions.map((restriction, index) => (
@@ -354,7 +354,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Allergènes</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.allergens')}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.allergens?.length > 0 ? (
                           restaurant.allergens.map((allergen, index) => (
