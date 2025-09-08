@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Plus, ChefHat, BookOpen, LayoutDashboard, LogOut, Sun, Moon, Globe } from "lucide-react";
+import { Menu, Plus, ChefHat, BookOpen, LayoutDashboard, LogOut, Sun, Moon, Globe, Home } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
@@ -71,6 +71,15 @@ export const RestaurantMobileMenu = ({
 
             {/* Main Menu Items */}
             <div className="flex-1 flex flex-col space-y-2 py-4">
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-left h-auto py-3"
+                onClick={() => handleMenuClick(() => navigate('/'))}
+              >
+                <Home className="h-5 w-5 mr-3" />
+                <span className="text-base">{t('navigation.back_home')}</span>
+              </Button>
+
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
