@@ -97,8 +97,8 @@ const Header = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link 
-                to="/"
+              <a 
+                href="/"
                 className="flex items-center py-2 cursor-pointer group"
               >
                 <img 
@@ -106,7 +106,7 @@ const Header = () => {
                   alt="Cuizly" 
                   className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
                 />
-              </Link>
+              </a>
             </div>
             {/* Loading spinner or placeholder */}
             <div className="flex-1"></div>
@@ -123,8 +123,8 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo - Extrême gauche */}
           <div className="flex-shrink-0">
-            <Link 
-              to="/"
+            <a 
+              href="/"
               className="flex items-center py-2 cursor-pointer group"
             >
               <img 
@@ -132,7 +132,7 @@ const Header = () => {
                 alt="Cuizly" 
                 className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               />
-            </Link>
+            </a>
           </div>
 
           {/* Navigation/Menu based on authentication status */}
