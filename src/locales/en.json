@@ -491,25 +491,6 @@
     "english": "English",
     "select": "Select Language"
   },
-  "restaurantMenu": {
-    "cuisineTypes": "Cuisine types",
-    "serviceTypes": "Service types",
-    "specialties": "Specialties",
-    "openingHours": "Opening hours",
-    "deliveryRadius": "Delivery radius", 
-    "dietaryRestrictions": "Dietary restrictions",
-    "allergens": "Allergens",
-    "loadingError": "Loading error",
-    "ourMenus": "Our menus",
-    "noMenusAvailable": "No menus available",
-    "noMenusDescription": "This restaurant hasn't added menus yet",
-    "comment": "Add comment",
-    "addToFavorites": "Add to favorites",
-    "removeFromFavorites": "Remove from favorites"
-  },
-  "dashboard": {
-    "serviceTypes": "Service types"
-  },
   "menus": {
     "title": "All Available Menus",
     "ourMenus": "Our Menus",
@@ -543,22 +524,6 @@
     "negativeTrend": "Negative trend",
     "stable": "Stable",
     "dataCollection": "Data collection"
-  },
-  "restaurantMenu": {
-    "cuisineTypes": "Cuisine types",
-    "serviceTypes": "Service types", 
-    "specialties": "Specialties",
-    "openingHours": "Opening hours",
-    "deliveryRadius": "Delivery radius",
-    "dietaryRestrictions": "Dietary restrictions",
-    "allergens": "Allergens",
-    "loadingError": "Loading error",
-    "ourMenus": "Our menus",
-    "noMenusAvailable": "No menus available",
-    "noMenusDescription": "This restaurant hasn't added menus yet",
-    "comment": "Add comment",
-    "addToFavorites": "Add to favorites",
-    "removeFromFavorites": "Remove from favorites"
   },
   "ratings": {
     "published": "Rating published",
