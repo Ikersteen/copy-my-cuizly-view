@@ -691,7 +691,9 @@
     "restaurantSpecialty": "Spécialité du restaurant",
     "notDefined": "Non défini",
     "description": "Description",
-    "completeProfile": "Veuillez d'abord compléter votre profil restaurant"
+    "completeProfile": "Veuillez d'abord compléter votre profil restaurant",
+    "coverImageAlt": "Photo de couverture du restaurant",
+    "logoAlt": "Logo du restaurant"
   },
   "errors": {
     "connectionProblem": "Problème de connexion",
