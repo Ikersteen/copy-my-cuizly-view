@@ -274,12 +274,44 @@ const RestaurantDashboard = () => {
                       <p className="text-foreground text-sm">{restaurant.address || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Téléphone</p>
+                      <p className="text-foreground text-sm">{restaurant.phone || t('dashboard.notSpecified')}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Email</p>
+                      <p className="text-foreground text-sm">{restaurant.email || t('dashboard.notSpecified')}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Gamme de prix</p>
+                      <p className="text-foreground text-sm">{restaurant.price_range || t('dashboard.notSpecified')}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Rayon de livraison</p>
+                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('dashboard.notSpecified')}</p>
+                    </div>
+                    <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.cuisineType')}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
                             <Badge key={index} variant="outline" className="text-xs">
                               {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                            </Badge>
+                          ))
+                        ) : (
+                          <Badge variant="outline" className="text-xs text-muted-foreground">
+                            {t('dashboard.notDefined')}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.serviceTypes')}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {(restaurant as any).service_types?.length > 0 ? (
+                          (restaurant as any).service_types.map((service: string, index: number) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
                             </Badge>
                           ))
                         ) : (
@@ -306,12 +338,28 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.serviceTypes')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Restrictions alimentaires</p>
                       <div className="flex flex-wrap gap-1">
-                        {(restaurant as any).service_types?.length > 0 ? (
-                          (restaurant as any).service_types.map((service: string, index: number) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                              {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
+                        {restaurant.dietary_restrictions?.length > 0 ? (
+                          restaurant.dietary_restrictions.map((restriction, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs">
+                              {restriction}
+                            </Badge>
+                          ))
+                        ) : (
+                          <Badge variant="outline" className="text-xs text-muted-foreground">
+                            {t('dashboard.notDefined')}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Allergènes</p>
+                      <div className="flex flex-wrap gap-1">
+                        {restaurant.allergens?.length > 0 ? (
+                          restaurant.allergens.map((allergen, index) => (
+                            <Badge key={index} variant="destructive" className="text-xs">
+                              {allergen}
                             </Badge>
                           ))
                         ) : (
