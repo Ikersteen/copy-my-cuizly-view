@@ -1732,7 +1732,8 @@
     "noMenusDescription": "Ce restaurant n'a pas encore ajouté de menus",
     "comment": "Commentaire",
     "addToFavorites": "Ajouter aux favoris",
-    "removeFromFavorites": "Retirer des favoris"
+    "removeFromFavorites": "Retirer des favoris",
+    "specialties": "Spécialités"
   },
   "recommendations": {
     "aiRecommendations": "Recommandations par Cuizly",

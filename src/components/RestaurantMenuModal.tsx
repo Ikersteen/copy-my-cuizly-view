@@ -109,6 +109,7 @@ interface Restaurant {
   cover_image_url?: string;
   rating?: number;
   delivery_time?: string;
+  restaurant_specialties?: string[];
 }
 
 interface RestaurantMenuModalProps {
@@ -241,6 +242,20 @@ export const RestaurantMenuModal = ({
                 </Badge>
               ))}
             </div>
+
+            {/* Restaurant Specialties */}
+            {restaurant.restaurant_specialties && restaurant.restaurant_specialties.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium">{t('restaurantMenu.specialties')}</h4>
+                <div className="flex flex-wrap gap-2">
+                  {restaurant.restaurant_specialties.map((specialty, idx) => (
+                    <Badge key={idx} variant="secondary">
+                      {specialty}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Contact Info */}
             {(restaurant.phone || restaurant.email) && (

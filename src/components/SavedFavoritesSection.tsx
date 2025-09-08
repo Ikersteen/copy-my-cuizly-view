@@ -22,6 +22,7 @@ interface Restaurant {
   price_range: string;
   address: string;
   logo_url?: string;
+  restaurant_specialties?: string[];
 }
 
 export const SavedFavoritesSection = () => {
