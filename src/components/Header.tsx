@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";  
+import { Link, useNavigate, useLocation } from "react-router-dom";  
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { Menu, X, Globe, Moon, Sun } from "lucide-react";
@@ -39,6 +39,7 @@ const Header = () => {
   
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Load restaurant data when user is a restaurant owner
   const loadRestaurantData = async (userId: string) => {
@@ -89,6 +90,14 @@ const Header = () => {
     navigate('/auth');
   };
 
+  // Détermine quel logo utiliser selon la route
+  const getLogoSrc = () => {
+    if (location.pathname === '/voice') {
+      return "/lovable-uploads/cd2b5fde-bda6-4869-addf-2746d5d849c6.png";
+    }
+    return "/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png";
+  };
+
   // Don't render anything while loading user profile
   if (loading) {
     return (
@@ -102,7 +111,7 @@ const Header = () => {
                 className="flex items-center py-2 cursor-pointer group"
               >
                 <img 
-                  src="/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png" 
+                  src={getLogoSrc()} 
                   alt="Cuizly" 
                   className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
                 />
@@ -128,7 +137,7 @@ const Header = () => {
               className="flex items-center py-2 cursor-pointer group"
             >
               <img 
-                src="/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png" 
+                src={getLogoSrc()} 
                 alt="Cuizly" 
                 className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               />
