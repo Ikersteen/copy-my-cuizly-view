@@ -836,6 +836,7 @@
     "address": "Address",
     "notSpecified": "Not specified",
     "cuisineType": "Cuisine type",
+    "serviceTypes": "Service types",
     "restaurantSpecialty": "Restaurant specialty",
     "notDefined": "Not defined",
     "description": "Description",
