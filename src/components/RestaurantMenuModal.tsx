@@ -233,15 +233,6 @@ export const RestaurantMenuModal = ({
               </p>
             )}
 
-            {/* Cuisine Types */}
-            <div className="flex flex-wrap gap-2">
-              {restaurant.cuisine_type?.map((cuisine, idx) => (
-                <Badge key={idx} variant="outline">
-                  {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
-                </Badge>
-              ))}
-            </div>
-
             {/* Contact Info */}
             {(restaurant.phone || restaurant.email) && (
               <>
