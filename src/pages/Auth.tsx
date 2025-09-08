@@ -44,6 +44,15 @@ const Auth = () => {
   const [signinSmsLoading, setSigninSmsLoading] = useState(false);
   const [signinSmsError, setSigninSmsError] = useState<string | null>(null);
   const [signinPhoneVerified, setSigninPhoneVerified] = useState(false);
+
+  // Load saved phone numbers on component mount
+  useEffect(() => {
+    const savedPhoneNumber = localStorage.getItem('cuizly_saved_phone');
+    if (savedPhoneNumber) {
+      setPhoneNumber(savedPhoneNumber);
+      setSigninPhoneNumber(savedPhoneNumber);
+    }
+  }, []);
   
   const hcaptchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
@@ -573,6 +582,9 @@ const Auth = () => {
         setPhoneVerified(true);
         setSmsVerificationStep('completed');
         
+        // Save phone number for future use
+        localStorage.setItem('cuizly_saved_phone', phoneNumber);
+        
         toast({
           title: t('auth.smsVerification.phoneVerified'),
           description: t('auth.smsVerification.phoneVerifiedSuccess'),
@@ -650,6 +662,9 @@ const Auth = () => {
       if (data.verified) {
         setSigninPhoneVerified(true);
         setSigninSmsVerificationStep('completed');
+        
+        // Save phone number for future use
+        localStorage.setItem('cuizly_saved_phone', signinPhoneNumber);
         
         toast({
           title: t('auth.smsVerification.phoneVerified'),
