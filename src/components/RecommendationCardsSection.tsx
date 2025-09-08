@@ -340,11 +340,43 @@ export const RecommendationCardsSection = () => {
         }
         score += priceScore;
 
-        // 3. EXACT MEAL TIME MATCHING (10%)
+        // 3. EXACT MEAL TIME / SERVICE TYPE MATCHING (10%)
         let timingScore = 0;
-        if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
-          timingScore = 10; // Full points only for exact match
+        
+        // Check if user has meal time preferences and restaurant has service types
+        if (preferences?.favorite_meal_times?.length > 0) {
+          const restaurantServiceTypes = (restaurant as any).service_types || [];
+          
+          if (restaurantServiceTypes.length > 0) {
+            // Map meal times to service types for matching
+            const mealTimeToServiceMap: { [key: string]: string } = {
+              'breakfast': 'breakfast_brunch',
+              'lunch': 'quick_lunch', 
+              'dinner': 'dinner_supper',
+              'late_night': 'late_night'
+            };
+            
+            const matchingServices = preferences.favorite_meal_times.filter(mealTime => {
+              const serviceType = mealTimeToServiceMap[mealTime];
+              return serviceType && restaurantServiceTypes.includes(serviceType);
+            });
+            
+            if (matchingServices.length > 0) {
+              timingScore = (matchingServices.length / preferences.favorite_meal_times.length) * 10;
+            }
+          } else {
+            // Fallback: check current meal time if no service types defined
+            if (preferences.favorite_meal_times.includes(currentMealTime)) {
+              timingScore = 10;
+            }
+          }
+        } else {
+          // Fallback: current meal time matching
+          if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
+            timingScore = 10;
+          }
         }
+        
         score += timingScore;
 
         // 4. EXACT DIETARY RESTRICTIONS MATCHING (5%)

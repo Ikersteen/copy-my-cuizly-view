@@ -13,7 +13,7 @@ import { CommentModal } from "@/components/CommentModal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
-import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 // Composant pour afficher l'évaluation avec le prix
 const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
@@ -232,6 +232,47 @@ export const RestaurantMenuModal = ({
                 {getTranslatedDescription(restaurant, currentLanguage)}
               </p>
             )}
+
+            {/* Restaurant Details */}
+            <div className="space-y-3">
+              {/* Cuisine Types */}
+              {restaurant.cuisine_type && restaurant.cuisine_type.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.cuisineTypes')}</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {restaurant.cuisine_type.map((cuisine: string, index: number) => (
+                      <Badge key={index} variant="secondary" className="text-xs">
+                        {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Service Types */}
+              {(restaurant as any).service_types && (restaurant as any).service_types.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.serviceTypes')}</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {(restaurant as any).service_types.map((service: string, index: number) => (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[currentLanguage] || service}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Restaurant Specialties */}
+              {(restaurant as any).restaurant_specialties && (restaurant as any).restaurant_specialties.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.specialties')}</h4>
+                  <div className="text-sm text-muted-foreground">
+                    {(restaurant as any).restaurant_specialties.join(' • ')}
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Contact Info */}
             {(restaurant.phone || restaurant.email) && (

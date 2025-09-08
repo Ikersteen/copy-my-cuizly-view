@@ -11,7 +11,7 @@ import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
-import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import type { User } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
@@ -293,17 +293,27 @@ const RestaurantDashboard = () => {
                       <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.restaurantSpecialty')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).restaurant_specialties?.length > 0 ? (
-                          (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => {
-                            // Trouver la traduction de la spécialité
-                            const specialtyEntries = Object.entries(t('preferences.specialtyOptions', { returnObjects: true }) as Record<string, string>);
-                            const translatedSpecialty = specialtyEntries.find(([key, label]) => label === specialty)?.[1] || specialty;
-                            
-                            return (
+                          (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => (
                             <Badge key={index} variant="secondary" className="text-xs rounded-full">
-                              {translatedSpecialty}
+                              {specialty}
                             </Badge>
-                            );
-                          })
+                          ))
+                        ) : (
+                          <Badge variant="outline" className="text-xs text-muted-foreground">
+                            {t('dashboard.notDefined')}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.serviceTypes')}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {(restaurant as any).service_types?.length > 0 ? (
+                          (restaurant as any).service_types.map((service: string, index: number) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
+                            </Badge>
+                          ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
                             {t('dashboard.notDefined')}

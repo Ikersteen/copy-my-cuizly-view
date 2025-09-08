@@ -92,6 +92,20 @@ export const ALLERGENS = [
   "Kiwi", "Banane", "Fruits à noyau"
 ];
 
+export const SERVICE_TYPES_OPTIONS = [
+  "breakfast_brunch", "quick_lunch", "dinner_supper", "cafe_snack", 
+  "specialized_detox_health", "late_night"
+];
+
+export const SERVICE_TYPES_TRANSLATIONS = {
+  breakfast_brunch: { fr: "Déjeuner / Brunch", en: "Breakfast / Brunch" },
+  quick_lunch: { fr: "Déjeuner rapide", en: "Quick Lunch" },
+  dinner_supper: { fr: "Dîner / Souper", en: "Dinner / Supper" },
+  cafe_snack: { fr: "Café & Snack", en: "Cafe & Snack" },
+  specialized_detox_health: { fr: "Spécialisés Détox / Santé", en: "Specialized Detox / Health" },
+  late_night: { fr: "Tard le soir", en: "Late Night" }
+};
+
 // Legacy exports for compatibility
 export const DIETARY_OPTIONS = DIETARY_RESTRICTIONS;
 export const ALLERGEN_OPTIONS = ALLERGENS;
