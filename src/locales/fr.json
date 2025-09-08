@@ -962,13 +962,13 @@
     "cancel": "Annuler",
     "save": "Sauvegarder",
     "saving": "Sauvegarde...",
+    "profileUpdated": "Profil mis à jour",
+    "profileUpdatedDesc": "Les informations de votre restaurant ont été sauvegardées",
     "saved": "Sauvegardé",
     "savedSuccessfully": "Les informations de votre restaurant ont été sauvegardées avec succès",
     "error": "Erreur",
     "saveError": "Une erreur s'est produite lors de la sauvegarde du profil",
-    "nameRequired": "Le nom du restaurant est requis",
-    "profileUpdated": "Profil mis à jour",
-    "profileUpdatedDesc": "Les informations de votre restaurant ont été sauvegardées"
+    "nameRequired": "Le nom du restaurant est requis"
   },
   "favorites": {
     "title": "Mes restaurants favoris",

@@ -980,12 +980,12 @@
     "cancel": "Cancel",
     "save": "Save",
     "saving": "Saving...",
+  "restaurantProfile": {
     "saved": "Saved",
     "savedSuccessfully": "Your restaurant information has been saved successfully",
     "error": "Error",
     "saveError": "An error occurred while saving the restaurant profile",
     "nameRequired": "Restaurant name is required",
-  "restaurantProfile": {
     "title": "Restaurant Profile",
     "description": "Edit your restaurant information, logo and cover photo",
     "coverPhoto": "Cover Photo",

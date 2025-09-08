@@ -104,10 +104,19 @@ export const ImprovedRestaurantProfileModal = ({
   };
 
   const handleSave = async () => {
+    console.log('=== DÉBOGAGE SAUVEGARDE RESTAURANT ===');
+    console.log('FormData au début:', formData);
+    
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
+    console.log('Session:', session?.user?.id);
+    
+    if (!session) {
+      console.log('ERREUR: Pas de session');
+      return;
+    }
     
     if (!formData.name.trim()) {
+      console.log('ERREUR: Nom requis');
       toast({
         title: t('restaurantProfile.error'),
         description: t('restaurantProfile.nameRequired'),
@@ -118,18 +127,26 @@ export const ImprovedRestaurantProfileModal = ({
 
     setSaving(true);
     try {
+      console.log('Début de la sauvegarde...');
+      
       // Update restaurant data (excluding address)
       const { address, ...restaurantData } = formData;
+      console.log('Restaurant data à sauvegarder:', restaurantData);
+      console.log('Adresse à traiter:', address);
       
       // Handle address update separately
       if (address && address !== restaurantAddress?.formatted_address) {
+        console.log('Mise à jour de l\'adresse...');
         if (restaurantAddress) {
+          console.log('Mise à jour adresse existante:', restaurantAddress.id);
           await updateAddressHook(restaurantAddress.id!, { 
             formatted_address: address 
           });
         } else {
+          console.log('Création nouvelle adresse');
           await createAddress(createAddressInput(address, 'restaurant', true));
         }
+        console.log('Adresse mise à jour avec succès');
       }
 
       // Update other restaurant data if needed
@@ -143,21 +160,29 @@ export const ImprovedRestaurantProfileModal = ({
         service_types: formData.service_types
       };
 
+      console.log('Données finales pour Supabase:', updateData);
+
       const { error } = await supabase
         .from('restaurants')
         .update(updateData)
         .eq('owner_id', session.user.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('ERREUR SUPABASE:', error);
+        throw error;
+      }
 
+      console.log('Mise à jour Supabase réussie');
       await loadRestaurant();
+      console.log('Rechargement des données terminé');
       
       toast({
         title: t('restaurantProfile.saved'),
         description: t('restaurantProfile.savedSuccessfully')
       });
+      console.log('Toast de succès affiché');
     } catch (error) {
-      console.error('Error saving restaurant:', error);
+      console.error('ERREUR COMPLÈTE:', error);
       toast({
         title: t('restaurantProfile.error'),
         description: t('restaurantProfile.saveError'),
@@ -165,6 +190,7 @@ export const ImprovedRestaurantProfileModal = ({
       });
     } finally {
       setSaving(false);
+      console.log('=== FIN SAUVEGARDE ===');
     }
   };
 
