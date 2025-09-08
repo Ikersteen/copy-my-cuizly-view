@@ -54,7 +54,9 @@ export const ImprovedRestaurantProfileModal = ({
     address: restaurantAddress?.formatted_address || "",
     cuisine_type: [] as string[],
     restaurant_specialties: [] as string[],
-    service_types: [] as string[]
+    service_types: [] as string[],
+    dietary_restrictions: [] as string[],
+    allergens: [] as string[]
   });
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -94,7 +96,9 @@ export const ImprovedRestaurantProfileModal = ({
         address: restaurantAddress?.formatted_address || data.address || "",
         cuisine_type: data.cuisine_type || [],
         restaurant_specialties: data.restaurant_specialties || [],
-        service_types: (data as any).service_types || []
+        service_types: (data as any).service_types || [],
+        dietary_restrictions: data.dietary_restrictions || [],
+        allergens: data.allergens || []
       });
     } catch (error) {
       console.error('Error loading restaurant:', error);
@@ -104,19 +108,10 @@ export const ImprovedRestaurantProfileModal = ({
   };
 
   const handleSave = async () => {
-    console.log('=== DÉBOGAGE SAUVEGARDE RESTAURANT ===');
-    console.log('FormData au début:', formData);
-    
     const { data: { session } } = await supabase.auth.getSession();
-    console.log('Session:', session?.user?.id);
-    
-    if (!session) {
-      console.log('ERREUR: Pas de session');
-      return;
-    }
+    if (!session) return;
     
     if (!formData.name.trim()) {
-      console.log('ERREUR: Nom requis');
       toast({
         title: t('restaurantProfile.error'),
         description: t('restaurantProfile.nameRequired'),
@@ -127,62 +122,48 @@ export const ImprovedRestaurantProfileModal = ({
 
     setSaving(true);
     try {
-      console.log('Début de la sauvegarde...');
-      
       // Update restaurant data (excluding address)
       const { address, ...restaurantData } = formData;
-      console.log('Restaurant data à sauvegarder:', restaurantData);
-      console.log('Adresse à traiter:', address);
       
       // Handle address update separately
       if (address && address !== restaurantAddress?.formatted_address) {
-        console.log('Mise à jour de l\'adresse...');
         if (restaurantAddress) {
-          console.log('Mise à jour adresse existante:', restaurantAddress.id);
           await updateAddressHook(restaurantAddress.id!, { 
             formatted_address: address 
           });
         } else {
-          console.log('Création nouvelle adresse');
           await createAddress(createAddressInput(address, 'restaurant', true));
         }
-        console.log('Adresse mise à jour avec succès');
       }
 
-      // Update other restaurant data if needed
+      // Update other restaurant data
       const updateData = {
-        name: restaurantData.name?.trim() || null,
-        description: restaurantData.description?.trim() || null,
-        phone: restaurantData.phone?.trim() || null,
-        email: restaurantData.email?.trim() || null,
+        name: formData.name.trim(),
+        description: formData.description?.trim() || null,
+        phone: formData.phone?.trim() || null,
+        email: formData.email?.trim() || null,
         cuisine_type: formData.cuisine_type,
         restaurant_specialties: formData.restaurant_specialties,
+        dietary_restrictions: formData.dietary_restrictions,
+        allergens: formData.allergens,
         service_types: formData.service_types
       };
-
-      console.log('Données finales pour Supabase:', updateData);
 
       const { error } = await supabase
         .from('restaurants')
         .update(updateData)
         .eq('owner_id', session.user.id);
 
-      if (error) {
-        console.error('ERREUR SUPABASE:', error);
-        throw error;
-      }
+      if (error) throw error;
 
-      console.log('Mise à jour Supabase réussie');
       await loadRestaurant();
-      console.log('Rechargement des données terminé');
       
       toast({
         title: t('restaurantProfile.saved'),
         description: t('restaurantProfile.savedSuccessfully')
       });
-      console.log('Toast de succès affiché');
     } catch (error) {
-      console.error('ERREUR COMPLÈTE:', error);
+      console.error('Error saving restaurant:', error);
       toast({
         title: t('restaurantProfile.error'),
         description: t('restaurantProfile.saveError'),
@@ -190,13 +171,13 @@ export const ImprovedRestaurantProfileModal = ({
       });
     } finally {
       setSaving(false);
-      console.log('=== FIN SAUVEGARDE ===');
     }
   };
 
   return (
     <Dialog open={modalIsOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogTitle className="sr-only">{t('restaurantProfile.title')}</DialogTitle>
         <DialogHeader>
           <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
           <DialogDescription>

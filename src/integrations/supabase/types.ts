@@ -471,6 +471,7 @@ export type Database = {
           phone: string | null
           price_range: string | null
           restaurant_specialties: string[] | null
+          service_types: string[] | null
           updated_at: string
         }
         Insert: {
@@ -494,6 +495,7 @@ export type Database = {
           phone?: string | null
           price_range?: string | null
           restaurant_specialties?: string[] | null
+          service_types?: string[] | null
           updated_at?: string
         }
         Update: {
@@ -517,6 +519,7 @@ export type Database = {
           phone?: string | null
           price_range?: string | null
           restaurant_specialties?: string[] | null
+          service_types?: string[] | null
           updated_at?: string
         }
         Relationships: []
