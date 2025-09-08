@@ -26,7 +26,6 @@ interface Restaurant {
   logo_url?: string;
   score?: number;
   reasons?: (string | { text: string; type: string })[];
-  restaurant_specialties?: string[];
 }
 
 export const RecommendationCardsSection = () => {

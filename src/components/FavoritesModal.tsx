@@ -28,7 +28,6 @@ interface Restaurant {
   logo_url?: string;
   cover_image_url?: string;
   opening_hours?: any;
-  restaurant_specialties?: string[];
 }
 
 export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
