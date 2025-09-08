@@ -100,7 +100,6 @@ const Header = () => {
               <Link 
                 to="/"
                 className="flex items-center py-2 cursor-pointer group"
-                onClick={() => window.location.href = '/'}
               >
                 <img 
                   src="/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png" 

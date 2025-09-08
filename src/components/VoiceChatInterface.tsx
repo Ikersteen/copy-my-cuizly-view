@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, Menu, Home } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import Header from '@/components/Header';
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from "next-themes";
+import { useLanguage } from "@/hooks/useLanguage";
+import { Sun, Moon, Globe } from "lucide-react";
 
 interface Message {
   id: string;
@@ -23,6 +27,10 @@ interface VoiceChatInterfaceProps {
 const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { theme, setTheme } = useTheme();
+  const { currentLanguage, changeLanguage } = useLanguage();
+  const navigate = useNavigate();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -80,14 +88,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setIsRecording(true);
       
       toast({
-        title: "Écoute en cours...",
-        description: "Parlez maintenant, cliquez pour arrêter",
+        title: t('voiceChat.listeningTitle'),
+        description: t('voiceChat.listeningDescription'),
       });
     } catch (error) {
       console.error('Erreur microphone:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'accéder au microphone",
+        title: t('voiceChat.microphoneError'),
+        description: t('voiceChat.microphoneErrorDescription'),
         variant: "destructive",
       });
     }
@@ -109,7 +117,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     setMessages(prev => [...prev, {
       id: userMessageId,
       type: 'user',
-      content: 'Traitement de l\'audio...',
+      content: t('voiceChat.processingAudio'),
       timestamp: new Date(),
       isAudio: true,
       isProcessing: true
@@ -233,16 +241,133 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      
-      {/* Overlay pour afficher "Assistant Vocal" à côté du logo */}
-      <div className="fixed top-0 left-0 z-[60] pointer-events-none">
-        <div className="flex items-center justify-between h-20 px-6 sm:px-8 w-full">
-          <div className="flex items-center gap-3 ml-[calc(120px+16px)]">
-            <span className="text-lg font-medium text-blue-600 dark:text-blue-400">{t('voiceChat.title')}</span>
+      {/* Header personnalisé pour la page Assistant vocal */}
+      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm border-b border-border">
+        <div className="w-full px-6 sm:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo - Extrême gauche */}
+            <div className="flex-shrink-0">
+              <Link 
+                to="/"
+                className="flex items-center py-2 cursor-pointer group"
+              >
+                <img 
+                  src="/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png" 
+                  alt="Cuizly" 
+                  className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+                />
+              </Link>
+            </div>
+
+            {/* Titre centré */}
+            <div className="flex items-center justify-center flex-1">
+              <span className="text-lg font-medium text-primary">{t('voiceChat.title')}</span>
+            </div>
+
+            {/* Menu burger - Extrême droite */}
+            <div className="flex-shrink-0">
+              <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="sm" className="p-2">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                  <div className="flex flex-col space-y-4 mt-8">
+                    <Button 
+                      variant="outline"
+                      className="w-full justify-start text-left h-auto py-3"
+                      onClick={() => {
+                        navigate('/');
+                        setIsSheetOpen(false);
+                      }}
+                    >
+                      <Home className="h-5 w-5 mr-3" />
+                      <span className="text-base">{t('navigation.back_home')}</span>
+                    </Button>
+                    
+                    {/* Sélecteur de thème */}
+                    <div className="py-2 border-t border-border">
+                      <div className="flex items-center gap-2 mb-2">
+                        {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                        <span className="text-sm font-medium">{t('navigation.theme')}</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant={theme === 'light' ? 'default' : 'outline'}
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => {
+                            setTheme('light');
+                            setIsSheetOpen(false);
+                          }}
+                        >
+                          ☀️
+                        </Button>
+                        <Button
+                          variant={theme === 'dark' ? 'default' : 'outline'}
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => {
+                            setTheme('dark');
+                            setIsSheetOpen(false);
+                          }}
+                        >
+                          🌙
+                        </Button>
+                        <Button
+                          variant={theme === 'system' ? 'default' : 'outline'}
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => {
+                            setTheme('system');
+                            setIsSheetOpen(false);
+                          }}
+                        >
+                          💻
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Sélecteur de langue */}
+                    <div className="py-2 border-t border-border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Globe className="h-4 w-4" />
+                        <span className="text-sm font-medium">{t('navigation.languageSelector')}</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant={currentLanguage === 'fr' ? 'default' : 'outline'}
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => {
+                            changeLanguage('fr');
+                            setIsSheetOpen(false);
+                          }}
+                        >
+                          🇫🇷 FR
+                        </Button>
+                        <Button
+                          variant={currentLanguage === 'en' ? 'default' : 'outline'}
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => {
+                            changeLanguage('en');
+                            setIsSheetOpen(false);
+                          }}
+                        >
+                          🇬🇧 EN
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Zone de conversation */}
       <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
@@ -255,7 +380,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 {isProcessing && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Brain className="w-4 h-4 animate-pulse text-blue-600" />
-                    <span>Traitement en cours...</span>
+                    <span>{t('voiceChat.processingInProgress')}</span>
                   </div>
                 )}
                 {isSpeaking && (
@@ -275,10 +400,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-2xl font-semibold text-foreground">
-                  Assistant Vocal Cuizly
+                  {t('voiceChat.mainTitle')}
                 </h1>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  Parlez naturellement pour trouver des restaurants, consulter vos préférences ou découvrir de nouvelles saveurs.
+                  {t('voiceChat.description')}
                 </p>
               </div>
             </div>
@@ -393,9 +518,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               <p className="text-primary font-medium">{t('voiceChat.processing')}</p>
             ) : (
               <div className="space-y-1">
-                <p className="text-foreground font-medium">Cliquez pour parler</p>
+                <p className="text-foreground font-medium">{t('voiceChat.clickToTalk')}</p>
                 <p className="text-sm text-muted-foreground">
-                  Demandez des recommandations de restaurants ou posez vos questions culinaires
+                  {t('voiceChat.askRecommendations')}
                 </p>
               </div>
             )}
