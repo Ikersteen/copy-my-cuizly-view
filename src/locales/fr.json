@@ -679,22 +679,13 @@
     "restaurantDetails": "Détails de votre établissement",
     "name": "Nom",
     "address": "Adresse",
-    "phone": "Téléphone",
-    "email": "Email",
-    "priceRange": "Gamme de prix",
-    "deliveryRadius": "Rayon de livraison",
-    "dietaryRestrictions": "Restrictions alimentaires",
-    "allergens": "Allergènes",
     "notSpecified": "Non renseignée",
     "cuisineType": "Type de cuisine",
     "serviceTypes": "Types de service",
     "restaurantSpecialty": "Spécialité du restaurant",
     "notDefined": "Non défini",
     "description": "Description",
-    "completeProfile": "Veuillez d'abord compléter votre profil restaurant",
-    "coverImageAlt": "Photo de couverture du restaurant",
-    "logoAlt": "Logo du restaurant",
-    "kmUnit": "km"
+    "completeProfile": "Veuillez d'abord compléter votre profil restaurant"
   },
   "errors": {
     "connectionProblem": "Problème de connexion",

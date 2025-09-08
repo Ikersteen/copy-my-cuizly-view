@@ -170,7 +170,7 @@ const RestaurantDashboard = () => {
             <div className="w-full h-32 sm:h-48 lg:h-56 rounded-xl overflow-hidden bg-muted">
               <img 
                 src={restaurant.cover_image_url} 
-                alt={t('dashboard.coverImageAlt')}
+                alt="Photo de couverture du restaurant"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -179,7 +179,7 @@ const RestaurantDashboard = () => {
                 {restaurant?.logo_url ? (
                   <img 
                     src={restaurant.logo_url} 
-                    alt={t('dashboard.logoAlt')}
+                    alt="Logo restaurant"
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -201,7 +201,7 @@ const RestaurantDashboard = () => {
                   {restaurant?.logo_url ? (
                     <img 
                       src={restaurant.logo_url} 
-                      alt={t('dashboard.logoAlt')}
+                      alt="Logo restaurant"
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -274,20 +274,20 @@ const RestaurantDashboard = () => {
                       <p className="text-foreground text-sm">{restaurant.address || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.phone')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Téléphone</p>
                       <p className="text-foreground text-sm">{restaurant.phone || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.email')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Email</p>
                       <p className="text-foreground text-sm">{restaurant.email || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.priceRange')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Gamme de prix</p>
                       <p className="text-foreground text-sm">{restaurant.price_range || t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.deliveryRadius')}</p>
-                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} ${t('dashboard.kmUnit')}` : t('dashboard.notSpecified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Rayon de livraison</p>
+                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.cuisineType')}</p>
@@ -338,7 +338,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.dietaryRestrictions')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Restrictions alimentaires</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.dietary_restrictions?.length > 0 ? (
                           restaurant.dietary_restrictions.map((restriction, index) => (
@@ -354,7 +354,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.allergens')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Allergènes</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.allergens?.length > 0 ? (
                           restaurant.allergens.map((allergen, index) => (
