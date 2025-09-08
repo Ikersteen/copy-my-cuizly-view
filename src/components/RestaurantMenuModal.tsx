@@ -272,6 +272,55 @@ export const RestaurantMenuModal = ({
                   </div>
                 </div>
               )}
+
+              {/* Opening Hours */}
+              {(restaurant as any).opening_hours && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.openingHours')}</h4>
+                  <div className="text-sm text-muted-foreground">
+                    {typeof (restaurant as any).opening_hours === 'object' ? 
+                      Object.entries((restaurant as any).opening_hours).map(([day, hours]: [string, any]) => (
+                        <div key={day} className="flex justify-between">
+                          <span className="capitalize">{day}:</span>
+                          <span>{hours || 'Fermé'}</span>
+                        </div>
+                      )) : 
+                      (restaurant as any).opening_hours
+                    }
+                  </div>
+                </div>
+              )}
+
+              {/* Delivery Radius */}
+              {(restaurant as any).delivery_radius && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.deliveryRadius')}</h4>
+                  <div className="text-sm text-muted-foreground">
+                    {(restaurant as any).delivery_radius} km
+                  </div>
+                </div>
+              )}
+
+              {/* Restaurant-level dietary restrictions */}
+              {(restaurant as any).dietary_restrictions && (restaurant as any).dietary_restrictions.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.dietaryRestrictions')}</h4>
+                  <div className="text-sm text-muted-foreground">
+                    {(restaurant as any).dietary_restrictions.join(' • ')}
+                  </div>
+                </div>
+              )}
+
+              {/* Restaurant-level allergens */}
+              {(restaurant as any).allergens && (restaurant as any).allergens.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.allergens')}</h4>
+                  <div className="text-sm text-muted-foreground flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                    {(restaurant as any).allergens.join(' • ')}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Contact Info */}

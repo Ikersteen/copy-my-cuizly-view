@@ -325,6 +325,25 @@
     "english": "English",
     "select": "Choisir la langue"
   },
+  "restaurantMenu": {
+    "cuisineTypes": "Types de cuisine",
+    "serviceTypes": "Types de service",
+    "specialties": "Spécialités",
+    "openingHours": "Heures d'ouverture",
+    "deliveryRadius": "Rayon de livraison",
+    "dietaryRestrictions": "Restrictions alimentaires",
+    "allergens": "Allergènes",
+    "loadingError": "Erreur lors du chargement",
+    "ourMenus": "Nos menus",
+    "noMenusAvailable": "Aucun menu disponible",
+    "noMenusDescription": "Ce restaurant n'a pas encore ajouté de menus",
+    "comment": "Ajouter un commentaire",
+    "addToFavorites": "Ajouter aux favoris",
+    "removeFromFavorites": "Retirer des favoris"
+  },
+  "dashboard": {
+    "serviceTypes": "Types de service"
+  },
   "menus": {
     "title": "Tous les menus disponibles",
       "cuisineTypes": "Types de cuisine",
@@ -360,6 +379,22 @@
     "negativeTrend": "Tendance négative",
     "stable": "Stable",
     "dataCollection": "Collecte de données"
+  },
+  "restaurantMenu": {
+    "cuisineTypes": "Types de cuisine",
+    "serviceTypes": "Types de service",
+    "specialties": "Spécialités",
+    "openingHours": "Heures d'ouverture",
+    "deliveryRadius": "Rayon de livraison",
+    "dietaryRestrictions": "Restrictions alimentaires",
+    "allergens": "Allergènes",
+    "loadingError": "Erreur lors du chargement",
+    "ourMenus": "Nos menus",
+    "noMenusAvailable": "Aucun menu disponible",
+    "noMenusDescription": "Ce restaurant n'a pas encore ajouté de menus",
+    "comment": "Ajouter un commentaire",
+    "addToFavorites": "Ajouter aux favoris",
+    "removeFromFavorites": "Retirer des favoris"
   },
   "ratings": {
     "published": "Évaluation publiée",
