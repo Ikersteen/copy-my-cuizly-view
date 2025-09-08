@@ -1745,7 +1745,8 @@
   },
   "restaurantMenu": {
     "loadingError": "Erreur lors du chargement des menus:",
-    "ourMenus": "Nos menus",
+    "cuisineTypes": "Types de cuisine",
+    "ourMenus": "Nos menus", 
     "noMenusAvailable": "Aucun menu disponible",
     "noMenusDescription": "Ce restaurant n'a pas encore ajouté de menus",
     "comment": "Commentaire",
