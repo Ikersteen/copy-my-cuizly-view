@@ -685,12 +685,6 @@
     "restaurantSpecialty": "Spécialité du restaurant",
     "notDefined": "Non défini",
     "description": "Description",
-    "phone": "Téléphone",
-    "email": "Email",
-    "priceRange": "Gamme de prix",
-    "deliveryRadius": "Rayon de livraison",
-    "dietaryRestrictions": "Restrictions alimentaires",
-    "allergens": "Allergènes",
     "completeProfile": "Veuillez d'abord compléter votre profil restaurant"
   },
   "errors": {
