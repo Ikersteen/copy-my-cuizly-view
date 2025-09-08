@@ -56,7 +56,17 @@ export const ImprovedRestaurantProfileModal = ({
     restaurant_specialties: [] as string[],
     service_types: [] as string[],
     dietary_restrictions: [] as string[],
-    allergens: [] as string[]
+    allergens: [] as string[],
+    opening_hours: {
+      monday: { open: "09:00", close: "17:00", closed: false },
+      tuesday: { open: "09:00", close: "17:00", closed: false },
+      wednesday: { open: "09:00", close: "17:00", closed: false },
+      thursday: { open: "09:00", close: "17:00", closed: false },
+      friday: { open: "09:00", close: "17:00", closed: false },
+      saturday: { open: "09:00", close: "17:00", closed: false },
+      sunday: { open: "09:00", close: "17:00", closed: true }
+    },
+    delivery_radius: 5
   });
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -98,7 +108,17 @@ export const ImprovedRestaurantProfileModal = ({
         restaurant_specialties: data.restaurant_specialties || [],
         service_types: (data as any).service_types || [],
         dietary_restrictions: data.dietary_restrictions || [],
-        allergens: data.allergens || []
+        allergens: data.allergens || [],
+        opening_hours: (data.opening_hours && typeof data.opening_hours === 'object') ? data.opening_hours as any : {
+          monday: { open: "09:00", close: "17:00", closed: false },
+          tuesday: { open: "09:00", close: "17:00", closed: false },
+          wednesday: { open: "09:00", close: "17:00", closed: false },
+          thursday: { open: "09:00", close: "17:00", closed: false },
+          friday: { open: "09:00", close: "17:00", closed: false },
+          saturday: { open: "09:00", close: "17:00", closed: false },
+          sunday: { open: "09:00", close: "17:00", closed: true }
+        },
+        delivery_radius: data.delivery_radius || 5
       });
     } catch (error) {
       console.error('Error loading restaurant:', error);
@@ -146,7 +166,9 @@ export const ImprovedRestaurantProfileModal = ({
         restaurant_specialties: formData.restaurant_specialties,
         dietary_restrictions: formData.dietary_restrictions,
         allergens: formData.allergens,
-        service_types: formData.service_types
+        service_types: formData.service_types,
+        opening_hours: formData.opening_hours,
+        delivery_radius: formData.delivery_radius
       };
 
       const { error } = await supabase
@@ -242,6 +264,74 @@ export const ImprovedRestaurantProfileModal = ({
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 placeholder="cuizlycanada@gmail.com"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>{t('restaurantProfile.openingHours')}</Label>
+              <p className="text-sm text-muted-foreground">{t('restaurantProfile.openingHoursDesc')}</p>
+              <div className="space-y-2">
+                {Object.entries(formData.opening_hours).map(([day, hours]) => (
+                  <div key={day} className="flex items-center gap-2">
+                    <div className="w-20 text-sm font-medium">
+                      {t(`restaurantProfile.${day}`)}
+                    </div>
+                    <div className="flex items-center gap-2 flex-1">
+                      <input
+                        type="checkbox"
+                        checked={!hours.closed}
+                        onChange={(e) => {
+                          const newHours = { ...formData.opening_hours };
+                          newHours[day as keyof typeof newHours].closed = !e.target.checked;
+                          setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                        }}
+                        className="rounded border-gray-300"
+                      />
+                      {!hours.closed && (
+                        <>
+                          <Input
+                            type="time"
+                            value={hours.open}
+                            onChange={(e) => {
+                              const newHours = { ...formData.opening_hours };
+                              newHours[day as keyof typeof newHours].open = e.target.value;
+                              setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                            }}
+                            className="w-24"
+                          />
+                          <span className="text-sm text-muted-foreground">à</span>
+                          <Input
+                            type="time"
+                            value={hours.close}
+                            onChange={(e) => {
+                              const newHours = { ...formData.opening_hours };
+                              newHours[day as keyof typeof newHours].close = e.target.value;
+                              setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                            }}
+                            className="w-24"
+                          />
+                        </>
+                      )}
+                      {hours.closed && (
+                        <span className="text-sm text-muted-foreground">{t('restaurantProfile.closed')}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="delivery_radius">{t('restaurantProfile.deliveryRadius')}</Label>
+              <p className="text-sm text-muted-foreground">{t('restaurantProfile.deliveryRadiusDesc')}</p>
+              <Input
+                id="delivery_radius"
+                type="number"
+                min="1"
+                max="50"
+                value={formData.delivery_radius}
+                onChange={(e) => setFormData(prev => ({ ...prev, delivery_radius: parseInt(e.target.value) || 5 }))}
+                placeholder="5"
               />
             </div>
 
