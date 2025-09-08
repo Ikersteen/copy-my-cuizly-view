@@ -287,7 +287,7 @@ const RestaurantDashboard = () => {
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.deliveryRadius')}</p>
-                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('dashboard.notSpecified')}</p>
+                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} ${t('dashboard.kmUnit')}` : t('dashboard.notSpecified')}</p>
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.cuisineType')}</p>

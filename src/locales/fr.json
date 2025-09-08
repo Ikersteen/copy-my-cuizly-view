@@ -693,7 +693,8 @@
     "description": "Description",
     "completeProfile": "Veuillez d'abord compléter votre profil restaurant",
     "coverImageAlt": "Photo de couverture du restaurant",
-    "logoAlt": "Logo du restaurant"
+    "logoAlt": "Logo du restaurant",
+    "kmUnit": "km"
   },
   "errors": {
     "connectionProblem": "Problème de connexion",
