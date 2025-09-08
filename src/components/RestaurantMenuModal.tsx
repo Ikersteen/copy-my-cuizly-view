@@ -370,13 +370,6 @@ export const RestaurantMenuModal = ({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button 
-              variant="outline" 
-              onClick={() => onOpenChange(false)}
-              className="w-full"
-            >
-              {t('common.cancel')}
-            </Button>
-            <Button 
               className="w-full"
               onClick={() => setShowCommentModal(true)}
              >
