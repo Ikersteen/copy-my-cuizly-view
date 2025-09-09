@@ -31,6 +31,7 @@ interface Restaurant {
 export const RecommendationCardsSection = () => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const navigate = useNavigate();
   const { preferences } = useUserPreferences();
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const [recommendedRestaurants, setRecommendedRestaurants] = useState<Restaurant[]>([]);
@@ -753,17 +754,16 @@ export const RecommendationCardsSection = () => {
                   );
                 })()}
 
-                <Button 
-                  className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
-                  size="sm"
-                  onClick={() => {
-                    trackProfileView(restaurant.id);
-                    setSelectedRestaurant(restaurant);
-                    setShowRestaurantModal(true);
-                  }}
-                 >
-                   {t('recommendations.viewProfile')}
-                 </Button>
+                 <Button 
+                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
+                   size="sm"
+                   onClick={() => {
+                     trackProfileView(restaurant.id);
+                     navigate(`/restaurant/${restaurant.id}`);
+                   }}
+                  >
+                    {t('recommendations.viewProfile')}
+                  </Button>
               </CardContent>
             </Card>
           ))}

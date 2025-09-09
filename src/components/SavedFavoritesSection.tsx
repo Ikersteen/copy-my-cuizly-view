@@ -6,11 +6,11 @@ import { Heart, Star, ArrowRight, MapPin } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { supabase } from "@/integrations/supabase/client";
-import { RestaurantMenuModal } from "./RestaurantMenuModal";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
+import { useNavigate } from "react-router-dom";
 
 interface Restaurant {
   id: string;
@@ -27,13 +27,12 @@ interface Restaurant {
 export const SavedFavoritesSection = () => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const navigate = useNavigate();
   const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
   const { preferences } = useUserPreferences();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
-  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-  const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
@@ -285,8 +284,7 @@ export const SavedFavoritesSection = () => {
                   onClick={() => {
                     // Track profile view
                     trackProfileView(restaurant.id);
-                    setSelectedRestaurant(restaurant);
-                    setShowRestaurantModal(true);
+                    navigate(`/restaurant/${restaurant.id}`);
                   }}
                  >
                    {t('favorites.viewProfile')}
