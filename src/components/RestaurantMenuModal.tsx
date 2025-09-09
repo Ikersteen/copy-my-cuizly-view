@@ -183,199 +183,138 @@ export const RestaurantMenuModal = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8">
-        <DialogHeader className="space-y-4">
-          {/* Restaurant Cover */}
-           <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
-            {restaurant.cover_image_url && (
-              <img 
-                src={restaurant.cover_image_url} 
-                alt={restaurant.name}
-                className="w-full h-full object-cover"
-              />
+        <DialogHeader className="space-y-3">
+          {/* Minimal Header */}
+          <div className="flex items-center gap-3">
+            {restaurant.logo_url ? (
+              <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                <img 
+                  src={restaurant.logo_url} 
+                  alt={restaurant.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                <ChefHat className="h-6 w-6 text-primary" />
+              </div>
             )}
-            {restaurant.cover_image_url && (
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-            )}
-            
-             {/* Restaurant Logo Only */}
-             <div className="absolute bottom-4 left-4">
-               {restaurant.logo_url ? (
-                 <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
-                   <img 
-                     src={restaurant.logo_url} 
-                     alt={restaurant.name}
-                     className="w-full h-full object-cover"
-                   />
-                 </div>
-               ) : (
-                 <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
-                   <ChefHat className="h-8 w-8 text-primary" />
-                 </div>
-               )}
-             </div>
+            <div className="min-w-0 flex-1">
+              <DialogTitle className="text-xl font-bold truncate">{restaurant.name}</DialogTitle>
+              <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleToggleFavorite}
+              className="flex-shrink-0"
+            >
+              <Heart className={`h-5 w-5 ${isFavorite(restaurant.id) ? 'fill-current text-red-500' : 'text-muted-foreground'}`} />
+            </Button>
           </div>
         </DialogHeader>
         
         <div className="space-y-4">
-          {/* Restaurant Info - Always visible */}
-          <div className="space-y-3">
-            <span className="text-lg font-bold text-foreground block">{restaurant.name}</span>
-            
-            <div className="flex flex-wrap items-center gap-4 text-sm">
-              {/* Delivery Time */}
-              <div className="flex items-center space-x-1 text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>{restaurant.delivery_radius ? `${restaurant.delivery_radius * 5}-${restaurant.delivery_radius * 8} min` : '25-40 min'}</span>
-              </div>
-              
-              <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
-            </div>
+          {/* Description - Only if exists */}
+          {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
+            <p className="text-sm text-muted-foreground line-clamp-3">
+              {getTranslatedDescription(restaurant, currentLanguage)}
+            </p>
+          )}
 
-            {/* Description */}
-            {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
-              <p className="text-muted-foreground whitespace-pre-line text-sm">
-                {getTranslatedDescription(restaurant, currentLanguage)}
-              </p>
-            )}
-          </div>
-
-          {/* Tabbed Content */}
+          {/* Compact Tabs */}
           <Tabs defaultValue="details" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="details" className="flex items-center gap-2">
-                <Info className="h-4 w-4" />
-                <span className="hidden sm:inline">{t('restaurantMenu.details')}</span>
+            <TabsList className="grid w-full grid-cols-3 h-9">
+              <TabsTrigger value="details" className="text-xs">
+                {t('restaurantMenu.details')}
               </TabsTrigger>
-              <TabsTrigger value="menus" className="flex items-center gap-2">
-                <Menu className="h-4 w-4" />
-                <span className="hidden sm:inline">{t('restaurantMenu.ourMenus')}</span>
+              <TabsTrigger value="menus" className="text-xs">
+                {t('restaurantMenu.ourMenus')}
               </TabsTrigger>
-              <TabsTrigger value="reviews" className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" />
-                <span className="hidden sm:inline">{t('restaurantMenu.reviews')}</span>
+              <TabsTrigger value="reviews" className="text-xs">
+                {t('restaurantMenu.reviews')}
               </TabsTrigger>
             </TabsList>
 
-            {/* Details Tab */}
-            <TabsContent value="details" className="space-y-4 mt-4">
-              {/* Restaurant Details */}
-              <div className="space-y-4">
-                {/* Cuisine Types */}
-                {restaurant.cuisine_type && restaurant.cuisine_type.length > 0 && (
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.cuisineTypes')}</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {restaurant.cuisine_type.map((cuisine: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
-                        </Badge>
-                      ))}
+            {/* Details Tab - Compact */}
+            <TabsContent value="details" className="space-y-3 mt-3">
+              {/* Quick Info Grid */}
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                {/* Left Column */}
+                <div className="space-y-3">
+                  {/* Delivery Time */}
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span>{restaurant.delivery_radius ? `${restaurant.delivery_radius * 5}-${restaurant.delivery_radius * 8} min` : '25-40 min'}</span>
+                  </div>
+                  
+                  {/* Phone */}
+                  {restaurant.phone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <span>{restaurant.phone}</span>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
 
-                {/* Service Types */}
-                {restaurant.service_types && restaurant.service_types.length > 0 && (
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.serviceTypes')}</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {restaurant.service_types.map((service: string, index: number) => (
-                        <Badge key={index} variant="outline" className="text-xs">
-                          {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[currentLanguage] || service}
-                        </Badge>
-                      ))}
+                {/* Right Column */}
+                <div className="space-y-3">
+                  {/* Email */}
+                  {restaurant.email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="truncate">{restaurant.email}</span>
                     </div>
-                  </div>
-                )}
-
-                {/* Restaurant Specialties */}
-                {restaurant.restaurant_specialties && restaurant.restaurant_specialties.length > 0 && (
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.specialties')}</h4>
-                    <div className="text-sm text-muted-foreground">
-                      {restaurant.restaurant_specialties.join(' • ')}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <Separator />
-
-              {/* Contact Info */}
-              <div className="space-y-4">
-                <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.contact')}</h4>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Phone & Email */}
-                  <div className="space-y-2">
-                    {restaurant.phone && (
-                      <div className="flex items-center space-x-2 text-sm">
-                        <Phone className="h-4 w-4 text-muted-foreground" />
-                        <span>{restaurant.phone}</span>
-                      </div>
-                    )}
-                    {restaurant.email && (
-                      <div className="flex items-center space-x-2 text-sm">
-                        <Mail className="h-4 w-4 text-muted-foreground" />
-                        <span>{restaurant.email}</span>
-                      </div>
-                    )}
-                  </div>
-
+                  )}
+                  
                   {/* Social Media */}
                   {(restaurant.instagram_url || restaurant.facebook_url) && (
-                    <div className="space-y-2">
-                      <h5 className="text-xs font-medium text-foreground">{t('restaurantMenu.socialMedia')}</h5>
-                      <div className="flex gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground text-xs">{t('restaurantMenu.socialMedia')}:</span>
+                      <div className="flex gap-2">
                         {restaurant.instagram_url && (
-                          <a 
-                            href={restaurant.instagram_url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-80 transition-opacity"
-                          >
-                            <Instagram className="h-4 w-4" />
+                          <a href={restaurant.instagram_url} target="_blank" rel="noopener noreferrer"
+                             className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                            <Instagram className="h-3 w-3 text-white" />
                           </a>
                         )}
                         {restaurant.facebook_url && (
-                          <a 
-                            href={restaurant.facebook_url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white hover:opacity-80 transition-opacity"
-                          >
-                            <Facebook className="h-4 w-4" />
+                          <a href={restaurant.facebook_url} target="_blank" rel="noopener noreferrer"
+                             className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center">
+                            <Facebook className="h-3 w-3 text-white" />
                           </a>
                         )}
                       </div>
                     </div>
                   )}
                 </div>
-
-                {/* Opening Hours */}
-                {restaurant.opening_hours && (
-                  <div className="space-y-2">
-                    <h5 className="text-xs font-medium text-foreground">{t('restaurantMenu.openingHours')}</h5>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {Object.entries(restaurant.opening_hours).map(([day, hours]) => {
-                        const hoursText = typeof hours === 'string' 
-                          ? hours 
-                          : typeof hours === 'object' && hours !== null
-                            ? (hours as any).closed 
-                              ? 'Fermé' 
-                              : `${(hours as any).open || ''} - ${(hours as any).close || ''}`
-                            : 'N/A';
-                        
-                        return (
-                          <Badge key={day} variant="outline" className="text-xs justify-center">
-                            {day}: {hoursText}
-                          </Badge>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
               </div>
+
+              {/* Cuisine & Service Types - Compact */}
+              {((restaurant.cuisine_type && restaurant.cuisine_type.length > 0) || 
+                (restaurant.service_types && restaurant.service_types.length > 0)) && (
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-1">
+                    {restaurant.cuisine_type?.map((cuisine: string, index: number) => (
+                      <Badge key={index} variant="secondary" className="text-xs px-2 py-0.5">
+                        {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
+                      </Badge>
+                    ))}
+                    {restaurant.service_types?.map((service: string, index: number) => (
+                      <Badge key={`service-${index}`} variant="outline" className="text-xs px-2 py-0.5">
+                        {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[currentLanguage] || service}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Specialties - Compact */}
+              {restaurant.restaurant_specialties && restaurant.restaurant_specialties.length > 0 && (
+                <div className="text-xs text-muted-foreground">
+                  <span className="font-medium">{t('restaurantMenu.specialties')}:</span> {restaurant.restaurant_specialties.join(' • ')}
+                </div>
+              )}
             </TabsContent>
 
             {/* Menus Tab */}
