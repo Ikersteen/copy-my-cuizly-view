@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown } from "lucide-react";
+import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
@@ -270,6 +270,34 @@ export const ImprovedRestaurantProfileModal = ({
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 placeholder="cuizlycanada@gmail.com"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="instagram_url" className="flex items-center gap-2">
+                <Instagram className="h-4 w-4" />
+                {t('restaurantProfile.instagram')}
+              </Label>
+              <Input
+                id="instagram_url"
+                type="url"
+                value={formData.instagram_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
+                placeholder="https://instagram.com/votre-restaurant"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="facebook_url" className="flex items-center gap-2">
+                <Facebook className="h-4 w-4" />
+                {t('restaurantProfile.facebook')}
+              </Label>
+              <Input
+                id="facebook_url"
+                type="url"
+                value={formData.facebook_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
+                placeholder="https://facebook.com/votre-restaurant"
               />
             </div>
 
