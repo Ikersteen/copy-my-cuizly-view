@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare, Share2, Instagram, Facebook, Twitter, Globe } from "lucide-react";
+import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -177,57 +177,36 @@ export const RestaurantMenuModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8">
         <DialogHeader className="space-y-4">
-           {/* Restaurant Cover */}
-            <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
-             {restaurant.cover_image_url && (
-               <img 
-                 src={restaurant.cover_image_url} 
-                 alt={restaurant.name}
-                 className="w-full h-full object-cover"
-               />
-             )}
-             {restaurant.cover_image_url && (
-               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-             )}
-             
-             {/* Share Button */}
-             <Button
-               size="sm"
-               variant="secondary"
-               className="absolute top-4 right-4 h-8 w-8 p-0 bg-white/90 hover:bg-white"
-               onClick={() => {
-                 if (navigator.share) {
-                   navigator.share({
-                     title: restaurant.name,
-                     text: `Découvrez ${restaurant.name} sur Cuizly!`,
-                     url: window.location.href,
-                   });
-                 } else {
-                   navigator.clipboard.writeText(window.location.href);
-                   toast({ title: "Lien copié!", description: "Le lien a été copié dans le presse-papier" });
-                 }
-               }}
-             >
-               <Share2 className="h-4 w-4 text-gray-700" />
-             </Button>
-             
-              {/* Restaurant Logo Only */}
-              <div className="absolute bottom-4 left-4">
-                {restaurant.logo_url ? (
-                  <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
-                    <img 
-                      src={restaurant.logo_url} 
-                      alt={restaurant.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
-                    <ChefHat className="h-8 w-8 text-primary" />
-                  </div>
-                )}
-              </div>
-           </div>
+          {/* Restaurant Cover */}
+           <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
+            {restaurant.cover_image_url && (
+              <img 
+                src={restaurant.cover_image_url} 
+                alt={restaurant.name}
+                className="w-full h-full object-cover"
+              />
+            )}
+            {restaurant.cover_image_url && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            )}
+            
+             {/* Restaurant Logo Only */}
+             <div className="absolute bottom-4 left-4">
+               {restaurant.logo_url ? (
+                 <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
+                   <img 
+                     src={restaurant.logo_url} 
+                     alt={restaurant.name}
+                     className="w-full h-full object-cover"
+                   />
+                 </div>
+               ) : (
+                 <div className="w-20 h-20 rounded-xl bg-white/90 flex items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
+                   <ChefHat className="h-8 w-8 text-primary" />
+                 </div>
+               )}
+             </div>
+          </div>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -293,25 +272,10 @@ export const RestaurantMenuModal = ({
                   </div>
                 </div>
               )}
-
-              {/* Opening Hours */}
-              {(restaurant as any).opening_hours && (
-                <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-foreground">Heures d'ouverture</h4>
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    {Object.entries((restaurant as any).opening_hours).map(([day, hours]) => (
-                      <div key={day} className="flex justify-between">
-                        <span className="capitalize">{day}</span>
-                        <span>{hours as string}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Contact Info */}
-            {(restaurant.phone || restaurant.email || (restaurant as any).social_media) && (
+            {(restaurant.phone || restaurant.email) && (
               <>
                 <Separator />
                 <div className="space-y-2">
@@ -325,54 +289,6 @@ export const RestaurantMenuModal = ({
                     <div className="flex items-center space-x-2 text-sm">
                       <Mail className="h-4 w-4 text-muted-foreground" />
                       <span>{restaurant.email}</span>
-                    </div>
-                  )}
-                  {/* Social Media */}
-                  {(restaurant as any).social_media && (
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-foreground">Réseaux sociaux</h4>
-                      <div className="flex items-center space-x-3">
-                        {(restaurant as any).social_media.instagram && (
-                          <a 
-                            href={(restaurant as any).social_media.instagram} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 text-white hover:scale-110 transition-transform"
-                          >
-                            <Instagram className="h-4 w-4" />
-                          </a>
-                        )}
-                        {(restaurant as any).social_media.facebook && (
-                          <a 
-                            href={(restaurant as any).social_media.facebook} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-blue-600 text-white hover:scale-110 transition-transform"
-                          >
-                            <Facebook className="h-4 w-4" />
-                          </a>
-                        )}
-                        {(restaurant as any).social_media.twitter && (
-                          <a 
-                            href={(restaurant as any).social_media.twitter} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-black text-white hover:scale-110 transition-transform"
-                          >
-                            <Twitter className="h-4 w-4" />
-                          </a>
-                        )}
-                        {(restaurant as any).social_media.website && (
-                          <a 
-                            href={(restaurant as any).social_media.website} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-gray-600 text-white hover:scale-110 transition-transform"
-                          >
-                            <Globe className="h-4 w-4" />
-                          </a>
-                        )}
-                      </div>
                     </div>
                   )}
                 </div>
