@@ -217,7 +217,7 @@ export const RestaurantMenuModal = ({
         <div className="space-y-4">
           {/* Description - Only if exists */}
           {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
-            <p className="text-sm text-muted-foreground line-clamp-3">
+            <p className="text-sm text-muted-foreground">
               {getTranslatedDescription(restaurant, currentLanguage)}
             </p>
           )}
@@ -247,6 +247,24 @@ export const RestaurantMenuModal = ({
                     <Clock className="h-4 w-4 text-muted-foreground" />
                     <span>{restaurant.delivery_radius ? `${restaurant.delivery_radius * 5}-${restaurant.delivery_radius * 8} min` : '25-40 min'}</span>
                   </div>
+                  
+                  {/* Opening Hours */}
+                  {restaurant.opening_hours && (
+                    <div className="flex items-start gap-2">
+                      <Clock className="h-4 w-4 text-muted-foreground mt-0.5" />
+                      <div className="text-xs">
+                        <div className="font-medium text-foreground mb-1">{t('restaurantMenu.openingHours')}</div>
+                        {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
+                          <div key={day} className="flex justify-between text-muted-foreground">
+                            <span>{t(`restaurantMenu.days.${day}`)}: </span>
+                            <span>{typeof hours === 'object' && hours !== null ? 
+                              `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` : 
+                              hours as string}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   
                   {/* Phone */}
                   {restaurant.phone && (

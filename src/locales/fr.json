@@ -1772,7 +1772,16 @@
     "noMenusDescription": "Ce restaurant n'a pas encore ajouté de menus",
     "comment": "Commentaire",
     "addToFavorites": "Ajouter aux favoris",
-    "removeFromFavorites": "Retirer des favoris"
+    "removeFromFavorites": "Retirer des favoris",
+    "days": {
+      "monday": "Lun",
+      "tuesday": "Mar",
+      "wednesday": "Mer",
+      "thursday": "Jeu",
+      "friday": "Ven",
+      "saturday": "Sam",
+      "sunday": "Dim"
+    }
   },
   "recommendations": {
     "aiRecommendations": "Recommandations par Cuizly",

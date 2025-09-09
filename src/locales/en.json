@@ -1892,7 +1892,16 @@
     "noMenusDescription": "This restaurant hasn't added any menus yet",
     "comment": "Comment",
     "addToFavorites": "Add to favorites",
-    "removeFromFavorites": "Remove from favorites"
+    "removeFromFavorites": "Remove from favorites",
+    "days": {
+      "monday": "Mon",
+      "tuesday": "Tue", 
+      "wednesday": "Wed",
+      "thursday": "Thu",
+      "friday": "Fri",
+      "saturday": "Sat",
+      "sunday": "Sun"
+    }
   },
   "recommendations": {
     "aiRecommendations": "Cuizly Recommendations",
