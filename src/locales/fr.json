@@ -1760,6 +1760,11 @@
   "restaurantMenu": {
     "loadingError": "Erreur lors du chargement des menus:",
     "cuisineTypes": "Types de cuisine",
+    "serviceTypes": "Types de service",
+    "specialties": "Spécialités",
+    "contact": "Contact",
+    "openingHours": "Heures d'ouverture",
+    "socialMedia": "Réseaux sociaux",
     "ourMenus": "Nos menus", 
     "noMenusAvailable": "Aucun menu disponible",
     "noMenusDescription": "Ce restaurant n'a pas encore ajouté de menus",
