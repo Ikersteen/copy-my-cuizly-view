@@ -879,7 +879,9 @@ export type Database = {
           description_fr: string
           dietary_restrictions: string[]
           email: string
+          facebook_url: string
           id: string
+          instagram_url: string
           is_active: boolean
           logo_url: string
           name: string
@@ -888,6 +890,7 @@ export type Database = {
           phone: string
           price_range: string
           restaurant_specialties: string[]
+          service_types: string[]
           updated_at: string
         }[]
       }
