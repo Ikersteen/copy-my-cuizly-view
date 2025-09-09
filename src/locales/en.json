@@ -165,7 +165,50 @@
         "content": "For any questions regarding this privacy policy, contact us at:",
         "email": "Email: cuizlycanada@gmail.com",
         "address": "Address: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
-      }
+  },
+  "restaurant": {
+    "contact": "Contact",
+    "socialMedia": "Social Media",
+    "cuisineType": "Cuisine Type",
+    "serviceTypes": "Available Services", 
+    "openingHours": "Opening Hours",
+    "specialties": "Specialties",
+    "dietaryInfo": "Dietary Information",
+    "dietaryRestrictions": "Dietary Restrictions",
+    "allergens": "Allergens",
+    "orderNow": "Order Now",
+    "call": "Call",
+    "closed": "Closed"
+  },
+  "favorites": {
+    "add": "Add to Favorites",
+    "remove": "Remove from Favorites", 
+    "added": "Added to Favorites",
+    "removed": "Removed from Favorites",
+    "addedToFavorites": "Restaurant added to your favorites",
+    "removedFromFavorites": "Restaurant removed from your favorites"
+  },
+  "share": {
+    "share": "Share",
+    "copied": "Link Copied",
+    "linkCopied": "Link copied to clipboard"
+  },
+  "ratings": {
+    "reviews": "reviews"
+  },
+  "days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday", 
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "errors": {
+    "general": "Error",
+    "tryAgain": "Please try again later"
+  }
     }
   },
   "mentions": {
