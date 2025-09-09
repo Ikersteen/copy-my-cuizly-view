@@ -238,68 +238,74 @@ export const RestaurantMenuModal = ({
 
             {/* Details Tab - Compact */}
             <TabsContent value="details" className="space-y-3 mt-3">
-              {/* Contact Info */}
-              <div className="space-y-3 text-sm">
-                {/* Delivery Time */}
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span>{restaurant.delivery_radius ? `${restaurant.delivery_radius * 5}-${restaurant.delivery_radius * 8} min` : '25-40 min'}</span>
+              {/* Contact Info Grid */}
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                {/* Left Column */}
+                <div className="space-y-3">
+                  {/* Delivery Time */}
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span>{restaurant.delivery_radius ? `${restaurant.delivery_radius * 5}-${restaurant.delivery_radius * 8} min` : '25-40 min'}</span>
+                  </div>
+                  
+                  {/* Opening Hours */}
+                  {restaurant.opening_hours && (
+                    <div className="flex items-start gap-2">
+                      <Clock className="h-4 w-4 text-muted-foreground mt-0.5" />
+                      <div className="text-xs">
+                        <div className="font-medium text-foreground mb-1">{t('restaurantMenu.openingHours')}</div>
+                        {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
+                          <div key={day} className="flex justify-between text-muted-foreground">
+                            <span>{t(`restaurantMenu.days.${day}`)}: </span>
+                            <span>{typeof hours === 'object' && hours !== null ? 
+                              `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` : 
+                              hours as string}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                
-                {/* Opening Hours */}
-                {restaurant.opening_hours && (
-                  <div className="flex items-start gap-2">
-                    <Clock className="h-4 w-4 text-muted-foreground mt-0.5" />
-                    <div className="text-xs">
-                      <div className="font-medium text-foreground mb-1">{t('restaurantMenu.openingHours')}</div>
-                      {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
-                        <div key={day} className="flex justify-between text-muted-foreground">
-                          <span>{t(`restaurantMenu.days.${day}`)}: </span>
-                          <span>{typeof hours === 'object' && hours !== null ? 
-                            `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` : 
-                            hours as string}</span>
-                        </div>
-                      ))}
+
+                {/* Right Column */}
+                <div className="space-y-3">
+                  {/* Email */}
+                  {restaurant.email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="truncate">{restaurant.email}</span>
                     </div>
-                  </div>
-                )}
-                
-                {/* Email */}
-                {restaurant.email && (
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span className="truncate">{restaurant.email}</span>
-                  </div>
-                )}
-                
-                {/* Phone */}
-                {restaurant.phone && (
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>{restaurant.phone}</span>
-                  </div>
-                )}
-                
-                {/* Social Media */}
-                {(restaurant.instagram_url || restaurant.facebook_url) && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground text-xs">{t('restaurantMenu.socialMedia')}:</span>
-                    <div className="flex gap-2">
-                      {restaurant.instagram_url && (
-                        <a href={restaurant.instagram_url} target="_blank" rel="noopener noreferrer"
-                           className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                          <Instagram className="h-3 w-3 text-white" />
-                        </a>
-                      )}
-                      {restaurant.facebook_url && (
-                        <a href={restaurant.facebook_url} target="_blank" rel="noopener noreferrer"
-                           className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center">
-                          <Facebook className="h-3 w-3 text-white" />
-                        </a>
-                      )}
+                  )}
+                  
+                  {/* Phone */}
+                  {restaurant.phone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <span>{restaurant.phone}</span>
                     </div>
-                  </div>
-                )}
+                  )}
+                  
+                  {/* Social Media */}
+                  {(restaurant.instagram_url || restaurant.facebook_url) && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground text-xs">{t('restaurantMenu.socialMedia')}:</span>
+                      <div className="flex gap-2">
+                        {restaurant.instagram_url && (
+                          <a href={restaurant.instagram_url} target="_blank" rel="noopener noreferrer"
+                             className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                            <Instagram className="h-3 w-3 text-white" />
+                          </a>
+                        )}
+                        {restaurant.facebook_url && (
+                          <a href={restaurant.facebook_url} target="_blank" rel="noopener noreferrer"
+                             className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center">
+                            <Facebook className="h-3 w-3 text-white" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Cuisine Types */}
