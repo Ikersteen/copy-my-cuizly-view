@@ -462,7 +462,9 @@ export type Database = {
           description_fr: string | null
           dietary_restrictions: string[] | null
           email: string | null
+          facebook_url: string | null
           id: string
+          instagram_url: string | null
           is_active: boolean | null
           logo_url: string | null
           name: string
@@ -486,7 +488,9 @@ export type Database = {
           description_fr?: string | null
           dietary_restrictions?: string[] | null
           email?: string | null
+          facebook_url?: string | null
           id?: string
+          instagram_url?: string | null
           is_active?: boolean | null
           logo_url?: string | null
           name: string
@@ -510,7 +514,9 @@ export type Database = {
           description_fr?: string | null
           dietary_restrictions?: string[] | null
           email?: string | null
+          facebook_url?: string | null
           id?: string
+          instagram_url?: string | null
           is_active?: boolean | null
           logo_url?: string | null
           name?: string
