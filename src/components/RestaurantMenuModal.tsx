@@ -203,14 +203,7 @@ export const RestaurantMenuModal = ({
               <DialogTitle className="text-xl font-bold truncate">{restaurant.name}</DialogTitle>
               <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleToggleFavorite}
-              className="flex-shrink-0"
-            >
-              <Heart className={`h-5 w-5 ${isFavorite(restaurant.id) ? 'fill-current text-red-500' : 'text-muted-foreground'}`} />
-            </Button>
+            {/* Retirer le petit coeur rouge - supprimé */}
           </div>
         </DialogHeader>
         
@@ -222,17 +215,14 @@ export const RestaurantMenuModal = ({
             </p>
           )}
 
-          {/* Compact Tabs */}
+          {/* Compact Tabs - Retirer l'onglet Avis */}
           <Tabs defaultValue="details" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-9">
+            <TabsList className="grid w-full grid-cols-2 h-9">
               <TabsTrigger value="details" className="text-xs">
                 {t('restaurantMenu.details')}
               </TabsTrigger>
               <TabsTrigger value="menus" className="text-xs">
                 {t('restaurantMenu.ourMenus')}
-              </TabsTrigger>
-              <TabsTrigger value="reviews" className="text-xs">
-                {t('restaurantMenu.reviews')}
               </TabsTrigger>
             </TabsList>
 
@@ -285,10 +275,9 @@ export const RestaurantMenuModal = ({
                     </div>
                   )}
                   
-                  {/* Social Media */}
+                  {/* Social Media - Juste les icônes sans texte */}
                   {(restaurant.instagram_url || restaurant.facebook_url) && (
                     <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground text-xs">{t('restaurantMenu.socialMedia')}:</span>
                       <div className="flex gap-2">
                         {restaurant.instagram_url && (
                           <a href={restaurant.instagram_url} target="_blank" rel="noopener noreferrer"
@@ -308,9 +297,10 @@ export const RestaurantMenuModal = ({
                 </div>
               </div>
 
-              {/* Cuisine Types */}
+              {/* Types de cuisines - Avec titre */}
               {restaurant.cuisine_type && restaurant.cuisine_type.length > 0 && (
                 <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.cuisineTypes')}</h4>
                   <div className="flex flex-wrap gap-1">
                     {restaurant.cuisine_type?.map((cuisine: string, index: number) => (
                       <Badge key={index} variant="secondary" className="text-xs px-2 py-0.5">
@@ -321,9 +311,10 @@ export const RestaurantMenuModal = ({
                 </div>
               )}
 
-              {/* Service Types */}
+              {/* Types de service - Avec titre */}
               {restaurant.service_types && restaurant.service_types.length > 0 && (
                 <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.serviceTypes')}</h4>
                   <div className="flex flex-wrap gap-1">
                     {restaurant.service_types?.map((service: string, index: number) => (
                       <Badge key={`service-${index}`} variant="outline" className="text-xs px-2 py-0.5">
@@ -422,10 +413,6 @@ export const RestaurantMenuModal = ({
               )}
             </TabsContent>
 
-            {/* Reviews Tab */}
-            <TabsContent value="reviews" className="space-y-4 mt-4">
-              <RatingComponent restaurantId={restaurant.id} showAddRating={true} />
-            </TabsContent>
           </Tabs>
 
           {/* Action Buttons */}
@@ -443,7 +430,7 @@ export const RestaurantMenuModal = ({
               onClick={handleToggleFavorite}
               variant={isFavorite(restaurant.id) ? "default" : "outline"}
             >
-              <Heart className={`h-4 w-4 mr-2 ${isFavorite(restaurant.id) ? 'fill-current' : ''}`} />
+              <Heart className={`h-4 w-4 mr-2 ${isFavorite(restaurant.id) ? 'fill-current text-red-500' : 'text-red-500'}`} />
               {isFavorite(restaurant.id) ? t('restaurantMenu.removeFromFavorites') : t('restaurantMenu.addToFavorites')}
             </Button>
           </div>
