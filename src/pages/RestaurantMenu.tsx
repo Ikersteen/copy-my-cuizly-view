@@ -141,14 +141,16 @@ export default function RestaurantMenu() {
     
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('restaurants')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const { data, error } = await supabase.rpc('get_public_restaurants');
 
       if (error) throw error;
-      setRestaurant(data);
+      
+      const restaurant = data?.find(r => r.id === id);
+      if (!restaurant) {
+        throw new Error('Restaurant not found');
+      }
+      
+      setRestaurant(restaurant);
     } catch (error) {
       console.error('Error loading restaurant:', error);
       toast({
