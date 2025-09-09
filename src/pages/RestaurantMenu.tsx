@@ -241,43 +241,88 @@ export default function RestaurantMenu() {
 
       <div className="container mx-auto px-4 pb-8">
         <div className="max-w-4xl mx-auto">
-          {/* Cover Image avec logo overlay style Facebook */}
-          <div className="relative">
-            {restaurant.cover_image_url ? (
-              <div className="w-full h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden">
-                <img
-                  src={restaurant.cover_image_url}
-                  alt={`${restaurant.name} - Photo de couverture`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ) : (
-              <div className="w-full h-64 sm:h-80 md:h-96 rounded-lg bg-muted flex items-center justify-center">
-                <ChefHat className="h-16 w-16 text-muted-foreground" />
-              </div>
-            )}
+          {/* Restaurant Header Card */}
+          <Card className="overflow-hidden shadow-xl">
+            {/* Cover Image */}
+            <div className="relative">
+              {restaurant.cover_image_url ? (
+                <div className="w-full h-48 sm:h-56 md:h-64 overflow-hidden">
+                  <img
+                    src={restaurant.cover_image_url}
+                    alt={`${restaurant.name} - Photo de couverture`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="w-full h-48 sm:h-56 md:h-64 bg-gradient-to-br from-cuizly-primary/20 to-cuizly-secondary/20 flex items-center justify-center">
+                  <ChefHat className="h-16 w-16 text-cuizly-primary/60" />
+                </div>
+              )}
+            </div>
             
-            {/* Logo overlay */}
-            {restaurant.logo_url && (
-              <div className="absolute bottom-4 left-4 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 border-4 border-background rounded-lg overflow-hidden bg-background">
-                <img 
-                  src={restaurant.logo_url} 
-                  alt={restaurant.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
-            
-            {/* Restaurant info overlay */}
-            <div className="absolute bottom-4 left-20 sm:left-24 md:left-28 right-4 text-white">
-              <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3 sm:p-4">
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">{restaurant.name}</h1>
-                <div className="text-white/90">
-                  <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
+            {/* Restaurant Info Card */}
+            <CardContent className="p-0">
+              <div className="relative bg-background">
+                {/* Logo positioned over the edge */}
+                {restaurant.logo_url && (
+                  <div className="absolute -top-12 left-6 w-24 h-24 border-4 border-background rounded-xl overflow-hidden bg-background shadow-lg">
+                    <img 
+                      src={restaurant.logo_url} 
+                      alt={restaurant.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                
+                {/* Main info section */}
+                <div className={`p-6 ${restaurant.logo_url ? 'pt-16' : 'pt-6'}`}>
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                    <div className="flex-1">
+                      <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                        {restaurant.name}
+                      </h1>
+                      <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4" />
+                          <span className="text-sm">Montreal</span>
+                        </div>
+                        {restaurant.price_range && (
+                          <>
+                            <span>•</span>
+                            <Badge variant="secondary" className="font-medium">
+                              {restaurant.price_range}
+                            </Badge>
+                          </>
+                        )}
+                        <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
+                      </div>
+                    </div>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant={isFavorite(restaurant.id) ? "default" : "outline"}
+                        size="sm"
+                        onClick={handleToggleFavorite}
+                        className="flex items-center gap-2"
+                      >
+                        <Heart className={`h-4 w-4 ${isFavorite(restaurant.id) ? 'fill-current' : ''}`} />
+                        {isFavorite(restaurant.id) ? 'Favori' : 'Ajouter aux favoris'}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowCommentModal(true)}
+                      >
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        Avis
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
           
           {/* Main Content */}
           <div className="bg-background rounded-lg mt-4 p-4 sm:p-6 space-y-6">
