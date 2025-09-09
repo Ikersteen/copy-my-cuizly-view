@@ -207,6 +207,17 @@ export const RestaurantMenuModal = ({
           </div>
         </DialogHeader>
         
+        {/* Cover Image */}
+        {restaurant.cover_image_url && (
+          <div className="aspect-video w-full rounded-lg overflow-hidden -mt-2">
+            <img
+              src={restaurant.cover_image_url}
+              alt={`${restaurant.name} - Photo de couverture`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        
         <div className="space-y-4">
           {/* Description - Only if exists */}
           {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
