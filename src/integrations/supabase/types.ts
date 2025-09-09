@@ -1068,6 +1068,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      upload_restaurant_image: {
+        Args: { p_image_type: string; p_image_url: string }
+        Returns: string
+      }
       validate_admin_session: {
         Args: Record<PropertyKey, never>
         Returns: boolean

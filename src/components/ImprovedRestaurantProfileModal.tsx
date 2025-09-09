@@ -72,6 +72,8 @@ export const ImprovedRestaurantProfileModal = ({
   });
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
 
   useEffect(() => {
     if (modalIsOpen) {
@@ -128,6 +130,142 @@ export const ImprovedRestaurantProfileModal = ({
       console.error('Error loading restaurant:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Handle image upload
+  const handleImageUpload = async (file: File, imageType: 'logo' | 'cover') => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast({
+          title: t('restaurantProfile.error'),
+          description: 'User not authenticated',
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const setUploading = imageType === 'logo' ? setUploadingLogo : setUploadingCover;
+      setUploading(true);
+
+      // Validate file
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: t('restaurantProfile.error'),
+          description: t('restaurantProfile.selectValidImage'),
+          variant: "destructive"
+        });
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: t('restaurantProfile.error'),
+          description: t('restaurantProfile.imageTooLarge'),
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Create unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${session.user.id}/${imageType}_${Date.now()}.${fileExt}`;
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('restaurant-images')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('restaurant-images')
+        .getPublicUrl(fileName);
+
+      // Update restaurant in database
+      const updateField = imageType === 'logo' ? 'logo_url' : 'cover_image_url';
+      const { error: updateError } = await supabase
+        .from('restaurants')
+        .update({ 
+          [updateField]: publicUrl,
+          updated_at: new Date().toISOString()
+        })
+        .eq('owner_id', session.user.id);
+
+      if (updateError) throw updateError;
+
+      // Update local state
+      setRestaurant((prev: any) => ({
+        ...prev,
+        [updateField]: publicUrl
+      }));
+
+      toast({
+        title: t('restaurantProfile.success'),
+        description: t('restaurantProfile.imageUploaded'),
+      });
+
+      // Reload restaurant data
+      await loadRestaurant();
+      if (onUpdate) onUpdate();
+
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast({
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.uploadError'),
+        variant: "destructive"
+      });
+    } finally {
+      const setUploading = imageType === 'logo' ? setUploadingLogo : setUploadingCover;
+      setUploading(false);
+    }
+  };
+
+  // Handle image removal
+  const handleImageRemove = async (imageType: 'logo' | 'cover') => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const updateField = imageType === 'logo' ? 'logo_url' : 'cover_image_url';
+      
+      // Update restaurant in database
+      const { error } = await supabase
+        .from('restaurants')
+        .update({ 
+          [updateField]: null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('owner_id', session.user.id);
+
+      if (error) throw error;
+
+      // Update local state
+      setRestaurant((prev: any) => ({
+        ...prev,
+        [updateField]: null
+      }));
+
+      toast({
+        title: t('restaurantProfile.success'),
+        description: t('restaurantProfile.imageRemoved'),
+      });
+
+      if (onUpdate) onUpdate();
+
+    } catch (error) {
+      console.error('Error removing image:', error);
+      toast({
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.removeError'),
+        variant: "destructive"
+      });
     }
   };
 
@@ -223,7 +361,133 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-6">
+            {/* Restaurant Images Section */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">{t('restaurantProfile.images')}</h3>
+              
+              {/* Cover Photo */}
+              <div className="space-y-2">
+                <Label>{t('restaurantProfile.coverPhoto')}</Label>
+                <div className="relative">
+                  <div className="aspect-video w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden">
+                    {restaurant?.cover_image_url ? (
+                      <div className="relative w-full h-full">
+                        <img 
+                          src={restaurant.cover_image_url} 
+                          alt="Cover photo"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 right-2 flex gap-2">
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleImageRemove('cover')}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <Camera className="h-12 w-12 text-gray-400 mx-auto mb-2" />
+                        <p className="text-sm text-gray-500">{t('restaurantProfile.noCoverPhoto')}</p>
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    id="cover-upload"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageUpload(file, 'cover');
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="absolute bottom-2 right-2"
+                    onClick={() => document.getElementById('cover-upload')?.click()}
+                    disabled={uploadingCover}
+                  >
+                    {uploadingCover ? (
+                      <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+                    ) : (
+                      <Upload className="h-4 w-4" />
+                    )}
+                    <span className="ml-2">{uploadingCover ? t('restaurantProfile.uploading') : t('restaurantProfile.upload')}</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Logo Photo */}
+              <div className="space-y-2">
+                <Label>{t('restaurantProfile.logoPhoto')}</Label>
+                <div className="relative">
+                  <div className="w-32 h-32 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden">
+                    {restaurant?.logo_url ? (
+                      <div className="relative w-full h-full">
+                        <img 
+                          src={restaurant.logo_url} 
+                          alt="Logo"
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                        <div className="absolute top-1 right-1">
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleImageRemove('logo')}
+                            className="h-6 w-6 p-0"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <User className="h-8 w-8 text-gray-400 mx-auto mb-1" />
+                        <p className="text-xs text-gray-500">{t('restaurantProfile.noLogo')}</p>
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    id="logo-upload"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageUpload(file, 'logo');
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="absolute -bottom-8 left-0 right-0 mx-auto w-fit"
+                    onClick={() => document.getElementById('logo-upload')?.click()}
+                    disabled={uploadingLogo}
+                  >
+                    {uploadingLogo ? (
+                      <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+                    ) : (
+                      <Upload className="h-4 w-4" />
+                    )}
+                    <span className="ml-2">{uploadingLogo ? t('restaurantProfile.uploading') : t('restaurantProfile.upload')}</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* Rest of the form */}
             <div className="space-y-2">
               <Label htmlFor="name">{t('restaurantProfile.restaurantName')}</Label>
               <Input
