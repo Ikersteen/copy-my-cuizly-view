@@ -136,7 +136,7 @@ Base de données Cuizly : Tu as accès aux restaurants montréalais, leurs menus
     }
 
     const data = await response.json();
-    let finalResponse = '';
+    let finalResponseText = '';
 
     // Handle tool calls if present
     if (data.choices[0].message.tool_calls) {
@@ -186,7 +186,7 @@ Base de données Cuizly : Tu as accès aux restaurants montréalais, leurs menus
         ...toolResults
       ];
       
-      const finalResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      const finalResponseCall = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${OPENAI_API_KEY}`,
@@ -200,21 +200,21 @@ Base de données Cuizly : Tu as accès aux restaurants montréalais, leurs menus
         }),
       });
       
-      if (finalResponse.ok) {
-        const finalData = await finalResponse.json();
-        finalResponse = finalData.choices[0].message.content;
+      if (finalResponseCall.ok) {
+        const finalData = await finalResponseCall.json();
+        finalResponseText = finalData.choices[0].message.content;
       } else {
-        finalResponse = "Désolé, j'ai eu un problème pour traiter votre demande avec les outils.";
+        finalResponseText = "Désolé, j'ai eu un problème pour traiter votre demande avec les outils.";
       }
     } else {
-      finalResponse = data.choices[0].message.content;
+      finalResponseText = data.choices[0].message.content;
     }
 
     console.log('ChatGPT processed message:', message);
-    console.log('Final response:', finalResponse);
+    console.log('Final response:', finalResponseText);
 
     return new Response(
-      JSON.stringify({ response: finalResponse }),
+      JSON.stringify({ response: finalResponseText }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       },

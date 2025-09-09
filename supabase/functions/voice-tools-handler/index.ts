@@ -101,15 +101,15 @@ serve(async (req) => {
         };
         break;
       case 'get_restaurant_recommendations':
-        const { cuisine, neighborhood, budget, dietary_restrictions } = toolArgs;
+        const { cuisine: restoCuisine, neighborhood, budget, dietary_restrictions } = toolArgs;
         result = {
-          message: `Voici des recommandations de restaurants${cuisine ? ` ${cuisine}` : ''}${neighborhood ? ` dans ${neighborhood}` : ''} avec adresses complètes :`,
+          message: `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''}${neighborhood ? ` dans ${neighborhood}` : ''} avec adresses complètes :`,
           restaurants: [
             {
               name: "Restaurant Le Bremner",
               address: "117 Rue Saint-Paul Ouest, Montréal, QC H2Y 1Z5",
               phone: "(514) 544-0100",
-              cuisine: cuisine || "Fruits de mer",
+              cuisine: restoCuisine || "Fruits de mer",
               neighborhood: neighborhood || "Vieux-Montréal",
               budget: budget || "Moyen (35-55$ par personne)",
               rating: 4.5,
@@ -121,7 +121,7 @@ serve(async (req) => {
               name: "Joe Beef",
               address: "2491 Rue Notre-Dame Ouest, Montréal, QC H3J 1N6",
               phone: "(514) 935-6504", 
-              cuisine: cuisine || "Bistro français",
+              cuisine: restoCuisine || "Bistro français",
               neighborhood: neighborhood || "Little Burgundy",
               budget: budget || "Élevé (60-90$ par personne)",
               rating: 4.7,
@@ -133,7 +133,7 @@ serve(async (req) => {
               name: "Schwartz's Deli",
               address: "3895 Boulevard Saint-Laurent, Montréal, QC H2W 1X9",
               phone: "(514) 842-4813",
-              cuisine: cuisine || "Deli traditionnel",
+              cuisine: restoCuisine || "Deli traditionnel",
               neighborhood: neighborhood || "Plateau-Mont-Royal", 
               budget: budget || "Économique (15-25$ par personne)",
               rating: 4.3,
