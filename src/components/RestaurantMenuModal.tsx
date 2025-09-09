@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare } from "lucide-react";
+import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -109,6 +109,12 @@ interface Restaurant {
   cover_image_url?: string;
   rating?: number;
   delivery_time?: string;
+  delivery_radius?: number;
+  opening_hours?: any;
+  service_types?: string[];
+  restaurant_specialties?: string[];
+  instagram_url?: string;
+  facebook_url?: string;
 }
 
 interface RestaurantMenuModalProps {
@@ -212,16 +218,17 @@ export const RestaurantMenuModal = ({
         <div className="space-y-6">
           {/* Restaurant Info */}
           <div className="space-y-4">
-            {/* Metadata */}
-            <div className="flex flex-wrap items-center gap-4 text-sm">
-              {restaurant.delivery_time && (
+            {/* Restaurant Name and Info */}
+            <div className="space-y-3">
+              <span className="text-lg font-bold text-foreground block">{restaurant.name}</span>
+              
+              <div className="flex flex-wrap items-center gap-4 text-sm">
+                {/* Delivery Time */}
                 <div className="flex items-center space-x-1 text-muted-foreground">
                   <Clock className="h-4 w-4" />
-                  <span>{restaurant.delivery_time}</span>
+                  <span>{restaurant.delivery_radius ? `${restaurant.delivery_radius * 5}-${restaurant.delivery_radius * 8} min` : '25-40 min'}</span>
                 </div>
-              )}
-              <div className="space-y-1">
-                <span className="text-lg font-bold text-foreground block">{restaurant.name}</span>
+                
                 <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
               </div>
             </div>
@@ -250,11 +257,11 @@ export const RestaurantMenuModal = ({
               )}
 
               {/* Service Types */}
-              {(restaurant as any).service_types && (restaurant as any).service_types.length > 0 && (
+              {restaurant.service_types && restaurant.service_types.length > 0 && (
                 <div className="space-y-2">
                   <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.serviceTypes')}</h4>
                   <div className="flex flex-wrap gap-2">
-                    {(restaurant as any).service_types.map((service: string, index: number) => (
+                    {restaurant.service_types.map((service: string, index: number) => (
                       <Badge key={index} variant="outline" className="text-xs">
                         {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[currentLanguage] || service}
                       </Badge>
@@ -264,20 +271,22 @@ export const RestaurantMenuModal = ({
               )}
 
               {/* Restaurant Specialties */}
-              {(restaurant as any).restaurant_specialties && (restaurant as any).restaurant_specialties.length > 0 && (
+              {restaurant.restaurant_specialties && restaurant.restaurant_specialties.length > 0 && (
                 <div className="space-y-2">
                   <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.specialties')}</h4>
                   <div className="text-sm text-muted-foreground">
-                    {(restaurant as any).restaurant_specialties.join(' • ')}
+                    {restaurant.restaurant_specialties.join(' • ')}
                   </div>
                 </div>
               )}
             </div>
 
             {/* Contact Info */}
-            {(restaurant.phone || restaurant.email) && (
-              <>
-                <Separator />
+            <>
+              <Separator />
+              <div className="space-y-4">
+                <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.contact')}</h4>
+                
                 <div className="space-y-2">
                   {restaurant.phone && (
                     <div className="flex items-center space-x-2 text-sm">
@@ -292,8 +301,51 @@ export const RestaurantMenuModal = ({
                     </div>
                   )}
                 </div>
-              </>
-            )}
+
+                {/* Opening Hours */}
+                {restaurant.opening_hours && (
+                  <div className="space-y-2">
+                    <h5 className="text-xs font-medium text-foreground">{t('restaurantMenu.openingHours')}</h5>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
+                        <Badge key={day} variant="outline" className="text-xs">
+                          {day}: {hours as string}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Social Media */}
+                {(restaurant.instagram_url || restaurant.facebook_url) && (
+                  <div className="space-y-2">
+                    <h5 className="text-xs font-medium text-foreground">{t('restaurantMenu.socialMedia')}</h5>
+                    <div className="flex gap-3">
+                      {restaurant.instagram_url && (
+                        <a 
+                          href={restaurant.instagram_url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-80 transition-opacity"
+                        >
+                          <Instagram className="h-4 w-4" />
+                        </a>
+                      )}
+                      {restaurant.facebook_url && (
+                        <a 
+                          href={restaurant.facebook_url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white hover:opacity-80 transition-opacity"
+                        >
+                          <Facebook className="h-4 w-4" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
           </div>
 
           <Separator />
