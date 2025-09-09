@@ -349,9 +349,6 @@ export const ImprovedRestaurantProfileModal = ({
         <div className="px-6 pt-6 pb-0">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold text-center">{t('restaurantProfile.title')}</DialogTitle>
-            <DialogDescription className="text-center text-sm text-muted-foreground">
-              {t('restaurantProfile.description')}
-            </DialogDescription>
           </DialogHeader>
         </div>
 
@@ -478,21 +475,6 @@ export const ImprovedRestaurantProfileModal = ({
                   </div>
                 </div>
 
-                {/* Restaurant Name and Basic Info */}
-                <div className="pb-2 text-white">
-                  <h1 className="text-2xl font-bold mb-1">{restaurant?.name || formData.name || t('restaurantProfile.restaurantName')}</h1>
-                  <div className="flex items-center gap-4 text-sm text-white/90">
-                    {restaurant?.cuisine_type && restaurant.cuisine_type.length > 0 && (
-                      <span>{restaurant.cuisine_type.slice(0, 2).join(' • ')}</span>
-                    )}
-                    {restaurant?.address && (
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        Montreal
-                      </span>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
 
