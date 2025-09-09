@@ -6,6 +6,8 @@ import PricingSectionLanding from "@/components/PricingSectionLanding";
 import ContactSectionLanding from "@/components/ContactSectionLanding";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import RestaurantsSection from "@/components/RestaurantsSection";
+import { RecommendationCardsSection } from "@/components/RecommendationCardsSection";
 import cuizlyLogo from "/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png";
 import { useTranslation } from "react-i18next";
 
@@ -131,6 +133,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+      <RecommendationCardsSection />
+      <RestaurantsSection />
       <FeaturesSectionLanding />
       <HowItWorksSection />
       <PricingSectionLanding />
