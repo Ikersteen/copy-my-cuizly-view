@@ -274,6 +274,26 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="instagram_url">{t('restaurantProfile.instagramUrl')}</Label>
+              <Input
+                id="instagram_url"
+                value={formData.instagram_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
+                placeholder="https://www.instagram.com/monrestaurant"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="facebook_url">{t('restaurantProfile.facebookUrl')}</Label>
+              <Input
+                id="facebook_url"
+                value={formData.facebook_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
+                placeholder="https://www.facebook.com/monrestaurant"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label>{t('restaurantProfile.openingHours')}</Label>
               <p className="text-sm text-muted-foreground">{t('restaurantProfile.openingHoursDesc')}</p>
               <div className="space-y-2">
@@ -478,33 +498,6 @@ export const ImprovedRestaurantProfileModal = ({
                   ))}
                 </div>
               )}
-            </div>
-
-            {/* Social Media Links */}
-            <div className="space-y-4 pt-4 border-t">
-              <h3 className="text-lg font-semibold">{t('restaurantProfile.socialMedia')}</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="instagram">{t('restaurantProfile.instagram')}</Label>
-                  <Input
-                    id="instagram"
-                    value={formData.instagram_url}
-                    onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
-                    placeholder={t('restaurantProfile.instagramPlaceholder')}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="facebook">{t('restaurantProfile.facebook')}</Label>
-                  <Input
-                    id="facebook"
-                    value={formData.facebook_url}
-                    onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
-                    placeholder={t('restaurantProfile.facebookPlaceholder')}
-                  />
-                </div>
-              </div>
             </div>
 
             <div className="flex justify-end gap-2 pt-4">
