@@ -274,26 +274,6 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="instagram_url">{t('restaurantProfile.instagram')}</Label>
-              <Input
-                id="instagram_url"
-                value={formData.instagram_url}
-                onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
-                placeholder="https://instagram.com/votre_restaurant"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="facebook_url">{t('restaurantProfile.facebook')}</Label>
-              <Input
-                id="facebook_url"
-                value={formData.facebook_url}
-                onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
-                placeholder="https://facebook.com/votre_restaurant"
-              />
-            </div>
-
-            <div className="space-y-2">
               <Label>{t('restaurantProfile.openingHours')}</Label>
               <p className="text-sm text-muted-foreground">{t('restaurantProfile.openingHoursDesc')}</p>
               <div className="space-y-2">
