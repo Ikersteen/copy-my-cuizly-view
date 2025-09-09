@@ -253,15 +253,19 @@ export default function RestaurantMenu() {
                 {/* Main info section */}
                 <div className="p-6 flex items-start gap-6">
                   {/* Logo à gauche */}
-                  {restaurant.logo_url && (
-                    <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 border-4 border-border rounded-xl overflow-hidden bg-background shadow-lg">
+                  <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 border-4 border-border rounded-xl overflow-hidden bg-background shadow-lg">
+                    {restaurant.logo_url ? (
                       <img 
                         src={restaurant.logo_url} 
                         alt={restaurant.name}
                         className="w-full h-full object-cover"
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-cuizly-primary/20 to-cuizly-secondary/20 flex items-center justify-center">
+                        <ChefHat className="h-8 w-8 text-cuizly-primary" />
+                      </div>
+                    )}
+                  </div>
                   
                   {/* Informations du restaurant */}
                   <div className="flex-1 min-w-0">
