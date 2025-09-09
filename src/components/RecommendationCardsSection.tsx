@@ -295,24 +295,56 @@ export const RecommendationCardsSection = () => {
         return;
       }
 
-      // EXACT MATCHING ALGORITHM - Score restaurants with precise preference matching
-      const scoredRestaurants = restaurantsData.map(restaurant => {
-        let score = 0; // Start from 0 for exact matching
-        const currentHour = new Date().getHours();
-        const currentMealTime = getCurrentMealTime(currentHour);
-        
-        // 0. ALLERGENS IDENTIFIED MATCHING (HIGHEST PRIORITY - 50 points bonus)
-        let allergenBonus = 0;
+      // 🔒 ÉTAPE 1: FILTRAGE DE SÉCURITÉ STRICT (avant scoring)
+      const safeRestaurants = restaurantsData.filter(restaurant => {
+        // ❌ EXCLUSION ALLERGÈNES: Restaurant contient allergènes dangereux
         if (preferences?.allergens?.length) {
           const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
-          const hasIdentifiedAllergens = restaurantMenus.some(menu => 
+          const hasConflictingAllergens = restaurantMenus.some(menu =>
             menu.allergens?.some((allergen: string) => preferences.allergens.includes(allergen))
-          );
-          if (hasIdentifiedAllergens) {
-            allergenBonus = 50; // Highest priority bonus for allergen identification
+          ) || restaurant.allergens?.some((allergen: string) => preferences.allergens.includes(allergen));
+          
+          if (hasConflictingAllergens) {
+            console.log(`🚫 EXCLUSION: ${restaurant.name} - allergènes dangereux détectés`);
+            return false; // EXCLUSION TOTALE
           }
         }
-        score += allergenBonus;
+        
+        // ❌ EXCLUSION RESTRICTIONS: Restaurant ne supporte pas les restrictions
+        if (preferences?.dietary_restrictions?.length) {
+          const restaurantMenus = menus.filter(menu => menu.restaurant_id === restaurant.id);
+          const hasCompatibleOptions = restaurantMenus.some(menu =>
+            preferences.dietary_restrictions.some(restriction =>
+              menu.dietary_restrictions?.includes(restriction)
+            )
+          ) || restaurant.dietary_restrictions?.some(restriction =>
+            preferences.dietary_restrictions.includes(restriction)
+          );
+          
+          if (!hasCompatibleOptions) {
+            console.log(`🚫 EXCLUSION: ${restaurant.name} - restrictions non supportées`);
+            return false; // EXCLUSION TOTALE
+          }
+        }
+        
+        console.log(`✅ SÉCURITAIRE: ${restaurant.name} passe le filtrage de sécurité`);
+        return true; // Restaurant sécuritaire
+      });
+
+      console.log(`🔒 FILTRAGE SÉCURITÉ: ${restaurantsData.length} → ${safeRestaurants.length} restaurants sécuritaires`);
+
+      if (safeRestaurants.length === 0) {
+        console.log('❌ Aucun restaurant sécuritaire après filtrage strict');
+        setRecommendedRestaurants([]);
+        setLoading(false);
+        return;
+      }
+
+      // 🎯 ÉTAPE 2: SCORING SOUPLE (préférences utilisateur)
+      const scoredRestaurants = safeRestaurants.map(restaurant => {
+        let score = 20; // Base score pour restaurants sécuritaires
+        const currentHour = new Date().getHours();
+        const currentMealTime = getCurrentMealTime(currentHour);
         
         // 1. EXACT CUISINE MATCHING (60% - Most Important)
         let cuisineScore = 0;
@@ -394,13 +426,14 @@ export const RecommendationCardsSection = () => {
         }
         score += dietaryScore;
 
-        // Only return restaurants with meaningful matches (score > 40)
+        console.log(`🎯 SCORING: ${restaurant.name} = ${score} points`);
+        
         return {
           ...restaurant,
-          score: Math.min(Math.round(score), 150), // Increase max score to accommodate allergen bonus
+          score: Math.min(Math.round(score), 120), // Score maximum de 120 points
           reasons: generateRecommendationReasons(restaurant, menus)
         };
-      }).filter(restaurant => restaurant.score > 60); // Only show restaurants with good matches
+      }).filter(restaurant => restaurant.score >= 40); // Restaurants avec score minimum
 
       // Helper function for meal time calculation  
       function getCurrentMealTime(hour: number): string {

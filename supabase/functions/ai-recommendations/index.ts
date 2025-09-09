@@ -72,41 +72,74 @@ serve(async (req) => {
 
     console.log(`Processing AI recommendations for ${restaurants.length} restaurants${hasPreferences ? ' with user preferences' : ' without specific preferences'}`);
 
-    // 🔒 ÉTAPE 2: FILTRAGE STRICT DE SÉCURITÉ (avant IA)
+    // 🔒 FILTRAGE DE SÉCURITÉ ABSOLUE (PRIORITÉ 1)
+    console.log('🔒 DÉBUT FILTRAGE DE SÉCURITÉ...');
+    
     const safeRestaurants = restaurants.filter(restaurant => {
-      // Exclure COMPLÈTEMENT si allergènes dangereux détectés
+      // ❌ EXCLUSION 1: Allergènes dangereux détectés
       if (preferences?.allergens?.length && restaurant.allergens?.length) {
-        const hasConflict = preferences.allergens.some(allergen =>
+        const conflictingAllergens = preferences.allergens.filter(allergen =>
           restaurant.allergens!.includes(allergen)
         );
-        if (hasConflict) {
-          console.log(`🚫 SÉCURITÉ: Restaurant ${restaurant.name} exclu - allergènes: ${restaurant.allergens.filter(a => preferences.allergens!.includes(a)).join(', ')}`);
-          return false; // EXCLUSION TOTALE
+        
+        if (conflictingAllergens.length > 0) {
+          console.log(`🚫 EXCLUSION ALLERGÈNES: ${restaurant.name} contient ${conflictingAllergens.join(', ')}`);
+          return false; // ❌ EXCLUSION TOTALE
         }
       }
       
-      // Exclure si restrictions alimentaires non respectées (strict)
-      if (preferences?.dietary_restrictions?.length && restaurant.dietary_restrictions?.length) {
-        const compatible = preferences.dietary_restrictions.some(restriction =>
-          restaurant.dietary_restrictions!.includes(restriction)
-        );
-        if (!compatible) {
-          console.log(`🚫 SÉCURITÉ: Restaurant ${restaurant.name} exclu - restrictions non compatibles`);
-          return false; // EXCLUSION TOTALE
+      // ❌ EXCLUSION 2: Restrictions alimentaires NON respectées (strict)
+      if (preferences?.dietary_restrictions?.length) {
+        // Le restaurant DOIT avoir au moins UNE restriction compatible
+        const hasCompatibleOptions = restaurant.dietary_restrictions?.length ? 
+          preferences.dietary_restrictions.some(restriction =>
+            restaurant.dietary_restrictions!.includes(restriction)
+          ) : false;
+        
+        if (!hasCompatibleOptions) {
+          console.log(`🚫 EXCLUSION RESTRICTIONS: ${restaurant.name} ne supporte aucune restriction requise`);
+          return false; // ❌ EXCLUSION TOTALE
         }
       }
       
-      return true; // Restaurant sécuritaire ✅
+      // ❌ EXCLUSION 3: Rayon de livraison dépassé
+      if (preferences?.delivery_radius && preferences?.full_address && restaurant.address) {
+        // Note: Pour une implémentation complète, ajouter calcul de distance géographique
+        // Ici on accepte tous les restaurants (distance non calculée)
+        console.log(`📍 DISTANCE: Restaurant ${restaurant.name} - vérification distance à implémenter`);
+      }
+      
+      console.log(`✅ SÉCURITAIRE: ${restaurant.name} passe tous les filtres de sécurité`);
+      return true; // ✅ Restaurant sécuritaire
     });
 
-    console.log(`🔒 FILTRAGE SÉCURITÉ: ${restaurants.length} restaurants → ${safeRestaurants.length} restaurants sécuritaires`);
+    console.log(`🔒 FILTRAGE DE SÉCURITÉ COMPLÉTÉ: ${restaurants.length} restaurants → ${safeRestaurants.length} restaurants sécuritaires`);
+    console.log('📊 RÉSULTATS FILTRAGE:');
+    console.log(`  - Exclusions allergènes: ${restaurants.length - safeRestaurants.length - (restaurants.filter(r => preferences?.dietary_restrictions?.length && (!r.dietary_restrictions?.length || !preferences.dietary_restrictions.some(restriction => r.dietary_restrictions!.includes(restriction)))).length || 0)}`);
+    console.log(`  - Exclusions restrictions: ${restaurants.filter(r => preferences?.dietary_restrictions?.length && (!r.dietary_restrictions?.length || !preferences.dietary_restrictions.some(restriction => r.dietary_restrictions!.includes(restriction)))).length || 0}`);
+    console.log(`  - Restaurants SÛRS: ${safeRestaurants.length}`);
 
     if (safeRestaurants.length === 0) {
-      console.log('❌ Aucun restaurant sécuritaire trouvé après filtrage');
+      console.log('❌ AUCUN RESTAURANT SÉCURITAIRE - Arrêt du processus');
       return new Response(
         JSON.stringify({ 
           recommendations: [],
-          message: 'Aucun restaurant compatible avec vos restrictions de sécurité' 
+          message: language === 'en' ? 
+            'No restaurants match your safety requirements (allergens/dietary restrictions)' :
+            'Aucun restaurant ne respecte vos exigences de sécurité (allergènes/restrictions alimentaires)',
+          safety_filtering: {
+            total_restaurants: restaurants.length,
+            safe_restaurants: 0,
+            excluded_by_allergens: restaurants.filter(r => 
+              preferences?.allergens?.length && r.allergens?.length &&
+              preferences.allergens.some(allergen => r.allergens!.includes(allergen))
+            ).length,
+            excluded_by_restrictions: restaurants.filter(r =>
+              preferences?.dietary_restrictions?.length && 
+              (!r.dietary_restrictions?.length || 
+               !preferences.dietary_restrictions.some(restriction => r.dietary_restrictions!.includes(restriction)))
+            ).length
+          }
         }),
         {
           status: 200,
@@ -115,7 +148,7 @@ serve(async (req) => {
       );
     }
 
-    // Analyse sémantique et scoring IA pour chaque restaurant SÉCURITAIRE uniquement
+    // 🎯 ÉTAPE 2: ANALYSE IA DES RESTAURANTS SÉCURITAIRES UNIQUEMENT
     const aiScoredRestaurants = await Promise.all(
       safeRestaurants.map(async (restaurant: Restaurant) => {
         try {
