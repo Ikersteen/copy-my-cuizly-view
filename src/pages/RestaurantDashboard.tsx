@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, LogOut } from "lucide-react";
+import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 
@@ -292,14 +292,6 @@ const RestaurantDashboard = () => {
                       <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Instagram</p>
-                      <p className="text-foreground text-sm">{restaurant.instagram_url || (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Facebook</p>
-                      <p className="text-foreground text-sm">{restaurant.facebook_url || (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
-                    </div>
-                    <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Type de cuisine' : 'Cuisine type'}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
@@ -347,6 +339,36 @@ const RestaurantDashboard = () => {
                         )}
                       </div>
                     </div>
+                    
+                    {/* Social Media Icons */}
+                    {(restaurant.instagram_url || restaurant.facebook_url) && (
+                      <div className="md:col-span-2">
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Réseaux sociaux' : 'Social Media'}</p>
+                        <div className="flex items-center gap-3">
+                          {restaurant.instagram_url && (
+                            <a 
+                              href={restaurant.instagram_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white rounded-lg transition-all duration-200 hover:shadow-lg"
+                            >
+                              <Instagram size={20} />
+                            </a>
+                          )}
+                          {restaurant.facebook_url && (
+                            <a 
+                              href={restaurant.facebook_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200 hover:shadow-lg"
+                            >
+                              <Facebook size={20} />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    
                     {restaurant.dietary_restrictions?.length > 0 && (
                       <div>
                         <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Restrictions alimentaires' : 'Dietary restrictions'}</p>
