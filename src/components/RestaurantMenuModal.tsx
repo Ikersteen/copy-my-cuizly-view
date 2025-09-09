@@ -307,11 +307,22 @@ export const RestaurantMenuModal = ({
                   <div className="space-y-2">
                     <h5 className="text-xs font-medium text-foreground">{t('restaurantMenu.openingHours')}</h5>
                     <div className="flex flex-wrap gap-2">
-                      {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
-                        <Badge key={day} variant="outline" className="text-xs">
-                          {day}: {hours as string}
-                        </Badge>
-                      ))}
+                      {Object.entries(restaurant.opening_hours).map(([day, hours]) => {
+                        // Handle both string and object formats for hours
+                        const hoursText = typeof hours === 'string' 
+                          ? hours 
+                          : typeof hours === 'object' && hours !== null
+                            ? (hours as any).closed 
+                              ? 'Fermé' 
+                              : `${(hours as any).open || ''} - ${(hours as any).close || ''}`
+                            : 'N/A';
+                        
+                        return (
+                          <Badge key={day} variant="outline" className="text-xs">
+                            {day}: {hoursText}
+                          </Badge>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
