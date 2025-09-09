@@ -508,33 +508,6 @@ export const ImprovedRestaurantProfileModal = ({
               )}
             </div>
 
-            {/* Social Media Links */}
-            <div className="space-y-4 pt-4 border-t">
-              <h3 className="text-lg font-semibold">{t('restaurantProfile.socialMedia')}</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="instagram">{t('restaurantProfile.instagram')}</Label>
-                  <Input
-                    id="instagram"
-                    value={formData.instagram_url}
-                    onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
-                    placeholder={t('restaurantProfile.instagramPlaceholder')}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="facebook">{t('restaurantProfile.facebook')}</Label>
-                  <Input
-                    id="facebook"
-                    value={formData.facebook_url}
-                    onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
-                    placeholder={t('restaurantProfile.facebookPlaceholder')}
-                  />
-                </div>
-              </div>
-            </div>
-
             <div className="flex justify-end gap-2 pt-4">
               <Button variant="outline" onClick={() => {
                 onClose?.();
