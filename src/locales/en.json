@@ -1051,8 +1051,7 @@
     "save": "Save",
     "saving": "Saving...",
     "profileUpdated": "Profile updated",
-    "profileUpdatedDesc": "Your restaurant information has been saved"
-  },
+    "profileUpdatedDesc": "Your restaurant information has been saved",
     "infoSaved": "Information has been saved",
     "errorCannotSave": "Unable to save changes",
     "accountDeactivated": "Account deactivated",
