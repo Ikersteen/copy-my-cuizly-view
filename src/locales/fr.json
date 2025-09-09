@@ -166,50 +166,7 @@
     "step2": {
       "title": "Repérez. Découvrez. Régalez-vous.",
       "description": "Découvrez en temps réel les meilleures adresses culinaires de Montréal autour de vous."
-  },
-  "restaurant": {
-    "contact": "Contact",
-    "socialMedia": "Réseaux sociaux",
-    "cuisineType": "Type de cuisine",
-    "serviceTypes": "Services disponibles",
-    "openingHours": "Horaires d'ouverture",
-    "specialties": "Spécialités",
-    "dietaryInfo": "Informations alimentaires",
-    "dietaryRestrictions": "Restrictions alimentaires",
-    "allergens": "Allergènes",
-    "orderNow": "Commander maintenant",
-    "call": "Appeler",
-    "closed": "Fermé"
-  },
-  "favorites": {
-    "add": "Ajouter aux favoris",
-    "remove": "Retirer des favoris",
-    "added": "Ajouté aux favoris",
-    "removed": "Retiré des favoris",
-    "addedToFavorites": "Restaurant ajouté à vos favoris",
-    "removedFromFavorites": "Restaurant retiré de vos favoris"
-  },
-  "share": {
-    "share": "Partager",
-    "copied": "Lien copié",
-    "linkCopied": "Lien copié dans le presse-papiers"
-  },
-  "ratings": {
-    "reviews": "avis"
-  },
-  "days": {
-    "monday": "Lundi",
-    "tuesday": "Mardi",
-    "wednesday": "Mercredi", 
-    "thursday": "Jeudi",
-    "friday": "Vendredi",
-    "saturday": "Samedi",
-    "sunday": "Dimanche"
-  },
-  "errors": {
-    "general": "Erreur",
-    "tryAgain": "Veuillez réessayer plus tard"
-  }
+    }
   },
   "mentions": {
     "title": "Mentions légales",
