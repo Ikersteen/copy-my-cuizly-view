@@ -182,43 +182,73 @@ export const RestaurantMenuModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8">
-        <DialogHeader className="space-y-3">
-          {/* Minimal Header */}
-          <div className="flex items-center gap-3">
-            {restaurant.logo_url ? (
-              <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                <img 
-                  src={restaurant.logo_url} 
-                  alt={restaurant.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0">
+        <DialogTitle className="sr-only">{restaurant.name}</DialogTitle>
+        
+        {/* Facebook-style Header with Cover Photo and Logo */}
+        <div className="relative">
+          {/* Cover Photo Background */}
+          <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+            {restaurant.cover_image_url ? (
+              <img 
+                src={restaurant.cover_image_url} 
+                alt="Photo de couverture"
+                className="w-full h-full object-cover"
+              />
             ) : (
-              <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                <ChefHat className="h-6 w-6 text-primary" />
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                <ChefHat className="h-16 w-16 text-gray-400" />
               </div>
             )}
-            <div className="min-w-0 flex-1">
-              <DialogTitle className="text-xl font-bold truncate">{restaurant.name}</DialogTitle>
-              <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
+            
+            {/* Dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          </div>
+
+          {/* Logo and Restaurant Info Overlay */}
+          <div className="absolute -bottom-6 left-6 flex items-end gap-4">
+            {/* Logo */}
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white">
+                {restaurant.logo_url ? (
+                  <img 
+                    src={restaurant.logo_url} 
+                    alt="Logo"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    <ChefHat className="h-12 w-12 text-gray-400" />
+                  </div>
+                )}
+              </div>
             </div>
-            {/* Retirer le petit coeur rouge - supprimé */}
+
+            {/* Restaurant Name and Basic Info */}
+            <div className="pb-2 text-white">
+              <h1 className="text-2xl font-bold mb-1">{restaurant.name}</h1>
+              <div className="flex items-center gap-4 text-sm text-white/90">
+                {restaurant.cuisine_type && restaurant.cuisine_type.length > 0 && (
+                  <span>{restaurant.cuisine_type.slice(0, 2).join(' • ')}</span>
+                )}
+                <span className="flex items-center gap-1">
+                  <MapPin className="h-3 w-3" />
+                  Montreal
+                </span>
+                {restaurant.price_range && (
+                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                    {restaurant.price_range}
+                  </Badge>
+                )}
+              </div>
+            </div>
           </div>
-        </DialogHeader>
+        </div>
+
+        {/* Spacer for the overlay */}
+        <div className="h-8"></div>
         
-        {/* Cover Image */}
-        {restaurant.cover_image_url && (
-          <div className="aspect-video w-full rounded-lg overflow-hidden -mt-2">
-            <img
-              src={restaurant.cover_image_url}
-              alt={`${restaurant.name} - Photo de couverture`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
-        
-        <div className="space-y-4">
+        <div className="px-6 pb-6 space-y-4">
           {/* Description - Only if exists */}
           {(restaurant.description || restaurant.description_fr || restaurant.description_en) && (
             <p className="text-sm text-muted-foreground">
@@ -445,7 +475,7 @@ export const RestaurantMenuModal = ({
               {isFavorite(restaurant.id) ? t('restaurantMenu.removeFromFavorites') : t('restaurantMenu.addToFavorites')}
             </Button>
           </div>
-        </div>
+          </div>
 
         <CommentModal
           open={showCommentModal}
