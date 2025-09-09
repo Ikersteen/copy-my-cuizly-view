@@ -11,7 +11,7 @@ import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
-import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_TRANSLATIONS } from "@/constants/cuisineTypes";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import type { User } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
@@ -338,12 +338,12 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Restrictions alimentaires</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Restrictions alimentaires' : 'Dietary restrictions'}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.dietary_restrictions?.length > 0 ? (
                           restaurant.dietary_restrictions.map((restriction, index) => (
                             <Badge key={index} variant="secondary" className="text-xs">
-                              {restriction}
+                              {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || restriction}
                             </Badge>
                           ))
                         ) : (
@@ -359,7 +359,7 @@ const RestaurantDashboard = () => {
                         {restaurant.allergens?.length > 0 ? (
                           restaurant.allergens.map((allergen, index) => (
                             <Badge key={index} variant="destructive" className="text-xs">
-                              {allergen}
+                              {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || allergen}
                             </Badge>
                           ))
                         ) : (
