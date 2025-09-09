@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook } from "lucide-react";
+import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
@@ -342,61 +342,50 @@ export const ImprovedRestaurantProfileModal = ({
 
   return (
     <Dialog open={modalIsOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0">
         <DialogTitle className="sr-only">{t('restaurantProfile.title')}</DialogTitle>
-        <DialogHeader>
-          <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
-          <DialogDescription>
-            {t('restaurantProfile.description')}
-          </DialogDescription>
-        </DialogHeader>
+        
+        {/* Header with padding */}
+        <div className="px-6 pt-6 pb-0">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold text-center">{t('restaurantProfile.title')}</DialogTitle>
+            <DialogDescription className="text-center text-sm text-muted-foreground">
+              {t('restaurantProfile.description')}
+            </DialogDescription>
+          </DialogHeader>
+        </div>
 
-        {loading ? (
-          <div className="space-y-4">
-            <div className="animate-pulse space-y-4">
-              <div className="h-4 bg-muted rounded w-3/4"></div>
-              <div className="h-10 bg-muted rounded"></div>
-              <div className="h-4 bg-muted rounded w-1/2"></div>
-              <div className="h-20 bg-muted rounded"></div>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {/* Restaurant Images Section */}
+        {/* Content area */}
+        <div className="px-6 pb-6">
+          {loading ? (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">{t('restaurantProfile.images')}</h3>
-              
-              {/* Cover Photo */}
-              <div className="space-y-2">
-                <Label>{t('restaurantProfile.coverPhoto')}</Label>
-                <div className="relative">
-                  <div className="aspect-video w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden">
-                    {restaurant?.cover_image_url ? (
-                      <div className="relative w-full h-full">
-                        <img 
-                          src={restaurant.cover_image_url} 
-                          alt="Cover photo"
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-2 right-2 flex gap-2">
-                          <Button
-                            type="button"
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleImageRemove('cover')}
-                            className="h-8 w-8 p-0"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-center">
-                        <Camera className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm text-gray-500">{t('restaurantProfile.noCoverPhoto')}</p>
-                      </div>
-                    )}
+              <div className="animate-pulse space-y-4">
+                <div className="h-4 bg-muted rounded w-3/4"></div>
+                <div className="h-10 bg-muted rounded"></div>
+                <div className="h-4 bg-muted rounded w-1/2"></div>
+                <div className="h-20 bg-muted rounded"></div>
+              </div>
+            </div>
+          ) : (
+          <div className="space-y-6">
+            {/* Facebook-style Header with Cover Photo and Logo */}
+            <div className="relative">
+              {/* Cover Photo Background */}
+              <div className="relative w-full h-48 sm:h-64 rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                {restaurant?.cover_image_url ? (
+                  <img 
+                    src={restaurant.cover_image_url} 
+                    alt="Photo de couverture"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                    <Camera className="h-16 w-16 text-gray-400" />
                   </div>
+                )}
+                
+                {/* Cover Photo Upload Button */}
+                <div className="absolute top-4 right-4">
                   <input
                     type="file"
                     accept="image/*"
@@ -409,83 +398,106 @@ export const ImprovedRestaurantProfileModal = ({
                   />
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
-                    className="absolute bottom-2 right-2"
+                    className="bg-white/90 backdrop-blur-sm hover:bg-white/100 transition-all shadow-sm"
                     onClick={() => document.getElementById('cover-upload')?.click()}
                     disabled={uploadingCover}
                   >
                     {uploadingCover ? (
                       <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
                     ) : (
-                      <Upload className="h-4 w-4" />
+                      <Camera className="h-4 w-4" />
                     )}
-                    <span className="ml-2">{uploadingCover ? t('restaurantProfile.uploading') : t('restaurantProfile.upload')}</span>
+                    <span className="ml-2">{uploadingCover ? t('restaurantProfile.uploading') : (restaurant?.cover_image_url ? 'Modifier' : 'Ajouter')}</span>
                   </Button>
                 </div>
+
+                {/* Remove Cover Photo Button */}
+                {restaurant?.cover_image_url && (
+                  <div className="absolute top-4 right-32">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleImageRemove('cover')}
+                      className="bg-red-500/90 backdrop-blur-sm hover:bg-red-600/100 transition-all shadow-sm"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+
+                {/* Dark overlay for better text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
               </div>
 
-              {/* Logo Photo */}
-              <div className="space-y-2">
-                <Label>{t('restaurantProfile.logoPhoto')}</Label>
+              {/* Logo and Restaurant Info Overlay */}
+              <div className="absolute -bottom-6 left-6 flex items-end gap-4">
+                {/* Logo */}
                 <div className="relative">
-                  <div className="w-32 h-32 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden">
+                  <div className="w-32 h-32 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white">
                     {restaurant?.logo_url ? (
-                      <div className="relative w-full h-full">
-                        <img 
-                          src={restaurant.logo_url} 
-                          alt="Logo"
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                        <div className="absolute top-1 right-1">
-                          <Button
-                            type="button"
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleImageRemove('logo')}
-                            className="h-6 w-6 p-0"
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
+                      <img 
+                        src={restaurant.logo_url} 
+                        alt="Logo"
+                        className="w-full h-full object-cover"
+                      />
                     ) : (
-                      <div className="text-center">
-                        <User className="h-8 w-8 text-gray-400 mx-auto mb-1" />
-                        <p className="text-xs text-gray-500">{t('restaurantProfile.noLogo')}</p>
+                      <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                        <User className="h-12 w-12 text-gray-400" />
                       </div>
                     )}
                   </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    id="logo-upload"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) handleImageUpload(file, 'logo');
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="absolute -bottom-8 left-0 right-0 mx-auto w-fit"
-                    onClick={() => document.getElementById('logo-upload')?.click()}
-                    disabled={uploadingLogo}
-                  >
-                    {uploadingLogo ? (
-                      <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
-                    ) : (
-                      <Upload className="h-4 w-4" />
+                  
+                  {/* Logo Upload Button */}
+                  <div className="absolute bottom-2 right-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      id="logo-upload"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleImageUpload(file, 'logo');
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      size="sm"
+                      className="w-8 h-8 p-0 rounded-full bg-primary hover:bg-primary/90 shadow-lg"
+                      onClick={() => document.getElementById('logo-upload')?.click()}
+                      disabled={uploadingLogo}
+                    >
+                      {uploadingLogo ? (
+                        <div className="animate-spin h-3 w-3 border-2 border-current border-t-transparent rounded-full" />
+                      ) : (
+                        <Camera className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Restaurant Name and Basic Info */}
+                <div className="pb-2 text-white">
+                  <h1 className="text-2xl font-bold mb-1">{restaurant?.name || formData.name || t('restaurantProfile.restaurantName')}</h1>
+                  <div className="flex items-center gap-4 text-sm text-white/90">
+                    {restaurant?.cuisine_type && restaurant.cuisine_type.length > 0 && (
+                      <span>{restaurant.cuisine_type.slice(0, 2).join(' • ')}</span>
                     )}
-                    <span className="ml-2">{uploadingLogo ? t('restaurantProfile.uploading') : t('restaurantProfile.upload')}</span>
-                  </Button>
+                    {restaurant?.address && (
+                      <span className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3" />
+                        Montreal
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
 
-            <Separator />
+            {/* Spacer for the overlay */}
+            <div className="h-8"></div>
 
             {/* Rest of the form */}
             <div className="space-y-2">
@@ -782,9 +794,10 @@ export const ImprovedRestaurantProfileModal = ({
               <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
                 {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>
-            </div>
-          </div>
-        )}
+             </div>
+           </div>
+         )}
+        </div>
       </DialogContent>
     </Dialog>
   );
