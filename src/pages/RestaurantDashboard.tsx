@@ -338,7 +338,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Restrictions alimentaires</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Restrictions alimentaires' : 'Dietary Restrictions'}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.dietary_restrictions?.length > 0 ? (
                           restaurant.dietary_restrictions.map((restriction, index) => (
