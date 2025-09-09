@@ -32,6 +32,8 @@ interface Restaurant {
   is_active: boolean;
   logo_url?: string;
   cover_image_url?: string;
+  instagram_url?: string;
+  facebook_url?: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -288,6 +290,14 @@ const RestaurantDashboard = () => {
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Rayon de livraison' : 'Delivery radius'}</p>
                       <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Instagram</p>
+                      <p className="text-foreground text-sm">{restaurant.instagram_url || (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Facebook</p>
+                      <p className="text-foreground text-sm">{restaurant.facebook_url || (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Type de cuisine' : 'Cuisine type'}</p>
