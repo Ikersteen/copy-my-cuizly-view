@@ -432,7 +432,7 @@ export const RecommendationCardsSection = () => {
           ...restaurant,
           score: Math.min(Math.round(score), 120), // Score maximum de 120 points
           reasons: generateRecommendationReasons(restaurant, menus),
-          // Ajout d'informations supplémentaires pour le modal
+          // Ajout d'informations supplémentaires pour le modal (utilise la vraie structure DB)
           service_types: (restaurant as any).service_types || ['dine_in', 'takeout', 'delivery'],
           restaurant_specialties: (restaurant as any).restaurant_specialties || ['Spécialités maison', 'Cuisine authentique', 'Produits locaux'],
           opening_hours: (restaurant as any).opening_hours || {
@@ -444,9 +444,9 @@ export const RecommendationCardsSection = () => {
             'Samedi': '10h00 - 23h00',
             'Dimanche': '10h00 - 21h00'
           },
-          social_media: (restaurant as any).social_media || {
-            instagram: 'https://instagram.com/' + restaurant.name.toLowerCase().replace(/\s+/g, ''),
-            facebook: 'https://facebook.com/' + restaurant.name.toLowerCase().replace(/\s+/g, ''),
+          social_media: {
+            instagram: (restaurant as any).instagram_url || 'https://instagram.com/' + restaurant.name.toLowerCase().replace(/\s+/g, ''),
+            facebook: (restaurant as any).facebook_url || 'https://facebook.com/' + restaurant.name.toLowerCase().replace(/\s+/g, ''),
             website: 'https://www.' + restaurant.name.toLowerCase().replace(/\s+/g, '') + '.com'
           }
         };
