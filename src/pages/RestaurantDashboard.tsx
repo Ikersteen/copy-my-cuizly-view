@@ -145,7 +145,7 @@ const RestaurantDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground">{t('dashboard.loadingDashboard')}</p>
+          <p className="text-muted-foreground">{i18n.language === 'fr' ? 'Chargement du tableau de bord...' : 'Loading dashboard...'}</p>
         </div>
       </div>
     );
@@ -213,7 +213,7 @@ const RestaurantDashboard = () => {
               )}
               <div>
                   <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                    {restaurant?.name || t('dashboard.myRestaurant')} {profile?.chef_emoji_color || '👨‍🍳'}
+                    {restaurant?.name || (i18n.language === 'fr' ? 'Mon Restaurant' : 'My Restaurant')} {profile?.chef_emoji_color || '👨‍🍳'}
                   </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
                   @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
@@ -236,10 +236,10 @@ const RestaurantDashboard = () => {
           <CardContent className="p-6">
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-2">
-                {t('dashboard.welcomeMessage')}
+                {i18n.language === 'fr' ? 'Bienvenue sur votre tableau de bord !' : 'Welcome to your dashboard!'}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {t('dashboard.welcomeDesc')}
+                {i18n.language === 'fr' ? 'Gérez vos offres, analysez vos performances et développez votre clientèle.' : 'Manage your offers, analyze your performance and grow your clientele.'}
               </p>
             </div>
           </CardContent>
@@ -258,39 +258,39 @@ const RestaurantDashboard = () => {
             {restaurant && (
               <Card className="hover:shadow-lg transition-all duration-200">
                 <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">{t('dashboard.restaurantInfo')}</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">{i18n.language === 'fr' ? 'Informations du Restaurant' : 'Restaurant Information'}</CardTitle>
                   <CardDescription className="text-sm">
-                    {t('dashboard.restaurantDetails')}
+                    {i18n.language === 'fr' ? 'Détails de votre établissement' : 'Details of your establishment'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.name')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Nom' : 'Name'}</p>
                       <p className="text-foreground text-sm sm:text-base font-medium">{restaurant.name}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.address')}</p>
-                      <p className="text-foreground text-sm">{restaurant.address || t('dashboard.notSpecified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Adresse' : 'Address'}</p>
+                      <p className="text-foreground text-sm">{restaurant.address || (i18n.language === 'fr' ? 'Non renseignée' : 'Not specified')}</p>
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">Téléphone</p>
-                      <p className="text-foreground text-sm">{restaurant.phone || t('dashboard.notSpecified')}</p>
+                      <p className="text-foreground text-sm">{restaurant.phone || (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">Email</p>
-                      <p className="text-foreground text-sm">{restaurant.email || t('dashboard.notSpecified')}</p>
+                      <p className="text-foreground text-sm">{restaurant.email || (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Gamme de prix</p>
-                      <p className="text-foreground text-sm">{restaurant.price_range || t('dashboard.notSpecified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Gamme de prix' : 'Price range'}</p>
+                      <p className="text-foreground text-sm">{restaurant.price_range || (i18n.language === 'fr' ? 'Non renseignée' : 'Not specified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Rayon de livraison</p>
-                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('dashboard.notSpecified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Rayon de livraison' : 'Delivery radius'}</p>
+                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.cuisineType')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Type de cuisine' : 'Cuisine type'}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
@@ -300,7 +300,7 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            {t('dashboard.notDefined')}
+                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
                           </Badge>
                         )}
                       </div>
@@ -316,13 +316,13 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            {t('dashboard.notDefined')}
+                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
                           </Badge>
                         )}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('dashboard.restaurantSpecialty')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Spécialité du restaurant' : 'Restaurant specialty'}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).restaurant_specialties?.length > 0 ? (
                           (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => (
@@ -332,7 +332,7 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            {t('dashboard.notDefined')}
+                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
                           </Badge>
                         )}
                       </div>
@@ -348,13 +348,13 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            {t('dashboard.notDefined')}
+                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
                           </Badge>
                         )}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Allergènes</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Allergènes' : 'Allergens'}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.allergens?.length > 0 ? (
                           restaurant.allergens.map((allergen, index) => (
@@ -364,7 +364,7 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            {t('dashboard.notDefined')}
+                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
                           </Badge>
                         )}
                       </div>
@@ -373,7 +373,7 @@ const RestaurantDashboard = () => {
                   
                   {restaurant.description && (
                     <div className="pt-4 border-t">
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('dashboard.description')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Description' : 'Description'}</p>
                       <p className="text-foreground text-sm">{restaurant.description}</p>
                     </div>
                   )}
