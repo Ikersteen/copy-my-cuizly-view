@@ -1773,9 +1773,6 @@
     "comment": "Commentaire",
     "addToFavorites": "Ajouter aux favoris",
     "removeFromFavorites": "Retirer des favoris",
-    "dietaryRestrictions": "Restrictions alimentaires",
-    "allergens": "Allergènes",
-    "deliveryRadius": "Rayon de livraison",
     "days": {
       "monday": "Lun",
       "tuesday": "Mar",

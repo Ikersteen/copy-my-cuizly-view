@@ -1893,9 +1893,6 @@
     "comment": "Comment",
     "addToFavorites": "Add to favorites",
     "removeFromFavorites": "Remove from favorites",
-    "dietaryRestrictions": "Dietary Restrictions",
-    "allergens": "Allergens",
-    "deliveryRadius": "Delivery Radius",
     "days": {
       "monday": "Mon",
       "tuesday": "Tue", 
