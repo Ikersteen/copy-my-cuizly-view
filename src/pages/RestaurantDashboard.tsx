@@ -337,30 +337,38 @@ const RestaurantDashboard = () => {
                         )}
                       </div>
                     </div>
-                    {restaurant.dietary_restrictions?.length > 0 && (
-                      <div>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Restrictions alimentaires' : 'Dietary restrictions'}</p>
-                        <div className="flex flex-wrap gap-1">
-                          {restaurant.dietary_restrictions.map((restriction, index) => (
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Restrictions alimentaires' : 'Dietary restrictions'}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {restaurant.dietary_restrictions?.length > 0 ? (
+                          restaurant.dietary_restrictions.map((restriction, index) => (
                             <Badge key={index} variant="secondary" className="text-xs">
                               {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || restriction}
                             </Badge>
-                          ))}
-                        </div>
+                          ))
+                        ) : (
+                          <Badge variant="outline" className="text-xs text-muted-foreground">
+                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
+                          </Badge>
+                        )}
                       </div>
-                    )}
-                    {restaurant.allergens?.length > 0 && (
-                      <div>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Allergènes' : 'Allergens'}</p>
-                        <div className="flex flex-wrap gap-1">
-                          {restaurant.allergens.map((allergen, index) => (
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Allergènes' : 'Allergens'}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {restaurant.allergens?.length > 0 ? (
+                          restaurant.allergens.map((allergen, index) => (
                             <Badge key={index} variant="destructive" className="text-xs">
                               {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || allergen}
                             </Badge>
-                          ))}
-                        </div>
+                          ))
+                        ) : (
+                          <Badge variant="outline" className="text-xs text-muted-foreground">
+                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
+                          </Badge>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
                   
                   {restaurant.description && (
