@@ -114,6 +114,8 @@ interface Restaurant {
   opening_hours?: any;
   service_types?: string[];
   restaurant_specialties?: string[];
+  dietary_restrictions?: string[];
+  allergens?: string[];
   instagram_url?: string;
   facebook_url?: string;
 }
@@ -184,6 +186,20 @@ export const RestaurantMenuModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8">
         <DialogHeader className="space-y-3">
+          {/* Cover Image */}
+          {restaurant.cover_image_url && (
+            <div className="relative -mx-6 -mt-6 mb-4">
+              <div className="w-full h-32 sm:h-40 overflow-hidden">
+                <img 
+                  src={restaurant.cover_image_url} 
+                  alt={restaurant.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute inset-0 bg-black/20"></div>
+            </div>
+          )}
+          
           {/* Minimal Header */}
           <div className="flex items-center gap-3">
             {restaurant.logo_url ? (
@@ -338,6 +354,44 @@ export const RestaurantMenuModal = ({
               {restaurant.restaurant_specialties && restaurant.restaurant_specialties.length > 0 && (
                 <div className="text-xs text-muted-foreground">
                   <span className="font-medium">{t('restaurantMenu.specialties')}:</span> {restaurant.restaurant_specialties.join(' • ')}
+                </div>
+              )}
+
+              {/* Dietary Restrictions */}
+              {restaurant.dietary_restrictions && restaurant.dietary_restrictions.length > 0 && (
+                <div className="space-y-2">
+                  <div className="text-xs font-medium text-foreground">{t('restaurantMenu.dietaryRestrictions')}</div>
+                  <div className="flex flex-wrap gap-1">
+                    {restaurant.dietary_restrictions.map((restriction: string, index: number) => (
+                      <Badge key={index} variant="secondary" className="text-xs px-2 py-0.5">
+                        {restriction}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Allergens */}
+              {restaurant.allergens && restaurant.allergens.length > 0 && (
+                <div className="space-y-2">
+                  <div className="text-xs font-medium text-foreground flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                    {t('restaurantMenu.allergens')}
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {restaurant.allergens.map((allergen: string, index: number) => (
+                      <Badge key={index} variant="destructive" className="text-xs px-2 py-0.5">
+                        {allergen}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Delivery Radius */}
+              {restaurant.delivery_radius && (
+                <div className="text-xs text-muted-foreground">
+                  <span className="font-medium">{t('restaurantMenu.deliveryRadius')}:</span> {restaurant.delivery_radius} km
                 </div>
               )}
             </TabsContent>
