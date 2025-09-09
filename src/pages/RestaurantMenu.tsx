@@ -14,7 +14,8 @@ import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 
-const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
+// Composant pour afficher l'évaluation avec le prix
+const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
   const [rating, setRating] = useState<number | null>(null);
   const [totalRatings, setTotalRatings] = useState(0);
 
@@ -57,16 +58,28 @@ const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
     };
   }, [restaurantId]);
 
-  if (!rating || totalRatings === 0) return null;
-
   return (
-    <>
-      <span className="text-muted-foreground">•</span>
-      <div className="flex items-center space-x-1">
-        <Star className="h-4 w-4 fill-current text-yellow-500" />
-        <span className="text-sm font-medium">{rating}</span>
-      </div>
-    </>
+    <div className="flex items-center space-x-1">
+      <MapPin className="h-4 w-4 text-muted-foreground" />
+      <span className="text-sm text-muted-foreground">Montreal</span>
+      {priceRange && (
+        <>
+          <span className="text-muted-foreground">•</span>
+          <Badge variant="secondary">
+            {priceRange}
+          </Badge>
+        </>
+      )}
+      {rating && totalRatings > 0 && (
+        <>
+          <span className="text-muted-foreground">•</span>
+          <div className="flex items-center space-x-1">
+            <Star className="h-4 w-4 fill-current text-yellow-500" />
+            <span className="text-sm font-medium">{rating}</span>
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 
@@ -249,39 +262,61 @@ export default function RestaurantMenu() {
             
             {/* Restaurant Info Card */}
             <CardContent className="p-0">
-              <div className="relative bg-background">                
+              <div className="relative bg-background">
+                {/* Logo positioned over the edge */}
+                {restaurant.logo_url && (
+                  <div className="absolute -top-12 left-6 w-24 h-24 border-4 border-background rounded-xl overflow-hidden bg-background shadow-lg">
+                    <img 
+                      src={restaurant.logo_url} 
+                      alt={restaurant.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                
                 {/* Main info section */}
-                <div className="p-6 flex items-start gap-6">
-                  {/* Logo à gauche */}
-                  {restaurant.logo_url && (
-                    <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 border-4 border-border rounded-xl overflow-hidden bg-background shadow-lg">
-                      <img 
-                        src={restaurant.logo_url} 
-                        alt={restaurant.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  
-                  {/* Informations du restaurant */}
-                  <div className="flex-1 min-w-0">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-                      {restaurant.name}
-                    </h1>
-                    <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-4 w-4" />
-                        <span className="text-sm">Montreal</span>
+                <div className={`p-6 ${restaurant.logo_url ? 'pt-16' : 'pt-6'}`}>
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                    <div className="flex-1">
+                      <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                        {restaurant.name}
+                      </h1>
+                      <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4" />
+                          <span className="text-sm">Montreal</span>
+                        </div>
+                        {restaurant.price_range && (
+                          <>
+                            <span>•</span>
+                            <Badge variant="secondary" className="font-medium">
+                              {restaurant.price_range}
+                            </Badge>
+                          </>
+                        )}
+                        <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
                       </div>
-                      {restaurant.price_range && (
-                        <>
-                          <span>•</span>
-                          <Badge variant="secondary" className="font-medium">
-                            {restaurant.price_range}
-                          </Badge>
-                        </>
-                      )}
-                      <RatingDisplay restaurantId={restaurant.id} />
+                    </div>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant={isFavorite(restaurant.id) ? "default" : "outline"}
+                        size="sm"
+                        onClick={handleToggleFavorite}
+                        className="flex items-center gap-2"
+                      >
+                        <Heart className={`h-4 w-4 ${isFavorite(restaurant.id) ? 'fill-current' : ''}`} />
+                        {isFavorite(restaurant.id) ? 'Favori' : 'Ajouter aux favoris'}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowCommentModal(true)}
+                      >
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        Avis
+                      </Button>
                     </div>
                   </div>
                 </div>
