@@ -14,8 +14,7 @@ import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 
-// Composant pour afficher l'évaluation avec le prix
-const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
+const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
   const [rating, setRating] = useState<number | null>(null);
   const [totalRatings, setTotalRatings] = useState(0);
 
@@ -58,28 +57,16 @@ const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; pri
     };
   }, [restaurantId]);
 
+  if (!rating || totalRatings === 0) return null;
+
   return (
-    <div className="flex items-center space-x-1">
-      <MapPin className="h-4 w-4 text-muted-foreground" />
-      <span className="text-sm text-muted-foreground">Montreal</span>
-      {priceRange && (
-        <>
-          <span className="text-muted-foreground">•</span>
-          <Badge variant="secondary">
-            {priceRange}
-          </Badge>
-        </>
-      )}
-      {rating && totalRatings > 0 && (
-        <>
-          <span className="text-muted-foreground">•</span>
-          <div className="flex items-center space-x-1">
-            <Star className="h-4 w-4 fill-current text-yellow-500" />
-            <span className="text-sm font-medium">{rating}</span>
-          </div>
-        </>
-      )}
-    </div>
+    <>
+      <span className="text-muted-foreground">•</span>
+      <div className="flex items-center space-x-1">
+        <Star className="h-4 w-4 fill-current text-yellow-500" />
+        <span className="text-sm font-medium">{rating}</span>
+      </div>
+    </>
   );
 };
 
@@ -294,7 +281,7 @@ export default function RestaurantMenu() {
                           </Badge>
                         </>
                       )}
-                      <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
+                      <RatingDisplay restaurantId={restaurant.id} />
                     </div>
                   </div>
                 </div>
