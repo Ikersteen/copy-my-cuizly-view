@@ -305,12 +305,6 @@ export const SavedFavoritesSection = () => {
           </div>
         )}
       </div>
-      
-      <RestaurantMenuModal 
-        open={showRestaurantModal}
-        onOpenChange={setShowRestaurantModal}
-        restaurant={selectedRestaurant}
-      />
     </section>
   );
 };

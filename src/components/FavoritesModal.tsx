@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,11 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Star, MapPin } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { supabase } from "@/integrations/supabase/client";
-import { RestaurantMenuModal } from "./RestaurantMenuModal";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
-import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface FavoritesModalProps {
   open: boolean;
@@ -34,10 +34,9 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { favorites, toggleFavorite } = useFavorites();
+  const navigate = useNavigate();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-  const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
   useEffect(() => {
     if (open && favorites.length > 0) {
@@ -138,16 +137,17 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                     </div>
                     <Badge variant="secondary">{restaurant.price_range}</Badge>
                   </div>
-                  <Button 
-                    className="w-full mt-3" 
-                    size="sm"
-                    onClick={() => {
-                      // Track profile view
-                      trackProfileView(restaurant.id);
-                      setSelectedRestaurant(restaurant);
-                      setShowRestaurantModal(true);
-                    }}
-                  >
+                   <Button 
+                     className="w-full mt-3" 
+                     size="sm"
+                     onClick={() => {
+                       // Track profile view
+                       trackProfileView(restaurant.id);
+                       // Navigate to restaurant page
+                       navigate(`/restaurant/${restaurant.id}`);
+                       onOpenChange(false);
+                     }}
+                   >
                     {t('favorites.viewProfile')}
                   </Button>
                 </CardContent>
@@ -156,12 +156,6 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
           </div>
         )}
       </DialogContent>
-      
-      <RestaurantMenuModal 
-        open={showRestaurantModal}
-        onOpenChange={setShowRestaurantModal}
-        restaurant={selectedRestaurant}
-      />
     </Dialog>
   );
 };

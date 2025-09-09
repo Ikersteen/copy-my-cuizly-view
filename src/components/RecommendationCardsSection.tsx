@@ -7,12 +7,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import LoadingSpinner from "./LoadingSpinner";
-import { RestaurantMenuModal } from "./RestaurantMenuModal";
 import { RestaurantFiltersModal, RestaurantFilterOptions } from "./RestaurantFiltersModal";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_TRANSLATIONS, CUISINE_OPTIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
+import { useNavigate } from "react-router-dom";
 
 interface Restaurant {
   id: string;
@@ -781,12 +781,6 @@ export const RecommendationCardsSection = () => {
           </Button>
         </div>
       </div>
-      
-      <RestaurantMenuModal 
-        open={showRestaurantModal}
-        onOpenChange={setShowRestaurantModal}
-        restaurant={selectedRestaurant}
-      />
       
       <RestaurantFiltersModal 
         open={showFilters}
