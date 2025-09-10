@@ -68,11 +68,11 @@ export const useProfile = () => {
         } catch (error) {
           console.error(`Profile load error (attempt ${retryCount + 1}):`, error);
           if (retryCount === maxRetries - 1) {
-            toast({
-              title: t('toasts.connectionProblem'),
-              description: t('toasts.cannotLoadProfile'),
-              variant: "destructive"
-            });
+      toast({
+        title: t('errors.title'),
+        description: t('errors.connectionProblem'),
+        variant: "destructive"
+      });
           }
           retryCount++;
           if (retryCount < maxRetries) {
@@ -125,16 +125,16 @@ export const useProfile = () => {
       console.log('✅ Profile updated successfully:', data);
 
       toast({
-        title: t('toasts.profileUpdated'),
-        description: t('toasts.informationSaved')
+        title: t('profile.profileUpdated'),
+        description: t('profile.informationSaved')
       });
       
       return { success: true };
     } catch (error) {
       console.error('❌ updateProfile error:', error);
       toast({
-        title: t('toasts.error'),
-        description: t('toasts.cannotSaveProfile'),
+        title: t('errors.title'),
+        description: t('profile.cannotSaveProfile'),
         variant: "destructive"
       });
       return { success: false, error };

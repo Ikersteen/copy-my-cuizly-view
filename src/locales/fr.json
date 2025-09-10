@@ -440,7 +440,10 @@
     "deleteAccountDescription": "Cette action est irréversible. Votre compte et toutes vos données seront définitivement supprimés.",
     "deleteAccount": "Supprimer le compte",
     "saving": "Sauvegarde...",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "profileUpdated": "Profil mis à jour",
+    "informationSaved": "Vos informations ont été sauvegardées avec succès",
+    "cannotSaveProfile": "Impossible de sauvegarder le profil en ce moment"
   },
   "comments": {
     "title": "Partagez votre expérience avec d'autres gourmets",

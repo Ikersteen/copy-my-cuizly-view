@@ -209,7 +209,10 @@
     "cannotUploadAvatar": "Cannot upload avatar",
     "selected": "Selected:",
     "emojiAvatar": "Emoji Avatar",
-    "chooseEmoji": "Choose your emoji"
+    "chooseEmoji": "Choose your emoji",
+    "profileUpdated": "Profile updated",
+    "informationSaved": "Your information has been saved successfully",
+    "cannotSaveProfile": "Cannot save profile at the moment"
   },
   "preferences": {
     "title": "Preferences",
