@@ -769,6 +769,7 @@
     "cannotLoadProfile": "Cannot load profile information",
     "cannotLoadPreferences": "Cannot load preferences",
     "preferencesUpdateError": "Cannot update preferences"
+  },
   "restaurantProfile": {
     "title": "Restaurant Profile",
     "basicInfo": "Basic Information",
