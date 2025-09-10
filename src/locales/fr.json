@@ -851,21 +851,6 @@
     "legalNotices": "Mentions légales",
     "instagram": "Instagram"
   },
-  "restaurantProfile": {
-    "title": "Profil du Restaurant",
-    "basicInfo": "Informations de base",
-    "contactInfo": "Informations de contact",
-    "operatingInfo": "Informations d'exploitation",
-    "success": "Succès",
-    "imageUploaded": "Image téléchargée avec succès",
-    "imageRemoved": "Image supprimée avec succès",
-    "profileUpdated": "Profil mis à jour avec succès",
-    "cannotSave": "Impossible de sauvegarder le profil",
-    "validationError": "Erreur de validation",
-    "uploadCover": "Télécharger une photo de couverture",
-    "removeCover": "Supprimer la photo de couverture",
-    "clickToAddCover": "Cliquez pour ajouter une photo de couverture"
-  },
   "profile": {
     "cancel": "Annuler",
     "modify": "Modifier",
@@ -1010,22 +995,6 @@
     "uploadingCover": "Upload de la photo de couverture...",
     "uploadingLogo": "Upload du logo...",
     "cancel": "Annuler",
-    "save": "Sauvegarder",
-    "saving": "Sauvegarde...",
-    "profileUpdated": "Profil mis à jour",
-    "profileUpdatedDesc": "Les informations de votre restaurant ont été sauvegardées",
-    "saved": "Sauvegardé",
-    "savedSuccessfully": "Les informations de votre restaurant ont été sauvegardées avec succès",
-    "success": "Succès",
-    "imageUploaded": "Image téléchargée avec succès",
-    "imageRemoved": "Image supprimée avec succès",
-    "uploadError": "Erreur lors du téléchargement de l'image",
-    "removeError": "Erreur lors de la suppression de l'image",
-    "selectValidImage": "Veuillez sélectionner une image valide",
-    "imageTooLarge": "L'image est trop volumineuse (max 5MB)",
-    "error": "Erreur",
-    "saveError": "Une erreur s'est produite lors de la sauvegarde du profil",
-    "nameRequired": "Le nom du restaurant est requis"
   },
   "favorites": {
     "title": "Mes restaurants favoris",
@@ -1355,7 +1324,6 @@
     "uploadingLogo": "Upload du logo...",
     "restaurantName": "Nom du restaurant",
     "restaurantNamePlaceholder": "Le nom de votre restaurant",
-    "description": "Description",
     "descriptionPlaceholder": "Décrivez votre restaurant...",
     "address": "Adresse",
     "addressPlaceholder": "Adresse de votre restaurant",
@@ -1421,7 +1389,14 @@
     "cannotDelete": "Impossible de traiter la demande de suppression",
     "confirmationError": "Veuillez taper exactement 'Supprimer mon compte' pour confirmer",
     "clickToAddCover": "Cliquer pour ajouter une photo de couverture",
-    "imageUploaded": "Image uploadée avec succès"
+    "imageUploaded": "Image uploadée avec succès",
+    "success": "Succès",
+    "imageRemoved": "Image supprimée avec succès",
+    "uploadError": "Erreur lors du téléchargement de l'image",
+    "selectValidImage": "Veuillez sélectionner une image valide",
+    "imageTooLarge": "L'image doit faire moins de 5 Mo",
+    "nameRequired": "Le nom du restaurant est requis",
+    "saveError": "Une erreur s'est produite lors de la sauvegarde du profil"
   },
   "dashboard": {
     "hello": "Bonjour",
