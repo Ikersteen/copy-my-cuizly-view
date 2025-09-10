@@ -473,14 +473,29 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">{t('restaurantProfile.description')}</Label>
+              <div className="flex justify-between items-center">
+                <Label htmlFor="description">{t('restaurantProfile.description')}</Label>
+                <span className={`text-xs ${formData.description.length > 200 ? 'text-destructive' : 'text-muted-foreground'}`}>
+                  {formData.description.length}/200
+                </span>
+              </div>
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                onChange={(e) => {
+                  if (e.target.value.length <= 200) {
+                    setFormData(prev => ({ ...prev, description: e.target.value }));
+                  }
+                }}
                 placeholder={t('restaurantProfile.descriptionPlaceholder')}
                 className="min-h-[100px]"
+                maxLength={200}
               />
+              {formData.description.length > 190 && (
+                <p className="text-xs text-muted-foreground">
+                  {200 - formData.description.length} caractères restants
+                </p>
+              )}
             </div>
 
             <AddressSelector
