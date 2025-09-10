@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { parseAddress, formatAddress } from "@/lib/addressUtils";
+import { useTranslation } from 'react-i18next';
 
 interface AddressSelectorProps {
   value?: string;
@@ -83,11 +84,13 @@ const MONTREAL_NEIGHBORHOODS = [
 export const AddressSelector = ({
   value = "",
   onChange,
-  placeholder = "Commencez à taper une adresse à Montréal...",
+  placeholder,
   label = "Adresse",
   className,
   required = false
 }: AddressSelectorProps) => {
+  const { t } = useTranslation();
+  const defaultPlaceholder = placeholder || t('common.startAddressTypingGeneral');
   const [inputValue, setInputValue] = useState(value);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -199,7 +202,7 @@ export const AddressSelector = ({
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
           onFocus={() => inputValue.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
-          placeholder={placeholder}
+          placeholder={defaultPlaceholder}
           className="pr-10"
           required={required}
         />

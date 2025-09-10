@@ -34,7 +34,7 @@ const HowItWorksSection = () => {
             <div className="bg-card rounded-2xl shadow-xl p-6 border">
               <img 
                 src="/lovable-uploads/1d140305-65ec-41f2-9f80-b1f332a56fe6.png" 
-                alt="Interface Assistant Vocal Cuizly" 
+                alt={t('common.voiceInterface')} 
                 className="w-full h-auto object-cover rounded-xl"
               />
             </div>

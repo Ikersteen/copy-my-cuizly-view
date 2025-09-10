@@ -478,7 +478,7 @@ export const RestaurantProfileModal = ({
                   id="phone"
                   value={formData.phone || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  placeholder="+1 (XXX) XXX-XXXX"
+                  placeholder={t('common.phonePlaceholder')}
                 />
               </div>
                 <div>
@@ -488,7 +488,7 @@ export const RestaurantProfileModal = ({
                     type="email"
                     value={formData.email || ""}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    placeholder="cuizlycanada@gmail.com"
+                    placeholder={t('common.emailPlaceholder')}
                   />
                 </div>
             </div>

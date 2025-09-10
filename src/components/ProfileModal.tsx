@@ -518,7 +518,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                       id="phone"
                       value={localProfile.phone}
                       onChange={(e) => setLocalProfile(prev => ({ ...prev, phone: e.target.value }))}
-                      placeholder="+1 (XXX) XXX-XXXX"
+                      placeholder={t('common.phonePlaceholder')}
                       className="mt-1"
                     />
                     {validationErrors.phone && (

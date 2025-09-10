@@ -112,7 +112,7 @@ const Header = () => {
               >
                 <img 
                   src={getLogoSrc()} 
-                  alt="Cuizly" 
+                  alt={t('common.logoAlt')}
                   className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
                 />
               </a>
@@ -138,7 +138,7 @@ const Header = () => {
             >
               <img 
                 src={getLogoSrc()} 
-                alt="Cuizly" 
+                alt={t('common.logoAlt')} 
                 className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               />
             </a>
