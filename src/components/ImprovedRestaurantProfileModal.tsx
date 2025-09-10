@@ -17,6 +17,7 @@ import { useAddresses } from "@/hooks/useAddresses";
 import { createAddressInput } from "@/lib/addressUtils";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
+import { PhotoActionModal } from "@/components/PhotoActionModal";
 
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, SERVICE_TYPES_OPTIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 
@@ -74,6 +75,8 @@ export const ImprovedRestaurantProfileModal = ({
   const [saving, setSaving] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
+  const [photoModalType, setPhotoModalType] = useState<'logo' | 'cover'>('logo');
 
   useEffect(() => {
     if (modalIsOpen) {
@@ -364,7 +367,7 @@ export const ImprovedRestaurantProfileModal = ({
               </div>
             </div>
           ) : (
-          <div className="space-y-6">
+            <div className="space-y-6">
             {/* Facebook-style Header with Cover Photo and Logo */}
             <div className="relative">
               {/* Cover Photo Background */}
@@ -381,49 +384,20 @@ export const ImprovedRestaurantProfileModal = ({
                   </div>
                 )}
                 
-                {/* Cover Photo Upload Button */}
-                <div className="absolute top-4 right-4">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    id="cover-upload"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) handleImageUpload(file, 'cover');
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="sm"
-                    className="bg-white/90 backdrop-blur-sm hover:bg-white/100 transition-all shadow-sm"
-                    onClick={() => document.getElementById('cover-upload')?.click()}
-                    disabled={uploadingCover}
-                  >
-                    {uploadingCover ? (
-                      <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
-                    ) : (
-                      <Camera className="h-4 w-4" />
-                    )}
-                    <span className="ml-2">{uploadingCover ? "Chargement..." : (restaurant?.cover_image_url ? 'Changer la photo' : 'Ajouter une photo')}</span>
-                  </Button>
-                </div>
-
-                {/* Remove Cover Photo Button */}
-                {restaurant?.cover_image_url && (
-                  <div className="absolute top-4 right-32">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleImageRemove('cover')}
-                      className="bg-red-500/90 backdrop-blur-sm hover:bg-red-600/100 transition-all shadow-sm"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                {/* Cover Photo Click Handler */}
+                <div 
+                  className="absolute inset-0 cursor-pointer group"
+                  onClick={() => {
+                    setPhotoModalType('cover');
+                    setPhotoModalOpen(true);
+                  }}
+                >
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <Camera className="h-8 w-8 text-white" />
+                    </div>
                   </div>
-                )}
+                </div>
 
                 {/* Dark overlay for better text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
@@ -447,32 +421,21 @@ export const ImprovedRestaurantProfileModal = ({
                     )}
                   </div>
                   
-                  {/* Logo Upload Button */}
-                  <div className="absolute bottom-2 right-2">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      id="logo-upload"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) handleImageUpload(file, 'logo');
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      size="sm"
-                      className="w-8 h-8 p-0 rounded-full bg-primary hover:bg-primary/90 shadow-lg"
-                      onClick={() => document.getElementById('logo-upload')?.click()}
-                      disabled={uploadingLogo}
-                    >
-                      {uploadingLogo ? (
-                        <div className="animate-spin h-3 w-3 border-2 border-current border-t-transparent rounded-full" />
-                      ) : (
-                        <Camera className="h-4 w-4" />
-                      )}
-                    </Button>
+                  {/* Logo Click Handler */}
+                  <div 
+                    className="absolute inset-0 cursor-pointer group rounded-full overflow-hidden"
+                    onClick={() => {
+                      setPhotoModalType('logo');
+                      setPhotoModalOpen(true);
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <Camera className="h-6 w-6 text-white" />
+                      </div>
+                    </div>
                   </div>
+                </div>
                 </div>
 
               </div>
@@ -778,8 +741,19 @@ export const ImprovedRestaurantProfileModal = ({
               </Button>
              </div>
            </div>
-         )}
+          )}
         </div>
+
+        {/* Photo Action Modal */}
+        <PhotoActionModal
+          isOpen={photoModalOpen}
+          onClose={() => setPhotoModalOpen(false)}
+          currentImageUrl={photoModalType === 'logo' ? restaurant?.logo_url : restaurant?.cover_image_url}
+          onUpload={(file) => handleImageUpload(file, photoModalType)}
+          onRemove={() => handleImageRemove(photoModalType)}
+          photoType={photoModalType === 'logo' ? 'profile' : 'cover'}
+          uploading={photoModalType === 'logo' ? uploadingLogo : uploadingCover}
+        />
       </DialogContent>
     </Dialog>
   );
