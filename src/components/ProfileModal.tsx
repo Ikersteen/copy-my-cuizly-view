@@ -369,10 +369,10 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           <DialogTitle>{t('profile.userProfile')}</DialogTitle>
         </DialogHeader>
         {/* Header avec avatar */}
-        <div className="p-4 sm:p-6 lg:p-8 pb-2 sm:pb-4">
-          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+        <div className="p-4 sm:p-6 lg:p-8 pb-4">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
             <div className="relative">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-4 border-background shadow-lg bg-muted">
+              <div className="w-24 h-24 sm:w-20 sm:h-20 rounded-full overflow-hidden border-4 border-background shadow-lg bg-muted">
                 {localProfile.avatar_url ? (
                   <img 
                     src={localProfile.avatar_url} 
@@ -381,13 +381,13 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                   />
                 ) : (
                   <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <UserIcon className="h-8 w-8 text-muted-foreground" />
+                    <UserIcon className="h-10 w-10 sm:h-8 sm:w-8 text-muted-foreground" />
                   </div>
                 )}
               </div>
               
               {/* Avatar Controls */}
-              <div className="absolute -bottom-2 -right-2 flex gap-1">
+              <div className="absolute -bottom-1 -right-1 flex gap-1">
                 <input
                   ref={avatarInputRef}
                   type="file"
@@ -398,14 +398,14 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                 <Button
                   size="sm"
                   variant="secondary"
-                  className="h-8 w-8 p-0 rounded-full"
+                  className="h-7 w-7 p-0 rounded-full shadow-md"
                   onClick={() => avatarInputRef.current?.click()}
                   disabled={uploading}
                 >
                   {uploading ? (
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent animate-spin rounded-full" />
+                    <div className="w-3 h-3 border-2 border-current border-t-transparent animate-spin rounded-full" />
                   ) : (
-                    <Camera className="h-4 w-4" />
+                    <Camera className="h-3 w-3" />
                   )}
                 </Button>
                 
@@ -413,25 +413,27 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                   <Button
                     size="sm"
                     variant="destructive"
-                    className="h-8 w-8 p-0 rounded-full"
+                    className="h-7 w-7 p-0 rounded-full shadow-md"
                     onClick={handleRemoveAvatar}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-3 w-3" />
                   </Button>
                 )}
               </div>
             </div>
             
-            <div className="text-center sm:text-left">
-              <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-                {localProfile.first_name} {localProfile.last_name}
+            <div className="text-center sm:text-left flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
+                {localProfile.first_name || localProfile.last_name
+                  ? `${localProfile.first_name || ''} ${localProfile.last_name || ''}`.trim()
+                  : localProfile.username || ''}
               </h1>
               {localProfile.username && (
-                <p className="text-base sm:text-lg text-muted-foreground">
+                <p className="text-sm sm:text-base text-muted-foreground mb-1">
                   @{localProfile.username}
                 </p>
               )}
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {user?.email}
               </p>
             </div>
