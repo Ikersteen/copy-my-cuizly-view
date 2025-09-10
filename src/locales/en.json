@@ -427,16 +427,7 @@
     "addOffer": "Add Special Offer",
     "viewAnalytics": "View Analytics",
     "uploadMenu": "Upload Menu",
-    "phoneNotSpecified": "Phone not specified",
-    "emailNotSpecified": "Email not specified",
-    "deliveryRadiusNotSpecified": "Delivery radius not specified",
-    "addressNotSpecified": "Address not specified",
-    "priceRangeNotSpecified": "Price range not specified",
-    "cuisineTypeNotDefined": "Cuisine type not defined",
-    "serviceTypesNotDefined": "Service types not defined",
-    "specialtyNotDefined": "Specialty not defined",
-    "coverPhoto": "Cover Photo",
-    "logo": "Restaurant Logo"
+    "updateHours": "Update Hours"
   },
   "offers": {
     "title": "Special Offers",

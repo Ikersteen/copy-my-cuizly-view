@@ -236,7 +236,7 @@ export default function RestaurantMenu() {
                 <div className="w-full h-48 sm:h-56 md:h-64 overflow-hidden">
                   <img
                     src={restaurant.cover_image_url}
-                    alt={`${restaurant.name} - ${t('restaurant.coverPhoto')}`}
+                    alt={`${restaurant.name} - Photo de couverture`}
                     className="w-full h-full object-cover"
                   />
                 </div>

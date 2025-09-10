@@ -1890,16 +1890,9 @@
     "socialMedia": "Réseaux sociaux",
     "dietaryRestrictions": "Restrictions alimentaires",
     "allergens": "Allergènes",
-    "phoneNotSpecified": "Téléphone non renseigné",
-    "emailNotSpecified": "Email non renseigné",
-    "deliveryRadiusNotSpecified": "Rayon de livraison non renseigné",
-    "addressNotSpecified": "Adresse non renseignée",
-    "priceRangeNotSpecified": "Gamme de prix non renseignée",
-    "cuisineTypeNotDefined": "Type de cuisine non défini",
-    "serviceTypesNotDefined": "Types de service non définis",
-    "specialtyNotDefined": "Spécialité non définie",
-    "coverPhoto": "Photo de couverture",
-    "logo": "Logo du restaurant"
+    "notSpecified": "Non renseigné",
+    "notSpecifiedFeminine": "Non renseignée",
+    "notDefined": "Non défini"
   },
   "accessibility": {
     "voiceAssistant": "Assistant vocal",
