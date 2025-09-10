@@ -379,8 +379,9 @@ export const ImprovedRestaurantProfileModal = ({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-                    <Camera className="h-16 w-16 text-gray-400" />
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                    <Camera className="h-16 w-16 text-gray-400 mb-2" />
+                    <p className="text-sm text-gray-500 font-medium">Cliquez pour ajouter une photo de couverture</p>
                   </div>
                 )}
                 
@@ -392,12 +393,29 @@ export const ImprovedRestaurantProfileModal = ({
                     setPhotoModalOpen(true);
                   }}
                 >
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <Camera className="h-8 w-8 text-white" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center">
+                      <Upload className="h-8 w-8 text-white mb-2" />
+                      <p className="text-white text-sm font-medium">
+                        {restaurant?.cover_image_url ? 'Modifier la photo de couverture' : 'Ajouter une photo de couverture'}
+                      </p>
                     </div>
                   </div>
                 </div>
+
+                {/* Floating Edit Button - Always visible for better UX */}
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 shadow-md"
+                  onClick={() => {
+                    setPhotoModalType('cover');
+                    setPhotoModalOpen(true);
+                  }}
+                >
+                  <Edit2 className="h-4 w-4 mr-1" />
+                  {restaurant?.cover_image_url ? 'Modifier' : 'Ajouter'}
+                </Button>
 
                 {/* Dark overlay for better text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
