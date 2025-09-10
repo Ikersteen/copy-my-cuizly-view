@@ -821,7 +821,9 @@ export type Database = {
         Returns: boolean
       }
       decrypt_pii: {
-        Args: { encrypted_data: string; secret_key?: string }
+        Args:
+          | { encrypted_data: string; secret_key?: string }
+          | { encrypted_text: string }
         Returns: string
       }
       detect_suspicious_admin_activity: {
@@ -842,7 +844,7 @@ export type Database = {
         }[]
       }
       encrypt_pii: {
-        Args: { data: string; secret_key?: string }
+        Args: { data: string; secret_key?: string } | { plain_text: string }
         Returns: string
       }
       get_offers_with_restaurant_names: {
