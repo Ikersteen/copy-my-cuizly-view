@@ -436,7 +436,6 @@ export const ImprovedRestaurantProfileModal = ({
                     </div>
                   </div>
                 </div>
-                </div>
 
               </div>
             </div>
@@ -739,22 +738,22 @@ export const ImprovedRestaurantProfileModal = ({
               <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
                 {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>
-             </div>
-           </div>
-          )}
-        </div>
-
-        {/* Photo Action Modal */}
-        <PhotoActionModal
-          isOpen={photoModalOpen}
-          onClose={() => setPhotoModalOpen(false)}
-          currentImageUrl={photoModalType === 'logo' ? restaurant?.logo_url : restaurant?.cover_image_url}
-          onUpload={(file) => handleImageUpload(file, photoModalType)}
-          onRemove={() => handleImageRemove(photoModalType)}
-          photoType={photoModalType === 'logo' ? 'profile' : 'cover'}
-          uploading={photoModalType === 'logo' ? uploadingLogo : uploadingCover}
-        />
+            </div>
+          </div>
+        )}
+      </div>
       </DialogContent>
+
+      {/* Photo Action Modal */}
+      <PhotoActionModal
+        isOpen={photoModalOpen}
+        onClose={() => setPhotoModalOpen(false)}
+        currentImageUrl={photoModalType === 'logo' ? restaurant?.logo_url : restaurant?.cover_image_url}
+        onUpload={(file) => handleImageUpload(file, photoModalType)}
+        onRemove={() => handleImageRemove(photoModalType)}
+        photoType={photoModalType === 'logo' ? 'profile' : 'cover'}
+        uploading={photoModalType === 'logo' ? uploadingLogo : uploadingCover}
+      />
     </Dialog>
   );
 };

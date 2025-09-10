@@ -13,6 +13,7 @@ import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 import { validateTextInput, validatePhone, validatePassword, INPUT_LIMITS } from "@/lib/validation";
 import { useTranslation } from 'react-i18next';
+import { PhotoActionModal } from "@/components/PhotoActionModal";
 
 interface ProfileModalProps {
   open: boolean;
@@ -47,6 +48,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [uploading, setUploading] = useState(false);
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -297,9 +299,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     }
   };
 
-  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !user) return;
+  const handleAvatarUpload = async (file: File) => {
+    if (!user) return;
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
@@ -354,7 +355,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     }
   };
 
-  const handleRemoveAvatar = () => {
+  const handleRemoveAvatar = async () => {
     setLocalProfile(prev => ({ ...prev, avatar_url: "" }));
     toast({
       title: t('profile.avatarRemoved'),
@@ -372,52 +373,32 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         <div className="p-2 sm:p-4 md:p-6 lg:p-8 pb-2 sm:pb-4">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
             <div className="relative">
-              <div className="w-24 h-24 sm:w-20 sm:h-20 rounded-full overflow-hidden border-4 border-background shadow-lg bg-muted">
+              <div 
+                className="w-24 h-24 sm:w-20 sm:h-20 rounded-full overflow-hidden border-4 border-background shadow-lg bg-muted cursor-pointer group"
+                onClick={() => setPhotoModalOpen(true)}
+              >
                 {localProfile.avatar_url ? (
-                  <img 
-                    src={localProfile.avatar_url} 
-                    alt="Avatar"
-                    className="w-full h-full object-cover"
-                  />
+                  <>
+                    <img 
+                      src={localProfile.avatar_url} 
+                      alt="Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <Camera className="h-6 w-6 text-white" />
+                      </div>
+                    </div>
+                  </>
                 ) : (
-                  <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <UserIcon className="h-10 w-10 sm:h-8 sm:w-8 text-muted-foreground" />
+                  <div className="w-full h-full bg-muted flex items-center justify-center group-hover:bg-muted/80 transition-colors">
+                    <div className="text-center">
+                      <UserIcon className="h-10 w-10 sm:h-8 sm:w-8 text-muted-foreground mx-auto mb-1" />
+                      <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                        Ajouter une photo
+                      </p>
+                    </div>
                   </div>
-                )}
-              </div>
-              
-              {/* Avatar Controls */}
-              <div className="absolute -bottom-1 -right-1 flex gap-1">
-                <input
-                  ref={avatarInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarUpload}
-                  className="hidden"
-                />
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  className="h-7 w-7 p-0 rounded-full shadow-md"
-                  onClick={() => avatarInputRef.current?.click()}
-                  disabled={uploading}
-                >
-                  {uploading ? (
-                    <div className="w-3 h-3 border-2 border-current border-t-transparent animate-spin rounded-full" />
-                  ) : (
-                    <Camera className="h-3 w-3" />
-                  )}
-                </Button>
-                
-                {localProfile.avatar_url && (
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    className="h-7 w-7 p-0 rounded-full shadow-md"
-                    onClick={handleRemoveAvatar}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
                 )}
               </div>
             </div>
@@ -716,12 +697,23 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               onClick={handleSave} 
               disabled={loading}
               className="min-w-[120px]"
-            >
-              {loading ? t('profile.saving') : t('profile.save')}
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
+             >
+               {loading ? t('profile.saving') : t('profile.save')}
+             </Button>
+           </div>
+         </div>
+       </DialogContent>
+
+       {/* Photo Action Modal */}
+       <PhotoActionModal
+         isOpen={photoModalOpen}
+         onClose={() => setPhotoModalOpen(false)}
+         currentImageUrl={localProfile.avatar_url}
+         onUpload={handleAvatarUpload}
+         onRemove={handleRemoveAvatar}
+         photoType="profile"
+         uploading={uploading}
+       />
+     </Dialog>
+   );
+ };
