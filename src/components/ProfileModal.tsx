@@ -357,6 +357,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
   const handleRemoveAvatar = async () => {
     setLocalProfile(prev => ({ ...prev, avatar_url: "" }));
+    console.log('Debug - t function for avatarRemoved:', t('profile.avatarRemoved'));
+    console.log('Debug - t function for avatarRemovedSuccess:', t('profile.avatarRemovedSuccess'));
     toast({
       title: t('profile.avatarRemoved'),
       description: t('profile.avatarRemovedSuccess')
