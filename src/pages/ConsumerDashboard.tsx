@@ -148,7 +148,7 @@ const ConsumerDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground animate-pulse">{i18n.language === 'fr' ? 'Chargement de votre expérience personnalisée...' : 'Loading your personalized experience...'}</p>
+          <p className="text-muted-foreground animate-pulse">{t('loading.personalizedExperience')}</p>
         </div>
       </div>
     );
@@ -169,7 +169,7 @@ const ConsumerDashboard = () => {
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                  {i18n.language === 'fr' ? 'Bonjour' : 'Hello'} {profile?.first_name || ""} ! {profile?.chef_emoji_color || '👋'}
+                  {t('welcome.hello')} {profile?.first_name || ""} ! {profile?.chef_emoji_color || '👋'}
                 </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
                   {profile?.username ? `@${profile.username}` : ""}
@@ -185,15 +185,15 @@ const ConsumerDashboard = () => {
           <TabsList className="grid w-full grid-cols-3 h-11">
             <TabsTrigger value="recommendations" className="text-xs sm:text-sm px-2 py-2 gap-1">
               <Star className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{i18n.language === 'fr' ? 'Recommandations' : 'Recommendations'}</span>
+              <span className="truncate">{t('tabs.recommendations')}</span>
             </TabsTrigger>
             <TabsTrigger value="favorites" className="text-xs sm:text-sm px-2 py-2 gap-1">
               <Heart className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{i18n.language === 'fr' ? 'Favoris' : 'Favorites'}</span>
+              <span className="truncate">{t('tabs.favorites')}</span>
             </TabsTrigger>
             <TabsTrigger value="offers" className="text-xs sm:text-sm px-2 py-2 gap-1">
               <Gift className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{i18n.language === 'fr' ? 'Offres' : 'Offers'}</span>
+              <span className="truncate">{t('tabs.offers')}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -226,7 +226,7 @@ const ConsumerDashboard = () => {
       <Button
         onClick={() => navigate('/voice')}
         className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-        aria-label="Assistant vocal"
+        aria-label={t('accessibility.voiceAssistant')}
       >
         <Mic className="w-6 h-6" />
       </Button>

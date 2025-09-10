@@ -1971,5 +1971,60 @@
     "veryPopular": "Very popular",
     "newDiscovery": "New discovery",
     "nearYou": "Near you"
+    }
+  },
+  "errors": {
+    "title": "Error",
+    "general": "An error occurred. Please try again.",
+    "loadMenus": "Unable to load menus",
+    "connectionProblem": "Connection problem",
+    "unableToLoadRestaurantData": "Unable to load restaurant data",
+    "connectionError": "Connection error",
+    "checkInternetConnection": "Check your internet connection",
+    "systemError": "System error",
+    "unexpectedError": "An unexpected error occurred"
+  },
+  "loading": {
+    "personalizedExperience": "Loading your personalized experience...",
+    "dashboard": "Loading dashboard...",
+    "general": "Loading..."
+  },
+  "welcome": {
+    "hello": "Hello",
+    "welcomeMessage": "Welcome to your dashboard!",
+    "dashboardDescription": "Manage your offers, analyze your performance and grow your clientele."
+  },
+  "tabs": {
+    "recommendations": "Recommendations",
+    "favorites": "Favorites",
+    "offers": "Offers"
+  },
+  "restaurant": {
+    "myRestaurant": "My Restaurant",
+    "information": "Restaurant Information",
+    "details": "Details of your establishment",
+    "name": "Name",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "priceRange": "Price range",
+    "deliveryRadius": "Delivery radius",
+    "cuisineType": "Cuisine type",
+    "serviceTypes": "Service types",
+    "specialty": "Restaurant specialty",
+    "socialMedia": "Social Media",
+    "dietaryRestrictions": "Dietary restrictions",
+    "allergens": "Allergens",
+    "notSpecified": "Not specified",
+    "notSpecifiedFeminine": "Not specified",
+    "notDefined": "Not defined"
+  },
+  "accessibility": {
+    "voiceAssistant": "Voice assistant",
+    "backToTop": "Back to top of page"
+  },
+  "placeholders": {
+    "searchConversation": "Search for a conversation...",
+    "addressInput": "Start typing your delivery address in Montreal..."
   }
 }

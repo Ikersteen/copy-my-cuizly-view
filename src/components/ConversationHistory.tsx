@@ -16,6 +16,7 @@ import {
 import { useConversations, type Conversation } from '@/hooks/useConversations';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 
 interface ConversationHistoryProps {
   isOpen: boolean;
@@ -34,6 +35,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
     deleteConversation, 
     updateConversationTitle 
   } = useConversations();
+  const { t } = useTranslation();
   
   const [searchTerm, setSearchTerm] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -83,7 +85,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder="Rechercher une conversation..."
+              placeholder={t('placeholders.searchConversation')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"

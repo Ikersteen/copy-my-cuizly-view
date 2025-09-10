@@ -1844,5 +1844,60 @@
       "veryPopular": "Très populaire",
       "newDiscovery": "Nouvelle découverte",
       "nearYou": "Près de vous"
+    }
+  },
+  "errors": {
+    "title": "Erreur",
+    "general": "Une erreur s'est produite. Veuillez réessayer.",
+    "loadMenus": "Impossible de charger les menus",
+    "connectionProblem": "Problème de connexion",
+    "unableToLoadRestaurantData": "Impossible de charger les données du restaurant",
+    "connectionError": "Erreur de connexion",
+    "checkInternetConnection": "Vérifiez votre connexion internet",
+    "systemError": "Erreur système",
+    "unexpectedError": "Une erreur inattendue s'est produite"
+  },
+  "loading": {
+    "personalizedExperience": "Chargement de votre expérience personnalisée...",
+    "dashboard": "Chargement du tableau de bord...",
+    "general": "Chargement..."
+  },
+  "welcome": {
+    "hello": "Bonjour",
+    "welcomeMessage": "Bienvenue sur votre tableau de bord !",
+    "dashboardDescription": "Gérez vos offres, analysez vos performances et développez votre clientèle."
+  },
+  "tabs": {
+    "recommendations": "Recommandations",
+    "favorites": "Favoris", 
+    "offers": "Offres"
+  },
+  "restaurant": {
+    "myRestaurant": "Mon Restaurant",
+    "information": "Informations du Restaurant",
+    "details": "Détails de votre établissement",
+    "name": "Nom",
+    "address": "Adresse",
+    "phone": "Téléphone",
+    "email": "Email",
+    "priceRange": "Gamme de prix",
+    "deliveryRadius": "Rayon de livraison",
+    "cuisineType": "Type de cuisine",
+    "serviceTypes": "Types de service",
+    "specialty": "Spécialité du restaurant",
+    "socialMedia": "Réseaux sociaux",
+    "dietaryRestrictions": "Restrictions alimentaires",
+    "allergens": "Allergènes",
+    "notSpecified": "Non renseigné",
+    "notSpecifiedFeminine": "Non renseignée",
+    "notDefined": "Non défini"
+  },
+  "accessibility": {
+    "voiceAssistant": "Assistant vocal",
+    "backToTop": "Retour en haut de la page"
+  },
+  "placeholders": {
+    "searchConversation": "Rechercher une conversation...",
+    "addressInput": "Commencez à taper votre adresse de livraison à Montréal..."
   }
 }

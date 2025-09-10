@@ -147,7 +147,7 @@ const RestaurantDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground">{i18n.language === 'fr' ? 'Chargement du tableau de bord...' : 'Loading dashboard...'}</p>
+          <p className="text-muted-foreground">{t('loading.dashboard')}</p>
         </div>
       </div>
     );
@@ -215,7 +215,7 @@ const RestaurantDashboard = () => {
               )}
               <div>
                   <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                    {restaurant?.name || (i18n.language === 'fr' ? 'Mon Restaurant' : 'My Restaurant')} {profile?.chef_emoji_color || '👨‍🍳'}
+                    {restaurant?.name || t('restaurant.myRestaurant')} {profile?.chef_emoji_color || '👨‍🍳'}
                   </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
                   @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
@@ -238,10 +238,10 @@ const RestaurantDashboard = () => {
           <CardContent className="p-6">
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-2">
-                {i18n.language === 'fr' ? 'Bienvenue sur votre tableau de bord !' : 'Welcome to your dashboard!'}
+                {t('welcome.welcomeMessage')}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {i18n.language === 'fr' ? 'Gérez vos offres, analysez vos performances et développez votre clientèle.' : 'Manage your offers, analyze your performance and grow your clientele.'}
+                {t('welcome.dashboardDescription')}
               </p>
             </div>
           </CardContent>
@@ -260,39 +260,39 @@ const RestaurantDashboard = () => {
             {restaurant && (
               <Card className="hover:shadow-lg transition-all duration-200">
                 <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">{i18n.language === 'fr' ? 'Informations du Restaurant' : 'Restaurant Information'}</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">{t('restaurant.information')}</CardTitle>
                   <CardDescription className="text-sm">
-                    {i18n.language === 'fr' ? 'Détails de votre établissement' : 'Details of your establishment'}
+                    {t('restaurant.details')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Nom' : 'Name'}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurant.name')}</p>
                       <p className="text-foreground text-sm sm:text-base font-medium">{restaurant.name}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Adresse' : 'Address'}</p>
-                      <p className="text-foreground text-sm">{restaurant.address || (i18n.language === 'fr' ? 'Non renseignée' : 'Not specified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurant.address')}</p>
+                      <p className="text-foreground text-sm">{restaurant.address || t('restaurant.notSpecifiedFeminine')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Téléphone</p>
-                      <p className="text-foreground text-sm">{restaurant.phone || (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurant.phone')}</p>
+                      <p className="text-foreground text-sm">{restaurant.phone || t('restaurant.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Email</p>
-                      <p className="text-foreground text-sm">{restaurant.email || (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurant.email')}</p>
+                      <p className="text-foreground text-sm">{restaurant.email || t('restaurant.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Gamme de prix' : 'Price range'}</p>
-                      <p className="text-foreground text-sm">{restaurant.price_range || (i18n.language === 'fr' ? 'Non renseignée' : 'Not specified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurant.priceRange')}</p>
+                      <p className="text-foreground text-sm">{restaurant.price_range || t('restaurant.notSpecifiedFeminine')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{i18n.language === 'fr' ? 'Rayon de livraison' : 'Delivery radius'}</p>
-                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : (i18n.language === 'fr' ? 'Non renseigné' : 'Not specified')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurant.deliveryRadius')}</p>
+                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('restaurant.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Type de cuisine' : 'Cuisine type'}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurant.cuisineType')}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
@@ -302,13 +302,13 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
+                            {t('restaurant.notDefined')}
                           </Badge>
                         )}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Types de service' : 'Service types'}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurant.serviceTypes')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).service_types?.length > 0 ? (
                           (restaurant as any).service_types.map((service: string, index: number) => (
@@ -318,13 +318,13 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
+                            {t('restaurant.notDefined')}
                           </Badge>
                         )}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Spécialité du restaurant' : 'Restaurant specialty'}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurant.specialty')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).restaurant_specialties?.length > 0 ? (
                           (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => (
@@ -334,7 +334,7 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            {i18n.language === 'fr' ? 'Non défini' : 'Not defined'}
+                            {t('restaurant.notDefined')}
                           </Badge>
                         )}
                       </div>
@@ -343,7 +343,7 @@ const RestaurantDashboard = () => {
                     {/* Social Media Icons */}
                     {(restaurant.instagram_url || restaurant.facebook_url) && (
                       <div className="md:col-span-2">
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Réseaux sociaux' : 'Social Media'}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurant.socialMedia')}</p>
                         <div className="flex items-center gap-3">
                           {restaurant.instagram_url && (
                             <a 
@@ -371,7 +371,7 @@ const RestaurantDashboard = () => {
                     
                     {restaurant.dietary_restrictions?.length > 0 && (
                       <div>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Restrictions alimentaires' : 'Dietary restrictions'}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurant.dietaryRestrictions')}</p>
                         <div className="flex flex-wrap gap-1">
                           {restaurant.dietary_restrictions.map((restriction, index) => (
                             <Badge key={index} variant="secondary" className="text-xs">
@@ -383,7 +383,7 @@ const RestaurantDashboard = () => {
                     )}
                     {restaurant.allergens?.length > 0 && (
                       <div>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{i18n.language === 'fr' ? 'Allergènes' : 'Allergens'}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurant.allergens')}</p>
                         <div className="flex flex-wrap gap-1">
                           {restaurant.allergens.map((allergen, index) => (
                             <Badge key={index} variant="destructive" className="text-xs">
