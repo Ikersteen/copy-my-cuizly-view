@@ -346,14 +346,14 @@ export const ImprovedRestaurantProfileModal = ({
         <DialogTitle className="sr-only">{t('restaurantProfile.title')}</DialogTitle>
         
         {/* Header with padding */}
-        <div className="px-6 pt-6 pb-0">
+        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold text-center">{t('restaurantProfile.title')}</DialogTitle>
           </DialogHeader>
         </div>
 
         {/* Content area */}
-        <div className="px-6 pb-6">
+        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pb-2 sm:pb-4 md:pb-6">
           {loading ? (
             <div className="space-y-4">
               <div className="animate-pulse space-y-4">

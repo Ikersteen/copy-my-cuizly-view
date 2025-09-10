@@ -45,7 +45,7 @@ const FeaturesSectionLanding = () => {
 
   return (
     <section id="features" className="py-16 sm:py-20 bg-muted/30">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
             {t('features.title')}

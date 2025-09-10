@@ -369,7 +369,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           <DialogTitle>{t('profile.userProfile')}</DialogTitle>
         </DialogHeader>
         {/* Header avec avatar */}
-        <div className="p-4 sm:p-6 lg:p-8 pb-4">
+        <div className="p-2 sm:p-4 md:p-6 lg:p-8 pb-2 sm:pb-4">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
             <div className="relative">
               <div className="w-24 h-24 sm:w-20 sm:h-20 rounded-full overflow-hidden border-4 border-background shadow-lg bg-muted">
@@ -441,12 +441,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         </div>
 
         {/* Content area */}
-        <div className="px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 overflow-y-auto max-h-[calc(95vh-160px)] sm:max-h-[calc(95vh-200px)]">
+        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pb-2 sm:pb-4 md:pb-6 overflow-y-auto max-h-[calc(95vh-160px)] sm:max-h-[calc(95vh-200px)]">
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             {/* Colonne gauche - Informations personnelles */}
             <div className="space-y-6">
-              <div className="bg-muted/30 rounded-lg p-6">
+              <div className="bg-muted/30 rounded-lg p-3 sm:p-4 md:p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <UserIcon className="h-5 w-5" />
                   {t('profile.personalInfo')}
@@ -536,7 +536,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             {/* Colonne droite - Préférences et sécurité */}
             <div className="space-y-6">
               {/* Notifications */}
-              <div className="bg-muted/30 rounded-lg p-6">
+              <div className="bg-muted/30 rounded-lg p-3 sm:p-4 md:p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   🔔 {t('profile.notifications')}
                 </h3>
@@ -578,7 +578,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               </div>
 
               {/* Sécurité */}
-              <div className="bg-muted/30 rounded-lg p-6">
+              <div className="bg-muted/30 rounded-lg p-3 sm:p-4 md:p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   🔒 {t('profile.security')}
                 </h3>
@@ -631,7 +631,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               </div>
 
               {/* Actions du compte */}
-              <div className="bg-muted/30 rounded-lg p-6">
+              <div className="bg-muted/30 rounded-lg p-3 sm:p-4 md:p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   ⚙️ {t('profile.accountActions')}
                 </h3>

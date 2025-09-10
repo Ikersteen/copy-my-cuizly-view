@@ -19,7 +19,7 @@ const HowItWorksSection = () => {
 
   return (
     <section className="py-16 sm:py-20 bg-gradient-card">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Content */}
         <div className="mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 sm:mb-6 text-center">

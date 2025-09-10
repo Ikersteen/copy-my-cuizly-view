@@ -41,7 +41,7 @@ const CTASection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+      <div className="relative max-w-4xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 text-center text-white">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 leading-tight px-2 sm:px-0">
           {t('cta.title')}
         </h2>
