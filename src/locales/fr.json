@@ -994,7 +994,7 @@
     "deleteAccountDescription": "Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, toutes vos données seront définitivement supprimées.",
     "uploadingCover": "Upload de la photo de couverture...",
     "uploadingLogo": "Upload du logo...",
-    "cancel": "Annuler",
+    "cancel": "Annuler"
   },
   "favorites": {
     "title": "Mes restaurants favoris",
