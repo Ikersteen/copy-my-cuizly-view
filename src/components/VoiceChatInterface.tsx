@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';

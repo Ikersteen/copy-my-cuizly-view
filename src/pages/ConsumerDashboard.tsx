@@ -170,7 +170,7 @@ const ConsumerDashboard = () => {
                 />
               ) : (
                 <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
-                  <User className="h-6 w-6 text-muted-foreground" />
+                  <UserIcon className="h-6 w-6 text-muted-foreground" />
                 </div>
               )}
               <div>

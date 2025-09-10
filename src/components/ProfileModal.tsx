@@ -8,7 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Trash2, User, Camera, Upload, X } from "lucide-react";
+import { LogOut, Trash2, User as UserIcon, Camera, Upload, X } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 import { validateTextInput, validatePhone, validatePassword, INPUT_LIMITS } from "@/lib/validation";
@@ -381,7 +381,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                   />
                 ) : (
                   <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <User className="h-8 w-8 text-muted-foreground" />
+                    <UserIcon className="h-8 w-8 text-muted-foreground" />
                   </div>
                 )}
               </div>
@@ -446,7 +446,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             <div className="space-y-6">
               <div className="bg-muted/30 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <User className="h-5 w-5" />
+                  <UserIcon className="h-5 w-5" />
                   {t('profile.personalInfo')}
                 </h3>
                 

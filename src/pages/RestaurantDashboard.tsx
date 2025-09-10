@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook } from "lucide-react";
+import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 
