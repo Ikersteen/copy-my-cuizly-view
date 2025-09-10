@@ -208,7 +208,6 @@ export const ImprovedRestaurantProfileModal = ({
         [updateField]: publicUrl
       }));
 
-      console.log('Translation test:', t('restaurantProfile.success')); // Debug
       toast({
         title: t('restaurantProfile.success'),
         description: t('restaurantProfile.imageUploaded'),
@@ -256,7 +255,6 @@ export const ImprovedRestaurantProfileModal = ({
         [updateField]: null
       }));
 
-      console.log('Translation test 2:', t('restaurantProfile.success')); // Debug
       toast({
         title: t('restaurantProfile.success'),
         description: t('restaurantProfile.imageRemoved'),

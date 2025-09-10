@@ -464,7 +464,11 @@
     "thisMonth": "This Month",
     "lastMonth": "Last Month",
     "thisWeek": "This Week",
-    "today": "Today"
+    "today": "Today",
+    "positiveTrend": "Positive Trend",
+    "negativeTrend": "Negative Trend",
+    "stable": "Stable",
+    "dataCollection": "Data Collection"
   },
   "menus": {
     "title": "Menus",
@@ -705,18 +709,42 @@
   "voiceChat": {
     "title": "Voice Chat",
     "subtitle": "Ask me about restaurants and food recommendations",
+    "mainTitle": "Cuizly Voice Assistant",
+    "description": "Speak naturally to find restaurants, check your preferences or discover new flavors.",
     "startRecording": "Start Recording",
     "stopRecording": "Stop Recording",
     "listening": "Listening...",
     "processing": "Processing your request...",
+    "processingAudio": "Processing audio...",
     "speak": "Tap and speak",
+    "clickToSpeak": "Click to speak",
+    "clickToTalk": "Click to talk",
+    "askRecommendations": "Ask for restaurant recommendations or ask your culinary questions",
+    "recording": "🎤 Listening...",
+    "processingInProgress": "Processing...",
+    "voiceMessage": "Voice message",
+    "assistantSpeaking": "🗣️ Assistant speaking...",
+    "stopSpeech": "Stop",
+    "listeningTitle": "Listening...",
+    "listeningDescription": "Speak now, click to stop",
     "microphoneAccess": "Microphone access required",
     "allowAccess": "Please allow microphone access to use voice chat",
+    "microphoneError": "Error",
+    "microphoneErrorDescription": "Cannot access microphone",
     "browserNotSupported": "Voice chat not supported in this browser",
-    "voiceMessage": "Voice message",
     "error": "Voice recognition error",
     "tryAgain": "Try speaking again",
-    "networkError": "Network connection error"
+    "networkError": "Network connection error",
+    "errors": {
+      "voiceProcessing": {
+        "title": "Error",
+        "description": "Problem during voice processing"
+      },
+      "audioPlayback": {
+        "title": "Audio error",
+        "description": "Cannot play voice response"
+      }
+    }
   },
   "waitlist": {
     "title": "Join the Waitlist",
@@ -772,5 +800,39 @@
   },
   "loading": {
     "personalizedExperience": "Preparing your personalized experience..."
+  },
+  "cta": {
+    "title": "Ready to revolutionize your culinary experience?",
+    "description": "Join the Cuizly community today and be among the first to discover Montreal's best offers.",
+    "button": "Create my account",
+    "imageAlt": "Modern restaurant in Montreal",
+    "disclaimer": "Free registration • No commitment"
+  },
+  "comments": {
+    "title": "Share your experience with other foodies",
+    "ratingCount": "ratings",
+    "placeholder": "Share your experience...",
+    "notAuthenticated": "Not authenticated",
+    "publishComment": "Publish comment",
+    "clientComments": "Customer comments",
+    "added": "Comment added",
+    "addedSuccess": "Your comment has been added successfully",
+    "limitReached": "Limit reached",
+    "maxImages": "Maximum 3 images allowed",
+    "error": "Error",
+    "commentOrRating": "Please add a comment or rating",
+    "cannotPublish": "Cannot publish comment",
+    "consumer": "Consumer",
+    "shareExperience": "Share your experience with other foodies",
+    "ratings": "ratings",
+    "comment": "comment",
+    "comments": "comments",
+    "yourRating": "Your rating",
+    "yourComment": "Your comment",
+    "shareExperiencePlaceholder": "Share your experience...",
+    "photos": "Photos (optional)",
+    "clickToAddPhotos": "Click to add photos",
+    "commentImage": "Comment image",
+    "uploadImages": "Uploading images..."
   }
 }
