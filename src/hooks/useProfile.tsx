@@ -11,7 +11,6 @@ export interface UserProfile {
   last_name?: string;
   phone?: string;
   username?: string;
-  chef_emoji_color?: string;
   avatar_url?: string;
 }
 

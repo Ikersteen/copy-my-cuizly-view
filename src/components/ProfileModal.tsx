@@ -8,7 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Trash2, User as UserIcon, Camera, Upload, X } from "lucide-react";
+import { LogOut, Trash2, User, Camera, Upload, X } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 import { validateTextInput, validatePhone, validatePassword, INPUT_LIMITS } from "@/lib/validation";
@@ -23,12 +23,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const { t } = useTranslation();
   const firstNameRef = useRef<HTMLInputElement>(null);
   const { profile, loading: profileLoading, updateProfile, loadProfile } = useProfile();
+  // Local profile state
   const [localProfile, setLocalProfile] = useState({
     first_name: "",
     last_name: "",
     phone: "",
     username: "",
-    chef_emoji_color: "👋",
     avatar_url: "",
     notifications: {
       push: false,
@@ -51,16 +51,6 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Person emojis with different skin tones
-  const personEmojis = [
-    "👋", "👤", "😊", "😄", "🙂", "😉", "🤗", "🥰", "😎", "🤓",
-    "👶", "🧒", "👦", "👧", "🧑", "👨", "👩", "🧓", "👴", "👵",
-    "👶🏻", "🧒🏻", "👦🏻", "👧🏻", "🧑🏻", "👨🏻", "👩🏻", "🧓🏻", "👴🏻", "👵🏻",
-    "👶🏼", "🧒🏼", "👦🏼", "👧🏼", "🧑🏼", "👨🏼", "👩🏼", "🧓🏼", "👴🏼", "👵🏼",
-    "👶🏽", "🧒🏽", "👦🏽", "👧🏽", "🧑🏽", "👨🏽", "👩🏽", "🧓🏽", "👴🏽", "👵🏽",
-    "👶🏾", "🧒🏾", "👦🏾", "👧🏾", "🧑🏾", "👨🏾", "👩🏾", "🧓🏾", "👴🏾", "👵🏾",
-    "👶🏿", "🧒🏿", "👦🏿", "👧🏿", "🧑🏿", "👨🏿", "👩🏿", "🧓🏿", "👴🏿", "👵🏿"
-  ];
 
   useEffect(() => {
     if (open) {
@@ -75,7 +65,6 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         last_name: profile.last_name || "",
         phone: profile.phone || "",
         username: profile.username || "",
-        chef_emoji_color: profile.chef_emoji_color || "👋",
         avatar_url: profile.avatar_url || "",
         notifications: {
           push: false,
@@ -164,7 +153,6 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         last_name: localProfile.last_name ? validateTextInput(localProfile.last_name, INPUT_LIMITS.NAME).sanitized : localProfile.last_name,
         phone: localProfile.phone ? validateTextInput(localProfile.phone, INPUT_LIMITS.PHONE).sanitized : localProfile.phone,
         username: localProfile.username,
-        chef_emoji_color: localProfile.chef_emoji_color,
         avatar_url: localProfile.avatar_url
       };
 
@@ -392,8 +380,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-primary flex items-center justify-center text-2xl sm:text-3xl font-bold text-primary-foreground">
-                    {localProfile.chef_emoji_color || (localProfile.username || user?.email?.split('@')[0] || 'U').charAt(0).toUpperCase()}
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <User className="h-8 w-8 text-muted-foreground" />
                   </div>
                 )}
               </div>
@@ -438,9 +426,11 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               <h1 className="text-xl sm:text-2xl font-bold text-foreground">
                 {localProfile.first_name} {localProfile.last_name}
               </h1>
-              <p className="text-base sm:text-lg text-muted-foreground">
-                @{localProfile.username || user?.email?.split('@')[0]}
-              </p>
+              {localProfile.username && (
+                <p className="text-base sm:text-lg text-muted-foreground">
+                  @{localProfile.username}
+                </p>
+              )}
               <p className="text-sm text-muted-foreground">
                 {user?.email}
               </p>
@@ -456,7 +446,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
             <div className="space-y-6">
               <div className="bg-muted/30 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <UserIcon className="h-5 w-5" />
+                  <User className="h-5 w-5" />
                   {t('profile.personalInfo')}
                 </h3>
                 
@@ -538,30 +528,6 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                 </div>
               </div>
 
-              {/* Emoji Selection */}
-              <div className="bg-muted/30 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  😊 {t('profile.emojiAvatar')}
-                </h3>
-                <div>
-                  <Label className="text-sm font-medium mb-3 block">{t('profile.chooseEmoji')}</Label>
-                  <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-32 overflow-y-auto">
-                    {personEmojis.map((emoji, index) => (
-                      <Button
-                        key={index}
-                        variant={localProfile.chef_emoji_color === emoji ? "default" : "outline"}
-                        className="h-8 w-8 sm:h-10 sm:w-10 p-0 text-base sm:text-lg hover:scale-110 transition-transform"
-                        onClick={() => setLocalProfile(prev => ({ ...prev, chef_emoji_color: emoji }))}
-                      >
-                        {emoji}
-                      </Button>
-                    ))}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {t('profile.selected')} <span className="text-lg">{localProfile.chef_emoji_color}</span>
-                  </p>
-                </div>
-              </div>
 
             </div>
 

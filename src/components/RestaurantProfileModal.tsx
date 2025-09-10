@@ -84,7 +84,7 @@ export const RestaurantProfileModal = ({
         cuisine_type: restaurant.cuisine_type || [],
         logo_url: restaurant.logo_url || "",
         cover_image_url: restaurant.cover_image_url || "",
-        chef_emoji_color: restaurant.chef_emoji_color || "🧑‍🍳",
+        chef_emoji_color: "",
         delivery_radius: restaurant.delivery_radius || 5,
         restaurant_specialties: restaurant.restaurant_specialties || []
       });
@@ -169,13 +169,6 @@ export const RestaurantProfileModal = ({
         }
       }
 
-      // Update the profile with chef_emoji_color if it changed using the hook
-      if (formData.chef_emoji_color !== restaurant.chef_emoji_color) {
-        const result = await updateProfile({ chef_emoji_color: formData.chef_emoji_color });
-        if (!result?.success) {
-          console.warn('Failed to update chef emoji, but restaurant data was saved');
-        }
-      }
 
       // Force update the parent component to reflect changes
       onUpdate();
@@ -646,35 +639,6 @@ export const RestaurantProfileModal = ({
 
           {/* Section Emoji et Livraison */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Emoji cuisinier */}
-            <div className="space-y-4">
-              <Label className="text-base font-medium">{t('restaurantProfile.profileEmoji')}</Label>
-              <p className="text-sm text-muted-foreground">
-                {t('restaurantProfile.profileEmojiDesc')}
-              </p>
-              <div className="grid grid-cols-6 gap-2">
-                {[
-                  // Émojis de mains avec différentes couleurs
-                  '👋', '👋🏻', '👋🏼', '👋🏽', '👋🏾', '👋🏿',
-                  '🤚', '🤚🏻', '🤚🏼', '🤚🏽', '🤚🏾', '🤚🏿',
-                  '🙌', '🙌🏻', '🙌🏼', '🙌🏽', '🙌🏾', '🙌🏿',
-                  // Têtes jaunes avec différentes réactions
-                  '😊', '😄', '😃', '😁', '😆', '😅',
-                  '🙂', '🙃', '😉', '😇', '🥰', '😍',
-                  '😋', '😎', '🤓', '🧐', '😏', '😌'
-                ].map(emoji => (
-                  <Button
-                    key={emoji}
-                    variant={formData.chef_emoji_color === emoji ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setFormData(prev => ({ ...prev, chef_emoji_color: emoji }))}
-                    className="text-lg h-10 w-10 p-0 hover:scale-110 transition-transform"
-                  >
-                    {emoji}
-                  </Button>
-                ))}
-              </div>
-            </div>
 
             {/* Rayon de livraison */}
             <div className="space-y-4">

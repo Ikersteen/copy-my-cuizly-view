@@ -123,8 +123,7 @@ const Auth = () => {
                 const { error: createError } = await supabase.from('profiles').insert({
                   user_id: session.user.id,
                   first_name: session.user.user_metadata?.full_name?.split(' ')[0] || 
-                             session.user.user_metadata?.name?.split(' ')[0] || 
-                             session.user.email?.split('@')[0] || '',
+                             session.user.user_metadata?.name?.split(' ')[0] || '',
                   last_name: session.user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || 
                             session.user.user_metadata?.name?.split(' ').slice(1).join(' ') || '',
                   user_type: 'consumer' // Par défaut pour OAuth

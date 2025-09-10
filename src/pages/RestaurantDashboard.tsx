@@ -186,7 +186,7 @@ const RestaurantDashboard = () => {
                   />
                 ) : (
                   <span className="text-foreground font-semibold text-lg sm:text-xl">
-                    {restaurant?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
+                    <UserIcon className="h-6 w-6" />
                   </span>
                 )}
               </div>
@@ -208,14 +208,14 @@ const RestaurantDashboard = () => {
                     />
                   ) : (
                     <span className="text-primary-foreground font-semibold text-lg">
-                      {restaurant?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
+                      <UserIcon className="h-6 w-6" />
                     </span>
                   )}
                 </div>
               )}
               <div>
                   <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                    {restaurant?.name || t('restaurant.myRestaurant')} {profile?.chef_emoji_color || '👨‍🍳'}
+                    {restaurant?.name || t('restaurant.myRestaurant')}
                   </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
                   @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}

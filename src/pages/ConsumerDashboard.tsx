@@ -162,14 +162,20 @@ const ConsumerDashboard = () => {
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-semibold text-lg">
-                  {user?.email?.charAt(0).toUpperCase()}
-                </span>
-              </div>
+              {profile?.avatar_url ? (
+                <img 
+                  src={profile.avatar_url} 
+                  alt="Profile"
+                  className="w-12 h-12 rounded-lg object-cover"
+                />
+              ) : (
+                <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
+                  <User className="h-6 w-6 text-muted-foreground" />
+                </div>
+              )}
               <div>
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                  {t('welcome.hello')} {profile?.first_name || ""} ! {profile?.chef_emoji_color || '👋'}
+                  {t('welcome.hello')} {profile?.first_name || ""} !
                 </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
                   {profile?.username ? `@${profile.username}` : ""}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
@@ -287,13 +287,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
                   {message.type === 'assistant' ? (
                     <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
-                      {userProfile?.chef_emoji_color || '🧑‍🍳'}
+                      <UserIcon className="h-5 w-5" />
                     </AvatarFallback>
                   ) : (
                     <>
                       <AvatarImage src={userProfile?.avatar_url} />
                       <AvatarFallback className="bg-primary text-primary-foreground">
-                        {userProfile?.first_name?.charAt(0) || userProfile?.display_name?.charAt(0) || 'U'}
+                        <UserIcon className="h-5 w-5" />
                       </AvatarFallback>
                     </>
                   )}
