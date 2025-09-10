@@ -172,7 +172,7 @@ const RestaurantDashboard = () => {
             <div className="w-full h-32 sm:h-48 lg:h-56 rounded-xl overflow-hidden bg-muted">
               <img 
                 src={restaurant.cover_image_url} 
-                alt="Photo de couverture du restaurant"
+                alt="Image de couverture du restaurant"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -181,7 +181,7 @@ const RestaurantDashboard = () => {
                 {restaurant?.logo_url ? (
                   <img 
                     src={restaurant.logo_url} 
-                    alt="Logo restaurant"
+                    alt="Logo du restaurant"
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -203,7 +203,7 @@ const RestaurantDashboard = () => {
                   {restaurant?.logo_url ? (
                     <img 
                       src={restaurant.logo_url} 
-                      alt="Logo restaurant"
+                      alt="Logo du restaurant"
                       className="w-full h-full object-cover"
                     />
                   ) : (

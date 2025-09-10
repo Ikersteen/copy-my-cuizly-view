@@ -372,7 +372,7 @@ export const ImprovedRestaurantProfileModal = ({
                 {restaurant?.cover_image_url ? (
                   <img 
                     src={restaurant.cover_image_url} 
-                    alt="Photo de couverture"
+                    alt="Image de couverture"
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -406,7 +406,7 @@ export const ImprovedRestaurantProfileModal = ({
                     ) : (
                       <Camera className="h-4 w-4" />
                     )}
-                    <span className="ml-2">{uploadingCover ? t('restaurantProfile.uploading') : (restaurant?.cover_image_url ? 'Modifier' : 'Ajouter')}</span>
+                    <span className="ml-2">{uploadingCover ? "Chargement..." : (restaurant?.cover_image_url ? 'Changer la photo' : 'Ajouter une photo')}</span>
                   </Button>
                 </div>
 
@@ -437,7 +437,7 @@ export const ImprovedRestaurantProfileModal = ({
                     {restaurant?.logo_url ? (
                       <img 
                         src={restaurant.logo_url} 
-                        alt="Logo"
+                        alt="Logo du restaurant"
                         className="w-full h-full object-cover"
                       />
                     ) : (
