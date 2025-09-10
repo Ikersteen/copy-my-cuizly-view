@@ -372,7 +372,7 @@ export const ImprovedRestaurantProfileModal = ({
                 {restaurant?.cover_image_url ? (
                   <img 
                     src={restaurant.cover_image_url} 
-                    alt="Photo de couverture"
+                    alt={t('restaurant.coverPhoto')}
                     className="w-full h-full object-cover"
                   />
                 ) : (

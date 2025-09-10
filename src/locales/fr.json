@@ -1892,7 +1892,9 @@
     "allergens": "Allergènes",
     "notSpecified": "Non renseigné",
     "notSpecifiedFeminine": "Non renseignée",
-    "notDefined": "Non défini"
+    "notDefined": "Non défini",
+    "coverPhoto": "Photo de couverture",
+    "logo": "Logo du restaurant"
   },
   "accessibility": {
     "voiceAssistant": "Assistant vocal",

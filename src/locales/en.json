@@ -427,7 +427,8 @@
     "addOffer": "Add Special Offer",
     "viewAnalytics": "View Analytics",
     "uploadMenu": "Upload Menu",
-    "updateHours": "Update Hours"
+    "coverPhoto": "Cover Photo",
+    "logo": "Restaurant Logo"
   },
   "offers": {
     "title": "Special Offers",
