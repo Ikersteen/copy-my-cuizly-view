@@ -96,8 +96,8 @@
         "Dietary restriction filters"
       ],
       "cta": "Start Free Trial"
-    },
-    "restaurant": {
+  },
+  "restaurant": {
       "title": "Restaurant",
       "description": "For restaurant owners",
       "price": "$29.99",
@@ -368,7 +368,17 @@
     "preferences": "Loading preferences...",
     "personalizedExperience": "Preparing your personalized experience..."
   },
-  "common": {
+  "errors": {
+    "title": "Error",
+    "description": "An error has occurred",
+    "tryAgain": "Try again",
+    "loadMenus": "Unable to load menus",
+    "loadRestaurants": "Unable to load restaurants",
+    "loadOffers": "Unable to load offers",
+    "networkError": "Network connection error",
+    "serverError": "Server error",
+    "validationError": "Validation error"
+  },
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
@@ -397,6 +407,61 @@
     "print": "Print",
     "download": "Download",
     "upload": "Upload",
+    "refresh": "Refresh",
+    "retry": "Retry",
+    "home": "Home"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "close": "Close",
+    "open": "Open",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "view": "View",
+    "update": "Update",
+    "create": "Create",
+    "confirm": "Confirm",
+    "reset": "Reset",
+    "clear": "Clear",
+    "select": "Select",
+    "unselect": "Unselect",
+    "upload": "Upload",
+    "download": "Download",
+    "copy": "Copy",
+    "paste": "Paste",
+    "cut": "Cut",
+    "undo": "Undo",
+    "redo": "Redo",
+    "send": "Send",
+    "receive": "Receive",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "enable": "Enable",
+    "disable": "Disable",
+    "show": "Show",
+    "hide": "Hide",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "minimize": "Minimize",
+    "maximize": "Maximize",
     "refresh": "Refresh",
     "retry": "Retry",
     "home": "Home"
@@ -469,6 +534,21 @@
     "negativeTrend": "Negative Trend",
     "stable": "Stable",
     "dataCollection": "Data Collection"
+  },
+  "restaurantProfile": {
+    "title": "Restaurant Profile",
+    "basicInfo": "Basic Information",
+    "contactInfo": "Contact Information", 
+    "operatingInfo": "Operating Information",
+    "success": "Success",
+    "imageUploaded": "Image uploaded successfully",
+    "imageRemoved": "Image removed successfully",
+    "profileUpdated": "Profile updated successfully",
+    "cannotSave": "Cannot save profile",
+    "validationError": "Validation error",
+    "uploadCover": "Upload Cover Photo",
+    "removeCover": "Remove Cover Photo",
+    "clickToAddCover": "Click to add cover photo"
   },
   "menus": {
     "title": "Menus",
@@ -797,6 +877,13 @@
     "checkInternetConnection": "Check your internet connection",
     "systemError": "System error",
     "unexpectedError": "An unexpected error occurred"
+  },
+  "toasts": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information",
+    "oauthError": "OAuth Error"
   },
   "loading": {
     "personalizedExperience": "Preparing your personalized experience..."

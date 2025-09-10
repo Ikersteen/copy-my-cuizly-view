@@ -385,6 +385,17 @@
     "added": "Ajouté aux favoris",
     "quickAccess": "Accès rapide"
   },
+  "errors": {
+    "title": "Erreur",
+    "description": "Une erreur s'est produite",
+    "tryAgain": "Réessayer",
+    "loadMenus": "Impossible de charger les menus",
+    "loadRestaurants": "Impossible de charger les restaurants",
+    "loadOffers": "Impossible de charger les offres",
+    "networkError": "Erreur de connexion réseau",
+    "serverError": "Erreur du serveur",
+    "validationError": "Erreur de validation"
+  },
   "profile": {
     "logoutSuccess": "Déconnexion réussie",
     "seeYouSoon": "À bientôt sur Cuizly !",
@@ -839,6 +850,21 @@
     "company": "Entreprise",
     "legalNotices": "Mentions légales",
     "instagram": "Instagram"
+  },
+  "restaurantProfile": {
+    "title": "Profil du Restaurant",
+    "basicInfo": "Informations de base",
+    "contactInfo": "Informations de contact",
+    "operatingInfo": "Informations d'exploitation",
+    "success": "Succès",
+    "imageUploaded": "Image téléchargée avec succès",
+    "imageRemoved": "Image supprimée avec succès",
+    "profileUpdated": "Profil mis à jour avec succès",
+    "cannotSave": "Impossible de sauvegarder le profil",
+    "validationError": "Erreur de validation",
+    "uploadCover": "Télécharger une photo de couverture",
+    "removeCover": "Supprimer la photo de couverture",
+    "clickToAddCover": "Cliquez pour ajouter une photo de couverture"
   },
   "profile": {
     "cancel": "Annuler",

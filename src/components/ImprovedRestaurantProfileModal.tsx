@@ -265,8 +265,8 @@ export const ImprovedRestaurantProfileModal = ({
     } catch (error) {
       console.error('Error removing image:', error);
       toast({
-        title: t('restaurantProfile.error'),
-        description: t('restaurantProfile.removeError'),
+        title: t('errors.title'),
+        description: t('errors.serverError'),
         variant: "destructive"
       });
     }
