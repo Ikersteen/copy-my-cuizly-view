@@ -548,7 +548,7 @@ export const RecommendationCardsSection = () => {
       <section className="py-8 bg-background">
         <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           <div className="text-center space-y-8">
-            <div className="bg-card border rounded-2xl p-12 max-w-2xl mx-auto shadow-sm">
+            <div className="bg-card border rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
                 <div className="p-4 rounded-full bg-muted/50">
                   <ChefHat className="h-12 w-12 text-muted-foreground" />
@@ -588,7 +588,7 @@ export const RecommendationCardsSection = () => {
   return (
     <section className="py-8 bg-gradient-to-br from-background to-muted/20">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
           {recommendedRestaurants.map((restaurant) => (
             <Card 
               key={restaurant.id}

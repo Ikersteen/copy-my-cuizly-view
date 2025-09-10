@@ -40,7 +40,7 @@ const MissionVisionSection = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
           {missions.map((mission, index) => {
             const IconComponent = mission.icon;
             return (
