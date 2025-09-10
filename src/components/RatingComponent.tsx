@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Star } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useRatings } from '@/hooks/useRatings';
-import { supabase } from '@/integrations/supabase/client';
-import { validateRatingComment } from '@/lib/validation';
-import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from "@/components/ui/button";  
+import { Textarea } from "@/components/ui/textarea";
+import { Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 interface RatingComponentProps {
   restaurantId: string;
@@ -15,7 +14,10 @@ interface RatingComponentProps {
 }
 
 export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingComponentProps) => {
-  const { ratings, loading, averageRating, totalRatings, addRating, getUserRating } = useRatings(restaurantId);
+  const [ratings, setRatings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [averageRating, setAverageRating] = useState(0);
+  const [totalRatings, setTotalRatings] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -25,48 +27,92 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
   const { toast } = useToast();
   const { t } = useTranslation();
 
+  const loadRatings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('ratings')
+        .select(`
+          *,
+          profiles (display_name)
+        `)
+        .eq('restaurant_id', restaurantId)
+        .order('created_at', { ascending: false });
+
+      if (!error && data) {
+        setRatings(data);
+        const avg = data.reduce((sum, r) => sum + r.rating, 0) / data.length || 0;
+        setAverageRating(avg);
+        setTotalRatings(data.length);
+      }
+    } catch (error) {
+      console.error('Error loading ratings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setIsAuthenticated(!!user);
       
       if (user) {
-        const existingRating = await getUserRating();
-        setUserRating(existingRating);
+        const { data } = await supabase
+          .from('ratings')
+          .select('*')
+          .eq('restaurant_id', restaurantId)
+          .eq('user_id', user.id)
+          .single();
+        setUserRating(data);
       }
     };
 
     checkAuth();
+    loadRatings();
   }, [restaurantId]);
 
   const handleSubmitRating = async () => {
     if (selectedRating === 0) return;
 
-    // Validate comment with enhanced security
-    const commentValidation = validateRatingComment(comment);
-    if (!commentValidation.isValid) {
+    setSubmitting(true);
+    
+    // Simple comment validation
+    if (comment.length > 500) {
       toast({
         title: t('ratings.invalidComment'),
-        description: commentValidation.error,
+        description: "Le commentaire est trop long",
         variant: "destructive"
       });
+      setSubmitting(false);
       return;
     }
 
-    setSubmitting(true);
-    const success = await addRating(selectedRating, commentValidation.sanitized);
-    
-    if (success) {
-      setIsDialogOpen(false);
-      setSelectedRating(0);
-      setComment('');
-      // Refresh user rating
-      const updatedRating = await getUserRating();
-      setUserRating(updatedRating);
-      toast({
-        title: t('ratings.published'),
-        description: t('ratings.thankYouFeedback')
-      });
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { error } = await supabase
+        .from('ratings')
+        .upsert({
+          restaurant_id: restaurantId,
+          user_id: user.id,
+          rating: selectedRating,
+          comment: comment || null
+        });
+
+      if (!error) {
+        setIsDialogOpen(false);
+        setSelectedRating(0);
+        setComment('');
+        toast({
+          title: t('ratings.published'),
+          description: t('ratings.thankYouFeedback')
+        });
+        // Reload ratings
+        loadRatings();
+      }
+    } catch (error) {
+      console.error('Error submitting rating:', error);
     }
     
     setSubmitting(false);
@@ -117,6 +163,11 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
                   <DialogTitle>
                     {userRating ? t('ratings.modifyRating') : t('ratings.rateRestaurant')}
                   </DialogTitle>
+                  <VisuallyHidden>
+                    <DialogDescription>
+                      {userRating ? 'Modifier votre évaluation du restaurant' : 'Évaluer ce restaurant et partager votre expérience'}
+                    </DialogDescription>
+                  </VisuallyHidden>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>

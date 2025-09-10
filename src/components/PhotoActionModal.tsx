@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Camera, Trash2, Upload, X } from "lucide-react";
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 interface PhotoActionModalProps {
   isOpen: boolean;
@@ -42,6 +42,15 @@ export const PhotoActionModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md bg-background/95 backdrop-blur-sm p-0 overflow-hidden">
+        <VisuallyHidden>
+          <DialogHeader>
+            <DialogTitle>{photoTitle}</DialogTitle>
+            <DialogDescription>
+              {photoType === 'profile' ? 'Gérer votre photo de profil' : 'Gérer votre photo de couverture'}
+            </DialogDescription>
+          </DialogHeader>
+        </VisuallyHidden>
+        
         {/* Header */}
         <div className="relative bg-black/80 text-white p-4 text-center">
           <Button

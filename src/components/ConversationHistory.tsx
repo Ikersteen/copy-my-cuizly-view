@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import { 
   MessageSquare, 
   Mic, 
-  Trash2, 
+  Trash2,
   Edit, 
   Calendar,
   Search,
@@ -78,6 +79,11 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
             <Archive className="w-5 h-5" />
             Historique des conversations
           </DialogTitle>
+          <VisuallyHidden>
+            <DialogDescription>
+              Consultez l'historique de toutes vos conversations avec l'assistant Cuizly
+            </DialogDescription>
+          </VisuallyHidden>
         </DialogHeader>
 
         <div className="space-y-4">

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -370,6 +370,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-hidden p-0 m-4 sm:m-6">
         <DialogHeader className="sr-only">
           <DialogTitle>{t('profile.userProfile')}</DialogTitle>
+          <DialogDescription>
+            Gérer votre profil utilisateur et vos préférences
+          </DialogDescription>
         </DialogHeader>
         {/* Header avec avatar */}
         <div className="p-2 sm:p-4 md:p-6 lg:p-8 pb-2 sm:pb-4">
