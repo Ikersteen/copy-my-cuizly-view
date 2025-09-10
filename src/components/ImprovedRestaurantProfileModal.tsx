@@ -372,7 +372,7 @@ export const ImprovedRestaurantProfileModal = ({
                 {restaurant?.cover_image_url ? (
                   <img 
                     src={restaurant.cover_image_url} 
-                    alt={t('common.coverPhoto')}
+                    alt="Photo de couverture"
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -437,7 +437,7 @@ export const ImprovedRestaurantProfileModal = ({
                     {restaurant?.logo_url ? (
                       <img 
                         src={restaurant.logo_url} 
-                        alt={t('common.logo')}
+                        alt="Logo"
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -527,7 +527,7 @@ export const ImprovedRestaurantProfileModal = ({
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                placeholder={t('common.emailPlaceholder')}
+                placeholder="cuizlycanada@gmail.com"
               />
             </div>
 
@@ -541,7 +541,7 @@ export const ImprovedRestaurantProfileModal = ({
                 type="url"
                 value={formData.instagram_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
-                placeholder={t('common.instagramPlaceholder')}
+                placeholder="https://instagram.com/votre-restaurant"
               />
             </div>
 
@@ -555,7 +555,7 @@ export const ImprovedRestaurantProfileModal = ({
                 type="url"
                 value={formData.facebook_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
-                placeholder={t('common.facebookPlaceholder')}
+                placeholder="https://facebook.com/votre-restaurant"
               />
             </div>
 

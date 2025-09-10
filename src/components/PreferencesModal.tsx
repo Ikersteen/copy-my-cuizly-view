@@ -308,7 +308,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                 }));
               }}
               label={t('preferences.deliveryAddress')}
-              placeholder={t('common.startAddressTyping')}
+              placeholder="Commencez à taper votre adresse de livraison à Montréal..."
             />
             {deliveryAddress?.formatted_address && (
               <p className="text-xs text-muted-foreground mt-2">

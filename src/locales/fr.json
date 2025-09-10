@@ -318,36 +318,7 @@
     "delete": "Supprimer",
     "view": "Voir",
     "validationError": "Erreur de validation",
-    "fixErrors": "Veuillez corriger les erreurs avant de sauvegarder",
-    "search": "Rechercher",
-    "searchConversation": "Rechercher une conversation...",
-    "preview": "Aperçu",
-    "coverPhoto": "Photo de couverture",
-    "logo": "Logo",
-    "logoAlt": "Logo",
-    "menu": "Menu",
-    "scrollToTop": "Remonter vers le haut",
-    "toggleSidebar": "Basculer la barre latérale",
-    "breadcrumb": "Fil d'Ariane",
-    "previousPage": "Page précédente",
-    "nextPage": "Page suivante",
-    "voiceAssistant": "Assistant vocal",
-    "search": "Rechercher une conversation...",
-    "startAddressTyping": "Commencez à taper votre adresse de livraison à Montréal...",
-    "startAddressTypingGeneral": "Commencez à taper une adresse à Montréal...",
-    "emailPlaceholder": "cuizlycanada@gmail.com",
-    "phonePlaceholder": "+1 (XXX) XXX-XXXX",
-    "instagramPlaceholder": "https://instagram.com/votre-restaurant",
-    "facebookPlaceholder": "https://facebook.com/votre-restaurant",
-    "searchBar": "Barre de recherche",
-  "photoAdjustment": {
-    "title": "Ajuster la photo",
-    "zoom": "Zoom",
-    "rotation": "Rotation",
-    "dragToReposition": "Cliquez et faites glisser l'image pour la repositionner",
-    "reset": "Réinitialiser",
-    "cancel": "Annuler",
-    "apply": "Appliquer"
+    "fixErrors": "Veuillez corriger les erreurs avant de sauvegarder"
   },
   "language": {
     "french": "Français",
@@ -1873,15 +1844,5 @@
       "veryPopular": "Très populaire",
       "newDiscovery": "Nouvelle découverte",
       "nearYou": "Près de vous"
-    }
-  },
-  "photoAdjustment": {
-    "title": "Ajuster la photo",
-    "zoom": "Zoom",
-    "rotation": "Rotation",
-    "dragToReposition": "Cliquez et faites glisser l'image pour la repositionner",
-    "reset": "Réinitialiser",
-    "cancel": "Annuler",
-    "apply": "Appliquer"
   }
 }

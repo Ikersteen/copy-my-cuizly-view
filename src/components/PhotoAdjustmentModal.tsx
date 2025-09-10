@@ -3,7 +3,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { RotateCw, ZoomIn, ZoomOut, Move } from "lucide-react";
-import { useTranslation } from 'react-i18next';
 
 interface PhotoAdjustmentModalProps {
   open: boolean;
@@ -18,10 +17,8 @@ export const PhotoAdjustmentModal = ({
   onOpenChange, 
   imageUrl, 
   onSave, 
-  title
+  title = "Ajuster la photo" 
 }: PhotoAdjustmentModalProps) => {
-  const { t } = useTranslation();
-  const modalTitle = title || t('photoAdjustment.title');
   const [scale, setScale] = useState([100]);
   const [rotation, setRotation] = useState(0);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -120,7 +117,7 @@ export const PhotoAdjustmentModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{modalTitle}</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -136,7 +133,7 @@ export const PhotoAdjustmentModal = ({
               <img
                 ref={imageRef}
                 src={imageUrl}
-                alt={t('common.preview')}
+                alt="Aperçu"
                 className="absolute inset-0 w-full h-full object-cover"
                 style={{
                   transform: `translate(${position.x}px, ${position.y}px) scale(${scale[0] / 100}) rotate(${rotation}deg)`,
@@ -159,7 +156,7 @@ export const PhotoAdjustmentModal = ({
             <div className="flex items-center space-x-4">
               <ZoomOut className="h-4 w-4" />
               <div className="flex-1">
-                <p className="text-sm mb-2">{t('photoAdjustment.zoom')}: {scale[0]}%</p>
+                <p className="text-sm mb-2">Zoom: {scale[0]}%</p>
                 <Slider
                   value={scale}
                   onValueChange={setScale}
@@ -175,7 +172,7 @@ export const PhotoAdjustmentModal = ({
             <div className="flex items-center space-x-4">
               <RotateCw className="h-4 w-4" />
               <div className="flex-1">
-                <p className="text-sm mb-2">{t('photoAdjustment.rotation')}: {rotation}°</p>
+                <p className="text-sm mb-2">Rotation: {rotation}°</p>
                 <Slider
                   value={[rotation]}
                   onValueChange={(value) => setRotation(value[0])}
@@ -189,21 +186,21 @@ export const PhotoAdjustmentModal = ({
 
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               <Move className="h-4 w-4" />
-              <span>{t('photoAdjustment.dragToReposition')}</span>
+              <span>Cliquez et faites glisser l'image pour la repositionner</span>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex justify-between">
             <Button variant="outline" onClick={resetAdjustments}>
-              {t('photoAdjustment.reset')}
+              Réinitialiser
             </Button>
             <div className="space-x-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                {t('photoAdjustment.cancel')}
+                Annuler
               </Button>
               <Button onClick={handleSave} disabled={!imageLoaded}>
-                {t('photoAdjustment.apply')}
+                Appliquer
               </Button>
             </div>
           </div>

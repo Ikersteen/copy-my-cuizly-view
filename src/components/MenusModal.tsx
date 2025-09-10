@@ -453,7 +453,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         <div className="relative mb-3">
                           <img
                             src={menu.image_url}
-                            alt={t('common.menu')}
+                            alt="Menu"
                             className="w-full h-32 object-cover rounded-lg"
                           />
                         </div>

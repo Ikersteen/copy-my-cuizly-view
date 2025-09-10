@@ -124,7 +124,7 @@ const Footer = () => {
             >
               <img 
                 src="/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png" 
-                alt={t('common.logoAlt')} 
+                alt="Cuizly" 
                 className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               />
                 </a>

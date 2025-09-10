@@ -16,7 +16,6 @@ import {
 import { useConversations, type Conversation } from '@/hooks/useConversations';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { useTranslation } from 'react-i18next';
 
 interface ConversationHistoryProps {
   isOpen: boolean;
@@ -29,7 +28,6 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
   onClose,
   onSelectConversation
 }) => {
-  const { t } = useTranslation();
   const { 
     conversations, 
     loading, 
@@ -85,7 +83,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder={t('common.searchConversation')}
+              placeholder="Rechercher une conversation..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
