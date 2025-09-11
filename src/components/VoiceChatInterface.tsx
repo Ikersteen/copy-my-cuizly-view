@@ -3,10 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Zap } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import RealtimeVoiceInterface from '@/components/RealtimeVoiceInterface';
 import { useTranslation } from 'react-i18next';
 
 interface Message {
@@ -35,7 +34,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [inputMode, setInputMode] = useState<'voice' | 'text'>('voice');
   const [isConversationActive, setIsConversationActive] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [showRealtimeMode, setShowRealtimeMode] = useState(false);
   const [textInput, setTextInput] = useState('');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -539,7 +537,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         </div>
 
         <div className="border-t border-border bg-background px-6 py-6">
-          <div className="flex justify-center mb-4 space-x-4">
+          <div className="flex justify-center mb-4">
             <div className="flex bg-muted rounded-full p-1">
               <Button
                 variant={inputMode === 'voice' ? 'default' : 'ghost'}
@@ -560,120 +558,102 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 Texte
               </Button>
             </div>
-            
-            {inputMode === 'voice' && (
-              <Button
-                onClick={() => setShowRealtimeMode(!showRealtimeMode)}
-                variant="outline"
-                size="sm"
-                className="rounded-full px-4 border-2 flex items-center justify-center"
-              >
-                <Zap className="w-4 h-4 mr-2 flex-shrink-0" />
-                <span>Mode vocal</span>
-              </Button>
-            )}
           </div>
 
           {inputMode === 'voice' ? (
-            showRealtimeMode ? (
-              <div className="h-[400px]">
-                <RealtimeVoiceInterface />
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center justify-center space-x-4">
-                  <div className="relative">
-                    {isConversationActive && (
-                      <>
-                        <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" />
-                        <div className="absolute inset-0 rounded-full bg-green-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
-                      </>
-                    )}
-                    {isRecording && (
-                      <>
-                        <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
-                        <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.3s' }} />
-                      </>
-                    )}
-                    <Button
-                      onClick={toggleConversation}
-                      disabled={isProcessing}
-                      className={`w-20 h-20 rounded-full transition-all duration-300 relative z-10 ${
-                        isConversationActive
-                          ? isRecording
-                            ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25'
-                            : 'bg-green-500 hover:bg-green-600 shadow-xl shadow-green-500/25'
-                          : isProcessing
-                          ? 'bg-muted cursor-not-allowed'
-                          : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
-                      }`}
-                    >
-                      {isProcessing ? (
-                        <div className="relative">
-                          <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
-                        </div>
-                      ) : isConversationActive ? (
-                        isRecording ? (
-                          <div className="flex flex-col items-center">
-                            <Mic className="w-6 h-6 text-white mb-1" />
-                            <div className="text-xs text-white">REC</div>
-                          </div>
-                        ) : (
-                          <div className="flex flex-col items-center">
-                            <Mic className="w-6 h-6 text-white mb-1" />
-                            <div className="text-xs text-white">ON</div>
-                          </div>
-                        )
-                      ) : (
-                        <Mic className="w-8 h-8 text-white transition-transform duration-200" />
-                      )}
-                    </Button>
-                  </div>
-
+            <>
+              <div className="flex items-center justify-center space-x-4">
+                <div className="relative">
                   {isConversationActive && (
-                    <Button
-                      onClick={toggleRecording}
-                      disabled={isProcessing}
-                      variant="outline"
-                      className={`w-12 h-12 rounded-full transition-all duration-300 ${
-                        isRecording 
-                          ? 'border-red-500 text-red-500 hover:bg-red-50' 
-                          : 'border-green-500 text-green-500 hover:bg-green-50'
-                      }`}
-                    >
-                      {isRecording ? (
-                        <MicOff className="w-5 h-5" />
-                      ) : (
-                        <Mic className="w-5 h-5" />
-                      )}
-                    </Button>
+                    <>
+                      <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" />
+                      <div className="absolute inset-0 rounded-full bg-green-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                    </>
                   )}
+                  {isRecording && (
+                    <>
+                      <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
+                      <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.3s' }} />
+                    </>
+                  )}
+                  <Button
+                    onClick={toggleConversation}
+                    disabled={isProcessing}
+                    className={`w-20 h-20 rounded-full transition-all duration-300 relative z-10 ${
+                      isConversationActive
+                        ? isRecording
+                          ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25'
+                          : 'bg-green-500 hover:bg-green-600 shadow-xl shadow-green-500/25'
+                        : isProcessing
+                        ? 'bg-muted cursor-not-allowed'
+                        : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
+                    }`}
+                  >
+                    {isProcessing ? (
+                      <div className="relative">
+                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
+                      </div>
+                    ) : isConversationActive ? (
+                      isRecording ? (
+                        <div className="flex flex-col items-center">
+                          <Mic className="w-6 h-6 text-white mb-1" />
+                          <div className="text-xs text-white">REC</div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center">
+                          <Mic className="w-6 h-6 text-white mb-1" />
+                          <div className="text-xs text-white">ON</div>
+                        </div>
+                      )
+                    ) : (
+                      <Mic className="w-8 h-8 text-white transition-transform duration-200" />
+                    )}
+                  </Button>
                 </div>
-                
-                <div className="text-center mt-4">
-                  <p className="text-sm text-muted-foreground">
-                    {!isConversationActive 
-                      ? "Appuyez pour démarrer une conversation vocale"
-                      : isRecording 
-                      ? "🎤 Je vous écoute..."
-                      : isProcessing 
-                      ? "🧠 Traitement en cours..."
-                      : isSpeaking
-                      ? "🗣️ Cuizly vous répond..."
-                      : "💬 Conversation active - Parlez naturellement"
+
+                {isConversationActive && (
+                  <Button
+                    onClick={toggleRecording}
+                    disabled={isProcessing}
+                    variant="outline"
+                    className={`w-12 h-12 rounded-full transition-all duration-300 ${
+                      isRecording 
+                        ? 'border-red-500 text-red-500 hover:bg-red-50' 
+                        : 'border-green-500 text-green-500 hover:bg-green-50'
+                    }`}
+                  >
+                    {isRecording ? (
+                      <MicOff className="w-5 h-5" />
+                    ) : (
+                      <Mic className="w-5 h-5" />
+                    )}
+                  </Button>
+                )}
+              </div>
+              
+              <div className="text-center mt-4">
+                <p className="text-sm text-muted-foreground">
+                  {!isConversationActive 
+                    ? "Appuyez pour démarrer une conversation vocale"
+                    : isRecording 
+                    ? "🎤 Je vous écoute..."
+                    : isProcessing 
+                    ? "🧠 Traitement en cours..."
+                    : isSpeaking
+                    ? "🗣️ Cuizly vous répond..."
+                    : "💬 Conversation active - Parlez naturellement"
+                  }
+                </p>
+                {isConversationActive && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {isRecording 
+                      ? "Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute"
+                      : "Cuizly détecte automatiquement quand vous parlez"
                     }
                   </p>
-                  {isConversationActive && (
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {isRecording 
-                        ? "Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute"
-                        : "Cuizly détecte automatiquement quand vous parlez"
-                      }
-                    </p>
-                  )}
-                </div>
-              </>
-            )
+                )}
+              </div>
+            </>
           ) : (
             <form onSubmit={handleTextSubmit} className="space-y-4">
               <div className="flex gap-3">
