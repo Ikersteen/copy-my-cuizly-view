@@ -409,7 +409,7 @@
     "checkInternetConnection": "Vérifiez votre connexion internet",
     "systemError": "Erreur système",
     "unexpectedError": "Une erreur inattendue s'est produite",
-    "general": "Une erreur s'est produite. Veuillez réessayer."
+    "general": "Une erreur s'est produite. Veuillez réessayer.",
     "loadOffers": "Impossible de charger les offres",
     "networkError": "Erreur de connexion réseau",
     "serverError": "Erreur du serveur",
