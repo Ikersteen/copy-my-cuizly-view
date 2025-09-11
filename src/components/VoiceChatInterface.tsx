@@ -455,14 +455,23 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     if (abortController) {
       abortController.abort();
       setAbortController(null);
-      setIsProcessing(false);
-      setIsThinking(false);
-      
-      toast({
-        title: "Génération arrêtée",
-        description: "La génération de la réponse a été interrompue.",
-      });
     }
+    
+    // Stop all states
+    setIsProcessing(false);
+    setIsThinking(false);
+    setIsSpeaking(false);
+    
+    // Stop audio if playing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    
+    toast({
+      title: "Génération arrêtée",
+      description: "La génération de la réponse a été interrompue.",
+    });
   };
 
   const handleTextSubmit = (e: React.FormEvent) => {
@@ -735,13 +744,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 <Button
-                  type={isProcessing ? "button" : "submit"}
-                  onClick={isProcessing ? stopGeneration : undefined}
-                  disabled={isProcessing ? false : !textInput.trim()}
+                  type={(isProcessing || isThinking || isSpeaking) ? "button" : "submit"}
+                  onClick={(isProcessing || isThinking || isSpeaking) ? stopGeneration : undefined}
+                  disabled={!(isProcessing || isThinking || isSpeaking) && !textInput.trim()}
                   className="rounded-full w-12 h-12 p-0"
                 >
-                  {isProcessing ? (
-                    <Square className="w-5 h-5" />
+                  {(isProcessing || isThinking || isSpeaking) ? (
+                    <Square className="w-5 h-5 fill-white" />
                   ) : (
                     <Send className="w-5 h-5" />
                   )}
