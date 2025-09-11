@@ -297,15 +297,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     } catch (error) {
       console.error('Erreur traitement vocal:', error);
       setIsThinking(false);
-      if (error.name !== 'AbortError') {
-        toast({
-          title: t('voiceChat.errors.voiceProcessing.title'),
-          description: t('voiceChat.errors.voiceProcessing.description'),
-          variant: "destructive",
-        });
-        
-        setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
-      }
+      toast({
+        title: t('voiceChat.errors.voiceProcessing.title'),
+        description: t('voiceChat.errors.voiceProcessing.description'),
+        variant: "destructive",
+      });
+      
+      setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
     } finally {
       setIsProcessing(false);
     }
@@ -357,13 +355,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     } catch (error) {
       console.error('Erreur traitement texte:', error);
       setIsThinking(false);
-      if (error.name !== 'AbortError') {
-        toast({
-          title: "Erreur de traitement",
-          description: "Une erreur s'est produite lors du traitement de votre message.",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Erreur de traitement",
+        description: "Une erreur s'est produite lors du traitement de votre message.",
+        variant: "destructive",
+      });
     } finally {
       setIsProcessing(false);
     }
@@ -452,14 +448,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       e.preventDefault();
       handleTextSubmit(e);
     }
-  };
-
-  const stopGeneration = () => {
-    setIsThinking(false);
-    toast({
-      title: "Génération arrêtée",
-      description: "La génération de la réponse a été interrompue.",
-    });
   };
 
   return (
@@ -572,17 +560,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     <UserIcon className="h-5 w-5" />
                   </AvatarFallback>
                 </Avatar>
-                <div className="rounded-3xl px-6 py-4 bg-muted text-foreground flex items-center gap-3">
-                  <span className="text-sm">Cuizly réfléchit...</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={stopGeneration}
-                    className="w-8 h-8 p-0 rounded-sm bg-destructive/10 hover:bg-destructive/20 transition-colors"
-                    title="Arrêter la génération"
-                  >
-                    <div className="w-4 h-4 bg-destructive rounded-sm" />
-                  </Button>
+                <div className="rounded-3xl px-6 py-4 bg-muted text-foreground">
+                  <ThinkingIndicator className="py-2" />
                 </div>
               </div>
             </div>
@@ -697,6 +676,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     ? "Appuyez pour démarrer une conversation vocale"
                     : isRecording 
                     ? "🎤 Je vous écoute..."
+                    : isProcessing 
+                    ? "🧠 Traitement en cours..."
                     : isSpeaking
                     ? "🗣️ Cuizly vous répond..."
                     : "💬 Conversation active - Parlez naturellement"
@@ -721,7 +702,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   onKeyPress={handleKeyPress}
                   placeholder="Écrivez votre message à Cuizly..."
                   disabled={isProcessing}
-                  className="flex-1 rounded-full border border-border focus:border-primary transition-colors"
+                  className="flex-1 rounded-full border-2 border-border focus:border-primary transition-colors"
                 />
                 <Button
                   type="submit"
@@ -737,7 +718,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
               <div className="text-center space-y-1 px-4 mx-auto max-w-xs sm:max-w-none">
                 <p className="text-foreground font-medium text-sm sm:text-base leading-tight">
-                  Écrivez votre question à Cuizly
+                  {isProcessing ? 'Traitement en cours...' : 'Écrivez votre question à Cuizly'}
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   Appuyez sur Entrée pour envoyer
