@@ -1006,6 +1006,16 @@ export type Database = {
           total_count: number
         }[]
       }
+      get_waitlist_secure_admin: {
+        Args: { page_offset?: number; page_size?: number; search_term?: string }
+        Returns: {
+          created_at: string
+          email_masked: string
+          id: string
+          restaurant_type: string
+          total_count: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

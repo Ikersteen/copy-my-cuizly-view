@@ -709,6 +709,7 @@
     "description": "Description",
     "completeProfile": "Veuillez d'abord compléter votre profil restaurant"
   },
+  "errors": {
     "unexpectedError": "Une erreur inattendue s'est produite"
   },
   "theme": {
@@ -1544,8 +1545,7 @@
     "editMenu": "Modifier le menu",
     "saveChanges": "Sauvegarder les modifications",
     "manageMenus": "Menus",
-    "addUpToFive": "Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions"
-  },
+    "addUpToFive": "Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions",
     "unexpectedError": "Une erreur inattendue s'est produite. Veuillez recharger la page."
   },
   "features": {
@@ -1839,8 +1839,10 @@
       "perfectTiming": "Moment parfait",
       "veryPopular": "Très populaire",
       "newDiscovery": "Nouvelle découverte",
-     "nearYou": "Près de vous"
+      "nearYou": "Près de vous"
+    }
   },
+  "errors": {
     "connectionError": "Erreur de connexion",
     "checkInternetConnection": "Vérifiez votre connexion internet",
     "systemError": "Erreur système",
