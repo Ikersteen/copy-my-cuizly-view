@@ -452,26 +452,30 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   };
 
   const stopGeneration = () => {
+    // Stop abort controller
     if (abortController) {
       abortController.abort();
       setAbortController(null);
     }
     
-    // Stop all states
+    // Stop all states immediately
     setIsProcessing(false);
     setIsThinking(false);
     setIsSpeaking(false);
     
-    // Stop typing effect on all messages
+    // Stop typing effect immediately on all messages
     setMessages(prev => prev.map(msg => 
       msg.isTyping ? { ...msg, isTyping: false } : msg
     ));
     
-    // Stop audio if playing
+    // Stop audio immediately if playing
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
+    
+    // Clear audio URL to stop any pending audio
+    setAudioUrl(null);
     
     toast({
       title: "Génération arrêtée",
