@@ -24,6 +24,15 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content, className 
           h3: ({ children }) => (
             <h3 className="text-base font-medium text-foreground mb-2 mt-2 first:mt-0">{children}</h3>
           ),
+          h4: ({ children }) => (
+            <h4 className="text-base font-semibold text-foreground mb-2 mt-2 first:mt-0">{children}</h4>
+          ),
+          h5: ({ children }) => (
+            <h5 className="text-sm font-semibold text-foreground mb-1 mt-2 first:mt-0">{children}</h5>
+          ),
+          h6: ({ children }) => (
+            <h6 className="text-sm font-medium text-foreground mb-1 mt-2 first:mt-0">{children}</h6>
+          ),
           
           // Paragraph
           p: ({ children }) => (
