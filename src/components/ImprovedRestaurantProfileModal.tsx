@@ -425,14 +425,13 @@ export const ImprovedRestaurantProfileModal = ({
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 shadow-md z-20"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    console.log('🟢 Cover photo button clicked - event triggered!');
-                    console.log('🟢 Current states before:', { photoModalOpen, photoModalType });
+                  className="absolute top-3 right-3 bg-white hover:bg-white/90 text-gray-700 shadow-lg border z-50"
+                  onMouseDown={() => console.log('🟡 Button mouse down')}
+                  onMouseUp={() => console.log('🟡 Button mouse up')}
+                  onClick={() => {
+                    console.log('🟢 BOUTON CLIQUÉ!');
                     setPhotoModalType('cover');
                     setPhotoModalOpen(true);
-                    console.log('🟢 SetState called for cover photo button');
                   }}
                 >
                   <Edit2 className="h-4 w-4 mr-1" />
