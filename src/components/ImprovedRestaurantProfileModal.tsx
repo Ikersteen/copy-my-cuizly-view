@@ -285,15 +285,6 @@ export const ImprovedRestaurantProfileModal = ({
       return;
     }
 
-    if (!formData.description.trim() || formData.description.length < 300) {
-      toast({
-        title: t('restaurantProfile.error'),
-        description: `La description doit contenir au moins 300 caractères (actuellement ${formData.description.length})`,
-        variant: "destructive"
-      });
-      return;
-    }
-
     setSaving(true);
     try {
       // Update restaurant data (excluding address)
@@ -483,13 +474,9 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <Label htmlFor="description">
-                  {t('restaurantProfile.description')} <span className="text-destructive">*</span>
-                </Label>
+                <Label htmlFor="description">{t('restaurantProfile.description')}</Label>
                 <span className={`text-xs ${
-                  formData.description.length < 300 
-                    ? 'text-destructive' 
-                    : formData.description.length > 290 
+                  formData.description.length > 280 
                     ? 'text-orange-500' 
                     : 'text-muted-foreground'
                 }`}>
@@ -505,28 +492,14 @@ export const ImprovedRestaurantProfileModal = ({
                   }
                 }}
                 placeholder={t('restaurantProfile.descriptionPlaceholder')}
-                className={`min-h-[120px] ${
-                  formData.description.length < 300 ? 'border-destructive focus:border-destructive' : ''
-                }`}
+                className="min-h-[120px]"
                 maxLength={300}
               />
-              <div className="flex justify-between items-center">
-                {formData.description.length < 300 && (
-                  <p className="text-xs text-destructive">
-                    Minimum 300 caractères requis ({300 - formData.description.length} manquants)
-                  </p>
-                )}
-                {formData.description.length >= 290 && formData.description.length < 300 && (
-                  <p className="text-xs text-orange-500">
-                    {300 - formData.description.length} caractères restants pour atteindre le minimum
-                  </p>
-                )}
-                {formData.description.length >= 300 && (
-                  <p className="text-xs text-green-600">
-                    ✓ Description complète
-                  </p>
-                )}
-              </div>
+              {formData.description.length > 280 && (
+                <p className="text-xs text-muted-foreground">
+                  {300 - formData.description.length} caractères restants
+                </p>
+              )}
             </div>
 
             <AddressSelector
@@ -799,11 +772,7 @@ export const ImprovedRestaurantProfileModal = ({
               }}>
                 {t('restaurantProfile.cancel')}
               </Button>
-              <Button 
-                onClick={handleSave} 
-                disabled={saving || !formData.name.trim() || formData.description.length < 300}
-                className={formData.description.length < 300 ? 'opacity-50' : ''}
-              >
+              <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
                 {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>
             </div>
