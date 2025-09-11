@@ -560,8 +560,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     <UserIcon className="h-5 w-5" />
                   </AvatarFallback>
                 </Avatar>
-                <div className="rounded-3xl px-6 py-4 bg-muted text-foreground">
-                  <ThinkingIndicator className="py-2" />
+                <div className="rounded-3xl px-6 py-4 bg-muted text-foreground flex items-center gap-3">
+                  <span className="text-sm">Cuizly réfléchit...</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsThinking(false)}
+                    className="w-6 h-6 p-0 rounded-sm bg-destructive/10 hover:bg-destructive/20"
+                  >
+                    <div className="w-3 h-3 bg-destructive rounded-sm" />
+                  </Button>
                 </div>
               </div>
             </div>
@@ -615,18 +623,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             <>
               <div className="flex items-center justify-center space-x-4">
                 <div className="relative">
-                  {isConversationActive && (
-                    <>
-                      <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" />
-                      <div className="absolute inset-0 rounded-full bg-green-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
-                    </>
-                  )}
-                  {isRecording && (
-                    <>
-                      <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
-                      <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.3s' }} />
-                    </>
-                  )}
                   <Button
                     onClick={toggleConversation}
                     disabled={isProcessing}
@@ -688,8 +684,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     ? "Appuyez pour démarrer une conversation vocale"
                     : isRecording 
                     ? "🎤 Je vous écoute..."
-                    : isProcessing 
-                    ? "🧠 Traitement en cours..."
                     : isSpeaking
                     ? "🗣️ Cuizly vous répond..."
                     : "💬 Conversation active - Parlez naturellement"
@@ -730,7 +724,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
               <div className="text-center space-y-1 px-4 mx-auto max-w-xs sm:max-w-none">
                 <p className="text-foreground font-medium text-sm sm:text-base leading-tight">
-                  {isProcessing ? 'Traitement en cours...' : 'Écrivez votre question à Cuizly'}
+                  Écrivez votre question à Cuizly
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   Appuyez sur Entrée pour envoyer
