@@ -285,6 +285,15 @@ export const ImprovedRestaurantProfileModal = ({
       return;
     }
 
+    if (!formData.description.trim() || formData.description.length < 300) {
+      toast({
+        title: t('restaurantProfile.error'),
+        description: `La description doit contenir au moins 300 caractères (actuellement ${formData.description.length})`,
+        variant: "destructive"
+      });
+      return;
+    }
+
     setSaving(true);
     try {
       // Update restaurant data (excluding address)
@@ -474,28 +483,50 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <Label htmlFor="description">{t('restaurantProfile.description')}</Label>
-                <span className={`text-xs ${formData.description.length > 200 ? 'text-destructive' : 'text-muted-foreground'}`}>
-                  {formData.description.length}/200
+                <Label htmlFor="description">
+                  {t('restaurantProfile.description')} <span className="text-destructive">*</span>
+                </Label>
+                <span className={`text-xs ${
+                  formData.description.length < 300 
+                    ? 'text-destructive' 
+                    : formData.description.length > 290 
+                    ? 'text-orange-500' 
+                    : 'text-muted-foreground'
+                }`}>
+                  {formData.description.length}/300
                 </span>
               </div>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => {
-                  if (e.target.value.length <= 200) {
+                  if (e.target.value.length <= 300) {
                     setFormData(prev => ({ ...prev, description: e.target.value }));
                   }
                 }}
                 placeholder={t('restaurantProfile.descriptionPlaceholder')}
-                className="min-h-[100px]"
-                maxLength={200}
+                className={`min-h-[120px] ${
+                  formData.description.length < 300 ? 'border-destructive focus:border-destructive' : ''
+                }`}
+                maxLength={300}
               />
-              {formData.description.length > 190 && (
-                <p className="text-xs text-muted-foreground">
-                  {200 - formData.description.length} caractères restants
-                </p>
-              )}
+              <div className="flex justify-between items-center">
+                {formData.description.length < 300 && (
+                  <p className="text-xs text-destructive">
+                    Minimum 300 caractères requis ({300 - formData.description.length} manquants)
+                  </p>
+                )}
+                {formData.description.length >= 290 && formData.description.length < 300 && (
+                  <p className="text-xs text-orange-500">
+                    {300 - formData.description.length} caractères restants pour atteindre le minimum
+                  </p>
+                )}
+                {formData.description.length >= 300 && (
+                  <p className="text-xs text-green-600">
+                    ✓ Description complète
+                  </p>
+                )}
+              </div>
             </div>
 
             <AddressSelector
@@ -768,7 +799,11 @@ export const ImprovedRestaurantProfileModal = ({
               }}>
                 {t('restaurantProfile.cancel')}
               </Button>
-              <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
+              <Button 
+                onClick={handleSave} 
+                disabled={saving || !formData.name.trim() || formData.description.length < 300}
+                className={formData.description.length < 300 ? 'opacity-50' : ''}
+              >
                 {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>
             </div>
