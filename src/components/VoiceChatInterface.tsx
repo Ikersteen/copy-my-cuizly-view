@@ -33,11 +33,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [textInput, setTextInput] = useState('');
   const [inputMode, setInputMode] = useState<'voice' | 'text'>('voice');
+  const [isConversationActive, setIsConversationActive] = useState(false);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const voiceDetectionRef = useRef<any>(null);
 
   useEffect(() => {
     const initUser = async () => {
@@ -61,10 +64,140 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   }, [messages]);
 
 
-  // Audio recording functions
-  const startRecording = async () => {
+  // Voice Activity Detection for interruption
+  const setupVoiceActivityDetection = (audioStream: MediaStream) => {
+    const audioContext = new AudioContext();
+    const source = audioContext.createMediaStreamSource(audioStream);
+    const analyser = audioContext.createAnalyser();
+    
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = 0.8;
+    source.connect(analyser);
+    
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    
+    let silenceTimeout: NodeJS.Timeout | null = null;
+    let isSpeakingDetected = false;
+    
+    const detectVoiceActivity = () => {
+      if (!isConversationActive) return;
+      
+      analyser.getByteFrequencyData(dataArray);
+      
+      // Calculate average volume
+      const average = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
+      const threshold = 15; // Voice activity threshold
+      
+      if (average > threshold) {
+        if (!isSpeakingDetected) {
+          isSpeakingDetected = true;
+          // User started speaking - interrupt AI if speaking
+          if (isSpeaking && audioRef.current) {
+            console.log('User started speaking - interrupting AI');
+            audioRef.current.pause();
+            setIsSpeaking(false);
+          }
+          // Clear silence timeout
+          if (silenceTimeout) {
+            clearTimeout(silenceTimeout);
+            silenceTimeout = null;
+          }
+        }
+      } else {
+        if (isSpeakingDetected) {
+          // Start silence timeout
+          if (silenceTimeout) clearTimeout(silenceTimeout);
+          silenceTimeout = setTimeout(() => {
+            isSpeakingDetected = false;
+            console.log('User stopped speaking');
+          }, 1000); // 1 second of silence
+        }
+      }
+      
+      requestAnimationFrame(detectVoiceActivity);
+    };
+    
+    detectVoiceActivity();
+    
+    return {
+      stop: () => {
+        if (silenceTimeout) clearTimeout(silenceTimeout);
+        audioContext.close();
+      }
+    };
+  };
+
+  // Start continuous conversation mode
+  const startConversation = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const audioStream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
+      
+      setStream(audioStream);
+      setIsConversationActive(true);
+      
+      // Setup voice activity detection for interruption
+      voiceDetectionRef.current = setupVoiceActivityDetection(audioStream);
+      
+      toast({
+        title: "Conversation démarrée",
+        description: "Vous pouvez maintenant parler naturellement avec Cuizly",
+      });
+    } catch (error) {
+      console.error('Erreur microphone:', error);
+      toast({
+        title: t('voiceChat.microphoneError'),
+        description: t('voiceChat.microphoneErrorDescription'),
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Stop conversation mode
+  const stopConversation = () => {
+    setIsConversationActive(false);
+    setIsRecording(false);
+    
+    // Stop voice detection
+    if (voiceDetectionRef.current) {
+      voiceDetectionRef.current.stop();
+      voiceDetectionRef.current = null;
+    }
+    
+    // Stop any ongoing recording
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      mediaRecorderRef.current.stop();
+    }
+    
+    // Stop audio stream
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      setStream(null);
+    }
+    
+    // Stop any playing audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsSpeaking(false);
+    }
+    
+    toast({
+      title: "Conversation terminée",
+      description: "La conversation vocale a été arrêtée",
+    });
+  };
+
+  // Audio recording functions (now works within conversation mode)
+  const startRecording = async () => {
+    if (!isConversationActive || !stream) return;
+    
+    try {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
@@ -76,23 +209,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
         await processVoiceInput(audioBlob);
-        stream.getTracks().forEach(track => track.stop());
       };
 
       mediaRecorder.start();
       setIsRecording(true);
       
-      toast({
-        title: t('voiceChat.listeningTitle'),
-        description: t('voiceChat.listeningDescription'),
-      });
     } catch (error) {
-      console.error('Erreur microphone:', error);
-      toast({
-        title: t('voiceChat.microphoneError'),
-        description: t('voiceChat.microphoneErrorDescription'),
-        variant: "destructive",
-      });
+      console.error('Erreur enregistrement:', error);
     }
   };
 
@@ -161,7 +284,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         timestamp: new Date()
       }]);
 
-      // Step 3: Text-to-Speech (ElevenLabs)
+      // Step 3: Text-to-Speech (ElevenLabs) - Always for voice mode
       const ttsResponse = await supabase.functions.invoke('cuizly-voice-elevenlabs', {
         body: { text: aiResponse }
       });
@@ -204,8 +327,22 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     const audio = new Audio(audioUrl);
     audioRef.current = audio;
     
-    audio.onplay = () => setIsSpeaking(true);
-    audio.onended = () => setIsSpeaking(false);
+    audio.onplay = () => {
+      console.log('AI started speaking');
+      setIsSpeaking(true);
+    };
+    
+    audio.onended = () => {
+      console.log('AI finished speaking');
+      setIsSpeaking(false);
+      // In conversation mode, automatically start listening again
+      if (isConversationActive && !isRecording) {
+        setTimeout(() => {
+          startRecording();
+        }, 500); // Small delay before starting to listen again
+      }
+    };
+    
     audio.onerror = () => {
       setIsSpeaking(false);
       toast({
@@ -218,7 +355,17 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     audio.play();
   };
 
+  const toggleConversation = () => {
+    if (isConversationActive) {
+      stopConversation();
+    } else {
+      startConversation();
+    }
+  };
+
   const toggleRecording = () => {
+    if (!isConversationActive) return;
+    
     if (isRecording) {
       stopRecording();
     } else {
@@ -274,7 +421,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         timestamp: new Date()
       }]);
 
-      // Text-to-Speech (ElevenLabs) - optional for text mode
+      // Text-to-Speech (ElevenLabs) - only for voice mode
       if (inputMode === 'voice') {
         const ttsResponse = await supabase.functions.invoke('cuizly-voice-elevenlabs', {
           body: { text: aiResponse }
@@ -455,53 +602,101 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           {inputMode === 'voice' ? (
             // Interface vocale
             <>
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center space-x-4">
+                {/* Bouton principal de conversation */}
                 <div className="relative">
+                  {/* Animation circles pour la conversation active */}
+                  {isConversationActive && (
+                    <>
+                      <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" />
+                      <div className="absolute inset-0 rounded-full bg-green-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                    </>
+                  )}
                   {/* Animation circles pour l'enregistrement */}
                   {isRecording && (
                     <>
                       <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
-                      <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                      <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.3s' }} />
                     </>
                   )}
                   <Button
-                    onClick={toggleRecording}
+                    onClick={toggleConversation}
                     disabled={isProcessing}
-                    className={`w-16 h-16 rounded-full transition-all duration-300 relative z-10 ${
-                      isRecording 
-                        ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25' 
+                    className={`w-20 h-20 rounded-full transition-all duration-300 relative z-10 ${
+                      isConversationActive
+                        ? isRecording
+                          ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25'
+                          : 'bg-green-500 hover:bg-green-600 shadow-xl shadow-green-500/25'
                         : isProcessing
                         ? 'bg-muted cursor-not-allowed'
                         : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
                     }`}
                   >
-                    {isRecording ? (
-                      <MicOff className="w-8 h-8 text-white" />
-                    ) : isProcessing ? (
+                    {isProcessing ? (
                       <div className="relative">
-                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary-foreground border-t-transparent" />
+                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
                       </div>
+                    ) : isConversationActive ? (
+                      isRecording ? (
+                        <div className="flex flex-col items-center">
+                          <Mic className="w-6 h-6 text-white mb-1" />
+                          <div className="text-xs text-white">REC</div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center">
+                          <Mic className="w-6 h-6 text-white mb-1" />
+                          <div className="text-xs text-white">ON</div>
+                        </div>
+                      )
                     ) : (
                       <Mic className="w-8 h-8 text-white transition-transform duration-200" />
                     )}
                   </Button>
                 </div>
-              </div>
-              
-              <div className="text-center mt-4 space-y-1">
-                {isRecording ? (
-                  <p className="text-red-600 font-medium">{t('voiceChat.recording')}</p>
-                ) : isProcessing ? (
-                  <p className="text-primary font-medium">{t('voiceChat.processing')}</p>
-                ) : (
-                  <div className="space-y-1">
-                    <p className="text-foreground font-medium">{t('voiceChat.clickToTalk')}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('voiceChat.askRecommendations')}
-                    </p>
-                  </div>
+
+                {/* Bouton de contrôle manuel de l'enregistrement (visible uniquement en mode conversation) */}
+                {isConversationActive && (
+                  <Button
+                    onClick={toggleRecording}
+                    disabled={isProcessing}
+                    variant="outline"
+                    className={`w-12 h-12 rounded-full transition-all duration-300 ${
+                      isRecording 
+                        ? 'border-red-500 text-red-500 hover:bg-red-50' 
+                        : 'border-green-500 text-green-500 hover:bg-green-50'
+                    }`}
+                  >
+                    {isRecording ? (
+                      <MicOff className="w-5 h-5" />
+                    ) : (
+                      <Mic className="w-5 h-5" />
+                    )}
+                  </Button>
                 )}
               </div>
+              
+              <div className="text-center mt-4 space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  {!isConversationActive 
+                    ? "Appuyez pour démarrer une conversation vocale"
+                    : isRecording 
+                    ? "🎤 Je vous écoute..."
+                    : isProcessing 
+                    ? "🧠 Traitement en cours..."
+                    : isSpeaking
+                    ? "🗣️ Cuizly vous répond..."
+                    : "💬 Conversation active - Parlez naturellement"
+                  }
+                </p>
+                {isConversationActive && (
+                  <p className="text-xs text-muted-foreground">
+                    {isRecording 
+                      ? "Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute"
+                      : "Cuizly détecte automatiquement quand vous parlez"
+                    }
+                  </p>
+                )}
+               </div>
             </>
           ) : (
             // Interface textuelle
