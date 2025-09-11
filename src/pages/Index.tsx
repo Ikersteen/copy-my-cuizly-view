@@ -7,6 +7,7 @@ import ContactSectionLanding from "@/components/ContactSectionLanding";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import { useTranslation } from "react-i18next";
+import cuizlyAssistantVocalLogo from "@/assets/cuizly-assistant-vocal-no-bg.png";
 
 const Index = () => {
   const { t } = useTranslation();
@@ -22,9 +23,9 @@ const Index = () => {
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
               <img 
-                src="/lovable-uploads/99dfbb07-8a19-4123-ae75-1da806e634ab.png" 
+                src={cuizlyAssistantVocalLogo} 
                 alt="Cuizly Assistant Vocal" 
-                className="h-16 w-auto" 
+                className="h-16 w-auto transition-all duration-300 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]" 
               />
             </div>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
