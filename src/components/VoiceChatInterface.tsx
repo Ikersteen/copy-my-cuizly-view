@@ -8,7 +8,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import ThinkingIndicator from '@/components/ThinkingIndicator';
-import TypewriterText from '@/components/TypewriterText';
+import TypewriterRichText from '@/components/TypewriterRichText';
+import RichTextRenderer from '@/components/RichTextRenderer';
 
 interface Message {
   id: string;
@@ -516,7 +517,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     : 'bg-muted text-foreground'
                 } ${message.isProcessing ? 'animate-pulse' : ''}`}>
                   {message.isTyping && message.type === 'assistant' ? (
-                    <TypewriterText 
+                    <TypewriterRichText 
                       text={message.content}
                       speed={20}
                       className="text-base leading-relaxed"
@@ -529,7 +530,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       }}
                     />
                   ) : (
-                    <p className="text-base leading-relaxed">{message.content}</p>
+                    <RichTextRenderer 
+                      content={message.content} 
+                      className="text-base leading-relaxed"
+                    />
                   )}
                   {message.isAudio && (
                     <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
