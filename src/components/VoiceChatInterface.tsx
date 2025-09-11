@@ -462,6 +462,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     setIsThinking(false);
     setIsSpeaking(false);
     
+    // Stop typing effect on all messages
+    setMessages(prev => prev.map(msg => 
+      msg.isTyping ? { ...msg, isTyping: false } : msg
+    ));
+    
     // Stop audio if playing
     if (audioRef.current) {
       audioRef.current.pause();
@@ -488,6 +493,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       handleTextSubmit(e);
     }
   };
+
+  // Check if any message is currently typing
+  const hasTypingMessage = messages.some(msg => msg.isTyping);
 
   return (
     <div className="min-h-screen bg-background">
@@ -744,12 +752,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 <Button
-                  type={(isProcessing || isThinking || isSpeaking) ? "button" : "submit"}
-                  onClick={(isProcessing || isThinking || isSpeaking) ? stopGeneration : undefined}
-                  disabled={!(isProcessing || isThinking || isSpeaking) && !textInput.trim()}
+                  type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
+                  onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
+                  disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim()}
                   className="rounded-full w-12 h-12 p-0"
                 >
-                  {(isProcessing || isThinking || isSpeaking) ? (
+                  {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
                     <Square className="w-5 h-5 fill-white" />
                   ) : (
                     <Send className="w-5 h-5" />
