@@ -394,6 +394,25 @@
     "loadOffers": "Impossible de charger les offres",
     "networkError": "Erreur de connexion réseau",
     "serverError": "Erreur du serveur",
+    "validationError": "Erreur de validation",
+    "validation": "Erreur de validation",
+    "correctErrors": "Veuillez corriger les erreurs avant de sauvegarder",
+    "sessionNotFound": "Session utilisateur introuvable",
+    "loadSession": "Impossible de charger la session utilisateur",
+    "passwordError": "Erreur de mot de passe",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "cannotChangePassword": "Impossible de changer le mot de passe",
+    "cannotProcessDeletion": "Impossible de traiter la demande de suppression",
+    "connectionProblem": "Problème de connexion",
+    "unableToLoadRestaurantData": "Impossible de charger les données du restaurant",
+    "connectionError": "Erreur de connexion",
+    "checkInternetConnection": "Vérifiez votre connexion internet",
+    "systemError": "Erreur système",
+    "unexpectedError": "Une erreur inattendue s'est produite",
+    "general": "Une erreur s'est produite. Veuillez réessayer."
+    "loadOffers": "Impossible de charger les offres",
+    "networkError": "Erreur de connexion réseau",
+    "serverError": "Erreur du serveur",
     "validationError": "Erreur de validation"
   },
   "profile": {
@@ -504,16 +523,6 @@
     "descriptionLabel": "Description *",
     "describeMenu": "Décrivez ce menu..."
   },
-  "errors": {
-    "title": "Erreur",
-    "loadMenus": "Impossible de charger les menus",
-    "validation": "Erreur de validation",
-    "correctErrors": "Veuillez corriger les erreurs avant de sauvegarder",
-    "sessionNotFound": "Session utilisateur introuvable",
-    "loadSession": "Impossible de charger la session utilisateur",
-    "passwordError": "Erreur de mot de passe",
-    "passwordMismatch": "Les mots de passe ne correspondent pas",
-    "cannotChangePassword": "Impossible de changer le mot de passe",
     "cannotProcessDeletion": "Impossible de traiter la demande de suppression"
   },
   "menus": {
@@ -701,12 +710,6 @@
     "description": "Description",
     "completeProfile": "Veuillez d'abord compléter votre profil restaurant"
   },
-  "errors": {
-    "connectionProblem": "Problème de connexion",
-    "unableToLoadRestaurantData": "Impossible de charger les données du restaurant",
-    "connectionError": "Erreur de connexion",
-    "checkInternetConnection": "Vérifiez votre connexion internet",
-    "systemError": "Erreur système",
     "unexpectedError": "Une erreur inattendue s'est produite"
   },
   "theme": {
@@ -839,10 +842,6 @@
     "placeholder": "Sélectionner les dates",
     "selectEnd": "Sélectionnez la date de fin (max {{maxDays}} jours)",
     "fromTo": "Du {{from}} - Sélectionnez la fin"
-  },
-  "errors": {
-    "title": "Erreur",
-    "loadMenus": "Impossible de charger les menus"
   },
   "footer": {
     "product": "Produit",
@@ -1548,12 +1547,6 @@
     "manageMenus": "Menus",
     "addUpToFive": "Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions"
   },
-  "errors": {
-    "connectionProblem": "Problème de connexion",
-    "unableToLoadRestaurantData": "Impossible de charger les données du restaurant. Veuillez rafraîchir la page.",
-    "connectionError": "Erreur de connexion",
-    "checkInternetConnection": "Vérifiez votre connexion internet et rechargez la page.",
-    "systemError": "Erreur système",
     "unexpectedError": "Une erreur inattendue s'est produite. Veuillez recharger la page."
   },
   "features": {
@@ -1849,12 +1842,6 @@
       "newDiscovery": "Nouvelle découverte",
      "nearYou": "Près de vous"
   },
-  "errors": {
-    "title": "Erreur",
-    "general": "Une erreur s'est produite. Veuillez réessayer.",
-    "loadMenus": "Impossible de charger les menus",
-    "connectionProblem": "Problème de connexion",
-    "unableToLoadRestaurantData": "Impossible de charger les données du restaurant",
     "connectionError": "Erreur de connexion",
     "checkInternetConnection": "Vérifiez votre connexion internet",
     "systemError": "Erreur système",

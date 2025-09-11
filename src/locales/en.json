@@ -377,7 +377,22 @@
     "loadOffers": "Unable to load offers",
     "networkError": "Network connection error",
     "serverError": "Server error",
-    "validationError": "Validation error"
+    "validationError": "Validation error",
+    "validation": "Validation error",
+    "correctErrors": "Please correct the errors before saving",
+    "sessionNotFound": "User session not found",
+    "loadSession": "Unable to load user session",
+    "passwordError": "Password error",
+    "passwordMismatch": "Passwords do not match",
+    "cannotChangePassword": "Cannot change password",
+    "cannotProcessDeletion": "Cannot process deletion request",
+    "connectionProblem": "Connection problem",
+    "unableToLoadRestaurantData": "Unable to load restaurant data",
+    "connectionError": "Connection error",
+    "checkInternetConnection": "Check your internet connection",
+    "systemError": "System error",
+    "unexpectedError": "An unexpected error occurred",
+    "general": "An error occurred. Please try again."
   },
   "common": {
     "save": "Save",
@@ -911,16 +926,6 @@
       "nearYou": "Near you"
     }
   },
-  "errors": {
-    "title": "Error",
-    "general": "An error occurred. Please try again.",
-    "loadMenus": "Unable to load menus",
-    "connectionProblem": "Connection problem",
-    "unableToLoadRestaurantData": "Unable to load restaurant data",
-    "connectionError": "Connection error", 
-    "checkInternetConnection": "Check your internet connection",
-    "systemError": "System error",
-    "unexpectedError": "An unexpected error occurred"
   },
   "toasts": {
     "success": "Success",
