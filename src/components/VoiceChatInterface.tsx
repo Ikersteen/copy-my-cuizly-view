@@ -297,13 +297,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     } catch (error) {
       console.error('Erreur traitement vocal:', error);
       setIsThinking(false);
-      toast({
-        title: t('voiceChat.errors.voiceProcessing.title'),
-        description: t('voiceChat.errors.voiceProcessing.description'),
-        variant: "destructive",
-      });
-      
-      setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
+      if (error.name !== 'AbortError') {
+        toast({
+          title: t('voiceChat.errors.voiceProcessing.title'),
+          description: t('voiceChat.errors.voiceProcessing.description'),
+          variant: "destructive",
+        });
+        
+        setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -355,11 +357,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     } catch (error) {
       console.error('Erreur traitement texte:', error);
       setIsThinking(false);
-      toast({
-        title: "Erreur de traitement",
-        description: "Une erreur s'est produite lors du traitement de votre message.",
-        variant: "destructive",
-      });
+      if (error.name !== 'AbortError') {
+        toast({
+          title: "Erreur de traitement",
+          description: "Une erreur s'est produite lors du traitement de votre message.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -448,6 +452,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       e.preventDefault();
       handleTextSubmit(e);
     }
+  };
+
+  const stopGeneration = () => {
+    setIsThinking(false);
+    toast({
+      title: "Génération arrêtée",
+      description: "La génération de la réponse a été interrompue.",
+    });
   };
 
   return (
@@ -565,10 +577,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setIsThinking(false)}
-                    className="w-6 h-6 p-0 rounded-sm bg-destructive/10 hover:bg-destructive/20"
+                    onClick={stopGeneration}
+                    className="w-8 h-8 p-0 rounded-sm bg-destructive/10 hover:bg-destructive/20 transition-colors"
+                    title="Arrêter la génération"
                   >
-                    <div className="w-3 h-3 bg-destructive rounded-sm" />
+                    <div className="w-4 h-4 bg-destructive rounded-sm" />
                   </Button>
                 </div>
               </div>
@@ -708,7 +721,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   onKeyPress={handleKeyPress}
                   placeholder="Écrivez votre message à Cuizly..."
                   disabled={isProcessing}
-                  className="flex-1 rounded-full border-2 border-border focus:border-primary transition-colors"
+                  className="flex-1 rounded-full border border-border focus:border-primary transition-colors"
                 />
                 <Button
                   type="submit"
