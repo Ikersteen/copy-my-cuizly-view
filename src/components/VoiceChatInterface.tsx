@@ -566,10 +566,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 onClick={() => setShowRealtimeMode(!showRealtimeMode)}
                 variant="outline"
                 size="sm"
-                className="rounded-full px-4 border-2"
+                className="rounded-full px-4 border-2 flex items-center justify-center"
               >
-                <Zap className="w-4 h-4 mr-2" />
-                Mode vocal
+                <Zap className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span>Mode vocal</span>
               </Button>
             )}
           </div>
@@ -650,7 +650,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   )}
                 </div>
                 
-                <div className="text-center mt-4 space-y-2">
+                <div className="text-center mt-4">
                   <p className="text-sm text-muted-foreground">
                     {!isConversationActive 
                       ? "Appuyez pour démarrer une conversation vocale"
@@ -664,7 +664,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     }
                   </p>
                   {isConversationActive && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {isRecording 
                         ? "Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute"
                         : "Cuizly détecte automatiquement quand vous parlez"
@@ -697,8 +697,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   )}
                 </Button>
               </div>
-              <div className="text-center space-y-1">
-                <p className="text-foreground font-medium">
+              <div className="text-center space-y-1 px-4">
+                <p className="text-foreground font-medium text-sm sm:text-base">
                   {isProcessing ? 'Traitement en cours...' : 'Écrivez votre question à Cuizly'}
                 </p>
                 <p className="text-sm text-muted-foreground">
