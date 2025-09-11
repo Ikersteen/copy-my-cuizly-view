@@ -82,19 +82,51 @@ const VoiceTestComponent = () => {
         body: { text: aiResponse }
       });
       
+      console.log('🧪 TTS Response:', ttsResponse);
+      
       if (ttsResponse.error) {
+        console.error('🧪 TTS Error:', ttsResponse.error);
         setTestResult(`❌ TTS Error: ${ttsResponse.error.message}`);
         return;
       }
       
       if (ttsResponse.data?.audioContent) {
-        setTestResult(`✅ FULL FLOW SUCCESS! All 3 steps worked`);
+        console.log('🧪 TTS Success - Audio length:', ttsResponse.data.audioContent.length);
+        setTestResult(`✅ FULL FLOW SUCCESS! Audio generated (${ttsResponse.data.audioContent.length} chars)`);
         
         // Play the final audio
-        const audioUrl = `data:audio/mp3;base64,${ttsResponse.data.audioContent}`;
-        const audio = new Audio(audioUrl);
-        audio.play();
+        try {
+          const audioUrl = `data:audio/mp3;base64,${ttsResponse.data.audioContent}`;
+          const audio = new Audio(audioUrl);
+          
+          audio.onloadeddata = () => {
+            console.log('🧪 Audio loaded successfully');
+            setTestResult(prev => prev + ' | 🔊 Audio loaded');
+          };
+          
+          audio.onplay = () => {
+            console.log('🧪 Audio started playing');
+            setTestResult(prev => prev + ' | ▶️ Playing');
+          };
+          
+          audio.onended = () => {
+            console.log('🧪 Audio finished playing');
+            setTestResult(prev => prev + ' | ✅ Playback complete');
+          };
+          
+          audio.onerror = (e) => {
+            console.error('🧪 Audio error:', e);
+            const errorType = e instanceof Event ? 'playback_error' : String(e);
+            setTestResult(prev => prev + ` | ❌ Audio error: ${errorType}`);
+          };
+          
+          await audio.play();
+        } catch (playError) {
+          console.error('🧪 Play error:', playError);
+          setTestResult(prev => prev + ` | ❌ Play failed: ${playError.message}`);
+        }
       } else {
+        console.log('🧪 No audio content in response:', ttsResponse.data);
         setTestResult(`❌ TTS: No audio content received`);
       }
       
