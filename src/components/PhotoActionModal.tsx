@@ -42,14 +42,12 @@ export const PhotoActionModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md bg-background/95 backdrop-blur-sm p-0 overflow-hidden">
-        <VisuallyHidden>
-          <DialogHeader>
-            <DialogTitle>{photoTitle}</DialogTitle>
-            <DialogDescription>
-              {photoType === 'profile' ? 'Gérer votre photo de profil' : 'Gérer votre photo de couverture'}
-            </DialogDescription>
-          </DialogHeader>
-        </VisuallyHidden>
+        <DialogHeader>
+          <DialogTitle>{photoTitle}</DialogTitle>
+          <DialogDescription>
+            {photoType === 'profile' ? 'Gérer votre photo de profil' : 'Gérer votre photo de couverture'}
+          </DialogDescription>
+        </DialogHeader>
         
         {/* Header */}
         <div className="relative bg-black/80 text-white p-4 text-center">
@@ -61,7 +59,7 @@ export const PhotoActionModal = ({
           >
             <X className="h-5 w-5" />
           </Button>
-          <h2 className="text-lg font-medium">{photoTitle}</h2>
+          <h3 className="text-lg font-medium">{photoTitle}</h3>
         </div>
 
         {/* Photo Preview */}

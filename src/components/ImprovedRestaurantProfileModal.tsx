@@ -418,12 +418,14 @@ export const ImprovedRestaurantProfileModal = ({
                 
                 {/* Cover Photo Click Handler */}
                 <div 
-                  className="absolute inset-0 cursor-pointer group"
-                  onClick={() => {
-                    console.log('Cover photo area clicked');
+                  className="absolute inset-0 cursor-pointer group z-10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('🔵 Cover photo area clicked - event triggered!');
+                    console.log('🔵 Current states before:', { photoModalOpen, photoModalType });
                     setPhotoModalType('cover');
                     setPhotoModalOpen(true);
-                    console.log('Modal state updated:', { photoModalType: 'cover', photoModalOpen: true });
+                    console.log('🔵 SetState called for cover photo modal');
                   }}
                 >
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center">
@@ -440,12 +442,14 @@ export const ImprovedRestaurantProfileModal = ({
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 shadow-md"
-                  onClick={() => {
-                    console.log('Cover photo button clicked');
+                  className="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 shadow-md z-20"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('🟢 Cover photo button clicked - event triggered!');
+                    console.log('🟢 Current states before:', { photoModalOpen, photoModalType });
                     setPhotoModalType('cover');
                     setPhotoModalOpen(true);
-                    console.log('Modal state updated via button:', { photoModalType: 'cover', photoModalOpen: true });
+                    console.log('🟢 SetState called for cover photo button');
                   }}
                 >
                   <Edit2 className="h-4 w-4 mr-1" />
