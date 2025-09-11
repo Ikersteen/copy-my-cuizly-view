@@ -39,9 +39,6 @@ const TypewriterRichText: React.FC<TypewriterRichTextProps> = ({
   return (
     <div className={className}>
       <RichTextRenderer content={displayedText} />
-      {currentIndex < text.length && (
-        <span className="animate-pulse text-foreground">|</span>
-      )}
     </div>
   );
 };

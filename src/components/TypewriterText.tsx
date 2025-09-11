@@ -38,9 +38,6 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
   return (
     <span className={className}>
       {displayedText}
-      {currentIndex < text.length && (
-        <span className="animate-pulse">|</span>
-      )}
     </span>
   );
 };
