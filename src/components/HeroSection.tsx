@@ -13,12 +13,7 @@ const HeroSection = () => {
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
 
-  const handleCTAClick = (e: React.MouseEvent) => {
-    if (isAuthenticated) {
-      e.preventDefault();
-      setShowProfileSwitch(true);
-    }
-  };
+  // Removed handleCTAClick - always redirect to auth
 
   const handleSwitchToRestaurant = () => {
     navigate('/auth');
@@ -55,33 +50,15 @@ const HeroSection = () => {
 
         {/* CTA */}
         <div className="animate-fade-in">
-          {isAuthenticated ? (
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device"
-              onClick={handleCTAClick}
-            >
+          <Link to="/auth">
+            <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
               {t('hero.cta')}
               <ArrowRight className="ml-3 h-5 w-5" />
             </Button>
-          ) : (
-            <Link to="/auth">
-              <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
-                {t('hero.cta')}
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </Button>
-            </Link>
-          )}
+          </Link>
         </div>
 
-        {/* Profile Switch Modal */}
-        {isAuthenticated && (
-          <ProfileSwitchModal
-            open={showProfileSwitch}
-            onOpenChange={setShowProfileSwitch}
-            currentProfile={profile?.user_type || 'consumer'}
-          />
-        )}
+        {/* Profile Switch Modal removed - always redirect to auth */}
       </div>
     </section>
   );
