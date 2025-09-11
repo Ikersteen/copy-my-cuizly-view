@@ -22,7 +22,7 @@ const Index = () => {
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
               <img 
-                src="/lovable-uploads/99dfbb07-8a19-4123-ae75-1da806e634ab.png" 
+                src="/lovable-uploads/4faf2783-b898-4e3b-965d-0de5459e27ab.png" 
                 alt="Cuizly Assistant Vocal" 
                 className="h-16 w-auto" 
               />
