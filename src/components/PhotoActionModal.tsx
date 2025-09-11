@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Camera, Trash2, Upload, X } from "lucide-react";
+import { Camera, Trash2, Upload, X, Image, Edit3 } from "lucide-react";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 interface PhotoActionModalProps {
@@ -41,46 +41,74 @@ export const PhotoActionModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md bg-background/95 backdrop-blur-sm p-0 overflow-hidden">
-        <DialogHeader>
+      <DialogContent className="max-w-sm bg-background border-0 shadow-2xl p-0 overflow-hidden rounded-3xl">
+        <DialogHeader className="sr-only">
           <DialogTitle>{photoTitle}</DialogTitle>
           <DialogDescription>
             {photoType === 'profile' ? 'Gérer votre photo de profil' : 'Gérer votre photo de couverture'}
           </DialogDescription>
         </DialogHeader>
         
-        {/* Header */}
-        <div className="relative bg-black/80 text-white p-4 text-center">
+        {/* Header avec gradient moderne */}
+        <div className="relative bg-gradient-to-r from-primary via-primary/90 to-primary/80 text-white p-6">
           <Button
             variant="ghost"
-            size="sm"
+            size="icon"
             onClick={onClose}
-            className="absolute left-4 top-4 text-white hover:bg-white/10 p-1"
+            className="absolute right-4 top-4 text-white hover:bg-white/20 rounded-full h-8 w-8"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </Button>
-          <h3 className="text-lg font-medium">{photoTitle}</h3>
-        </div>
-
-        {/* Photo Preview */}
-        <div className="flex justify-center p-6 bg-muted/50">
-          <div className={`${imageSize} rounded-full border-4 border-background shadow-lg overflow-hidden bg-muted ${photoType === 'cover' ? 'rounded-lg' : ''}`}>
-            {currentImageUrl ? (
-              <img 
-                src={currentImageUrl} 
-                alt={photoTitle}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
-                <Camera className="h-12 w-12 text-muted-foreground" />
-              </div>
-            )}
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-full">
+              {photoType === 'profile' ? (
+                <Camera className="h-5 w-5" />
+              ) : (
+                <Image className="h-5 w-5" />
+              )}
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold">{photoTitle}</h3>
+              <p className="text-white/80 text-sm">
+                {photoType === 'profile' ? 'Personnalisez votre profil' : 'Ajoutez une image d\'en-tête'}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="px-4 pb-4 space-y-2">
+        {/* Photo Preview avec design moderne */}
+        <div className="flex justify-center p-8 bg-gradient-to-br from-muted/50 to-background">
+          <div className="relative">
+            <div className={`${imageSize} border-4 border-white shadow-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 ${photoType === 'cover' ? 'rounded-2xl' : 'rounded-full'}`}>
+              {currentImageUrl ? (
+                <img 
+                  src={currentImageUrl} 
+                  alt={photoTitle}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center">
+                  <div className="p-4 rounded-full bg-primary/10 mb-3">
+                    <Camera className="h-8 w-8 text-primary" />
+                  </div>
+                  <p className="text-sm text-muted-foreground font-medium">Aucune photo</p>
+                </div>
+              )}
+            </div>
+            
+            {/* Indicateur de type de photo */}
+            <div className="absolute -bottom-2 -right-2 bg-primary text-white p-1.5 rounded-full shadow-lg">
+              {photoType === 'profile' ? (
+                <Camera className="h-3 w-3" />
+              ) : (
+                <Image className="h-3 w-3" />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons avec design moderne */}
+        <div className="p-6 space-y-3 bg-background">
           {/* Upload/Modify Button */}
           <div className="relative">
             <input
@@ -92,17 +120,27 @@ export const PhotoActionModal = ({
               disabled={uploading}
             />
             <Button
-              variant="outline"
-              className="w-full justify-start h-12 text-left"
+              className="w-full h-14 text-base font-medium bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
               onClick={() => document.getElementById('photo-upload')?.click()}
               disabled={uploading}
             >
-              {uploading ? (
-                <div className="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full mr-3" />
-              ) : (
-                <Upload className="h-5 w-5 mr-3" />
-              )}
-              {uploading ? 'Téléchargement...' : (currentImageUrl ? 'Modifier la photo' : 'Ajouter une photo')}
+              <div className="flex items-center justify-center gap-3">
+                {uploading ? (
+                  <>
+                    <div className="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full" />
+                    <span>Téléchargement en cours...</span>
+                  </>
+                ) : (
+                  <>
+                    {currentImageUrl ? (
+                      <Edit3 className="h-5 w-5" />
+                    ) : (
+                      <Upload className="h-5 w-5" />
+                    )}
+                    <span>{currentImageUrl ? 'Modifier la photo' : 'Choisir une photo'}</span>
+                  </>
+                )}
+              </div>
             </Button>
           </div>
 
@@ -110,11 +148,11 @@ export const PhotoActionModal = ({
           {currentImageUrl && (
             <Button
               variant="outline"
-              className="w-full justify-start h-12 text-left text-destructive hover:text-destructive"
+              className="w-full h-12 text-base font-medium border-destructive/20 text-destructive hover:bg-destructive/5 hover:border-destructive/40 rounded-xl transition-all duration-200"
               onClick={handleRemove}
               disabled={uploading}
             >
-              <Trash2 className="h-5 w-5 mr-3" />
+              <Trash2 className="h-4 w-4 mr-3" />
               Supprimer la photo
             </Button>
           )}
