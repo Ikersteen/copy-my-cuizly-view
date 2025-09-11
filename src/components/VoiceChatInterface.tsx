@@ -7,6 +7,8 @@ import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, 
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
+import ThinkingIndicator from '@/components/ThinkingIndicator';
+import TypewriterText from '@/components/TypewriterText';
 
 interface Message {
   id: string;
@@ -15,6 +17,7 @@ interface Message {
   timestamp: Date;
   isAudio?: boolean;
   isProcessing?: boolean;
+  isTyping?: boolean;
 }
 
 interface VoiceChatInterfaceProps {
@@ -28,6 +31,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -252,6 +256,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           : msg
       ));
 
+      // Show thinking indicator
+      setIsThinking(true);
+
       const chatResponse = await supabase.functions.invoke('cuizly-voice-chat', {
         body: { 
           message: transcription,
@@ -265,12 +272,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       const aiResponse = chatResponse.data?.response;
       if (!aiResponse) throw new Error('No AI response received');
 
+      // Hide thinking indicator and show response with typing effect
+      setIsThinking(false);
       const aiMessageId = (Date.now() + 1).toString();
       setMessages(prev => [...prev, {
         id: aiMessageId,
         type: 'assistant',
         content: aiResponse,
-        timestamp: new Date()
+        timestamp: new Date(),
+        isTyping: true
       }]);
 
       const ttsResponse = await supabase.functions.invoke('cuizly-voice-elevenlabs', {
@@ -285,6 +295,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
     } catch (error) {
       console.error('Erreur traitement vocal:', error);
+      setIsThinking(false);
       toast({
         title: t('voiceChat.errors.voiceProcessing.title'),
         description: t('voiceChat.errors.voiceProcessing.description'),
@@ -313,6 +324,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }]);
 
     try {
+      // Show thinking indicator
+      setIsThinking(true);
+
       const chatResponse = await supabase.functions.invoke('cuizly-voice-chat', {
         body: { 
           message: text,
@@ -326,16 +340,20 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       const aiResponse = chatResponse.data?.response;
       if (!aiResponse) throw new Error('No AI response received');
 
+      // Hide thinking indicator and show response with typing effect
+      setIsThinking(false);
       const aiMessageId = (Date.now() + 1).toString();
       setMessages(prev => [...prev, {
         id: aiMessageId,
         type: 'assistant',
         content: aiResponse,
-        timestamp: new Date()
+        timestamp: new Date(),
+        isTyping: true
       }]);
 
     } catch (error) {
       console.error('Erreur traitement texte:', error);
+      setIsThinking(false);
       toast({
         title: "Erreur de traitement",
         description: "Une erreur s'est produite lors du traitement de votre message.",
@@ -497,7 +515,22 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     ? 'bg-primary text-primary-foreground' 
                     : 'bg-muted text-foreground'
                 } ${message.isProcessing ? 'animate-pulse' : ''}`}>
-                  <p className="text-base leading-relaxed">{message.content}</p>
+                  {message.isTyping && message.type === 'assistant' ? (
+                    <TypewriterText 
+                      text={message.content}
+                      speed={20}
+                      className="text-base leading-relaxed"
+                      onComplete={() => {
+                        setMessages(prev => prev.map(msg => 
+                          msg.id === message.id 
+                            ? { ...msg, isTyping: false }
+                            : msg
+                        ));
+                      }}
+                    />
+                  ) : (
+                    <p className="text-base leading-relaxed">{message.content}</p>
+                  )}
                   {message.isAudio && (
                     <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
                       <Volume2 className="w-3 h-3" />
@@ -506,15 +539,29 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   )}
                   {message.isProcessing && (
                     <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" />
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                      <ThinkingIndicator />
                     </div>
                   )}
                 </div>
               </div>
             </div>
           ))}
+
+          {/* Thinking indicator when AI is processing */}
+          {isThinking && (
+            <div className="flex justify-start">
+              <div className="flex items-start gap-4 max-w-[85%]">
+                <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
+                  <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
+                    <UserIcon className="h-5 w-5" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="rounded-3xl px-6 py-4 bg-muted text-foreground">
+                  <ThinkingIndicator className="py-2" />
+                </div>
+              </div>
+            </div>
+          )}
           
           {isSpeaking && (
             <div className="flex justify-start">
