@@ -23,15 +23,6 @@ interface VoiceChatInterfaceProps {
 }
 
 const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
-  return (
-    <div className="min-h-screen bg-background">
-      <VoiceMode />
-    </div>
-  );
-};
-
-// Composant pour le mode vocal (existant)
-const VoiceMode: React.FC = () => {
   const { toast } = useToast();
   const { t } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -45,6 +36,7 @@ const VoiceMode: React.FC = () => {
   const [isConversationActive, setIsConversationActive] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [showRealtimeMode, setShowRealtimeMode] = useState(false);
+  const [textInput, setTextInput] = useState('');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -307,6 +299,55 @@ const VoiceMode: React.FC = () => {
     }
   };
 
+  // Process text input
+  const processTextInput = async (text: string) => {
+    if (!text.trim()) return;
+    
+    setIsProcessing(true);
+    
+    const userMessageId = Date.now().toString();
+    setMessages(prev => [...prev, {
+      id: userMessageId,
+      type: 'user',
+      content: text,
+      timestamp: new Date(),
+      isAudio: false
+    }]);
+
+    try {
+      const chatResponse = await supabase.functions.invoke('cuizly-voice-chat', {
+        body: { 
+          message: text,
+          userId,
+          conversationHistory: messages.slice(-5)
+        }
+      });
+
+      if (chatResponse.error) throw new Error('AI processing failed');
+
+      const aiResponse = chatResponse.data?.response;
+      if (!aiResponse) throw new Error('No AI response received');
+
+      const aiMessageId = (Date.now() + 1).toString();
+      setMessages(prev => [...prev, {
+        id: aiMessageId,
+        type: 'assistant',
+        content: aiResponse,
+        timestamp: new Date()
+      }]);
+
+    } catch (error) {
+      console.error('Erreur traitement texte:', error);
+      toast({
+        title: "Erreur de traitement",
+        description: "Une erreur s'est produite lors du traitement de votre message.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const blobToBase64 = (blob: Blob): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -377,334 +418,6 @@ const VoiceMode: React.FC = () => {
     }
   };
 
-  return (
-    <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
-      <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-280px)]">
-        {(isProcessing || isSpeaking) && (
-          <div className="flex justify-center mb-4">
-            <div className="flex items-center gap-3 bg-muted rounded-full px-4 py-2 text-sm">
-              {isProcessing && (
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Brain className="w-4 h-4 animate-pulse text-blue-600" />
-                  <span>{t('voiceChat.processingInProgress')}</span>
-                </div>
-              )}
-              {isSpeaking && (
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Volume2 className="w-4 h-4 animate-pulse text-green-600" />
-                  <span>🗣️ Assistant répond...</span>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-        
-        {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
-            <img 
-              src="/lovable-uploads/edfb6ec8-ac0c-42dd-8b77-8a1f4e6edee2.png" 
-              alt="Cuizly Assistant Vocal"
-              className="h-16 w-auto"
-            />
-            <div className="space-y-3 max-w-lg">
-              <p className="text-base text-muted-foreground leading-relaxed">
-                {t('voiceChat.description')}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div className={`flex items-start gap-4 max-w-[85%] ${
-              message.type === 'user' ? 'flex-row-reverse' : 'flex-row'
-            }`}>
-              <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
-                {message.type === 'assistant' ? (
-                  <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
-                    <UserIcon className="h-5 w-5" />
-                  </AvatarFallback>
-                ) : (
-                  <>
-                    <AvatarImage src={userProfile?.avatar_url} />
-                    <AvatarFallback className="bg-primary text-primary-foreground">
-                      <UserIcon className="h-5 w-5" />
-                    </AvatarFallback>
-                  </>
-                )}
-              </Avatar>
-              
-              <div className={`rounded-3xl px-6 py-4 ${
-                message.type === 'user' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-muted text-foreground'
-              } ${message.isProcessing ? 'animate-pulse' : ''}`}>
-                <p className="text-base leading-relaxed">{message.content}</p>
-                {message.isAudio && (
-                  <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
-                    <Volume2 className="w-3 h-3" />
-                    <span>{t('voiceChat.voiceMessage')}</span>
-                  </div>
-                )}
-                {message.isProcessing && (
-                  <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
-                    <div className="w-2 h-2 bg-current rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                    <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-        
-        {isSpeaking && (
-          <div className="flex justify-start">
-            <div className="flex items-center gap-3 bg-green-50 text-green-700 rounded-3xl px-6 py-4">
-              <Volume2 className="w-5 h-5 animate-pulse" />
-              <span className="text-sm font-medium">{t('voiceChat.assistantSpeaking')}</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={stopAudio}
-                className="text-green-700 hover:bg-green-100"
-              >
-                <VolumeX className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        )}
-        
-        <div ref={messagesEndRef} />
-      </div>
-
-      <div className="border-t border-border bg-background px-6 py-6">
-        <div className="flex justify-center mb-4 space-x-4">
-          <div className="flex bg-muted rounded-full p-1">
-            <Button
-              variant={inputMode === 'voice' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setInputMode('voice')}
-              className="rounded-full px-4"
-            >
-              <Mic className="w-4 h-4 mr-2" />
-              Vocal
-            </Button>
-            <Button
-              variant={inputMode === 'text' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setInputMode('text')}
-              className="rounded-full px-4"
-            >
-              <Keyboard className="w-4 h-4 mr-2" />
-              Texte
-            </Button>
-          </div>
-          
-          {inputMode === 'voice' && (
-            <Button
-              onClick={() => setShowRealtimeMode(!showRealtimeMode)}
-              variant="outline"
-              size="sm"
-              className="rounded-full px-4 border-2"
-            >
-              <Zap className="w-4 h-4 mr-2" />
-              Mode vocal
-            </Button>
-          )}
-        </div>
-
-        {inputMode === 'voice' ? (
-          showRealtimeMode ? (
-            <div className="h-[400px]">
-              <RealtimeVoiceInterface />
-            </div>
-          ) : (
-          <>
-            <div className="flex items-center justify-center space-x-4">
-              <div className="relative">
-                {isConversationActive && (
-                  <>
-                    <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" />
-                    <div className="absolute inset-0 rounded-full bg-green-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
-                  </>
-                )}
-                {isRecording && (
-                  <>
-                    <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
-                    <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.3s' }} />
-                  </>
-                )}
-                <Button
-                  onClick={toggleConversation}
-                  disabled={isProcessing}
-                  className={`w-20 h-20 rounded-full transition-all duration-300 relative z-10 ${
-                    isConversationActive
-                      ? isRecording
-                        ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25'
-                        : 'bg-green-500 hover:bg-green-600 shadow-xl shadow-green-500/25'
-                      : isProcessing
-                      ? 'bg-muted cursor-not-allowed'
-                      : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
-                  }`}
-                >
-                  {isProcessing ? (
-                    <div className="relative">
-                      <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
-                    </div>
-                  ) : isConversationActive ? (
-                    isRecording ? (
-                      <div className="flex flex-col items-center">
-                        <Mic className="w-6 h-6 text-white mb-1" />
-                        <div className="text-xs text-white">REC</div>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center">
-                        <Mic className="w-6 h-6 text-white mb-1" />
-                        <div className="text-xs text-white">ON</div>
-                      </div>
-                    )
-                  ) : (
-                    <Mic className="w-8 h-8 text-white transition-transform duration-200" />
-                  )}
-                </Button>
-              </div>
-
-              {isConversationActive && (
-                <Button
-                  onClick={toggleRecording}
-                  disabled={isProcessing}
-                  variant="outline"
-                  className={`w-12 h-12 rounded-full transition-all duration-300 ${
-                    isRecording 
-                      ? 'border-red-500 text-red-500 hover:bg-red-50' 
-                      : 'border-green-500 text-green-500 hover:bg-green-50'
-                  }`}
-                >
-                  {isRecording ? (
-                    <MicOff className="w-5 h-5" />
-                  ) : (
-                    <Mic className="w-5 h-5" />
-                  )}
-                </Button>
-              )}
-            </div>
-            
-            <div className="text-center mt-4 space-y-2">
-              <p className="text-sm text-muted-foreground">
-                {!isConversationActive 
-                  ? "Appuyez pour démarrer une conversation vocale"
-                  : isRecording 
-                  ? "🎤 Je vous écoute..."
-                  : isProcessing 
-                  ? "🧠 Traitement en cours..."
-                  : isSpeaking
-                  ? "🗣️ Cuizly vous répond..."
-                  : "💬 Conversation active - Parlez naturellement"
-                }
-              </p>
-              {isConversationActive && (
-                <p className="text-xs text-muted-foreground">
-                  {isRecording 
-                    ? "Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute"
-                    : "Cuizly détecte automatiquement quand vous parlez"
-                  }
-                </p>
-              )}
-            </div>
-           </>
-          )
-        ) : (
-          <TextMode />
-        )}
-      </div>
-    </main>
-  );
-};
-
-// Composant pour le mode texte
-const TextMode: React.FC = () => {
-  const { toast } = useToast();
-  const { t } = useTranslation();
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [textInput, setTextInput] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [userProfile, setUserProfile] = useState<any>(null);
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const initUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUserId(session.user.id);
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .single();
-        setUserProfile(profile);
-      }
-    };
-    initUser();
-  }, []);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  const processTextInput = async (text: string) => {
-    if (!text.trim()) return;
-    
-    setIsProcessing(true);
-    
-    const userMessageId = Date.now().toString();
-    setMessages(prev => [...prev, {
-      id: userMessageId,
-      type: 'user',
-      content: text,
-      timestamp: new Date(),
-      isAudio: false
-    }]);
-
-    try {
-      const chatResponse = await supabase.functions.invoke('cuizly-voice-chat', {
-        body: { 
-          message: text,
-          userId,
-          conversationHistory: messages.slice(-5)
-        }
-      });
-
-      if (chatResponse.error) throw new Error('AI processing failed');
-
-      const aiResponse = chatResponse.data?.response;
-      if (!aiResponse) throw new Error('No AI response received');
-
-      const aiMessageId = (Date.now() + 1).toString();
-      setMessages(prev => [...prev, {
-        id: aiMessageId,
-        type: 'assistant',
-        content: aiResponse,
-        timestamp: new Date()
-      }]);
-
-    } catch (error) {
-      console.error('Erreur traitement texte:', error);
-      toast({
-        title: "Erreur de traitement",
-        description: "Une erreur s'est produite lors du traitement de votre message.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
   const handleTextSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (textInput.trim() && !isProcessing) {
@@ -721,95 +434,282 @@ const TextMode: React.FC = () => {
   };
 
   return (
-    <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
-      <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-280px)]">
-        {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-              <ChefHat className="w-8 h-8 text-primary" />
-            </div>
-            <div className="space-y-3 max-w-lg">
-              <h1 className="text-2xl font-semibold text-foreground">
-                Mode Texte Cuizly
-              </h1>
-              <p className="text-base text-muted-foreground leading-relaxed">
-                Posez vos questions par écrit et obtenez des recommandations personnalisées.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div className={`flex items-start gap-4 max-w-[85%] ${
-              message.type === 'user' ? 'flex-row-reverse' : 'flex-row'
-            }`}>
-              <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
-                {message.type === 'assistant' ? (
-                  <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
-                    <UserIcon className="h-5 w-5" />
-                  </AvatarFallback>
-                ) : (
-                  <>
-                    <AvatarImage src={userProfile?.avatar_url} />
-                    <AvatarFallback className="bg-primary text-primary-foreground">
-                      <UserIcon className="h-5 w-5" />
-                    </AvatarFallback>
-                  </>
+    <div className="min-h-screen bg-background">
+      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
+        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-280px)]">
+          {(isProcessing || isSpeaking) && (
+            <div className="flex justify-center mb-4">
+              <div className="flex items-center gap-3 bg-muted rounded-full px-4 py-2 text-sm">
+                {isProcessing && (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Brain className="w-4 h-4 animate-pulse text-blue-600" />
+                    <span>{t('voiceChat.processingInProgress')}</span>
+                  </div>
                 )}
-              </Avatar>
-              
-              <div className={`rounded-3xl px-6 py-4 ${
-                message.type === 'user' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-muted text-foreground'
-              }`}>
-                <p className="text-base leading-relaxed">{message.content}</p>
+                {isSpeaking && (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Volume2 className="w-4 h-4 animate-pulse text-green-600" />
+                    <span>🗣️ Assistant répond...</span>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        ))}
-        
-        <div ref={messagesEndRef} />
-      </div>
+          )}
+          
+          {messages.length === 0 && (
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
+              <img 
+                src="/lovable-uploads/edfb6ec8-ac0c-42dd-8b77-8a1f4e6edee2.png" 
+                alt="Cuizly Assistant Vocal"
+                className="h-16 w-auto"
+              />
+              <div className="space-y-3 max-w-lg">
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  {t('voiceChat.description')}
+                </p>
+              </div>
+            </div>
+          )}
 
-      <div className="border-t border-border bg-background px-6 py-6">
-        <form onSubmit={handleTextSubmit} className="space-y-4">
-          <div className="flex gap-3">
-            <Input
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Écrivez votre message à Cuizly..."
-              disabled={isProcessing}
-              className="flex-1 rounded-full border-2 border-border focus:border-primary transition-colors"
-            />
-            <Button
-              type="submit"
-              disabled={!textInput.trim() || isProcessing}
-              className="rounded-full w-12 h-12 p-0"
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              {isProcessing ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-2 border-primary-foreground border-t-transparent" />
-              ) : (
-                <Send className="w-5 h-5" />
-              )}
-            </Button>
+              <div className={`flex items-start gap-4 max-w-[85%] ${
+                message.type === 'user' ? 'flex-row-reverse' : 'flex-row'
+              }`}>
+                <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
+                  {message.type === 'assistant' ? (
+                    <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
+                      <UserIcon className="h-5 w-5" />
+                    </AvatarFallback>
+                  ) : (
+                    <>
+                      <AvatarImage src={userProfile?.avatar_url} />
+                      <AvatarFallback className="bg-primary text-primary-foreground">
+                        <UserIcon className="h-5 w-5" />
+                      </AvatarFallback>
+                    </>
+                  )}
+                </Avatar>
+                
+                <div className={`rounded-3xl px-6 py-4 ${
+                  message.type === 'user' 
+                    ? 'bg-primary text-primary-foreground' 
+                    : 'bg-muted text-foreground'
+                } ${message.isProcessing ? 'animate-pulse' : ''}`}>
+                  <p className="text-base leading-relaxed">{message.content}</p>
+                  {message.isAudio && (
+                    <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
+                      <Volume2 className="w-3 h-3" />
+                      <span>{t('voiceChat.voiceMessage')}</span>
+                    </div>
+                  )}
+                  {message.isProcessing && (
+                    <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
+                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" />
+                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          {isSpeaking && (
+            <div className="flex justify-start">
+              <div className="flex items-center gap-3 bg-green-50 text-green-700 rounded-3xl px-6 py-4">
+                <Volume2 className="w-5 h-5 animate-pulse" />
+                <span className="text-sm font-medium">{t('voiceChat.assistantSpeaking')}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={stopAudio}
+                  className="text-green-700 hover:bg-green-100"
+                >
+                  <VolumeX className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className="border-t border-border bg-background px-6 py-6">
+          <div className="flex justify-center mb-4 space-x-4">
+            <div className="flex bg-muted rounded-full p-1">
+              <Button
+                variant={inputMode === 'voice' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setInputMode('voice')}
+                className="rounded-full px-4"
+              >
+                <Mic className="w-4 h-4 mr-2" />
+                Vocal
+              </Button>
+              <Button
+                variant={inputMode === 'text' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setInputMode('text')}
+                className="rounded-full px-4"
+              >
+                <Keyboard className="w-4 h-4 mr-2" />
+                Texte
+              </Button>
+            </div>
+            
+            {inputMode === 'voice' && (
+              <Button
+                onClick={() => setShowRealtimeMode(!showRealtimeMode)}
+                variant="outline"
+                size="sm"
+                className="rounded-full px-4 border-2"
+              >
+                <Zap className="w-4 h-4 mr-2" />
+                Mode vocal
+              </Button>
+            )}
           </div>
-          <div className="text-center space-y-1">
-            <p className="text-foreground font-medium">
-              {isProcessing ? 'Traitement en cours...' : 'Écrivez votre question à Cuizly'}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Appuyez sur Entrée pour envoyer
-            </p>
-          </div>
-        </form>
-      </div>
-    </main>
+
+          {inputMode === 'voice' ? (
+            showRealtimeMode ? (
+              <div className="h-[400px]">
+                <RealtimeVoiceInterface />
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center justify-center space-x-4">
+                  <div className="relative">
+                    {isConversationActive && (
+                      <>
+                        <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" />
+                        <div className="absolute inset-0 rounded-full bg-green-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                      </>
+                    )}
+                    {isRecording && (
+                      <>
+                        <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
+                        <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.3s' }} />
+                      </>
+                    )}
+                    <Button
+                      onClick={toggleConversation}
+                      disabled={isProcessing}
+                      className={`w-20 h-20 rounded-full transition-all duration-300 relative z-10 ${
+                        isConversationActive
+                          ? isRecording
+                            ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25'
+                            : 'bg-green-500 hover:bg-green-600 shadow-xl shadow-green-500/25'
+                          : isProcessing
+                          ? 'bg-muted cursor-not-allowed'
+                          : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
+                      }`}
+                    >
+                      {isProcessing ? (
+                        <div className="relative">
+                          <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
+                        </div>
+                      ) : isConversationActive ? (
+                        isRecording ? (
+                          <div className="flex flex-col items-center">
+                            <Mic className="w-6 h-6 text-white mb-1" />
+                            <div className="text-xs text-white">REC</div>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center">
+                            <Mic className="w-6 h-6 text-white mb-1" />
+                            <div className="text-xs text-white">ON</div>
+                          </div>
+                        )
+                      ) : (
+                        <Mic className="w-8 h-8 text-white transition-transform duration-200" />
+                      )}
+                    </Button>
+                  </div>
+
+                  {isConversationActive && (
+                    <Button
+                      onClick={toggleRecording}
+                      disabled={isProcessing}
+                      variant="outline"
+                      className={`w-12 h-12 rounded-full transition-all duration-300 ${
+                        isRecording 
+                          ? 'border-red-500 text-red-500 hover:bg-red-50' 
+                          : 'border-green-500 text-green-500 hover:bg-green-50'
+                      }`}
+                    >
+                      {isRecording ? (
+                        <MicOff className="w-5 h-5" />
+                      ) : (
+                        <Mic className="w-5 h-5" />
+                      )}
+                    </Button>
+                  )}
+                </div>
+                
+                <div className="text-center mt-4 space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    {!isConversationActive 
+                      ? "Appuyez pour démarrer une conversation vocale"
+                      : isRecording 
+                      ? "🎤 Je vous écoute..."
+                      : isProcessing 
+                      ? "🧠 Traitement en cours..."
+                      : isSpeaking
+                      ? "🗣️ Cuizly vous répond..."
+                      : "💬 Conversation active - Parlez naturellement"
+                    }
+                  </p>
+                  {isConversationActive && (
+                    <p className="text-xs text-muted-foreground">
+                      {isRecording 
+                        ? "Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute"
+                        : "Cuizly détecte automatiquement quand vous parlez"
+                      }
+                    </p>
+                  )}
+                </div>
+              </>
+            )
+          ) : (
+            <form onSubmit={handleTextSubmit} className="space-y-4">
+              <div className="flex gap-3">
+                <Input
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Écrivez votre message à Cuizly..."
+                  disabled={isProcessing}
+                  className="flex-1 rounded-full border-2 border-border focus:border-primary transition-colors"
+                />
+                <Button
+                  type="submit"
+                  disabled={!textInput.trim() || isProcessing}
+                  className="rounded-full w-12 h-12 p-0"
+                >
+                  {isProcessing ? (
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-primary-foreground border-t-transparent" />
+                  ) : (
+                    <Send className="w-5 h-5" />
+                  )}
+                </Button>
+              </div>
+              <div className="text-center space-y-1">
+                <p className="text-foreground font-medium">
+                  {isProcessing ? 'Traitement en cours...' : 'Écrivez votre question à Cuizly'}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Appuyez sur Entrée pour envoyer
+                </p>
+              </div>
+            </form>
+          )}
+        </div>
+      </main>
+    </div>
   );
 };
 
