@@ -27,32 +27,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
-      {/* Tabs pour choisir le mode */}
-      <div className="border-b border-border bg-background">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <Tabs defaultValue="voice" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="voice" className="flex items-center gap-2">
-                <Mic className="w-4 h-4" />
-                Vocal
-              </TabsTrigger>
-              <TabsTrigger value="text" className="flex items-center gap-2">
-                <Keyboard className="w-4 h-4" />
-                Texte
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="voice" className="mt-0">
-              <VoiceMode />
-            </TabsContent>
-            
-            <TabsContent value="text" className="mt-0">
-              <TextMode />
-            </TabsContent>
-          </Tabs>
-        </div>
-      </div>
+      <VoiceMode />
     </div>
   );
 };
