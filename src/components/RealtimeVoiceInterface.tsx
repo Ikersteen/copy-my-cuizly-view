@@ -161,10 +161,10 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
             <AnimatedOrb />
             <div className="space-y-3 max-w-lg">
               <h1 className="text-2xl font-semibold text-foreground">
-                Assistant Vocal Temps Réel
+                Mode vocal
               </h1>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Expérience conversationnelle fluide comme ChatGPT Voice. Parlez naturellement et obtenez des réponses instantanées.
+                Parlez naturellement avec l'assistant Cuizly et obtenez des recommandations personnalisées.
               </p>
             </div>
           </div>
@@ -268,7 +268,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
         <div className="text-center mt-4">
           <p className="text-sm text-muted-foreground">
             {!isConnected 
-              ? "Mode temps réel avec interruption naturelle"
+              ? "Assistant vocal intelligent"
               : "Conversation active - Parlez quand vous voulez"
             }
           </p>

@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Zap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import Header from '@/components/Header';
 import RealtimeVoiceInterface from '@/components/RealtimeVoiceInterface';
 import { useTranslation } from 'react-i18next';
 
@@ -26,7 +25,6 @@ interface VoiceChatInterfaceProps {
 const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <VoiceMode />
     </div>
   );
@@ -515,7 +513,7 @@ const VoiceMode: React.FC = () => {
               className="rounded-full px-4 border-2"
             >
               <Zap className="w-4 h-4 mr-2" />
-              Temps Réel
+              Mode vocal
             </Button>
           )}
         </div>

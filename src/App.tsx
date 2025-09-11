@@ -104,7 +104,12 @@ const AppContent = () => {
           </>
         } />
         <Route path="/waitlist" element={<Waitlist />} />
-        <Route path="/voice" element={<VoiceChat />} />
+        <Route path="/voice" element={
+          <>
+            <Header />
+            <VoiceChat />
+          </>
+        } />
         <Route path="/restaurant/:id" element={<RestaurantMenu />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
