@@ -737,7 +737,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 <Button
                   type={isProcessing ? "button" : "submit"}
                   onClick={isProcessing ? stopGeneration : undefined}
-                  disabled={!isProcessing && !textInput.trim()}
+                  disabled={isProcessing ? false : !textInput.trim()}
                   className="rounded-full w-12 h-12 p-0"
                 >
                   {isProcessing ? (
