@@ -145,6 +145,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       // Setup voice activity detection for interruption
       voiceDetectionRef.current = setupVoiceActivityDetection(audioStream);
       
+      // Auto-start recording immediately when conversation is active
+      setTimeout(() => {
+        console.log('🎤 Auto-starting recording...');
+        startRecording();
+      }, 1000);
+      
       toast({
         title: "Conversation démarrée",
         description: "Vous pouvez maintenant parler naturellement avec Cuizly",
