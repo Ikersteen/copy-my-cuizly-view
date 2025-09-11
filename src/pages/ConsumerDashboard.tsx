@@ -161,19 +161,23 @@ const ConsumerDashboard = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center space-x-4">
-              {profile?.avatar_url ? (
-                <img 
-                  src={profile.avatar_url} 
-                  alt="Profile"
-                  className="w-12 h-12 rounded-lg object-cover"
-                />
-              ) : (
-                <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
-                  <UserIcon className="h-6 w-6 text-muted-foreground" />
-                </div>
-              )}
-              <div>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
+              {/* Photo de profil */}
+              <div className="flex justify-start">
+                {profile?.avatar_url ? (
+                  <img 
+                    src={profile.avatar_url} 
+                    alt="Profile"
+                    className="w-16 h-16 sm:w-12 sm:h-12 rounded-lg object-cover"
+                  />
+                ) : (
+                  <div className="w-16 h-16 sm:w-12 sm:h-12 bg-muted rounded-lg flex items-center justify-center">
+                    <UserIcon className="h-8 w-8 sm:h-6 sm:w-6 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+              {/* Informations du profil */}
+              <div className="text-left">
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
                   {t('welcome.hello')} {profile?.first_name || ""} !
                 </h1>
