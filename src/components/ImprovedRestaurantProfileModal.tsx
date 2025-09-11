@@ -78,6 +78,9 @@ export const ImprovedRestaurantProfileModal = ({
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const [photoModalType, setPhotoModalType] = useState<'logo' | 'cover'>('logo');
 
+  // Debug log for modal state
+  console.log('Modal states:', { photoModalOpen, photoModalType });
+
   useEffect(() => {
     if (modalIsOpen) {
       loadRestaurant();
@@ -414,8 +417,10 @@ export const ImprovedRestaurantProfileModal = ({
                 <div 
                   className="absolute inset-0 cursor-pointer group"
                   onClick={() => {
+                    console.log('Cover photo area clicked');
                     setPhotoModalType('cover');
                     setPhotoModalOpen(true);
+                    console.log('Modal state updated:', { photoModalType: 'cover', photoModalOpen: true });
                   }}
                 >
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center">
@@ -434,8 +439,10 @@ export const ImprovedRestaurantProfileModal = ({
                   size="sm"
                   className="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 shadow-md"
                   onClick={() => {
+                    console.log('Cover photo button clicked');
                     setPhotoModalType('cover');
                     setPhotoModalOpen(true);
+                    console.log('Modal state updated via button:', { photoModalType: 'cover', photoModalOpen: true });
                   }}
                 >
                   <Edit2 className="h-4 w-4 mr-1" />
@@ -809,7 +816,10 @@ export const ImprovedRestaurantProfileModal = ({
       {/* Photo Action Modal */}
       <PhotoActionModal
         isOpen={photoModalOpen}
-        onClose={() => setPhotoModalOpen(false)}
+        onClose={() => {
+          console.log('PhotoActionModal closing');
+          setPhotoModalOpen(false);
+        }}
         currentImageUrl={photoModalType === 'logo' ? restaurant?.logo_url : restaurant?.cover_image_url}
         onUpload={(file) => handleImageUpload(file, photoModalType)}
         onRemove={() => handleImageRemove(photoModalType)}
