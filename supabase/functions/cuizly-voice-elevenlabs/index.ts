@@ -29,8 +29,8 @@ serve(async (req) => {
       throw new Error('ElevenLabs API key not configured');
     }
 
-    // Voice ID pour Charlie (québécois)
-    const voiceId = "IKne3meq5aSn9XLyUdCD";
+    // Voice ID personnalisée de l'utilisateur
+    const voiceId = "ZWX1qsdiL9hRTue6JAL7";
     
     console.log(`🗣️  Generating speech for: "${text.substring(0, 50)}..."`);
     console.log(`🎭 Using voice: ${voice} (${voiceId})`);
