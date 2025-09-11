@@ -6,6 +6,20 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Fonction utilitaire pour convertir en base64 par chunks
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 32768; // 32KB chunks pour éviter les problèmes de mémoire
+  let result = '';
+  
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, Math.min(i + chunkSize, bytes.length));
+    result += btoa(String.fromCharCode(...chunk));
+  }
+  
+  return result;
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -89,13 +103,14 @@ serve(async (req) => {
       throw new Error(`ElevenLabs API error: ${response.status} - ${error}`);
     }
 
-    // Convert audio to base64
+    // Convert audio to base64 avec gestion mémoire améliorée
     const arrayBuffer = await response.arrayBuffer();
-    const base64Audio = btoa(
-      String.fromCharCode(...new Uint8Array(arrayBuffer))
-    );
+    console.log(`📊 Audio size: ${arrayBuffer.byteLength} bytes`);
+    
+    const base64Audio = arrayBufferToBase64(arrayBuffer);
 
     console.log('✅ Speech generated successfully');
+    console.log(`📤 Base64 length: ${base64Audio.length}`);
 
     return new Response(
       JSON.stringify({ audioContent: base64Audio }),
@@ -104,7 +119,7 @@ serve(async (req) => {
       },
     );
   } catch (error) {
-    console.error('Error in cuizly-voice-elevenlabs function:', error);
+    console.error('❌ Error in cuizly-voice-elevenlabs function:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       {
