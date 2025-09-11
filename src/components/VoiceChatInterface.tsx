@@ -697,11 +697,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   )}
                 </Button>
               </div>
-              <div className="text-center space-y-1 px-4">
-                <p className="text-foreground font-medium text-sm sm:text-base">
+              <div className="text-center space-y-1 px-4 mx-auto max-w-xs sm:max-w-none">
+                <p className="text-foreground font-medium text-sm sm:text-base leading-tight">
                   {isProcessing ? 'Traitement en cours...' : 'Écrivez votre question à Cuizly'}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Appuyez sur Entrée pour envoyer
                 </p>
               </div>
