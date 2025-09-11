@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -40,6 +40,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [isConversationActive, setIsConversationActive] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [textInput, setTextInput] = useState('');
+  const [abortController, setAbortController] = useState<AbortController | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -315,6 +316,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     
     setIsProcessing(true);
     
+    // Create abort controller for this request
+    const controller = new AbortController();
+    setAbortController(controller);
+    
     const userMessageId = Date.now().toString();
     setMessages(prev => [...prev, {
       id: userMessageId,
@@ -336,6 +341,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         }
       });
 
+      // Check if request was aborted
+      if (controller.signal.aborted) {
+        return;
+      }
+
       if (chatResponse.error) throw new Error('AI processing failed');
 
       const aiResponse = chatResponse.data?.response;
@@ -353,6 +363,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       }]);
 
     } catch (error) {
+      if (controller.signal.aborted) {
+        console.log('Request was aborted by user');
+        return;
+      }
+      
       console.error('Erreur traitement texte:', error);
       setIsThinking(false);
       toast({
@@ -362,6 +377,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       });
     } finally {
       setIsProcessing(false);
+      setAbortController(null);
     }
   };
 
@@ -432,6 +448,20 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       setIsSpeaking(false);
+    }
+  };
+
+  const stopGeneration = () => {
+    if (abortController) {
+      abortController.abort();
+      setAbortController(null);
+      setIsProcessing(false);
+      setIsThinking(false);
+      
+      toast({
+        title: "Génération arrêtée",
+        description: "La génération de la réponse a été interrompue.",
+      });
     }
   };
 
@@ -705,12 +735,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 <Button
-                  type="submit"
-                  disabled={!textInput.trim() || isProcessing}
+                  type={isProcessing ? "button" : "submit"}
+                  onClick={isProcessing ? stopGeneration : undefined}
+                  disabled={!isProcessing && !textInput.trim()}
                   className="rounded-full w-12 h-12 p-0"
                 >
                   {isProcessing ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-primary-foreground border-t-transparent" />
+                    <Square className="w-5 h-5" />
                   ) : (
                     <Send className="w-5 h-5" />
                   )}
