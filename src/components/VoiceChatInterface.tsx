@@ -458,15 +458,20 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setAbortController(null);
     }
     
+    // Stop typing effect and capture partial text
+    if ((window as any).stopTypewriter) {
+      (window as any).stopTypewriter();
+    } else {
+      // Fallback: Stop typing effect immediately on all messages
+      setMessages(prev => prev.map(msg => 
+        msg.isTyping ? { ...msg, isTyping: false } : msg
+      ));
+    }
+    
     // Stop all states immediately
     setIsProcessing(false);
     setIsThinking(false);
     setIsSpeaking(false);
-    
-    // Stop typing effect immediately on all messages
-    setMessages(prev => prev.map(msg => 
-      msg.isTyping ? { ...msg, isTyping: false } : msg
-    ));
     
     // Stop audio immediately if playing
     if (audioRef.current) {
@@ -481,6 +486,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       title: "Génération arrêtée",
       description: "La génération de la réponse a été interrompue.",
     });
+  };
+
+  const handleTypewriterStop = (partialText: string, messageId: string) => {
+    setMessages(prev => prev.map(msg => 
+      msg.id === messageId 
+        ? { ...msg, content: partialText, isTyping: false }
+        : msg
+    ));
   };
 
   const handleTextSubmit = (e: React.FormEvent) => {
@@ -579,6 +592,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                             : msg
                         ));
                       }}
+                      onStop={(partialText) => handleTypewriterStop(partialText, message.id)}
                     />
                   ) : (
                     <RichTextRenderer 
