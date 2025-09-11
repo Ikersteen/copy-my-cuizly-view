@@ -615,18 +615,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             <>
               <div className="flex items-center justify-center space-x-4">
                 <div className="relative">
-                  {isConversationActive && (
-                    <>
-                      <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" />
-                      <div className="absolute inset-0 rounded-full bg-green-500/30 animate-pulse" style={{ animationDelay: '0.5s' }} />
-                    </>
-                  )}
-                  {isRecording && (
-                    <>
-                      <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
-                      <div className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse" style={{ animationDelay: '0.3s' }} />
-                    </>
-                  )}
                   <Button
                     onClick={toggleConversation}
                     disabled={isProcessing}
