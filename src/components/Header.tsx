@@ -90,11 +90,8 @@ const Header = () => {
     navigate('/auth');
   };
 
-  // Détermine quel logo utiliser selon la route
+  // Utilise le même logo que le footer partout
   const getLogoSrc = () => {
-    if (location.pathname === '/voice') {
-      return "/lovable-uploads/cd2b5fde-bda6-4869-addf-2746d5d849c6.png";
-    }
     return "/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png";
   };
 
