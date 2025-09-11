@@ -702,7 +702,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   onKeyPress={handleKeyPress}
                   placeholder="Écrivez votre message à Cuizly..."
                   disabled={isProcessing}
-                  className="flex-1 rounded-full border-2 border-border focus:border-primary transition-colors"
+                  className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 <Button
                   type="submit"
