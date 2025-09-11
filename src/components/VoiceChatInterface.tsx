@@ -401,13 +401,12 @@ const VoiceMode: React.FC = () => {
         
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-              <ChefHat className="w-8 h-8 text-primary" />
-            </div>
+            <img 
+              src="/lovable-uploads/edfb6ec8-ac0c-42dd-8b77-8a1f4e6edee2.png" 
+              alt="Cuizly Assistant Vocal"
+              className="h-16 w-auto"
+            />
             <div className="space-y-3 max-w-lg">
-              <h1 className="text-2xl font-semibold text-foreground">
-                {t('voiceChat.mainTitle')}
-              </h1>
               <p className="text-base text-muted-foreground leading-relaxed">
                 {t('voiceChat.description')}
               </p>
