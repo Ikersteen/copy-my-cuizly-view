@@ -32,7 +32,7 @@ serve(async (req) => {
     }
 
     // Voice ID personnalisée de l'utilisateur
-    const voiceId = "ZWX1qsdiL9hRTue6JAL7";
+    const voiceId = "UJCi4DDncuo0VJDSIegj";
     
     console.log(`🗣️  Generating speech for: "${text.substring(0, 50)}..."`);
     console.log(`🎭 Using voice: ${voice} (${voiceId})`);
