@@ -521,8 +521,7 @@
   "cuisines": {
     "typeLabel": "Type de cuisine",
     "descriptionLabel": "Description *",
-    "describeMenu": "Décrivez ce menu..."
-  },
+    "describeMenu": "Décrivez ce menu...",
     "cannotProcessDeletion": "Impossible de traiter la demande de suppression"
   },
   "menus": {
