@@ -31,27 +31,17 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       {/* Tabs pour choisir le mode */}
       <div className="border-b border-border bg-background">
         <div className="max-w-6xl mx-auto px-6 py-4">
-          <Tabs defaultValue="realtime" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="realtime" className="flex items-center gap-2">
-                <Zap className="w-4 h-4" />
-                Temps Réel (ChatGPT Style)
-              </TabsTrigger>
+          <Tabs defaultValue="voice" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="voice" className="flex items-center gap-2">
                 <Mic className="w-4 h-4" />
-                Mode Vocal
+                Vocal
               </TabsTrigger>
               <TabsTrigger value="text" className="flex items-center gap-2">
                 <Keyboard className="w-4 h-4" />
-                Mode Texte
+                Texte
               </TabsTrigger>
             </TabsList>
-            
-            <TabsContent value="realtime" className="mt-0">
-              <div className="h-[calc(100vh-200px)]">
-                <RealtimeVoiceInterface />
-              </div>
-            </TabsContent>
             
             <TabsContent value="voice" className="mt-0">
               <VoiceMode />
@@ -81,6 +71,7 @@ const VoiceMode: React.FC = () => {
   const [inputMode, setInputMode] = useState<'voice' | 'text'>('voice');
   const [isConversationActive, setIsConversationActive] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [showRealtimeMode, setShowRealtimeMode] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -519,7 +510,7 @@ const VoiceMode: React.FC = () => {
       </div>
 
       <div className="border-t border-border bg-background px-6 py-6">
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-4 space-x-4">
           <div className="flex bg-muted rounded-full p-1">
             <Button
               variant={inputMode === 'voice' ? 'default' : 'ghost'}
@@ -540,9 +531,26 @@ const VoiceMode: React.FC = () => {
               Texte
             </Button>
           </div>
+          
+          {inputMode === 'voice' && (
+            <Button
+              onClick={() => setShowRealtimeMode(!showRealtimeMode)}
+              variant="outline"
+              size="sm"
+              className="rounded-full px-4 border-2"
+            >
+              <Zap className="w-4 h-4 mr-2" />
+              Temps Réel
+            </Button>
+          )}
         </div>
 
         {inputMode === 'voice' ? (
+          showRealtimeMode ? (
+            <div className="h-[400px]">
+              <RealtimeVoiceInterface />
+            </div>
+          ) : (
           <>
             <div className="flex items-center justify-center space-x-4">
               <div className="relative">
@@ -635,7 +643,8 @@ const VoiceMode: React.FC = () => {
                 </p>
               )}
             </div>
-          </>
+           </>
+          )
         ) : (
           <TextMode />
         )}
