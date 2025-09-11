@@ -8,6 +8,8 @@ const corsHeaders = {
 
 serve(async (req) => {
   console.log(`🎤 Cuizly Voice ElevenLabs - ${req.method} request received`);
+  console.log(`🔧 Using optimized base64 conversion for large audio files`);
+  
   
   if (req.method === 'OPTIONS') {
     console.log('🔄 Handling CORS preflight');
