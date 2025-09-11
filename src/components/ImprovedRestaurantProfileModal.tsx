@@ -409,33 +409,16 @@ export const ImprovedRestaurantProfileModal = ({
                     alt="Image de couverture"
                     className="w-full h-full object-cover"
                   />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-                    <Camera className="h-16 w-16 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-500 font-medium">Cliquez pour ajouter une photo de couverture</p>
-                  </div>
-                )}
+                 ) : (
+                   <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                     <Camera className="h-16 w-16 text-gray-400 mb-2" />
+                     <p className="text-sm text-gray-500 font-medium">Aucune photo de couverture</p>
+                   </div>
+                 )}
                 
-                {/* Cover Photo Click Handler */}
-                <div 
-                  className="absolute inset-0 cursor-pointer group z-10"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    console.log('🔵 Cover photo area clicked - event triggered!');
-                    console.log('🔵 Current states before:', { photoModalOpen, photoModalType });
-                    setPhotoModalType('cover');
-                    setPhotoModalOpen(true);
-                    console.log('🔵 SetState called for cover photo modal');
-                  }}
-                >
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center">
-                      <Upload className="h-8 w-8 text-white mb-2" />
-                      <p className="text-white text-sm font-medium">
-                        {restaurant?.cover_image_url ? 'Modifier la photo de couverture' : 'Ajouter une photo de couverture'}
-                      </p>
-                    </div>
-                  </div>
+                {/* Cover Photo Hover Effect Only - No Click */}
+                <div className="absolute inset-0 group">
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200" />
                 </div>
 
                 {/* Floating Edit Button - Always visible for better UX */}
