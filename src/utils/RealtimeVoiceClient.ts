@@ -154,15 +154,13 @@ export class RealtimeVoiceClient {
   private recorder: AudioRecorder | null = null;
   private audioContext: AudioContext | null = null;
   private audioQueue: AudioQueue | null = null;
-  private onMessage: (message: any) => void;
-  private onSpeakingChange: (speaking: boolean) => void;
+  
+  // Event handlers - made public for external access
+  public onMessage?: (message: any) => void;
+  public onSpeakingChange?: (speaking: boolean) => void;
 
-  constructor(
-    onMessage: (message: any) => void,
-    onSpeakingChange: (speaking: boolean) => void
-  ) {
-    this.onMessage = onMessage;
-    this.onSpeakingChange = onSpeakingChange;
+  constructor() {
+    // Constructor vide
   }
 
   async init(userId: string) {
