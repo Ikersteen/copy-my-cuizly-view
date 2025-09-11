@@ -128,7 +128,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     };
   };
 
-  // Start continuous conversation mode
+  // Start continuous conversation mode - real-time streaming
   const startConversation = async () => {
     try {
       const audioStream = await navigator.mediaDevices.getUserMedia({ 
@@ -142,18 +142,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setStream(audioStream);
       setIsConversationActive(true);
       
-      // Setup voice activity detection for interruption
+      // Setup voice activity detection for real-time streaming
       voiceDetectionRef.current = setupVoiceActivityDetection(audioStream);
       
-      // Auto-start recording immediately when conversation is active
-      setTimeout(() => {
-        console.log('🎤 Auto-starting recording...');
-        startRecording();
-      }, 1000);
+      // Start continuous recording immediately - real-time mode
+      startContinuousRecording(audioStream);
       
       toast({
-        title: "Conversation démarrée",
-        description: "Vous pouvez maintenant parler naturellement avec Cuizly",
+        title: "Conversation temps réel démarrée",
+        description: "Parlez naturellement, Cuizly vous écoute en continu",
       });
     } catch (error) {
       console.error('Erreur microphone:', error);
@@ -199,30 +196,41 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     });
   };
 
-  // Audio recording functions (now works within conversation mode)
-  const startRecording = async () => {
-    if (!isConversationActive || !stream) return;
+  // Continuous real-time recording
+  const startContinuousRecording = async (audioStream: MediaStream) => {
+    if (!audioStream) return;
     
     try {
-      const mediaRecorder = new MediaRecorder(stream);
+      const mediaRecorder = new MediaRecorder(audioStream, {
+        mimeType: 'audio/webm;codecs=opus'
+      });
       mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
-
-      mediaRecorder.ondataavailable = (event) => {
-        audioChunksRef.current.push(event.data);
+      
+      // Real-time streaming with shorter intervals
+      const recordingInterval = 2000; // 2 seconds chunks for real-time feel
+      
+      mediaRecorder.ondataavailable = async (event) => {
+        if (event.data.size > 0 && isConversationActive) {
+          console.log('🎤 Processing real-time audio chunk...');
+          await processVoiceInput(event.data);
+        }
       };
 
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-        await processVoiceInput(audioBlob);
-      };
-
-      mediaRecorder.start();
+      // Start recording with time slices for continuous streaming
+      mediaRecorder.start(recordingInterval);
       setIsRecording(true);
       
+      console.log('🎤 Continuous real-time recording started');
+      
     } catch (error) {
-      console.error('Erreur enregistrement:', error);
+      console.error('Erreur enregistrement continu:', error);
     }
+  };
+
+  // Legacy recording function (keep for compatibility)
+  const startRecording = async () => {
+    if (!isConversationActive || !stream) return;
+    startContinuousRecording(stream);
   };
 
   const stopRecording = () => {
@@ -341,12 +349,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     audio.onended = () => {
       console.log('AI finished speaking');
       setIsSpeaking(false);
-      // In conversation mode, automatically start listening again
-      if (isConversationActive && !isRecording) {
-        setTimeout(() => {
-          startRecording();
-        }, 500); // Small delay before starting to listen again
-      }
+      // In real-time mode, recording continues automatically (no need to restart)
+      console.log('🎤 Continuous recording continues...');
     };
     
     audio.onerror = () => {
