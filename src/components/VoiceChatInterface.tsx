@@ -33,6 +33,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
+  const [shouldStopTyping, setShouldStopTyping] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -458,15 +459,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setAbortController(null);
     }
     
-    // Stop typing effect and capture partial text
-    if ((window as any).stopTypewriter) {
-      (window as any).stopTypewriter();
-    } else {
-      // Fallback: Stop typing effect immediately on all messages
-      setMessages(prev => prev.map(msg => 
-        msg.isTyping ? { ...msg, isTyping: false } : msg
-      ));
-    }
+    // Signal typewriter to stop
+    setShouldStopTyping(true);
     
     // Stop all states immediately
     setIsProcessing(false);
@@ -494,6 +488,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         ? { ...msg, content: partialText, isTyping: false }
         : msg
     ));
+    setShouldStopTyping(false); // Reset the stop signal
   };
 
   const handleTextSubmit = (e: React.FormEvent) => {
@@ -585,6 +580,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       text={message.content}
                       speed={20}
                       className="text-base leading-relaxed"
+                      shouldStop={shouldStopTyping}
                       onComplete={() => {
                         setMessages(prev => prev.map(msg => 
                           msg.id === message.id 
@@ -592,7 +588,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                             : msg
                         ));
                       }}
-                      onStop={(partialText) => handleTypewriterStop(partialText, message.id)}
+                      onStopped={(partialText) => handleTypewriterStop(partialText, message.id)}
                     />
                   ) : (
                     <RichTextRenderer 

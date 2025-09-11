@@ -6,7 +6,8 @@ interface TypewriterRichTextProps {
   speed?: number;
   className?: string;
   onComplete?: () => void;
-  onStop?: (partialText: string) => void;
+  shouldStop?: boolean;
+  onStopped?: (partialText: string) => void;
 }
 
 const TypewriterRichText: React.FC<TypewriterRichTextProps> = ({ 
@@ -14,31 +15,42 @@ const TypewriterRichText: React.FC<TypewriterRichTextProps> = ({
   speed = 30, 
   className = "",
   onComplete,
-  onStop 
+  shouldStop = false,
+  onStopped
 }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isStopped, setIsStopped] = useState(false);
 
+  // Handle shouldStop prop
   useEffect(() => {
-    if (currentIndex < text.length && !isStopped) {
+    if (shouldStop && !isStopped) {
+      setIsStopped(true);
+      if (onStopped) {
+        onStopped(displayedText);
+      }
+    }
+  }, [shouldStop, isStopped, displayedText, onStopped]);
+
+  useEffect(() => {
+    if (currentIndex < text.length && !isStopped && !shouldStop) {
       const timeout = setTimeout(() => {
         setDisplayedText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
       }, speed);
 
       return () => clearTimeout(timeout);
-    } else if (onComplete && currentIndex === text.length && !isStopped) {
+    } else if (onComplete && currentIndex === text.length && !isStopped && !shouldStop) {
       onComplete();
     }
-  }, [currentIndex, text, speed, onComplete, isStopped]);
+  }, [currentIndex, text, speed, onComplete, isStopped, shouldStop]);
 
   // Handle stop signal
   useEffect(() => {
-    if (isStopped && onStop) {
-      onStop(displayedText);
+    if (isStopped && onStopped) {
+      onStopped(displayedText);
     }
-  }, [isStopped, displayedText, onStop]);
+  }, [isStopped, displayedText, onStopped]);
 
   // Reset when text changes
   useEffect(() => {
@@ -46,16 +58,6 @@ const TypewriterRichText: React.FC<TypewriterRichTextProps> = ({
     setCurrentIndex(0);
     setIsStopped(false);
   }, [text]);
-
-  // Add stop method to component
-  React.useEffect(() => {
-    if (onStop) {
-      (window as any).stopTypewriter = () => setIsStopped(true);
-    }
-    return () => {
-      delete (window as any).stopTypewriter;
-    };
-  }, [onStop]);
 
   return (
     <div className={className}>
