@@ -138,9 +138,14 @@ export const ImprovedRestaurantProfileModal = ({
 
   // Handle image upload
   const handleImageUpload = async (file: File, imageType: 'logo' | 'cover') => {
+    console.log('Starting image upload:', { imageType, fileName: file.name, fileSize: file.size });
+    
     try {
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('Session check:', { hasSession: !!session, userId: session?.user?.id });
+      
       if (!session) {
+        console.error('No session found');
         toast({
           title: t('restaurantProfile.error'),
           description: 'User not authenticated',
@@ -151,9 +156,11 @@ export const ImprovedRestaurantProfileModal = ({
 
       const setUploading = imageType === 'logo' ? setUploadingLogo : setUploadingCover;
       setUploading(true);
+      console.log('Set uploading state to true');
 
       // Validate file
       if (!file.type.startsWith('image/')) {
+        console.error('Invalid file type:', file.type);
         toast({
           title: t('restaurantProfile.error'),
           description: t('restaurantProfile.selectValidImage'),
@@ -163,6 +170,7 @@ export const ImprovedRestaurantProfileModal = ({
       }
 
       if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        console.error('File too large:', file.size);
         toast({
           title: t('restaurantProfile.error'),
           description: t('restaurantProfile.imageTooLarge'),
@@ -174,8 +182,10 @@ export const ImprovedRestaurantProfileModal = ({
       // Create unique filename
       const fileExt = file.name.split('.').pop();
       const fileName = `${session.user.id}/${imageType}_${Date.now()}.${fileExt}`;
+      console.log('Generated fileName:', fileName);
 
       // Upload to Supabase Storage
+      console.log('Starting upload to bucket: restaurant-images');
       const { error: uploadError } = await supabase.storage
         .from('restaurant-images')
         .upload(fileName, file, {
@@ -183,15 +193,24 @@ export const ImprovedRestaurantProfileModal = ({
           upsert: false
         });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
+      
+      console.log('Upload successful, getting public URL');
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('restaurant-images')
         .getPublicUrl(fileName);
+      
+      console.log('Public URL generated:', publicUrl);
 
       // Update restaurant in database
       const updateField = imageType === 'logo' ? 'logo_url' : 'cover_image_url';
+      console.log('Updating restaurant database:', { updateField, publicUrl });
+      
       const { error: updateError } = await supabase
         .from('restaurants')
         .update({ 
@@ -200,7 +219,12 @@ export const ImprovedRestaurantProfileModal = ({
         })
         .eq('owner_id', session.user.id);
 
-      if (updateError) throw updateError;
+      if (updateError) {
+        console.error('Database update error:', updateError);
+        throw updateError;
+      }
+
+      console.log('Database update successful');
 
       // Update local state
       setRestaurant((prev: any) => ({
@@ -221,12 +245,13 @@ export const ImprovedRestaurantProfileModal = ({
       console.error('Error uploading image:', error);
       toast({
         title: t('restaurantProfile.error'),
-        description: t('restaurantProfile.uploadError'),
+        description: `Erreur d'upload: ${error.message}`,
         variant: "destructive"
       });
     } finally {
       const setUploading = imageType === 'logo' ? setUploadingLogo : setUploadingCover;
       setUploading(false);
+      console.log('Set uploading state to false');
     }
   };
 
