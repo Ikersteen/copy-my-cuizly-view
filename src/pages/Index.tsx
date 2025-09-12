@@ -21,10 +21,17 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
+              {/* Logo normal pour le mode clair */}
               <img 
                 src="/lovable-uploads/64c3c5b4-0bea-428d-8a44-3f25301da946.png" 
                 alt="Cuizly Assistant Vocal" 
-                className="h-16 w-auto dark:brightness-150 dark:contrast-125" 
+                className="h-16 w-auto block dark:hidden" 
+              />
+              {/* Logo éclairé pour le mode dark */}
+              <img 
+                src="/lovable-uploads/0f8fb1c9-af76-4fbc-8cec-9dc5fd10dc99.png" 
+                alt="Cuizly Assistant Vocal" 
+                className="h-16 w-auto hidden dark:block brightness-125" 
               />
             </div>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
