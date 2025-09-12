@@ -216,7 +216,7 @@ const RestaurantDashboard = () => {
         )}
 
         {/* Restaurant Information Section - Between logo and welcome message */}
-        <div className="mb-8 ml-4">
+        <div className="mb-8 ml-8">
           <div>
             <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
               {restaurant?.name || t('restaurant.myRestaurant')}
