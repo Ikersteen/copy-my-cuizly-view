@@ -24,7 +24,7 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/64c3c5b4-0bea-428d-8a44-3f25301da946.png" 
                 alt="Cuizly Assistant Vocal" 
-                className="h-16 w-auto" 
+                className="h-16 w-auto transition-all duration-300 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]" 
               />
             </div>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
