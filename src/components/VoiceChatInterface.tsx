@@ -751,12 +751,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     : "💬 Conversation active - Parlez naturellement"
                   }
                 </p>
-                {isConversationActive && (
+                {isConversationActive && isRecording && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    {isRecording 
-                      ? "Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute"
-                      : "Cuizly détecte automatiquement quand vous parlez"
-                    }
+                    Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute
                   </p>
                 )}
               </div>
