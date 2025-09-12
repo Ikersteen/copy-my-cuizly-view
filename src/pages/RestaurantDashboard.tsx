@@ -197,7 +197,7 @@ const RestaurantDashboard = () => {
         {/* Header */}
         <div className={`mb-8 ${restaurant?.cover_image_url ? 'mt-8' : ''}`}>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="absolute bottom-4 left-4 flex items-center space-x-4">
+            <div className={`flex items-center ${restaurant?.cover_image_url ? 'ml-20 sm:ml-24' : 'space-x-4'}`}>
               {!restaurant?.cover_image_url && (
                 <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
                   {restaurant?.logo_url ? (
