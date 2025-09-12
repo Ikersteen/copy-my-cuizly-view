@@ -28,6 +28,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [currentMessage, setCurrentMessage] = useState('');
+  const [currentAssistantMessageId, setCurrentAssistantMessageId] = useState<string | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const voiceClientRef = useRef<RealtimeVoiceClient | null>(null);
@@ -65,20 +66,41 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
         break;
       case 'response.audio_transcript.delta':
         if (event.delta) {
-          setCurrentMessage(prev => prev + event.delta);
+          const newContent = currentMessage + event.delta;
+          setCurrentMessage(newContent);
+          
+          // Si pas de message assistant actuel, en créer un
+          if (!currentAssistantMessageId) {
+            const messageId = Date.now().toString();
+            setCurrentAssistantMessageId(messageId);
+            setMessages(prev => [...prev, {
+              id: messageId,
+              type: 'assistant',
+              content: newContent,
+              timestamp: new Date(),
+              isTyping: true
+            }]);
+          } else {
+            // Mettre à jour le message existant
+            setMessages(prev => prev.map(msg => 
+              msg.id === currentAssistantMessageId 
+                ? { ...msg, content: newContent }
+                : msg
+            ));
+          }
         }
         break;
       case 'response.audio_transcript.done':
-        if (currentMessage) {
-          setMessages(prev => [...prev, {
-            id: Date.now().toString(),
-            type: 'assistant',
-            content: currentMessage,
-            timestamp: new Date(),
-            isTyping: true
-          }]);
-          setCurrentMessage('');
+        if (currentAssistantMessageId) {
+          // Finaliser le message existant
+          setMessages(prev => prev.map(msg => 
+            msg.id === currentAssistantMessageId 
+              ? { ...msg, isTyping: false }
+              : msg
+          ));
+          setCurrentAssistantMessageId(null);
         }
+        setCurrentMessage('');
         break;
       case 'input_audio_buffer.speech_started':
         console.log('User started speaking');
@@ -211,21 +233,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
           </div>
         )}
 
-        {/* Current message display */}
-        {currentMessage && (
-          <div className="flex justify-start">
-            <div className="flex items-start gap-4 max-w-[85%]">
-              <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
-                <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
-                  <UserIcon className="h-5 w-5" />
-                </AvatarFallback>
-              </Avatar>
-              <div className="rounded-3xl px-6 py-4 bg-muted text-foreground">
-                <p className="text-base leading-relaxed">{currentMessage}</p>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Messages en cours supprimés car maintenant intégrés dans la liste */}
 
         {/* Message history */}
         {messages.map((message) => (
