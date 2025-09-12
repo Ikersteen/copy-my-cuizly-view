@@ -239,7 +239,7 @@ const RestaurantDashboard = () => {
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
           <CardContent className="p-6">
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2 text-balance">
+              <h3 className="text-lg font-semibold text-foreground mb-2 whitespace-nowrap">
                 {t('welcome.welcomeMessage')}
               </h3>
               <p className="text-sm text-muted-foreground">
