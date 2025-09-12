@@ -70,10 +70,12 @@ export class RealtimeVoiceClient {
   private audioEl: HTMLAudioElement;
   private recorder: AudioRecorder | null = null;
   private isConnected = false;
+  private audioQueue: HTMLAudioElement[] = [];
+  private isPlayingAudio = false;
 
   constructor(private onMessage: (message: any) => void) {
     this.audioEl = document.createElement("audio");
-    this.audioEl.autoplay = true;
+    this.audioEl.autoplay = false; // Désactivé car on utilisera ElevenLabs
   }
 
   async connect() {
@@ -117,11 +119,19 @@ export class RealtimeVoiceClient {
       });
       this.pc.addTrack(ms.getTracks()[0]);
 
-      // Set up data channel
+      // Set up data channel for handling events
       this.dc = this.pc.createDataChannel("oai-events");
-      this.dc.addEventListener("message", (e) => {
+      this.dc.addEventListener("message", async (e) => {
         const event = JSON.parse(e.data);
         console.log("Received event:", event);
+        
+        // Intercepter les transcriptions pour ElevenLabs
+        if (event.type === 'response.audio_transcript.done' && event.transcript) {
+          console.log('🎤 Processing transcript with ElevenLabs:', event.transcript);
+          await this.processWithElevenLabs(event.transcript);
+        }
+        
+        // Transmettre tous les événements
         this.onMessage(event);
       });
 
@@ -217,6 +227,77 @@ export class RealtimeVoiceClient {
 
     this.dc.send(JSON.stringify(event));
     this.dc.send(JSON.stringify({type: 'response.create'}));
+  }
+
+  // Nouvelle méthode pour traiter avec ElevenLabs
+  private async processWithElevenLabs(text: string) {
+    try {
+      console.log('🎤 Generating speech with ElevenLabs for:', text);
+      
+      const { data, error } = await supabase.functions.invoke("cuizly-voice-elevenlabs", {
+        body: { text }
+      });
+      
+      if (error) {
+        console.error('ElevenLabs error:', error);
+        return;
+      }
+      
+      if (data?.audioContent) {
+        await this.playElevenLabsAudio(data.audioContent);
+      }
+    } catch (error) {
+      console.error('Error processing with ElevenLabs:', error);
+    }
+  }
+
+  // Méthode pour jouer l'audio ElevenLabs
+  private async playElevenLabsAudio(base64Audio: string) {
+    try {
+      console.log('🔊 Playing ElevenLabs audio...');
+      
+      // Créer un nouvel élément audio
+      const audio = new Audio();
+      audio.src = `data:audio/mpeg;base64,${base64Audio}`;
+      
+      // Ajouter à la queue
+      this.audioQueue.push(audio);
+      
+      // Si pas déjà en train de jouer, commencer
+      if (!this.isPlayingAudio) {
+        await this.playNextAudio();
+      }
+    } catch (error) {
+      console.error('Error playing ElevenLabs audio:', error);
+    }
+  }
+
+  // Méthode pour jouer la prochaine audio dans la queue
+  private async playNextAudio() {
+    if (this.audioQueue.length === 0) {
+      this.isPlayingAudio = false;
+      return;
+    }
+
+    this.isPlayingAudio = true;
+    const audio = this.audioQueue.shift()!;
+    
+    return new Promise<void>((resolve) => {
+      audio.onended = () => {
+        console.log('🔊 Audio finished, playing next...');
+        this.playNextAudio().then(resolve);
+      };
+      
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
+        this.playNextAudio().then(resolve);
+      };
+      
+      audio.play().catch(e => {
+        console.error('Error starting audio playback:', e);
+        this.playNextAudio().then(resolve);
+      });
+    });
   }
 
   disconnect() {
