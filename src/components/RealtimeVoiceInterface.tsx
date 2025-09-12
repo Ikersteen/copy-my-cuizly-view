@@ -49,6 +49,42 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Handle realtime voice messages
+  const handleMessage = (event: any) => {
+    console.log('Realtime event:', event);
+    
+    switch (event.type) {
+      case 'response.audio.delta':
+        setIsSpeaking(true);
+        break;
+      case 'response.audio.done':
+        setIsSpeaking(false);
+        break;
+      case 'response.audio_transcript.delta':
+        if (event.delta) {
+          setCurrentMessage(prev => prev + event.delta);
+        }
+        break;
+      case 'response.audio_transcript.done':
+        if (currentMessage) {
+          setMessages(prev => [...prev, {
+            id: Date.now().toString(),
+            type: 'assistant',
+            content: currentMessage,
+            timestamp: new Date()
+          }]);
+          setCurrentMessage('');
+        }
+        break;
+      case 'input_audio_buffer.speech_started':
+        console.log('User started speaking');
+        break;
+      case 'input_audio_buffer.speech_stopped':
+        console.log('User stopped speaking');
+        break;
+    }
+  };
+
   const startConversation = async () => {
     if (!userId) {
       toast({
@@ -62,9 +98,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
     try {
       voiceClientRef.current = new RealtimeVoiceClient(handleMessage);
       await voiceClientRef.current.connect();
-      };
-
-      await voiceClientRef.current.init(userId);
+      
       setIsConnected(true);
       
       toast({
