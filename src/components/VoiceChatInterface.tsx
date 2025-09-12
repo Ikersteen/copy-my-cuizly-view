@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import ThinkingIndicator from '@/components/ThinkingIndicator';
 import TypewriterRichText from '@/components/TypewriterRichText';
 import RichTextRenderer from '@/components/RichTextRenderer';
-import cuizlyLogo from "@/assets/cuizly-logo.png";
 
 interface Message {
   id: string;
@@ -535,14 +534,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
-              <div className="flex items-center justify-center space-x-2">
-                <img 
-                  src={cuizlyLogo} 
-                  alt="Cuizly"
-                  className="h-16 w-auto transition-all duration-300 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
-                />
-                <span className="text-2xl font-bold text-muted-foreground">Assistant Vocal</span>
-              </div>
+              <img 
+                src="/lovable-uploads/64c3c5b4-0bea-428d-8a44-3f25301da946.png" 
+                alt="Cuizly Assistant Vocal"
+                className="h-16 w-auto"
+              />
               <div className="space-y-3 max-w-lg">
                 <p className="text-base text-muted-foreground leading-relaxed">
                   {t('voiceChat.description')}
