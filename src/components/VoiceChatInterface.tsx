@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import ThinkingIndicator from '@/components/ThinkingIndicator';
 import TypewriterRichText from '@/components/TypewriterRichText';
 import RichTextRenderer from '@/components/RichTextRenderer';
+import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 
 interface Message {
   id: string;
@@ -48,6 +49,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const audioChunksRef = useRef<Blob[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const voiceDetectionRef = useRef<any>(null);
+  const realtimeClientRef = useRef<RealtimeVoiceClient | null>(null);
 
   useEffect(() => {
     const initUser = async () => {
@@ -68,6 +70,88 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Handle realtime voice messages
+  const handleRealtimeMessage = (event: any) => {
+    console.log('Realtime event:', event);
+    
+    switch (event.type) {
+      case 'session.created':
+        console.log('Session created');
+        break;
+      case 'response.audio.delta':
+        setIsSpeaking(true);
+        break;
+      case 'response.audio.done':
+        setIsSpeaking(false);
+        // In conversation mode, restart recording after AI finishes
+        if (isConversationActive && !isRecording) {
+          setTimeout(() => {
+            if (realtimeClientRef.current?.getConnectionStatus()) {
+              setIsRecording(true);
+            }
+          }, 500);
+        }
+        break;
+      case 'response.audio_transcript.delta':
+        // Handle assistant transcript
+        if (event.delta) {
+          setMessages(prev => {
+            const lastMessage = prev[prev.length - 1];
+            if (lastMessage && lastMessage.type === 'assistant' && lastMessage.isTyping) {
+              return [
+                ...prev.slice(0, -1),
+                {
+                  ...lastMessage,
+                  content: lastMessage.content + event.delta,
+                }
+              ];
+            } else {
+              return [
+                ...prev,
+                {
+                  id: Date.now().toString(),
+                  content: event.delta,
+                  type: 'assistant',
+                  timestamp: new Date(),
+                  isAudio: true,
+                  isProcessing: false,
+                  isTyping: true,
+                }
+              ];
+            }
+          });
+        }
+        break;
+      case 'response.audio_transcript.done':
+        // Mark transcript as complete
+        setMessages(prev => {
+          const lastMessage = prev[prev.length - 1];
+          if (lastMessage && lastMessage.type === 'assistant' && lastMessage.isTyping) {
+            return [
+              ...prev.slice(0, -1),
+              {
+                ...lastMessage,
+                isTyping: false,
+              }
+            ];
+          }
+          return prev;
+        });
+        break;
+      case 'input_audio_buffer.speech_started':
+        console.log('User started speaking');
+        // Stop AI audio if playing
+        if (isSpeaking && audioRef.current) {
+          audioRef.current.pause();
+          setIsSpeaking(false);
+        }
+        break;
+      case 'input_audio_buffer.speech_stopped':
+        console.log('User stopped speaking');
+        break;
+    }
+  };
 
   // Voice Activity Detection for interruption
   const setupVoiceActivityDetection = (audioStream: MediaStream) => {
@@ -129,36 +213,41 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     };
   };
 
-  // Start continuous conversation mode
+  // Start continuous conversation mode with realtime
   const startConversation = async () => {
     try {
-      const audioStream = await navigator.mediaDevices.getUserMedia({ 
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        }
-      });
-      
-      setStream(audioStream);
       setIsConversationActive(true);
+      setIsRecording(true);
+      console.log('Starting realtime conversation...');
       
-      voiceDetectionRef.current = setupVoiceActivityDetection(audioStream);
+      // Initialize realtime voice client
+      realtimeClientRef.current = new RealtimeVoiceClient(handleRealtimeMessage);
+      await realtimeClientRef.current.connect();
       
-      setTimeout(() => {
-        console.log('🎤 Auto-starting recording...');
-        startRecording();
-      }, 1000);
+      // Add initial system message
+      const initialMessage: Message = {
+        id: Date.now().toString(),
+        content: "Conversation vocale en temps réel démarrée. Je vous écoute...",
+        type: 'system',
+        timestamp: new Date(),
+        isAudio: false,
+        isProcessing: false,
+        isTyping: false,
+      };
+      
+      setMessages(prev => [...prev, initialMessage]);
       
       toast({
         title: "Conversation démarrée",
-        description: "Vous pouvez maintenant parler naturellement avec Cuizly",
+        description: "Vous pouvez maintenant parler naturellement avec Cuizly en temps réel",
       });
     } catch (error) {
-      console.error('Erreur microphone:', error);
+      console.error('Error starting realtime conversation:', error);
+      setIsConversationActive(false);
+      setIsRecording(false);
       toast({
-        title: t('voiceChat.microphoneError'),
-        description: t('voiceChat.microphoneErrorDescription'),
+        title: "Erreur de connexion",
+        description: "Impossible de démarrer la conversation vocale en temps réel",
         variant: "destructive",
       });
     }
@@ -168,7 +257,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const stopConversation = () => {
     setIsConversationActive(false);
     setIsRecording(false);
+    setIsProcessing(false);
+    setIsSpeaking(false);
     
+    // Disconnect realtime client
+    if (realtimeClientRef.current) {
+      realtimeClientRef.current.disconnect();
+      realtimeClientRef.current = null;
+    }
+    
+    // Clean up old voice activity detection if exists
     if (voiceDetectionRef.current) {
       voiceDetectionRef.current.stop();
       voiceDetectionRef.current = null;
@@ -188,9 +286,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setIsSpeaking(false);
     }
     
+    console.log('Realtime conversation stopped');
+    
     toast({
       title: "Conversation terminée",
-      description: "La conversation vocale a été arrêtée",
+      description: "La conversation vocale en temps réel a été arrêtée",
     });
   };
 
@@ -331,7 +431,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }]);
 
     try {
-      // Show thinking indicator
+      // If realtime client is connected, send via realtime
+      if (realtimeClientRef.current?.getConnectionStatus()) {
+        await realtimeClientRef.current.sendMessage(text);
+        setIsProcessing(false);
+        return;
+      }
+
+      // Fallback to regular chat function for text mode
       setIsThinking(true);
 
       const chatResponse = await supabase.functions.invoke('cuizly-voice-chat', {
@@ -679,82 +786,58 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {inputMode === 'voice' ? (
+           {inputMode === 'voice' ? (
             <>
-              <div className="flex items-center justify-center space-x-4">
+              <div className="flex items-center justify-center">
                 <div className="relative">
                   <Button
                     onClick={toggleConversation}
                     disabled={isProcessing}
                     className={`w-20 h-20 rounded-full transition-all duration-300 relative z-10 ${
-                      isConversationActive
-                        ? isRecording
-                          ? 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25'
-                          : 'bg-green-500 hover:bg-green-600 shadow-xl shadow-green-500/25'
-                        : isProcessing
+                      isProcessing
                         ? 'bg-muted cursor-not-allowed'
-                        : 'bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105'
+                        : isRecording
+                        ? 'bg-blue-500 hover:bg-blue-600 shadow-xl shadow-blue-500/25 text-white'
+                        : 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25 text-white'
                     }`}
                   >
                     {isProcessing ? (
                       <div className="relative">
                         <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
                       </div>
-                    ) : isConversationActive ? (
-                      isRecording ? (
-                        <div className="flex flex-col items-center">
-                          <Mic className="w-6 h-6 text-white mb-1" />
-                          <div className="text-xs text-white">REC</div>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col items-center">
-                          <Mic className="w-6 h-6 text-white mb-1" />
-                          <div className="text-xs text-white">ON</div>
-                        </div>
-                      )
-                    ) : (
+                    ) : isRecording ? (
                       <Mic className="w-8 h-8 text-white transition-transform duration-200" />
-                    )}
-                  </Button>
-                </div>
-
-                {isConversationActive && (
-                  <Button
-                    onClick={toggleRecording}
-                    disabled={isProcessing}
-                    variant="outline"
-                    className={`w-12 h-12 rounded-full transition-all duration-300 ${
-                      isRecording 
-                        ? 'border-red-500 text-red-500 hover:bg-red-50' 
-                        : 'border-green-500 text-green-500 hover:bg-green-50'
-                    }`}
-                  >
-                    {isRecording ? (
-                      <MicOff className="w-5 h-5" />
                     ) : (
-                      <Mic className="w-5 h-5" />
+                      <MicOff className="w-8 h-8 text-white transition-transform duration-200" />
                     )}
                   </Button>
-                )}
+                  
+                  {/* Indicateur de parole AI */}
+                  {isSpeaking && (
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+                      <div className="flex items-center gap-1 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
+                        <Volume2 className="w-3 h-3" />
+                        IA parle
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
               
               <div className="text-center mt-4">
                 <p className="text-sm text-muted-foreground">
                   {!isConversationActive 
-                    ? "Appuyez pour démarrer une conversation vocale"
-                    : isRecording 
-                    ? "🎤 Je vous écoute..."
-                    : isProcessing 
-                    ? "🧠 Traitement en cours..."
-                    : isSpeaking
-                    ? "🗣️ Cuizly vous répond..."
-                    : ""
+                    ? "Cliquez pour démarrer la conversation vocale temps réel"
+                    : isRecording
+                    ? "🟢 Micro actif - Je vous écoute..."
+                    : "🔴 Micro fermé - Cliquez pour réactiver"
                   }
                 </p>
-                {isConversationActive && isRecording && (
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Parlez maintenant, ou utilisez le petit bouton pour arrêter l'écoute
-                  </p>
+                
+                {isConversationActive && (
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    Conversation temps réel active • Parlez naturellement
+                  </div>
                 )}
               </div>
             </>

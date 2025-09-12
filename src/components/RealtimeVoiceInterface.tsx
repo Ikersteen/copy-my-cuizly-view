@@ -60,14 +60,8 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
     }
 
     try {
-      voiceClientRef.current = new RealtimeVoiceClient();
-      
-      voiceClientRef.current.onMessage = (message) => {
-        setCurrentMessage(message);
-      };
-      
-      voiceClientRef.current.onSpeakingChange = (speaking) => {
-        setIsSpeaking(speaking);
+      voiceClientRef.current = new RealtimeVoiceClient(handleMessage);
+      await voiceClientRef.current.connect();
       };
 
       await voiceClientRef.current.init(userId);
