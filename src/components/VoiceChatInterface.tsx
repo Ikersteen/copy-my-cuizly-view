@@ -776,7 +776,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   className="rounded-full w-12 h-12 p-0"
                 >
                   {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
-                    <Square className="w-5 h-5 fill-white" />
+                    <Square className="w-5 h-5 fill-white dark:fill-black" />
                   ) : (
                     <Send className="w-5 h-5" />
                   )}
