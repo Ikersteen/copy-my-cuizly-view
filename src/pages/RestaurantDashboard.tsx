@@ -216,7 +216,7 @@ const RestaurantDashboard = () => {
         )}
 
         {/* Restaurant Information Section - Between logo and welcome message */}
-        <div className="mb-8 ml-8">
+        <div className="mb-8 ml-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
               {restaurant?.name || t('restaurant.myRestaurant')}
@@ -239,7 +239,7 @@ const RestaurantDashboard = () => {
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
           <CardContent className="p-6">
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2 whitespace-nowrap">
+              <h3 className="text-lg font-semibold text-foreground mb-2">
                 {t('welcome.welcomeMessage')}
               </h3>
               <p className="text-sm text-muted-foreground">
