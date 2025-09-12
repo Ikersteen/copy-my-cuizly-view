@@ -224,18 +224,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       realtimeClientRef.current = new RealtimeVoiceClient(handleRealtimeMessage);
       await realtimeClientRef.current.connect();
       
-      // Add initial system message
-      const initialMessage: Message = {
-        id: Date.now().toString(),
-        content: "Conversation vocale en temps réel démarrée. Je vous écoute...",
-        type: 'system',
-        timestamp: new Date(),
-        isAudio: false,
-        isProcessing: false,
-        isTyping: false,
-      };
-      
-      setMessages(prev => [...prev, initialMessage]);
+      // Le système attend silencieusement que l'utilisateur parle
       
       toast({
         title: "Conversation démarrée",
