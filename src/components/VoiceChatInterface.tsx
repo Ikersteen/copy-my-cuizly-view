@@ -784,7 +784,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
               <div className="text-center space-y-1 px-4 mx-auto max-w-xs sm:max-w-none">
                 <p className="text-foreground font-medium text-sm sm:text-base leading-tight">
-                  {isProcessing ? 'Traitement en cours...' : 'Écrivez votre question à Cuizly'}
+                  {isProcessing ? 'Traitement en cours...' : ''}
                 </p>
               </div>
             </form>
