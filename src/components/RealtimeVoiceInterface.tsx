@@ -101,10 +101,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
       
       setIsConnected(true);
       
-      toast({
-        title: "Connecté",
-        description: "Conversation temps réel démarrée - Parlez naturellement",
-      });
+      // Pas de toast au démarrage
     } catch (error) {
       console.error('Erreur connexion:', error);
       toast({
@@ -204,12 +201,12 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
             <AnimatedOrb />
             <div className="text-center space-y-2">
               <p className="text-lg font-medium text-foreground">
-                {isSpeaking ? "🗣️ Cuizly vous répond..." : "👂 Je vous écoute..."}
+                Conversation temps réel active • Parlez naturellement
               </p>
               <p className="text-sm text-muted-foreground">
                 {isSpeaking 
-                  ? "L'assistant parle - Vous pouvez l'interrompre à tout moment"
-                  : "Parlez naturellement, la conversation est fluide"
+                  ? "Assistant en cours de réponse"
+                  : "Parlez naturellement"
                 }
               </p>
             </div>
