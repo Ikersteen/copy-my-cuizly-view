@@ -662,18 +662,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 variant={inputMode === 'voice' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setInputMode('voice')}
-                className="rounded-full px-4"
+                className="rounded-full px-4 flex items-center justify-center"
               >
-                <Mic className="w-4 h-4 mr-2" />
+                <Mic className="w-4 h-4 mr-1" />
                 Vocal
               </Button>
               <Button
                 variant={inputMode === 'text' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setInputMode('text')}
-                className="rounded-full px-4"
+                className="rounded-full px-4 flex items-center justify-center"
               >
-                <Keyboard className="w-4 h-4 mr-2" />
+                <Keyboard className="w-4 h-4 mr-1" />
                 Texte
               </Button>
             </div>
