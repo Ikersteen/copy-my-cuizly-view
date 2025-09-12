@@ -168,7 +168,7 @@ const RestaurantDashboard = () => {
         
         {/* Cover Image Facebook-style */}
         {restaurant?.cover_image_url && (
-          <div className="relative w-full mb-16">
+          <div className="relative w-full mb-8">
             <div className="w-full h-32 sm:h-48 lg:h-56 rounded-xl overflow-hidden bg-muted">
               <img 
                 src={restaurant.cover_image_url} 
@@ -191,62 +191,47 @@ const RestaurantDashboard = () => {
                 )}
               </div>
             </div>
-            {/* Restaurant info positioned below logo when cover image exists */}
-            <div className="absolute -bottom-14 left-4 sm:left-6 ml-20 sm:ml-24">
-              <div>
-                <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                  {restaurant?.name || t('restaurant.myRestaurant')}
-                </h1>
-                <p className="text-sm sm:text-base text-muted-foreground">
-                  @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
-                </p>
-                {restaurant?.address && (
-                  <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
-                    {restaurant.address}
-                  </p>
-                )}
-              </div>
-            </div>
           </div>
         )}
 
         {/* Header - Only show when no cover image */}
         {!restaurant?.cover_image_url && (
           <div className="mb-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
-                  {restaurant?.logo_url ? (
-                    <img 
-                      src={restaurant.logo_url} 
-                      alt="Logo du restaurant"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-primary-foreground font-semibold text-lg">
-                      <UserIcon className="h-6 w-6" />
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                    {restaurant?.name || t('restaurant.myRestaurant')}
-                  </h1>
-                  <p className="text-sm sm:text-base text-muted-foreground">
-                    @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
-                  </p>
-                  {restaurant?.address && (
-                    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />
-                      {restaurant.address}
-                    </p>
-                  )}
-                </div>
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
+                {restaurant?.logo_url ? (
+                  <img 
+                    src={restaurant.logo_url} 
+                    alt="Logo du restaurant"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-primary-foreground font-semibold text-lg">
+                    <UserIcon className="h-6 w-6" />
+                  </span>
+                )}
               </div>
             </div>
           </div>
         )}
+
+        {/* Restaurant Information Section - Between logo and welcome message */}
+        <div className="mb-8">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
+              {restaurant?.name || t('restaurant.myRestaurant')}
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
+            </p>
+            {restaurant?.address && (
+              <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                <MapPin className="h-3 w-3" />
+                {restaurant.address}
+              </p>
+            )}
+          </div>
+        </div>
 
         {/* Buttons section removed - functionality moved to mobile menu */}
 
