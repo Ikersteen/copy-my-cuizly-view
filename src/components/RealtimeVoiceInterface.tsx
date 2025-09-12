@@ -270,7 +270,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
               className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Mic className="w-5 h-5 mr-2" />
-              Démarrer la Conversation
+              Cuizly Assistant Vocal est maintenant Disponible.
             </Button>
           ) : (
             <Button
