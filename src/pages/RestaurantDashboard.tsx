@@ -190,6 +190,21 @@ const RestaurantDashboard = () => {
                   </span>
                 )}
               </div>
+              {/* Textes juste en dessous du logo */}
+              <div className="mt-20 ml-2">
+                <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
+                  {restaurant?.name || t('restaurant.myRestaurant')}
+                </h1>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
+                </p>
+                {restaurant?.address && (
+                  <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                    <MapPin className="h-3 w-3" />
+                    {restaurant.address}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -213,20 +228,6 @@ const RestaurantDashboard = () => {
                   )}
                 </div>
               )}
-              <div>
-                  <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-                    {restaurant?.name || t('restaurant.myRestaurant')}
-                  </h1>
-                <p className="text-sm sm:text-base text-muted-foreground">
-                  @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
-                </p>
-                {restaurant?.address && (
-                  <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
-                    {restaurant.address}
-                  </p>
-                )}
-              </div>
             </div>
           </div>
         </div>
