@@ -5,12 +5,15 @@ import { Mic, MicOff, Volume2, VolumeX, User as UserIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
+import TypewriterRichText from '@/components/TypewriterRichText';
+import RichTextRenderer from '@/components/RichTextRenderer';
 
 interface Message {
   id: string;
   type: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+  isTyping?: boolean;
 }
 
 interface RealtimeVoiceInterfaceProps {
@@ -71,7 +74,8 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
             id: Date.now().toString(),
             type: 'assistant',
             content: currentMessage,
-            timestamp: new Date()
+            timestamp: new Date(),
+            isTyping: true
           }]);
           setCurrentMessage('');
         }
@@ -252,7 +256,25 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
                   ? 'bg-primary text-primary-foreground' 
                   : 'bg-muted text-foreground'
               }`}>
-                <p className="text-base leading-relaxed">{message.content}</p>
+                {message.isTyping && message.type === 'assistant' ? (
+                  <TypewriterRichText 
+                    text={message.content}
+                    speed={20}
+                    className="text-base leading-relaxed"
+                    onComplete={() => {
+                      setMessages(prev => prev.map(msg => 
+                        msg.id === message.id 
+                          ? { ...msg, isTyping: false }
+                          : msg
+                      ));
+                    }}
+                  />
+                ) : (
+                  <RichTextRenderer 
+                    content={message.content} 
+                    className="text-base leading-relaxed"
+                  />
+                )}
               </div>
             </div>
           </div>
