@@ -827,18 +827,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               <div className="text-center mt-4">
                 <p className="text-sm text-muted-foreground">
                   {!isConversationActive 
-                    ? "Cliquez pour démarrer la conversation vocale temps réel"
-                    : isRecording
-                    ? "🟢 Micro actif - Je vous écoute..."
-                    : "🔴 Micro fermé - Cliquez pour réactiver"
+                    ? "Cuizly Assistant Vocal est maintenant Disponible."
+                    : "Parlez naturellement."
                   }
                 </p>
                 
-                {isConversationActive && (
-                  <div className="mt-2 text-xs text-muted-foreground">
-                    Conversation temps réel active • Parlez naturellement
-                  </div>
-                )}
+                {/* Texte supprimé pour simplifier */}
               </div>
             </>
           ) : (
