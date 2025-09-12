@@ -748,7 +748,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     ? "🧠 Traitement en cours..."
                     : isSpeaking
                     ? "🗣️ Cuizly vous répond..."
-                    : "💬 Conversation active - Parlez naturellement"
+                    : ""
                   }
                 </p>
                 {isConversationActive && isRecording && (
