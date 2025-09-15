@@ -51,7 +51,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     const html = await renderAsync(
       React.createElement(ConfirmationEmail, {
-        confirmationUrl: `${Deno.env.get('SUPABASE_URL')}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${redirect_to}`,
+        confirmationUrl: `${Deno.env.get('SUPABASE_URL')}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=https://www.cuizly.ca/auth`,
         userName,
         userType: 'consumer',
       })

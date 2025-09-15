@@ -27,7 +27,7 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { email, userName, userType }: WelcomeEmailRequest = await req.json();
 
-    const loginUrl = `${Deno.env.get('SUPABASE_URL')?.replace('.supabase.co', '')}.lovable.app/auth`;
+    const loginUrl = 'https://www.cuizly.ca/auth';
 
     // Render the React email template
     const html = await renderAsync(
