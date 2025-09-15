@@ -68,6 +68,7 @@
   "pricing": {
     "title": "Simple, transparent pricing",
     "subtitle": "Choose the plan that's right for you",
+    "createAccount": "Create Account",
     "monthly": "Monthly",
     "yearly": "Yearly",
     "save": "Save 20%",
