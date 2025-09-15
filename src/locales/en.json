@@ -65,11 +65,10 @@
       "description": "Discover the best restaurants in your neighborhood"
     }
   },
-  "pricingLanding": {
+  "pricing": {
     "title": "Simple, transparent pricing",
     "subtitle": "Choose the plan that's right for you",
-    "createAccount": "Create Account",
-    "popular": "Popular",
+    "monthly": "Monthly",
     "yearly": "Yearly",
     "save": "Save 20%",
     "free": {

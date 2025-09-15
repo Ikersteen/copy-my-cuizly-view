@@ -147,24 +147,11 @@ const PricingSectionLanding = () => {
                   >
                     {t(plan.ctaKey)}
                   </Button>
-                ) : index === 1 ? (
-                  <div className="space-y-3">
-                    <Link to="/auth?type=restaurant&tab=signup">
-                      <Button className="w-full text-sm sm:text-base bg-foreground hover:bg-foreground/90 text-background">
-                        {t('pricingLanding.createAccount')}
-                      </Button>
-                    </Link>
-                    <Button 
-                      className="w-full text-sm sm:text-base bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground"
-                      onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
-                    >
-                      {t(plan.ctaKey)}
-                    </Button>
-                  </div>
                 ) : (
-                  <Link to={index === 0 ? "/auth" : "/waitlist"}>
+                  <Link to={index === 0 ? "/auth" : index === 1 ? "/auth?type=restaurant&tab=signup" : "/waitlist"}>
                     <Button className={`w-full text-sm sm:text-base ${
                       index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
+                      index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground' :
                       'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-cuizly-analytics-foreground'
                     }`}>
                       {t(plan.ctaKey)}

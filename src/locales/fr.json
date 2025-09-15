@@ -54,10 +54,9 @@
       "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
     }
   },
-  "pricingLanding": {
+  "pricing": {
     "title": "Des tarifs pensés pour tous",
     "subtitle": "Une offre gratuite pour les gourmets, des solutions professionnelles abordables pour les restaurateurs. Commencez dès aujourd'hui !",
-    "createAccount": "Créer un compte",
     "popular": "Populaire",
     "comingSoon": "Bientôt",
     "consumerSection": "Pour les consommateurs",
