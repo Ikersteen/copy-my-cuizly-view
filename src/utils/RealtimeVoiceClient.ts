@@ -30,7 +30,14 @@ export class AudioRecorder {
       
       this.processor.onaudioprocess = (e) => {
         const inputData = e.inputBuffer.getChannelData(0);
-        this.onAudioData(new Float32Array(inputData));
+        
+        // Calculer le niveau audio pour éviter d'envoyer du silence constant
+        const audioLevel = inputData.reduce((sum, sample) => sum + Math.abs(sample), 0) / inputData.length;
+        
+        // Seuil de silence pour éviter l'envoi continu d'audio vide
+        if (audioLevel > 0.01) {
+          this.onAudioData(new Float32Array(inputData));
+        }
       };
       
       this.source.connect(this.processor);
@@ -123,7 +130,12 @@ export class RealtimeVoiceClient {
       this.dc = this.pc.createDataChannel("oai-events");
       this.dc.addEventListener("message", async (e) => {
         const event = JSON.parse(e.data);
-        console.log("Received event:", event);
+        
+        // Limiter les logs pour éviter le spam - seulement les événements importants
+        const isImportantEvent = ['response.audio_transcript.delta', 'response.audio_transcript.done', 'input_audio_buffer.speech_started', 'input_audio_buffer.speech_stopped'].includes(event.type);
+        if (isImportantEvent) {
+          console.log("Received event:", event.type);
+        }
         
         // Intercepter les transcriptions pour ElevenLabs
         if (event.type === 'response.audio_transcript.done' && event.transcript) {
@@ -273,7 +285,7 @@ export class RealtimeVoiceClient {
   }
 
   // Méthode pour jouer la prochaine audio dans la queue
-  private async playNextAudio() {
+  private async playNextAudio(): Promise<void> {
     if (this.audioQueue.length === 0) {
       this.isPlayingAudio = false;
       return;
@@ -285,17 +297,26 @@ export class RealtimeVoiceClient {
     return new Promise<void>((resolve) => {
       audio.onended = () => {
         console.log('🔊 Audio finished, playing next...');
-        this.playNextAudio().then(resolve);
+        // Utiliser setTimeout pour éviter la récursion synchrone
+        setTimeout(() => {
+          this.playNextAudio().then(resolve);
+        }, 100);
       };
       
       audio.onerror = (e) => {
         console.error('Audio playback error:', e);
-        this.playNextAudio().then(resolve);
+        // Utiliser setTimeout pour éviter la récursion synchrone
+        setTimeout(() => {
+          this.playNextAudio().then(resolve);
+        }, 100);
       };
       
       audio.play().catch(e => {
         console.error('Error starting audio playback:', e);
-        this.playNextAudio().then(resolve);
+        // Utiliser setTimeout pour éviter la récursion synchrone
+        setTimeout(() => {
+          this.playNextAudio().then(resolve);
+        }, 100);
       });
     });
   }
