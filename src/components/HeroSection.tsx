@@ -49,22 +49,24 @@ const HeroSection = () => {
         />
 
         {/* CTA */}
-        <div className="animate-fade-in space-y-4">
-          <Link to="/auth?type=restaurant&tab=signup">
-            <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
-              {t('hero.createAccount')}
-              <ArrowRight className="ml-3 h-5 w-5" />
+        <div className="animate-fade-in">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center">
+            <Link to="/auth?type=restaurant&tab=signup">
+              <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
+                {t('hero.createAccount')}
+                <ArrowRight className="ml-3 h-5 w-5" />
+              </Button>
+            </Link>
+            
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="bg-transparent border-2 border-primary/20 text-primary hover:bg-primary/10 px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device"
+              onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
+            >
+              {t('hero.bookDemo')}
             </Button>
-          </Link>
-          
-          <Button 
-            size="lg" 
-            variant="outline"
-            className="bg-transparent border-2 border-primary/20 text-primary hover:bg-primary/10 px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device"
-            onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
-          >
-            {t('hero.bookDemo')}
-          </Button>
+          </div>
         </div>
 
         {/* Profile Switch Modal removed - always redirect to auth */}
