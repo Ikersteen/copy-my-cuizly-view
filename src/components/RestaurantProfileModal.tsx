@@ -467,12 +467,16 @@ export const RestaurantProfileModal = ({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="phone">{t('restaurantProfile.phone')}</Label>
-                <Input
-                  id="phone"
-                  value={formData.phone || ""}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  placeholder="+1 (XXX) XXX-XXXX"
-                />
+                 <Input
+                   id="phone"
+                   value={formData.phone || ""}
+                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                   placeholder="+1 (XXX) XXX-XXXX"
+                   autoComplete="off"
+                   autoCorrect="off"
+                   autoCapitalize="off"
+                   spellCheck="false"
+                 />
               </div>
                 <div>
                   <Label htmlFor="email">{t('restaurantProfile.email')}</Label>

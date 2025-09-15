@@ -532,12 +532,16 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <Label htmlFor="phone">{t('restaurantProfile.phone')}</Label>
-              <Input
-                id="phone"
-                value={formData.phone}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                placeholder="+1 (514) 465-4783"
-              />
+               <Input
+                 id="phone"
+                 value={formData.phone}
+                 onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                 placeholder="+1 (514) 465-4783"
+                 autoComplete="off"
+                 autoCorrect="off"
+                 autoCapitalize="off"
+                 spellCheck="false"
+               />
             </div>
 
             <div className="space-y-2">
