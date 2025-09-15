@@ -125,8 +125,8 @@ export const useProfile = () => {
       console.log('✅ Profile updated successfully:', data);
 
       toast({
-        title: t('profile.profileUpdated'),
-        description: t('profile.informationSaved')
+        title: "Profil mis à jour",
+        description: "Vos informations ont été sauvegardées avec succès"
       });
       
       return { success: true };
