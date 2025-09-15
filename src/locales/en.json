@@ -31,6 +31,8 @@
     "title": "Order smarter with AI-powered food recommendations",
     "subtitle": "Discover the best restaurants and dishes tailored to your preferences and dietary needs in Montreal.",
     "cta": "Get Started",
+    "createAccount": "Create Account",
+    "bookDemo": "Book a Demo",
     "ctaSecondary": "Learn More",
     "poweredBy": "Powered by advanced AI",
     "trustedBy": "Trusted by food lovers"
@@ -165,7 +167,11 @@
     "verifyEmail": "Please verify your email",
     "verifyEmailDescription": "We've sent you a verification link. Please check your email and click the link to verify your account.",
     "resendVerification": "Resend verification email",
-    "emailSent": "Verification email sent!"
+    "emailSent": "Verification email sent!",
+    "form": {
+      "createAccount": "Create Account",
+      "bookDemo": "Book a Demo"
+    }
   },
   "profile": {
     "title": "Profile",

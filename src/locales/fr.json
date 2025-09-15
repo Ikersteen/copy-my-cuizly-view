@@ -19,7 +19,9 @@
       "location": "à Montréal"
     },
     "subtitle": "Cuizly utilise l'IA pour vous recommander les restaurants qui correspondent à vos goûts, votre budget et vos envies.",
-    "cta": "Commencer maintenant"
+    "cta": "Commencer maintenant",
+    "createAccount": "Créer un compte",
+    "bookDemo": "Réserver une démo"
   },
   "mission": {
     "title": "Mission",
@@ -602,6 +604,7 @@
         "special": "Un caractère spécial"
       },
       "bookDemo": "Réserver une démo",
+      "createAccount": "Créer un compte",
       "createAccountInvitation": "Créer mon compte (Invitation requise)"
     },
     "smsVerification": {

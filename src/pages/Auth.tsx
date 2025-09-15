@@ -1278,18 +1278,10 @@ const Auth = () => {
                   {userType === 'restaurant_owner' ? (
                     <div className="space-y-3">
                       <Button 
-                        type="button" 
-                        className="w-full text-sm bg-sky-500 hover:bg-sky-600 text-white"
-                        onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
-                      >
-                        {t('auth.form.bookDemo')}
-                      </Button>
-                      <Button 
                         type="submit" 
-                        className="w-full text-sm opacity-50 cursor-not-allowed" 
-                        disabled={true}
+                        className="w-full text-sm bg-primary hover:bg-primary/90 text-primary-foreground"
                       >
-                        {t('auth.form.createAccountInvitation')}
+                        {t('auth.form.createAccount')}
                       </Button>
                     </div>
                   ) : (
