@@ -55,10 +55,10 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
 
   // Handle realtime voice messages
   const handleMessage = (event: any) => {
-    // Limiter les logs pour éviter le spam
-    const isImportantEvent = ['response.audio_transcript.delta', 'response.audio_transcript.done', 'input_audio_buffer.speech_started', 'input_audio_buffer.speech_stopped'].includes(event.type);
-    if (isImportantEvent) {
-      console.log('Realtime event:', event.type);
+    // Uniquement les événements critiques pour éviter le spam
+    const criticalEvents = ['session.created', 'error', 'input_audio_buffer.speech_started', 'input_audio_buffer.speech_stopped'];
+    if (criticalEvents.includes(event.type)) {
+      console.log('Voice event:', event.type);
     }
     
     switch (event.type) {
