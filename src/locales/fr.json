@@ -383,7 +383,7 @@
     "anonymousUser": "Utilisateur anonyme"
   },
   "favorites": {
-    "removed": "Retiré des favoris",
+    "removed": "Favoris supprimé",
     "added": "Ajouté aux favoris",
     "quickAccess": "Accès rapide"
   },
@@ -535,7 +535,7 @@
     "cannotLoadComments": "Impossible de charger les commentaires",
     "cannotAddComment": "Impossible d'ajouter le commentaire",
     "addedToFavorites": "Ajouté aux favoris",
-    "removedFromFavorites": "Retiré des favoris",
+    "removedFromFavorites": "Favoris supprimé",
     "cannotModifyFavorites": "Impossible de modifier les favoris",
     "profileUpdated": "Profil mis à jour",
     "informationSaved": "Vos informations ont été sauvegardées",
@@ -1014,7 +1014,7 @@
     "noFavorites": "Aucun favori pour le moment",
     "addFavorites": "Ajoutez des restaurants à vos favoris pour les retrouver ici",
     "viewProfile": "Voir le profil",
-    "removed": "Retiré des favoris"
+    "removed": "Favoris supprimé"
   },
   "history": {
     "title": "Recherches",
