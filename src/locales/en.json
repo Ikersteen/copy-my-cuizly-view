@@ -218,7 +218,8 @@
     "chooseEmoji": "Choose your emoji",
     "profileUpdated": "Profile updated",
     "informationSaved": "Your information has been saved successfully",
-    "cannotSaveProfile": "Cannot save profile at the moment"
+    "cannotSaveProfile": "Cannot save profile at the moment",
+    "userNotAuthenticated": "User not authenticated"
   },
   "preferences": {
     "title": "Preferences",
@@ -852,7 +853,20 @@
     "publish": "Publish Profile",
     "draft": "Save as Draft",
     "profileEmoji": "Profile Emoji",
-    "profileEmojiDesc": "Choose the emoji that will appear on your profile"
+    "profileEmojiDesc": "Choose the emoji that will appear on your profile",
+    "coverImageAlt": "Cover Image",
+    "noCoverImage": "No cover photo",
+    "logoAlt": "Restaurant Logo"
+  },
+  "voiceAssistant": {
+    "connectionError": "Connection Error",
+    "smartAssistant": "Smart Voice Assistant",
+    "conversationActive": "Active Conversation - Speak whenever you want",
+    "connectionFailed": "Unable to start real-time voice conversation",
+    "transcriptionFailed": "Transcription failed",
+    "noTranscription": "No transcription received",
+    "aiProcessingFailed": "AI processing failed",
+    "noAiResponse": "No AI response received"
   },
   "voiceChat": {
     "title": "Voice Chat",

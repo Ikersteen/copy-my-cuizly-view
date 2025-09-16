@@ -137,7 +137,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
     } catch (error) {
       console.error('Erreur connexion:', error);
       toast({
-        title: "Erreur de connexion",
+        title: t('voiceAssistant.connectionError'),
         description: t('errors.general'),
         variant: "destructive",
       });
@@ -323,8 +323,8 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
         <div className="text-center mt-4">
           <p className="text-sm text-muted-foreground">
             {!isConnected 
-              ? "Assistant vocal intelligent"
-              : "Conversation active - Parlez quand vous voulez"
+              ? t('voiceAssistant.smartAssistant')
+              : t('voiceAssistant.conversationActive')
             }
           </p>
         </div>

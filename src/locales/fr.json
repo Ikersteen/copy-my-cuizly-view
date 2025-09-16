@@ -667,7 +667,8 @@
       "checkEmailConfirmation": "Vérifiez votre email pour confirmer votre compte"
     },
     "creatingAccount": "Création du compte...",
-    "createAccount": "Créer mon compte"
+    "createAccount": "Créer mon compte",
+    "userNotAuthenticated": "Utilisateur non authentifié"
   },
   "profileSwitch": {
     "title": "Changer de profil",
@@ -788,6 +789,16 @@
         "question": "Cuizly, recommande moi un restaurant pas cher pour ce soir à Montréal."
       }
     }
+  },
+  "voiceAssistant": {
+    "connectionError": "Erreur de connexion",
+    "smartAssistant": "Assistant vocal intelligent",
+    "conversationActive": "Conversation active - Parlez quand vous voulez",
+    "connectionFailed": "Impossible de démarrer la conversation vocale en temps réel",
+    "transcriptionFailed": "Échec de la transcription",
+    "noTranscription": "Aucune transcription reçue",
+    "aiProcessingFailed": "Échec du traitement IA",
+    "noAiResponse": "Aucune réponse IA reçue"
   },
   "voiceChat": {
     "title": "Assistant Vocal",
@@ -1404,7 +1415,10 @@
     "selectValidImage": "Veuillez sélectionner une image valide",
     "imageTooLarge": "L'image doit faire moins de 5 Mo",
     "nameRequired": "Le nom du restaurant est requis",
-    "saveError": "Une erreur s'est produite lors de la sauvegarde du profil"
+    "saveError": "Une erreur s'est produite lors de la sauvegarde du profil",
+    "coverImageAlt": "Image de couverture",
+    "noCoverImage": "Aucune photo de couverture",
+    "logoAlt": "Logo du restaurant"
   },
   "dashboard": {
     "hello": "Bonjour",

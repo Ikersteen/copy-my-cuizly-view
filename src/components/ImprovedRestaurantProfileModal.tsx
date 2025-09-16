@@ -151,7 +151,7 @@ export const ImprovedRestaurantProfileModal = ({
         console.error('No session found');
         toast({
           title: t('restaurantProfile.error'),
-          description: 'User not authenticated',
+          description: t('auth.userNotAuthenticated'),
           variant: "destructive"
         });
         return;
@@ -406,13 +406,13 @@ export const ImprovedRestaurantProfileModal = ({
                 {restaurant?.cover_image_url ? (
                   <img 
                     src={restaurant.cover_image_url} 
-                    alt="Image de couverture"
+                    alt={t('restaurantProfile.coverImageAlt')}
                     className="w-full h-full object-cover"
                   />
                  ) : (
                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
                      <Camera className="h-16 w-16 text-gray-400 mb-2" />
-                     <p className="text-sm text-gray-500 font-medium">Aucune photo de couverture</p>
+                     <p className="text-sm text-gray-500 font-medium">{t('restaurantProfile.noCoverImage')}</p>
                    </div>
                  )}
                 
@@ -450,7 +450,7 @@ export const ImprovedRestaurantProfileModal = ({
                     {restaurant?.logo_url ? (
                       <img 
                         src={restaurant.logo_url} 
-                        alt="Logo du restaurant"
+                        alt={t('restaurantProfile.logoAlt')}
                         className="w-full h-full object-cover"
                       />
                     ) : (

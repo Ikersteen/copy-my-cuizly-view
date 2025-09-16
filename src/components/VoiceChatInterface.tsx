@@ -235,8 +235,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setIsConversationActive(false);
       setIsRecording(false);
       toast({
-        title: "Erreur de connexion",
-        description: "Impossible de démarrer la conversation vocale en temps réel",
+        title: t('voiceAssistant.connectionError'),
+        description: t('voiceAssistant.connectionFailed'),
         variant: "destructive",
       });
     }
@@ -337,10 +337,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         body: { audio: audioBase64.split(',')[1] }
       });
 
-      if (transcriptionResponse.error) throw new Error('Transcription failed');
+      if (transcriptionResponse.error) throw new Error(t('voiceAssistant.transcriptionFailed'));
       
       const transcription = transcriptionResponse.data?.text;
-      if (!transcription) throw new Error('No transcription received');
+      if (!transcription) throw new Error(t('voiceAssistant.noTranscription'));
 
       setMessages(prev => prev.map(msg => 
         msg.id === userMessageId 
@@ -359,10 +359,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         }
       });
 
-      if (chatResponse.error) throw new Error('AI processing failed');
+      if (chatResponse.error) throw new Error(t('voiceAssistant.aiProcessingFailed'));
 
       const aiResponse = chatResponse.data?.response;
-      if (!aiResponse) throw new Error('No AI response received');
+      if (!aiResponse) throw new Error(t('voiceAssistant.noAiResponse'));
 
       // Hide thinking indicator and show response with typing effect
       setIsThinking(false);
@@ -443,10 +443,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         return;
       }
 
-      if (chatResponse.error) throw new Error('AI processing failed');
+      if (chatResponse.error) throw new Error(t('voiceAssistant.aiProcessingFailed'));
 
       const aiResponse = chatResponse.data?.response;
-      if (!aiResponse) throw new Error('No AI response received');
+      if (!aiResponse) throw new Error(t('voiceAssistant.noAiResponse'));
 
       // Hide thinking indicator and show response with typing effect
       setIsThinking(false);
