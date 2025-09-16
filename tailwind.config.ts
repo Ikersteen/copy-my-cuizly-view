@@ -21,7 +21,6 @@ export default {
 			fontFamily: {
 				'sans': ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
 				'montserrat': ['Montserrat', 'sans-serif'],
-				'righteous': ['Righteous', 'cursive'],
 			},
 			fontWeight: {
 				'normal': '400',    // Petits textes
