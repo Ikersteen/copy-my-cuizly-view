@@ -8,7 +8,6 @@ import { useAddresses } from "@/hooks/useAddresses";
 
 
 import { OffersSection } from "@/components/OffersSection";
-import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
@@ -254,8 +253,6 @@ const RestaurantDashboard = () => {
         {/* Section des offres */}
         <OffersSection userType="restaurant" restaurantId={restaurant?.id} />
 
-        {/* Section analytics */}
-        <AnalyticsSection restaurantId={restaurant?.id} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
 
