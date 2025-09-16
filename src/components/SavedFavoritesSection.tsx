@@ -297,9 +297,8 @@ export const SavedFavoritesSection = () => {
         {favoriteRestaurants.length > 4 && (
           <div className="mt-8 text-center">
              <Button variant="outline" className="group">
-               {t('favorites.viewAllFavorites')}
-               <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-             </Button>
+                {t('favorites.viewAllFavorites')}
+              </Button>
           </div>
         )}
       </div>
