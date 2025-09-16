@@ -18,6 +18,18 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'sans': ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				'montserrat': ['Montserrat', 'sans-serif'],
+			},
+			fontWeight: {
+				'normal': '400',    // Petits textes
+				'medium': '500',    // Textes moyens  
+				'semibold': '600',  // Textes moyens (alternative)
+				'bold': '700',      // Textes importants
+				'extrabold': '800', // Grands textes
+				'black': '900',     // Grands textes (très gras)
+			},
 			screens: {
 				'xs': '480px',
 				'touch': { 'raw': '(hover: none) and (pointer: coarse)' },
