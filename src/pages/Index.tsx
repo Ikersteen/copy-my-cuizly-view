@@ -1,5 +1,4 @@
 import HeroSection from "@/components/HeroSection";
-import MissionSection from "@/components/MissionSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import FeaturesSectionLanding from "@/components/FeaturesSectionLanding";
 import PricingSectionLanding from "@/components/PricingSectionLanding";
@@ -14,7 +13,6 @@ const Index = () => {
   return (
     <>
       <HeroSection />
-      <MissionSection />
       
       {/* Démo Interface Vocale */}
       <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-20">
