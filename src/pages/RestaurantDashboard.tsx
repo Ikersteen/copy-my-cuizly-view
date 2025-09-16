@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon, Mic } from "lucide-react";
+import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 
@@ -413,14 +413,6 @@ const RestaurantDashboard = () => {
       {/* Modals */}
       {/* Modals removed - functionality moved to Header component */}
 
-      {/* Floating Voice Assistant Button - Redirects to voice interface */}
-      <Button
-        onClick={() => navigate('/voice')}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-        aria-label={t('accessibility.voiceAssistant')}
-      >
-        <Mic className="w-6 h-6" />
-      </Button>
     </div>
   );
 };
