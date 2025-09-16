@@ -95,15 +95,6 @@ export const PhotoActionModal = ({
                 </div>
               )}
             </div>
-            
-            {/* Indicateur de type de photo */}
-            <div className="absolute -bottom-2 -right-2 bg-primary text-white p-1.5 rounded-full shadow-lg">
-              {photoType === 'profile' ? (
-                <Camera className="h-3 w-3" />
-              ) : (
-                <Image className="h-3 w-3" />
-              )}
-            </div>
           </div>
         </div>
 
