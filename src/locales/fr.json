@@ -754,7 +754,6 @@
   "voiceAssistant": {
     "title": "Cuizly Assistance Vocale",
     "demo": {
-      "title": "Comment ça marche ?",
       "subtitle": "Parlez naturellement à Cuizly et obtenez des recommandations personnalisées"
     },
     "features": {
