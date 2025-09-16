@@ -89,7 +89,14 @@ export const RestaurantProfileModal = ({
         restaurant_specialties: restaurant.restaurant_specialties || []
       });
     }
-  }, [restaurant, open]);
+  }, [restaurant, open, restaurantAddress]);
+
+  // Mettre à jour l'adresse quand restaurantAddress change
+  useEffect(() => {
+    if (restaurantAddress) {
+      setFormData(prev => ({ ...prev, address: restaurantAddress.formatted_address }));
+    }
+  }, [restaurantAddress]);
 
   // Validate form data
   const validateForm = (): boolean => {
