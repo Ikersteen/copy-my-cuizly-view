@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Plus, ChefHat, BookOpen, LogOut, Globe, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Plus, ChefHat, BookOpen, LogOut, Globe } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,7 +18,6 @@ export const AuthenticatedRestaurantHeader = ({
   onRestaurantProfileClick,
   onManageMenusClick,
 }: AuthenticatedRestaurantHeaderProps) => {
-  const { theme, setTheme } = useTheme();
   const { currentLanguage, changeLanguage } = useLanguage();
   const { t } = useTranslation();
   const navigate = useNavigate();

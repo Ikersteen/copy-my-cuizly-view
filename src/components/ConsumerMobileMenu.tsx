@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, User, Settings, LayoutDashboard, LogOut, Sun, Moon, Globe, Home } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Menu, User, Settings, LayoutDashboard, LogOut, Globe, Home } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,7 +18,6 @@ export const ConsumerMobileMenu = ({
   onPreferencesClick,
 }: ConsumerMobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
   const { currentLanguage, changeLanguage } = useLanguage();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -115,53 +113,8 @@ export const ConsumerMobileMenu = ({
               </Button>
             </div>
 
-            {/* Bottom Section - Theme & Language */}
+            {/* Bottom Section - Language */}
             <div className="border-t border-border pt-4 space-y-4">
-              {/* Theme Selector */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {t('navigation.theme')}
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant={theme === 'light' ? 'default' : 'outline'}
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => {
-                      setTheme('light');
-                      setIsOpen(false);
-                    }}
-                  >
-                    ☀️
-                  </Button>
-                  <Button
-                    variant={theme === 'dark' ? 'default' : 'outline'}
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => {
-                      setTheme('dark');
-                      setIsOpen(false);
-                    }}
-                  >
-                    🌙
-                  </Button>
-                  <Button
-                    variant={theme === 'system' ? 'default' : 'outline'}
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => {
-                      setTheme('system');
-                      setIsOpen(false);
-                    }}
-                  >
-                    💻
-                  </Button>
-                </div>
-              </div>
-
               {/* Language Selector */}
               <div className="space-y-2 pb-4">
                 <div className="flex items-center gap-2">

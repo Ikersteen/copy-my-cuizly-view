@@ -2,13 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";  
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
-import { Menu, X, Globe, Moon, Sun } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/hooks/useLanguage";
-import { useTheme } from "next-themes";
+
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useToast } from "@/hooks/use-toast";
 import { AuthenticatedConsumerHeader } from "@/components/AuthenticatedConsumerHeader";
@@ -26,7 +26,6 @@ import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 const Header = () => {
   const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
-  const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const { user, profile, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -181,35 +180,6 @@ const Header = () => {
 
               {/* Auth Actions Desktop - Public */}
               <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
-                {/* Theme Toggle */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="gap-1 px-2">
-                      {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem 
-                      onClick={() => setTheme('light')}
-                      className={theme === 'light' ? 'bg-accent' : ''}
-                    >
-                      ☀️ {t('theme.light')}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => setTheme('dark')}
-                      className={theme === 'dark' ? 'bg-accent' : ''}
-                    >
-                      🌙 {t('theme.dark')}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => setTheme('system')}
-                      className={theme === 'system' ? 'bg-accent' : ''}
-                    >
-                      💻 {t('theme.system')}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
                 {/* Language Selector */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -303,49 +273,6 @@ const Header = () => {
                       {t('navigation.contact')}
                     </button>
                     
-                    {/* Mobile Theme Selector */}
-                    <div className="py-2 border-b border-border">
-                      <div className="flex items-center gap-2 mb-2">
-                        {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                        <span className="text-sm font-medium">{t('navigation.theme')}</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant={theme === 'light' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            setTheme('light');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          ☀️
-                        </Button>
-                        <Button
-                          variant={theme === 'dark' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            setTheme('dark');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          🌙
-                        </Button>
-                        <Button
-                          variant={theme === 'system' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            setTheme('system');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          💻
-                        </Button>
-                      </div>
-                    </div>
-
                     {/* Mobile Language Selector */}
                     <div className="py-2 border-b border-border">
                       <div className="flex items-center gap-2 mb-2">
