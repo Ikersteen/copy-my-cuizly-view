@@ -28,14 +28,21 @@
     "favoriteRestaurantsTitle": "Favorite Restaurants"
   },
   "hero": {
-    "title": "Order smarter with AI-powered food recommendations",
-    "subtitle": "Discover the best restaurants and dishes tailored to your preferences and dietary needs in Montreal.",
-    "cta": "Get Started",
+    "badge": "",
+    "title": {
+      "discover": "Discover your next",
+      "favorites": "culinary favorites",
+      "location": "in Montreal"
+    },
+    "subtitle": "Cuizly uses AI to recommend restaurants that match your tastes, budget and cravings.",
+    "cta": "Get Started Now",
     "createAccount": "Create Account",
-    "bookDemo": "Book a Demo",
-    "ctaSecondary": "Learn More",
-    "poweredBy": "Powered by advanced AI",
-    "trustedBy": "Trusted by food lovers"
+    "bookDemo": "Book a Demo"
+  },
+  "mission": {
+    "title": "Mission",
+    "subtitle": "Connecting food lovers to the best culinary experiences in Montreal",
+    "description": "Cuizly revolutionizes food discovery by using artificial intelligence to recommend restaurants perfectly tailored to consumers' preferences, budget and cravings."
   },
   "howItWorks": {
     "title": "How it works",
@@ -49,22 +56,30 @@
   },
   "features": {
     "title": "",
-    "subtitle": "Discover what makes our platform special",
-    "aiPowered": {
-      "title": "AI-Powered Recommendations",
-      "description": "Our smart algorithms learn your preferences to suggest perfect meals"
+    "subtitle": "Features designed for\nrestaurants & foodies",
+    "ai_recommendations": {
+      "title": "Artificial Intelligence",
+      "description": "Personalized recommendations based on your culinary tastes and preferences."
     },
-    "realTime": {
-      "title": "Real-Time Availability",
-      "description": "Get up-to-date information on restaurant availability and delivery times"
+    "geolocation": {
+      "title": "Geolocation",
+      "description": "Find the best deals near you in Montreal."
     },
-    "personalized": {
-      "title": "Personalized Experience",
-      "description": "Every recommendation is tailored to your dietary needs and preferences"
+    "real_time_alerts": {
+      "title": "Real-time alerts",
+      "description": "Be instantly notified of new offers that interest you."
     },
-    "local": {
-      "title": "Local Focus",
-      "description": "Discover the best restaurants in your neighborhood"
+    "reviews_ratings": {
+      "title": "Reviews and ratings",
+      "description": "Read authentic reviews from other users."
+    },
+    "restaurant_analytics": {
+      "title": "Restaurant analytics",
+      "description": "Analyze your restaurant's performance with detailed data."
+    },
+    "smart_targeting": {
+      "title": "Smart targeting",
+      "description": "Reach the right customers at the right time with our AI."
     }
   },
   "pricing": {
@@ -101,6 +116,152 @@
         "Priority customer support"
       ],
       "cta": "Create account"
+    },
+    "analytics": {
+      "title": "Cuizly Analytics+",
+      "subtitle": "To optimize your strategy with data",
+      "price": "$29.99 CAD/month",
+      "priceNote": "or $299.90 CAD/year (save 2 months!) 🎉",
+      "features": [
+        "All Pro features",
+        "Detailed anonymized reports",
+        "Consumer trend analysis",
+        "Precise insights on performance per segment",
+        "API access for advanced integrations"
+      ],
+      "cta": "Join the waitlist"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "returnHome": "Return to home"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "content": "Cuizly Technologies (\"we\", \"our\" or \"Cuizly\") respects your privacy and is committed to protecting your personal data. This privacy policy informs you about how we collect, use and protect your information when you use our service."
+      },
+      "collection": {
+        "title": "2. Information we collect",
+        "items": [
+          "Personal identification information (name, email)",
+          "Culinary and dietary preferences",
+          "Location data (with your consent)",
+          "Usage and analytics information"
+        ]
+      },
+      "usage": {
+        "title": "3. How we use your information",
+        "items": [
+          "Provide and improve our services",
+          "Personalize your experience",
+          "Send you relevant notifications",
+          "Analyze usage of our platform"
+        ]
+      },
+      "sharing": {
+        "title": "4. Information sharing",
+        "content": "We do not sell, trade or rent your personal information to third parties. We may share your information in the following cases:",
+        "items": [
+          "With your explicit consent",
+          "To comply with legal obligations",
+          "To protect our rights and security"
+        ]
+      },
+      "rights": {
+        "title": "5. Your rights",
+        "content": "You have the right to access, correct, delete or limit the use of your personal data. To exercise these rights, contact us at cuizlycanada@gmail.com."
+      },
+      "contact": {
+        "title": "6. Contact",
+        "content": "For any questions regarding this privacy policy, contact us at:",
+        "email": "Email: cuizlycanada@gmail.com",
+        "address": "Address: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
+      }
+    }
+  },
+  "mentions": {
+    "title": "Legal Mentions",
+    "sections": {
+      "editor": {
+        "title": "Site Editor",
+        "companyName": "Company name: Cuizly Technologies",
+        "legalForm": "Legal form: Independent Startup",
+        "address": "Head office: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4",
+        "email": "Email: cuizlycanada@gmail.com"
+      },
+      "hosting": {
+        "title": "Hosting",
+        "host": "Host: Supabase Inc.",
+        "address": "Address: San Francisco, CA, United States",
+        "website": "Website: https://supabase.com"
+      },
+      "director": {
+        "title": "Publication Director",
+        "name": "Iker Kiomba Landu, President CEO",
+        "email": "Email: cuizlycanada@gmail.com"
+      },
+      "intellectual": {
+        "title": "Intellectual Property",
+        "content": "This entire site is subject to Canadian and international legislation on copyright and intellectual property. All reproduction rights are reserved, including for downloadable documents and iconographic and photographic representations."
+      },
+      "personal": {
+        "title": "Personal Data",
+        "content": "In accordance with Canadian personal information protection law, you have the right to access, rectify and delete data concerning you. To exercise this right, contact us at cuizlycanada@gmail.com"
+      },
+      "liability": {
+        "title": "Liability",
+        "content": "Cuizly Technologies cannot be held responsible for direct and indirect damage caused to the user's equipment, when accessing the site, and resulting either from the use of equipment that does not meet the indicated specifications, or from the appearance of a bug or incompatibility."
+      },
+      "law": {
+        "title": "Applicable Law",
+        "content": "Any dispute in relation to the use of the Cuizly site is subject to Canadian and Quebec law. Exclusive jurisdiction is attributed to the competent courts of Montreal."
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of terms",
+        "content": "By accessing and using Cuizly, you agree to be bound by these terms of use and all applicable laws and regulations."
+      },
+      "service": {
+        "title": "2. Service description",
+        "content": "Cuizly is a platform that connects consumers to restaurants in Montreal by offering personalized culinary offers through artificial intelligence."
+      },
+      "responsibilities": {
+        "title": "3. User responsibilities",
+        "items": [
+          "Provide accurate information when registering",
+          "Maintain the security of your account",
+          "Use the service legally and respectfully",
+          "Do not disrupt the operation of the platform"
+        ]
+      },
+      "intellectual": {
+        "title": "4. Intellectual property",
+        "content": "All content on Cuizly, including text, graphics, logos and software, is the property of Cuizly Technologies and is protected by intellectual property laws."
+      },
+      "liability": {
+        "title": "5. Limitation of liability",
+        "content": "Cuizly cannot be held responsible for indirect, incidental or consequential damages resulting from the use or inability to use our service."
+      },
+      "modifications": {
+        "title": "6. Modifications",
+        "content": "We reserve the right to modify these terms of use at any time. Changes will take effect immediately after publication on this page."
+      },
+      "contact": {
+        "title": "7. Contact",
+        "content": "For any questions regarding these terms of use, contact us at:",
+        "email": "Email: cuizlycanada@gmail.com",
+        "address": "Address: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
+      }
     }
   },
   "pricingLanding": {
@@ -434,59 +595,83 @@
     "general": "An error occurred. Please try again."
   },
   "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Try again",
+    "close": "Close",
     "save": "Save",
     "cancel": "Cancel",
-    "delete": "Delete",
-    "edit": "Edit",
-    "add": "Add",
-    "remove": "Remove",
-    "close": "Close",
-    "open": "Open",
-    "yes": "Yes",
-    "no": "No",
-    "ok": "OK",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
-    "warning": "Warning",
-    "info": "Information",
-    "submit": "Submit",
-    "search": "Search",
-    "filter": "Filter",
-    "sort": "Sort",
-    "view": "View",
-    "update": "Update",
-    "create": "Create",
     "confirm": "Confirm",
-    "reset": "Reset",
-    "clear": "Clear",
-    "select": "Select",
-    "unselect": "Unselect",
-    "upload": "Upload",
-    "download": "Download",
-    "copy": "Copy",
-    "paste": "Paste",
-    "cut": "Cut",
-    "undo": "Undo",
-    "redo": "Redo",
-    "send": "Send",
-    "receive": "Receive",
-    "connect": "Connect",
-    "disconnect": "Disconnect",
-    "enable": "Enable",
-    "disable": "Disable",
-    "show": "Show",
-    "hide": "Hide",
-    "expand": "Expand",
-    "collapse": "Collapse",
-    "minimize": "Minimize",
-    "maximize": "Maximize",
-    "refresh": "Refresh",
-    "retry": "Retry",
-    "home": "Home"
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "validationError": "Validation error",
+    "fixErrors": "Please correct errors before saving"
+  },
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "select": "Choose language"
+  },
+  "menus": {
+    "title": "All available menus",
+    "cuisineTypes": "Cuisine types",
+    "serviceTypes": "Service types", 
+    "specialties": "Specialties",
+    "subtitle": "Discover the delicious menus offered by our partner restaurants",
+    "noMenus": "No menus available",
+    "comeBack": "This restaurant hasn't added menus yet",
+    "addedOn": "Added on",
+    "loading": "Loading menus...",
+    "unknownRestaurant": "Unknown restaurant",
+    "comment": "Comment",
+    "dietaryRestrictions": "Dietary restrictions:",
+    "allergens": "Allergens:",
+    "menuImage": "Menu image"
+  },
+  "analytics": {
+    "title": "Real-time performance dashboard",
+    "subtitle": "Performance insights by segment (Real-time updates)",
+    "totalOffers": "Total offers",
+    "activeOffers": "active",
+    "menusAdded": "Menus added",
+    "activeMenus": "active",
+    "profileViews": "Profile views",
+    "totalViews": "Total views",
+    "avgRating": "Average rating",
+    "outOfFive": "Out of 5 stars",
+    "weeklyTrends": "This week's trends",
+    "positiveGrowth": "views compared to last week",
+    "noChange": "No change compared to last week",
+    "collectingData": "Collecting data...",
+    "positiveTrend": "Positive trend",
+    "negativeTrend": "Negative trend",
+    "stable": "Stable",
+    "dataCollection": "Data collection"
+  },
+  "ratings": {
+    "published": "Rating published",
+    "evaluation": "evaluation",
+    "evaluations": "evaluations",
+    "rate": "Rate",
+    "modify": "Modify my review",
+    "rateRestaurant": "Rate this restaurant",
+    "modifyRating": "Modify your rating",
+    "sharePlaceholder": "Share your experience...",
+    "invalidComment": "Invalid comment",
+    "thankYouFeedback": "Thank you for your feedback!",
+    "rating": "Rating",
+    "optionalComment": "Comment (optional)",
+    "cancel": "Cancel",
+    "inProgress": "In progress...",
+    "publish": "Publish",
+    "customerReviews": "Customer reviews",
+    "anonymousUser": "Anonymous user"
+  },
+  "favorites": {
+    "removed": "Removed from favorites",
+    "added": "Added to favorites", 
+    "quickAccess": "Quick access"
   },
   "restaurant": {
     "profile": "Restaurant Profile",
@@ -750,17 +935,62 @@
     "acceptPrivacy": "I accept the Privacy Policy"
   },
   "cookies": {
-    "title": "Cookie Preferences",
-    "description": "We use cookies to enhance your experience. Choose which cookies you'd like to accept.",
-    "necessary": "Necessary Cookies",
-    "necessaryDescription": "These cookies are essential for the website to function properly.",
-    "analytics": "Analytics Cookies", 
-    "analyticsDescription": "Help us understand how visitors use our website.",
-    "marketing": "Marketing Cookies",
-    "marketingDescription": "Used to deliver personalized advertisements.",
-    "acceptAll": "Accept All",
-    "acceptSelected": "Accept Selected",
-    "rejectAll": "Reject All"
+    "title": "Cookie Policy",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "what": {
+        "title": "What is a cookie?",
+        "content": "A cookie is a small text file placed on your computer when visiting a website. It allows to recognize your browser and keep certain information about your preferences or past actions."
+      },
+      "types": {
+        "title": "Types of cookies used",
+        "essential": {
+          "title": "Essential cookies",
+          "content": "These cookies are necessary for the site to function. They allow you to navigate the site and use its essential features like authentication and security."
+        },
+        "performance": {
+          "title": "Performance cookies",
+          "content": "These cookies collect information about how you use our site, like the most visited pages. This data helps us improve the site's operation."
+        },
+        "functionality": {
+          "title": "Functionality cookies",
+          "content": "These cookies allow the site to remember your choices (like your username or language) and provide enhanced and more personalized features."
+        }
+      },
+      "management": {
+        "title": "Cookie management",
+        "content1": "You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can configure most browsers to prevent their placement.",
+        "content2": "However, if you do this, you may have to manually adjust some preferences each time you visit a site and some services and features may not work."
+      },
+      "disable": {
+        "title": "How to disable cookies",
+        "chrome": "Chrome: Settings → Privacy and security → Cookies and other site data",
+        "firefox": "Firefox: Options → Privacy and security → Cookies and site data",
+        "safari": "Safari: Preferences → Privacy → Manage website data",
+        "edge": "Edge: Settings → Cookies and site permissions → Manage and delete cookies"
+      },
+      "third": {
+        "title": "Third-party cookies",
+        "content": "Some cookies may be placed by third-party services we use, like Google Analytics to measure site audience. These third-party services have their own privacy policies."
+      },
+      "editor": {
+        "title": "Site Editor",
+        "company": "Company name: Cuizly Technologies",
+        "form": "Legal form: Independent Startup",
+        "address": "Head office: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
+      },
+      "director": {
+        "title": "Publication Director",
+        "name": "Iker Kiomba Landu, President CEO",
+        "email": "Email: cuizlycanada@gmail.com"
+      },
+      "contact": {
+        "title": "Contact",
+        "content": "For any questions regarding our use of cookies, contact us at:",
+        "email": "Email: cuizlycanada@gmail.com",
+        "address": "Head office: 2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4"
+      }
+    }
   },
   "notifications": {
     "title": "Notifications",
