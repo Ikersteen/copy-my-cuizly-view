@@ -241,19 +241,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       
       // Le système attend silencieusement que l'utilisateur parle
       
-      toast({
-        title: "Conversation démarrée",
-        description: "Vous pouvez maintenant parler naturellement avec Cuizly en temps réel",
-      });
+      console.log('Conversation démarrée - Vous pouvez maintenant parler naturellement avec Cuizly en temps réel');
     } catch (error) {
       console.error('Error starting realtime conversation:', error);
       setIsConversationActive(false);
       setIsRecording(false);
-      toast({
-        title: t('voiceAssistant.connectionError'),
-        description: t('voiceAssistant.connectionFailed'),
-        variant: "destructive",
-      });
     }
   };
 
@@ -291,11 +283,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }
     
     console.log('Realtime conversation stopped');
-    
-    toast({
-      title: "Conversation terminée",
-      description: "La conversation vocale en temps réel a été arrêtée",
-    });
   };
 
   // Audio recording functions
@@ -403,11 +390,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     } catch (error) {
       console.error('Erreur traitement vocal:', error);
       setIsThinking(false);
-      toast({
-        title: t('voiceChat.errors.voiceProcessing.title'),
-        description: t('voiceChat.errors.voiceProcessing.description'),
-        variant: "destructive",
-      });
       
       setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
     } finally {
@@ -482,11 +464,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       
       console.error('Erreur traitement texte:', error);
       setIsThinking(false);
-      toast({
-        title: "Erreur de traitement",
-        description: "Une erreur s'est produite lors du traitement de votre message.",
-        variant: "destructive",
-      });
     } finally {
       setIsProcessing(false);
       setAbortController(null);
@@ -527,11 +504,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     
     audio.onerror = () => {
       setIsSpeaking(false);
-      toast({
-        title: t('voiceChat.errors.audioPlayback.title'),
-        description: t('voiceChat.errors.audioPlayback.description'),
-        variant: "destructive",
-      });
+      console.error('Erreur de lecture audio');
     };
     
     audio.play();
@@ -587,10 +560,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     // Clear audio URL to stop any pending audio
     setAudioUrl(null);
     
-    toast({
-      title: "Génération arrêtée",
-      description: "La génération de la réponse a été interrompue.",
-    });
+    console.log('Génération arrêtée - La génération de la réponse a été interrompue.');
   };
 
   const handleTypewriterStop = (partialText: string, messageId: string) => {
@@ -829,14 +799,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
               
               <div className="text-center mt-4">
-                <p className="text-sm text-muted-foreground">
-                  {!isConversationActive 
-                    ? "Cuizly Assistant Vocal est maintenant Disponible."
-                    : "Parlez naturellement."
-                  }
-                </p>
-                
-                {/* Texte supprimé pour simplifier */}
+                {/* Texte supprimé */}
               </div>
             </>
           ) : (
@@ -868,9 +831,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 </Button>
               </div>
               <div className="text-center space-y-1 px-4 mx-auto max-w-xs sm:max-w-none">
-                <p className="text-foreground font-medium text-sm sm:text-base leading-tight">
-                  {isProcessing ? 'Traitement en cours...' : ''}
-                </p>
+                {/* Texte supprimé */}
               </div>
             </form>
           )}
