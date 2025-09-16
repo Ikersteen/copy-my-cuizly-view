@@ -29,6 +29,15 @@ const HeroSection = () => {
       <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 text-center mobile-friendly-spacing">
 
 
+        {/* Main Title */}
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground mb-4 sm:mb-6 leading-[1.1] tracking-tight animate-fade-in">
+          <span className="block">{t('hero.title.discover')}</span>
+          <span className="block bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent font-extrabold">
+            {t('hero.title.favorites')}
+          </span>
+          <span className="block text-foreground/90">{t('hero.title.location')}</span>
+        </h1>
+
         {/* Subtitle */}
         <p 
           className="text-base sm:text-xl md:text-2xl text-muted-foreground/90 max-w-4xl mx-auto mb-8 sm:mb-10 leading-relaxed font-normal animate-fade-in"
