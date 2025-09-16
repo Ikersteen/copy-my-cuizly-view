@@ -178,7 +178,7 @@ const RestaurantDashboard = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-8 left-4 sm:left-6">
+            <div className="absolute -bottom-8 left-2 sm:left-4">
               <div className="w-20 h-20 sm:w-24 sm:h-24 bg-background border-4 border-background rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
                 {restaurant?.logo_url ? (
                   <img 
@@ -218,7 +218,7 @@ const RestaurantDashboard = () => {
         )}
 
         {/* Restaurant Information Section - Between logo and welcome message */}
-        <div className="mb-8 ml-4">
+        <div className="mb-8 ml-2">
           <div>
             <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
               {restaurant?.name || t('restaurant.myRestaurant')}
