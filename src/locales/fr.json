@@ -1317,6 +1317,11 @@
     "imageTooLarge": "L'image doit faire moins de 5 Mo"
   },
   "restaurantProfile": {
+    "uploadError": "Erreur lors du téléchargement de l'image",
+    "validationError": "Erreur de validation",
+    "validationErrorDesc": "Veuillez corriger les erreurs avant de sauvegarder",
+    "profileUpdated": "Profil mis à jour",
+    "profileUpdatedDesc": "Les informations du restaurant ont été sauvegardées avec succès",
     "title": "Profil du restaurant",
     "description": "Gérez les informations de votre restaurant",
     "profileUpdated": "Profil mis à jour",
@@ -1630,6 +1635,10 @@
     "lastNamePlaceholder": "Votre nom",
     "username": "Nom d'utilisateur",
     "usernamePlaceholder": "Votre nom d'utilisateur",
+    "firstNameRequired": "Le prénom est requis",
+    "lastNameRequired": "Le nom est requis", 
+    "usernameRequired": "Le nom d'utilisateur est requis",
+    "phoneInvalid": "Numéro de téléphone invalide",
     "phone": "Téléphone",
     "email": "Adresse courriel",
     "emojiAvatar": "Avatar emoji",

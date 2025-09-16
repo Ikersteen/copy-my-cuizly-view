@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, X } from 'lucide-react';
@@ -20,6 +21,7 @@ interface Message {
 
 const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -85,7 +87,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
       console.error('❌ Error starting conversation:', error);
       toast({
         title: "Erreur",
-        description: error instanceof Error ? error.message : 'Impossible de démarrer la conversation',
+        description: t('errors.general'),
         variant: "destructive",
       });
     } finally {

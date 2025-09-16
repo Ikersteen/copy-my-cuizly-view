@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Mic, MicOff, Volume2, VolumeX, User as UserIcon } from 'lucide-react';
@@ -22,6 +23,7 @@ interface RealtimeVoiceInterfaceProps {
 
 const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose }) => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -136,7 +138,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
       console.error('Erreur connexion:', error);
       toast({
         title: "Erreur de connexion",
-        description: error instanceof Error ? error.message : 'Impossible de démarrer la conversation',
+        description: t('errors.general'),
         variant: "destructive",
       });
     }

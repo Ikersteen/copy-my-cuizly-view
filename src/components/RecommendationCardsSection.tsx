@@ -743,9 +743,9 @@ export const RecommendationCardsSection = () => {
                                     reasonObj.type === 'timing' ? 'bg-purple-500' :
                                     'bg-gray-400'
                                   }`} />
-                                  <span className="text-xs text-foreground/80 leading-relaxed">
-                                    {reasonObj.text}
-                                  </span>
+                                   <span className="text-xs text-foreground/80 leading-relaxed">
+                                     {t(reasonObj.text) || reasonObj.text}
+                                   </span>
                                 </div>
                               );
                           })}

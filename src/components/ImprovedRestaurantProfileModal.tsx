@@ -248,7 +248,7 @@ export const ImprovedRestaurantProfileModal = ({
       console.error('Error uploading image:', error);
       toast({
         title: t('restaurantProfile.error'),
-        description: `Erreur d'upload: ${error.message}`,
+        description: t('restaurantProfile.uploadError'),
         variant: "destructive"
       });
     } finally {

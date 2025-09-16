@@ -461,9 +461,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                         className="mt-1"
                         autoFocus={false}
                       />
-                      {validationErrors.first_name && (
-                        <p className="text-xs text-destructive mt-1">{validationErrors.first_name}</p>
-                      )}
+                       {validationErrors.first_name && (
+                         <p className="text-xs text-destructive mt-1">{t('profile.firstNameRequired')}</p>
+                       )}
                     </div>
                     <div>
                       <Label htmlFor="last_name" className="text-sm font-medium">{t('profile.lastName')}</Label>
@@ -474,9 +474,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                         placeholder={t('profile.lastNamePlaceholder')}
                         className="mt-1"
                       />
-                      {validationErrors.last_name && (
-                        <p className="text-xs text-destructive mt-1">{validationErrors.last_name}</p>
-                      )}
+                       {validationErrors.last_name && (
+                         <p className="text-xs text-destructive mt-1">{t('profile.lastNameRequired')}</p>
+                       )}
                     </div>
                   </div>
 
@@ -489,9 +489,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                       placeholder={t('profile.usernamePlaceholder')}
                       className="mt-1"
                     />
-                    {validationErrors.username && (
-                      <p className="text-xs text-destructive mt-1">{validationErrors.username}</p>
-                    )}
+                     {validationErrors.username && (
+                       <p className="text-xs text-destructive mt-1">{t('profile.usernameRequired')}</p>
+                     )}
                   </div>
 
                   <div>
@@ -507,9 +507,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                        autoCapitalize="off"
                        spellCheck="false"
                      />
-                    {validationErrors.phone && (
-                      <p className="text-xs text-destructive mt-1">{validationErrors.phone}</p>
-                    )}
+                     {validationErrors.phone && (
+                       <p className="text-xs text-destructive mt-1">{t('profile.phoneInvalid')}</p>
+                     )}
                   </div>
 
                   <div>
