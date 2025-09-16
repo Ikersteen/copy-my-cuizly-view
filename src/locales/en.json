@@ -298,7 +298,8 @@
     "opensAt": "Opens at",
     "noResultsTitle": "No restaurants found",
     "noResultsMessage": "We couldn't find any restaurants matching your preferences. Try adjusting your filters.",
-    "adjustFilters": "Adjust Filters"
+    "adjustFilters": "Adjust Filters",
+    "viewProfile": "View Profile"
   },
   "restaurants": {
     "map": "Map View",
@@ -342,7 +343,8 @@
     "addedToFavorites": "Added to favorites",
     "removedFromFavorites": "Removed from favorites",
     "viewAll": "View All Favorites",
-    "exploreRestaurants": "Explore Restaurants"
+    "exploreRestaurants": "Explore Restaurants",
+    "viewProfile": "View Profile"
   },
   "voice": {
     "title": "Voice Assistant",
