@@ -1002,7 +1002,8 @@
     "title": "Mes restaurants favoris",
     "noFavorites": "Aucun favori pour le moment",
     "addFavorites": "Ajoutez des restaurants à vos favoris pour les retrouver ici",
-    "viewProfile": "Voir le profil"
+    "viewProfile": "Voir le profil",
+    "removed": "Retiré des favoris"
   },
   "history": {
     "title": "Recherches",

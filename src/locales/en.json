@@ -344,7 +344,8 @@
     "removedFromFavorites": "Removed from favorites",
     "viewAll": "View All Favorites",
     "exploreRestaurants": "Explore Restaurants",
-    "viewProfile": "View Profile"
+    "viewProfile": "View Profile",
+    "removed": "Removed from favorites"
   },
   "voice": {
     "title": "Voice Assistant",
