@@ -41,7 +41,7 @@ const PerformanceDashboardSection = () => {
             Tableau de performance en temps réel
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Suivez vos performances et boostez vos réservations en temps réel.
+            Suivez vos données en temps réel et boostez les performances de votre restaurant.
           </p>
         </div>
 
