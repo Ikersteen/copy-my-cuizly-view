@@ -52,7 +52,7 @@ const FeaturesSectionLanding = () => {
               {t('features.title')}
             </h2>
           )}
-          <p className="text-lg sm:text-xl text-cuizly-neutral max-w-3xl mx-auto px-2 sm:px-4 font-bold">
+          <p className="text-lg sm:text-xl text-foreground max-w-3xl mx-auto px-2 sm:px-4 font-bold">
             {t('features.subtitle')}
           </p>
         </div>
