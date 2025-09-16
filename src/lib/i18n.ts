@@ -15,7 +15,7 @@ const resources = {
   }
 };
 
-// Initialize i18n immediately
+// Initialize i18n immediately  
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -39,7 +39,11 @@ i18n
       useSuspense: false,
       bindI18n: 'languageChanged loaded',
       bindI18nStore: 'added removed',
-    }
+    },
+
+    // Ensure translations are loaded synchronously
+    initImmediate: false,
+    preload: ['fr', 'en']
   });
 
 export default i18n;
