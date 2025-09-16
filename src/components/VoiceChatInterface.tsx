@@ -875,6 +875,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             </form>
           )}
         </div>
+        
+        {/* Disclaimer */}
+        <div className="flex-shrink-0 px-6 py-2">
+          <p className="text-center text-xs text-muted-foreground">
+            Cuizly peut parfois se tromper, pensez à vérifier les infos importantes.
+          </p>
+        </div>
       </main>
     </div>
   );
