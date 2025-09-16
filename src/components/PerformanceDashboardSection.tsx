@@ -17,7 +17,7 @@ const PerformanceDashboardSection = () => {
         </div>
       </div>
       
-      <div className="w-full px-2 sm:px-0">
+      <div className="w-full">
         <img 
           src={performanceImage} 
           alt="Tableau de performance Cuizly montrant les métriques en temps réel"
