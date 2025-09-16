@@ -704,11 +704,26 @@ export const RecommendationCardsSection = () => {
                          </div>
                        </div>
                        <div className="space-y-2">
-                            {reasons.slice(0, 3).map((reason, idx) => {
-                              const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
-                              
-                              // Auto-detect reason type based on content for AI-generated reasons
-                              if (reasonObj.type === 'default' && typeof reason === 'string') {
+                             {reasons.slice(0, 3).map((reason, idx) => {
+                               const reasonObj = typeof reason === 'string' ? { text: reason, type: 'default' } : reason;
+                               
+                               // Translate reason text if it looks like a translation key
+                               let translatedText = reasonObj.text;
+                               if (reasonObj.text && reasonObj.text.includes('.')) {
+                                 // Check if it's a translation key and translate it
+                                 try {
+                                   const translated = t(reasonObj.text);
+                                   if (translated && translated !== reasonObj.text) {
+                                     translatedText = translated;
+                                   }
+                                 } catch (e) {
+                                   // Keep original text if translation fails
+                                   translatedText = reasonObj.text;
+                                 }
+                               }
+                               
+                               // Auto-detect reason type based on content for AI-generated reasons
+                               if (reasonObj.type === 'default' && typeof reason === 'string') {
                                 if (reason.toLowerCase().includes('allergène') || reason.toLowerCase().includes('allergen')) {
                                   reasonObj.type = 'allergens';
                                 } else if (reason.toLowerCase().includes('restriction') || reason.toLowerCase().includes('dietary')) {
@@ -743,9 +758,9 @@ export const RecommendationCardsSection = () => {
                                     reasonObj.type === 'timing' ? 'bg-purple-500' :
                                     'bg-gray-400'
                                   }`} />
-                                  <span className="text-xs text-foreground/80 leading-relaxed">
-                                    {reasonObj.text}
-                                  </span>
+                                   <span className="text-xs text-foreground/80 leading-relaxed">
+                                     {translatedText}
+                                   </span>
                                 </div>
                               );
                           })}
