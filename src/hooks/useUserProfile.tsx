@@ -43,6 +43,7 @@ export const useUserProfile = () => {
 
   const fetchProfile = async (userId: string) => {
     try {
+      console.log('Fetching profile for user:', userId);
       let retryCount = 0;
       const maxRetries = 2;
       
@@ -54,8 +55,12 @@ export const useUserProfile = () => {
             .eq('user_id', userId)
             .maybeSingle();
 
+          console.log('Profile data:', data, 'Error:', error);
+          
           if (!error) {
-            setProfile(data || { user_type: 'consumer' });
+            const profileData = data || { user_type: 'consumer' };
+            console.log('Setting profile to:', profileData);
+            setProfile(profileData);
             setLoading(false);
             return;
           } else {
@@ -86,12 +91,20 @@ export const useUserProfile = () => {
     }
   };
 
+  const refreshProfile = async () => {
+    if (user) {
+      setLoading(true);
+      await fetchProfile(user.id);
+    }
+  };
+
   return {
     user,
     profile,
     loading,
     isAuthenticated: !!user,
     isConsumer: profile?.user_type === 'consumer',
-    isRestaurant: profile?.user_type === 'restaurant_owner'
+    isRestaurant: profile?.user_type === 'restaurant_owner',
+    refreshProfile
   };
 };

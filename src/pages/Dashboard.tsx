@@ -6,8 +6,11 @@ import ConsumerDashboard from "./ConsumerDashboard";
 import RestaurantDashboard from "./RestaurantDashboard";
 
 const Dashboard = () => {
-  const { user, profile, loading, isAuthenticated } = useUserProfile();
+  const { user, profile, loading, isAuthenticated, refreshProfile } = useUserProfile();
   const navigate = useNavigate();
+
+  // Debug logging
+  console.log('Dashboard - User:', user?.id, 'Profile:', profile, 'Loading:', loading);
 
   // Redirect to auth if not authenticated
   useEffect(() => {
@@ -34,7 +37,23 @@ const Dashboard = () => {
   }
 
   // Render appropriate dashboard based on user type
-  return profile?.user_type === 'restaurant_owner' ? <RestaurantDashboard /> : <ConsumerDashboard />;
+  return (
+    <div>
+      {/* Debug info - remove after fixing */}
+      <div className="fixed top-4 right-4 bg-black/80 text-white p-2 rounded text-xs z-50">
+        User: {user?.email}<br/>
+        Profile: {profile?.user_type}<br/>
+        <button 
+          onClick={refreshProfile}
+          className="bg-blue-500 px-2 py-1 rounded mt-1"
+        >
+          Refresh Profile
+        </button>
+      </div>
+      
+      {profile?.user_type === 'restaurant_owner' ? <RestaurantDashboard /> : <ConsumerDashboard />}
+    </div>
+  );
 };
 
 export default Dashboard;
