@@ -178,7 +178,7 @@ const RestaurantDashboard = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-8 left-0">
+            <div className="absolute -bottom-8 -left-1">
               <div className="w-20 h-20 sm:w-24 sm:h-24 bg-background border-4 border-background rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
                 {restaurant?.logo_url ? (
                   <img 
