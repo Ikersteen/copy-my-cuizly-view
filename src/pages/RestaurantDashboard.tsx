@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAddresses } from "@/hooks/useAddresses";
 
 
 import { OffersSection } from "@/components/OffersSection";
@@ -46,6 +47,7 @@ const RestaurantDashboard = () => {
   
   const { toast } = useToast();
   const { profile, updateProfile } = useProfile();
+  const { primaryAddress: restaurantAddress } = useAddresses('restaurant');
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
@@ -176,8 +178,8 @@ const RestaurantDashboard = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 left-4 sm:left-6">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-background border-4 border-background rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
+            <div className="absolute -bottom-8 left-4 sm:left-6">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-background border-4 border-background rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
                 {restaurant?.logo_url ? (
                   <img 
                     src={restaurant.logo_url} 
@@ -198,7 +200,7 @@ const RestaurantDashboard = () => {
         {!restaurant?.cover_image_url && (
           <div className="mb-8">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
+              <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
                 {restaurant?.logo_url ? (
                   <img 
                     src={restaurant.logo_url} 
@@ -224,10 +226,10 @@ const RestaurantDashboard = () => {
             <p className="text-sm sm:text-base text-muted-foreground">
               @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
             </p>
-            {restaurant?.address && (
+            {restaurantAddress?.formatted_address && (
               <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                 <MapPin className="h-3 w-3" />
-                {restaurant.address}
+                {restaurantAddress.formatted_address}
               </p>
             )}
           </div>
@@ -275,7 +277,7 @@ const RestaurantDashboard = () => {
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurant.address')}</p>
-                      <p className="text-foreground text-sm">{restaurant.address || t('restaurant.notSpecifiedFeminine')}</p>
+                      <p className="text-foreground text-sm">{restaurantAddress?.formatted_address || t('restaurant.notSpecifiedFeminine')}</p>
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurant.phone')}</p>
