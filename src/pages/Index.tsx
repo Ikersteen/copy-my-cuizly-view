@@ -34,9 +34,6 @@ const Index = () => {
                 className="h-16 w-auto hidden dark:block brightness-125" 
               />
             </div>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              {t('voiceAssistant.subtitle')}
-            </p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -51,7 +48,6 @@ const Index = () => {
                   />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold mb-2">{t('voiceAssistant.demo.title')}</h3>
                   <p className="text-muted-foreground text-sm">
                     {t('voiceAssistant.demo.subtitle')}
                   </p>
