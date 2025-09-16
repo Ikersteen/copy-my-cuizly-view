@@ -68,47 +68,51 @@
     }
   },
   "pricing": {
-    "title": "Pricing for everyone",
-    "subtitle": "A free offer for food lovers, affordable professional solutions for restaurants.",
-    "popular": "Popular",
-    "comingSoon": "Coming Soon",
-    "consumerSection": "For consumers",
-    "restaurantSection": "For restaurateurs",
-    "consumer": {
-      "title": "Cuizly Basic",
-      "subtitle": "For food lovers who want to discover Montreal",
-      "price": "Free for life",
+    "title": "Simple, transparent pricing",
+    "subtitle": "Choose the plan that's right for you",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save": "Save 20%",
+    "free": {
+      "title": "Free",
+      "description": "Perfect to get started",
+      "price": "$0",
+      "period": "/month",
       "features": [
-        "Access to all exclusive offers",
-        "Personalized AI recommendations",
-        "Priority alerts on promos",
-        "Cuizly Copilot Assistance integrated",
-        "Dedicated customer support",
-        "Ad-free interface"
+        "Basic AI recommendations",
+        "5 restaurant searches per day",
+        "Standard customer support"
       ],
-      "cta": "Start for free"
+      "cta": "Get Started"
     },
-    "pro": {
-      "title": "Cuizly Pro",
-      "subtitle": "For restaurants that want to attract more customers",
-      "price": "$9.99 CAD/month",
-      "priceNote": "or $99 CAD/year (save 2 months!) 🎉",
+    "premium": {
+      "title": "Premium",
+      "description": "For food enthusiasts",
+      "price": "$9.99",
+      "period": "/month",
       "features": [
-        "Real-time performance tracking dashboard",
-        "Advanced visibility and SEO system",
-        "Offers and menu management tools",
-        "Customer relationship management",
-        "Priority customer support"
+        "Advanced AI recommendations", 
+        "Unlimited restaurant searches",
+        "Priority customer support",
+        "Exclusive restaurant offers",
+        "Dietary restriction filters"
       ],
-      "cta": "Create account"
-    }
+      "cta": "Start Free Trial"
   },
-  "pricingLanding": {
-    "title": "Pricing for everyone",
-    "subtitle": "A free offer for consumers, affordable professional solutions for restaurants.",
-    "popular": "Popular",
-    "comingSoon": "Coming Soon",
-    "backToHome": "Back to home"
+  "restaurant": {
+      "title": "Restaurant",
+      "description": "For restaurant owners",
+      "price": "$29.99",
+      "period": "/month",
+      "features": [
+        "Restaurant profile management",
+        "Menu analytics",
+        "Customer insights",
+        "Promotion tools",
+        "Priority listing"
+      ],
+      "cta": "Start Free Trial"
+    }
   },
   "team": {
     "title": "Meet our team",
