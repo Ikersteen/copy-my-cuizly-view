@@ -2,8 +2,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { User } from "lucide-react";
-import { useSecureAuth } from "@/hooks/useSecureAuth";
-import { useNavigate } from "react-router-dom";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 interface ProfileSwitchModalProps {
   open: boolean;
@@ -17,13 +18,33 @@ export const ProfileSwitchModal = ({
   currentProfile
 }: ProfileSwitchModalProps) => {
   const { t } = useTranslation();
-  const { logout } = useSecureAuth();
-  const navigate = useNavigate();
+  const { updateUserType } = useUserProfile();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSwitchProfile = async () => {
-    await logout();
-    onOpenChange(false);
-    navigate('/auth');
+    setIsLoading(true);
+    const newUserType = currentProfile === 'consumer' ? 'restaurant_owner' : 'consumer';
+    
+    const { error } = await updateUserType(newUserType);
+    
+    if (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de changer le type de profil. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Profil mis à jour",
+        description: newUserType === 'restaurant_owner' 
+          ? "Vous êtes maintenant en mode Cuizly Pro"
+          : "Vous êtes maintenant en mode Consommateur",
+      });
+      onOpenChange(false);
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -57,11 +78,13 @@ export const ProfileSwitchModal = ({
           <Button
             onClick={handleSwitchProfile}
             className="w-full sm:w-auto"
+            disabled={isLoading}
           >
-            {currentProfile === 'consumer' 
-              ? t('profileSwitch.switchToRestaurant')
-              : t('profileSwitch.switchToConsumer')
-            }
+            {isLoading ? "Changement en cours..." : (
+              currentProfile === 'consumer' 
+                ? t('profileSwitch.switchToRestaurant')
+                : t('profileSwitch.switchToConsumer')
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

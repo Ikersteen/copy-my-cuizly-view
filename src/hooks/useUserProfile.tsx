@@ -86,12 +86,38 @@ export const useUserProfile = () => {
     }
   };
 
+  const updateUserType = async (newUserType: 'consumer' | 'restaurant_owner') => {
+    if (!user) return { error: 'User not authenticated' };
+    
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          user_id: user.id,
+          user_type: newUserType
+        });
+      
+      if (error) {
+        console.error('Error updating user type:', error);
+        return { error: error.message };
+      }
+      
+      // Update local state immediately
+      setProfile({ user_type: newUserType });
+      return { error: null };
+    } catch (error: any) {
+      console.error('Error updating user type:', error);
+      return { error: error.message };
+    }
+  };
+
   return {
     user,
     profile,
     loading,
     isAuthenticated: !!user,
     isConsumer: profile?.user_type === 'consumer',
-    isRestaurant: profile?.user_type === 'restaurant_owner'
+    isRestaurant: profile?.user_type === 'restaurant_owner',
+    updateUserType
   };
 };
