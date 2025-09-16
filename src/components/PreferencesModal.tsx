@@ -206,7 +206,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   }
                 }}
               >
-                <SelectTrigger className="w-full bg-background border z-50">
+                <SelectTrigger className="w-full bg-background border focus:ring-0 focus:ring-offset-0 focus:outline-none">
                   <SelectValue placeholder={t('preferences.selectCuisine')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
@@ -277,7 +277,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               value={localPrefs.price_range || ""}
               onValueChange={(range) => setLocalPrefs(prev => ({ ...prev, price_range: range }))}
             >
-              <SelectTrigger className="w-full bg-background border z-50">
+              <SelectTrigger className="w-full bg-background border focus:ring-0 focus:ring-offset-0 focus:outline-none">
                 <SelectValue placeholder={t('preferences.selectPriceRange')} />
               </SelectTrigger>
               <SelectContent className="bg-background border z-50">
