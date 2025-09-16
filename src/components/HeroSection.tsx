@@ -53,7 +53,6 @@ const HeroSection = () => {
           <Link to="/auth?type=restaurant&tab=signup" className="w-full sm:w-auto">
             <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-8 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto touch-device">
               {t('hero.createAccount')}
-              <ArrowRight className="ml-3 h-5 w-5" />
             </Button>
           </Link>
           
