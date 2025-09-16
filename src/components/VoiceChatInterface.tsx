@@ -606,9 +606,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const hasTypingMessage = messages.some(msg => msg.isTyping);
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
-        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 min-h-[calc(100vh-280px)]">
+    <div className="h-full bg-background flex flex-col">
+      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full min-h-0">
+        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6">
           {(isProcessing || isSpeaking) && (
             <div className="flex justify-center mb-4">
               <div className="flex items-center gap-3 bg-muted rounded-full px-4 py-2 text-sm">
@@ -751,7 +751,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="border-t border-border bg-background px-6 py-6">
+        <div className="flex-shrink-0 border-t border-border bg-background px-6 py-6">
           <div className="flex justify-center mb-4">
             <div className="flex bg-muted rounded-full p-1">
               <Button
