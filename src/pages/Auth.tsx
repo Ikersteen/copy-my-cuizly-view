@@ -1008,6 +1008,30 @@ const Auth = () => {
                      {t('auth.form.continueWithGoogle')}
                    </Button>
                  </div>
+
+                 {/* Section pour les restaurateurs dans l'onglet connexion */}
+                 <div className="border-t pt-4">
+                   <div className="text-center mb-4">
+                     <h3 className="text-sm font-medium text-muted-foreground">{t('auth.form.restaurantOwner')}</h3>
+                   </div>
+                   <div className="space-y-3">
+                     <Link to="/auth?type=restaurant&tab=signup">
+                       <Button 
+                         className="w-full text-sm bg-primary hover:bg-primary/90 text-primary-foreground"
+                       >
+                         {t('auth.form.createAccount')}
+                       </Button>
+                     </Link>
+                     <Button 
+                       type="button" 
+                       variant="outline"
+                       className="w-full text-sm"
+                       onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
+                     >
+                       {t('auth.form.bookDemo')}
+                     </Button>
+                   </div>
+                 </div>
               </TabsContent>
 
               <TabsContent value="signup" className="space-y-3 sm:space-y-4">
