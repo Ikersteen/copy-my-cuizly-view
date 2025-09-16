@@ -38,7 +38,34 @@ export const useUserProfile = () => {
       }
     );
 
-    return () => subscription.unsubscribe();
+    // Set up real-time subscription for profile changes
+    const profileSubscription = supabase
+      .channel('profile_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles'
+        },
+        (payload) => {
+          console.log('Profile changed:', payload);
+          // If this is the current user's profile, refresh it
+          const currentUser = supabase.auth.getUser();
+          currentUser.then(({ data: { user } }) => {
+            if (user && payload.new.user_id === user.id) {
+              console.log('Refreshing current user profile due to change');
+              fetchProfile(user.id);
+            }
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+      profileSubscription.unsubscribe();
+    };
   }, []);
 
   const fetchProfile = async (userId: string) => {
