@@ -42,6 +42,11 @@ const HowItWorksSection = () => {
 
           <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
             {steps.map((step, index) => {
+              // Don't render the card if both title and description are empty
+              if (!step.title && !step.description) {
+                return null;
+              }
+              
               return (
                 <Card key={index} className="border-primary/10 bg-background/50 backdrop-blur-sm">
                   <CardContent className="p-4 sm:p-6">

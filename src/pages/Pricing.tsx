@@ -17,6 +17,21 @@ const Pricing = () => {
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
 
+  // Function to highlight "Assistance" in blue
+  const highlightAssistance = (text: string) => {
+    if (text.includes('Assistance')) {
+      const parts = text.split('Assistance');
+      return (
+        <>
+          {parts[0]}
+          <span className="text-cuizly-assistant font-semibold">Assistance</span>
+          {parts[1]}
+        </>
+      );
+    }
+    return text;
+  };
+
   const handleCTAClick = (e: React.MouseEvent, planIndex: number) => {
     if (isAuthenticated) {
       // Consumer plan: show modal only if user is restaurant_owner profile
@@ -69,21 +84,6 @@ const Pricing = () => {
       ],
       ctaKey: "pricing.pro.cta"
     },
-    {
-      titleKey: "pricing.analytics.title",
-      subtitleKey: "pricing.analytics.subtitle",
-      priceKey: "pricing.analytics.price",
-      priceNoteKey: "pricing.analytics.priceNote", 
-      comingSoon: true,
-      featuresKeys: [
-        "pricing.analytics.features.0",
-        "pricing.analytics.features.1",
-        "pricing.analytics.features.2",
-        "pricing.analytics.features.3", 
-        "pricing.analytics.features.4"
-      ],
-      ctaKey: "pricing.analytics.cta"
-    }
   ];
 
   return (
@@ -105,21 +105,15 @@ const Pricing = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-start mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-start mb-4">
           {plans.map((plan, index) => (
             <Card key={index} className={`relative shadow-card border ${
               index === 1 ? 'border-cuizly-pro ring-2 ring-cuizly-pro/20' : 
-              index === 2 ? 'border-cuizly-analytics ring-2 ring-cuizly-analytics/20' : 
               'border-border'
-            } ${plan.popular ? 'ring-2 ring-foreground' : ''} ${index < 2 ? 'h-fit' : ''} ${index === 2 ? 'md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto' : ''}`}>
+            } ${plan.popular ? 'ring-2 ring-foreground' : ''} h-fit`}>
               {plan.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-foreground text-background">
                   {t('pricingLanding.popular')}
-                </Badge>
-              )}
-              {plan.comingSoon && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-destructive text-destructive-foreground animate-none pointer-events-none">
-                  {t('pricingLanding.comingSoon')}
                 </Badge>
               )}
               <CardHeader className="text-center pb-4">
@@ -135,7 +129,9 @@ const Pricing = () => {
                   {plan.featuresKeys.map((featureKey, featureIndex) => (
                     <li key={featureIndex} className="flex items-start space-x-2 sm:space-x-3">
                       <Check className="h-4 w-4 text-foreground mt-0.5 sm:mt-1 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm text-foreground">{t(featureKey)}</span>
+                      <span className="text-xs sm:text-sm text-foreground">
+                        {highlightAssistance(t(featureKey))}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -157,11 +153,10 @@ const Pricing = () => {
                     {t(plan.ctaKey)}
                   </Button>
                 ) : (
-                  <Link to={index === 0 ? "/auth" : index === 1 ? "/auth?type=restaurant&tab=signup" : "/waitlist"}>
+                  <Link to={index === 0 ? "/auth" : "/auth?type=restaurant&tab=signup"}>
                     <Button className={`w-full text-sm sm:text-base ${
                       index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
-                      index === 1 ? 'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground' :
-                      'bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-cuizly-analytics-foreground'
+                      'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground'
                     }`}>
                       {t(plan.ctaKey)}
                     </Button>

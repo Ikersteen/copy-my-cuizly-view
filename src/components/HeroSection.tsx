@@ -27,11 +27,7 @@ const HeroSection = () => {
     <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-12 sm:py-16 md:py-20">
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 text-center mobile-friendly-spacing">
-        {/* Location Badge */}
-        <div className="inline-flex items-center bg-gradient-to-r from-primary/8 to-primary/12 border border-primary/15 px-5 py-2.5 rounded-full text-sm font-semibold text-primary mb-4 shadow-lg backdrop-blur-md animate-fade-in">
-          <Sparkles className="mr-2 h-4 w-4 star-logo" />
-          {t('hero.badge')}
-        </div>
+
 
         {/* Main Title */}
         <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground mb-4 sm:mb-6 leading-[1.1] tracking-tight animate-fade-in">
