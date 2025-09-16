@@ -6,11 +6,8 @@ import ConsumerDashboard from "./ConsumerDashboard";
 import RestaurantDashboard from "./RestaurantDashboard";
 
 const Dashboard = () => {
-  const { user, profile, loading, isAuthenticated, refreshProfile } = useUserProfile();
+  const { user, profile, loading, isAuthenticated } = useUserProfile();
   const navigate = useNavigate();
-
-  // Debug logging
-  console.log('Dashboard - User:', user?.id, 'Profile type:', profile?.user_type, 'Loading:', loading);
 
   // Redirect to auth if not authenticated
   useEffect(() => {
@@ -37,26 +34,7 @@ const Dashboard = () => {
   }
 
   // Render appropriate dashboard based on user type
-  console.log(`Rendering dashboard for user type: ${profile?.user_type}`);
-  
-  return (
-    <div>
-      {/* Debug info - can be removed once everything works */}
-      <div className="fixed top-4 right-4 bg-black/80 text-white p-2 rounded text-xs z-50 max-w-xs">
-        <div>Email: {user?.email}</div>
-        <div>Type: {profile?.user_type}</div>
-        <div>Dashboard: {profile?.user_type === 'restaurant_owner' ? 'Restaurant' : 'Consumer'}</div>
-        <button 
-          onClick={refreshProfile}
-          className="bg-blue-500 px-2 py-1 rounded mt-1 text-xs"
-        >
-          Actualiser Profil
-        </button>
-      </div>
-      
-      {profile?.user_type === 'restaurant_owner' ? <RestaurantDashboard /> : <ConsumerDashboard />}
-    </div>
-  );
+  return profile?.user_type === 'restaurant_owner' ? <RestaurantDashboard /> : <ConsumerDashboard />;
 };
 
 export default Dashboard;

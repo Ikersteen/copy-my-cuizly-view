@@ -49,12 +49,10 @@ export const useUserProfile = () => {
           table: 'profiles'
         },
         (payload) => {
-          console.log('Profile changed:', payload);
           // If this is the current user's profile, refresh it
           const currentUser = supabase.auth.getUser();
           currentUser.then(({ data: { user } }) => {
             if (user && payload.new.user_id === user.id) {
-              console.log('Refreshing current user profile due to change');
               fetchProfile(user.id);
             }
           });
@@ -70,7 +68,6 @@ export const useUserProfile = () => {
 
   const fetchProfile = async (userId: string) => {
     try {
-      console.log('Fetching profile for user:', userId);
       let retryCount = 0;
       const maxRetries = 2;
       
@@ -81,17 +78,13 @@ export const useUserProfile = () => {
             .select('user_type')
             .eq('user_id', userId)
             .maybeSingle();
-
-          console.log('Profile data:', data, 'Error:', error);
           
           if (!error) {
             const profileData = data || { user_type: 'consumer' };
-            console.log('Setting profile to:', profileData);
             setProfile(profileData);
             setLoading(false);
             return;
           } else {
-            console.error(`Profile fetch error (attempt ${retryCount + 1}):`, error);
             if (retryCount === maxRetries - 1) {
               // Default to consumer after all retries
               setProfile({ user_type: 'consumer' });
@@ -99,7 +92,6 @@ export const useUserProfile = () => {
             }
           }
         } catch (fetchError) {
-          console.error(`Network error (attempt ${retryCount + 1}):`, fetchError);
           if (retryCount === maxRetries - 1) {
             setProfile({ user_type: 'consumer' });
             setLoading(false);
@@ -112,7 +104,6 @@ export const useUserProfile = () => {
         }
       }
     } catch (error) {
-      console.error('Critical error in fetchProfile:', error);
       setProfile({ user_type: 'consumer' });
       setLoading(false);
     }
