@@ -15,6 +15,21 @@ const PricingSectionLanding = () => {
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
 
+  // Function to highlight "Assistance" in blue
+  const highlightAssistance = (text: string) => {
+    if (text.includes('Assistance')) {
+      const parts = text.split('Assistance');
+      return (
+        <>
+          {parts[0]}
+          <span className="text-cuizly-pro font-semibold">Assistance</span>
+          {parts[1]}
+        </>
+      );
+    }
+    return text;
+  };
+
   const handleCTAClick = (e: React.MouseEvent, planIndex: number) => {
     if (isAuthenticated) {
       // Consumer plan: show modal only if user is restaurant_owner profile
@@ -105,7 +120,9 @@ const PricingSectionLanding = () => {
                   {plan.featuresKeys.map((featureKey, featureIndex) => (
                     <li key={featureIndex} className="flex items-start space-x-2 sm:space-x-3">
                       <Check className="h-4 w-4 text-foreground mt-0.5 sm:mt-1 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm text-foreground">{t(featureKey)}</span>
+                      <span className="text-xs sm:text-sm text-foreground">
+                        {highlightAssistance(t(featureKey))}
+                      </span>
                     </li>
                   ))}
                 </ul>
