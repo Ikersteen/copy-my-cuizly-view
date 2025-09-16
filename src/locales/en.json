@@ -257,57 +257,7 @@
     "selectAddress": "Select an address",
     "currentAddress": "Current address:",
     "noAddressSet": "No delivery address set",
-    "updateAddress": "Update Address",
-    "dietaryOptions": {
-      "vegetarian": "Vegetarian",
-      "vegan": "Vegan",
-      "glutenFree": "Gluten-Free",
-      "halal": "Halal",
-      "kosher": "Kosher",
-      "paleo": "Paleo",
-      "keto": "Keto",
-      "lactoseFree": "Lactose-Free",
-      "pescatarian": "Pescatarian",
-      "lowSodium": "Low Sodium",
-      "fruitarian": "Fruitarian",
-      "carnivore": "Carnivore",
-      "detox": "Detox",
-      "spicy": "Spicy Food",
-      "notSpicy": "Non-Spicy Food",
-      "lowSugar": "Low Sugar"
-    },
-    "allergenOptions": {
-      "peanuts": "Peanuts",
-      "nuts": "Tree Nuts",
-      "milk": "Dairy",
-      "eggs": "Eggs",
-      "wheat": "Wheat/Gluten",
-      "soy": "Soy",
-      "fish": "Fish",
-      "shellfish": "Shellfish",
-      "sesame": "Sesame",
-      "corn": "Corn",
-      "legumes": "Legumes",
-      "kiwi": "Kiwi",
-      "banana": "Banana",
-      "stoneFruits": "Stone Fruits"
-    },
-    "mealTimeOptions": {
-      "breakfast": "Breakfast / Brunch",
-      "quickLunch": "Quick Lunch",
-      "dinner": "Dinner / Supper",
-      "snack": "Coffee & Snack",
-      "detox": "Detox / Health Specialized",
-      "lateNight": "Late Night"
-    },
-    "specialtyOptions": {
-      "breakfast": "Breakfast / Brunch",
-      "quickLunch": "Quick Lunch",
-      "dinner": "Dinner / Supper",
-      "snack": "Coffee & Snack",
-      "detox": "Detox / Health Specialized",
-      "lateNight": "Late Night"
-    }
+    "updateAddress": "Update Address"
   },
   "dashboard": {
     "title": "Dashboard",
