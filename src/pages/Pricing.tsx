@@ -24,7 +24,7 @@ const Pricing = () => {
       return (
         <>
           {parts[0]}
-          <span className="text-cuizly-pro font-semibold">Assistance</span>
+          <span className="text-cuizly-assistant font-semibold">Assistance</span>
           {parts[1]}
         </>
       );
