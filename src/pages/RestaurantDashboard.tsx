@@ -238,13 +238,13 @@ const RestaurantDashboard = () => {
         {/* Buttons section removed - functionality moved to mobile menu */}
 
         {/* Message de bienvenue */}
-        <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+        <Card className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-50 dark:to-gray-100 border-gray-200 dark:border-gray-200">
           <CardContent className="p-6">
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-900 mb-2">
                 {t('welcome.welcomeMessage')}
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-700 dark:text-gray-700">
                 {t('welcome.dashboardDescription')}
               </p>
             </div>
