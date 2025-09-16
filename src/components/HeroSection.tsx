@@ -50,7 +50,7 @@ const HeroSection = () => {
 
         {/* CTA */}
         <div className="animate-fade-in">
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
             <Link to="/auth?type=restaurant&tab=signup">
               <Button size="lg" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground px-10 sm:px-12 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-primary/25 border border-primary/20 min-h-[60px] w-full sm:w-auto max-w-sm mx-auto touch-device">
                 {t('hero.createAccount')}
