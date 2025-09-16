@@ -67,8 +67,23 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     initUser();
   }, []);
 
+  // Auto-scroll when messages change or content updates
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Auto-scroll during typing animation
+  useEffect(() => {
+    const scrollToBottom = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Check if there's a typing message and scroll periodically
+    const hasTypingMessage = messages.some(msg => msg.isTyping);
+    if (hasTypingMessage) {
+      const interval = setInterval(scrollToBottom, 100);
+      return () => clearInterval(interval);
+    }
   }, [messages]);
 
   // Handle realtime voice messages
