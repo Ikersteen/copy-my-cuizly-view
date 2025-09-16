@@ -51,7 +51,7 @@ const FeaturesSectionLanding = () => {
             <div className="flex flex-col items-center">
               <span className="block">Des fonctionnalités pensées</span>
               <span className="block">
-                pour les <span className="text-cuizly-pro">restaurateurs</span> & les <span className="text-cuizly-allergen">foodies</span>
+                pour les restaurateurs & les foodies
               </span>
             </div>
           </h2>
