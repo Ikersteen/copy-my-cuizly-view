@@ -363,6 +363,39 @@
     "networkError": "Network error",
     "placeholder": "Example: I want spicy Asian food for dinner"
   },
+  "voiceAssistant": {
+    "features": {
+      "naturalConversation": {
+        "title": "Natural conversation",
+        "description": "Talk naturally to our AI like you would with a Montreal gastronomy expert friend"
+      },
+      "preciseRecommendations": {
+        "title": "Precise recommendations",
+        "description": "Get personalized restaurant suggestions based on your tastes, budget and current cravings"
+      },
+      "voiceResponses": {
+        "title": "Voice responses",
+        "description": "Listen to recommendations directly with natural audio responses",
+        "comingSoon": "Coming soon"
+      }
+    },
+    "cta": "Try voice assistant",
+    "examples": {
+      "title": "Example questions",
+      "italian": {
+        "title": "Italian cuisine",
+        "question": "Where can I find the best Neapolitan pizza in Montreal?"
+      },
+      "african": {
+        "title": "African cuisine",
+        "question": "I'm looking for an authentic African restaurant near downtown"
+      },
+      "budget": {
+        "title": "Budget-friendly",
+        "question": "What are the best affordable restaurants for a romantic dinner?"
+      }
+    }
+  },
   "welcome": {
     "hello": "Hello",
     "welcome": "Welcome",

@@ -1919,5 +1919,38 @@
   "placeholders": {
     "searchConversation": "Rechercher une conversation...",
     "addressInput": "Commencez à taper votre adresse de livraison à Montréal..."
+  },
+  "voiceAssistant": {
+    "features": {
+      "naturalConversation": {
+        "title": "Conversation naturelle",
+        "description": "Parlez naturellement à notre IA comme vous le feriez avec un ami expert en gastronomie montréalaise"
+      },
+      "preciseRecommendations": {
+        "title": "Recommandations précises",
+        "description": "Obtenez des suggestions de restaurants personnalisées basées sur vos goûts, votre budget et vos envies du moment"
+      },
+      "voiceResponses": {
+        "title": "Réponses vocales",
+        "description": "Écoutez les recommandations directement avec des réponses audio naturelles",
+        "comingSoon": "Bientôt disponible"
+      }
+    },
+    "cta": "Essayer l'assistant vocal",
+    "examples": {
+      "title": "Exemples de questions",
+      "italian": {
+        "title": "Cuisine italienne",
+        "question": "Où puis-je trouver la meilleure pizza napolitaine à Montréal ?"
+      },
+      "african": {
+        "title": "Cuisine africaine",
+        "question": "Je cherche un restaurant africain authentique près du centre-ville"
+      },
+      "budget": {
+        "title": "Budget serré",
+        "question": "Quels sont les meilleurs restaurants abordables pour un dîner romantique ?"
+      }
+    }
   }
 }
