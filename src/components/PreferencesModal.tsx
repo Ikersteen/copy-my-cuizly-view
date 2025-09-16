@@ -237,9 +237,6 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   onClick={() => toggleArrayItem(localPrefs.dietary_restrictions || [], diet.value, 'dietary_restrictions')}
                 >
                   {diet.value}
-                  {(localPrefs.dietary_restrictions || []).includes(diet.value) && (
-                    <X className="h-3 w-3 ml-1" />
-                  )}
                 </Badge>
               ))}
             </div>
@@ -262,9 +259,6 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   onClick={() => toggleArrayItem(localPrefs.allergens || [], allergen.value, 'allergens')}
                 >
                   {allergen.value}
-                  {(localPrefs.allergens || []).includes(allergen.value) && (
-                    <X className="h-3 w-3 ml-1" />
-                  )}
                 </Badge>
               ))}
             </div>
@@ -351,9 +345,6 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   onClick={() => toggleArrayItem(localPrefs.favorite_meal_times || [], time.value, 'favorite_meal_times')}
                 >
                   {time.value}
-                  {(localPrefs.favorite_meal_times || []).includes(time.value) && (
-                    <X className="h-3 w-3 ml-1" />
-                  )}
                 </Badge>
               ))}
             </div>
