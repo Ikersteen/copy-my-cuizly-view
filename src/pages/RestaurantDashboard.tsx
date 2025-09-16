@@ -227,9 +227,9 @@ const RestaurantDashboard = () => {
               @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
             </p>
             {restaurantAddress?.formatted_address && (
-              <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                {restaurantAddress.formatted_address}
+              <p className="text-xs text-muted-foreground mt-1 flex items-start gap-1 break-words">
+                <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
+                <span className="break-words">{restaurantAddress.formatted_address}</span>
               </p>
             )}
           </div>
