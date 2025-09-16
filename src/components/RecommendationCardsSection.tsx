@@ -586,7 +586,7 @@ export const RecommendationCardsSection = () => {
   }
 
   return (
-    <section className="py-8 bg-gradient-to-br from-background to-muted/20">
+    <section className="py-8 bg-muted">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
           {recommendedRestaurants.map((restaurant) => (
