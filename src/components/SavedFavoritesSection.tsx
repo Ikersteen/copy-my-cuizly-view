@@ -250,7 +250,7 @@ export const SavedFavoritesSection = () => {
                       </CardTitle>
                       <div className="flex items-center space-x-1">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">Montreal</span>
+                        <span className="text-sm text-muted-foreground">{restaurant.address}</span>
                         {restaurant.price_range && (
                           <>
                             <span className="text-sm text-muted-foreground">•</span>
