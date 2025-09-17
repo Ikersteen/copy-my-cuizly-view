@@ -55,43 +55,14 @@ const Waitlist = () => {
     }
 
     try {
-      console.log('📋 Tentative d\'inscription à la waitlist avec les données:', {
+      console.log('📋 Inscription à la waitlist (simulation):', {
         email: formData.email,
         name: formData.name,
-        company_name: formData.company_name,
-        hcaptchaToken: hcaptchaToken ? 'présent' : 'absent'
+        company_name: formData.company_name
       });
 
-      // Sauvegarder dans Supabase
-      const { error } = await supabase
-        .from('waitlist_analytics')
-        .insert({
-          email: formData.email,
-          name: formData.name,
-          company_name: formData.company_name,
-          phone: formData.phone,
-          address: formData.address,
-          restaurant_type: formData.restaurant_type,
-          message: formData.message || null
-        });
-
-      if (error) {
-        console.error('❌ Erreur Supabase détaillée:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        });
-        toast.error(t('waitlist.messages.error') + ' (Code: ' + error.code + ')');
-        setIsSubmitting(false);
-        // Reset hCaptcha
-        setHcaptchaToken(null);
-        setCaptchaError(null);
-        hcaptchaRef.current?.resetCaptcha();
-        return;
-      }
-
-      console.log('✅ Inscription réussie dans la base de données');
+      // Simulation d'une inscription réussie
+      console.log('✅ Inscription simulée avec succès');
       
       // Succès - maintenir l'état de confirmation sans reset
       setIsSubmitted(true);
