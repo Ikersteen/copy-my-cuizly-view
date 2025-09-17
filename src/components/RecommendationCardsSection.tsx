@@ -554,7 +554,7 @@ export const RecommendationCardsSection = () => {
                   <ChefHat className="h-12 w-12 text-muted-foreground" />
                 </div>
                 <div className="space-y-4 text-center">
-                  <h3 className="text-2xl font-bold whitespace-nowrap">{t('recommendations.noRecommendationsTitle')}</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-center break-words">{t('recommendations.noRecommendationsTitle')}</h3>
                   <p className="text-muted-foreground max-w-md">
                     {t('recommendations.noRecommendationsDesc')}
                   </p>
