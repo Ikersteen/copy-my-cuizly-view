@@ -383,9 +383,28 @@
     "anonymousUser": "Utilisateur anonyme"
   },
   "favorites": {
-    "removed": "Favoris supprimé",
+    "title": "Mes restaurants favoris",
+    "subtitle": "Accès rapide à vos restaurants sauvegardés",
+    "empty": "Aucun favori pour le moment",
+    "emptyMessage": "Commencez à ajouter des restaurants à vos favoris pour un accès rapide",
+    "addedToFavorites": "Ajouté aux favoris",
+    "removedFromFavorites": "Retiré des favoris",
+    "viewAll": "Voir tous mes favoris",
+    "exploreRestaurants": "Explorer les restaurants",
+    "viewProfile": "Voir le profil",
+    "removed": "Retiré des favoris",
     "added": "Ajouté aux favoris",
-    "quickAccess": "Accès rapide"
+    "noFavorites": "Aucun favori pour l'instant",
+    "noFavoritesDescription": "Retrouvez vos restaurants favoris ici.",
+    "viewAllFavorites": "Voir tous mes favoris",
+    "whyThisChoice": "Pourquoi ce choix ?",
+    "matchingCuisines": "cuisine(s) correspondante(s)",
+    "inYourBudget": "Dans votre budget",
+    "inFavorites": "Dans vos favoris",
+    "quickAccess": "Accès rapide",
+    "evaluations": "évaluations",
+    "evaluation": "évaluation",
+    "noRatingsYet": "Pas d'évaluations pour le moment"
   },
   "errors": {
     "title": "Erreur",
@@ -1006,13 +1025,6 @@
     "uploadingCover": "Upload de la photo de couverture...",
     "uploadingLogo": "Upload du logo...",
     "cancel": "Annuler"
-  },
-  "favorites": {
-    "title": "Mes restaurants favoris",
-    "noFavorites": "Aucun favori pour le moment",
-    "addFavorites": "Ajoutez des restaurants à vos favoris pour les retrouver ici",
-    "viewProfile": "Voir le profil",
-    "removed": "Favoris supprimé"
   },
   "history": {
     "title": "Recherches",
@@ -1792,20 +1804,6 @@
       "captchaError": "Erreur lors de la vérification de sécurité. Veuillez réessayer."
     }
   },
-  "favorites": {
-    "added": "Ajouté aux favoris",
-    "noFavorites": "Aucun favori pour l'instant",
-    "noFavoritesDescription": "Retrouvez vos restaurants favoris ici.",
-    "viewProfile": "Voir le profil",
-    "viewAllFavorites": "Voir tous mes favoris",
-    "whyThisChoice": "Pourquoi ce choix ?",
-    "matchingCuisines": "cuisine(s) correspondante(s)",
-    "inYourBudget": "Dans votre budget",
-    "inFavorites": "Dans vos favoris",
-    "quickAccess": "Accès rapide",
-    "evaluations": "évaluations",
-    "evaluation": "évaluation",
-    "noRatingsYet": "Pas d'évaluations pour le moment"
   },
   "restaurantMenu": {
     "loadingError": "Erreur lors du chargement des menus:",
