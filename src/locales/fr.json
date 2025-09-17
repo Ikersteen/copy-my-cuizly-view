@@ -66,7 +66,8 @@
     "consumer": {
       "title": "Cuizly Basique",
       "subtitle": "Pour les gourmets qui veulent découvrir Montréal",
-      "price": "Gratuit à vie",
+      "price": "9,99$ CAD/mois",
+      "priceNote": "ou 119.88$ CAD/an",
       "features": [
         "Accès à toutes les offres exclusives",
         "Recommandations IA personnalisées",
@@ -80,8 +81,8 @@
     "pro": {
       "title": "Cuizly Pro",
       "subtitle": "Pour restaurants qui veulent attirer plus de clients",
-      "price": "9,99$ CAD/mois",
-      "priceNote": "ou 99$ CAD/an (économisez 2 mois !) 🎉",
+      "price": "19,99 $ CAD/mois",
+      "priceNote": "ou 199,90 $ CAD/an (économisez 2 mois !) 🎉",
       "features": [
         "Tableau de bord de suivi des performances en temps réel",
         "Sytème de visibilité et de référncement avancées",
@@ -938,7 +939,7 @@
   },
   "pricingLanding": {
     "title": "Des tarifs pensés pour tous",
-    "subtitle": "Une offre gratuite pour les consommateurs, des solutions professionnelles abordables pour les restaurateurs.",
+    "subtitle": "Des solutions abordables pour les consommateurs et les restaurateurs.",
     "popular": "Populaire",
     "comingSoon": "Bientôt",
     "backToHome": "Retour à l'accueil"
