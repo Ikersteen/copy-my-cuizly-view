@@ -22,7 +22,7 @@ const HowItWorksSection = () => {
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Content */}
         <div className="mx-auto">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 sm:mb-6 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6 text-center">
             {t('howItWorks.title')}
           </h2>
           <p className="text-base sm:text-lg text-cuizly-neutral mb-8 sm:mb-12 leading-relaxed text-center px-2 sm:px-4 max-w-4xl mx-auto">
@@ -57,7 +57,7 @@ const HowItWorksSection = () => {
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">
+                        <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">
                           {step.title}
                         </h3>
                         <p className="text-sm sm:text-base text-cuizly-neutral leading-relaxed">
