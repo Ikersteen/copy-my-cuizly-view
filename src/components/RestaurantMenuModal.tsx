@@ -17,7 +17,7 @@ import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 // Composant pour afficher l'évaluation avec le prix
-const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; priceRange?: string }) => {
+const RatingDisplay = ({ restaurantId, priceRange, address }: { restaurantId: string; priceRange?: string; address?: string }) => {
   const [rating, setRating] = useState<number | null>(null);
   const [totalRatings, setTotalRatings] = useState(0);
 
@@ -63,7 +63,7 @@ const RatingDisplay = ({ restaurantId, priceRange }: { restaurantId: string; pri
   return (
     <div className="flex items-center space-x-1">
       <MapPin className="h-4 w-4 text-muted-foreground" />
-      <span className="text-sm text-muted-foreground">Montreal</span>
+      <span className="text-sm text-muted-foreground">{address || 'Montreal'}</span>
       {priceRange && (
         <>
           <span className="text-muted-foreground">•</span>
@@ -201,7 +201,7 @@ export const RestaurantMenuModal = ({
             )}
             <div className="min-w-0 flex-1">
               <DialogTitle className="text-xl font-bold truncate">{restaurant.name}</DialogTitle>
-              <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} />
+              <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} address={restaurant.address} />
             </div>
             {/* Retirer le petit coeur rouge - supprimé */}
           </div>
