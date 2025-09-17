@@ -1804,7 +1804,6 @@
       "captchaError": "Erreur lors de la vérification de sécurité. Veuillez réessayer."
     }
   },
-  },
   "restaurantMenu": {
     "loadingError": "Erreur lors du chargement des menus:",
     "cuisineTypes": "Types de cuisine",
