@@ -4,14 +4,14 @@ import { useTranslation } from "react-i18next";
 const HowItWorksSection = () => {
   const { t } = useTranslation();
   
-  // Fonction pour mettre en évidence "Assistance" en bleu
+  // Fonction pour mettre en évidence "Assistant" en bleu
   const highlightAssistance = (text: string) => {
-    const parts = text.split('Assistance');
+    const parts = text.split('Assistant');
     if (parts.length > 1) {
       return (
         <>
           {parts[0]}
-          <span className="text-cuizly-assistant font-semibold">Assistance</span>
+          <span className="text-cuizly-assistant font-semibold">Assistant</span>
           {parts[1]}
         </>
       );
