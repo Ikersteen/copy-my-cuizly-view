@@ -50,5 +50,59 @@ export const AuthenticatedRestaurantHeader = ({
     }
   };
 
-  return null;
+  return (
+    <div className="hidden lg:flex items-center gap-2">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className="gap-2">
+            <ChefHat className="h-4 w-4" />
+            {t('dashboard.restaurant')}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => handleAction(onNewOfferClick)}>
+            <Plus className="mr-2 h-4 w-4" />
+            {t('dashboard.newOffer')}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleAction(onRestaurantProfileClick)}>
+            <ChefHat className="mr-2 h-4 w-4" />
+            {t('dashboard.restaurantProfile')}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleAction(onManageMenusClick)}>
+            <BookOpen className="mr-2 h-4 w-4" />
+            {t('dashboard.manageMenus')}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            {t('dashboard.logout')}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className="gap-1">
+            <Globe className="h-4 w-4" />
+            <span className="uppercase text-xs font-medium">
+              {currentLanguage}
+            </span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem 
+            onClick={() => changeLanguage('fr')}
+            className={currentLanguage === 'fr' ? 'bg-accent' : ''}
+          >
+            🇫🇷 Français
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            onClick={() => changeLanguage('en')}
+            className={currentLanguage === 'en' ? 'bg-accent' : ''}
+          >
+            🇬🇧 English
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
 };
