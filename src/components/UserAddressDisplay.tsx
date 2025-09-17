@@ -10,12 +10,11 @@ export const UserAddressDisplay = ({ className }: UserAddressDisplayProps) => {
   const { isConsumer, isRestaurant } = useUserProfile();
   const { t } = useTranslation();
   
-  // Get appropriate address based on user type
-  const { primaryAddress: consumerAddress } = useAddresses('user_delivery');
+  // Always show restaurant address for both user types
   const { primaryAddress: restaurantAddress } = useAddresses('restaurant');
   
-  const address = isConsumer ? consumerAddress : restaurantAddress;
-  const addressLabel = isConsumer ? t('address.delivery') : t('address.restaurant');
+  const address = restaurantAddress;
+  const addressLabel = t('address.restaurant');
   
   if (!address?.formatted_address) {
     return null;
