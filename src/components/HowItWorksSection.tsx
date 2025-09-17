@@ -45,12 +45,12 @@ const HowItWorksSection = () => {
           </p>
 
           {/* Demo Image */}
-          <div className="mb-12 max-w-4xl mx-auto">
-            <div className="bg-card rounded-2xl shadow-xl p-6 border">
+          <div className="mb-12 max-w-5xl mx-auto">
+            <div className="bg-card rounded-2xl shadow-xl p-8 border">
               <img 
                 src="/lovable-uploads/cuizly-assistance-interface.png" 
                 alt="Interface Cuizly Assistant" 
-                className="w-full h-auto object-cover rounded-xl"
+                className="w-full h-auto object-cover rounded-xl scale-110"
               />
             </div>
           </div>
