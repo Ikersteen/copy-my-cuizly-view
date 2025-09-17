@@ -17,14 +17,14 @@ const Pricing = () => {
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
 
-  // Function to highlight "Assistance" in blue
+  // Function to highlight "Assistant" in blue
   const highlightAssistance = (text: string) => {
-    if (text.includes('Assistance')) {
-      const parts = text.split('Assistance');
+    if (text.includes('Assistant')) {
+      const parts = text.split('Assistant');
       return (
         <>
           {parts[0]}
-          <span className="text-cuizly-assistant font-semibold">Assistance</span>
+          <span className="text-cuizly-assistant font-semibold">Assistant</span>
           {parts[1]}
         </>
       );
