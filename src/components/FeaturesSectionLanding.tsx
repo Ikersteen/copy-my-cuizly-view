@@ -48,8 +48,7 @@ const FeaturesSectionLanding = () => {
       <div className="max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4 text-center">
-            Des fonctionnalités pensées<br />
-            pour les restaurateurs & les foodies
+            Des fonctionnalités pensées pour les restaurateurs & les foodies
           </h2>
         </div>
 
