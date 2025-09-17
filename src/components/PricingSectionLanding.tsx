@@ -23,7 +23,7 @@ const PricingSectionLanding = () => {
         <>
           {parts[0]}
           <span className="text-cuizly-assistant font-semibold">Assistant</span>
-          {parts[1]}
+          {parts.slice(1).join('Assistant')}
         </>
       );
     }
