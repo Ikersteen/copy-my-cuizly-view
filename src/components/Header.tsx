@@ -109,7 +109,7 @@ const Header = () => {
                 <img 
                   src={getLogoSrc()} 
                   alt="Cuizly" 
-                  className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+                  className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
                 />
               </Link>
             </div>
@@ -135,7 +135,7 @@ const Header = () => {
               <img 
                 src={getLogoSrc()} 
                 alt="Cuizly" 
-                className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+                className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               />
             </Link>
           </div>
