@@ -4,6 +4,21 @@ import { useTranslation } from "react-i18next";
 const HowItWorksSection = () => {
   const { t } = useTranslation();
   
+  // Fonction pour mettre en évidence "Assistance" en bleu
+  const highlightAssistance = (text: string) => {
+    const parts = text.split('Assistance');
+    if (parts.length > 1) {
+      return (
+        <>
+          {parts[0]}
+          <span className="text-cuizly-primary font-semibold">Assistance</span>
+          {parts[1]}
+        </>
+      );
+    }
+    return text;
+  };
+  
   const steps = [
     {
       icon: "🍻",
@@ -26,7 +41,7 @@ const HowItWorksSection = () => {
             {t('howItWorks.title')}
           </h2>
           <p className="text-base sm:text-lg text-cuizly-neutral mb-8 sm:mb-12 leading-relaxed text-center px-2 sm:px-4 max-w-4xl mx-auto">
-            {t('howItWorks.subtitle')}
+            {highlightAssistance(t('howItWorks.subtitle'))}
           </p>
 
           {/* Demo Image */}
