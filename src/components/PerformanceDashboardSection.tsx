@@ -27,13 +27,11 @@ const PerformanceDashboardSection = () => {
             className="w-full h-auto object-contain block md:hidden"
           />
           {/* Image desktop */}
-          <div className="w-full h-32 sm:h-48 lg:h-56 overflow-hidden hidden md:block">
-            <img 
-              src={performanceImage} 
-              alt="Tableau de performance Cuizly montrant les métriques en temps réel"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <img 
+            src={performanceImage} 
+            alt="Tableau de performance Cuizly montrant les métriques en temps réel"
+            className="w-full h-auto object-contain hidden md:block"
+          />
         </div>
       </div>
     </div>
