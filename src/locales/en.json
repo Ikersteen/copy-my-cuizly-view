@@ -293,6 +293,10 @@
     "followUs": "Follow Us",
     "rights": "© 2024 Cuizly. All rights reserved."
   },
+  "address": {
+    "delivery": "Delivery address", 
+    "restaurant": "Restaurant address"
+  },
   "auth": {
     "signIn": "Sign In",
     "signUp": "Sign Up", 

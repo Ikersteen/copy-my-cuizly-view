@@ -15,13 +15,14 @@ export const UserAddressDisplay = ({ className }: UserAddressDisplayProps) => {
   const { primaryAddress: restaurantAddress } = useAddresses('restaurant');
   
   const address = isConsumer ? consumerAddress : restaurantAddress;
+  const addressLabel = isConsumer ? t('address.delivery') : t('address.restaurant');
   
   if (!address?.formatted_address) {
     return null;
   }
 
   return (
-    <p className={`text-xs text-muted-foreground ${className}`}>
+    <p className={`text-xs text-muted-foreground ${className}`} title={addressLabel}>
       📍 {address.formatted_address}
     </p>
   );

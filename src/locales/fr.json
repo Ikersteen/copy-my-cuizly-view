@@ -590,6 +590,10 @@
     ],
     "placeholder": "Commencez à taper une adresse à Montréal..."
   },
+  "address": {
+    "delivery": "Adresse de livraison",
+    "restaurant": "Adresse du restaurant"
+  },
   "auth": {
     "title": "Rejoignez Cuizly",
     "subtitle": "Ton prochain coup de cœur culinaire en un swipe",
