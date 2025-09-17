@@ -19,19 +19,21 @@ const PerformanceDashboardSection = () => {
       </div>
       
       <div className="w-full">
-        <div className="w-full h-32 sm:h-48 lg:h-56 rounded-xl overflow-hidden bg-muted">
+        <div className="w-full rounded-xl overflow-hidden bg-muted">
           {/* Image mobile */}
           <img 
             src={performanceMobileImage} 
             alt="Tableau de performance Cuizly montrant les métriques en temps réel"
-            className="w-full h-full object-cover block md:hidden"
+            className="w-full h-auto object-contain block md:hidden"
           />
           {/* Image desktop */}
-          <img 
-            src={performanceImage} 
-            alt="Tableau de performance Cuizly montrant les métriques en temps réel"
-            className="w-full h-full object-cover hidden md:block"
-          />
+          <div className="w-full h-32 sm:h-48 lg:h-56 overflow-hidden hidden md:block">
+            <img 
+              src={performanceImage} 
+              alt="Tableau de performance Cuizly montrant les métriques en temps réel"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </div>
     </div>
