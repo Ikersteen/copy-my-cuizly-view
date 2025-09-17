@@ -144,7 +144,7 @@ export const NewOfferModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-[95vw] sm:max-w-md mx-4 sm:mx-auto">
         <DialogHeader>
           <DialogTitle>{t('newOffer.createNew')}</DialogTitle>
         </DialogHeader>
@@ -172,7 +172,7 @@ export const NewOfferModal = ({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="discount_percentage">{t('newOffer.discountPercent')}</Label>
               <Input
@@ -257,7 +257,7 @@ export const NewOfferModal = ({
             />
           </div>
 
-          <div className="flex gap-2 pt-4">
+          <div className="flex flex-col sm:flex-row gap-2 pt-4">
             <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1">
               {t('newOffer.cancel')}
             </Button>
