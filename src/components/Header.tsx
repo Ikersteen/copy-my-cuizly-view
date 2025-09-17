@@ -104,12 +104,12 @@ const Header = () => {
             <div className="flex-shrink-0">
               <Link 
                 to="/"
-                className="flex items-center py-2 cursor-pointer group"
+                className="flex items-center space-x-3 group cursor-pointer"
               >
                 <img 
                   src={getLogoSrc()} 
                   alt="Cuizly" 
-                  className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+                  className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
                 />
               </Link>
             </div>
@@ -129,13 +129,13 @@ const Header = () => {
           {/* Logo - Extrême gauche */}
           <div className="flex-shrink-0">
             <Link 
-              to={isAuthenticated ? "/dashboard" : "/"}
-              className="flex items-center py-2 cursor-pointer group"
+              to="/"
+              className="flex items-center space-x-3 group cursor-pointer"
             >
               <img 
                 src={getLogoSrc()} 
                 alt="Cuizly" 
-                className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+                className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               />
             </Link>
           </div>
