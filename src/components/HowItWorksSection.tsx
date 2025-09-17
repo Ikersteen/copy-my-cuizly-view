@@ -50,7 +50,7 @@ const HowItWorksSection = () => {
               <img 
                 src="/lovable-uploads/cuizly-assistance-interface.png" 
                 alt="Interface Cuizly Assistant" 
-                className="w-full h-auto object-cover rounded-xl scale-110"
+                className="w-full h-auto object-cover rounded-xl scale-90"
               />
             </div>
           </div>
