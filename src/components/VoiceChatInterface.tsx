@@ -804,10 +804,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   onKeyPress={handleKeyPress}
                   placeholder="Écrivez votre message à Cuizly..."
                   disabled={isProcessing}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck="false"
+                  autoComplete="on"
+                  autoCorrect="on"
+                  autoCapitalize="sentences"
+                  spellCheck="true"
                   className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 <Button
