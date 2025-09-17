@@ -72,16 +72,25 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Auto-scroll during typing animation
+  // Auto-scroll during typing animation - only if user is near bottom
   useEffect(() => {
-    const scrollToBottom = () => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const scrollToBottomIfNearBottom = () => {
+      const container = messagesEndRef.current?.parentElement;
+      if (!container) return;
+      
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100; // 100px threshold
+      
+      // Only auto-scroll if user is near the bottom
+      if (isNearBottom) {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }
     };
 
-    // Check if there's a typing message and scroll periodically
+    // Check if there's a typing message and scroll periodically only if near bottom
     const hasTypingMessage = messages.some(msg => msg.isTyping);
     if (hasTypingMessage) {
-      const interval = setInterval(scrollToBottom, 100);
+      const interval = setInterval(scrollToBottomIfNearBottom, 100);
       return () => clearInterval(interval);
     }
   }, [messages]);
