@@ -1251,5 +1251,11 @@
     "clickToAddPhotos": "Click to add photos",
     "commentImage": "Comment image",
     "uploadImages": "Uploading images..."
+  },
+  "dateRangePicker": {
+    "from": "from",
+    "to": "to",
+    "selectEnd": "select end date",
+    "selectEndDate": "Select end date (max {{maxDays}} days)"
   }
 }

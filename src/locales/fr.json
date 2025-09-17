@@ -1950,5 +1950,11 @@
         "question": "Quels sont les meilleurs restaurants abordables pour un dîner romantique ?"
       }
     }
+  },
+  "dateRangePicker": {
+    "from": "du",
+    "to": "au",
+    "selectEnd": "sélectionnez la fin",
+    "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
   }
 }

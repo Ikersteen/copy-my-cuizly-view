@@ -37,8 +37,8 @@ export const DateRangePicker = ({
 
   const formatDateRange = (range: DateRange) => {
     if (!range.from) return placeholder;
-    if (!range.to) return `${t('dateRangePicker.from')} ${format(range.from, "dd MMM", { locale: fr })} - ${t('dateRangePicker.selectEnd')}`;
-    return `${t('dateRangePicker.from')} ${format(range.from, "dd MMM", { locale: fr })} ${t('dateRangePicker.to')} ${format(range.to, "dd MMM", { locale: fr })}`;
+    if (!range.to) return `${format(range.from, "dd MMM", { locale: fr })} - ${t('dateRangePicker.selectEnd')}`;
+    return `${format(range.from, "dd MMM", { locale: fr })} - ${format(range.to, "dd MMM", { locale: fr })}`;
   };
 
   const handleDateSelect = (date: Date | undefined) => {
