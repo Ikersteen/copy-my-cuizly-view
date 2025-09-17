@@ -11,7 +11,7 @@ const HowItWorksSection = () => {
       return (
         <>
           {parts[0]}
-          <span className="text-cuizly-primary font-semibold">Assistance</span>
+          <span className="text-cuizly-assistant font-semibold">Assistance</span>
           {parts[1]}
         </>
       );
