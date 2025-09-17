@@ -115,9 +115,3 @@ verify_jwt = false
 
 [functions.verify-sms-code]
 verify_jwt = false
-
-[functions.stripe-checkout]
-verify_jwt = true
-
-[functions.realtime-voice-token]
-verify_jwt = false
