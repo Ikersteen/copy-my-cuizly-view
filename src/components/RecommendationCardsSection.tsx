@@ -551,7 +551,11 @@ export const RecommendationCardsSection = () => {
             <div className="bg-card border rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
                 <div className="p-4 rounded-full bg-muted/50">
-                  <ChefHat className="h-12 w-12 text-muted-foreground" />
+                  <img 
+                    src="/lovable-uploads/cuizly-chef-icon.jpg" 
+                    alt="Cuizly Chef Icon" 
+                    className="h-12 w-12 object-contain" 
+                  />
                 </div>
                 <div className="space-y-4 text-center">
                   <h3 className="text-xl sm:text-2xl font-bold text-center break-words">{t('recommendations.noRecommendationsTitle')}</h3>
