@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 const HowItWorksSection = () => {
   const { t } = useTranslation();
   
-  // Function to highlight "Assistant" in blue
+  // Fonction pour mettre en évidence "Assistant" en bleu
   const highlightAssistance = (text: string) => {
     const parts = text.split('Assistant');
     if (parts.length > 1) {
@@ -49,7 +49,7 @@ const HowItWorksSection = () => {
             <div className="bg-card rounded-2xl shadow-xl p-8 border">
               <img 
                 src="/lovable-uploads/cuizly-assistance-interface.png" 
-                alt={t('howItWorks.demo.altText')} 
+                alt="Interface Cuizly Assistant" 
                 className="w-full h-auto object-cover rounded-xl scale-105"
               />
             </div>

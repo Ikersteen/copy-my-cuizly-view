@@ -29,7 +29,7 @@
     "description": "Cuizly révolutionne la découverte gastronomique en utilisant l'intelligence artificielle pour recommander des restaurants parfaitement adaptés aux préférences, au budget et aux envies des consommateurs."
   },
   "features": {
-    "title": "Les fonctionnalités",
+    "title": "",
     "subtitle": "Des fonctionnalités pensées pour\nles restaurateurs & les foodies",
     "ai_recommendations": {
       "title": "Intelligence Artificielle",
@@ -162,9 +162,6 @@
   "howItWorks": {
     "title": "Un copilote culinaire partout avec vous",
     "subtitle": "Cuizly Assistant vous fait découvrir les meilleurs restos de Montréal, de nouvelles saveurs et des recettes.",
-    "demo": {
-      "altText": "Interface Cuizly Assistant"
-    },
     "step1": {
       "title": "",
       "description": ""
