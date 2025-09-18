@@ -264,6 +264,11 @@
       }
     }
   },
+  "performance": {
+    "title": "Real-time performance dashboard",
+    "subtitle": "Track your data in real-time and boost your restaurant's performance.",
+    "altText": "Cuizly performance dashboard showing real-time metrics"
+  },
   "pricingLanding": {
     "title": "Pricing for everyone",
     "subtitle": "A free offer for consumers, affordable professional solutions for restaurants.",

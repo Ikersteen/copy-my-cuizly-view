@@ -344,6 +344,11 @@
     "allergens": "Allergènes :",
     "menuImage": "Image du menu"
   },
+  "performance": {
+    "title": "Tableau de performance en temps réel",
+    "subtitle": "Suivez vos données en temps réel et boostez les performances de votre restaurant.",
+    "altText": "Tableau de performance Cuizly montrant les métriques en temps réel"
+  },
   "analytics": {
     "title": "Tableau de performance en temps réel",
     "subtitle": "Aperçus sur les performances par segment (Mise à jour en temps réel)",
