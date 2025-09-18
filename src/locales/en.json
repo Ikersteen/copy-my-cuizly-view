@@ -47,6 +47,9 @@
   "howItWorks": {
     "title": "How it works",
     "subtitle": "Three simple steps to discover your perfect meal",
+    "demo": {
+      "altText": "Cuizly Assistant Interface"
+    },
     "step1Title": "Tell us your preferences",
     "step1Description": "Share your dietary needs, favorite cuisines, and food restrictions",
     "step2Title": "Get AI recommendations",
@@ -55,7 +58,7 @@
     "step3Description": "Choose from personalized options and enjoy meals you'll love"
   },
   "features": {
-    "title": "",
+    "title": "Features",
     "subtitle": "Features designed for\nrestaurants & foodies",
     "ai_recommendations": {
       "title": "Artificial Intelligence",
