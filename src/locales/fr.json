@@ -31,32 +31,6 @@
   "features": {
     "title": "",
     "subtitle": "Des fonctionnalités pensées pour\nles restaurateurs & les foodies",
-    "list": {
-      "ai": {
-        "title": "Intelligence Artificielle",
-        "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
-      },
-      "geolocation": {
-        "title": "Géolocalisation",
-        "description": "Trouvez les meilleures offres près de chez vous à Montréal."
-      },
-      "alerts": {
-        "title": "Alertes en temps réel",
-        "description": "Soyez informé instantanément des nouvelles offres qui vous intéressent."
-      },
-      "reviews": {
-        "title": "Avis et notations",
-        "description": "Consultez les avis authentiques des autres utilisateurs."
-      },
-      "analytics": {
-        "title": "Analytics pour restaurants",
-        "description": "Analysez les performances de votre restaurant avec des données détaillées."
-      },
-      "targeting": {
-        "title": "Ciblage intelligent",
-        "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
-      }
-    },
     "ai_recommendations": {
       "title": "Intelligence Artificielle",
       "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
@@ -93,7 +67,7 @@
       "title": "Cuizly Basique",
       "subtitle": "Pour les gourmets qui veulent découvrir Montréal",
       "price": "Gratuit",
-      "priceNote": "",
+      "priceNote": "ou 119.88$ CAD/an",
       "features": [
         "Accès à toutes les offres exclusives",
         "Recommandations IA personnalisées",
@@ -186,19 +160,15 @@
     }
   },
   "howItWorks": {
-    "title": "Comment ça marche",
-    "subtitle": "Trois étapes simples pour découvrir votre repas parfait",
+    "title": "Un copilote culinaire partout avec vous",
+    "subtitle": "Cuizly Assistant vous fait découvrir les meilleurs restos de Montréal, de nouvelles saveurs et des recettes.",
     "step1": {
-      "title": "Dites-nous vos préférences",
-      "description": "Partagez vos besoins alimentaires, cuisines préférées et restrictions"
+      "title": "",
+      "description": ""
     },
     "step2": {
-      "title": "Obtenez des recommandations IA",
-      "description": "Notre système intelligent analyse vos préférences pour suggérer des restaurants parfaits"
-    },
-    "step3": {
-      "title": "Commandez et savourez",
-      "description": "Choisissez parmi les options personnalisées et savourez des repas que vous allez adorer"
+      "title": "",
+      "description": ""
     }
   },
   "mentions": {
@@ -386,6 +356,13 @@
     "avgRating": "Note moyenne",
     "outOfFive": "Sur 5 étoiles",
     "weeklyTrends": "Tendances cette semaine",
+    "viewsComparedToLastWeek": "de vues par rapport à la semaine dernière",
+    "noChange": "Aucune évolution par rapport à la semaine dernière",
+    "collectingData": "Données en cours de collecte...",
+    "positiveTrend": "Tendance positive",
+    "negativeTrend": "Tendance négative", 
+    "stable": "Stable",
+    "dataCollection": "Collecte de données",
     "positiveGrowth": "de vues par rapport à la semaine dernière",
     "noChange": "Aucune évolution par rapport à la semaine dernière",
     "collectingData": "Données en cours de collecte...",
@@ -1789,7 +1766,7 @@
       "phone": "Téléphone",
       "phonePlaceholder": "(514) 123-4567",
       "address": "Adresse du restaurant",
-      "addressPlaceholder": "Montréal, QC (Canada)",
+      "addressPlaceholder": "2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4",
       "restaurantType": "Type de restaurant",
       "restaurantTypePlaceholder": "Sélectionnez le type de votre restaurant",
       "message": "Message (optionnel)",
@@ -1988,31 +1965,5 @@
     "to": "au",
     "selectEnd": "sélectionnez la fin",
     "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
-  },
-  "photoAdjustment": {
-    "title": "Ajuster la photo",
-    "preview": "Aperçu",
-    "zoom": "Zoom",
-    "rotation": "Rotation",
-    "repositionHint": "Cliquez et faites glisser l'image pour la repositionner",
-    "reset": "Réinitialiser",
-    "cancel": "Annuler",
-    "apply": "Appliquer"
-  },
-  "messageActions": {
-    "like": "J'aime",
-    "dislike": "Je n'aime pas",
-    "bookmark": "Sauvegarder",
-    "copy": "Copier"
-  },
-  "altText": {
-    "cuizlyLogo": "Logo Cuizly",
-    "cuizlyAssistant": "Interface Cuizly Assistant",
-    "voiceAssistant": "Cuizly Assistant Vocal",
-    "performanceDashboard": "Tableau de performance Cuizly montrant les métriques en temps réel",
-    "restaurantCover": "Image de couverture du restaurant",
-    "restaurantLogo": "Logo du restaurant",
-    "chefHat": "Toque de chef",
-    "profile": "Profil"
   }
 }
