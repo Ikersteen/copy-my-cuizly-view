@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -23,22 +22,22 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.product')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <Link 
-                  to="/features" 
+                <a 
+                  href="/features" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.features')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link 
-                  to="/pricing" 
+                <a 
+                  href="/pricing" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.rates')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -47,13 +46,13 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.support')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <Link 
-                  to="/contact" 
+                <a 
+                  href="/contact" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.contactUs')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -62,22 +61,22 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.company')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <Link 
-                  to="/team" 
+                <a 
+                  href="/team" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.team')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link 
-                  to="/mentions" 
+                <a 
+                  href="/mentions" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.legalNotices')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -86,31 +85,31 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.legal')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <Link 
-                  to="/privacy" 
+                <a 
+                  href="/privacy" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.privacyPolicy')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link 
-                  to="/terms" 
+                <a 
+                  href="/terms" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.termsOfUse')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link 
-                  to="/cookies" 
+                <a 
+                  href="/cookies" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.cookiePolicy')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -119,8 +118,8 @@ const Footer = () => {
         <div className="relative border-t-2 border-border/60 mt-8 sm:mt-12 pt-8 sm:pt-10">
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
-            <Link 
-              to="/"
+            <a 
+              href="/"
               className="flex items-center space-x-3 group cursor-pointer"
             >
               <img 
@@ -128,7 +127,7 @@ const Footer = () => {
                 alt="Cuizly" 
                 className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               />
-                </Link>
+                </a>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
               {t('footer.tagline')}

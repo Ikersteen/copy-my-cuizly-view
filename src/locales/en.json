@@ -47,9 +47,6 @@
   "howItWorks": {
     "title": "How it works",
     "subtitle": "Three simple steps to discover your perfect meal",
-    "demo": {
-      "altText": "Cuizly Assistant Interface"
-    },
     "step1Title": "Tell us your preferences",
     "step1Description": "Share your dietary needs, favorite cuisines, and food restrictions",
     "step2Title": "Get AI recommendations",
@@ -266,11 +263,6 @@
         "address": "Address: Montreal, QC (Canada)"
       }
     }
-  },
-  "performance": {
-    "title": "Real-time performance dashboard",
-    "subtitle": "Track your data in real-time and boost your restaurant's performance.",
-    "altText": "Cuizly performance dashboard showing real-time metrics"
   },
   "pricingLanding": {
     "title": "Pricing for everyone",
@@ -652,8 +644,7 @@
     "totalViews": "Total views",
     "avgRating": "Average rating",
     "outOfFive": "Out of 5 stars",
-    "weeklyTrends": "Weekly trends",
-    "viewsComparedToLastWeek": "views compared to last week",
+    "weeklyTrends": "This week's trends",
     "positiveGrowth": "views compared to last week",
     "noChange": "No change compared to last week",
     "collectingData": "Collecting data...",
@@ -1145,8 +1136,6 @@
     "subtitle": "Ask me about restaurants and food recommendations",
     "mainTitle": "Cuizly Voice Assistant",
     "description": "Speak naturally to find restaurants, check your preferences or discover new flavors.",
-    "inputPlaceholder": "Type your message to Cuizly...",
-    "logoAlt": "Cuizly Voice Assistant",
     "startRecording": "Start Recording",
     "stopRecording": "Stop Recording",
     "listening": "Listening...",

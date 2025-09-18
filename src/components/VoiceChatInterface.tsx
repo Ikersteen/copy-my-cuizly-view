@@ -608,7 +608,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
               <img 
                 src="/lovable-uploads/cuizly-assistant-logo.png" 
-                alt={t('voiceChat.logoAlt')}
+                alt="Cuizly Assistant Vocal"
                 className="h-16 w-auto"
               />
               <div className="space-y-3 max-w-lg">
@@ -793,7 +793,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={t('voiceChat.inputPlaceholder')}
+                  placeholder="Écrivez votre message à Cuizly..."
                   disabled={isProcessing}
                   autoComplete="on"
                   autoCorrect="on"
