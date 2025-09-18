@@ -43,7 +43,7 @@ const AvatarFallback = React.forwardRef<
     {...props}
   >
     <img 
-      src="/lovable-uploads/63d87b3d-3593-45f3-9c04-a45064394077.png" 
+      src="/lovable-uploads/cuizly-chef-icon.jpg" 
       alt="Chef Hat" 
       className="w-1/2 h-1/2 object-contain"
     />
