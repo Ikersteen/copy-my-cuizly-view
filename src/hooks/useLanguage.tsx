@@ -10,6 +10,8 @@ export const useLanguage = () => {
 
   const changeLanguage = useCallback((language: SupportedLanguage) => {
     i18n.changeLanguage(language);
+    // Explicitly save to localStorage to ensure persistence
+    localStorage.setItem('cuizly-language', language);
   }, [i18n]);
 
   const isLanguage = useCallback((language: SupportedLanguage) => {
