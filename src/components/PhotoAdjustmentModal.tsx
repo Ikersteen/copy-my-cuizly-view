@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { RotateCw, ZoomIn, ZoomOut, Move } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface PhotoAdjustmentModalProps {
   open: boolean;
@@ -17,8 +18,10 @@ export const PhotoAdjustmentModal = ({
   onOpenChange, 
   imageUrl, 
   onSave, 
-  title = "Ajuster la photo" 
+  title
 }: PhotoAdjustmentModalProps) => {
+  const { t } = useTranslation();
+  const finalTitle = title || t('photoAdjustment.title');
   const [scale, setScale] = useState([100]);
   const [rotation, setRotation] = useState(0);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -117,7 +120,7 @@ export const PhotoAdjustmentModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle>{finalTitle}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">

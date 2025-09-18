@@ -47,16 +47,48 @@
   "howItWorks": {
     "title": "How it works",
     "subtitle": "Three simple steps to discover your perfect meal",
-    "step1Title": "Tell us your preferences",
-    "step1Description": "Share your dietary needs, favorite cuisines, and food restrictions",
-    "step2Title": "Get AI recommendations",
-    "step2Description": "Our smart system analyzes your preferences to suggest perfect restaurants",
-    "step3Title": "Order and enjoy",
-    "step3Description": "Choose from personalized options and enjoy meals you'll love"
+    "step1": {
+      "title": "Tell us your preferences",
+      "description": "Share your dietary needs, favorite cuisines, and food restrictions"
+    },
+    "step2": {
+      "title": "Get AI recommendations",
+      "description": "Our smart system analyzes your preferences to suggest perfect restaurants"
+    },
+    "step3": {
+      "title": "Order and enjoy",
+      "description": "Choose from personalized options and enjoy meals you'll love"
+    }
   },
   "features": {
     "title": "",
     "subtitle": "Features designed for\nrestaurants & foodies",
+    "list": {
+      "ai": {
+        "title": "Artificial Intelligence",
+        "description": "Personalized recommendations based on your culinary tastes and preferences."
+      },
+      "geolocation": {
+        "title": "Geolocation",
+        "description": "Find the best deals near you in Montreal."
+      },
+      "alerts": {
+        "title": "Real-time alerts",
+        "description": "Be instantly notified of new offers that interest you."
+      },
+      "reviews": {
+        "title": "Reviews and ratings",
+        "description": "Read authentic reviews from other users."
+      },
+      "analytics": {
+        "title": "Restaurant analytics",
+        "description": "Analyze your restaurant's performance with detailed data." 
+      },
+      "targeting": {
+        "title": "Smart targeting",
+        "description": "Reach the right customers at the right time with our AI."
+      }
+    },
     "ai_recommendations": {
       "title": "Artificial Intelligence",
       "description": "Personalized recommendations based on your culinary tastes and preferences."
@@ -1947,5 +1979,37 @@
         "question": "What are the best affordable restaurants for a romantic dinner?"
       }
     }
+  },
+  "dateRangePicker": {
+    "from": "from",
+    "to": "to",
+    "selectEnd": "select end date",
+    "selectEndDate": "Select end date (max {{maxDays}} days)"
+  },
+  "photoAdjustment": {
+    "title": "Adjust Photo",
+    "preview": "Preview",
+    "zoom": "Zoom",
+    "rotation": "Rotation",
+    "repositionHint": "Click and drag the image to reposition",
+    "reset": "Reset",
+    "cancel": "Cancel",
+    "apply": "Apply"
+  },
+  "messageActions": {
+    "like": "Like",
+    "dislike": "Dislike",
+    "bookmark": "Bookmark",
+    "copy": "Copy"
+  },
+  "altText": {
+    "cuizlyLogo": "Cuizly Logo",
+    "cuizlyAssistant": "Cuizly Assistant Interface",
+    "voiceAssistant": "Cuizly Voice Assistant",
+    "performanceDashboard": "Cuizly performance dashboard showing real-time metrics",
+    "restaurantCover": "Restaurant cover image",
+    "restaurantLogo": "Restaurant logo",
+    "chefHat": "Chef Hat",
+    "profile": "Profile"
   }
 }

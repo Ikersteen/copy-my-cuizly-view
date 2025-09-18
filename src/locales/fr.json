@@ -31,6 +31,32 @@
   "features": {
     "title": "",
     "subtitle": "Des fonctionnalités pensées pour\nles restaurateurs & les foodies",
+    "list": {
+      "ai": {
+        "title": "Intelligence Artificielle",
+        "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
+      },
+      "geolocation": {
+        "title": "Géolocalisation",
+        "description": "Trouvez les meilleures offres près de chez vous à Montréal."
+      },
+      "alerts": {
+        "title": "Alertes en temps réel",
+        "description": "Soyez informé instantanément des nouvelles offres qui vous intéressent."
+      },
+      "reviews": {
+        "title": "Avis et notations",
+        "description": "Consultez les avis authentiques des autres utilisateurs."
+      },
+      "analytics": {
+        "title": "Analytics pour restaurants",
+        "description": "Analysez les performances de votre restaurant avec des données détaillées."
+      },
+      "targeting": {
+        "title": "Ciblage intelligent",
+        "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
+      }
+    },
     "ai_recommendations": {
       "title": "Intelligence Artificielle",
       "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
@@ -162,12 +188,18 @@
   "howItWorks": {
     "title": "Comment ça marche",
     "subtitle": "Trois étapes simples pour découvrir votre repas parfait",
-    "step1Title": "Dites-nous vos préférences",
-    "step1Description": "Partagez vos besoins alimentaires, cuisines préférées et restrictions",
-    "step2Title": "Obtenez des recommandations IA",
-    "step2Description": "Notre système intelligent analyse vos préférences pour suggérer des restaurants parfaits",
-    "step3Title": "Commandez et savourez",
-    "step3Description": "Choisissez parmi les options personnalisées et savourez des repas que vous allez adorer"
+    "step1": {
+      "title": "Dites-nous vos préférences",
+      "description": "Partagez vos besoins alimentaires, cuisines préférées et restrictions"
+    },
+    "step2": {
+      "title": "Obtenez des recommandations IA",
+      "description": "Notre système intelligent analyse vos préférences pour suggérer des restaurants parfaits"
+    },
+    "step3": {
+      "title": "Commandez et savourez",
+      "description": "Choisissez parmi les options personnalisées et savourez des repas que vous allez adorer"
+    }
   },
   "mentions": {
     "title": "Mentions légales",
@@ -1956,5 +1988,31 @@
     "to": "au",
     "selectEnd": "sélectionnez la fin",
     "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
+  },
+  "photoAdjustment": {
+    "title": "Ajuster la photo",
+    "preview": "Aperçu",
+    "zoom": "Zoom",
+    "rotation": "Rotation",
+    "repositionHint": "Cliquez et faites glisser l'image pour la repositionner",
+    "reset": "Réinitialiser",
+    "cancel": "Annuler",
+    "apply": "Appliquer"
+  },
+  "messageActions": {
+    "like": "J'aime",
+    "dislike": "Je n'aime pas",
+    "bookmark": "Sauvegarder",
+    "copy": "Copier"
+  },
+  "altText": {
+    "cuizlyLogo": "Logo Cuizly",
+    "cuizlyAssistant": "Interface Cuizly Assistant",
+    "voiceAssistant": "Cuizly Assistant Vocal",
+    "performanceDashboard": "Tableau de performance Cuizly montrant les métriques en temps réel",
+    "restaurantCover": "Image de couverture du restaurant",
+    "restaurantLogo": "Logo du restaurant",
+    "chefHat": "Toque de chef",
+    "profile": "Profil"
   }
 }
