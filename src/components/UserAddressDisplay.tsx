@@ -22,7 +22,7 @@ export const UserAddressDisplay = ({ className }: UserAddressDisplayProps) => {
 
   return (
     <p className={`text-xs text-muted-foreground ${className}`} title={addressLabel}>
-      📍 Montréal, QC
+      📍 {address.formatted_address}
     </p>
   );
 };
