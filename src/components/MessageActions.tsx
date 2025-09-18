@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Heart, HeartCrack, Bookmark, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface MessageActionsProps {
   messageId: string;
@@ -26,6 +27,7 @@ export const MessageActions: React.FC<MessageActionsProps> = ({
   onBookmark,
   className
 }) => {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -48,7 +50,7 @@ export const MessageActions: React.FC<MessageActionsProps> = ({
           "h-7 w-7 p-0",
           isLiked && "text-red-500 hover:text-red-600"
         )}
-        title="J'aime"
+        title={t('messageActions.like')}
       >
         <Heart className={cn("w-3 h-3", isLiked && "fill-current")} />
       </Button>
@@ -61,7 +63,7 @@ export const MessageActions: React.FC<MessageActionsProps> = ({
           "h-7 w-7 p-0",
           isDisliked && "text-gray-600 hover:text-gray-700"
         )}
-        title="Je n'aime pas"
+        title={t('messageActions.dislike')}
       >
         <HeartCrack className={cn("w-3 h-3", isDisliked && "fill-current")} />
       </Button>
@@ -74,7 +76,7 @@ export const MessageActions: React.FC<MessageActionsProps> = ({
           "h-7 w-7 p-0",
           isBookmarked && "text-yellow-500 hover:text-yellow-600"
         )}
-        title="Sauvegarder"
+        title={t('messageActions.bookmark')}
       >
         <Bookmark className={cn("w-3 h-3", isBookmarked && "fill-current")} />
       </Button>
@@ -84,7 +86,7 @@ export const MessageActions: React.FC<MessageActionsProps> = ({
         size="sm"
         onClick={handleCopy}
         className="h-7 w-7 p-0"
-        title="Copier"
+        title={t('messageActions.copy')}
       >
         {copied ? (
           <Check className="w-3 h-3 text-green-500" />

@@ -49,7 +49,7 @@ const HowItWorksSection = () => {
             <div className="bg-card rounded-2xl shadow-xl p-8 border">
               <img 
                 src="/lovable-uploads/cuizly-assistance-interface.png" 
-                alt="Interface Cuizly Assistant" 
+                alt={t('altText.cuizlyAssistant')} 
                 className="w-full h-auto object-cover rounded-xl scale-105"
               />
             </div>
