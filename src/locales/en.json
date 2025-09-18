@@ -92,7 +92,7 @@
     "consumer": {
       "title": "Cuizly Basic",
       "subtitle": "For food lovers who want to discover Montreal",
-      "price": "Free for life",
+      "price": "Free",
       "features": [
         "Access to all exclusive offers",
         "Personalized AI recommendations",
@@ -106,8 +106,8 @@
     "pro": {
       "title": "Cuizly Pro",
       "subtitle": "For restaurants that want to attract more customers",
-      "price": "$9.99 CAD/month",
-      "priceNote": "or $99 CAD/year (save 2 months!) 🎉",
+      "price": "$19.99 CAD/month",
+      "priceNote": "or $199.90 CAD/year (save 2 months!) 🎉",
       "features": [
         "Real-time performance tracking dashboard",
         "Advanced visibility and SEO system",
