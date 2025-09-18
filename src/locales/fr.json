@@ -67,7 +67,7 @@
       "title": "Cuizly Basique",
       "subtitle": "Pour les gourmets qui veulent découvrir Montréal",
       "price": "Gratuit",
-      "priceNote": "",
+      "priceNote": "ou 119.88$ CAD/an",
       "features": [
         "Accès à toutes les offres exclusives",
         "Recommandations IA personnalisées",
@@ -160,14 +160,16 @@
     }
   },
   "howItWorks": {
-    "title": "Comment ça marche",
-    "subtitle": "Trois étapes simples pour découvrir votre repas parfait",
-    "step1Title": "Dites-nous vos préférences",
-    "step1Description": "Partagez vos besoins alimentaires, cuisines préférées et restrictions",
-    "step2Title": "Obtenez des recommandations IA",
-    "step2Description": "Notre système intelligent analyse vos préférences pour suggérer des restaurants parfaits",
-    "step3Title": "Commandez et savourez",
-    "step3Description": "Choisissez parmi les options personnalisées et savourez des repas que vous allez adorer"
+    "title": "Un copilote culinaire partout avec vous",
+    "subtitle": "Cuizly Assistant vous fait découvrir les meilleurs restos de Montréal, de nouvelles saveurs et des recettes.",
+    "step1": {
+      "title": "",
+      "description": ""
+    },
+    "step2": {
+      "title": "",
+      "description": ""
+    }
   },
   "mentions": {
     "title": "Mentions légales",
@@ -1757,7 +1759,7 @@
       "phone": "Téléphone",
       "phonePlaceholder": "(514) 123-4567",
       "address": "Adresse du restaurant",
-      "addressPlaceholder": "Montréal, QC (Canada)",
+      "addressPlaceholder": "2900 Bd Édouard-Montpetit, Montréal, QC H3T 1J4",
       "restaurantType": "Type de restaurant",
       "restaurantTypePlaceholder": "Sélectionnez le type de votre restaurant",
       "message": "Message (optionnel)",
