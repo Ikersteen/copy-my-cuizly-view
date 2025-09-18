@@ -47,6 +47,9 @@
   "howItWorks": {
     "title": "How it works",
     "subtitle": "Three simple steps to discover your perfect meal",
+    "demo": {
+      "altText": "Cuizly Assistant Interface"
+    },
     "step1Title": "Tell us your preferences",
     "step1Description": "Share your dietary needs, favorite cuisines, and food restrictions",
     "step2Title": "Get AI recommendations",
@@ -1142,6 +1145,8 @@
     "subtitle": "Ask me about restaurants and food recommendations",
     "mainTitle": "Cuizly Voice Assistant",
     "description": "Speak naturally to find restaurants, check your preferences or discover new flavors.",
+    "inputPlaceholder": "Type your message to Cuizly...",
+    "logoAlt": "Cuizly Voice Assistant",
     "startRecording": "Start Recording",
     "stopRecording": "Stop Recording",
     "listening": "Listening...",

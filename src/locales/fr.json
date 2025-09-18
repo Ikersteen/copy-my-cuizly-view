@@ -162,6 +162,9 @@
   "howItWorks": {
     "title": "Un copilote culinaire partout avec vous",
     "subtitle": "Cuizly Assistant vous fait découvrir les meilleurs restos de Montréal, de nouvelles saveurs et des recettes.",
+    "demo": {
+      "altText": "Interface Cuizly Assistant"
+    },
     "step1": {
       "title": "",
       "description": ""
@@ -838,6 +841,8 @@
     "title": "Assistant Vocal",
     "mainTitle": "Assistant Vocal Cuizly",
     "description": "Parlez naturellement à Cuizly pour découvrir les meilleurs restaurants autour de vous, explorer de nouvelles saveurs ou même obtenir des idées de recettes.",
+    "inputPlaceholder": "Écrivez votre message à Cuizly...",
+    "logoAlt": "Cuizly Assistant Vocal",
     "clickToSpeak": "Cliquez pour parler",
     "askRecommendations": "Demandez des recommandations de restaurants ou posez vos questions culinaires",
     "recording": "🎤 Écoute en cours...",
