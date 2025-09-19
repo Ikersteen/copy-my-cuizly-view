@@ -376,7 +376,7 @@ export const ImprovedRestaurantProfileModal = ({
       <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0">
         <DialogTitle className="sr-only">{t('restaurantProfile.title')}</DialogTitle>
         <DialogDescription className="sr-only">
-          Edit your restaurant information, add photos and manage your settings.
+          Modifiez les informations de votre restaurant, ajoutez des photos et gérez vos paramètres.
         </DialogDescription>
         
         {/* Header with padding */}
@@ -435,7 +435,7 @@ export const ImprovedRestaurantProfileModal = ({
                   }}
                 >
                   <Edit2 className="h-4 w-4 mr-1" />
-                  {restaurant?.cover_image_url ? "Edit" : "Add"}
+                  {restaurant?.cover_image_url ? 'Modifier' : 'Ajouter'}
                 </Button>
 
                 {/* Dark overlay for better text readability */}
@@ -518,7 +518,7 @@ export const ImprovedRestaurantProfileModal = ({
               />
               {formData.description.length > 280 && (
                 <p className="text-xs text-muted-foreground">
-                  {300 - formData.description.length} characters remaining
+                  {300 - formData.description.length} caractères restants
                 </p>
               )}
             </div>
@@ -565,7 +565,7 @@ export const ImprovedRestaurantProfileModal = ({
                 type="url"
                 value={formData.instagram_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
-                placeholder="https://instagram.com/your-restaurant"
+                placeholder="https://instagram.com/votre-restaurant"
               />
             </div>
 
@@ -579,7 +579,7 @@ export const ImprovedRestaurantProfileModal = ({
                 type="url"
                 value={formData.facebook_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
-                placeholder="https://facebook.com/your-restaurant"
+                placeholder="https://facebook.com/votre-restaurant"
               />
             </div>
 
@@ -615,7 +615,7 @@ export const ImprovedRestaurantProfileModal = ({
                             }}
                             className="w-24"
                           />
-                          <span className="text-sm text-muted-foreground">to</span>
+                          <span className="text-sm text-muted-foreground">à</span>
                           <Input
                             type="time"
                             value={hours.close}
