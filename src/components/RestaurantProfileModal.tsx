@@ -674,7 +674,7 @@ export const RestaurantProfileModal = ({
           <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-end">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                {t('restaurantProfile.cancel')}
+                Annuler
               </Button>
               <Button onClick={handleSave} disabled={loading || !formData.name}>
                 {loading ? t('restaurantProfile.saving') : t('restaurantProfile.save')}

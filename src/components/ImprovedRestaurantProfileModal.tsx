@@ -652,7 +652,7 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
-              <Label>{t('restaurantProfile.cuisineTypes')}</Label>
+              <Label>Types de cuisine</Label>
               <div className="space-y-3">
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {CUISINE_OPTIONS.map((cuisine) => {
@@ -766,11 +766,11 @@ export const ImprovedRestaurantProfileModal = ({
                   const specialties = e.target.value.split(',').map(s => s.trim()).filter(s => s);
                   setFormData(prev => ({ ...prev, restaurant_specialties: specialties }));
                 }}
-                placeholder={t('restaurantProfile.specialtiesPlaceholder')}
+                placeholder="Ajoutez vos spécialités (séparez par des virgules)"
                 className="min-h-[80px]"
               />
               <p className="text-xs text-muted-foreground">
-                {t('restaurantProfile.specialtiesHint')}
+                Décrivez les plats signatures de votre restaurant
               </p>
               {formData.restaurant_specialties.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
@@ -795,7 +795,7 @@ export const ImprovedRestaurantProfileModal = ({
                 onClose?.();
                 onOpenChange?.(false);
               }}>
-                {t('restaurantProfile.cancel')}
+                Annuler
               </Button>
               <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
                 {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}

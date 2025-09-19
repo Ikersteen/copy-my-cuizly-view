@@ -325,7 +325,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       disabled={uploading}
                     />
                      <p className="text-xs text-muted-foreground">Maximum size: 5MB</p>
-                     {uploading && <p className="text-sm text-muted-foreground">Uploading...</p>}
+                     {uploading && <p className="text-sm text-muted-foreground">Téléchargement...</p>}
                     {newMenu.image_url && (
                       <div className="relative w-32 h-32">
                         <img
@@ -558,7 +558,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           disabled={uploading}
                         />
                          <p className="text-xs text-muted-foreground">Maximum size: 5MB</p>
-                         {uploading && <p className="text-sm text-muted-foreground">Uploading...</p>}
+                         {uploading && <p className="text-sm text-muted-foreground">Téléchargement...</p>}
                         {editingMenu.image_url && (
                           <div className="relative w-32 h-32">
                             <img

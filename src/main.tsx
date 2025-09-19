@@ -14,7 +14,7 @@ document.title = 'Cuizly';
 // Ensure i18n is ready and language is loaded before rendering
 const renderApp = () => {
   createRoot(document.getElementById("root")!).render(
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Chargement...</div>}>
       <App />
     </Suspense>
   );
