@@ -30,9 +30,9 @@ export interface FilterOptions {
 }
 
 const CUISINE_OPTIONS = [
-  "Française", "Italienne", "Japonaise", "Chinoise", "Mexicaine", "Indienne",
-  "Thaïlandaise", "Libanaise", "Grecque", "Américaine", "Québécoise", "Coréenne",
-  "Vietnamienne", "Espagnole", "Marocaine", "Turque"
+  "french", "italian", "japanese", "chinese", "mexican", "indian",
+  "thai", "lebanese", "greek", "american", "quebecois", "korean",
+  "vietnamese", "spanish", "moroccan", "turkish"
 ];
 
 const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
@@ -107,7 +107,7 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
                   className="cursor-pointer min-h-[44px] px-4 py-2 text-sm"
                   onClick={() => toggleCuisine(cuisine)}
                 >
-                  {cuisine}
+                  {t(`cuisineTypes.${cuisine}`)}
                 </Badge>
               ))}
             </div>

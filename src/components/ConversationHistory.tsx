@@ -66,7 +66,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
   };
 
   const handleDelete = async (conversationId: string) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette conversation ?')) {
+    if (window.confirm(t('confirmations.deleteConversation'))) {
       await deleteConversation(conversationId);
     }
   };
@@ -77,7 +77,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Archive className="w-5 h-5" />
-            Historique des conversations
+            {t('conversations.historyTitle')}
           </DialogTitle>
           <VisuallyHidden>
             <DialogDescription>
@@ -101,13 +101,13 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="text-muted-foreground mt-2">Chargement...</p>
+              <p className="text-muted-foreground mt-2">{t('actions.loading')}</p>
             </div>
           ) : filteredConversations.length === 0 ? (
             <div className="text-center py-8">
               <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
               <p className="text-muted-foreground">
-                {searchTerm ? 'Aucune conversation trouvée' : 'Aucune conversation sauvegardée'}
+                {searchTerm ? t('emptyStates.noConversationFound') : t('emptyStates.noConversationSaved')}
               </p>
             </div>
           ) : (
@@ -154,7 +154,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
                             className="font-medium text-sm mb-2 cursor-pointer hover:text-primary"
                             onClick={() => onSelectConversation?.(conversation)}
                           >
-                            {conversation.title || `Conversation du ${new Date(conversation.created_at).toLocaleDateString('fr-FR')}`}
+                            {conversation.title || `${t('conversations.conversationFrom')} ${new Date(conversation.created_at).toLocaleDateString('fr-FR')}`}
                           </h3>
                         )}
                         
@@ -168,9 +168,9 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
                           </div>
                           <Badge variant={conversation.type === 'voice' ? 'default' : 'secondary'} className="text-xs">
                             {conversation.type === 'voice' ? (
-                              <><Mic className="w-3 h-3 mr-1" /> Vocal</>
+                              <><Mic className="w-3 h-3 mr-1" /> {t('conversations.vocal')}</>
                             ) : (
-                              <><MessageSquare className="w-3 h-3 mr-1" /> Texte</>
+                              <><MessageSquare className="w-3 h-3 mr-1" /> {t('conversations.text')}</>
                             )}
                           </Badge>
                         </div>
@@ -203,9 +203,9 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
           )}
 
           <div className="flex justify-between items-center text-sm text-muted-foreground pt-4 border-t">
-            <span>{filteredConversations.length} conversation(s)</span>
+            <span>{filteredConversations.length} {t('conversations.conversationCount')}</span>
             <Button variant="outline" onClick={onClose}>
-              Fermer
+              {t('conversations.close')}
             </Button>
           </div>
         </div>

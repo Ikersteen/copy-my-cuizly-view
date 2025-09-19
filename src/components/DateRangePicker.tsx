@@ -35,8 +35,12 @@ export const DateRangePicker = ({
   const [open, setOpen] = useState(false);
   const [hoverDate, setHoverDate] = useState<Date | undefined>();
 
+  // Update default values with translations
+  const translatedLabel = label === "Période de validité" ? t('periods.validityPeriod') : label;
+  const translatedPlaceholder = placeholder === "Sélectionner les dates" ? t('periods.selectDates') : placeholder;
+
   const formatDateRange = (range: DateRange) => {
-    if (!range.from) return placeholder;
+    if (!range.from) return translatedPlaceholder;
     if (!range.to) return `${format(range.from, "dd MMM", { locale: fr })} - ${t('dateRangePicker.selectEnd')}`;
     return `${format(range.from, "dd MMM", { locale: fr })} - ${format(range.to, "dd MMM", { locale: fr })}`;
   };
@@ -109,7 +113,7 @@ export const DateRangePicker = ({
 
   return (
     <div className="space-y-2">
-      <Label>{label}</Label>
+      <Label>{translatedLabel}</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

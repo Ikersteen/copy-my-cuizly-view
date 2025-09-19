@@ -35,7 +35,7 @@ export const PhotoActionModal = ({
     onClose();
   };
 
-  const photoTitle = photoType === 'profile' ? 'Photo de profil' : 'Photo de couverture';
+  const photoTitle = photoType === 'profile' ? t('photos.profilePhoto') : t('photos.coverPhoto');
   const aspectRatio = photoType === 'profile' ? 'aspect-square' : 'aspect-video';
   const imageSize = photoType === 'profile' ? 'w-48 h-48' : 'w-80 h-48';
 
@@ -91,7 +91,7 @@ export const PhotoActionModal = ({
                   <div className="p-4 rounded-full bg-primary/10 mb-3">
                     <Camera className="h-8 w-8 text-primary" />
                   </div>
-                  <p className="text-sm text-muted-foreground font-medium">Aucune photo</p>
+                  <p className="text-sm text-muted-foreground font-medium">{t('emptyStates.noPhoto')}</p>
                 </div>
               )}
             </div>
@@ -119,7 +119,7 @@ export const PhotoActionModal = ({
                 {uploading ? (
                   <>
                     <div className="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full" />
-                    <span>Téléchargement en cours...</span>
+                    <span>{t('actions.uploading')}</span>
                   </>
                 ) : (
                   <>
@@ -128,7 +128,7 @@ export const PhotoActionModal = ({
                     ) : (
                       <Upload className="h-5 w-5" />
                     )}
-                    <span>{currentImageUrl ? 'Modifier la photo' : 'Choisir une photo'}</span>
+                    <span>{currentImageUrl ? t('photos.modifyPhoto') : t('photos.choosePhoto')}</span>
                   </>
                 )}
               </div>
@@ -144,7 +144,7 @@ export const PhotoActionModal = ({
               disabled={uploading}
             >
               <Trash2 className="h-4 w-4 mr-3" />
-              Supprimer la photo
+              {t('photos.deletePhoto')}
             </Button>
           )}
         </div>

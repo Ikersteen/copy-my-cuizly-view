@@ -1955,8 +1955,98 @@
   },
   "dateRangePicker": {
     "from": "du",
-    "to": "au",
+    "to": "au", 
     "selectEnd": "sélectionnez la fin",
     "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
+  },
+  "confirmations": {
+    "deleteConversation": "Êtes-vous sûr de vouloir supprimer cette conversation ?",
+    "deleteOffer": "Êtes-vous sûr de vouloir supprimer cette offre ?"
+  },
+  "emptyStates": {
+    "noConversationFound": "Aucune conversation trouvée",
+    "noConversationSaved": "Aucune conversation sauvegardée",
+    "noConversation": "Aucune conversation",
+    "loadingConversations": "Chargement des conversations...",
+    "noPhoto": "Aucune photo"
+  },
+  "mealTimes": {
+    "breakfast": "Déjeuner / Brunch",
+    "lunch": "Déjeuner rapide", 
+    "snack": "Collation",
+    "dinner": "Dîner / Souper",
+    "lateNight": "Repas tardif",
+    "detox": "Détox"
+  },
+  "cuisineTypes": {
+    "french": "Française",
+    "italian": "Italienne", 
+    "japanese": "Japonaise",
+    "chinese": "Chinoise",
+    "mexican": "Mexicaine",
+    "indian": "Indienne",
+    "thai": "Thaïlandaise",
+    "lebanese": "Libanaise",
+    "greek": "Grecque",
+    "american": "Américaine",
+    "quebecois": "Québécoise",
+    "korean": "Coréenne",
+    "vietnamese": "Vietnamienne",
+    "spanish": "Espagnole",
+    "moroccan": "Marocaine",
+    "turkish": "Turque"
+  },
+  "addresses": {
+    "placeholder": "Commencez à taper une adresse à Montréal...",
+    "label": "Adresse",
+    "tip": "💡 Astuce: Utilisez les suggestions pour une meilleure précision de localisation"
+  },
+  "photos": {
+    "profilePhoto": "Photo de profil",
+    "coverPhoto": "Photo de couverture", 
+    "manage": "Gérer votre photo",
+    "personalizeProfile": "Personnalisez votre profil",
+    "addHeaderImage": "Ajoutez une image d'en-tête",
+    "uploadingInProgress": "Téléchargement en cours...",
+    "modifyPhoto": "Modifier la photo",
+    "choosePhoto": "Choisir une photo",
+    "deletePhoto": "Supprimer la photo",
+    "preview": "Aperçu"
+  },
+  "conversations": {
+    "newConversation": "Nouvelle conversation",
+    "historyTitle": "Historique des conversations",
+    "conversationFrom": "Conversation du",
+    "conversationCount": "conversation(s)",
+    "close": "Fermer",
+    "vocal": "Vocal",
+    "text": "Texte"
+  },
+  "periods": {
+    "validityPeriod": "Période de validité",
+    "selectDates": "Sélectionner les dates"
+  },
+  "actions": {
+    "uploading": "Téléchargement en cours...",
+    "loading": "Chargement...",
+    "refreshing": "Actualisation...",
+    "collectingData": "Données en cours de collecte...",
+    "generatingRecommendations": "Génération de recommandations personnalisées...",
+    "analyzingPreferences": "Notre IA analyse vos préférences et votre historique pour vous proposer les meilleurs restaurants"
+  },
+  "analytics": {
+    "title": "Tableau de performance en temps réel",
+    "subtitle": "Aperçus sur les performances par segment (Mise à jour en temps réel)",
+    "totalOffers": "Offres totales",
+    "activeOffers": "actives",
+    "menusAdded": "Menus ajoutés",
+    "activeMenus": "actifs", 
+    "profileViews": "Vues du profil",
+    "totalViews": "Vues totales",
+    "averageRating": "Note moyenne",
+    "outOfStars": "Sur 5 étoiles",
+    "weeklyTrends": "Tendances cette semaine",
+    "viewsVsLastWeek": "de vues par rapport à la semaine dernière",
+    "noChangeVsLastWeek": "Aucune évolution par rapport à la semaine dernière"
   }
 }

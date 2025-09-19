@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { parseAddress, formatAddress } from "@/lib/addressUtils";
+import { useTranslation } from 'react-i18next';
 
 interface AddressSelectorProps {
   value?: string;
@@ -88,6 +89,12 @@ export const AddressSelector = ({
   className,
   required = false
 }: AddressSelectorProps) => {
+  const { t } = useTranslation();
+  
+  // Use translation or fallback to defaults
+  const translatedPlaceholder = placeholder === "Commencez à taper une adresse à Montréal..." ? t('addresses.placeholder') : placeholder;
+  const translatedLabel = label === "Adresse" ? t('addresses.label') : label;
+  
   const [inputValue, setInputValue] = useState(value);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -191,7 +198,7 @@ export const AddressSelector = ({
 
   return (
     <div className={cn("relative space-y-2", className)}>
-      <Label>{label}{required && " *"}</Label>
+      <Label>{translatedLabel}{required && " *"}</Label>
       <div className="relative">
         <Input
           value={inputValue}
@@ -199,7 +206,7 @@ export const AddressSelector = ({
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
           onFocus={() => inputValue.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
-          placeholder={placeholder}
+          placeholder={translatedPlaceholder}
           className="pr-10"
           required={required}
         />
@@ -240,7 +247,7 @@ export const AddressSelector = ({
 
       {inputValue && !showSuggestions && (
         <p className="text-xs text-muted-foreground">
-          💡 Astuce: Utilisez les suggestions pour une meilleure précision de localisation
+          {t('addresses.tip')}
         </p>
       )}
     </div>

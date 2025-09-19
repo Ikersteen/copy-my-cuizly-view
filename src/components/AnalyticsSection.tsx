@@ -235,9 +235,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
 
   const analyticsCards = [
     {
-      title: i18n.language === 'fr' ? 'Offres totales' : 'Total offers',
+      title: t('analytics.totalOffers'),
       value: analytics.totalOffers,
-      subtitle: `${analytics.activeOffers} ${i18n.language === 'fr' ? 'actives' : 'active'}`,
+      subtitle: `${analytics.activeOffers} ${t('analytics.activeOffers')}`,
       icon: TrendingUp,
       color: "text-blue-600",
       bgColor: "bg-blue-100 dark:bg-blue-100",
@@ -245,9 +245,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'totalOffers'
     },
     {
-      title: i18n.language === 'fr' ? 'Menus ajoutés' : 'Menus added',
+      title: t('analytics.menusAdded'),
       value: analytics.totalMenus,
-      subtitle: `${analytics.activeMenus} ${i18n.language === 'fr' ? 'actifs' : 'active'}`,
+      subtitle: `${analytics.activeMenus} ${t('analytics.activeMenus')}`,
       icon: Calendar,
       color: "text-green-600",
       bgColor: "bg-green-100 dark:bg-green-100",
@@ -255,9 +255,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'totalMenus'
     },
     {
-      title: i18n.language === 'fr' ? 'Vues du profil' : 'Profile views',
+      title: t('analytics.profileViews'),
       value: analytics.profileViews,
-      subtitle: i18n.language === 'fr' ? 'Vues totales' : 'Total views',
+      subtitle: t('analytics.totalViews'),
       icon: Eye,
       color: "text-purple-600",
       bgColor: "bg-purple-100 dark:bg-purple-100",
@@ -265,9 +265,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'profileViews'
     },
     {
-      title: i18n.language === 'fr' ? 'Note moyenne' : 'Average rating',
+      title: t('analytics.averageRating'),
       value: analytics.avgRating.toFixed(1),
-      subtitle: i18n.language === 'fr' ? 'Sur 5 étoiles' : 'Out of 5 stars',
+      subtitle: t('analytics.outOfStars'),
       icon: Star,
       color: "text-orange-600",
       bgColor: "bg-orange-100 dark:bg-orange-100",
@@ -296,9 +296,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg sm:text-xl">{i18n.language === 'fr' ? 'Tableau de performance en temps réel' : 'Real-time performance dashboard'}</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">{t('analytics.title')}</CardTitle>
         <CardDescription className="text-sm">
-          {i18n.language === 'fr' ? 'Aperçus sur les performances par segment (Mise à jour en temps réel)' : 'Performance insights by segment (Real-time updates)'}
+          {t('analytics.subtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -356,12 +356,12 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
               <p className="text-xs text-gray-700 dark:text-gray-700">
                 {analytics.weeklyGrowth !== undefined ? (
                   analytics.weeklyGrowth > 0 ? 
-                    `+${analytics.weeklyGrowth}% ${i18n.language === 'fr' ? 'de vues par rapport à la semaine dernière' : 'views compared to last week'}` :
+                    `+${analytics.weeklyGrowth}% ${t('analytics.viewsVsLastWeek')}` :
                   analytics.weeklyGrowth < 0 ?
-                    `${analytics.weeklyGrowth}% ${i18n.language === 'fr' ? 'de vues par rapport à la semaine dernière' : 'views compared to last week'}` :
-                    (i18n.language === 'fr' ? 'Aucune évolution par rapport à la semaine dernière' : 'No change compared to last week')
+                    `${analytics.weeklyGrowth}% ${t('analytics.viewsVsLastWeek')}` :
+                    t('analytics.noChangeVsLastWeek')
                 ) : (
-                  i18n.language === 'fr' ? 'Données en cours de collecte...' : 'Collecting data...'
+                  t('actions.collectingData')
                 )}
               </p>
             </div>

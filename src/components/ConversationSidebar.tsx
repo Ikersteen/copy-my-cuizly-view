@@ -8,6 +8,7 @@ import { Plus, Menu, Edit3, Trash2, Check, X } from "lucide-react";
 import { useConversations } from "@/hooks/useConversations";
 import { cn } from "@/lib/utils";
 import type { Conversation } from "@/hooks/useConversations";
+import { useTranslation } from 'react-i18next';
 
 interface ConversationSidebarProps {
   currentConversation: Conversation | null;
@@ -25,12 +26,13 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
   isMobile = false
 }) => {
   const { conversations, loading, deleteConversation, updateConversationTitle } = useConversations();
+  const { t } = useTranslation();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
 
   const handleStartEdit = (conversation: Conversation) => {
     setEditingId(conversation.id);
-    setEditTitle(conversation.title || `Conversation du ${new Date(conversation.created_at).toLocaleDateString()}`);
+    setEditTitle(conversation.title || `${t('conversations.conversationFrom')} ${new Date(conversation.created_at).toLocaleDateString()}`);
   };
 
   const handleSaveEdit = async () => {
@@ -47,7 +49,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
   };
 
   const handleDelete = async (conversation: Conversation) => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette conversation ?')) {
+    if (confirm(t('confirmations.deleteConversation'))) {
       await deleteConversation(conversation.id);
       if (currentConversation?.id === conversation.id) {
         onNewConversation();
@@ -65,7 +67,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
           variant="outline"
         >
           <Plus className="w-4 h-4" />
-          Nouvelle conversation
+          {t('conversations.newConversation')}
         </Button>
       </div>
 
@@ -74,11 +76,11 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
         <div className="p-2 space-y-1">
           {loading ? (
             <div className="p-4 text-center text-muted-foreground">
-              Chargement des conversations...
+              {t('emptyStates.loadingConversations')}
             </div>
           ) : conversations.length === 0 ? (
             <div className="p-4 text-center text-muted-foreground">
-              Aucune conversation
+              {t('emptyStates.noConversation')}
             </div>
           ) : (
             conversations.map((conversation) => (
@@ -122,9 +124,9 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                   <>
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium truncate">
-                          {conversation.title || `Conversation du ${new Date(conversation.created_at).toLocaleDateString()}`}
-                        </h3>
+                         <h3 className="text-sm font-medium truncate">
+                           {conversation.title || `${t('conversations.conversationFrom')} ${new Date(conversation.created_at).toLocaleDateString()}`}
+                         </h3>
                         <p className="text-xs text-muted-foreground mt-1">
                           {new Date(conversation.updated_at).toLocaleDateString()}
                         </p>

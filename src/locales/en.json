@@ -1261,5 +1261,95 @@
     "to": "to",
     "selectEnd": "select end date",
     "selectEndDate": "Select end date (max {{maxDays}} days)"
+  },
+  "confirmations": {
+    "deleteConversation": "Are you sure you want to delete this conversation?",
+    "deleteOffer": "Are you sure you want to delete this offer?"
+  },
+  "emptyStates": {
+    "noConversationFound": "No conversation found",
+    "noConversationSaved": "No conversation saved",
+    "noConversation": "No conversation",
+    "loadingConversations": "Loading conversations...",
+    "noPhoto": "No photo"
+  },
+  "mealTimes": {
+    "breakfast": "Breakfast / Brunch",
+    "lunch": "Quick lunch",
+    "snack": "Snack",
+    "dinner": "Dinner",
+    "lateNight": "Late night meal",
+    "detox": "Detox"
+  },
+  "cuisineTypes": {
+    "french": "French",
+    "italian": "Italian",
+    "japanese": "Japanese", 
+    "chinese": "Chinese",
+    "mexican": "Mexican",
+    "indian": "Indian",
+    "thai": "Thai",
+    "lebanese": "Lebanese",
+    "greek": "Greek",
+    "american": "American",
+    "quebecois": "Quebecois",
+    "korean": "Korean",
+    "vietnamese": "Vietnamese",
+    "spanish": "Spanish",
+    "moroccan": "Moroccan",
+    "turkish": "Turkish"
+  },
+  "addresses": {
+    "placeholder": "Start typing an address in Montreal...",
+    "label": "Address",
+    "tip": "💡 Tip: Use suggestions for better location accuracy"
+  },
+  "photos": {
+    "profilePhoto": "Profile photo",
+    "coverPhoto": "Cover photo",
+    "manage": "Manage your photo", 
+    "personalizeProfile": "Customize your profile",
+    "addHeaderImage": "Add a header image",
+    "uploadingInProgress": "Upload in progress...",
+    "modifyPhoto": "Modify photo",
+    "choosePhoto": "Choose photo",
+    "deletePhoto": "Delete photo",
+    "preview": "Preview"
+  },
+  "conversations": {
+    "newConversation": "New conversation",
+    "historyTitle": "Conversation history",
+    "conversationFrom": "Conversation from",
+    "conversationCount": "conversation(s)",
+    "close": "Close",
+    "vocal": "Voice",
+    "text": "Text"
+  },
+  "periods": {
+    "validityPeriod": "Validity period",
+    "selectDates": "Select dates"
+  },
+  "actions": {
+    "uploading": "Uploading...",
+    "loading": "Loading...",
+    "refreshing": "Refreshing...",
+    "collectingData": "Collecting data...",
+    "generatingRecommendations": "Generating personalized recommendations...",
+    "analyzingPreferences": "Our AI is analyzing your preferences and history to suggest the best restaurants"
+  },
+  "analytics": {
+    "title": "Real-time performance dashboard",
+    "subtitle": "Performance insights by segment (Real-time updates)",
+    "totalOffers": "Total offers",
+    "activeOffers": "active",
+    "menusAdded": "Menus added", 
+    "activeMenus": "active",
+    "profileViews": "Profile views",
+    "totalViews": "Total views",
+    "averageRating": "Average rating",
+    "outOfStars": "Out of 5 stars",
+    "weeklyTrends": "Weekly trends",
+    "viewsVsLastWeek": "views compared to last week",
+    "noChangeVsLastWeek": "No change compared to last week"
   }
 }
