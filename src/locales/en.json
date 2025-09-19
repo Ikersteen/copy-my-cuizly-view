@@ -1651,7 +1651,7 @@
     "noChangeVsLastWeek": "No change compared to last week"
   },
   "placeholders": {
-    "addressInput": "Start typing your delivery address in Montreal..."
+    "addressInput": "Start typing your address (Montreal or Repentigny)..."
   },
   "cookieBanner": {
     "title": "We use cookies",

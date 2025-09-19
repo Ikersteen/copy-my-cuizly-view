@@ -7,6 +7,7 @@ import { MapPin, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { parseAddress, formatAddress } from "@/lib/addressUtils";
 import { useTranslation } from 'react-i18next';
+import { MONTREAL_CONFIG, REPENTIGNY_CONFIG, detectCityFromAddress } from '@/constants/cities';
 
 interface AddressSelectorProps {
   value?: string;
@@ -17,74 +18,16 @@ interface AddressSelectorProps {
   required?: boolean;
 }
 
-// Liste de rues populaires de Montréal pour l'autocomplete
-const MONTREAL_STREETS = [
-  "Rue Sainte-Catherine",
-  "Boulevard Saint-Laurent",
-  "Rue Notre-Dame",
-  "Avenue du Parc",
-  "Rue Sherbrooke",
-  "Boulevard René-Lévesque",
-  "Rue Saint-Denis",
-  "Avenue Mont-Royal",
-  "Rue Peel",
-  "Rue Guy",
-  "Avenue McGill College",
-  "Rue Crescent",
-  "Boulevard de Maisonneuve",
-  "Rue Saint-Jacques",
-  "Avenue des Pins",
-  "Rue Rachel",
-  "Rue Laurier",
-  "Rue Bernard",
-  "Avenue du Mont-Royal",
-  "Rue Ontario",
-  "Rue Beaubien",
-  "Rue Masson",
-  "Boulevard Pie-IX",
-  "Avenue Papineau",
-  "Rue Fleury",
-  "Boulevard Henri-Bourassa",
-  "Rue Jean-Talon",
-  "Avenue de l'Esplanade",
-  "Rue Clark",
-  "Rue Hutchison",
-  "Avenue Fairmount",
-  "Rue Saint-Viateur",
-  "Rue Van Horne",
-  "Avenue Laurier Ouest",
-  "Rue Duluth",
-  "Boulevard Saint-Joseph",
-  "Rue Prince-Arthur",
-  "Avenue de Gaspe",
-  "Rue Plateau Mont-Royal",
-  "Avenue Christophe-Colomb"
-];
-
-const MONTREAL_NEIGHBORHOODS = [
-  "Plateau-Mont-Royal",
-  "Ville-Marie",
-  "Le Sud-Ouest",
-  "Verdun",
-  "Rosemont–La Petite-Patrie",
-  "Villeray–Saint-Michel–Parc-Extension",
-  "Ahuntsic-Cartierville",
-  "Côte-des-Neiges–Notre-Dame-de-Grâce",
-  "Outremont",
-  "LaSalle",
-  "Lachine",
-  "Saint-Laurent",
-  "Mercier–Hochelaga-Maisonneuve",
-  "Anjou",
-  "Montréal-Nord",
-  "Saint-Léonard",
-  "Rivière-des-Prairies–Pointe-aux-Trembles"
-];
+// Combiner les rues des deux villes pour l'autocomplete
+const MONTREAL_STREETS = MONTREAL_CONFIG.streets;
+const MONTREAL_NEIGHBORHOODS = MONTREAL_CONFIG.neighborhoods;
+const REPENTIGNY_STREETS = REPENTIGNY_CONFIG.streets;
+const REPENTIGNY_NEIGHBORHOODS = REPENTIGNY_CONFIG.neighborhoods;
 
 export const AddressSelector = ({
   value = "",
   onChange,
-  placeholder = "Commencez à taper une adresse à Montréal...",
+  placeholder = "Commencez à taper une adresse (Montréal ou Repentigny)...",
   label = "Adresse",
   className,
   required = false
@@ -92,7 +35,7 @@ export const AddressSelector = ({
   const { t } = useTranslation();
   
   // Use translation or fallback to defaults
-  const translatedPlaceholder = placeholder === "Commencez à taper une adresse à Montréal..." ? t('addresses.placeholder') : placeholder;
+  const translatedPlaceholder = placeholder === "Commencez à taper une adresse (Montréal ou Repentigny)..." ? t('addresses.placeholder') : placeholder;
   const translatedLabel = label === "Adresse" ? t('addresses.label') : label;
   
   const [inputValue, setInputValue] = useState(value);
@@ -112,25 +55,34 @@ export const AddressSelector = ({
 
     const normalizedQuery = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     
+    // Détecter la ville en fonction du texte
+    const detectedCity = detectCityFromAddress(query);
+    const isRepentigny = detectedCity.id === 'repentigny';
+    
+    // Choisir les bonnes données selon la ville
+    const streets = isRepentigny ? REPENTIGNY_STREETS : MONTREAL_STREETS;
+    const neighborhoods = isRepentigny ? REPENTIGNY_NEIGHBORHOODS : MONTREAL_NEIGHBORHOODS;
+    const cityName = detectedCity.name;
+    
     // Filtrer les rues
-    const streetMatches = MONTREAL_STREETS.filter(street =>
+    const streetMatches = streets.filter(street =>
       street.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(normalizedQuery)
     );
 
     // Filtrer les quartiers
-    const neighborhoodMatches = MONTREAL_NEIGHBORHOODS.filter(neighborhood =>
+    const neighborhoodMatches = neighborhoods.filter(neighborhood =>
       neighborhood.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(normalizedQuery)
     );
 
     // Générer des adresses complètes pour les rues
     const streetAddresses = streetMatches.slice(0, 5).map(street => {
       const numbers = ['123', '456', '789', '101', '234'];
-      return `${numbers[Math.floor(Math.random() * numbers.length)]} ${street}, Montréal, QC`;
+      return `${numbers[Math.floor(Math.random() * numbers.length)]} ${street}, ${cityName}, QC`;
     });
 
     // Ajouter les quartiers comme suggestions
     const neighborhoodAddresses = neighborhoodMatches.slice(0, 3).map(neighborhood => 
-      `${neighborhood}, Montréal, QC`
+      `${neighborhood}, ${cityName}, QC`
     );
 
     const allSuggestions = [...streetAddresses, ...neighborhoodAddresses].slice(0, 8);

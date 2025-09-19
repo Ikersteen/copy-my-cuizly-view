@@ -1,4 +1,5 @@
 import type { ParsedAddress, AddressInput } from '@/types/address';
+import { getCityByPostalCode, detectCityFromAddress, MONTREAL_CONFIG, REPENTIGNY_CONFIG } from "@/constants/cities";
 
 /**
  * Parse a formatted address string into components
@@ -119,6 +120,24 @@ export function isValidMontrealPostalCode(postalCode: string): boolean {
 }
 
 /**
+ * Validate Repentigny postal code format
+ */
+export function isValidRepentinyPostalCode(postalCode: string): boolean {
+  const cleanCode = postalCode.replace(/\s/g, '').toUpperCase();
+  
+  // Repentigny postal codes: J5Y, J6A, J6B
+  const repentinyPattern = /^(J5Y|J6A|J6B)[0-9][A-Z][0-9]$/;
+  return repentinyPattern.test(cleanCode);
+}
+
+/**
+ * Validate postal code for supported cities
+ */
+export function isValidPostalCode(postalCode: string): boolean {
+  return isValidMontrealPostalCode(postalCode) || isValidRepentinyPostalCode(postalCode);
+}
+
+/**
  * Clean and format postal code
  */
 export function formatPostalCode(postalCode: string): string {
@@ -142,8 +161,8 @@ export function validateAddressInput(address: Partial<AddressInput>): {
     errors.formatted_address = 'L\'adresse complète est requise';
   }
 
-  if (address.postal_code && !isValidMontrealPostalCode(address.postal_code)) {
-    errors.postal_code = 'Code postal invalide pour Montréal (format: H1A 1A1)';
+  if (address.postal_code && !isValidPostalCode(address.postal_code)) {
+    errors.postal_code = 'Code postal invalide (Montréal: H#X #X#, Repentigny: J5Y/J6A/J6B #X#)';
   }
 
   if (address.street_name && address.street_name.length < 2) {
@@ -169,6 +188,7 @@ export function createAddressInput(
   isPrimary = true
 ): AddressInput {
   const parsed = parseAddress(formattedAddress);
+  const detectedCity = detectCityFromAddress(formattedAddress);
   
   return {
     address_type: addressType,
@@ -177,10 +197,10 @@ export function createAddressInput(
     street_name: parsed.street_name,
     apartment_unit: parsed.apartment_unit,
     neighborhood: parsed.neighborhood,
-    city: parsed.city,
-    province: parsed.province,
+    city: parsed.city || detectedCity.name,
+    province: parsed.province || detectedCity.province,
     postal_code: parsed.postal_code,
-    country: parsed.country,
+    country: parsed.country || detectedCity.country,
     is_primary: isPrimary
   };
 }
