@@ -55,11 +55,33 @@
     "step3Description": "Choose from personalized options and enjoy meals you'll love"
   },
   "features": {
-    "title": "",
-    "subtitle": "Features designed for\nrestaurants & foodies",
-    "ai_recommendations": {
-      "title": "Artificial Intelligence",
-      "description": "Personalized recommendations based on your culinary tastes and preferences."
+    "title": "Features",
+    "subtitle": "Features designed for restaurateurs & foodies",
+    "list": {
+      "ai": {
+        "title": "Artificial Intelligence",
+        "description": "Personalized recommendations based on your culinary tastes and preferences."
+      },
+      "geolocation": {
+        "title": "Geolocation",
+        "description": "Find the best deals near you in Montreal."
+      },
+      "alerts": {
+        "title": "Real-time alerts",
+        "description": "Be instantly notified of new offers that interest you."
+      },
+      "reviews": {
+        "title": "Reviews and ratings",
+        "description": "Consult authentic reviews from other users."
+      },
+      "analytics": {
+        "title": "Restaurant analytics",
+        "description": "Analyze your restaurant's performance with detailed data."
+      },
+      "targeting": {
+        "title": "Smart targeting",
+        "description": "Reach the right customers at the right time with our AI."
+      }
     },
     "geolocation": {
       "title": "Geolocation",
