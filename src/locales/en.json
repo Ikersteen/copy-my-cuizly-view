@@ -33,7 +33,7 @@
     "title": {
       "discover": "Discover your next",
       "favorites": "culinary favorites",
-      "location": "in Montreal"
+      "location": ""
     },
     "subtitle": "Cuizly uses AI to recommend restaurants that match your tastes, budget and cravings.",
     "cta": "Get Started Now",
@@ -1490,7 +1490,7 @@
   },
   "cta": {
     "title": "Ready to revolutionize your culinary experience?",
-    "description": "Join the Cuizly community today and be among the first to discover Montreal's best offers.",
+    "description": "Join the great Cuizly community today.",
     "button": "Create my account",
     "imageAlt": "Modern restaurant in Montreal",
     "disclaimer": "Free registration • No commitment"

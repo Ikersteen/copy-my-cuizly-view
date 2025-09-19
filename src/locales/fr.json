@@ -16,7 +16,7 @@
     "title": {
       "discover": "Découvrez vos prochains",
       "favorites": "coups de cœur culinaires",
-      "location": "à Montréal"
+      "location": ""
     },
     "subtitle": "Cuizly utilise l'IA pour vous recommander les restaurants qui correspondent à vos goûts, votre budget et vos envies.",
     "cta": "Commencer maintenant",
@@ -161,7 +161,7 @@
   },
   "howItWorks": {
     "title": "Un copilote culinaire partout avec vous",
-    "subtitle": "Cuizly Assistant vous fait découvrir les meilleurs restos de Montréal, de nouvelles saveurs et des recettes.",
+    "subtitle": "Cuizly Assistant vous fait découvrir les meilleurs restos, de nouvelles saveurs et des recettes.",
     "step1": {
       "title": "",
       "description": ""
@@ -856,7 +856,7 @@
   },
   "cta": {
     "title": "Prêt à révolutionner votre expérience culinaire ?",
-    "description": "Rejoignez dès maintenant la communauté Cuizly et soyez parmi les premiers à découvrir les meilleures offres de Montréal.",
+    "description": "Rejoignez dès maintenant la grande communauté Cuizly.",
     "button": "Créer mon compte",
     "imageAlt": "Restaurant moderne à Montréal"
   },
@@ -1744,7 +1744,7 @@
   },
   "cta": {
     "title": "Prêt à révolutionner votre expérience culinaire ?",
-    "description": "Rejoignez dès maintenant la communauté Cuizly et soyez parmi les premiers à découvrir les meilleures offres de Montréal.",
+    "description": "Rejoignez dès maintenant la grande communauté Cuizly.",
     "button": "Créer mon compte",
     "imageAlt": "Restaurant moderne à Montréal",
     "disclaimer": "Inscription gratuite • Sans engagement"
