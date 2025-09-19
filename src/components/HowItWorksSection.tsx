@@ -19,18 +19,7 @@ const HowItWorksSection = () => {
     return text;
   };
   
-  const steps = [
-    {
-      icon: "🍻",
-      title: t('howItWorks.step1.title'),
-      description: t('howItWorks.step1.description')
-    },
-    {
-      icon: "🍽️",
-      title: t('howItWorks.step2.title'),
-      description: t('howItWorks.step2.description')
-    }
-  ];
+  const steps = [];
 
   return (
     <section className="py-16 sm:py-20 bg-gradient-card">
