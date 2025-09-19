@@ -374,6 +374,7 @@
     "modifyRating": "Modifier votre évaluation",
     "sharePlaceholder": "Partagez votre expérience...",
     "invalidComment": "Commentaire invalide",
+    "commentTooLong": "Le commentaire est trop long",
     "thankYouFeedback": "Merci pour votre avis !",
     "rating": "Note",
     "optionalComment": "Commentaire (optionnel)",
@@ -2025,6 +2026,42 @@
   "periods": {
     "validityPeriod": "Période de validité",
     "selectDates": "Sélectionner les dates"
+  },
+  "photoAdjustment": {
+    "title": "Ajuster la photo",
+    "preview": "Aperçu",
+    "zoom": "Zoom",
+    "rotation": "Rotation",
+    "dragInstruction": "Cliquez et faites glisser l'image pour la repositionner",
+    "reset": "Réinitialiser",
+    "cancel": "Annuler", 
+    "apply": "Appliquer"
+  },
+  "restaurants": {
+    "popularTitle": "Restaurants populaires"
+  },
+  "voiceAssistant": {
+    "modalTitle": "Assistant Vocal Cuizly",
+    "voiceMode": "Mode vocal",
+    "available": "Cuizly Assistant Vocal est maintenant Disponible.",
+    "readyToConnect": "Prêt à se connecter",
+    "connecting": "Connexion...",
+    "connected": "Connecté",
+    "disconnected": "Déconnecté",
+    "speakNaturally": "Parlez naturellement.",
+    "startConversation": "Démarrer la conversation",
+    "endConversation": "Terminer",
+    "conversationEnded": "Conversation terminée",
+    "conversationEndedDesc": "Conversation temps réel terminée",
+    "instructions": {
+      "try": "Essayez:",
+      "examples": "\"Trouve-moi un resto italien\" ou \"Quelles sont mes préférences?\"",
+      "capabilities": "L'assistant peut chercher des recommandations et répondre à vos questions sur Cuizly"
+    },
+    "errors": {
+      "notConnected": "Utilisateur non connecté",
+      "connectionFailed": "Erreur de connexion"
+    }
   },
   "actions": {
     "uploading": "Téléchargement en cours...",

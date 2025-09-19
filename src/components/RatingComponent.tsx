@@ -80,7 +80,7 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
     if (comment.length > 500) {
       toast({
         title: t('ratings.invalidComment'),
-        description: "Le commentaire est trop long",
+        description: t('ratings.commentTooLong'),
         variant: "destructive"
       });
       setSubmitting(false);

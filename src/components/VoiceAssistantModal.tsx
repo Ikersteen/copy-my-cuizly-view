@@ -59,8 +59,8 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
   const startConversation = async () => {
     if (!userId) {
       toast({
-        title: "Erreur",
-        description: "Utilisateur non connecté",
+        title: t('voiceAssistant.errors.connectionFailed'),
+        description: t('voiceAssistant.errors.notConnected'),
         variant: "destructive",
       });
       return;
@@ -80,13 +80,13 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
       }]);
       
       toast({
-        title: "Connecté",
-        description: "L'assistant vocal est prêt!",
+        title: t('voiceAssistant.connected'),
+        description: t('voiceAssistant.available'),
       });
     } catch (error) {
       console.error('❌ Error starting conversation:', error);
       toast({
-        title: "Erreur",
+        title: t('voiceAssistant.errors.connectionFailed'),
         description: t('errors.general'),
         variant: "destructive",
       });
@@ -101,7 +101,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
     setIsSpeaking(false);
     setMessages(prev => [...prev, {
       type: 'system',
-      text: '🔌 Conversation terminée',
+      text: t('voiceAssistant.conversationEnded'),
       role: 'system',
       timestamp: new Date()
     }]);
@@ -119,7 +119,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            🎙️ Assistant Vocal Cuizly
+            🎙️ {t('voiceAssistant.modalTitle')}
             <Button
               variant="ghost"
               size="icon"
@@ -149,7 +149,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                 </>
               ) : (
                 <div className="text-cuizly-neutral text-sm">
-                  {isConnecting ? 'Connexion...' : 'Prêt à se connecter'}
+                  {isConnecting ? t('voiceAssistant.connecting') : t('voiceAssistant.readyToConnect')}
                 </div>
               )}
             </div>
@@ -166,12 +166,12 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                 {isConnecting ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                    Connexion...
+                    {t('voiceAssistant.connecting')}
                   </>
                 ) : (
                   <>
                     <Mic className="w-4 h-4 mr-2" />
-                    Démarrer la conversation
+                    {t('voiceAssistant.startConversation')}
                   </>
                 )}
               </Button>
@@ -182,7 +182,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                 className="bg-red-500 hover:bg-red-600 text-white"
               >
                 <MicOff className="w-4 h-4 mr-2" />
-                Terminer
+                {t('voiceAssistant.endConversation')}
               </Button>
             )}
           </div>
@@ -209,8 +209,8 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
 
           {/* Instructions */}
           <div className="text-xs text-cuizly-neutral text-center space-y-1">
-            <p>💡 <strong>Essayez:</strong> "Trouve-moi un resto italien" ou "Quelles sont mes préférences?"</p>
-            <p>🎯 L'assistant peut chercher des recommandations et répondre à vos questions sur Cuizly</p>
+            <p>💡 <strong>{t('voiceAssistant.instructions.try')}</strong> {t('voiceAssistant.instructions.examples')}</p>
+            <p>🎯 {t('voiceAssistant.instructions.capabilities')}</p>
           </div>
         </div>
       </DialogContent>

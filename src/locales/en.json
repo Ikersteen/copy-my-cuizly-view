@@ -663,6 +663,7 @@
     "modifyRating": "Modify your rating",
     "sharePlaceholder": "Share your experience...",
     "invalidComment": "Invalid comment",
+    "commentTooLong": "Comment is too long",
     "thankYouFeedback": "Thank you for your feedback!",
     "rating": "Rating",
     "optionalComment": "Comment (optional)",
@@ -1328,6 +1329,42 @@
   "periods": {
     "validityPeriod": "Validity period",
     "selectDates": "Select dates"
+  },
+  "photoAdjustment": {
+    "title": "Adjust Photo",
+    "preview": "Preview",
+    "zoom": "Zoom",
+    "rotation": "Rotation",
+    "dragInstruction": "Click and drag the image to reposition it",
+    "reset": "Reset",
+    "cancel": "Cancel",
+    "apply": "Apply"
+  },
+  "restaurants": {
+    "popularTitle": "Popular Restaurants"
+  },
+  "voiceAssistant": {
+    "modalTitle": "Cuizly Voice Assistant",
+    "voiceMode": "Voice Mode",
+    "available": "Cuizly Voice Assistant is now Available.",
+    "readyToConnect": "Ready to connect",
+    "connecting": "Connecting...",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "speakNaturally": "Speak naturally.",
+    "startConversation": "Start conversation",
+    "endConversation": "End",
+    "conversationEnded": "Conversation ended",
+    "conversationEndedDesc": "Real-time conversation ended",
+    "instructions": {
+      "try": "Try:",
+      "examples": "\"Find me an Italian restaurant\" or \"What are my preferences?\"",
+      "capabilities": "The assistant can search for recommendations and answer your questions about Cuizly"
+    },
+    "errors": {
+      "notConnected": "User not connected",
+      "connectionFailed": "Connection error"
+    }
   },
   "actions": {
     "uploading": "Uploading...",

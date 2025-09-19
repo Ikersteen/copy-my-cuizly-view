@@ -1,8 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const RestaurantsSection = () => {
+  const { t } = useTranslation();
   const restaurants = [
     {
       id: 1,
@@ -35,7 +37,7 @@ const RestaurantsSection = () => {
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-cuizly-primary mb-4">
-            Restaurants populaires
+            {t('restaurants.popularTitle')}
           </h2>
         </div>
 

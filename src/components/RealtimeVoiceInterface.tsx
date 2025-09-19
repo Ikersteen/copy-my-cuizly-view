@@ -120,8 +120,8 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
   const startConversation = async () => {
     if (!userId) {
       toast({
-        title: "Erreur",
-        description: "Utilisateur non connecté",
+        title: t('voiceAssistant.errors.connectionFailed'),
+        description: t('voiceAssistant.errors.notConnected'),
         variant: "destructive",
       });
       return;
@@ -154,8 +154,8 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
     setCurrentMessage('');
     
     toast({
-      title: "Déconnecté",
-      description: "Conversation temps réel terminée",
+      title: t('voiceAssistant.disconnected'),
+      description: t('voiceAssistant.conversationEndedDesc'),
     });
   };
 
@@ -218,10 +218,10 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
             <AnimatedOrb />
             <div className="space-y-3 max-w-lg">
               <h1 className="text-2xl font-semibold text-foreground">
-                Mode vocal
+                {t('voiceAssistant.voiceMode')}
               </h1>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Cuizly Assistant Vocal est maintenant Disponible.
+                {t('voiceAssistant.available')}
               </p>
             </div>
           </div>
@@ -233,7 +233,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
             <AnimatedOrb />
             <div className="text-center space-y-2">
               <p className="text-lg font-medium text-foreground">
-                Parlez naturellement.
+                {t('voiceAssistant.speakNaturally')}
               </p>
             </div>
           </div>
@@ -306,7 +306,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
               className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Mic className="w-5 h-5 mr-2" />
-              Cuizly Assistant Vocal est maintenant Disponible.
+              {t('voiceAssistant.available')}
             </Button>
           ) : (
             <Button
@@ -315,7 +315,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
               className="px-8 py-4 rounded-full font-medium"
             >
               <MicOff className="w-5 h-5 mr-2" />
-              Terminer
+              {t('voiceAssistant.endConversation')}
             </Button>
           )}
         </div>
