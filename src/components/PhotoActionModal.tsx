@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Camera, Trash2, Upload, X, Image, Edit3 } from "lucide-react";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
+import { useTranslation } from 'react-i18next';
 
 interface PhotoActionModalProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ export const PhotoActionModal = ({
   photoType,
   uploading
 }: PhotoActionModalProps) => {
+  const { t } = useTranslation();
+  
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
