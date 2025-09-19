@@ -180,6 +180,7 @@ export const SavedFavoritesSection = () => {
   };
 
   if (loading || favLoading) {
+    console.log('🔍 Loading state:', { loading, favLoading, favoriteRestaurants: favoriteRestaurants.length });
     return (
       <section className="py-8 bg-background">
         <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
