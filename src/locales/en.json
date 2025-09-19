@@ -294,9 +294,24 @@
     "backToHome": "Back to home"
   },
   "team": {
-    "title": "Meet our team",
-    "subtitle": "The passionate people behind Cuizly",
-    "contact": "Contact"
+    "badge": "Our team",
+    "title": "The team behind Cuizly",
+    "subtitle": "Meet the person revolutionizing culinary discovery in Montreal",
+    "meetFounder": "Meet the founder",
+    "founderIntro": "The vision of a passionate student transforming the Montreal gastronomic experience",
+    "founderName": "Iker Kiomba Landu",
+    "founderTitle": "CEO & Founder of Cuizly",
+    "education": "Academic background",
+    "educationDetails": "Permanent resident of Canada and Congolese🇨🇩 student pursuing a Bachelor's degree in Natural and Formal Sciences: Computer Science, at the University of Montreal.",
+    "journey": "The spark",
+    "journeyDetails": "From a simple observation when he arrived in Quebec 2 years ago: He discovered too many multicultural restaurant choices, but not enough landmarks to eat well according to his budget and tastes.",
+    "vision": "The vision",
+    "visionDetails": "With Cuizly, Iker builds an intelligent bridge between consumers and restaurateurs through the AI-powered culinary matching system. With the vision to transform each piece of data into a personalized experience and redefine how we discover gastronomy in the city.",
+    "location": "Montreal, QC",
+    "contact": "Contact",
+    "foundingYear": "Founding year",
+    "teamSize": "Founding member",
+    "basedIn": "Based in Canada"
   },
   "contact": {
     "title": "Contact us",
