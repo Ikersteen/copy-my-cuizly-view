@@ -296,9 +296,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg sm:text-xl">{i18n.language === 'fr' ? 'Tableau de performance en temps réel' : 'Real-time performance dashboard'}</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">{t('analytics.title')}</CardTitle>
         <CardDescription className="text-sm">
-          {i18n.language === 'fr' ? 'Aperçus sur les performances par segment (Mise à jour en temps réel)' : 'Performance insights by segment (Real-time updates)'}
+          {t('analytics.subtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent>
