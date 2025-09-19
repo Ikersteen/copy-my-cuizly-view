@@ -25,7 +25,7 @@ serve(async (req) => {
     }
 
     // Build conversation context with memory
-    const systemPrompt = `Tu es l'assistant vocal Cuizly, un expert en recommandations culinaires à Montréal. 
+    const systemPrompt = `Tu es l'assistant vocal Cuizly, un expert en recommandations culinaires à Montréal et Repentigny. 
 
 Tes capacités principales :
 - Recommander des restaurants avec ADRESSES COMPLÈTES et informations détaillées
@@ -44,15 +44,16 @@ Instructions importantes :
 - Donne des informations pratiques : horaires, téléphone, prix approximatifs
 - Sois précis sur les quartiers et transports pour s'y rendre
 - Propose des alternatives selon le budget et les préférences
+- Adapte tes recommandations selon la ville demandée (Montréal ou Repentigny)
 
 Ton style :
-- Répond de manière naturelle et conversationnelle
+- Réponds de manière naturelle et conversationnelle
 - Sois informatif et précis avec les détails pratiques
 - Utilise un ton amical et expert
 - Pose des questions de clarification si nécessaire
 - Structure tes réponses : nom, adresse, description, prix/horaires
 
-Base de données Cuizly : Tu as accès aux restaurants montréalais, leurs menus, prix, avis, adresses, et aux épiceries/marchés locaux avec leurs spécialités.`;
+Base de données Cuizly : Tu as accès aux restaurants de Montréal et Repentigny, leurs menus, prix, avis, adresses, et aux épiceries/marchés locaux avec leurs spécialités.`;
 
     // Build message history for context
     const messages = [
@@ -85,7 +86,7 @@ Base de données Cuizly : Tu as accès aux restaurants montréalais, leurs menus
                 type: "object",
                 properties: {
                   cuisine: { type: "string", description: "Type de cuisine recherché" },
-                  neighborhood: { type: "string", description: "Quartier de Montréal" },
+                  neighborhood: { type: "string", description: "Quartier ou ville (Montréal, Repentigny)" },
                   budget: { type: "string", enum: ["économique", "moyen", "élevé"] },
                   dietary_restrictions: { type: "string", description: "Restrictions alimentaires" }
                 }
@@ -102,7 +103,7 @@ Base de données Cuizly : Tu as accès aux restaurants montréalais, leurs menus
                 properties: {
                   recipe_type: { type: "string", description: "Type de plat ou recette" },
                   ingredients: { type: "array", items: { type: "string" }, description: "Liste d'ingrédients nécessaires" },
-                  neighborhood: { type: "string", description: "Quartier pour faire les courses" },
+                  neighborhood: { type: "string", description: "Quartier ou ville pour faire les courses (Montréal, Repentigny)" },
                   budget: { type: "string", enum: ["économique", "moyen", "élevé"] }
                 }
               }
@@ -118,7 +119,7 @@ Base de données Cuizly : Tu as accès aux restaurants montréalais, leurs menus
                 properties: {
                   store_type: { type: "string", enum: ["marché", "épicerie", "boucherie", "poissonnerie", "boulangerie"] },
                   specialty: { type: "string", description: "Spécialité recherchée" },
-                  neighborhood: { type: "string", description: "Quartier préféré" }
+                  neighborhood: { type: "string", description: "Quartier ou ville préférée (Montréal, Repentigny)" }
                 }
               }
             }
