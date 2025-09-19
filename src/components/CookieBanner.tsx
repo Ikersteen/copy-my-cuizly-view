@@ -10,9 +10,10 @@ import CookiePreferencesModal from "./CookiePreferencesModal";
 const CookieBanner = () => {
   const { showBanner, acceptCookies, declineCookies } = useCookieConsent();
   const [showPreferences, setShowPreferences] = useState(false);
-  const { t } = useTranslation();
+  const { t, ready } = useTranslation();
 
-  if (!showBanner) return null;
+  // Ne pas afficher le banner si i18n n'est pas prêt
+  if (!showBanner || !ready) return null;
 
   return (
     <>
