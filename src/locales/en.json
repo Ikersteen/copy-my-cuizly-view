@@ -598,7 +598,54 @@
     "selectAddress": "Select an address",
     "currentAddress": "Current address:",
     "noAddressSet": "No delivery address set",
-    "updateAddress": "Update Address"
+    "updateAddress": "Update Address",
+    "dietaryOptions": {
+      "vegetarian": "Vegetarian",
+      "vegan": "Vegan",
+      "glutenFree": "Gluten-free",
+      "halal": "Halal",
+      "kosher": "Kosher",
+      "paleo": "Paleo",
+      "keto": "Ketogenic",
+      "lactoseFree": "Lactose-free",
+      "pescatarian": "Pescatarian",
+      "lowSodium": "Low sodium",
+      "fruitarian": "Fruitarian",
+      "carnivore": "Carnivore",
+      "detox": "Detox",
+      "spicy": "Spicy",
+      "notSpicy": "Not spicy",
+      "lowSugar": "Low sugar"
+    },
+    "allergenOptions": {
+      "peanuts": "Peanuts",
+      "nuts": "Tree nuts",
+      "milk": "Milk",
+      "eggs": "Eggs",
+      "wheat": "Wheat",
+      "soy": "Soy",
+      "fish": "Fish",
+      "seafood": "Seafood",
+      "sesame": "Sesame seeds",
+      "sulfites": "Sulfites",
+      "mustard": "Mustard",
+      "lupin": "Lupin",
+      "celery": "Celery",
+      "gluten": "Gluten",
+      "corn": "Corn",
+      "legumes": "Legumes/Peas",
+      "kiwi": "Kiwi",
+      "banana": "Banana",
+      "stoneFruits": "Stone fruits"
+    },
+    "mealTimeOptions": {
+      "breakfast": "Breakfast",
+      "quickLunch": "Quick lunch",
+      "dinner": "Dinner",
+      "snack": "Snack",
+      "detox": "Detox",
+      "lateNight": "Late night"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
@@ -1606,5 +1653,8 @@
     "weeklyTrends": "Weekly trends",
     "viewsVsLastWeek": "views compared to last week",
     "noChangeVsLastWeek": "No change compared to last week"
+  },
+  "placeholders": {
+    "addressInput": "Start typing your delivery address in Montreal..."
   }
 }
