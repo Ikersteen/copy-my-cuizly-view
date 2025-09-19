@@ -585,7 +585,8 @@
     "noMicrophone": "Microphone not available",
     "permissionDenied": "Microphone permission denied",
     "networkError": "Network error",
-    "placeholder": "Example: I want spicy Asian food for dinner"
+    "placeholder": "Example: I want spicy Asian food for dinner",
+    "disclaimer": "Cuizly can sometimes make mistakes, please verify important information."
   },
   "voiceAssistant": {
     "features": {

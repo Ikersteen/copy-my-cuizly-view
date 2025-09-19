@@ -850,7 +850,8 @@
         "title": "Erreur audio",
         "description": "Impossible de lire la réponse vocale"
       }
-    }
+    },
+    "disclaimer": "Cuizly peut parfois se tromper, pensez à vérifier les infos importantes."
   },
   "cta": {
     "title": "Prêt à révolutionner votre expérience culinaire ?",
