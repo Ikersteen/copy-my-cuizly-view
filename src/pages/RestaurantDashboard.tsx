@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon } from "lucide-react";
+import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAddresses } from "@/hooks/useAddresses";
 
@@ -168,54 +168,36 @@ const RestaurantDashboard = () => {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 space-y-4 sm:space-y-6 md:space-y-8">
         
-        {/* Cover Image Facebook-style */}
-        {restaurant?.cover_image_url && (
-          <div className="relative w-full mb-8">
-            <div className="w-full h-32 sm:h-48 lg:h-56 rounded-xl overflow-hidden bg-muted">
+        {/* Cover Image Section - Always visible */}
+        <div className="relative w-full mb-8">
+          <div className="w-full h-32 sm:h-48 lg:h-56 rounded-xl overflow-hidden bg-muted flex items-center justify-center">
+            {restaurant?.cover_image_url ? (
               <img 
                 src={restaurant.cover_image_url} 
                 alt="Image de couverture du restaurant"
                 className="w-full h-full object-cover"
               />
-            </div>
-            <div className="absolute -bottom-8 left-4">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-background border-4 border-background rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
-                {restaurant?.logo_url ? (
-                  <img 
-                    src={restaurant.logo_url} 
-                    alt="Logo du restaurant"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-foreground font-semibold text-lg sm:text-xl">
-                    <UserIcon className="h-6 w-6" />
-                  </span>
-                )}
+            ) : (
+              <div className="text-muted-foreground text-center">
+                <Camera className="h-8 w-8 mx-auto mb-2" />
+                <p className="text-sm">{t('restaurant.noCoverImage')}</p>
               </div>
+            )}
+          </div>
+          <div className="absolute -bottom-8 left-4">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-background border-4 border-background rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
+              {restaurant?.logo_url ? (
+                <img 
+                  src={restaurant.logo_url} 
+                  alt="Logo du restaurant"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <UserIcon className="h-6 w-6 text-muted-foreground" />
+              )}
             </div>
           </div>
-        )}
-
-        {/* Header - Only show when no cover image */}
-        {!restaurant?.cover_image_url && (
-          <div className="mb-8">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
-                {restaurant?.logo_url ? (
-                  <img 
-                    src={restaurant.logo_url} 
-                    alt="Logo du restaurant"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-primary-foreground font-semibold text-lg">
-                    <UserIcon className="h-6 w-6" />
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
 
         {/* Restaurant Information Section - Between logo and welcome message */}
         <div className="mb-8 ml-4">
