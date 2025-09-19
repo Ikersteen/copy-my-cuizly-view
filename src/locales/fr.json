@@ -1091,7 +1091,8 @@
     }
   },
   "preferences": {
-    "title": "Mes préférences culinaires",
+    "title": "Préférences",
+    "subtitle": "Personnalisez votre expérience",
     "cuisines": "Cuisines préférées",
     "selectCuisines": "Sélectionnez vos types de cuisine favoris",
     "selectCuisine": "Sélectionner une cuisine",
@@ -1099,7 +1100,7 @@
     "dietaryRestrictionsDesc": "Indiquez vos restrictions alimentaires",
     "allergens": "Allergènes à éviter",
     "allergensDesc": "Sélectionnez vos allergènes à éviter",
-    "priceRange": "Gamme de prix préférée",
+    "priceRange": "Gamme de prix",
     "priceRangeDesc": "Choisissez votre budget habituel",
     "selectPriceRange": "Sélectionner une gamme de prix",
     "priceRanges": {
@@ -1112,7 +1113,7 @@
     "fullAddress": "Votre adresse complète à Montréal",
     "deliveryAddress": "Votre adresse",
     "addressSelected": "Adresse sélectionnée",
-    "deliveryRadius": "Rayon de livraison (km)",
+    "deliveryRadius": "Rayon de livraison",
     "mealTimes": "Moments de repas favoris",
     "mealTimesDesc": "Quand commandez-vous habituellement ?",
     "notifications": "Préférences de notification",
@@ -1121,7 +1122,8 @@
     "emailNotifications": "Notifications courriel",
     "emailNotificationsDesc": "Recevez des notifications par e-mail",
     "cancel": "Annuler",
-    "save": "Sauvegarder",
+    "save": "Sauvegarder les préférences",
+    "saveError": "Erreur lors de la sauvegarde",
     "dietaryOptions": {
       "vegetarian": "Végétarien",
       "vegan": "Végan",
