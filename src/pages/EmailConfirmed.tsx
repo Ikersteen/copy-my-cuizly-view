@@ -9,41 +9,14 @@ import { useToast } from "@/hooks/use-toast";
 
 const EmailConfirmed = () => {
   const [countdown, setCountdown] = useState(5);
-  const [userType, setUserType] = useState<'consumer' | 'restaurant_owner' | null>(null);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { t } = useTranslation();
-  const { toast } = useToast();
 
   useEffect(() => {
-    // Get user profile to determine redirect
-    const getUserProfile = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session?.user) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('user_type')
-            .eq('user_id', session.user.id)
-            .single();
-          
-          setUserType(profile?.user_type || 'consumer');
-        }
-      } catch (error) {
-        console.error('Error getting user profile:', error);
-        setUserType('consumer'); // default fallback
-      }
-    };
-
-    getUserProfile();
-
     // Start countdown timer
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          navigate('/dashboard');
+          window.location.reload(); // Recharge la page au lieu de naviguer
           return 0;
         }
         return prev - 1;
@@ -51,15 +24,12 @@ const EmailConfirmed = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [navigate]);
+  }, []);
 
   const handleRedirectNow = () => {
-    navigate('/dashboard');
+    window.location.reload(); // Recharge la page au lieu de naviguer
   };
 
-  const getDashboardType = () => {
-    return userType === 'restaurant_owner' ? t('emailConfirmed.restaurantDashboard') : t('emailConfirmed.consumerDashboard');
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center p-4">
@@ -71,10 +41,10 @@ const EmailConfirmed = () => {
           
           <div className="space-y-2">
             <CardTitle className="text-2xl font-bold text-foreground animate-fade-in">
-              {t('emailConfirmed.title')}
+              🎉 Email confirmé !
             </CardTitle>
             <CardDescription className="text-lg animate-fade-in">
-              {t('emailConfirmed.description')}
+              Votre compte a été activé avec succès
             </CardDescription>
           </div>
         </CardHeader>
@@ -82,16 +52,13 @@ const EmailConfirmed = () => {
         <CardContent className="space-y-6 text-center">
           <div className="p-4 rounded-lg bg-green-50 border border-green-200 animate-fade-in">
             <p className="text-green-800 font-medium">
-              {t('emailConfirmed.successMessage')}
+              Félicitations ! Votre adresse email a été vérifiée.
             </p>
           </div>
 
           <div className="space-y-3 animate-fade-in">
             <p className="text-muted-foreground">
-              {t('emailConfirmed.redirectMessage', { 
-                seconds: countdown,
-                dashboard: getDashboardType()
-              })}
+              Redirection automatique dans {countdown} seconde{countdown > 1 ? 's' : ''}...
             </p>
             
             <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
@@ -107,12 +74,12 @@ const EmailConfirmed = () => {
             className="w-full group hover-scale transition-all duration-300"
             size="lg"
           >
-            <span>{t('emailConfirmed.accessDashboard')}</span>
+            <span>Accéder maintenant</span>
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
 
           <p className="text-xs text-muted-foreground">
-            {t('emailConfirmed.welcomeMessage')}
+            Bienvenue dans Cuizly !
           </p>
         </CardContent>
       </Card>
