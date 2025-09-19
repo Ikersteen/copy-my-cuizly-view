@@ -300,13 +300,43 @@
   },
   "contact": {
     "title": "Contact us",
-    "subtitle": "We'd love to hear from you",
-    "name": "Name",
-    "email": "Email",
-    "message": "Message",
-    "send": "Send Message",
-    "success": "Message sent successfully!",
-    "error": "Failed to send message. Please try again."
+    "subtitle": "A question? A suggestion? We're here to help.",
+    "form": {
+      "title": "Send us a message",
+      "description": "Fill out the form and we'll get back to you as soon as possible.",
+      "firstName": "First name",
+      "firstNamePlaceholder": "Iker",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Steen",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "How can we help you?",
+      "message": "Message",
+      "messagePlaceholder": "Describe your request...",
+      "send": "Send message"
+    },
+    "info": {
+      "title": "Contact information",
+      "email": {
+        "label": "Email",
+        "value": "cuizlycanada@gmail.com"
+      },
+      "address": {
+        "label": "Address", 
+        "value": "Montreal, QC (Canada)"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "+1 (514) 465-4783"
+      }
+    },
+    "hours": {
+      "title": "Business hours",
+      "weekdays": "Monday - Friday: 9:00 AM - 6:00 PM",
+      "saturday": "Saturday: 10:00 AM - 4:00 PM",
+      "sunday": "Sunday: Closed"
+    }
   },
   "footer": {
     "product": "Product",
@@ -1409,7 +1439,7 @@
   },
   "analytics": {
     "title": "Real-time performance dashboard",
-    "subtitle": "Performance insights by segment (Real-time updates)",
+    "subtitle": "Track your data in real-time and boost your restaurant's performance.",
     "totalOffers": "Total offers",
     "activeOffers": "active",
     "menusAdded": "Menus added", 
