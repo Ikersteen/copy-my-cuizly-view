@@ -712,7 +712,9 @@
     "viewAllFavorites": "View All Favorites",
     "exploreRestaurants": "Explore Restaurants",
     "viewProfile": "View Profile",
-    "removed": "Removed from favorites"
+    "removed": "Removed from favorites",
+    "added": "Added to favorites",
+    "quickAccess": "Quick access"
   },
   "voice": {
     "title": "Voice Assistant",
@@ -881,11 +883,6 @@
     "publish": "Publish",
     "customerReviews": "Customer reviews",
     "anonymousUser": "Anonymous user"
-  },
-  "favorites": {
-    "removed": "Removed from favorites",
-    "added": "Added to favorites", 
-    "quickAccess": "Quick access"
   },
   "restaurant": {
     "profile": "Restaurant Profile",
