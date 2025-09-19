@@ -477,6 +477,9 @@
   },
   "profile": {
     "title": "Profile",
+    "userProfile": "User Profile",
+    "profileDescription": "Manage your user profile and preferences",
+    "addPhoto": "Add a photo",
     "personalInfo": "Personal Information",
     "firstName": "First Name",
     "lastName": "Last Name",

@@ -372,12 +372,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-hidden p-0 m-4 sm:m-6">
-        <DialogHeader className="sr-only">
-          <DialogTitle>{t('profile.userProfile')}</DialogTitle>
-          <DialogDescription>
-            Gérer votre profil utilisateur et vos préférences
-          </DialogDescription>
-        </DialogHeader>
+         <DialogHeader className="sr-only">
+           <DialogTitle>{t('profile.userProfile')}</DialogTitle>
+           <DialogDescription>
+             {t('profile.profileDescription')}
+           </DialogDescription>
+         </DialogHeader>
         {/* Header avec avatar */}
         <div className="p-2 sm:p-4 md:p-6 lg:p-8 pb-2 sm:pb-4">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
@@ -403,9 +403,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                   <div className="w-full h-full bg-muted flex items-center justify-center group-hover:bg-muted/80 transition-colors">
                     <div className="text-center">
                       <UserIcon className="h-10 w-10 sm:h-8 sm:w-8 text-muted-foreground mx-auto mb-1" />
-                      <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                        Ajouter une photo
-                      </p>
+                       <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                         {t('profile.addPhoto')}
+                       </p>
                     </div>
                   </div>
                 )}
