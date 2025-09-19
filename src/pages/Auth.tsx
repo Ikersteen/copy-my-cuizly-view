@@ -271,7 +271,7 @@ const Auth = () => {
         email: email.trim().toLowerCase(),
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/email-confirmed`,
           captchaToken: hcaptchaToken,
           data: {
             full_name: nameValidation.sanitized,

@@ -1922,6 +1922,16 @@
     "searchConversation": "Rechercher une conversation...",
     "addressInput": "Commencez à taper votre adresse (Montréal ou Repentigny)..."
   },
+  "emailConfirmed": {
+    "title": "🎉 Email confirmé !",
+    "description": "Votre compte a été activé avec succès",
+    "successMessage": "✅ Votre adresse email a été vérifiée et votre compte est maintenant actif",
+    "redirectMessage": "Redirection automatique vers votre {{dashboard}} dans {{seconds}} secondes...",
+    "consumerDashboard": "tableau de bord consommateur",
+    "restaurantDashboard": "tableau de bord restaurant",
+    "accessDashboard": "Accéder maintenant à mon tableau de bord",
+    "welcomeMessage": "Bienvenue dans la communauté Cuizly ! 🍽️"
+  },
   "voiceAssistant": {
     "features": {
       "naturalConversation": {

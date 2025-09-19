@@ -1653,6 +1653,16 @@
   "placeholders": {
     "addressInput": "Start typing your address (Montreal or Repentigny)..."
   },
+  "emailConfirmed": {
+    "title": "🎉 Email Confirmed!",
+    "description": "Your account has been successfully activated",
+    "successMessage": "✅ Your email address has been verified and your account is now active",
+    "redirectMessage": "Automatic redirect to your {{dashboard}} in {{seconds}} seconds...",
+    "consumerDashboard": "consumer dashboard",
+    "restaurantDashboard": "restaurant dashboard",
+    "accessDashboard": "Access my dashboard now",
+    "welcomeMessage": "Welcome to the Cuizly community! 🍽️"
+  },
   "cookieBanner": {
     "title": "We use cookies",
     "description": "We use cookies to improve your experience on our site and to show you personalized content.",
