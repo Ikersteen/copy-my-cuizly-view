@@ -148,7 +148,7 @@ const ConsumerDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground animate-pulse">{t('loading.personalizedExperience')}</p>
+          <p className="text-muted-foreground animate-pulse">Préparation de votre expérience personnalisée...</p>
         </div>
       </div>
     );

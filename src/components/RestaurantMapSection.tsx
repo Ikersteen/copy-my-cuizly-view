@@ -83,7 +83,7 @@ const RestaurantMapSection = () => {
                    <div className="h-full flex items-center justify-center">
                      <div className="text-center">
                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                       <p className="text-muted-foreground">{t('loading.mapConfiguration')}</p>
+                       <p className="text-muted-foreground">Configuration de la carte...</p>
                      </div>
                    </div>
                 ) : apiKey ? (
@@ -122,7 +122,7 @@ const RestaurantMapSection = () => {
                     <div className="flex items-center justify-center h-full text-muted-foreground">
                        <div className="text-center">
                          <MapPin className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                         <p>{t('loading.restaurants')}</p>
+                         <p>Recherche de restaurants...</p>
                        </div>
                     </div>
                   ) : (

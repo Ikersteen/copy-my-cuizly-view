@@ -149,7 +149,7 @@ const RestaurantDashboard = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground">{t('loading.dashboard')}</p>
+          <p className="text-muted-foreground">Chargement de votre tableau de bord...</p>
         </div>
       </div>
     );
