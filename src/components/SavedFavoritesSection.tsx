@@ -25,8 +25,10 @@ interface Restaurant {
 }
 
 export const SavedFavoritesSection = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentLanguage } = useLanguage();
+  console.log('🌐 Current language in SavedFavoritesSection:', i18n.language, currentLanguage);
+  console.log('🔍 Translation test:', t('favorites.noFavorites'));
   const navigate = useNavigate();
   const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
   const { preferences } = useUserPreferences();
