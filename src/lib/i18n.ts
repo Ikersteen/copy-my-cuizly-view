@@ -23,7 +23,7 @@ i18n
     resources,
     fallbackLng: 'fr',
     // Remove hardcoded lng to let detection work
-    debug: true,
+    debug: false,
     
     interpolation: {
       escapeValue: false

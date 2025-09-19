@@ -22,14 +22,17 @@ const renderApp = () => {
 
 // Better initialization with language persistence
 const initializeApp = () => {
-  // Ensure the saved language is loaded
-  const savedLanguage = localStorage.getItem('cuizly-language');
+  // Force French as default language
+  const savedLanguage = localStorage.getItem('cuizly-language') || 'fr';
+  console.log('🔧 Initializing language:', savedLanguage);
+  
   if (savedLanguage && (savedLanguage === 'fr' || savedLanguage === 'en')) {
     i18n.changeLanguage(savedLanguage).then(() => {
       renderApp();
     });
   } else {
-    // Default to French if no valid language is saved
+    // Default to French
+    localStorage.setItem('cuizly-language', 'fr');
     i18n.changeLanguage('fr').then(() => {
       renderApp();
     });
