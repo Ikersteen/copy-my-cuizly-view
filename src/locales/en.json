@@ -287,11 +287,22 @@
     "error": "Failed to send message. Please try again."
   },
   "footer": {
-    "description": "Discover the best restaurants with AI-powered recommendations tailored to your preferences.",
-    "links": "Quick Links",
+    "product": "Product",
+    "features": "Features",
+    "rates": "Pricing", 
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "company": "Company",
+    "team": "Team",
+    "legalNotices": "Legal Notices",
     "legal": "Legal",
-    "followUs": "Follow Us",
-    "rights": "© 2024 Cuizly. All rights reserved."
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use", 
+    "cookiePolicy": "Cookie Policy",
+    "tagline": "Discover Montreal's gastronomy with personalized AI-powered recommendations.",
+    "allRightsReserved": "All rights reserved",
+    "companyName": "Cuizly Technologies",
+    "instagram": "Instagram"
   },
   "address": {
     "delivery": "Delivery address", 

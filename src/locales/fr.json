@@ -932,10 +932,11 @@
     "legalNotices": "Mentions légales",
     "legal": "Légal",
     "privacyPolicy": "Politique de confidentialité",
-    "termsOfUse": "Conditions d'utilisation",
+    "termsOfUse": "Conditions d'utilisation", 
     "cookiePolicy": "Politique des cookies",
-    "tagline": "Ton prochain coup de cœur culinaire en un swipe.",
+    "tagline": "Découvrez la gastronomie montréalaise avec des recommandations personnalisées propulsées par l'IA.",
     "allRightsReserved": "Tous droits réservés",
+    "companyName": "Cuizly Technologies",
     "instagram": "Instagram"
   },
   "pricingLanding": {

@@ -158,7 +158,7 @@ const Footer = () => {
             
             <div className="flex items-center space-x-2 text-cuizly-neutral/80 text-xs sm:text-sm">
               <span>© 2025</span>
-              <span className="font-medium">Cuizly Technologies</span>
+              <span className="font-medium">{t('footer.companyName')}</span>
               <span>•</span>
               <span>{t('footer.allRightsReserved')}</span>
             </div>
