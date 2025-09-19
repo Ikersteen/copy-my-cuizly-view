@@ -1652,5 +1652,35 @@
   },
   "placeholders": {
     "addressInput": "Start typing your delivery address in Montreal..."
+  },
+  "cookieBanner": {
+    "title": "We use cookies",
+    "description": "We use cookies to improve your experience on our site and to show you personalized content.",
+    "learnMore": "Learn more",
+    "decline": "Decline",
+    "configure": "Configure",
+    "accept": "Accept all"
+  },
+  "cookiePreferences": {
+    "title": "Cookie Preferences",
+    "description": "Manage your cookie preferences. You can choose which cookies to accept or decline.",
+    "necessary": {
+      "title": "Necessary Cookies",
+      "description": "These cookies are essential for the proper functioning of our website and cannot be disabled.",
+      "label": "Always active"
+    },
+    "analytics": {
+      "title": "Analytics Cookies",
+      "description": "These cookies help us understand how you use our website to improve our services.",
+      "label": "Enable analytics cookies"
+    },
+    "marketing": {
+      "title": "Marketing Cookies",
+      "description": "These cookies are used to show you relevant advertisements and promotional content.",
+      "label": "Enable marketing cookies"
+    },
+    "declineAll": "Decline all",
+    "acceptAll": "Accept all",
+    "saveChoices": "Save my choices"
   }
 }
