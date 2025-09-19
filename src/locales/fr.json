@@ -1958,5 +1958,22 @@
     "to": "au",
     "selectEnd": "sélectionnez la fin",
     "selectEndDate": "Sélectionnez la date de fin (max {{maxDays}} jours)"
+  },
+  "footer": {
+    "product": "Produit",
+    "features": "Fonctionnalités",
+    "rates": "Tarifs",
+    "support": "Support",
+    "contactUs": "Nous contacter",
+    "company": "Entreprise",
+    "team": "Équipe",
+    "legalNotices": "Mentions légales",
+    "legal": "Légal",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfUse": "Conditions d'utilisation",
+    "cookiePolicy": "Politique des cookies",
+    "tagline": "Votre copilote culinaire intelligent pour découvrir Montréal",
+    "instagram": "Instagram",
+    "allRightsReserved": "Tous droits réservés"
   }
 }
