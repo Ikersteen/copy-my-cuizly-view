@@ -132,12 +132,12 @@ export const RecommendationCardsSection = () => {
 
   // Helper function for meal time calculation (used in multiple places)
   const getCurrentMealTime = (hour: number): string => {
-    if (hour >= 6 && hour < 11) return 'Déjeuner / Brunch';
-    if (hour >= 11 && hour < 15) return 'Déjeuner rapide';
-    if (hour >= 15 && hour < 17) return 'Collation';
-    if (hour >= 17 && hour < 22) return 'Dîner / Souper';
-    if (hour >= 22 || hour < 2) return 'Repas tardif';
-    return 'Détox';
+    if (hour >= 6 && hour < 11) return t('mealTimes.breakfast');
+    if (hour >= 11 && hour < 15) return t('mealTimes.lunch');
+    if (hour >= 15 && hour < 17) return t('mealTimes.snack');
+    if (hour >= 17 && hour < 22) return t('mealTimes.dinner');
+    if (hour >= 22 || hour < 2) return t('mealTimes.lateNight');
+    return t('mealTimes.detox');
   };
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
@@ -438,12 +438,12 @@ export const RecommendationCardsSection = () => {
 
       // Helper function for meal time calculation  
       function getCurrentMealTime(hour: number): string {
-        if (hour >= 6 && hour < 11) return 'Déjeuner / Brunch';
-        if (hour >= 11 && hour < 15) return 'Déjeuner rapide';
-        if (hour >= 15 && hour < 17) return 'Collation';
-        if (hour >= 17 && hour < 22) return 'Dîner / Souper';
-        if (hour >= 22 || hour < 2) return 'Repas tardif';
-        return 'Détox';
+        if (hour >= 6 && hour < 11) return t('mealTimes.breakfast');
+        if (hour >= 11 && hour < 15) return t('mealTimes.lunch');
+        if (hour >= 15 && hour < 17) return t('mealTimes.snack');
+        if (hour >= 17 && hour < 22) return t('mealTimes.dinner');
+        if (hour >= 22 || hour < 2) return t('mealTimes.lateNight');
+        return t('mealTimes.detox');
       }
 
       // Only proceed if we have good matches

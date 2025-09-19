@@ -1880,12 +1880,16 @@
     "connectionError": "Erreur de connexion",
     "checkInternetConnection": "Vérifiez votre connexion internet",
     "systemError": "Erreur système",
-    "unexpectedError": "Une erreur inattendue s'est produite"
+    "unexpectedError": "Une erreur inattendue s'est produite",
+    "configurationError": "Erreur de configuration",
+    "cannotLoadMap": "Impossible de charger la carte"
   },
   "loading": {
     "personalizedExperience": "Chargement de votre expérience personnalisée...",
     "dashboard": "Chargement du tableau de bord...",
-    "general": "Chargement..."
+    "general": "Chargement...",
+    "restaurants": "Chargement des restaurants...",
+    "mapConfiguration": "Configuration de la carte..."
   },
   "welcome": {
     "hello": "Bonjour",
@@ -2042,7 +2046,13 @@
     "apply": "Appliquer"
   },
   "restaurants": {
-    "popularTitle": "Restaurants populaires"
+    "popularTitle": "Restaurants populaires",
+    "discoverMontreal": "Découvrez les restaurants de Montréal",
+    "exploreInteractiveMap": "Explorez la carte interactive pour découvrir les meilleurs restaurants près de vous. Cliquez sur les marqueurs pour plus d'informations.",
+    "nearbyRestaurants": "Restaurants à proximité",
+    "restaurantsFound": "restaurants trouvés",
+    "tip": "Astuce :",
+    "tipDescription": "Cliquez sur les marqueurs rouges de la carte ou sur les restaurants de la liste pour voir plus de détails"
   },
   "voiceAssistant": {
     "modalTitle": "Assistant Vocal Cuizly",

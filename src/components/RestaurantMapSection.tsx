@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Star, Euro } from 'lucide-react';
 import { useGoogleMapsKey } from '@/hooks/useGoogleMapsKey';
+import { useTranslation } from 'react-i18next';
 
 interface Restaurant {
   place_id: string;
@@ -22,6 +23,7 @@ interface Restaurant {
 }
 
 const RestaurantMapSection = () => {
+  const { t } = useTranslation();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const { apiKey, loading: keyLoading, error: keyError } = useGoogleMapsKey();
@@ -56,11 +58,10 @@ const RestaurantMapSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-4">
-            Découvrez les restaurants de Montréal
+            {t('restaurants.discoverMontreal')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explorez la carte interactive pour découvrir les meilleurs restaurants près de vous. 
-            Cliquez sur les marqueurs pour plus d'informations.
+            {t('restaurants.exploreInteractiveMap')}
           </p>
         </div>
 
@@ -71,20 +72,20 @@ const RestaurantMapSection = () => {
               <CardContent className="p-0 h-full">
                 {keyError ? (
                   <div className="h-full flex items-center justify-center text-center p-6">
-                    <div>
-                      <p className="text-destructive mb-2">Erreur de configuration</p>
-                      <p className="text-muted-foreground text-sm">
-                        {keyError}
-                      </p>
-                    </div>
+                     <div>
+                       <p className="text-destructive mb-2">{t('errors.configurationError')}</p>
+                       <p className="text-muted-foreground text-sm">
+                         {keyError}
+                       </p>
+                     </div>
                   </div>
                 ) : keyLoading ? (
-                  <div className="h-full flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                      <p className="text-muted-foreground">Configuration de la carte...</p>
-                    </div>
-                  </div>
+                   <div className="h-full flex items-center justify-center">
+                     <div className="text-center">
+                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                       <p className="text-muted-foreground">{t('loading.mapConfiguration')}</p>
+                     </div>
+                   </div>
                 ) : apiKey ? (
                   <GoogleMap 
                     center={{ lat: 45.5017, lng: -73.5673 }}
@@ -93,11 +94,11 @@ const RestaurantMapSection = () => {
                     onRestaurantsLoaded={handleRestaurantsLoaded}
                   />
                 ) : (
-                  <div className="h-full flex items-center justify-center text-center p-6">
-                    <div>
-                      <p className="text-muted-foreground">Impossible de charger la carte</p>
-                    </div>
-                  </div>
+                   <div className="h-full flex items-center justify-center text-center p-6">
+                     <div>
+                       <p className="text-muted-foreground">{t('errors.cannotLoadMap')}</p>
+                     </div>
+                   </div>
                 )}
               </CardContent>
             </Card>
@@ -107,22 +108,22 @@ const RestaurantMapSection = () => {
           <div className="lg:col-span-1">
             <Card className="h-[600px] overflow-hidden">
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <MapPin className="h-5 w-5 mr-2 text-primary" />
-                  Restaurants à proximité
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  {restaurants.length} restaurants trouvés
-                </p>
+                 <CardTitle className="flex items-center">
+                   <MapPin className="h-5 w-5 mr-2 text-primary" />
+                   {t('restaurants.nearbyRestaurants')}
+                 </CardTitle>
+                 <p className="text-sm text-muted-foreground">
+                   {restaurants.length} {t('restaurants.restaurantsFound')}
+                 </p>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="h-[480px] overflow-y-auto">
                   {restaurants.length === 0 ? (
                     <div className="flex items-center justify-center h-full text-muted-foreground">
-                      <div className="text-center">
-                        <MapPin className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                        <p>Chargement des restaurants...</p>
-                      </div>
+                       <div className="text-center">
+                         <MapPin className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                         <p>{t('loading.restaurants')}</p>
+                       </div>
                     </div>
                   ) : (
                     <div className="space-y-3 p-4">
@@ -181,7 +182,7 @@ const RestaurantMapSection = () => {
         {/* Instructions */}
         <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            💡 <strong>Astuce :</strong> Cliquez sur les marqueurs rouges de la carte ou sur les restaurants de la liste pour voir plus de détails
+            💡 <strong>{t('restaurants.tip')}</strong> {t('restaurants.tipDescription')}
           </p>
         </div>
       </div>

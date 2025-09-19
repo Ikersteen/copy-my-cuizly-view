@@ -586,6 +586,15 @@
     "noFavoritesYet": "No favorites yet",
     "findFavoritesHere": "Find your favorite restaurants here"
   },
+  "tabs": {
+    "recommendations": "Recommendations",
+    "favorites": "Favorites", 
+    "offers": "Offers"
+  },
+  "accessibility": {
+    "voiceAssistant": "Voice Assistant",
+    "backToTop": "Back to top"
+  },
   "recommendations": {
     "title": "AI Recommendations",
     "subtitle": "Discover restaurants perfect for you",
@@ -647,7 +656,13 @@
     "featuredDishes": "Featured Dishes",
     "specialOffers": "Special Offers",
     "aboutRestaurant": "About this restaurant",
-    "similarRestaurants": "Similar Restaurants"
+    "similarRestaurants": "Similar Restaurants",
+    "discoverMontreal": "Discover Montreal Restaurants",
+    "exploreInteractiveMap": "Explore the interactive map to discover the best restaurants near you. Click on markers for more information.",
+    "nearbyRestaurants": "Nearby Restaurants",
+    "restaurantsFound": "restaurants found",
+    "tip": "Tip:",
+    "tipDescription": "Click on the red markers on the map or on the restaurants in the list to see more details"
   },
   "favorites": {
     "title": "Your Favorite Restaurants",
@@ -725,7 +740,8 @@
     "restaurants": "Loading restaurants...",
     "profile": "Loading profile...",
     "preferences": "Loading preferences...",
-    "personalizedExperience": "Preparing your personalized experience..."
+    "personalizedExperience": "Preparing your personalized experience...",
+    "mapConfiguration": "Setting up the map..."
   },
   "errors": {
     "title": "Error",
@@ -751,7 +767,9 @@
     "checkInternetConnection": "Check your internet connection",
     "systemError": "System error",
     "unexpectedError": "An unexpected error occurred",
-    "general": "An error occurred. Please try again."
+    "general": "An error occurred. Please try again.",
+    "configurationError": "Configuration error",
+    "cannotLoadMap": "Unable to load the map"
   },
   "common": {
     "loading": "Loading...",
@@ -883,6 +901,12 @@
     "noOffers": "No offers available",
     "noOngoingOffers": "No active offers",
     "newOffersHere": "New offers will appear here",
+    "noFinishedOffers": "No completed offers",
+    "historyHere": "Your offer history will appear here",
+    "validUntil": "Valid until",
+    "deactivated": "Deactivated",
+    "deactivatedOn": "Deactivated on",
+    "expiredOn": "Expired on",
     "createFirst": "Create your first special offer to attract customers"
   },
   "analytics": {
