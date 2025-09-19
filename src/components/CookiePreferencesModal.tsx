@@ -16,10 +16,10 @@ interface CookiePreferencesModalProps {
 const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalProps) => {
   const { preferences, saveCustomPreferences } = useCookieConsent();
   const [localPreferences, setLocalPreferences] = useState(preferences);
-  const { t, ready } = useTranslation();
+  const { t, ready, i18n } = useTranslation();
 
-  // Ne pas afficher le modal si i18n n'est pas prêt
-  if (!ready) return null;
+  // Ne pas afficher le modal si i18n n'est pas prêt ou si les traductions ne sont pas chargées
+  if (!ready || !i18n.isInitialized) return null;
 
   const handleSave = () => {
     saveCustomPreferences(localPreferences);
