@@ -1923,14 +1923,12 @@
     "addressInput": "Commencez à taper votre adresse (Montréal ou Repentigny)..."
   },
   "emailConfirmed": {
-    "title": "🎉 Email confirmé !",
+    "title": "🎉 Courriel confirmé !",
     "description": "Votre compte a été activé avec succès",
-    "successMessage": "✅ Votre adresse email a été vérifiée et votre compte est maintenant actif",
-    "redirectMessage": "Redirection automatique vers votre {{dashboard}} dans {{seconds}} secondes...",
-    "consumerDashboard": "tableau de bord consommateur",
-    "restaurantDashboard": "tableau de bord restaurant",
-    "accessDashboard": "Accéder maintenant à mon tableau de bord",
-    "welcomeMessage": "Bienvenue dans la communauté Cuizly ! 🍽️"
+    "successMessage": "Félicitations ! Votre adresse courriel a été vérifiée.",
+    "redirectMessage": "Redirection automatique dans {{seconds}} seconde{{seconds, plural, =1 {} other{s}}}...",
+    "accessNow": "Accéder maintenant",
+    "welcomeMessage": "Bienvenue dans Cuizly !"
   },
   "voiceAssistant": {
     "features": {

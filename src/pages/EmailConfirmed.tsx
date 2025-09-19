@@ -8,7 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const EmailConfirmed = () => {
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(3);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Start countdown timer
@@ -41,10 +42,10 @@ const EmailConfirmed = () => {
           
           <div className="space-y-2">
             <CardTitle className="text-2xl font-bold text-foreground animate-fade-in">
-              🎉 Email confirmé !
+              {t('emailConfirmed.title')}
             </CardTitle>
             <CardDescription className="text-lg animate-fade-in">
-              Votre compte a été activé avec succès
+              {t('emailConfirmed.description')}
             </CardDescription>
           </div>
         </CardHeader>
@@ -52,19 +53,19 @@ const EmailConfirmed = () => {
         <CardContent className="space-y-6 text-center">
           <div className="p-4 rounded-lg bg-green-50 border border-green-200 animate-fade-in">
             <p className="text-green-800 font-medium">
-              Félicitations ! Votre adresse email a été vérifiée.
+              {t('emailConfirmed.successMessage')}
             </p>
           </div>
 
           <div className="space-y-3 animate-fade-in">
             <p className="text-muted-foreground">
-              Redirection automatique dans {countdown} seconde{countdown > 1 ? 's' : ''}...
+              {t('emailConfirmed.redirectMessage', { seconds: countdown })}
             </p>
             
             <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
               <div 
                 className="h-full bg-primary transition-all duration-1000 ease-linear animate-pulse"
-                style={{ width: `${(5 - countdown) * 20}%` }}
+                style={{ width: `${(3 - countdown) * 33.33}%` }}
               />
             </div>
           </div>
@@ -74,12 +75,12 @@ const EmailConfirmed = () => {
             className="w-full group hover-scale transition-all duration-300"
             size="lg"
           >
-            <span>Accéder maintenant</span>
+            <span>{t('emailConfirmed.accessNow')}</span>
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
 
           <p className="text-xs text-muted-foreground">
-            Bienvenue dans Cuizly !
+            {t('emailConfirmed.welcomeMessage')}
           </p>
         </CardContent>
       </Card>

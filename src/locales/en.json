@@ -1654,14 +1654,12 @@
     "addressInput": "Start typing your address (Montreal or Repentigny)..."
   },
   "emailConfirmed": {
-    "title": "🎉 Email Confirmed!",
+    "title": "🎉 Email confirmed!",
     "description": "Your account has been successfully activated",
-    "successMessage": "✅ Your email address has been verified and your account is now active",
-    "redirectMessage": "Automatic redirect to your {{dashboard}} in {{seconds}} seconds...",
-    "consumerDashboard": "consumer dashboard",
-    "restaurantDashboard": "restaurant dashboard",
-    "accessDashboard": "Access my dashboard now",
-    "welcomeMessage": "Welcome to the Cuizly community! 🍽️"
+    "successMessage": "Congratulations! Your email address has been verified.",
+    "redirectMessage": "Automatic redirection in {{seconds}} second{{seconds, plural, =1 {} other{s}}}...",
+    "accessNow": "Access now",
+    "welcomeMessage": "Welcome to Cuizly!"
   },
   "cookieBanner": {
     "title": "We use cookies",
