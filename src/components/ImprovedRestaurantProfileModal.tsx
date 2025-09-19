@@ -374,7 +374,7 @@ export const ImprovedRestaurantProfileModal = ({
   return (
     <Dialog open={modalIsOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0">
-        <DialogTitle className="sr-only">{t('restaurantProfile.title')}</DialogTitle>
+        <DialogTitle className="sr-only">Profil du restaurant</DialogTitle>
         <DialogDescription className="sr-only">
           Modifiez les informations de votre restaurant, ajoutez des photos et gérez vos paramètres.
         </DialogDescription>
@@ -382,7 +382,7 @@ export const ImprovedRestaurantProfileModal = ({
         {/* Header with padding */}
         <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-center">{t('restaurantProfile.title')}</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-center">Profil du restaurant</DialogTitle>
           </DialogHeader>
         </div>
 
@@ -412,7 +412,7 @@ export const ImprovedRestaurantProfileModal = ({
                  ) : (
                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
                      <Camera className="h-16 w-16 text-gray-400 mb-2" />
-                     <p className="text-sm text-gray-500 font-medium">{t('restaurantProfile.noCoverImage')}</p>
+                     <p className="text-sm text-gray-500 font-medium">Aucune photo de couverture</p>
                    </div>
                  )}
                 
@@ -484,12 +484,12 @@ export const ImprovedRestaurantProfileModal = ({
 
             {/* Rest of the form */}
             <div className="space-y-2">
-              <Label htmlFor="name">{t('restaurantProfile.restaurantName')}</Label>
+              <Label htmlFor="name">Nom du restaurant</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder={t('restaurantProfile.restaurantNamePlaceholder')}
+                placeholder="Nom de votre restaurant"
               />
             </div>
 
@@ -526,8 +526,8 @@ export const ImprovedRestaurantProfileModal = ({
             <AddressSelector
               value={formData.address}
               onChange={(address) => setFormData(prev => ({ ...prev, address }))}
-              label={t('restaurantProfile.address')}
-              placeholder={t('restaurantProfile.addressPlaceholder')}
+              label="Adresse"
+              placeholder="Entrez l'adresse de votre restaurant"
             />
 
             <div className="space-y-2">
@@ -558,7 +558,7 @@ export const ImprovedRestaurantProfileModal = ({
             <div className="space-y-2">
               <Label htmlFor="instagram_url" className="flex items-center gap-2">
                 <Instagram className="h-4 w-4" />
-                {t('restaurantProfile.instagram')}
+                Instagram
               </Label>
               <Input
                 id="instagram_url"
@@ -572,7 +572,7 @@ export const ImprovedRestaurantProfileModal = ({
             <div className="space-y-2">
               <Label htmlFor="facebook_url" className="flex items-center gap-2">
                 <Facebook className="h-4 w-4" />
-                {t('restaurantProfile.facebook')}
+                Facebook
               </Label>
               <Input
                 id="facebook_url"
@@ -584,8 +584,8 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
-              <Label>{t('restaurantProfile.openingHours')}</Label>
-              <p className="text-sm text-muted-foreground">{t('restaurantProfile.openingHoursDesc')}</p>
+              <Label>Heures d'ouverture</Label>
+              <p className="text-sm text-muted-foreground">Définissez vos heures d'ouverture pour chaque jour de la semaine</p>
               <div className="space-y-2">
                 {Object.entries(formData.opening_hours).map(([day, hours]) => (
                   <div key={day} className="flex items-center gap-2">
@@ -639,7 +639,7 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <Label htmlFor="delivery_radius">{t('restaurantProfile.deliveryRadius')}</Label>
-              <p className="text-sm text-muted-foreground">{t('restaurantProfile.deliveryRadiusDesc')}</p>
+              <p className="text-sm text-muted-foreground">Distance maximale de livraison en kilomètres</p>
               <Input
                 id="delivery_radius"
                 type="number"

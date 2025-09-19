@@ -351,7 +351,7 @@ export const RestaurantProfileModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
+          <DialogTitle>Profil du restaurant</DialogTitle>
           <DialogDescription>
             {t('restaurantProfile.description')}
           </DialogDescription>
@@ -442,12 +442,12 @@ export const RestaurantProfileModal = ({
           {/* Informations de base */}
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">{t('restaurantProfile.restaurantName')} *</Label>
+              <Label htmlFor="name">Nom du restaurant *</Label>
               <Input
                 id="name"
                 value={formData.name || ""}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder={t('restaurantProfile.restaurantNamePlaceholder')}
+                placeholder="Nom de votre restaurant"
               />
             </div>
 
@@ -466,8 +466,8 @@ export const RestaurantProfileModal = ({
               <AddressSelector
                 value={formData.address || ""}
                 onChange={(address) => setFormData(prev => ({ ...prev, address }))}
-                label={t('restaurantProfile.address')}
-                placeholder={t('restaurantProfile.addressPlaceholder')}
+                label="Adresse"
+                placeholder="Entrez l'adresse de votre restaurant"
               />
             </div>
 
@@ -664,7 +664,7 @@ export const RestaurantProfileModal = ({
                 placeholder="5"
               />
               <p className="text-sm text-muted-foreground">
-                {t('restaurantProfile.deliveryRadiusDesc')}
+                Distance maximale de livraison en kilomètres
               </p>
             </div>
           </div>
