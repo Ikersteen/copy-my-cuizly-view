@@ -10,10 +10,10 @@ const PerformanceDashboardSection = () => {
       <div className="max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 mb-8 sm:mb-12">
         <div className="text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            {t('analytics.title')}
+            Tableau de performance en temps réel
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-            {t('analytics.subtitle')}
+            Suivez vos données en temps réel et boostez les performances de votre restaurant.
           </p>
         </div>
       </div>
