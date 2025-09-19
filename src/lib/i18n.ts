@@ -15,14 +15,14 @@ const resources = {
   }
 };
 
-// Initialize i18n immediately  
+// Initialize i18n with better persistence
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
     fallbackLng: 'fr',
-    lng: 'fr',
+    // Remove hardcoded lng to let detection work
     debug: false,
     
     interpolation: {
@@ -30,9 +30,11 @@ i18n
     },
     
     detection: {
-      order: ['localStorage'],
-      caches: ['localStorage'],
-      lookupLocalStorage: 'cuizly-language'
+      // Improved detection order for better persistence
+      order: ['localStorage', 'sessionStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage', 'sessionStorage'],
+      lookupLocalStorage: 'cuizly-language',
+      lookupSessionStorage: 'cuizly-language'
     },
 
     react: {
@@ -43,7 +45,11 @@ i18n
 
     // Ensure translations are loaded synchronously
     initImmediate: false,
-    preload: ['fr', 'en']
+    preload: ['fr', 'en'],
+    
+    // Load missing translations immediately
+    load: 'languageOnly',
+    cleanCode: true
   });
 
 export default i18n;
