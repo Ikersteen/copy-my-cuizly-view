@@ -496,17 +496,17 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
                   <div>
                     <Label htmlFor="phone" className="text-sm font-medium">{t('profile.phone')}</Label>
-                     <Input
-                       id="phone"
-                       value={localProfile.phone}
-                       onChange={(e) => setLocalProfile(prev => ({ ...prev, phone: e.target.value }))}
-                       placeholder="+1 (XXX) XXX-XXXX"
-                       className="mt-1"
-                       autoComplete="off"
-                       autoCorrect="off"
-                       autoCapitalize="off"
-                       spellCheck="false"
-                     />
+                       <Input
+                        id="phone"
+                        value={localProfile.phone}
+                        onChange={(e) => setLocalProfile(prev => ({ ...prev, phone: e.target.value }))}
+                        placeholder={t('profile.phonePlaceholder')}
+                        className="mt-1"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
+                      />
                      {validationErrors.phone && (
                        <p className="text-xs text-destructive mt-1">{t('profile.phoneInvalid')}</p>
                      )}
