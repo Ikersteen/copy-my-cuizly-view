@@ -21,7 +21,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'fr',
+    fallbackLng: 'en',
     // Remove hardcoded lng to let detection work
     debug: false,
     
@@ -45,7 +45,7 @@ i18n
 
     // Ensure translations are loaded synchronously
     initImmediate: false,
-    preload: ['fr', 'en'],
+    preload: ['en', 'fr'],
     
     // Load missing translations immediately
     load: 'languageOnly',
