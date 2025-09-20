@@ -400,13 +400,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                     </div>
                   </>
                 ) : (
-                  <div className="w-full h-full bg-muted flex items-center justify-center group-hover:bg-muted/80 transition-colors">
-                    <div className="text-center">
-                      <UserIcon className="h-10 w-10 sm:h-8 sm:w-8 text-muted-foreground mx-auto mb-1" />
-                       <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                         {t('profile.addPhoto')}
-                       </p>
-                    </div>
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    <UserIcon className="h-12 w-12 text-gray-400" />
                   </div>
                 )}
               </div>
