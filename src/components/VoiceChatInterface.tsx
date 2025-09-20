@@ -793,7 +793,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Écrivez votre message à Cuizly..."
+                  placeholder={t('voiceChat.inputPlaceholder')}
                   disabled={isProcessing}
                   autoComplete="on"
                   autoCorrect="on"

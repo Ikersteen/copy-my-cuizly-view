@@ -844,7 +844,8 @@
         "description": "Impossible de lire la réponse vocale"
       }
     },
-    "disclaimer": "Cuizly peut parfois se tromper, pensez à vérifier les infos importantes."
+    "disclaimer": "Cuizly peut parfois se tromper, pensez à vérifier les infos importantes.",
+    "inputPlaceholder": "Posez une question à Cuizly"
   },
   "cta": {
     "title": "Prêt à révolutionner votre expérience culinaire ?",

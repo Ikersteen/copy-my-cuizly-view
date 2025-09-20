@@ -1433,7 +1433,8 @@
         "description": "Cannot play voice response"
       }
     },
-    "disclaimer": "Cuizly can sometimes be wrong, remember to check the important information."
+    "disclaimer": "Cuizly can sometimes be wrong, remember to check the important information.",
+    "inputPlaceholder": "Ask Cuizly a question"
   },
   "waitlist": {
     "title": "Join the Waitlist",
