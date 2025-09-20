@@ -290,13 +290,170 @@ const Profile = () => {
     return (
       <>
         <Dialog open={true} onOpenChange={() => navigate(-1)}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-semibold">
+          <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
+            <DialogHeader className="flex-shrink-0">
+              <DialogTitle className="text-xl font-semibold text-center">
                 Profil
               </DialogTitle>
             </DialogHeader>
-            {profileContent}
+            
+            {/* Contenu scrollable */}
+            <div className="flex-1 overflow-y-auto px-1">
+              <div className="space-y-6">
+                {/* Photo de profil */}
+                <div className="flex flex-col items-center space-y-4">
+                  <Avatar className="w-24 h-24">
+                    <AvatarImage 
+                      src={localProfile.avatar_url} 
+                      alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
+                    />
+                    <AvatarFallback className="text-xl">
+                      <User className="w-12 h-12" />
+                    </AvatarFallback>
+                  </Avatar>
+                  
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setPhotoModalOpen(true)}
+                    size="sm"
+                  >
+                    <Camera className="w-4 h-4 mr-2" />
+                    Changer la photo
+                  </Button>
+                </div>
+
+                <Separator />
+
+                {/* Informations personnelles */}
+                <div className="space-y-4">
+                  <h2 className="text-lg font-medium text-center">Informations personnelles</h2>
+                  
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="first_name">Prénom</Label>
+                      <Input
+                        id="first_name"
+                        value={localProfile.first_name}
+                        onChange={(e) => handleInputChange('first_name', e.target.value)}
+                        placeholder="Votre prénom"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="last_name">Nom</Label>
+                      <Input
+                        id="last_name"
+                        value={localProfile.last_name}
+                        onChange={(e) => handleInputChange('last_name', e.target.value)}
+                        placeholder="Votre nom"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="username">Nom d'utilisateur</Label>
+                      <Input
+                        id="username"
+                        value={localProfile.username}
+                        onChange={(e) => handleInputChange('username', e.target.value)}
+                        placeholder="Votre nom d'utilisateur"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Téléphone</Label>
+                      <Input
+                        id="phone"
+                        value={localProfile.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        placeholder="Votre numéro de téléphone"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Préférences */}
+                <div className="space-y-4">
+                  <h2 className="text-lg font-medium text-center">Préférences</h2>
+                  
+                  <div className="space-y-2">
+                    <Label>Langue</Label>
+                    <Select value={currentLanguage} onValueChange={changeLanguage}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="fr">Français</SelectItem>
+                        <SelectItem value="en">English</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Zone de danger */}
+                <div className="space-y-4">
+                  <h2 className="text-lg font-medium text-destructive text-center">Zone de danger</h2>
+                  
+                  <div className="p-4 border border-destructive/20 rounded-lg bg-destructive/5">
+                    <div className="space-y-2 text-center">
+                      <h4 className="font-medium text-destructive">Supprimer le compte</h4>
+                      <p className="text-sm text-muted-foreground">Cette action est irréversible</p>
+                      
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" size="sm">
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Supprimer le compte
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Annuler</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={handleDeleteAccount}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Supprimer
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Espace pour les boutons fixes */}
+                <div className="h-16"></div>
+              </div>
+            </div>
+            
+            {/* Boutons d'action fixes */}
+            <div className="flex-shrink-0 flex gap-3 p-4 border-t bg-background">
+              <Button 
+                variant="outline" 
+                onClick={() => navigate(-1)}
+                disabled={saving}
+                className="flex-1"
+              >
+                Annuler
+              </Button>
+              <Button 
+                onClick={handleSave} 
+                disabled={saving}
+                className="flex-1"
+               >
+                 {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+               </Button>
+             </div>
           </DialogContent>
         </Dialog>
 
