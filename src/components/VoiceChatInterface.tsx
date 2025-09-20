@@ -805,7 +805,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
                   onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
                   disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim()}
-                  className="rounded-full w-12 h-12 p-0 flex items-center justify-center"
+                  className="rounded-full w-10 h-10 p-0 flex items-center justify-center"
                 >
                   {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
                     <Square className="w-3.5 h-3.5 fill-white dark:fill-black" />
