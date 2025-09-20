@@ -47,25 +47,19 @@ const ConsumerDashboard = () => {
   const { toast } = useToast();
   const { t } = useTranslation();
 
-  // Animation de bienvenue - simplifiée pour debug
+  // Vérifier s'il faut jouer l'animation de bienvenue
   useEffect(() => {
-    console.log('🔄 useEffect animation démarré');
-    localStorage.removeItem('cuizly_welcome_animation_seen');
-    
-    console.log('🎉 Déclenchement immédiat de l\'animation de bienvenue');
-    setShowWelcomeAnimation(true);
-    
-    // Cacher l'animation après 3 secondes
-    const timer = setTimeout(() => {
-      console.log('✅ Animation terminée');
-      setShowWelcomeAnimation(false);
-    }, 3000);
-
-    return () => {
-      console.log('🧹 Cleanup animation useEffect');
-      clearTimeout(timer);
-    };
-  }, []);
+    const hasSeenWelcome = localStorage.getItem('cuizly_welcome_animation_seen');
+    if (!hasSeenWelcome && !loading) {
+      setShowWelcomeAnimation(true);
+      localStorage.setItem('cuizly_welcome_animation_seen', 'true');
+      
+      // Cacher l'animation après 3 secondes
+      setTimeout(() => {
+        setShowWelcomeAnimation(false);
+      }, 3000);
+    }
+  }, [loading]);
 
   // Timeout to prevent infinite loading
   useEffect(() => {
