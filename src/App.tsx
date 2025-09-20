@@ -26,7 +26,6 @@ import Waitlist from "./pages/Waitlist";
 import VoiceChat from "./pages/VoiceChat";
 import RestaurantMenu from "./pages/RestaurantMenu";
 import EmailConfirmed from "./pages/EmailConfirmed";
-import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,7 +33,7 @@ const queryClient = new QueryClient();
 const AppContent = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard') && !location.pathname.includes('/voice') && !location.pathname.includes('/profile');
+  const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard') && !location.pathname.includes('/voice');
 
   return (
     <div className="min-h-screen bg-background">
@@ -115,11 +114,10 @@ const AppContent = () => {
         } />
         <Route path="/restaurant/:id" element={<RestaurantMenu />} />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
-      {!location.pathname.includes('/profile') && <CookieBanner />}
+      <CookieBanner />
     </div>
   );
 };

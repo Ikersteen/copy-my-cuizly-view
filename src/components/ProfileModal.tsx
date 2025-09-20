@@ -693,19 +693,19 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           </div>
 
           {/* Footer avec boutons d'action */}
-          <div className="flex gap-3 mt-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center pt-3 border-t bg-background/80 backdrop-blur-sm sticky bottom-0 px-4 sm:px-8 py-2 -mx-4 sm:-mx-8 -mb-4">
             <Button 
               variant="outline" 
               onClick={() => onOpenChange(false)}
               disabled={loading}
-              className="flex-1"
+              className="order-2 sm:order-1 h-12 sm:h-10"
             >
               {t('profile.cancel')}
             </Button>
             <Button 
               onClick={handleSave} 
               disabled={loading}
-              className="flex-1"
+              className="order-1 sm:order-2 min-w-[120px] h-12 sm:h-10 text-base sm:text-sm font-semibold bg-primary hover:bg-primary/90"
              >
                {loading ? t('profile.saving') : t('profile.save')}
              </Button>
