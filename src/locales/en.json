@@ -465,6 +465,7 @@
     },
     "success": {
       "accountCreated": "Account created successfully!",
+      "checkEmailConfirmation": "Check your email to confirm your account",
       "welcomeBack": "Welcome back!",
       "emailVerificationSent": "A verification email has been sent to your inbox",
       "passwordReset": "Password reset email sent",
