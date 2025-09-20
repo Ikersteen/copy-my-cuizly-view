@@ -1,4 +1,4 @@
-export type AddressType = 'restaurant' | 'user_delivery' | 'user_billing';
+export type AddressType = 'user_delivery' | 'user_billing';
 
 export interface Address {
   id?: string;

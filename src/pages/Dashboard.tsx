@@ -34,7 +34,7 @@ const Dashboard = () => {
   }
 
   // Render appropriate dashboard based on user type
-  return profile?.user_type === 'restaurant_owner' ? <RestaurantDashboard /> : <ConsumerDashboard />;
+  return <ConsumerDashboard />;
 };
 
 export default Dashboard;

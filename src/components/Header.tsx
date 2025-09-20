@@ -1,92 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate, useLocation } from "react-router-dom";  
-import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useState } from "react";
-import { Menu, X, Globe } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";  
+import { useState } from "react";
+import { Menu, Globe } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/hooks/useLanguage";
 
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { useToast } from "@/hooks/use-toast";
 import { AuthenticatedConsumerHeader } from "@/components/AuthenticatedConsumerHeader";
-import { AuthenticatedRestaurantHeader } from "@/components/AuthenticatedRestaurantHeader";
 import { ConsumerMobileMenu } from "@/components/ConsumerMobileMenu";
-import { RestaurantMobileMenu } from "@/components/RestaurantMobileMenu";
-import { MenusModal } from "@/components/MenusModal";
 import { PreferencesModal } from "@/components/PreferencesModal";
 import { ProfileModal } from "@/components/ProfileModal";
-import { NewOfferModal } from "@/components/NewOfferModal";
-import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
-
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 
 const Header = () => {
   const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
-  const { toast } = useToast();
-  const { user, profile, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
+  const { user, profile, isAuthenticated, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const [showNewOffer, setShowNewOffer] = useState(false);
-  const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
-  const [showMenus, setShowMenus] = useState(false);
-  const [restaurant, setRestaurant] = useState(null);
-  
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Load restaurant data when user is a restaurant owner
-  const loadRestaurantData = async (userId: string) => {
-    try {
-      const { data: restaurantData, error } = await supabase
-        .from('restaurants')
-        .select('*')
-        .eq('owner_id', userId)
-        .maybeSingle();
-
-      if (!error && restaurantData) {
-        setRestaurant(restaurantData);
-      }
-    } catch (error) {
-      console.error('Error loading restaurant data:', error);
-    }
-  };
-
-  // Load restaurant data when isRestaurant changes
-  useEffect(() => {
-    if (isRestaurant && user?.id) {
-      loadRestaurantData(user.id);
-    }
-  }, [isRestaurant, user?.id]);
-
-  const handleMenusClick = () => {
-    if (!restaurant?.id) {
-      toast({
-        title: t('common.error'),
-        description: t('dashboard.completeProfile'),
-        variant: "destructive"
-      });
-      return;
-    }
-    setShowMenus(true);
-  };
 
   const handleNavigate = (path: string) => {
     setIsSheetOpen(false);
     navigate(path);
-  };
-
-  const handleSwitchToRestaurant = () => {
-    navigate('/auth');
-  };
-
-  const handleSwitchToConsumer = () => {
-    navigate('/auth');
   };
 
   // Utilise le même logo que le footer partout
@@ -142,14 +82,13 @@ const Header = () => {
 
           {/* Navigation/Menu based on authentication status */}
           {isAuthenticated ? (
-            // Authenticated user - show role-specific menu
+            // Authenticated user - show consumer header
             <>
               {/* Center space for authenticated users */}
               <div className="flex-1"></div>
               
-              {/* Desktop: Show role-specific header */}
-              {isConsumer && <AuthenticatedConsumerHeader />}
-              {isRestaurant && <AuthenticatedRestaurantHeader />}
+              {/* Desktop: Show consumer header */}
+              <AuthenticatedConsumerHeader />
             </>
           ) : (
             // Public navigation - show for non-authenticated users
@@ -218,22 +157,11 @@ const Header = () => {
           {/* Menu - Always visible */}
           <div className="flex items-center">
             {isAuthenticated ? (
-              // Authenticated mobile menu - role specific
-              <>
-                {isConsumer && (
-                  <ConsumerMobileMenu 
-                    onProfileClick={() => setShowProfile(true)}
-                    onPreferencesClick={() => setShowPreferences(true)}
-                  />
-                )}
-                {isRestaurant && (
-                  <RestaurantMobileMenu 
-                    onNewOfferClick={() => setShowNewOffer(true)}
-                    onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
-                    onMenusClick={handleMenusClick}
-                  />
-                )}
-              </>
+              // Authenticated mobile menu - consumer only
+              <ConsumerMobileMenu 
+                onProfileClick={() => setShowProfile(true)}
+                onPreferencesClick={() => setShowPreferences(true)}
+              />
             ) : (
               // Public mobile menu
               <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -320,6 +248,7 @@ const Header = () => {
           </div>
         </div>
       </div>
+      
       {/* Profile Switch Modal */}
       {isAuthenticated && (
         <ProfileSwitchModal
@@ -329,47 +258,17 @@ const Header = () => {
         />
       )}
       
-      {/* Other Modals - Only show when authenticated */}
+      {/* Consumer Modals - Only show when authenticated */}
       {isAuthenticated && (
         <>
-          {isConsumer && (
-            <>
-              <PreferencesModal 
-                open={showPreferences} 
-                onOpenChange={setShowPreferences}
-              />
-              <ProfileModal 
-                open={showProfile} 
-                onOpenChange={setShowProfile}
-              />
-            </>
-          )}
-          {isRestaurant && (
-            <>
-              <NewOfferModal 
-                open={showNewOffer}
-                onOpenChange={setShowNewOffer}
-                restaurantId={null}
-                onSuccess={() => {}}
-              />
-              <RestaurantProfileModal 
-                open={showRestaurantProfile}
-                onOpenChange={setShowRestaurantProfile}
-                restaurant={null}
-                onUpdate={() => {}}
-              />
-              <MenusModal 
-                open={showMenus}
-                onOpenChange={setShowMenus}
-                restaurantId={restaurant?.id || null}
-                onSuccess={() => {
-                  if (restaurant?.id && user?.id) {
-                    loadRestaurantData(user.id);
-                  }
-                }}
-              />
-            </>
-          )}
+          <PreferencesModal 
+            open={showPreferences} 
+            onOpenChange={setShowPreferences}
+          />
+          <ProfileModal 
+            open={showProfile} 
+            onOpenChange={setShowProfile}
+          />
         </>
       )}
     </header>

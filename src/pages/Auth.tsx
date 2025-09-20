@@ -20,7 +20,7 @@ import { useDataPersistence } from "@/hooks/useDataPersistence";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [userType, setUserType] = useState<'consumer' | 'restaurant_owner'>('consumer');
+  const [userType] = useState<'consumer'>('consumer');
   const [hcaptchaToken, setHcaptchaToken] = useState<string | null>(null);
   const [captchaError, setCaptchaError] = useState<string | null>(null);
   const [showSignInPassword, setShowSignInPassword] = useState(false);
@@ -62,15 +62,10 @@ const Auth = () => {
   const { currentLanguage } = useLanguage();
   const { restoreDataAfterAuth } = useDataPersistence();
 
-  // Check URL parameters to set user type and active tab
+  // Check URL parameters to set active tab
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const typeParam = urlParams.get('type');
     const tabParam = urlParams.get('tab');
-    
-    if (typeParam === 'restaurant') {
-      setUserType('restaurant_owner');
-    }
     
     if (tabParam === 'signup') {
       setActiveTab('signup');
@@ -206,7 +201,6 @@ const Auth = () => {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const fullName = formData.get('fullName') as string;
-    const restaurantName = userType === 'restaurant_owner' ? formData.get('restaurantName') as string : '';
 
     // Enhanced validation
     const emailValidation = validateEmail(email);
@@ -242,18 +236,6 @@ const Auth = () => {
       return;
     }
 
-    if (userType === 'restaurant_owner' && restaurantName) {
-      const restaurantNameValidation = validateTextInput(restaurantName, INPUT_LIMITS.NAME, 'Nom du restaurant');
-      if (!restaurantNameValidation.isValid) {
-        toast({
-          title: t('auth.errors.invalidRestaurantName'),
-          description: restaurantNameValidation.error,
-          variant: "destructive"
-        });
-        setIsLoading(false);
-        return;
-      }
-    }
 
     // Vérification hCaptcha
     if (!hcaptchaToken) {
@@ -276,7 +258,6 @@ const Auth = () => {
           data: {
             full_name: nameValidation.sanitized,
             user_type: userType,
-            restaurant_name: userType === 'restaurant_owner' ? validateTextInput(restaurantName, INPUT_LIMITS.NAME).sanitized : null,
             phone_number: phoneVerified ? phoneNumber : null
           }
         }
@@ -352,28 +333,13 @@ const Auth = () => {
         user_id: user.id,
         first_name: user.user_metadata.full_name?.split(' ')[0] || '',
         last_name: user.user_metadata.full_name?.split(' ').slice(1).join(' ') || '',
-        user_type: user.user_metadata.user_type || 'consumer',
-        restaurant_name: user.user_metadata.restaurant_name || null,
+        user_type: 'consumer',
         phone: user.user_metadata.phone_number || null
       });
 
       if (error) {
         console.error('Error creating profile:', error);
         return;
-      }
-
-      // Si c'est un propriétaire de restaurant, créer automatiquement le restaurant
-      if (user.user_metadata.user_type === 'restaurant_owner' && user.user_metadata.restaurant_name) {
-        const { error: restaurantError } = await supabase.from('restaurants').insert({
-          name: user.user_metadata.restaurant_name,
-          owner_id: user.id,
-          description: `Bienvenue chez ${user.user_metadata.restaurant_name}`,
-          is_active: true
-        });
-
-        if (restaurantError) {
-          console.error('Error creating restaurant:', restaurantError);
-        }
       }
     } catch (error) {
       console.error('Error creating profile:', error);
@@ -1017,19 +983,12 @@ const Auth = () => {
                     <Label className="text-sm">{t('auth.form.iAm')}</Label>
                     <RadioGroup
                       value={userType}
-                      onValueChange={(value: 'consumer' | 'restaurant_owner') => setUserType(value)}
                       className="flex space-x-4"
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="consumer" id="consumer" />
                         <Label htmlFor="consumer" className="text-xs sm:text-sm cursor-pointer">
                           {t('auth.form.consumer')}
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="restaurant_owner" id="restaurant_owner" />
-                        <Label htmlFor="restaurant_owner" className="text-xs sm:text-sm cursor-pointer">
-                          {t('auth.form.restaurantOwner')}
                         </Label>
                       </div>
                     </RadioGroup>
@@ -1051,7 +1010,7 @@ const Auth = () => {
                     </div>
                   </div>
 
-                  {userType === 'restaurant_owner' && (
+                  {false && (
                     <div className="space-y-2">
                       <Label htmlFor="restaurantName" className="text-sm">{t('auth.form.restaurantName')}</Label>
                       <div className="relative">
