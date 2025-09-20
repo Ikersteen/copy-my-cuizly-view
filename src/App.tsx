@@ -26,6 +26,7 @@ import Waitlist from "./pages/Waitlist";
 import VoiceChat from "./pages/VoiceChat";
 import RestaurantMenu from "./pages/RestaurantMenu";
 import EmailConfirmed from "./pages/EmailConfirmed";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -114,6 +115,12 @@ const AppContent = () => {
         } />
         <Route path="/restaurant/:id" element={<RestaurantMenu />} />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
+        <Route path="/profile" element={
+          <>
+            <Header />
+            <Profile />
+          </>
+        } />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
