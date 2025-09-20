@@ -130,7 +130,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header avec titre et bouton fermer */}
-      <div className="flex items-center justify-between p-4 border-b">
+      <div className="sticky top-0 z-10 flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur-sm">
         <h1 className="text-xl font-semibold">Profil</h1>
         <Button 
           variant="ghost" 
@@ -141,7 +141,7 @@ const Profile = () => {
         </Button>
       </div>
 
-      <div className="p-4 space-y-6">
+      <div className="p-4 space-y-6 pb-safe-area-inset-bottom">
         {/* Photo de profil */}
         <div className="flex flex-col items-center space-y-4">
           <Avatar className="w-24 h-24">
@@ -274,22 +274,24 @@ const Profile = () => {
         </div>
 
         {/* Boutons d'action */}
-        <div className="flex gap-3 pt-4">
-          <Button 
-            variant="outline" 
-            onClick={() => navigate(-1)}
-            disabled={saving}
-            className="flex-1"
-          >
-            Annuler
-          </Button>
-          <Button 
-            onClick={handleSave} 
-            disabled={saving}
-            className="flex-1"
-           >
-             {saving ? 'Sauvegarde...' : 'Sauvegarder'}
-           </Button>
+        <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t p-4 -mx-4">
+          <div className="flex gap-3">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate(-1)}
+              disabled={saving}
+              className="flex-1 h-12"
+            >
+              Annuler
+            </Button>
+            <Button 
+              onClick={handleSave} 
+              disabled={saving}
+              className="flex-1 h-12"
+             >
+               {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+             </Button>
+           </div>
          </div>
       </div>
 
