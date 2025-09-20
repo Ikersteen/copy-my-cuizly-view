@@ -824,7 +824,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         {/* Disclaimer */}
         <div className="flex-shrink-0 px-6 py-2">
           <p className="text-center text-xs text-muted-foreground">
-            {t('voiceAssistant.disclaimer')}
+            {t('voiceChat.disclaimer')}
           </p>
         </div>
       </main>
