@@ -808,9 +808,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   className="rounded-full w-12 h-12 p-0 flex items-center justify-center"
                 >
                   {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
-                    <Square className="w-4 h-4 fill-white dark:fill-black" />
+                    <Square className="w-3.5 h-3.5 fill-white dark:fill-black" />
                   ) : (
-                    <Send className="w-4 h-4" />
+                    <Send className="w-3.5 h-3.5" />
                   )}
                 </Button>
               </div>
