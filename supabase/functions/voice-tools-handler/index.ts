@@ -101,7 +101,7 @@ serve(async (req) => {
         };
         break;
       case 'get_restaurant_recommendations':
-        const { cuisine: restoCuisine, neighborhood, budget, dietary_restrictions } = toolArgs;
+        const { cuisine: restoCuisine, neighborhood, budget: restoBudget, dietary_restrictions } = toolArgs;
         
         // Détecter si c'est pour Repentigny ou Montréal
         const isRepentigny = neighborhood && (
@@ -121,7 +121,7 @@ serve(async (req) => {
                 phone: "(450) 582-6672",
                 cuisine: restoCuisine || "Déjeuners et brunchs",
                 neighborhood: "Centre-ville Repentigny",
-                budget: budget || "Économique (15-25$ par personne)",
+                budget: restoBudget || "Économique (15-25$ par personne)",
                 rating: 4.2,
                 hours: "Lun-Dim 6h-15h",
                 description: "Spécialiste des déjeuners créatifs et brunchs généreux. Fruits frais et plats colorés.",
@@ -133,7 +133,7 @@ serve(async (req) => {
                 phone: "(450) 585-4848",
                 cuisine: restoCuisine || "Grillades et BBQ",
                 neighborhood: "Centre-ville Repentigny",
-                budget: budget || "Moyen (30-45$ par personne)",
+                budget: restoBudget || "Moyen (30-45$ par personne)",
                 rating: 4.0,
                 hours: "Lun-Dim 11h30-22h",
                 description: "Spécialités de grillades, côtes levées et steaks. Ambiance décontractée.",
@@ -145,7 +145,7 @@ serve(async (req) => {
                 phone: "(450) 585-3434",
                 cuisine: restoCuisine || "Italien moderne",
                 neighborhood: "Repentigny",
-                budget: budget || "Moyen (25-40$ par personne)",
+                budget: restoBudget || "Moyen (25-40$ par personne)",
                 rating: 4.1,
                 hours: "Lun-Dim 11h-22h",
                 description: "Cuisine italienne moderne avec bar à pain gratuit. Parfait pour les familles.",
@@ -163,7 +163,7 @@ serve(async (req) => {
                 phone: "(514) 544-0100",
                 cuisine: restoCuisine || "Fruits de mer",
                 neighborhood: neighborhood || "Vieux-Montréal",
-                budget: budget || "Moyen (35-55$ par personne)",
+                budget: restoBudget || "Moyen (35-55$ par personne)",
                 rating: 4.5,
                 hours: "Mar-Sam 17h30-22h30",
                 description: "Excellents fruits de mer dans une ambiance chaleureuse. Spécialités : huîtres, homard, poissons frais.",
@@ -175,7 +175,7 @@ serve(async (req) => {
                 phone: "(514) 935-6504", 
                 cuisine: restoCuisine || "Bistro français",
                 neighborhood: neighborhood || "Little Burgundy",
-                budget: budget || "Élevé (60-90$ par personne)",
+                budget: restoBudget || "Élevé (60-90$ par personne)",
                 rating: 4.7,
                 hours: "Mar-Sam 17h-23h",
                 description: "Cuisine créative avec produits locaux de qualité. Réservation fortement recommandée.",
@@ -187,7 +187,7 @@ serve(async (req) => {
                 phone: "(514) 842-4813",
                 cuisine: restoCuisine || "Deli traditionnel",
                 neighborhood: neighborhood || "Plateau-Mont-Royal", 
-                budget: budget || "Économique (15-25$ par personne)",
+                budget: restoBudget || "Économique (15-25$ par personne)",
                 rating: 4.3,
                 hours: "Dim-Mer 10h30-0h30, Jeu-Sam 10h30-3h30",
                 description: "Légendaire smoked meat depuis 1928. Ambiance authentique, portions généreuses.",
