@@ -49,13 +49,19 @@ const ConsumerDashboard = () => {
 
   // Vérifier s'il faut jouer l'animation de bienvenue
   useEffect(() => {
+    // Temporairement, on force l'animation pour le test
+    localStorage.removeItem('cuizly_welcome_animation_seen');
     const hasSeenWelcome = localStorage.getItem('cuizly_welcome_animation_seen');
+    console.log('Animation check:', { hasSeenWelcome, loading });
+    
     if (!hasSeenWelcome && !loading) {
+      console.log('Playing welcome animation');
       setShowWelcomeAnimation(true);
       localStorage.setItem('cuizly_welcome_animation_seen', 'true');
       
       // Cacher l'animation après 3 secondes
       setTimeout(() => {
+        console.log('Hiding welcome animation');
         setShowWelcomeAnimation(false);
       }, 3000);
     }
