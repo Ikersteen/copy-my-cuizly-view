@@ -115,12 +115,7 @@ const AppContent = () => {
         } />
         <Route path="/restaurant/:id" element={<RestaurantMenu />} />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
-        <Route path="/profile" element={
-          <>
-            <Header />
-            <Profile />
-          </>
-        } />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
