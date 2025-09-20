@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
 interface Profile {
-  user_type: 'consumer';
+  user_type: 'consumer' | 'restaurant_owner';
 }
 
 export const useUserProfile = () => {
@@ -80,8 +80,7 @@ export const useUserProfile = () => {
             .maybeSingle();
           
           if (!error) {
-            // Always default to consumer since we only have consumers now
-            const profileData: Profile = { user_type: 'consumer' };
+            const profileData = data || { user_type: 'consumer' };
             setProfile(profileData);
             setLoading(false);
             return;
@@ -122,7 +121,8 @@ export const useUserProfile = () => {
     profile,
     loading,
     isAuthenticated: !!user,
-    isConsumer: true,
+    isConsumer: profile?.user_type === 'consumer',
+    isRestaurant: profile?.user_type === 'restaurant_owner',
     refreshProfile
   };
 };

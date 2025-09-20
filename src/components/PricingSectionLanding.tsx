@@ -31,8 +31,18 @@ const PricingSectionLanding = () => {
   };
 
   const handleCTAClick = (e: React.MouseEvent, planIndex: number) => {
-    // No profile switching needed in consumer-only app
-    // All users are consumers, so redirect to appropriate flow
+    if (isAuthenticated) {
+      // Consumer plan: show modal only if user is restaurant_owner profile
+      if (planIndex === 0 && profile?.user_type === 'restaurant_owner') {
+        e.preventDefault();
+        setShowProfileSwitch(true);
+      }
+      // Pro plan: show modal only if user is consumer profile  
+      else if (planIndex === 1 && profile?.user_type === 'consumer') {
+        e.preventDefault();
+        setShowProfileSwitch(true);
+      }
+    }
   };
 
   const handleSwitchToRestaurant = () => {
@@ -116,14 +126,33 @@ const PricingSectionLanding = () => {
                     </li>
                   ))}
                 </ul>
-                <Link to="/auth">
-                  <Button className={`w-full text-sm sm:text-base ${
-                    index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
-                    'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground'
-                  }`}>
+                {/* Consumer plan: show modal if authenticated and on restaurant_owner profile */}
+                {isAuthenticated && index === 0 && profile?.user_type === 'restaurant_owner' ? (
+                  <Button 
+                    className="w-full text-sm sm:text-base bg-foreground hover:bg-foreground/90 text-background"
+                    onClick={(e) => handleCTAClick(e, index)}
+                  >
                     {t(plan.ctaKey)}
                   </Button>
-                </Link>
+                ) : 
+                /* Pro plan: show modal if authenticated and on consumer profile */
+                isAuthenticated && index === 1 && profile?.user_type === 'consumer' ? (
+                  <Button 
+                    className="w-full text-sm sm:text-base bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground"
+                    onClick={(e) => handleCTAClick(e, index)}
+                  >
+                    {t(plan.ctaKey)}
+                  </Button>
+                ) : (
+                  <Link to={index === 0 ? "/auth" : "/auth?type=restaurant&tab=signup"}>
+                    <Button className={`w-full text-sm sm:text-base ${
+                      index === 0 ? 'bg-foreground hover:bg-foreground/90 text-background' : 
+                      'bg-cuizly-pro hover:bg-cuizly-pro/90 text-cuizly-pro-foreground'
+                    }`}>
+                      {t(plan.ctaKey)}
+                    </Button>
+                  </Link>
+                )}
               </CardContent>
             </Card>
           ))}

@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import ConsumerDashboard from "./ConsumerDashboard";
+import RestaurantDashboard from "./RestaurantDashboard";
 
 const Dashboard = () => {
   const { user, profile, loading, isAuthenticated } = useUserProfile();
@@ -32,7 +34,7 @@ const Dashboard = () => {
   }
 
   // Render appropriate dashboard based on user type
-  return <ConsumerDashboard />;
+  return profile?.user_type === 'restaurant_owner' ? <RestaurantDashboard /> : <ConsumerDashboard />;
 };
 
 export default Dashboard;
