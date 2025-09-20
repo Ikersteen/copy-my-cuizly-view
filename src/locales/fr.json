@@ -1924,7 +1924,6 @@
   },
   "emailConfirmed": {
     "title": "🎉 Courriel confirmé !",
-    "description": "Votre compte a été activé avec succès",
     "successMessage": "Félicitations ! Votre adresse courriel a été vérifiée.",
     "redirectMessage": "Redirection automatique dans {{seconds}} seconde{{seconds, plural, =1 {} other{s}}}...",
     "accessNow": "Accéder maintenant",

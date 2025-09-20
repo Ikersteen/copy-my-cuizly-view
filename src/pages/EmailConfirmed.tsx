@@ -40,14 +40,9 @@ const EmailConfirmed = () => {
             <CheckCircle className="w-12 h-12 text-green-600 animate-pulse" />
           </div>
           
-          <div className="space-y-2">
-            <CardTitle className="text-2xl font-bold text-foreground animate-fade-in">
-              {t('emailConfirmed.title')}
-            </CardTitle>
-            <CardDescription className="text-lg animate-fade-in">
-              {t('emailConfirmed.description')}
-            </CardDescription>
-          </div>
+          <CardTitle className="text-2xl font-bold text-foreground animate-fade-in">
+            {t('emailConfirmed.title')}
+          </CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-6 text-center">

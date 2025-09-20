@@ -1655,7 +1655,6 @@
   },
   "emailConfirmed": {
     "title": "🎉 Email confirmed!",
-    "description": "Your account has been successfully activated",
     "successMessage": "Congratulations! Your email address has been verified.",
     "redirectMessage": "Automatic redirection in {{seconds}} second{{seconds, plural, =1 {} other{s}}}...",
     "accessNow": "Access now",
