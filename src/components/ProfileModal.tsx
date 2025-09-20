@@ -693,7 +693,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           </div>
 
           {/* Footer avec boutons d'action */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center pt-3 border-t bg-background/80 backdrop-blur-sm sticky bottom-0 px-4 sm:px-8 py-2 -mx-4 sm:-mx-8 -mb-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center pt-2 border-t bg-background/80 backdrop-blur-sm sticky bottom-0 px-4 sm:px-8 py-2 -mx-4 sm:-mx-8 -mb-4">
             <Button 
               variant="outline" 
               onClick={() => onOpenChange(false)}
