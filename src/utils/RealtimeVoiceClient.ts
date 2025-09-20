@@ -137,18 +137,9 @@ export class RealtimeVoiceClient {
           console.log("Voice client event:", event.type);
         }
         
-        // Intercepter les réponses de l'assistant pour ElevenLabs
-        if (event.type === 'response.output_item.added' && event.item?.content) {
-          const textContent = event.item.content.find((c: any) => c.type === 'text');
-          if (textContent?.text) {
-            console.log('🎤 Processing AI response with ElevenLabs:', textContent.text);
-            await this.processWithElevenLabs(textContent.text);
-          }
-        }
-        
-        // Aussi intercepter les transcriptions si disponibles
+        // Utiliser seulement les transcriptions finales pour éviter les doublons
         if (event.type === 'response.audio_transcript.done' && event.transcript) {
-          console.log('🎤 Processing transcript with ElevenLabs:', event.transcript);
+          console.log('🎤 Processing final transcript with ElevenLabs:', event.transcript);
           await this.processWithElevenLabs(event.transcript);
         }
         
