@@ -35,6 +35,7 @@ const Profile = () => {
   const [saving, setSaving] = useState(false);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
     if (profile) {
@@ -47,6 +48,17 @@ const Profile = () => {
       });
     }
   }, [profile]);
+
+  // Récupérer l'email de l'utilisateur
+  useEffect(() => {
+    const getUserEmail = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.email) {
+        setUserEmail(session.user.email);
+      }
+    };
+    getUserEmail();
+  }, []);
 
   const handleInputChange = (field: string, value: any) => {
     setLocalProfile(prev => ({ ...prev, [field]: value }));
@@ -134,8 +146,9 @@ const Profile = () => {
   const profileContent = (
     <div className="space-y-6">
       {/* Photo de profil */}
-      <div className="flex flex-col items-center space-y-4">
-        <Avatar className="w-24 h-24">
+      <div className="flex items-center space-x-4">
+        {/* Avatar à gauche */}
+        <Avatar className="w-24 h-24 flex-shrink-0">
           <AvatarImage 
             src={localProfile.avatar_url} 
             alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
@@ -145,14 +158,24 @@ const Profile = () => {
           </AvatarFallback>
         </Avatar>
         
-        <Button 
-          variant="outline" 
-          onClick={() => setPhotoModalOpen(true)}
-          size="sm"
-        >
-          <Camera className="w-4 h-4 mr-2" />
-          Changer la photo
-        </Button>
+        {/* Informations à droite */}
+        <div className="flex-1 space-y-2">
+          <h3 className="text-xl font-semibold">
+            {`${localProfile.first_name || ''} ${localProfile.last_name || ''}`.trim() || 'Utilisateur'}
+          </h3>
+          <p className="text-muted-foreground">
+            {userEmail}
+          </p>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full max-w-xs"
+            onClick={() => setPhotoModalOpen(true)}
+          >
+            <Camera className="w-4 h-4 mr-2" />
+            Changer la photo
+          </Button>
+        </div>
       </div>
 
       <Separator />
@@ -301,8 +324,9 @@ const Profile = () => {
             <div className="flex-1 overflow-y-auto px-4 py-4 min-h-0">
               <div className="space-y-6">
                 {/* Photo de profil */}
-                <div className="flex flex-col items-center space-y-4">
-                  <Avatar className="w-24 h-24">
+                <div className="flex items-center space-x-4">
+                  {/* Avatar à gauche */}
+                  <Avatar className="w-24 h-24 flex-shrink-0">
                     <AvatarImage 
                       src={localProfile.avatar_url} 
                       alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
@@ -312,14 +336,24 @@ const Profile = () => {
                     </AvatarFallback>
                   </Avatar>
                   
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setPhotoModalOpen(true)}
-                    size="sm"
-                  >
-                    <Camera className="w-4 h-4 mr-2" />
-                    Changer la photo
-                  </Button>
+                  {/* Informations à droite */}
+                  <div className="flex-1 space-y-2">
+                    <h3 className="text-xl font-semibold">
+                      {`${localProfile.first_name || ''} ${localProfile.last_name || ''}`.trim() || 'Utilisateur'}
+                    </h3>
+                    <p className="text-muted-foreground">
+                      {userEmail}
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => setPhotoModalOpen(true)}
+                    >
+                      <Camera className="w-4 h-4 mr-2" />
+                      Changer la photo
+                    </Button>
+                  </div>
                 </div>
 
                 <Separator />
