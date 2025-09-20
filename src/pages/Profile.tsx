@@ -290,7 +290,7 @@ const Profile = () => {
     return (
       <>
         <Dialog open={true} onOpenChange={() => navigate(-1)}>
-          <DialogContent className="sm:max-w-md w-[95%] max-h-[95vh] flex flex-col mx-auto my-auto">
+          <DialogContent className="sm:max-w-md w-[95%] h-[85vh] flex flex-col mx-auto my-auto pb-safe-area-inset-bottom">
             <DialogHeader className="flex-shrink-0 text-center">
               <DialogTitle className="text-xl font-semibold">
                 Profil
@@ -298,7 +298,7 @@ const Profile = () => {
             </DialogHeader>
             
             {/* Contenu scrollable centré */}
-            <div className="flex-1 overflow-y-auto px-2">
+            <div className="flex-1 overflow-y-auto px-2 pb-2">
               <div className="space-y-6 text-center">
                 {/* Photo de profil */}
                 <div className="flex flex-col items-center space-y-4">
@@ -330,9 +330,9 @@ const Profile = () => {
                   
                   <div className="space-y-4 text-left">
                     <div className="space-y-2">
-                      <Label htmlFor="first_name">Prénom</Label>
+                      <Label htmlFor="first_name_mobile">Prénom</Label>
                       <Input
-                        id="first_name"
+                        id="first_name_mobile"
                         value={localProfile.first_name}
                         onChange={(e) => handleInputChange('first_name', e.target.value)}
                         placeholder="Votre prénom"
@@ -340,9 +340,9 @@ const Profile = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="last_name">Nom</Label>
+                      <Label htmlFor="last_name_mobile">Nom</Label>
                       <Input
-                        id="last_name"
+                        id="last_name_mobile"
                         value={localProfile.last_name}
                         onChange={(e) => handleInputChange('last_name', e.target.value)}
                         placeholder="Votre nom"
@@ -350,9 +350,9 @@ const Profile = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="username">Nom d'utilisateur</Label>
+                      <Label htmlFor="username_mobile">Nom d'utilisateur</Label>
                       <Input
-                        id="username"
+                        id="username_mobile"
                         value={localProfile.username}
                         onChange={(e) => handleInputChange('username', e.target.value)}
                         placeholder="Votre nom d'utilisateur"
@@ -360,9 +360,9 @@ const Profile = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Téléphone</Label>
+                      <Label htmlFor="phone_mobile">Téléphone</Label>
                       <Input
-                        id="phone"
+                        id="phone_mobile"
                         value={localProfile.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="Votre numéro de téléphone"
@@ -432,24 +432,24 @@ const Profile = () => {
                 </div>
                 
                 {/* Espace pour les boutons fixes */}
-                <div className="h-20"></div>
+                <div className="h-24"></div>
               </div>
             </div>
             
             {/* Boutons d'action fixes en bas */}
-            <div className="flex-shrink-0 flex gap-3 p-4 border-t bg-background/95 backdrop-blur">
+            <div className="flex-shrink-0 flex gap-3 p-4 border-t bg-background shadow-lg sticky bottom-0">
               <Button 
                 variant="outline" 
                 onClick={() => navigate(-1)}
                 disabled={saving}
-                className="flex-1"
+                className="flex-1 min-h-[44px]"
               >
                 Annuler
               </Button>
-              <Button 
+              <Button
                 onClick={handleSave} 
                 disabled={saving}
-                className="flex-1"
+                className="flex-1 min-h-[44px]"
                >
                  {saving ? 'Sauvegarde...' : 'Sauvegarder'}
                </Button>
