@@ -290,19 +290,19 @@ const Profile = () => {
     return (
       <>
         <Dialog open={true} onOpenChange={() => navigate(-1)}>
-          <DialogContent className="sm:max-w-md w-[95%] h-[85vh] flex flex-col mx-auto my-auto pb-safe-area-inset-bottom">
-            <DialogHeader className="flex-shrink-0 text-center">
+          <DialogContent className="sm:max-w-md w-[95vw] max-h-[90vh] flex flex-col mx-auto my-auto">
+            <DialogHeader className="flex-shrink-0 text-center border-b pb-3">
               <DialogTitle className="text-xl font-semibold">
                 Profil
               </DialogTitle>
             </DialogHeader>
             
-            {/* Contenu scrollable centré */}
-            <div className="flex-1 overflow-y-auto px-2 pb-2">
-              <div className="space-y-6 text-center">
+            {/* Contenu scrollable */}
+            <div className="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+              <div className="space-y-6">
                 {/* Photo de profil */}
                 <div className="flex flex-col items-center space-y-4">
-                  <Avatar className="w-24 h-24 mx-auto">
+                  <Avatar className="w-24 h-24">
                     <AvatarImage 
                       src={localProfile.avatar_url} 
                       alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
@@ -326,9 +326,9 @@ const Profile = () => {
 
                 {/* Informations personnelles */}
                 <div className="space-y-4">
-                  <h2 className="text-lg font-medium">Informations personnelles</h2>
+                  <h2 className="text-lg font-medium text-center">Informations personnelles</h2>
                   
-                  <div className="space-y-4 text-left">
+                  <div className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="first_name_mobile">Prénom</Label>
                       <Input
@@ -375,9 +375,9 @@ const Profile = () => {
 
                 {/* Préférences */}
                 <div className="space-y-4">
-                  <h2 className="text-lg font-medium">Préférences</h2>
+                  <h2 className="text-lg font-medium text-center">Préférences</h2>
                   
-                  <div className="space-y-2 text-left">
+                  <div className="space-y-2">
                     <Label>Langue</Label>
                     <Select value={currentLanguage} onValueChange={changeLanguage}>
                       <SelectTrigger>
@@ -395,10 +395,10 @@ const Profile = () => {
 
                 {/* Zone de danger */}
                 <div className="space-y-4">
-                  <h2 className="text-lg font-medium text-destructive">Zone de danger</h2>
+                  <h2 className="text-lg font-medium text-destructive text-center">Zone de danger</h2>
                   
                   <div className="p-4 border border-destructive/20 rounded-lg bg-destructive/5">
-                    <div className="space-y-2">
+                    <div className="space-y-2 text-center">
                       <h4 className="font-medium text-destructive">Supprimer le compte</h4>
                       <p className="text-sm text-muted-foreground">Cette action est irréversible</p>
                       
@@ -430,14 +430,11 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-                
-                {/* Espace pour les boutons fixes */}
-                <div className="h-24"></div>
               </div>
             </div>
             
-            {/* Boutons d'action fixes en bas */}
-            <div className="flex-shrink-0 flex gap-3 p-4 border-t bg-background shadow-lg sticky bottom-0">
+            {/* Boutons d'action toujours visibles en bas */}
+            <div className="flex-shrink-0 flex gap-3 p-4 border-t bg-background">
               <Button 
                 variant="outline" 
                 onClick={() => navigate(-1)}
@@ -450,10 +447,10 @@ const Profile = () => {
                 onClick={handleSave} 
                 disabled={saving}
                 className="flex-1 min-h-[44px]"
-               >
-                 {saving ? 'Sauvegarde...' : 'Sauvegarder'}
-               </Button>
-             </div>
+              >
+                {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+              </Button>
+            </div>
           </DialogContent>
         </Dialog>
 
