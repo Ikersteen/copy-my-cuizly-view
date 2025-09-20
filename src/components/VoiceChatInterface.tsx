@@ -11,7 +11,6 @@ import ThinkingIndicator from '@/components/ThinkingIndicator';
 import TypewriterRichText from '@/components/TypewriterRichText';
 import RichTextRenderer from '@/components/RichTextRenderer';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
-import { useConversations } from '@/hooks/useConversations';
 
 interface Message {
   id: string;
@@ -30,14 +29,6 @@ interface VoiceChatInterfaceProps {
 const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const { toast } = useToast();
   const { t } = useTranslation();
-  const { 
-    currentConversation, 
-    createConversation, 
-    saveMessage, 
-    loadConversationMessages,
-    setCurrentConversation 
-  } = useConversations();
-  
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -52,7 +43,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [textInput, setTextInput] = useState('');
   const [abortController, setAbortController] = useState<AbortController | null>(null);
-  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -76,50 +66,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     };
     initUser();
   }, []);
-
-  // Initialize or create conversation
-  useEffect(() => {
-    const initializeConversation = async () => {
-      if (userId && !currentConversationId) {
-        const conversationId = await createConversation('voice', `Conversation vocale - ${new Date().toLocaleDateString('fr-FR')}`);
-        if (conversationId) {
-          setCurrentConversationId(conversationId);
-        }
-      }
-    };
-
-    initializeConversation();
-  }, [userId, currentConversationId, createConversation]);
-
-  // Load conversation messages when conversation is set
-  useEffect(() => {
-    const loadMessages = async () => {
-      if (currentConversation && currentConversation.messages) {
-        const formattedMessages: Message[] = currentConversation.messages.map(msg => ({
-          id: msg.id,
-          type: msg.role as 'user' | 'assistant' | 'system',
-          content: msg.content,
-          timestamp: new Date(msg.created_at),
-          isAudio: msg.message_type === 'audio'
-        }));
-        setMessages(formattedMessages);
-      }
-    };
-
-    loadMessages();
-  }, [currentConversation]);
-
-  // Save message to database
-  const saveMessageToDB = async (message: Message) => {
-    if (currentConversationId && userId) {
-      await saveMessage(
-        currentConversationId,
-        message.type as 'user' | 'assistant' | 'system',
-        message.content,
-        message.isAudio ? 'audio' : 'text'
-      );
-    }
-  };
 
   // Auto-scroll when messages change or content updates
   useEffect(() => {
@@ -413,17 +359,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           : msg
       ));
 
-      // Save user message to database
-      const userMessage: Message = {
-        id: userMessageId,
-        type: 'user',
-        content: transcription,
-        timestamp: new Date(),
-        isAudio: true,
-        isProcessing: false
-      };
-      await saveMessageToDB(userMessage);
-
       // Show thinking indicator
       setIsThinking(true);
 
@@ -443,18 +378,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       // Hide thinking indicator and show response with typing effect
       setIsThinking(false);
       const aiMessageId = (Date.now() + 1).toString();
-      const assistantMessage: Message = {
+      setMessages(prev => [...prev, {
         id: aiMessageId,
         type: 'assistant',
         content: aiResponse,
         timestamp: new Date(),
         isTyping: true
-      };
-      
-      setMessages(prev => [...prev, assistantMessage]);
-      
-      // Save assistant message to database (will save again when typing is done)
-      await saveMessageToDB({...assistantMessage, isTyping: false});
+      }]);
 
       const ttsResponse = await supabase.functions.invoke('cuizly-voice-elevenlabs', {
         body: { text: aiResponse }
@@ -487,18 +417,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     setAbortController(controller);
     
     const userMessageId = Date.now().toString();
-    const userMessage: Message = {
+    setMessages(prev => [...prev, {
       id: userMessageId,
       type: 'user',
       content: text,
       timestamp: new Date(),
       isAudio: false
-    };
-    
-    setMessages(prev => [...prev, userMessage]);
-    
-    // Save user message to database
-    await saveMessageToDB(userMessage);
+    }]);
 
     try {
       // If realtime client is connected, send via realtime
@@ -532,18 +457,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       // Hide thinking indicator and show response with typing effect
       setIsThinking(false);
       const aiMessageId = (Date.now() + 1).toString();
-      const assistantMessage: Message = {
+      setMessages(prev => [...prev, {
         id: aiMessageId,
         type: 'assistant',
         content: aiResponse,
         timestamp: new Date(),
         isTyping: true
-      };
-      
-      setMessages(prev => [...prev, assistantMessage]);
-      
-      // Save assistant message to database
-      await saveMessageToDB({...assistantMessage, isTyping: false});
+      }]);
 
     } catch (error) {
       if (controller.signal.aborted) {
