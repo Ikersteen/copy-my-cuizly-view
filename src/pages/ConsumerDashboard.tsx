@@ -162,9 +162,9 @@ const ConsumerDashboard = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
-              {/* Photo de profil */}
-              <div className="flex justify-start">
+            <div className="flex items-center space-x-4">
+              {/* Avatar à gauche */}
+              <div className="flex-shrink-0">
                 {profile?.avatar_url ? (
                   <img 
                     src={profile.avatar_url} 
@@ -177,12 +177,16 @@ const ConsumerDashboard = () => {
                   </div>
                 )}
               </div>
-              {/* Informations du profil */}
-              <div className="text-left">
+              
+              {/* Informations à droite */}
+              <div className="flex-1 min-w-0">
                 <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
                   {t('welcome.hello')} {profile?.first_name || ""} !
                 </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
+                  {user?.email}
+                </p>
+                <p className="text-sm text-muted-foreground">
                   {profile?.username ? `@${profile.username}` : ""}
                 </p>
                 <UserAddressDisplay className="mt-1" />
