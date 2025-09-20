@@ -137,9 +137,9 @@ export class RealtimeVoiceClient {
           console.log("Voice client event:", event.type);
         }
         
-        // Utiliser seulement les transcriptions finales pour éviter les doublons
+        // Intercepter les transcriptions pour ElevenLabs
         if (event.type === 'response.audio_transcript.done' && event.transcript) {
-          console.log('🎤 Processing final transcript with ElevenLabs:', event.transcript);
+          console.log('🎤 Processing transcript with ElevenLabs:', event.transcript);
           await this.processWithElevenLabs(event.transcript);
         }
         

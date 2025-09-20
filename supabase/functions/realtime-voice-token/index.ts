@@ -30,8 +30,8 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "gpt-4o-realtime-preview-2024-12-17",
         voice: "alloy",
-        modalities: ["text", "audio"], // Texte et audio pour une expérience complète
-        instructions: "Tu es Cuizly, assistant culinaire québécois. Réponds TRÈS BRIÈVEMENT en français familier. Maximum 1-2 phrases courtes. Pas de longs discours. Sois direct et naturel comme un ami qui donne un conseil rapide."
+        modalities: ["text"], // Seulement texte, pas d'audio de sortie
+        instructions: "Tu es Cuizly, un assistant vocal culinaire chaleureux et naturel, spécialisé dans la cuisine québécoise et montréalaise. Tu parles français de façon fluide et conversationnelle, comme un ami passionné de cuisine. Évite les réponses robotiques - sois spontané, engageant et utilise un ton naturel. Donne des conseils concrets et personnalisés sur les restaurants de Montréal. Réponds de manière conversationnelle, pas comme un assistant formel. Tes réponses seront lues par une voix synthétique, alors écris de façon naturelle pour l'oral."
       }),
     });
 
