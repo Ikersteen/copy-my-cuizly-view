@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera, Trash2, User, Phone, Shield, X } from "lucide-react";
@@ -11,6 +12,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useLanguage } from '@/hooks/useLanguage';
 import { useTranslation } from 'react-i18next';
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { PhotoActionModal } from "@/components/PhotoActionModal";
@@ -21,6 +23,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { currentLanguage, changeLanguage } = useLanguage();
   const { profile, updateProfile, loading } = useProfile();
+  const isMobile = useIsMobile();
   
   const [localProfile, setLocalProfile] = useState({
     first_name: '',
@@ -127,6 +130,191 @@ const Profile = () => {
     );
   }
 
+  // Contenu principal du profil
+  const profileContent = (
+    <div className="space-y-6">
+      {/* Photo de profil */}
+      <div className="flex flex-col items-center space-y-4">
+        <Avatar className="w-24 h-24">
+          <AvatarImage 
+            src={localProfile.avatar_url} 
+            alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
+          />
+          <AvatarFallback className="text-xl">
+            <User className="w-12 h-12" />
+          </AvatarFallback>
+        </Avatar>
+        
+        <Button 
+          variant="outline" 
+          onClick={() => setPhotoModalOpen(true)}
+          size="sm"
+        >
+          <Camera className="w-4 h-4 mr-2" />
+          Changer la photo
+        </Button>
+      </div>
+
+      <Separator />
+
+      {/* Informations personnelles */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-medium">Informations personnelles</h2>
+        
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="first_name">Prénom</Label>
+            <Input
+              id="first_name"
+              value={localProfile.first_name}
+              onChange={(e) => handleInputChange('first_name', e.target.value)}
+              placeholder="Votre prénom"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="last_name">Nom</Label>
+            <Input
+              id="last_name"
+              value={localProfile.last_name}
+              onChange={(e) => handleInputChange('last_name', e.target.value)}
+              placeholder="Votre nom"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="username">Nom d'utilisateur</Label>
+            <Input
+              id="username"
+              value={localProfile.username}
+              onChange={(e) => handleInputChange('username', e.target.value)}
+              placeholder="Votre nom d'utilisateur"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="phone">Téléphone</Label>
+            <Input
+              id="phone"
+              value={localProfile.phone}
+              onChange={(e) => handleInputChange('phone', e.target.value)}
+              placeholder="Votre numéro de téléphone"
+            />
+          </div>
+        </div>
+      </div>
+
+      <Separator />
+
+      {/* Préférences */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-medium">Préférences</h2>
+        
+        <div className="space-y-2">
+          <Label>Langue</Label>
+          <Select value={currentLanguage} onValueChange={changeLanguage}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="fr">Français</SelectItem>
+              <SelectItem value="en">English</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <Separator />
+
+      {/* Zone de danger */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-medium text-destructive">Zone de danger</h2>
+        
+        <div className="p-4 border border-destructive/20 rounded-lg bg-destructive/5">
+          <div className="space-y-2">
+            <h4 className="font-medium text-destructive">Supprimer le compte</h4>
+            <p className="text-sm text-muted-foreground">Cette action est irréversible</p>
+            
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="sm">
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Supprimer le compte
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogAction 
+                    onClick={handleDeleteAccount}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Supprimer
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </div>
+      </div>
+
+      {/* Boutons d'action */}
+      <div className="flex gap-3 mt-6">
+        <Button 
+          variant="outline" 
+          onClick={() => navigate(-1)}
+          disabled={saving}
+          className="flex-1"
+        >
+          Annuler
+        </Button>
+        <Button 
+          onClick={handleSave} 
+          disabled={saving}
+          className="flex-1"
+         >
+           {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+         </Button>
+       </div>
+    </div>
+  );
+
+  // Affichage mobile (modal)
+  if (isMobile) {
+    return (
+      <>
+        <Dialog open={true} onOpenChange={() => navigate(-1)}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-semibold">
+                Profil
+              </DialogTitle>
+            </DialogHeader>
+            {profileContent}
+          </DialogContent>
+        </Dialog>
+
+        {/* Photo Action Modal */}
+        <PhotoActionModal
+          isOpen={photoModalOpen}
+          onClose={() => setPhotoModalOpen(false)}
+          currentImageUrl={localProfile.avatar_url}
+          onUpload={handlePhotoUpload}
+          onRemove={handlePhotoRemove}
+          photoType="profile"
+          uploading={uploading}
+        />
+      </>
+    );
+  }
+
+  // Affichage desktop (page complète)
   return (
     <div className="min-h-screen bg-background">
       {/* Header avec titre et bouton fermer */}
@@ -141,158 +329,8 @@ const Profile = () => {
         </Button>
       </div>
 
-      <div className="p-4 space-y-6 pb-safe-area-inset-bottom">
-        {/* Photo de profil */}
-        <div className="flex flex-col items-center space-y-4">
-          <Avatar className="w-24 h-24">
-            <AvatarImage 
-              src={localProfile.avatar_url} 
-              alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
-            />
-            <AvatarFallback className="text-xl">
-              <User className="w-12 h-12" />
-            </AvatarFallback>
-          </Avatar>
-          
-          <Button 
-            variant="outline" 
-            onClick={() => setPhotoModalOpen(true)}
-            size="sm"
-          >
-            <Camera className="w-4 h-4 mr-2" />
-            Changer la photo
-          </Button>
-        </div>
-
-        <Separator />
-
-        {/* Informations personnelles */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-medium">Informations personnelles</h2>
-          
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="first_name">Prénom</Label>
-              <Input
-                id="first_name"
-                value={localProfile.first_name}
-                onChange={(e) => handleInputChange('first_name', e.target.value)}
-                placeholder="Votre prénom"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="last_name">Nom</Label>
-              <Input
-                id="last_name"
-                value={localProfile.last_name}
-                onChange={(e) => handleInputChange('last_name', e.target.value)}
-                placeholder="Votre nom"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="username">Nom d'utilisateur</Label>
-              <Input
-                id="username"
-                value={localProfile.username}
-                onChange={(e) => handleInputChange('username', e.target.value)}
-                placeholder="Votre nom d'utilisateur"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Téléphone</Label>
-              <Input
-                id="phone"
-                value={localProfile.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
-                placeholder="Votre numéro de téléphone"
-              />
-            </div>
-          </div>
-        </div>
-
-        <Separator />
-
-        {/* Préférences */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-medium">Préférences</h2>
-          
-          <div className="space-y-2">
-            <Label>Langue</Label>
-            <Select value={currentLanguage} onValueChange={changeLanguage}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="fr">Français</SelectItem>
-                <SelectItem value="en">English</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <Separator />
-
-        {/* Zone de danger */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-medium text-destructive">Zone de danger</h2>
-          
-          <div className="p-4 border border-destructive/20 rounded-lg bg-destructive/5">
-            <div className="space-y-2">
-              <h4 className="font-medium text-destructive">Supprimer le compte</h4>
-              <p className="text-sm text-muted-foreground">Cette action est irréversible</p>
-              
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" size="sm">
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Supprimer le compte
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Annuler</AlertDialogCancel>
-                    <AlertDialogAction 
-                      onClick={handleDeleteAccount}
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    >
-                      Supprimer
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          </div>
-        </div>
-
-        {/* Boutons d'action */}
-        <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t p-4 -mx-4">
-          <div className="flex gap-3">
-            <Button 
-              variant="outline" 
-              onClick={() => navigate(-1)}
-              disabled={saving}
-              className="flex-1 h-12"
-            >
-              Annuler
-            </Button>
-            <Button 
-              onClick={handleSave} 
-              disabled={saving}
-              className="flex-1 h-12"
-             >
-               {saving ? 'Sauvegarde...' : 'Sauvegarder'}
-             </Button>
-           </div>
-         </div>
+      <div className="p-4 pb-safe-area-inset-bottom">
+        {profileContent}
       </div>
 
       {/* Photo Action Modal */}
