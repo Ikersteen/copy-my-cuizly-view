@@ -137,13 +137,10 @@ export class RealtimeVoiceClient {
           console.log("Voice client event:", event.type);
         }
         
-        // Intercepter les réponses textuelles complètes pour ElevenLabs
-        if (event.type === 'response.output_item.done' && 
-            event.item?.type === 'message' && 
-            event.item?.content?.[0]?.type === 'text') {
-          const text = event.item.content[0].text;
-          console.log('🎤 Processing complete response with ElevenLabs:', text);
-          await this.processWithElevenLabs(text);
+        // Intercepter les transcriptions pour ElevenLabs
+        if (event.type === 'response.audio_transcript.done' && event.transcript) {
+          console.log('🎤 Processing transcript with ElevenLabs:', event.transcript);
+          await this.processWithElevenLabs(event.transcript);
         }
         
         // Transmettre tous les événements
