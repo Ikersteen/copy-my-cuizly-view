@@ -698,14 +698,14 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
               variant="outline" 
               onClick={() => onOpenChange(false)}
               disabled={loading}
-              className="order-2 sm:order-1 h-12 sm:h-10 w-full sm:w-auto"
+              className="order-2 sm:order-1 h-10 w-full sm:w-auto text-sm"
             >
               {t('profile.cancel')}
             </Button>
             <Button 
               onClick={handleSave} 
               disabled={loading}
-              className="order-1 sm:order-2 min-w-[120px] h-12 sm:h-10 text-base sm:text-sm font-semibold bg-primary hover:bg-primary/90 w-full sm:w-auto"
+              className="order-1 sm:order-2 min-w-[120px] h-10 text-sm font-semibold bg-primary hover:bg-primary/90 w-full sm:w-auto"
              >
                {loading ? t('profile.saving') : t('profile.save')}
              </Button>
