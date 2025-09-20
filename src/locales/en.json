@@ -1432,7 +1432,8 @@
         "title": "Audio error",
         "description": "Cannot play voice response"
       }
-    }
+    },
+    "disclaimer": "Cuizly can sometimes be wrong, remember to check the important information."
   },
   "waitlist": {
     "title": "Join the Waitlist",
