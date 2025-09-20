@@ -326,35 +326,36 @@ const Profile = () => {
                 {/* Photo de profil */}
                 <div className="flex items-center space-x-4">
                   {/* Avatar à gauche */}
-                  <Avatar className="w-24 h-24 flex-shrink-0">
+                  <Avatar className="w-20 h-20 flex-shrink-0">
                     <AvatarImage 
                       src={localProfile.avatar_url} 
                       alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
                     />
-                    <AvatarFallback className="text-xl">
-                      <User className="w-12 h-12" />
+                    <AvatarFallback className="text-lg">
+                      <User className="w-10 h-10" />
                     </AvatarFallback>
                   </Avatar>
                   
                   {/* Informations à droite */}
-                  <div className="flex-1 space-y-2">
-                    <h3 className="text-xl font-semibold">
+                  <div className="flex-1 space-y-1">
+                    <h3 className="text-lg font-semibold">
                       {`${localProfile.first_name || ''} ${localProfile.last_name || ''}`.trim() || 'Utilisateur'}
                     </h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm text-muted-foreground">
                       {userEmail}
                     </p>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full"
-                      onClick={() => setPhotoModalOpen(true)}
-                    >
-                      <Camera className="w-4 h-4 mr-2" />
-                      Changer la photo
-                    </Button>
                   </div>
                 </div>
+
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full mt-3"
+                  onClick={() => setPhotoModalOpen(true)}
+                >
+                  <Camera className="w-4 h-4 mr-2" />
+                  Changer la photo
+                </Button>
 
                 <Separator />
 
