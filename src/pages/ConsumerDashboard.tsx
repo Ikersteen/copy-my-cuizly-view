@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   MapPin, Clock, Star, Heart, Settings, 
-  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut, Mic
+  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut, Mic, CheckCircle
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -31,9 +31,9 @@ const ConsumerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  // showVoiceModal removed - now redirects to /voice page
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [forceLoaded, setForceLoaded] = useState(false);
+  const [showWelcomeAnimation, setShowWelcomeAnimation] = useState(false);
   
   const { preferences, loading: preferencesLoading } = useUserPreferences();
   const { profile, loading: profileLoading } = useProfile();
@@ -46,6 +46,20 @@ const ConsumerDashboard = () => {
   
   const { toast } = useToast();
   const { t } = useTranslation();
+
+  // Vérifier s'il faut jouer l'animation de bienvenue
+  useEffect(() => {
+    const hasSeenWelcome = localStorage.getItem('cuizly_welcome_animation_seen');
+    if (!hasSeenWelcome && !loading) {
+      setShowWelcomeAnimation(true);
+      localStorage.setItem('cuizly_welcome_animation_seen', 'true');
+      
+      // Cacher l'animation après 3 secondes
+      setTimeout(() => {
+        setShowWelcomeAnimation(false);
+      }, 3000);
+    }
+  }, [loading]);
 
   // Timeout to prevent infinite loading
   useEffect(() => {
@@ -240,6 +254,29 @@ const ConsumerDashboard = () => {
       >
         <Mic className="w-6 h-6" />
       </Button>
+
+      {/* Animation de bienvenue - une seule fois */}
+      {showWelcomeAnimation && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] animate-fade-in">
+          <Card className="w-full max-w-md animate-scale-in shadow-2xl border-0 bg-card/90 backdrop-blur-md mx-4">
+            <CardHeader className="text-center space-y-6">
+              <div className="mx-auto w-20 h-20 rounded-full bg-green-100 flex items-center justify-center animate-scale-in">
+                <CheckCircle className="w-12 h-12 text-green-600 animate-pulse" />
+              </div>
+              
+              <CardTitle className="text-2xl font-bold text-foreground animate-fade-in">
+                🎉 Bienvenue dans Cuizly !
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="text-center space-y-4">
+              <p className="text-muted-foreground animate-fade-in">
+                Découvrez les meilleurs restaurants près de chez vous
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };

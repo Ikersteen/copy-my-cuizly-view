@@ -1,9 +1,21 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 
 const EmailConfirmed = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirection automatique vers le dashboard après 5 secondes
+    const timer = setTimeout(() => {
+      navigate('/dashboard');
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
 
   return (
