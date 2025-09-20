@@ -550,7 +550,7 @@ export const RecommendationCardsSection = () => {
           <div className="text-center space-y-8">
             <div className="bg-card border rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 max-w-2xl mx-auto shadow-sm">
               <div className="flex flex-col items-center space-y-6">
-                <div className="p-4 rounded-full bg-muted/50">
+                <div className="p-4 rounded-full bg-background border border-muted/20">
                   <img 
                     src="/lovable-uploads/cuizly-chef-icon.jpg" 
                     alt="Cuizly Chef Icon" 
