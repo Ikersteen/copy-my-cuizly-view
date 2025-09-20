@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import ConsumerDashboard from "./ConsumerDashboard";
-import RestaurantDashboard from "./RestaurantDashboard";
 
 const Dashboard = () => {
   const { user, profile, loading, isAuthenticated } = useUserProfile();

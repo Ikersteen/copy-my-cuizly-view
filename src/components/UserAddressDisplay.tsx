@@ -7,14 +7,13 @@ interface UserAddressDisplayProps {
 }
 
 export const UserAddressDisplay = ({ className }: UserAddressDisplayProps) => {
-  const { isConsumer, isRestaurant } = useUserProfile();
   const { t } = useTranslation();
   
-  // Always show restaurant address for both user types
-  const { primaryAddress: restaurantAddress } = useAddresses('restaurant');
+  // Get user delivery address for consumer-only app
+  const { primaryAddress: deliveryAddress } = useAddresses('user_delivery');
   
-  const address = restaurantAddress;
-  const addressLabel = t('address.restaurant');
+  const address = deliveryAddress;
+  const addressLabel = t('address.delivery');
   
   if (!address?.formatted_address) {
     return null;

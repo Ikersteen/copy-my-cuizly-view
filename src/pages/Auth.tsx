@@ -1022,7 +1022,7 @@ const Auth = () => {
                           className="pl-10 text-sm"
                           autoComplete="new-password"
                           autoFocus={false}
-                          required={userType === 'restaurant_owner'}
+                          required={false}
                         />
                       </div>
                     </div>
@@ -1235,24 +1235,14 @@ const Auth = () => {
                     </div>
                   )}
 
-                  {userType === 'restaurant_owner' ? (
-                    <div className="space-y-3">
-                      <Button 
-                        type="submit" 
-                        className="w-full text-sm bg-primary hover:bg-primary/90 text-primary-foreground"
-                      >
-                        {t('auth.form.createAccount')}
-                      </Button>
-                    </div>
-                  ) : (
+                  <div className="space-y-3">
                     <Button 
                       type="submit" 
-                      className="w-full text-sm" 
-                      disabled={isLoading || !hcaptchaToken || !phoneVerified}
+                      className="w-full text-sm bg-primary hover:bg-primary/90 text-primary-foreground"
                     >
-                      {isLoading ? t('auth.creatingAccount') : t('auth.createAccount')}
+                      {t('auth.form.createAccount')}
                     </Button>
-                  )}
+                  </div>
                 </form>
 
                 <div className="relative">
