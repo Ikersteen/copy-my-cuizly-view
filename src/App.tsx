@@ -34,7 +34,7 @@ const queryClient = new QueryClient();
 const AppContent = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard') && !location.pathname.includes('/voice');
+  const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard') && !location.pathname.includes('/voice') && !location.pathname.includes('/profile');
 
   return (
     <div className="min-h-screen bg-background">
@@ -119,7 +119,7 @@ const AppContent = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
-      <CookieBanner />
+      {!location.pathname.includes('/profile') && <CookieBanner />}
     </div>
   );
 };
