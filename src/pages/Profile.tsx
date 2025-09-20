@@ -146,9 +146,9 @@ const Profile = () => {
   const profileContent = (
     <div className="space-y-6">
       {/* Photo de profil */}
-      <div className="flex flex-col items-center space-y-4">
-        {/* Avatar centré */}
-        <Avatar className="w-24 h-24">
+      <div className="flex items-center space-x-4">
+        {/* Avatar à gauche */}
+        <Avatar className="w-24 h-24 flex-shrink-0">
           <AvatarImage 
             src={localProfile.avatar_url} 
             alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
@@ -158,25 +158,24 @@ const Profile = () => {
           </AvatarFallback>
         </Avatar>
         
-        {/* Nom centré */}
-        <h3 className="text-xl font-semibold text-center">
-          {`${localProfile.first_name || ''} ${localProfile.last_name || ''}`.trim() || 'Utilisateur'}
-        </h3>
-        
-        {/* Email centré */}
-        <p className="text-muted-foreground text-center">
-          {userEmail}
-        </p>
-        
-        {/* Bouton centré */}
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={() => setPhotoModalOpen(true)}
-        >
-          <Camera className="w-4 h-4 mr-2" />
-          Changer la photo
-        </Button>
+        {/* Informations à droite */}
+        <div className="flex-1 space-y-2">
+          <h3 className="text-xl font-semibold">
+            {`${localProfile.first_name || ''} ${localProfile.last_name || ''}`.trim() || 'Utilisateur'}
+          </h3>
+          <p className="text-muted-foreground">
+            {userEmail}
+          </p>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full max-w-xs"
+            onClick={() => setPhotoModalOpen(true)}
+          >
+            <Camera className="w-4 h-4 mr-2" />
+            Changer la photo
+          </Button>
+        </div>
       </div>
 
       <Separator />
@@ -325,9 +324,9 @@ const Profile = () => {
             <div className="flex-1 overflow-y-auto px-4 py-4 min-h-0">
               <div className="space-y-6">
                 {/* Photo de profil */}
-                <div className="flex flex-col items-center space-y-4">
-                  {/* Avatar centré */}
-                  <Avatar className="w-24 h-24">
+                <div className="flex items-center space-x-4">
+                  {/* Avatar à gauche */}
+                  <Avatar className="w-24 h-24 flex-shrink-0">
                     <AvatarImage 
                       src={localProfile.avatar_url} 
                       alt={`${localProfile.first_name} ${localProfile.last_name}` || 'Photo de profil'} 
@@ -337,25 +336,24 @@ const Profile = () => {
                     </AvatarFallback>
                   </Avatar>
                   
-                  {/* Nom centré */}
-                  <h3 className="text-xl font-semibold text-center">
-                    {`${localProfile.first_name || ''} ${localProfile.last_name || ''}`.trim() || 'Utilisateur'}
-                  </h3>
-                  
-                  {/* Email centré */}
-                  <p className="text-muted-foreground text-center">
-                    {userEmail}
-                  </p>
-                  
-                  {/* Bouton centré */}
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => setPhotoModalOpen(true)}
-                  >
-                    <Camera className="w-4 h-4 mr-2" />
-                    Changer la photo
-                  </Button>
+                  {/* Informations à droite */}
+                  <div className="flex-1 space-y-2">
+                    <h3 className="text-xl font-semibold">
+                      {`${localProfile.first_name || ''} ${localProfile.last_name || ''}`.trim() || 'Utilisateur'}
+                    </h3>
+                    <p className="text-muted-foreground">
+                      {userEmail}
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => setPhotoModalOpen(true)}
+                    >
+                      <Camera className="w-4 h-4 mr-2" />
+                      Changer la photo
+                    </Button>
+                  </div>
                 </div>
 
                 <Separator />

@@ -162,42 +162,35 @@ const ConsumerDashboard = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex flex-col items-center space-y-3">
-              {/* Avatar centré */}
-              <div>
+            <div className="flex items-center space-x-4">
+              {/* Avatar à gauche */}
+              <div className="flex-shrink-0">
                 {profile?.avatar_url ? (
                   <img 
                     src={profile.avatar_url} 
                     alt="Profile"
-                    className="w-16 h-16 rounded-lg object-cover mx-auto"
+                    className="w-16 h-16 sm:w-12 sm:h-12 rounded-lg object-cover"
                   />
                 ) : (
-                  <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center mx-auto">
-                    <UserIcon className="h-8 w-8 text-muted-foreground" />
+                  <div className="w-16 h-16 sm:w-12 sm:h-12 bg-muted rounded-lg flex items-center justify-center">
+                    <UserIcon className="h-8 w-8 sm:h-6 sm:w-6 text-muted-foreground" />
                   </div>
                 )}
               </div>
               
-              {/* Nom centré */}
-              <h1 className="text-xl sm:text-2xl font-semibold text-foreground text-center">
-                {profile?.first_name && profile?.last_name 
-                  ? `${profile.first_name} ${profile.last_name}`
-                  : t('welcome.hello') + " " + (profile?.first_name || "") + " !"
-                }
-              </h1>
-              
-              {/* Email centré */}
-              <p className="text-sm sm:text-base text-muted-foreground text-center">
-                {user?.email}
-              </p>
-              
-              {/* Username et adresse centrés */}
-              {profile?.username && (
-                <p className="text-sm text-muted-foreground text-center">
-                  @{profile.username}
+              {/* Informations à droite */}
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
+                  {t('welcome.hello')} {profile?.first_name || ""} !
+                </h1>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  {user?.email}
                 </p>
-              )}
-              <UserAddressDisplay className="text-center" />
+                <p className="text-sm text-muted-foreground">
+                  {profile?.username ? `@${profile.username}` : ""}
+                </p>
+                <UserAddressDisplay className="mt-1" />
+              </div>
             </div>
           </div>
         </div>
