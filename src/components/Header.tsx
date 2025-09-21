@@ -91,7 +91,7 @@ const Header = () => {
 
   // Utilise le même logo que le footer partout
   const getLogoSrc = () => {
-    return "/lovable-uploads/3c5c1704-3a2b-4c77-8039-43aae95c34f9.png";
+    return "/cuizly-logo-official.png";
   };
 
   // Don't render anything while loading user profile
