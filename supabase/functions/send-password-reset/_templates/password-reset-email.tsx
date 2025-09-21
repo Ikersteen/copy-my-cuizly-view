@@ -96,7 +96,7 @@ export default PasswordResetEmail
 
 // Styles inspired by Cuizly's minimal design
 const main = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#f0f4ff', // Same as site background (--background: 225 100% 96%)
   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif',
 }
 
