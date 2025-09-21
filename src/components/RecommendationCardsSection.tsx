@@ -504,17 +504,93 @@ export const RecommendationCardsSection = () => {
     }
   }, [preferences?.id, generateRecommendations]);
 
-  // Listen for preference updates
+  // Listen for preference updates + SYSTÈME REAL-TIME COMPLET
   useEffect(() => {
+    console.log('🚀 Initialisation du système real-time pour les recommandations');
+    
     const handlePreferencesUpdate = () => {
       if (preferences?.id && !loading) {
+        console.log('🔄 Global preferences update event received');
         generateRecommendations();
       }
     };
 
+    // 1. Real-time: Nouveaux restaurants
+    const restaurantsChannel = supabase
+      .channel('restaurants-realtime')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public', 
+        table: 'restaurants'
+      }, (payload) => {
+        console.log('🏪 Restaurant data changed:', payload);
+        if (preferences?.id && !loading) {
+          generateRecommendations();
+        }
+      })
+      .subscribe();
+
+    // 2. Real-time: Changements de menus
+    const menusChannel = supabase
+      .channel('menus-realtime')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'menus'
+      }, (payload) => {
+        console.log('🍽️ Menu data changed:', payload);
+        if (preferences?.id && !loading) {
+          generateRecommendations();
+        }
+      })
+      .subscribe();
+
+    // 3. Real-time: Nouvelles offres
+    const offersChannel = supabase
+      .channel('offers-realtime')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'offers'
+      }, (payload) => {
+        console.log('🎯 Offer data changed:', payload);
+        if (preferences?.id && !loading) {
+          generateRecommendations();
+        }
+      })
+      .subscribe();
+
+    // 4. Real-time: Nouveaux commentaires/évaluations
+    const commentsChannel = supabase
+      .channel('comments-realtime')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'comments'
+      }, (payload) => {
+        console.log('💬 Comment/Rating data changed:', payload);
+        // Mettre à jour les évaluations spécifiques
+        if (payload.new && typeof payload.new === 'object' && 'restaurant_id' in payload.new && payload.new.restaurant_id) {
+          const restaurantId = payload.new.restaurant_id as string;
+          getRealRating(restaurantId).then(ratingData => {
+            setRestaurantRatings(prev => ({
+              ...prev,
+              [restaurantId]: ratingData
+            }));
+          });
+        }
+      })
+      .subscribe();
+
     window.addEventListener('preferencesUpdated', handlePreferencesUpdate);
+
     return () => {
+      console.log('🛑 Nettoyage des souscriptions real-time');
       window.removeEventListener('preferencesUpdated', handlePreferencesUpdate);
+      supabase.removeChannel(restaurantsChannel);
+      supabase.removeChannel(menusChannel);
+      supabase.removeChannel(offersChannel);
+      supabase.removeChannel(commentsChannel);
     };
   }, [preferences?.id, loading, generateRecommendations]);
 
