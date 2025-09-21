@@ -584,7 +584,7 @@
     "emailNotifications": "Email Notifications",
     "emailNotificationsDesc": "Receive notifications by email",
     "cancel": "Cancel",
-    "save": "Save Preferences",
+    "save": "Save",
     "saveError": "Error saving preferences",
     "saved": "Preferences saved successfully",
     "error": "Failed to save preferences",

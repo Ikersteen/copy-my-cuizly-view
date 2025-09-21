@@ -1115,7 +1115,7 @@
     "emailNotifications": "Notifications courriel",
     "emailNotificationsDesc": "Recevez des notifications par e-mail",
     "cancel": "Annuler",
-    "save": "Sauvegarder les préférences",
+    "save": "Sauvegarder",
     "saveError": "Erreur lors de la sauvegarde",
     "dietaryOptions": {
       "vegetarian": "Végétarien",
