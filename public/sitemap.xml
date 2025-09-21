@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://cuizly.ca/</loc>
+    <lastmod>2025-09-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cuizly.ca/" />
+  </url>
+  <url>
+    <loc>https://cuizly.ca/features</loc>
+    <lastmod>2025-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/features" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cuizly.ca/features" />
+  </url>
+  <url>
+    <loc>https://cuizly.ca/pricing</loc>
+    <lastmod>2025-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/pricing" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cuizly.ca/pricing" />
+  </url>
+  <url>
+    <loc>https://cuizly.ca/contact</loc>
+    <lastmod>2025-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/contact" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cuizly.ca/contact" />
+  </url>
+  <url>
+    <loc>https://cuizly.ca/auth</loc>
+    <lastmod>2025-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/auth" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cuizly.ca/auth" />
+  </url>
+</urlset>
