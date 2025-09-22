@@ -698,12 +698,6 @@ export const RecommendationCardsSection = () => {
                       </CardTitle>
                       <div className="flex items-center space-x-1 mt-0.5">
                         <span className="text-sm text-muted-foreground">{restaurant.address}</span>
-                        {restaurant.price_range && (
-                          <>
-                            <span className="text-sm text-muted-foreground">•</span>
-                            <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
-                          </>
-                        )}
                       </div>
                       <CardDescription className="line-clamp-2 text-sm mt-1">
                         {getTranslatedDescription(restaurant, currentLanguage)}
@@ -735,10 +729,26 @@ export const RecommendationCardsSection = () => {
                            <span className="font-medium text-xs">
                              {currentRating.rating} ({currentRating.totalRatings} {currentRating.totalRatings > 1 ? t('recommendations.evaluations') : t('recommendations.evaluation')})
                            </span>
+                           {restaurant.price_range && (
+                             <>
+                               <span className="text-xs text-muted-foreground">•</span>
+                               <span className="text-xs font-bold text-muted-foreground">{restaurant.price_range}</span>
+                             </>
+                           )}
                         </div>
                       );
                     } else {
-                      return <span className="text-xs text-muted-foreground">{t('recommendations.noRatingsYet')}</span>;
+                      return (
+                        <div className="flex items-center space-x-1">
+                          <span className="text-xs text-muted-foreground">{t('recommendations.noRatingsYet')}</span>
+                          {restaurant.price_range && (
+                            <>
+                              <span className="text-xs text-muted-foreground">•</span>
+                              <span className="text-xs font-bold text-muted-foreground">{restaurant.price_range}</span>
+                            </>
+                          )}
+                        </div>
+                      );
                     }
                   })()}
                 </div>
