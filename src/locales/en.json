@@ -169,7 +169,9 @@
     "filters": "Filters",
     "viewProfile": "View Profile",
     "generatingRecommendations": "Generating personalized recommendations...",
-    "analyzingPreferences": "Our AI is analyzing your preferences and history to suggest the best restaurants"
+    "analyzingPreferences": "Our AI is analyzing your preferences and history to suggest the best restaurants",
+    "evaluation": "review",
+    "evaluations": "reviews"
   },
   "restaurantMenu": {
     "details": "Details",
