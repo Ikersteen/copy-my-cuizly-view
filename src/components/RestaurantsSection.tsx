@@ -46,7 +46,7 @@ const RestaurantsSection = () => {
             <Card key={restaurant.id} className="p-4 sm:p-6 bg-gradient-card shadow-card hover:shadow-elevated transition-all duration-300 cursor-pointer group">
               <div className="flex items-start justify-between mb-3 sm:mb-4">
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold text-base sm:text-lg text-cuizly-primary mb-1 group-hover:text-cuizly-accent transition-colors truncate">
+                  <h3 className="font-semibold text-base sm:text-lg text-cuizly-primary mb-0.5 group-hover:text-cuizly-accent transition-colors truncate">
                     {restaurant.name}
                   </h3>
                   <div className="flex items-center text-sm text-muted-foreground mb-2">
