@@ -992,6 +992,7 @@
     "facebook": "Facebook",
     "openingHours": "Heures d'ouverture",
     "openingHoursDesc": "Définissez vos heures d'ouverture pour chaque jour",
+    "priceRange": "Gamme de prix",
     "deliveryRadius": "Rayon de livraison (km)",
     "deliveryRadiusDesc": "Distance maximale pour les livraisons (1-50 km)",
     "cuisineTypes": "Types de cuisine",
