@@ -1548,6 +1548,7 @@
     "activate": "Activer",
     "editMenu": "Modifier le menu",
     "saveChanges": "Enregistrer les modifications"
+  },
   "filters": {
     "newOffer": "Nouvelle offre",
     "restaurantProfile": "Profil du restaurant",
