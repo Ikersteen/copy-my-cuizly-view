@@ -19,7 +19,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
 import { PhotoActionModal } from "@/components/PhotoActionModal";
 
-import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, SERVICE_TYPES_OPTIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, SERVICE_TYPES_OPTIONS, SERVICE_TYPES_TRANSLATIONS, PRICE_RANGE_OPTIONS, PRICE_RANGE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 interface ImprovedRestaurantProfileModalProps {
   isOpen?: boolean;
@@ -60,6 +60,7 @@ export const ImprovedRestaurantProfileModal = ({
     allergens: [] as string[],
     instagram_url: "",
     facebook_url: "",
+    price_range: "" as string,
     opening_hours: {
       monday: { open: "09:00", close: "17:00", closed: false },
       tuesday: { open: "09:00", close: "17:00", closed: false },
@@ -121,6 +122,7 @@ export const ImprovedRestaurantProfileModal = ({
         service_types: (data as any).service_types || [],
         dietary_restrictions: data.dietary_restrictions || [],
         allergens: data.allergens || [],
+        price_range: data.price_range || "",
         opening_hours: (data.opening_hours && typeof data.opening_hours === 'object') ? data.opening_hours as any : {
           monday: { open: "09:00", close: "17:00", closed: false },
           tuesday: { open: "09:00", close: "17:00", closed: false },
@@ -342,6 +344,7 @@ export const ImprovedRestaurantProfileModal = ({
         dietary_restrictions: formData.dietary_restrictions,
         allergens: formData.allergens,
         service_types: formData.service_types,
+        price_range: formData.price_range || null,
         opening_hours: formData.opening_hours,
         delivery_radius: formData.delivery_radius
       };
@@ -653,6 +656,26 @@ export const ImprovedRestaurantProfileModal = ({
                 onChange={(e) => setFormData(prev => ({ ...prev, delivery_radius: parseInt(e.target.value) || 5 }))}
                 placeholder="5"
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Gamme de prix</Label>
+              <p className="text-sm text-muted-foreground">Sélectionnez la gamme de prix qui correspond à votre restaurant</p>
+              <Select 
+                value={formData.price_range} 
+                onValueChange={(value) => setFormData(prev => ({ ...prev, price_range: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Choisissez une gamme de prix" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PRICE_RANGE_OPTIONS.map((range) => (
+                    <SelectItem key={range} value={range}>
+                      {PRICE_RANGE_TRANSLATIONS[range as keyof typeof PRICE_RANGE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || range}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">

@@ -106,6 +106,17 @@ export const SERVICE_TYPES_TRANSLATIONS = {
   late_night: { fr: "Tard le soir", en: "Late Night" }
 };
 
+export const PRICE_RANGE_OPTIONS = [
+  "$", "$$", "$$$", "$$$$"
+];
+
+export const PRICE_RANGE_TRANSLATIONS = {
+  "$": { fr: "Économique ($)", en: "Budget ($)" },
+  "$$": { fr: "Modéré ($$)", en: "Moderate ($$)" },
+  "$$$": { fr: "Cher ($$$)", en: "Expensive ($$$)" },
+  "$$$$": { fr: "Luxe ($$$$)", en: "Luxury ($$$$)" }
+};
+
 // Legacy exports for compatibility
 export const DIETARY_OPTIONS = DIETARY_RESTRICTIONS;
 export const ALLERGEN_OPTIONS = ALLERGENS;
