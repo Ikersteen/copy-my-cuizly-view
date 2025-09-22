@@ -115,16 +115,6 @@ const ContactSectionLanding = () => {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4">
-                {t('contact.hours.title')}
-              </h3>
-              <div className="space-y-1 sm:space-y-2 text-cuizly-neutral text-sm sm:text-base">
-                <p>{t('contact.hours.weekdays')}</p>
-                <p>{t('contact.hours.saturday')}</p>
-                <p>{t('contact.hours.sunday')}</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
