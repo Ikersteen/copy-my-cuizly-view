@@ -2078,6 +2078,34 @@
       "connectionFailed": "Erreur de connexion"
     }
   },
+  "toasts": {
+    "preferencesUpdated": "Préférences mises à jour",
+    "preferencesSavedSuccessfully": "Préférences sauvegardées avec succès"
+  },
+  "recommendations": {
+    "noRatingsYet": "Aucune évaluation pour le moment",
+    "whyThisChoice": "Pourquoi ce choix ?",
+    "filters": "Filtres"
+  },
+  "restaurantMenu": {
+    "details": "Détails",
+    "ourMenus": "Nos menus",
+    "openingHours": "Heures d'ouverture",
+    "days": {
+      "monday": "Lundi",
+      "tuesday": "Mardi", 
+      "wednesday": "Mercredi",
+      "thursday": "Jeudi",
+      "friday": "Vendredi",
+      "saturday": "Samedi",
+      "sunday": "Dimanche"
+    },
+    "cuisineTypes": "Types de cuisine",
+    "serviceTypes": "Types de service",
+    "specialties": "Spécialités",
+    "comment": "Commenter",
+    "addToFavorites": "Ajouter aux favoris"
+  },
   "actions": {
     "uploading": "Téléchargement en cours...",
     "loading": "Chargement...",
