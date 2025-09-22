@@ -7,6 +7,7 @@ import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useTranslation } from 'react-i18next';
+import { CUISINE_TRANSLATIONS } from '@/constants/cuisineTypes';
 
 interface HistoryModalProps {
   open: boolean;
@@ -14,7 +15,8 @@ interface HistoryModalProps {
 }
 
 export const HistoryModal = ({ open, onOpenChange }: HistoryModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language as 'fr' | 'en';
   const { searchHistory, clearHistory, removeSearchItem } = useSearchHistory();
 
   const getSearchTypeText = (type: string) => {
@@ -101,7 +103,7 @@ export const HistoryModal = ({ open, onOpenChange }: HistoryModalProps) => {
                     <div className="flex flex-wrap gap-1">
                       {item.restaurant.cuisine_type.map((cuisine, idx) => (
                         <Badge key={idx} variant="outline" className="text-xs">
-                          {cuisine}
+                          {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
                         </Badge>
                       ))}
                     </div>

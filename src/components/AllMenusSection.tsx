@@ -6,6 +6,7 @@ import { RatingComponent } from '@/components/RatingComponent';
 import { useToast } from '@/hooks/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
+import { CUISINE_TRANSLATIONS } from '@/constants/cuisineTypes';
 
 interface Menu {
   id: string;
@@ -28,7 +29,8 @@ export const AllMenusSection = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language as 'fr' | 'en';
 
   const fetchMenus = async () => {
     setLoading(true);
@@ -219,7 +221,7 @@ export const AllMenusSection = () => {
                     <div className="flex flex-wrap gap-1">
                       {menu.restaurants.cuisine_type.map((cuisine, index) => (
                         <Badge key={index} variant="outline" className="text-xs">
-                          {cuisine}
+                          {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
                         </Badge>
                       ))}
                     </div>
