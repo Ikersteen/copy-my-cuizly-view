@@ -245,7 +245,7 @@ export const SavedFavoritesSection = () => {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <CardTitle className="text-lg font-bold text-foreground mb-2 line-clamp-1">
+                      <CardTitle className="text-lg font-bold text-foreground mb-0.5 line-clamp-1">
                         {restaurant.name}
                       </CardTitle>
                         <div className="flex items-center space-x-1">
