@@ -1719,6 +1719,8 @@
     "serviceTypes": "Service Types",
     "specialties": "Specialties",
     "comment": "Comment",
-    "addToFavorites": "Add to Favorites"
+    "addToFavorites": "Add to Favorites",
+    "noMenusAvailable": "No menus available",
+    "noMenusDescription": "This restaurant has not added menus yet"
   }
 }
