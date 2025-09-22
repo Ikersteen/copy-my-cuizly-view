@@ -119,31 +119,17 @@ serve(async (req) => {
     
     console.log(`🏪 ${limitedRestaurants.length} restaurants trouvés`);
 
-    // Obtenir l'utilisateur authentifié pour l'assigner comme propriétaire temporaire
-    const authHeader = req.headers.get("Authorization");
-    console.log(`🔐 Auth header présent: ${authHeader ? 'OUI' : 'NON'}`);
+    // Obtenir l'utilisateur authentifié (géré automatiquement par Supabase avec verify_jwt = true)
+    const user_id = (await supabase.auth.getUser()).data.user?.id;
     
-    if (!authHeader) {
-      console.error("❌ Pas d'en-tête Authorization");
-      throw new Error("Authentification requise - en-tête manquant");
+    console.log(`👤 Utilisateur authentifié: ${user_id ? user_id : 'AUCUN'}`);
+
+    if (!user_id) {
+      console.error("❌ Aucun utilisateur authentifié");
+      throw new Error("Utilisateur non authentifié");
     }
 
-    // Extraire le token JWT de l'en-tête Authorization
-    const token = authHeader.replace('Bearer ', '');
-    console.log(`🔑 Token JWT extrait: ${token ? 'PRÉSENT' : 'MANQUANT'}`);
-
-    // Vérifier et décoder le token JWT pour obtenir l'utilisateur
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    
-    console.log(`👤 Utilisateur récupéré: ${user ? user.id : 'AUCUN'}`);
-    console.log(`❌ Erreur auth: ${authError ? authError.message : 'AUCUNE'}`);
-
-    if (authError || !user) {
-      console.error("❌ Authentification échouée:", authError);
-      throw new Error(`Utilisateur non authentifié: ${authError?.message || 'utilisateur null'}`);
-    }
-
-    console.log(`👤 Import par l'utilisateur: ${user.id}`);
+    console.log(`👤 Import par l'utilisateur: ${user_id}`);
 
     // Traitement et insertion des restaurants
     let successCount = 0;
@@ -191,7 +177,7 @@ serve(async (req) => {
           email: null, // Pas disponible via Places API
           cuisine_type: cuisineTypes,
           price_range: priceRange,
-          owner_id: user.id, // Assigné à l'administrateur qui fait l'import
+          owner_id: user_id, // Assigné à l'administrateur qui fait l'import
           is_active: true,
           dietary_restrictions: [],
           allergens: [],

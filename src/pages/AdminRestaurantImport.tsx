@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,6 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { AlertCircle, MapPin, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import { toast } from 'sonner';
 
 interface ImportResult {
@@ -19,6 +21,8 @@ interface ImportResult {
 }
 
 export default function AdminRestaurantImport() {
+  const { user, isAuthenticated, loading } = useUserProfile();
+  const navigate = useNavigate();
   const [isImporting, setIsImporting] = useState(false);
   const [isTestingApi, setIsTestingApi] = useState(false);
   const [testMode, setTestMode] = useState(true);
@@ -28,6 +32,37 @@ export default function AdminRestaurantImport() {
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [apiTestResult, setApiTestResult] = useState<any>(null);
   const [progress, setProgress] = useState(0);
+
+  // Redirect to auth if not authenticated
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      toast.error('Vous devez être connecté pour accéder à cette page');
+      navigate("/auth");
+    }
+  }, [loading, isAuthenticated, navigate]);
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
+        <div className="text-center">
+          <div className="space-y-2">
+            <p className="text-cuizly-neutral font-medium">Vérification des permissions...</p>
+            <div className="flex justify-center space-x-1">
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const handleImport = async () => {
     if (!location.trim()) {
