@@ -289,9 +289,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Menus</DialogTitle>
+          <DialogTitle>{t('menusModal.title')}</DialogTitle>
           <DialogDescription>
-            Add up to 5 photos of your menus with their descriptions
+            {t('menusModal.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -304,7 +304,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
               {t('menus.completeProfile')}
             </p>
             <Button onClick={() => onOpenChange(false)} variant="outline">
-              Close
+              {t('common.close')}
             </Button>
           </div>
         ) : (
@@ -312,11 +312,11 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           {/* Ajouter un nouveau menu */}
           <Card>
             <CardContent className="p-4 space-y-4">
-              <h3 className="font-medium">Add New Menu</h3>
+              <h3 className="font-medium">{t('menusModal.addNewMenu')}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Menu Image</Label>
+                  <Label>{t('menusModal.menuImage')}</Label>
                   <div className="flex flex-col space-y-2">
                     <Input
                       type="file"
@@ -324,8 +324,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       onChange={(e) => handleImageUpload(e, false)}
                       disabled={uploading}
                     />
-                     <p className="text-xs text-muted-foreground">Maximum size: 5MB</p>
-                     {uploading && <p className="text-sm text-muted-foreground">Téléchargement...</p>}
+                     <p className="text-xs text-muted-foreground">{t('menusModal.maxSize')}</p>
+                     {uploading && <p className="text-sm text-muted-foreground">{t('menusModal.uploading')}</p>}
                     {newMenu.image_url && (
                       <div className="relative w-32 h-32">
                         <img
@@ -347,13 +347,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Cuisine Type</Label>
+                  <Label>{t('menusModal.cuisineType')}</Label>
                   <select
                     value={newMenu.cuisine_type}
                     onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
                     className="w-full px-3 py-2 border border-input bg-background rounded-md"
                   >
-                    <option value="">Select cuisine type</option>
+                    <option value="">{t('menusModal.selectCuisineType')}</option>
                     {CUISINE_OPTIONS.map(cuisine => (
                       <option key={cuisine} value={cuisine}>
                         {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
@@ -361,16 +361,16 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     ))}
                   </select>
 
-          <Label>Description *</Label>
+          <Label>{t('menusModal.description')} *</Label>
           <Textarea
             value={newMenu.description}
             onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
-            placeholder="Describe this menu... (required)"
+            placeholder={t('menusModal.describePlaceholder')}
             className="min-h-[80px]"
             required
           />
                   
-                  <Label>Compatible Diet Type</Label>
+                  <Label>{t('menusModal.compatibleDietType')}</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {DIETARY_RESTRICTIONS_OPTIONS.sort().map(restriction => (
                       <Badge
@@ -391,7 +391,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     ))}
                   </div>
 
-                  <Label>Allergens Present</Label>
+                  <Label>{t('menusModal.allergensPresent')}</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {ALLERGENS_OPTIONS.sort().map(allergen => (
                       <Badge
@@ -418,7 +418,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     className="w-full"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Add This Menu
+                    {t('menusModal.addThisMenu')}
                   </Button>
                 </div>
               </div>
@@ -428,8 +428,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           {/* Liste des menus existants */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">Your Menus ({menus.length}/5)</h3>
-              <Badge variant="outline">{menus.filter(m => m.is_active).length} active</Badge>
+              <h3 className="font-medium">{t('menusModal.yourMenus')} ({menus.length}/5)</h3>
+              <Badge variant="outline">{menus.filter(m => m.is_active).length} {t('menusModal.active')}</Badge>
             </div>
 
             {menus.length === 0 ? (
@@ -437,10 +437,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 <CardContent className="p-8 text-center">
                   <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
                    <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                     No Menu Added
+                     {t('menusModal.noMenuAdded')}
                    </h3>
                    <p className="text-sm text-muted-foreground">
-                     Start by adding photos of your menus
+                     {t('menusModal.startAdding')}
                    </p>
                 </CardContent>
               </Card>
@@ -466,7 +466,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         <Badge 
                           variant={menu.is_active ? "default" : "secondary"}
                         >
-                          {menu.is_active ? "Active" : "Inactive"}
+                          {menu.is_active ? t('menusModal.activeStatus') : t('menusModal.inactiveStatus')}
                         </Badge>
                       </div>
                       <p className="text-sm text-foreground mb-3">
@@ -477,7 +477,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         <div className="mb-3 space-y-2">
                           {menu.dietary_restrictions?.length > 0 && (
                              <div>
-                                <p className="text-xs font-medium text-muted-foreground mb-1">Dietary Restrictions</p>
+                                <p className="text-xs font-medium text-muted-foreground mb-1">{t('menusModal.dietaryRestrictions')}</p>
                                 <div className="flex flex-wrap gap-1">
                                   {menu.dietary_restrictions.map(restriction => (
                                     <Badge key={restriction} variant="secondary" className="text-xs">
@@ -491,7 +491,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                                <div>
                                  <div className="flex items-center gap-2 mb-1">
                                    <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
-                                   <p className="text-xs font-medium text-muted-foreground">Allergens</p>
+                                   <p className="text-xs font-medium text-muted-foreground">{t('menusModal.allergens')}</p>
                                  </div>
                                  <div className="flex flex-wrap gap-1">
                                    {menu.allergens.map(allergen => (
@@ -511,15 +511,15 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           size="sm"
                           onClick={() => setEditingMenu(menu)}
                           className="flex-1"
-                         >
-                            Edit
+                          >
+                            {t('menusModal.edit')}
                           </Button>
                          <Button
                            variant="outline"
                            size="sm"
                            onClick={() => handleToggleActive(menu.id, menu.is_active)}
                          >
-                           {menu.is_active ? "Deactivate" : "Activate"}
+                           {menu.is_active ? t('menusModal.deactivate') : t('menusModal.activate')}
                          </Button>
                         <Button
                           variant="destructive"
@@ -541,7 +541,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
             <Card className="mt-6">
               <CardContent className="p-4 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-medium">Edit Menu</h3>
+                  <h3 className="font-medium">{t('menusModal.editMenu')}</h3>
                   <Button variant="ghost" size="sm" onClick={() => setEditingMenu(null)}>
                     <X className="h-4 w-4" />
                   </Button>
@@ -549,7 +549,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Menu Image</Label>
+                      <Label>{t('menusModal.menuImage')}</Label>
                       <div className="flex flex-col space-y-2">
                         <Input
                           type="file"
@@ -557,8 +557,8 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           onChange={(e) => handleImageUpload(e, true)}
                           disabled={uploading}
                         />
-                         <p className="text-xs text-muted-foreground">Maximum size: 5MB</p>
-                         {uploading && <p className="text-sm text-muted-foreground">Téléchargement...</p>}
+                         <p className="text-xs text-muted-foreground">{t('menusModal.maxSize')}</p>
+                         {uploading && <p className="text-sm text-muted-foreground">{t('menusModal.uploading')}</p>}
                         {editingMenu.image_url && (
                           <div className="relative w-32 h-32">
                             <img
@@ -572,13 +572,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Cuisine Type</Label>
+                      <Label>{t('menusModal.cuisineType')}</Label>
                     <select
                       value={editingMenu.cuisine_type}
                       onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, cuisine_type: e.target.value }) : null)}
                       className="w-full px-3 py-2 border border-input bg-background rounded-md"
                     >
-                      <option value="">Select cuisine type</option>
+                      <option value="">{t('menusModal.selectCuisineType')}</option>
                       {CUISINE_OPTIONS.map(cuisine => (
                         <option key={cuisine} value={cuisine}>
                           {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
@@ -586,16 +586,16 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       ))}
                     </select>
 
-                    <Label>Description *</Label>
+                    <Label>{t('menusModal.description')} *</Label>
                     <Textarea
                       value={editingMenu.description}
                       onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, description: e.target.value }) : null)}
-                      placeholder="Describe this menu... (required)"
+                      placeholder={t('menusModal.describePlaceholder')}
                       className="min-h-[80px]"
                       required
                     />
 
-                    <Label>Compatible Diet Type</Label>
+                    <Label>{t('menusModal.compatibleDietType')}</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                       {DIETARY_RESTRICTIONS_OPTIONS.sort().map(restriction => (
                         <Badge
@@ -616,7 +616,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       ))}
                     </div>
 
-                    <Label>Allergens Present</Label>
+                    <Label>{t('menusModal.allergensPresent')}</Label>
                     <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                       {ALLERGENS_OPTIONS.sort().map(allergen => (
                         <Badge
@@ -642,7 +642,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       disabled={loading || !editingMenu?.description?.trim()}
                       className="w-full"
                     >
-                      Save Changes
+                      {t('menusModal.saveChanges')}
                     </Button>
                   </div>
                 </div>
