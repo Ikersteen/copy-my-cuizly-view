@@ -1056,6 +1056,12 @@
     "deletionRequestedDesc": "Votre demande de suppression de compte a été enregistrée. Votre compte sera désactivé.",
     "confirmationError": "Veuillez taper exactement le texte de confirmation"
   },
+  "restaurantInfo": {
+    "title": "Informations du restaurant",
+    "description": "Détails sur votre établissement",
+    "notSpecified": "Non spécifié",
+    "notDefined": "Non défini"
+  },
   "history": {
     "title": "Recherches",
     "clearAll": "Effacer tout",

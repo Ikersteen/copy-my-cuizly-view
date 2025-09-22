@@ -246,6 +246,7 @@
     "email": "Email",
     "instagram": "Instagram",
     "facebook": "Facebook",
+    "socialMedia": "Social Media",
     "openingHours": "Opening Hours",
     "openingHoursDesc": "Set your opening hours for each day",
     "priceRange": "Price Range",
@@ -310,6 +311,12 @@
     "deletionRequested": "Deletion Requested",
     "deletionRequestedDesc": "Your account deletion request has been recorded. Your account will be deactivated.",
     "confirmationError": "Please type exactly the confirmation text"
+  },
+  "restaurantInfo": {
+    "title": "Restaurant Information",
+    "description": "Details about your establishment",
+    "notSpecified": "Not specified",
+    "notDefined": "Not defined"
   },
   "restaurantMenu": {
     "details": "Details",
