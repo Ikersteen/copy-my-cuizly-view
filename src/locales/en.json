@@ -959,7 +959,9 @@
   "offers": {
     "title": "Special Offers",
     "yourOffers": "Your offers",
+    "myOffers": "My offers",  
     "trackOffers": "Track your current offers and history",
+    "manageOffers": "Manage your active and archived offers",
     "createOffer": "Create New Offer",
     "editOffer": "Edit Offer",
     "offerTitle": "Offer Title",

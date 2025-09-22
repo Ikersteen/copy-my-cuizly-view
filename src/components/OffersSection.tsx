@@ -154,12 +154,12 @@ export const OffersSection = ({ userType, restaurantId }: OffersSectionProps) =>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Gift className="h-5 w-5" />
-          {userType === 'restaurant' ? "My Offers" : "Your Offers"}
+          {userType === 'restaurant' ? t('offers.myOffers') : t('offers.yourOffers')}
         </CardTitle>
         <CardDescription>
           {userType === 'restaurant' 
-            ? "Manage your active and archived offers" 
-            : "Track your ongoing offers and history"
+            ? t('offers.manageOffers') 
+            : t('offers.trackOffers')
           }
         </CardDescription>
       </CardHeader>
