@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, ArrowLeft } from "lucide-react";
+import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -274,7 +274,6 @@ export default function RestaurantMenu() {
                     </h1>
                     <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
                       <div className="flex items-center gap-1">
-                        <MapPin className="h-4 w-4" />
                         <span className="text-sm">{restaurant.address}</span>
                       </div>
                       {restaurant.price_range && (

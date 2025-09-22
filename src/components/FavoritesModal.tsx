@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Star, MapPin } from "lucide-react";
+import { Heart, Star } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from 'react-i18next';
@@ -124,7 +124,6 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center space-x-1 text-sm text-muted-foreground mb-3">
-                    <MapPin className="h-4 w-4" />
                     <span>{restaurant.address}</span>
                   </div>
                   <div className="flex items-center justify-between">

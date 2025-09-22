@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Star, ArrowRight, MapPin } from "lucide-react";
+import { Heart, Star, ArrowRight } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { supabase } from "@/integrations/supabase/client";
@@ -248,9 +248,8 @@ export const SavedFavoritesSection = () => {
                       <CardTitle className="text-lg font-bold text-foreground mb-2 line-clamp-1">
                         {restaurant.name}
                       </CardTitle>
-                       <div className="flex items-center space-x-1">
-                         <MapPin className="h-4 w-4 text-muted-foreground" />
-                         <span className="text-sm text-muted-foreground">{restaurant.address}</span>
+                        <div className="flex items-center space-x-1">
+                          <span className="text-sm text-muted-foreground">{restaurant.address}</span>
                         {restaurant.price_range && (
                           <>
                             <span className="text-sm text-muted-foreground">•</span>

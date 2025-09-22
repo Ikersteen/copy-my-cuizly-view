@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, MapPin, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Info, Menu, MessageCircle } from "lucide-react";
+import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Info, Menu, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -62,7 +62,6 @@ const RatingDisplay = ({ restaurantId, priceRange, address }: { restaurantId: st
 
   return (
     <div className="flex items-center space-x-1">
-      <MapPin className="h-4 w-4 text-muted-foreground" />
       <span className="text-sm text-muted-foreground">{address || 'Montreal'}</span>
       {priceRange && (
         <>
