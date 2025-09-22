@@ -2108,7 +2108,8 @@
     "specialties": "Spécialités",
     "comment": "Commenter",
     "addToFavorites": "Ajouter aux favoris",
-    "removeFromFavorites": "Retirer des favoris"
+    "removeFromFavorites": "Retirer des favoris",
+    "closed": "Fermé"
   },
   "actions": {
     "uploading": "Téléchargement en cours...",

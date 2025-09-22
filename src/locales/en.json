@@ -1725,6 +1725,7 @@
     "addToFavorites": "Add to Favorites",
     "noMenusAvailable": "No menus available",
     "noMenusDescription": "This restaurant has not added menus yet",
-    "removeFromFavorites": "Remove from Favorites"
+    "removeFromFavorites": "Remove from Favorites",
+    "closed": "Closed"
   }
 }

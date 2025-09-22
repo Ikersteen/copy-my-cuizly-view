@@ -332,14 +332,18 @@ export default function RestaurantMenu() {
                         <div>
                           <div className="font-medium mb-2">{t('restaurantMenu.openingHours')}</div>
                           <div className="space-y-1 text-sm text-muted-foreground">
-                            {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
-                              <div key={day} className="flex justify-between">
-                                <span>{t(`restaurantMenu.days.${day}`)}: </span>
-                                <span>{typeof hours === 'object' && hours !== null ? 
-                                  `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` : 
-                                  hours as string}</span>
-                              </div>
-                            ))}
+                             {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
+                               <div key={day} className="flex justify-between">
+                                 <span>{t(`restaurantMenu.days.${day}`)}: </span>
+                                 <span>
+                                   {typeof hours === 'object' && hours !== null ? 
+                                     (hours as any).closed ? 
+                                       t('restaurantMenu.closed') : 
+                                       `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` 
+                                     : hours as string}
+                                 </span>
+                               </div>
+                             ))}
                           </div>
                         </div>
                       </div>
