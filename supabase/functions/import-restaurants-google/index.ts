@@ -70,11 +70,33 @@ serve(async (req) => {
     // Obtenir les coordonnées de la localisation via Geocoding API
     const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location)}&key=${googleMapsApiKey}`;
     
+    console.log(`🔍 URL Geocoding: ${geocodeUrl.replace(googleMapsApiKey, '***API_KEY***')}`);
+    
     const geocodeResponse = await fetch(geocodeUrl);
     const geocodeData = await geocodeResponse.json();
 
-    if (geocodeData.status !== "OK" || !geocodeData.results.length) {
-      throw new Error(`Impossible de géolocaliser: ${location}`);
+    console.log(`📡 Réponse Geocoding API:`, JSON.stringify(geocodeData, null, 2));
+    console.log(`📊 Status de la réponse: ${geocodeData.status}`);
+
+    if (geocodeData.status !== "OK") {
+      // Log des erreurs détaillées selon le status
+      switch (geocodeData.status) {
+        case "REQUEST_DENIED":
+          console.error("❌ REQUEST_DENIED - Vérifiez que l'API Geocoding est activée et que la facturation est configurée");
+          throw new Error(`API Geocoding refusée: ${geocodeData.error_message || 'Vérifiez la configuration de votre API key'}`);
+        case "OVER_QUERY_LIMIT":
+          throw new Error(`Quota API dépassé: ${geocodeData.error_message}`);
+        case "ZERO_RESULTS":
+          throw new Error(`Aucun résultat trouvé pour: ${location}`);
+        case "INVALID_REQUEST":
+          throw new Error(`Requête invalide: ${geocodeData.error_message}`);
+        default:
+          throw new Error(`Erreur API Geocoding (${geocodeData.status}): ${geocodeData.error_message || 'Erreur inconnue'}`);
+      }
+    }
+
+    if (!geocodeData.results || geocodeData.results.length === 0) {
+      throw new Error(`Aucune coordonnée trouvée pour: ${location}`);
     }
 
     const { lat, lng } = geocodeData.results[0].geometry.location;
