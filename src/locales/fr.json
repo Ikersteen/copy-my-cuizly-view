@@ -2086,19 +2086,4 @@
     "generatingRecommendations": "Génération de recommandations personnalisées...",
     "analyzingPreferences": "Notre IA analyse vos préférences et votre historique pour vous proposer les meilleurs restaurants"
   },
-  "analytics": {
-    "title": "Tableau de performance en temps réel",
-    "subtitle": "Suivez vos données en temps réel et boostez les performances de votre restaurant.",
-    "totalOffers": "Offres totales",
-    "activeOffers": "actives",
-    "menusAdded": "Menus ajoutés",
-    "activeMenus": "actifs", 
-    "profileViews": "Vues du profil",
-    "totalViews": "Vues totales",
-    "averageRating": "Note moyenne",
-    "outOfStars": "Sur 5 étoiles",
-    "weeklyTrends": "Tendances cette semaine",
-    "viewsVsLastWeek": "de vues par rapport à la semaine dernière",
-    "noChangeVsLastWeek": "Aucune évolution par rapport à la semaine dernière"
-  }
 }
