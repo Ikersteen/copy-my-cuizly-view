@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAddresses } from "@/hooks/useAddresses";
+import { formatRestaurantAddress } from "@/lib/addressUtils";
 
 
 import { OffersSection } from "@/components/OffersSection";
@@ -245,7 +246,7 @@ const RestaurantDashboard = () => {
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">Address</p>
-                      <p className="text-foreground text-sm">{restaurantAddress?.formatted_address || "Not specified"}</p>
+                      <p className="text-foreground text-sm">{formatRestaurantAddress(restaurantAddress?.formatted_address || "Not specified")}</p>
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">Phone</p>
