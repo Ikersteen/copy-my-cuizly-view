@@ -67,17 +67,32 @@ serve(async (req) => {
     // Initialisation du client Supabase avec les permissions admin
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Obtenir les coordonnées de la localisation via Geocoding
-    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location)}&key=${googleMapsApiKey}`;
+    // Coordonnées fixes pour Montréal et Repentigny (contournement temporaire)
+    let lat: number, lng: number;
     
-    const geocodeResponse = await fetch(geocodeUrl);
-    const geocodeData = await geocodeResponse.json();
+    if (location.toLowerCase().includes('montreal') || location.toLowerCase().includes('montréal')) {
+      lat = 45.5017;  // Montréal centre-ville
+      lng = -73.5673;
+      console.log(`🗺️ Utilisation des coordonnées fixes de Montréal: ${lat}, ${lng}`);
+    } else if (location.toLowerCase().includes('repentigny')) {
+      lat = 45.7420;  // Repentigny
+      lng = -73.4500;
+      console.log(`🗺️ Utilisation des coordonnées fixes de Repentigny: ${lat}, ${lng}`);
+    } else {
+      // Fallback vers Geocoding API pour autres locations
+      const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location)}&key=${googleMapsApiKey}`;
+      
+      const geocodeResponse = await fetch(geocodeUrl);
+      const geocodeData = await geocodeResponse.json();
 
-    if (geocodeData.status !== "OK" || !geocodeData.results.length) {
-      throw new Error(`Impossible de géolocaliser: ${location}`);
+      if (geocodeData.status !== "OK" || !geocodeData.results.length) {
+        throw new Error(`Impossible de géolocaliser: ${location}. Activez l'API Geocoding dans Google Cloud Console.`);
+      }
+
+      const coords = geocodeData.results[0].geometry.location;
+      lat = coords.lat;
+      lng = coords.lng;
     }
-
-    const { lat, lng } = geocodeData.results[0].geometry.location;
     console.log(`🗺️ Coordonnées trouvées: ${lat}, ${lng}`);
 
     // Recherche de restaurants via Places API
