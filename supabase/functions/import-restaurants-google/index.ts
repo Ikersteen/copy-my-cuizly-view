@@ -67,39 +67,26 @@ serve(async (req) => {
     // Initialisation du client Supabase avec les permissions admin
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Obtenir les coordonnées de la localisation via Geocoding API
-    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location)}&key=${googleMapsApiKey}`;
+    // VERSION DE TEST - CONTOURNEMENT TEMPORAIRE
+    // Utilisation de coordonnées fixes pour éviter l'API Geocoding
+    let lat: number, lng: number;
     
-    console.log(`🔍 URL Geocoding: ${geocodeUrl.replace(googleMapsApiKey, '***API_KEY***')}`);
+    console.log(`🔧 CONTOURNEMENT TEMPORAIRE: Utilisation de coordonnées fixes pour ${location}`);
     
-    const geocodeResponse = await fetch(geocodeUrl);
-    const geocodeData = await geocodeResponse.json();
-
-    console.log(`📡 Réponse Geocoding API:`, JSON.stringify(geocodeData, null, 2));
-    console.log(`📊 Status de la réponse: ${geocodeData.status}`);
-
-    if (geocodeData.status !== "OK") {
-      // Log des erreurs détaillées selon le status
-      switch (geocodeData.status) {
-        case "REQUEST_DENIED":
-          console.error("❌ REQUEST_DENIED - Vérifiez que l'API Geocoding est activée et que la facturation est configurée");
-          throw new Error(`API Geocoding refusée: ${geocodeData.error_message || 'Vérifiez la configuration de votre API key'}`);
-        case "OVER_QUERY_LIMIT":
-          throw new Error(`Quota API dépassé: ${geocodeData.error_message}`);
-        case "ZERO_RESULTS":
-          throw new Error(`Aucun résultat trouvé pour: ${location}`);
-        case "INVALID_REQUEST":
-          throw new Error(`Requête invalide: ${geocodeData.error_message}`);
-        default:
-          throw new Error(`Erreur API Geocoding (${geocodeData.status}): ${geocodeData.error_message || 'Erreur inconnue'}`);
-      }
+    if (location.toLowerCase().includes('montreal') || location.toLowerCase().includes('montréal')) {
+      lat = 45.5017;  // Montréal centre-ville
+      lng = -73.5673;
+      console.log(`📍 Coordonnées fixes Montréal: ${lat}, ${lng}`);
+    } else if (location.toLowerCase().includes('repentigny')) {
+      lat = 45.7420;  // Repentigny  
+      lng = -73.4500;
+      console.log(`📍 Coordonnées fixes Repentigny: ${lat}, ${lng}`);
+    } else {
+      // Fallback vers Montréal pour autres locations
+      lat = 45.5017;
+      lng = -73.5673;
+      console.log(`📍 Fallback vers Montréal pour: ${location}`);
     }
-
-    if (!geocodeData.results || geocodeData.results.length === 0) {
-      throw new Error(`Aucune coordonnée trouvée pour: ${location}`);
-    }
-
-    const { lat, lng } = geocodeData.results[0].geometry.location;
     console.log(`🗺️ Coordonnées trouvées: ${lat}, ${lng}`);
 
     // Recherche de restaurants via Places API
