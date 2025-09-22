@@ -606,6 +606,48 @@ function calculateLocationScore(restaurant: Restaurant, preferences: UserPrefere
   return locationScore;
 }
 
+// Traductions des cuisines pour les explications
+const CUISINE_TRANSLATIONS = {
+  fr: {
+    african: "africaine",
+    mexican: "mexicaine", 
+    italian: "italienne",
+    moroccan: "marocaine",
+    chinese: "chinoise",
+    turkish: "turque",
+    lebanese: "libanaise",
+    indian: "indienne",
+    korean: "coréenne",
+    vietnamese: "vietnamienne",
+    thai: "thaïlandaise",
+    japanese: "japonaise",
+    greek: "grecque",
+    quebecois: "québécoise",
+    french: "française",
+    american: "américaine",
+    spanish: "espagnole"
+  },
+  en: {
+    african: "African",
+    mexican: "Mexican",
+    italian: "Italian",
+    moroccan: "Moroccan", 
+    chinese: "Chinese",
+    turkish: "Turkish",
+    lebanese: "Lebanese",
+    indian: "Indian",
+    korean: "Korean",
+    vietnamese: "Vietnamese",
+    thai: "Thai",
+    japanese: "Japanese",
+    greek: "Greek",
+    quebecois: "Quebecois",
+    french: "French",
+    american: "American",
+    spanish: "Spanish"
+  }
+};
+
 // Phrases prédéfinies pour les explications - TOUTES LES PRÉFÉRENCES
 const EXPLANATION_PHRASES = {
   fr: {
@@ -624,8 +666,16 @@ const EXPLANATION_PHRASES = {
     allergens_gluten: "Sans gluten pour ta santé",
     
     // 3. CUISINES PRÉFÉRÉES 
-    cuisine_favorite: (cuisine: string) => `Parce que tu aimes la cuisine ${cuisine.toLowerCase()}`,
-    cuisine_multiple: (cuisines: string[]) => `Parce que tu aimes la cuisine ${cuisines.slice(0, 3).join(', ')}`,
+    cuisine_favorite: (cuisine: string, lang: string = 'fr') => {
+      const translatedCuisine = CUISINE_TRANSLATIONS[lang as keyof typeof CUISINE_TRANSLATIONS]?.[cuisine.toLowerCase() as keyof typeof CUISINE_TRANSLATIONS.fr] || cuisine.toLowerCase();
+      return `Parce que tu aimes la cuisine ${translatedCuisine}`;
+    },
+    cuisine_multiple: (cuisines: string[], lang: string = 'fr') => {
+      const translatedCuisines = cuisines.slice(0, 3).map(cuisine => 
+        CUISINE_TRANSLATIONS[lang as keyof typeof CUISINE_TRANSLATIONS]?.[cuisine.toLowerCase() as keyof typeof CUISINE_TRANSLATIONS.fr] || cuisine.toLowerCase()
+      );
+      return `Parce que tu aimes la cuisine ${translatedCuisines.join(', ')}`;
+    },
     
     // 4. MOMENTS FAVORIS (timing)
     timing_perfect: "Ouvert pour tes moments favoris",
@@ -674,8 +724,16 @@ const EXPLANATION_PHRASES = {
     allergens_gluten: "Gluten-free for your health",
     
     // 3. PREFERRED CUISINES
-    cuisine_favorite: (cuisine: string) => `Because you love ${cuisine.toLowerCase()} cuisine`,
-    cuisine_multiple: (cuisines: string[]) => `Because you love ${cuisines.slice(0, 3).join(', ')} cuisine`,
+    cuisine_favorite: (cuisine: string, lang: string = 'en') => {
+      const translatedCuisine = CUISINE_TRANSLATIONS[lang as keyof typeof CUISINE_TRANSLATIONS]?.[cuisine.toLowerCase() as keyof typeof CUISINE_TRANSLATIONS.en] || cuisine.toLowerCase();
+      return `Because you love ${translatedCuisine} cuisine`;
+    },
+    cuisine_multiple: (cuisines: string[], lang: string = 'en') => {
+      const translatedCuisines = cuisines.slice(0, 3).map(cuisine => 
+        CUISINE_TRANSLATIONS[lang as keyof typeof CUISINE_TRANSLATIONS]?.[cuisine.toLowerCase() as keyof typeof CUISINE_TRANSLATIONS.en] || cuisine.toLowerCase()
+      );
+      return `Because you love ${translatedCuisines.join(', ')} cuisine`;
+    },
     
     // 4. FAVORITE MEAL TIMES
     timing_perfect: "Open for your favorite times",
@@ -752,7 +810,7 @@ function generateFallbackReasons(restaurant: Restaurant, preferences: UserPrefer
     if (matchingCuisines.length > 0) {
       const cuisineName = matchingCuisines[0];
       return [typeof phrases.cuisine_favorite === 'function' 
-        ? phrases.cuisine_favorite(cuisineName) 
+        ? phrases.cuisine_favorite(cuisineName, language) 
         : `Cuisine ${cuisineName} appréciée`];
     }
   }
