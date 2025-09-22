@@ -27,6 +27,7 @@ import VoiceChat from "./pages/VoiceChat";
 import RestaurantMenu from "./pages/RestaurantMenu";
 import EmailConfirmed from "./pages/EmailConfirmed";
 import AdminRestaurantImport from "./pages/AdminRestaurantImport";
+import AdminRestaurantDashboard from "./pages/AdminRestaurantDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -119,6 +120,12 @@ const AppContent = () => {
           <>
             <Header />
             <AdminRestaurantImport />
+          </>
+        } />
+        <Route path="/admin/restaurants" element={
+          <>
+            <Header />
+            <AdminRestaurantDashboard />
           </>
         } />
         <Route path="*" element={<NotFound />} />
