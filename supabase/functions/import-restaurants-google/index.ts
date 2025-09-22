@@ -50,6 +50,11 @@ serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
+    console.log("🔑 Vérification des secrets:");
+    console.log(`- Google Maps API Key: ${googleMapsApiKey ? 'PRÉSENT ✅' : 'MANQUANT ❌'}`);
+    console.log(`- Supabase URL: ${supabaseUrl ? 'PRÉSENT ✅' : 'MANQUANT ❌'}`);
+    console.log(`- Supabase Service Key: ${supabaseServiceKey ? 'PRÉSENT ✅' : 'MANQUANT ❌'}`);
+
     if (!googleMapsApiKey) {
       throw new Error("GOOGLE_MAPS_API_KEY n'est pas configuré");
     }
