@@ -115,9 +115,3 @@ verify_jwt = false
 
 [functions.verify-sms-code]
 verify_jwt = false
-
-[functions.test-google-api]
-verify_jwt = true
-
-[functions.import-restaurants-google]
-verify_jwt = true

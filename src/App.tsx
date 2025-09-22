@@ -26,8 +26,6 @@ import Waitlist from "./pages/Waitlist";
 import VoiceChat from "./pages/VoiceChat";
 import RestaurantMenu from "./pages/RestaurantMenu";
 import EmailConfirmed from "./pages/EmailConfirmed";
-import AdminRestaurantImport from "./pages/AdminRestaurantImport";
-import AdminRestaurantDashboard from "./pages/AdminRestaurantDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -116,18 +114,6 @@ const AppContent = () => {
         } />
         <Route path="/restaurant/:id" element={<RestaurantMenu />} />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
-        <Route path="/admin/import-restaurants" element={
-          <>
-            <Header />
-            <AdminRestaurantImport />
-          </>
-        } />
-        <Route path="/admin/restaurants" element={
-          <>
-            <Header />
-            <AdminRestaurantDashboard />
-          </>
-        } />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
