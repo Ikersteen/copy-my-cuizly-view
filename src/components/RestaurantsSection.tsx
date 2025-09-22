@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, MapPin } from "lucide-react";
+import { Star } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
 const RestaurantsSection = () => {
@@ -50,7 +50,6 @@ const RestaurantsSection = () => {
                     {restaurant.name}
                   </h3>
                   <div className="flex items-center text-sm text-muted-foreground mb-2">
-                    <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
                     <span className="truncate">{restaurant.location}</span>
                   </div>
                 </div>
