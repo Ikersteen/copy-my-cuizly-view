@@ -254,18 +254,22 @@ export const RestaurantMenuModal = ({
                       <Clock className="h-4 w-4 text-muted-foreground mt-0.5" />
                       <div className="text-xs">
                         <div className="font-medium text-foreground mb-1">{t('restaurantMenu.openingHours')}</div>
-                         {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
-                           <div key={day} className="flex justify-between text-muted-foreground">
-                             <span>{t(`restaurantMenu.days.${day}`)}: </span>
-                             <span>
-                               {typeof hours === 'object' && hours !== null ? 
-                                 (hours as any).closed ? 
-                                   t('restaurantMenu.closed') : 
-                                   `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` 
-                                 : hours as string}
-                             </span>
-                           </div>
-                         ))}
+                         {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
+                           const hours = restaurant.opening_hours[day];
+                           if (!hours) return null;
+                           return (
+                             <div key={day} className="flex justify-between text-muted-foreground">
+                               <span>{t(`restaurantMenu.days.${day}`)}: </span>
+                               <span>
+                                 {typeof hours === 'object' && hours !== null ? 
+                                   (hours as any).closed ? 
+                                     t('restaurantMenu.closed') : 
+                                     `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` 
+                                   : hours as string}
+                               </span>
+                             </div>
+                           );
+                         })}
                       </div>
                     </div>
                   )}

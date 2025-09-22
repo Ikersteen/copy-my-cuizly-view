@@ -587,11 +587,14 @@ export const ImprovedRestaurantProfileModal = ({
               <Label>Heures d'ouverture</Label>
               <p className="text-sm text-muted-foreground">Définissez vos heures d'ouverture pour chaque jour de la semaine</p>
               <div className="space-y-2">
-                {Object.entries(formData.opening_hours).map(([day, hours]) => (
-                  <div key={day} className="flex items-center gap-2">
-                    <div className="w-20 text-sm font-medium">
-                      {t(`restaurantProfile.${day}`)}
-                    </div>
+                {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
+                  const hours = formData.opening_hours[day as keyof typeof formData.opening_hours];
+                  if (!hours) return null;
+                  return (
+                    <div key={day} className="flex items-center gap-2">
+                      <div className="w-20 text-sm font-medium">
+                        {t(`restaurantProfile.${day}`)}
+                      </div>
                     <div className="flex items-center gap-2 flex-1">
                       <input
                         type="checkbox"
@@ -631,9 +634,10 @@ export const ImprovedRestaurantProfileModal = ({
                       {hours.closed && (
                         <span className="text-sm text-muted-foreground">{t('restaurantProfile.closed')}</span>
                       )}
-                    </div>
-                  </div>
-                ))}
+                     </div>
+                   </div>
+                 );
+                 })}
               </div>
             </div>
 

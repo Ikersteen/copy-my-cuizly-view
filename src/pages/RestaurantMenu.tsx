@@ -330,19 +330,23 @@ export default function RestaurantMenu() {
                         <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
                         <div>
                           <div className="font-medium mb-2">{t('restaurantMenu.openingHours')}</div>
-                          <div className="space-y-1 text-sm text-muted-foreground">
-                             {Object.entries(restaurant.opening_hours).map(([day, hours]) => (
-                               <div key={day} className="flex justify-between">
-                                 <span>{t(`restaurantMenu.days.${day}`)}: </span>
-                                 <span>
-                                   {typeof hours === 'object' && hours !== null ? 
-                                     (hours as any).closed ? 
-                                       t('restaurantMenu.closed') : 
-                                       `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` 
-                                     : hours as string}
-                                 </span>
-                               </div>
-                             ))}
+                           <div className="space-y-1 text-sm text-muted-foreground">
+                             {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
+                               const hours = restaurant.opening_hours[day];
+                               if (!hours) return null;
+                               return (
+                                 <div key={day} className="flex justify-between">
+                                   <span>{t(`restaurantMenu.days.${day}`)}: </span>
+                                   <span>
+                                     {typeof hours === 'object' && hours !== null ? 
+                                       (hours as any).closed ? 
+                                         t('restaurantMenu.closed') : 
+                                         `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` 
+                                       : hours as string}
+                                   </span>
+                                 </div>
+                               );
+                             })}
                           </div>
                         </div>
                       </div>
