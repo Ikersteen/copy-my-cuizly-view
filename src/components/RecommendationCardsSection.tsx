@@ -43,17 +43,24 @@ export const RecommendationCardsSection = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   // Generate detailed, explanatory reasons for restaurant recommendations
+  // Following strict priority order: Dietary restrictions, Allergens, Cuisines, Price, Timing, Location, Address
   const generateRecommendationReasons = (restaurant: Restaurant, menus: any[] = []) => {
     const reasons: { text: string; type: string }[] = [];
     const currentHour = new Date().getHours();
     const currentMealTime = getCurrentMealTime(currentHour);
 
-    // Check for allergen matches - Highest priority with red indicator
-    console.log('🔍 ALLERGEN CHECK:', {
-      userAllergens: preferences?.allergens,
-      hasUserAllergens: preferences?.allergens && preferences.allergens.length > 0
-    });
+    // 1. DIETARY RESTRICTIONS - Highest priority (only if user has defined them)
+    if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
+      // Note: We check dietary restrictions match based on user preferences and context
+      // The actual compatibility is handled by the filtering in generateRecommendations
+      const translationKey = preferences.dietary_restrictions.length === 1 ? 'reasonDietaryRestrictionFound' : 'reasonDietaryRestrictionsFound';
+      reasons.push({
+        text: t(`recommendations.${translationKey}`),
+        type: 'dietary'
+      });
+    }
 
+    // 2. ALLERGENS - Safety priority (only if user has defined allergens to avoid)
     if (preferences?.allergens && preferences.allergens.length > 0) {
       const restaurantMenus = menus.filter((menu: any) => menu.restaurant_id === restaurant.id);
       const identifiedAllergens = restaurantMenus.reduce((allergens: string[], menu: any) => {
@@ -62,43 +69,16 @@ export const RecommendationCardsSection = () => {
       }, []);
       const uniqueAllergens = [...new Set(identifiedAllergens)];
       
-      console.log('🔍 ALLERGEN DETECTION:', {
-        restaurantId: restaurant.id,
-        restaurantName: restaurant.name,
-        restaurantMenus: restaurantMenus.length,
-        identifiedAllergens,
-        uniqueAllergens
-      });
-      
       if (uniqueAllergens.length > 0) {
         const translationKey = uniqueAllergens.length === 1 ? 'reasonAllergenIdentified' : 'reasonAllergensIdentified';
-        const allergenReason = {
+        reasons.push({
           text: t(`recommendations.${translationKey}`),
           type: 'allergens'
-        };
-        console.log('🔍 ADDING ALLERGEN REASON:', allergenReason);
-        reasons.push(allergenReason);
+        });
       }
     }
 
-    // Dietary restrictions match - Clear and brief explanation with warning indicator
-    if (preferences?.dietary_restrictions && preferences.dietary_restrictions.length > 0) {
-      const translationKey = preferences.dietary_restrictions.length === 1 ? 'reasonDietaryRestrictionFound' : 'reasonDietaryRestrictionsFound';
-      reasons.push({
-        text: t(`recommendations.${translationKey}`),
-        type: 'dietary'
-      });
-    }
-
-    // Price range match - Clear and brief explanation
-    if (preferences?.price_range && restaurant.price_range === preferences.price_range) {
-      reasons.push({
-        text: t('recommendations.reasonPriceIdeal'),
-        type: 'price'
-      });
-    }
-
-    // Cuisine preferences match - Clear and brief explanation
+    // 3. CUISINES - Keep current explanation (only if user has defined cuisine preferences)
     if (preferences?.cuisine_preferences && preferences.cuisine_preferences.length > 0) {
       const matchingCuisines = restaurant.cuisine_type?.filter((cuisine: string) => 
         preferences.cuisine_preferences.includes(cuisine)
@@ -111,18 +91,42 @@ export const RecommendationCardsSection = () => {
       }
     }
 
-    // Meal time match - Clear and brief explanation
-    if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
+    // 4. PRICE RANGE - Only if user has defined a specific price preference
+    if (preferences?.price_range && preferences.price_range !== '$' && restaurant.price_range === preferences.price_range) {
+      reasons.push({
+        text: t('recommendations.reasonPriceIdeal') + ` (${preferences.price_range})`,
+        type: 'price'
+      });
+    }
+
+    // 5. MEAL TIMING - Only if user has defined favorite meal times
+    if (preferences?.favorite_meal_times && preferences.favorite_meal_times.length > 0 && preferences.favorite_meal_times.includes(currentMealTime)) {
       reasons.push({
         text: t('recommendations.reasonPerfectTiming'),
         type: 'timing'
       });
     }
 
-    // Default reason if no specific matches
+    // 6. DELIVERY RADIUS - Only if user has defined a specific radius
+    if (preferences?.delivery_radius && preferences.delivery_radius > 1) {
+      reasons.push({
+        text: t('recommendations.reasonWithinRadius') + ` (${preferences.delivery_radius} km)`,
+        type: 'location'
+      });
+    }
+
+    // 7. ADDRESS/NEIGHBORHOOD - Only if user has defined an address
+    if (preferences?.neighborhood && restaurant.address?.toLowerCase().includes(preferences.neighborhood.toLowerCase())) {
+      reasons.push({
+        text: t('recommendations.reasonNearAddress'),
+        type: 'address'
+      });
+    }
+
+    // Default reason if no specific preferences match or are defined
     if (reasons.length === 0) {
       reasons.push({
-        text: t('recommendations.reasonPopularRestaurant'),
+        text: t('recommendations.reasonNewDiscovery'),
         type: 'default'
       });
     }

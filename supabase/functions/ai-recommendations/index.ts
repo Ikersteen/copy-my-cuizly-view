@@ -272,45 +272,49 @@ async function analyzeRestaurantWithAI(
             "preference_match": number (0-1),
             "quality_prediction": number (0-1)
           }` :
-          `Tu es un expert en recommandations qui génère des explications selon deux cas distincts : une seule ou plusieurs préférences par catégorie.
+          `Tu es un expert en recommandations qui génère des explications basées UNIQUEMENT sur les préférences que l'utilisateur a définies.
 
-          MISSION: Analyser les préférences utilisateur et générer des phrases adaptées selon le nombre de critères qui matchent.
+          MISSION: Analyser les préférences utilisateur et expliquer pourquoi ce restaurant est recommandé selon l'ordre de priorité strict.
           
-          ORDRE DE PRIORITÉS STRICT:
-          1. 🔒 RESTRICTIONS + ALLERGÈNES (priorité absolue - toujours en premier)
-          2. 🍽️ CUISINES PRÉFÉRÉES 
-          3. ⏰ MOMENTS FAVORIS
-          4. 📍 LOCALISATION/BUDGET  
-          5. 🎁 PROMOTIONS
+          ORDRE DE PRIORITÉS STRICT (NE MENTIONNER QUE SI L'UTILISATEUR A DÉFINI CETTE PRÉFÉRENCE):
+          1. 🔒 RESTRICTIONS ALIMENTAIRES (priorité absolue)
+          2. 🚫 ALLERGÈNES À ÉVITER (sécurité absolue)  
+          3. 🍽️ CUISINES PRÉFÉRÉES (garder explication actuelle)
+          4. 💰 GAMME DE PRIX
+          5. ⏰ MOMENTS DE REPAS FAVORIS
+          6. 📍 RAYON DE LIVRAISON
+          7. 🏠 ADRESSE
 
-          🔹 CAS 1 : UNE SEULE PRÉFÉRENCE PAR CATÉGORIE
-          Génère une phrase simple et directe par critère qui matche :
+          PHRASES EXPLICITES PAR PRÉFÉRENCE DÉFINIE:
 
-          • Cuisine : "Parce que vous aimez la cuisine japonaise."
-          • Restriction alimentaire : "Adapté à votre restriction : Végétarien."
-          • Allergène : "Allergène identifié : Arachides."
-          • Localisation : 
-            - Si < 2 km → "À moins de 2 km de chez vous."
-            - Si > 2 km → "À plus de 2 km de chez vous."
-            - Zone livraison → "Vous êtes dans la zone de livraison."
-            - Même rue → "Vous êtes proche du restaurant."
-          • Budget : "Respecte votre budget $$"
-          • Promotion : "En cours promo aujourd'hui."
+          🔒 RESTRICTIONS ALIMENTAIRES:
+          - Une restriction : "Compatible avec votre préférence [restriction]."
+          - Plusieurs : "Compatible avec vos préférences : [restriction1], [restriction2] et [restriction3]."
 
-          🔹 CAS 2 : PLUSIEURS PRÉFÉRENCES PAR CATÉGORIE
-          Regroupe et condense (max 3 par catégorie) :
+          🚫 ALLERGÈNES:
+          - Un allergène : "Sécuritaire pour votre allergie à [allergène]."  
+          - Plusieurs : "Sécuritaire pour vos allergies : [allergène1], [allergène2] et [allergène3]."
 
-          • Cuisines : "Parce que vous aimez la cuisine Japonaise, Italienne et Mexicaine."
-          • Restrictions : "Adapté à vos restrictions : Végétarien, Halal et Sans gluten."
-          • Allergènes : "Allergènes pris en compte : Arachides, Lait et Fruits de mer."
-          • Moments : "Ouvert pour vos moments favoris : Déjeuner et Souper."
-          • Promotions : "Des promotions spéciales sont disponibles aujourd'hui."
+          🍽️ CUISINES (garder format actuel):
+          - Une cuisine : "Parce que vous aimez la cuisine [type]."
+          - Plusieurs : "Parce que vous aimez la cuisine [type1], [type2] et [type3]."
 
-          RÈGLES STRICTES:
-          - Toujours afficher restrictions + allergènes EN PREMIER
-          - Limiter à 3 items max par catégorie, sinon "et autres"
-          - Générer 1 à 2 phrases maximum par recommandation
-          - Ton simple, fluide, naturel (pas robotique)
+          💰 GAMME DE PRIX:
+          - "Respecte votre budget [gamme] (ex: $$)."
+
+          ⏰ MOMENTS FAVORIS:
+          - Un moment : "Parfait pour votre moment favori : [moment]."
+          - Plusieurs : "Parfait pour vos moments favoris : [moment1] et [moment2]."
+
+          📍 RAYON/ADRESSE:
+          - "Dans votre rayon de livraison de [X] km."
+          - "Proche de votre adresse à [quartier]."
+
+          RÈGLES CRITIQUES:
+          - NE PAS mentionner une préférence si elle n'est pas définie par l'utilisateur
+          - Respecter l'ordre de priorité pour l'affichage
+          - Maximum 2 phrases par recommandation
+          - Si aucune préférence définie : "Nouveau restaurant à découvrir."
           
           FORMAT JSON OBLIGATOIRE:
           {
