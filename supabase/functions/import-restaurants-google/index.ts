@@ -128,16 +128,12 @@ serve(async (req) => {
       throw new Error("Authentification requise - en-tête manquant");
     }
 
-    // Créer un client Supabase avec l'auth header pour cet utilisateur
-    const userSupabase = createClient(supabaseUrl, supabaseServiceKey, {
-      global: {
-        headers: {
-          Authorization: authHeader
-        }
-      }
-    });
+    // Extraire le token JWT de l'en-tête Authorization
+    const token = authHeader.replace('Bearer ', '');
+    console.log(`🔑 Token JWT extrait: ${token ? 'PRÉSENT' : 'MANQUANT'}`);
 
-    const { data: { user }, error: authError } = await userSupabase.auth.getUser();
+    // Vérifier et décoder le token JWT pour obtenir l'utilisateur
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     
     console.log(`👤 Utilisateur récupéré: ${user ? user.id : 'AUCUN'}`);
     console.log(`❌ Erreur auth: ${authError ? authError.message : 'AUCUNE'}`);
