@@ -753,18 +753,18 @@ export const RecommendationCardsSection = () => {
                   }).map((cuisine, idx) => {
                     const isPreferred = preferences?.cuisine_preferences?.includes(cuisine);
                     return (
-                       <Badge 
-                         key={idx} 
-                         variant={isPreferred ? "default" : "outline"}
-                         className={`text-xs text-center justify-center flex items-center gap-0.5 ${
-                           isPreferred
-                             ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
-                             : 'bg-muted/50 text-muted-foreground border-muted'
-                         }`}
-                       >
-                         {isPreferred && <span className="text-xs leading-none">★</span>}
-                         <span className="leading-none">{CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}</span>
-                       </Badge>
+                        <Badge 
+                          key={idx} 
+                          variant={isPreferred ? "default" : "outline"}
+                          className={`text-xs text-center justify-center flex items-center gap-0.5 ${
+                            isPreferred
+                              ? 'bg-primary text-primary-foreground border-primary shadow-sm font-medium'
+                              : 'bg-muted/50 text-muted-foreground border-muted'
+                          }`}
+                        >
+                          {isPreferred && <span className="text-xs leading-none">★</span>}
+                          <span className="leading-none">{CUISINE_TRANSLATIONS[cuisine.toLowerCase() as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}</span>
+                        </Badge>
                     );
                   })}
                 </div>
