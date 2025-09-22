@@ -56,21 +56,33 @@ serve(async (req) => {
     console.log(`- Supabase Service Key: ${supabaseServiceKey ? 'PRÉSENT ✅' : 'MANQUANT ❌'}`);
 
     if (!googleMapsApiKey) {
+      console.error("❌ GOOGLE_MAPS_API_KEY manquant");
       throw new Error("GOOGLE_MAPS_API_KEY n'est pas configuré");
     }
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      throw new Error("Configuration Supabase manquante");
+      console.error("❌ Configuration Supabase manquante");
+      throw new Error("Configuration Supabase manquante"); 
     }
 
     // Parse de la requête
-    const { location, radius, maxResults, testMode }: ImportRequest = await req.json();
+    let requestBody;
+    try {
+      requestBody = await req.json();
+      console.log("📦 Body de la requête reçu:", JSON.stringify(requestBody, null, 2));
+    } catch (parseError) {
+      console.error("❌ Erreur parsing JSON:", parseError);
+      throw new Error("Corps de requête JSON invalide");
+    }
+
+    const { location, radius, maxResults, testMode } = requestBody;
 
     console.log(`📍 Recherche de restaurants près de: ${location}`);
     console.log(`📊 Paramètres: rayon=${radius}m, max=${maxResults}, test=${testMode}`);
 
     // Initialisation du client Supabase avec les permissions admin
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    console.log("✅ Client Supabase initialisé");
 
     // VERSION DE TEST - CONTOURNEMENT TEMPORAIRE
     // Utilisation de coordonnées fixes pour éviter l'API Geocoding
@@ -120,16 +132,37 @@ serve(async (req) => {
     console.log(`🏪 ${limitedRestaurants.length} restaurants trouvés`);
 
     // Obtenir l'utilisateur authentifié (géré automatiquement par Supabase avec verify_jwt = true)
-    const user_id = (await supabase.auth.getUser()).data.user?.id;
+    console.log("🔐 Récupération de l'utilisateur authentifié...");
     
-    console.log(`👤 Utilisateur authentifié: ${user_id ? user_id : 'AUCUN'}`);
+    let user_id: string;
+    try {
+      const authHeader = req.headers.get("Authorization");
+      console.log(`🔑 Auth header: ${authHeader ? 'PRÉSENT' : 'MANQUANT'}`);
+      
+      if (!authHeader) {
+        throw new Error("En-tête Authorization manquant");
+      }
 
-    if (!user_id) {
-      console.error("❌ Aucun utilisateur authentifié");
-      throw new Error("Utilisateur non authentifié");
+      const token = authHeader.replace('Bearer ', '');
+      const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+      
+      console.log(`👤 Utilisateur récupéré: ${user ? user.id : 'AUCUN'}`);
+      
+      if (authError) {
+        console.error("❌ Erreur auth:", authError.message);
+        throw new Error(`Erreur d'authentification: ${authError.message}`);
+      }
+      
+      if (!user) {
+        throw new Error("Utilisateur non authentifié");
+      }
+
+      user_id = user.id;
+      console.log(`👤 Import par l'utilisateur: ${user_id}`);
+    } catch (authErr) {
+      console.error("❌ Erreur d'authentification:", authErr);
+      throw new Error(`Authentification échouée: ${authErr.message}`);
     }
-
-    console.log(`👤 Import par l'utilisateur: ${user_id}`);
 
     // Traitement et insertion des restaurants
     let successCount = 0;
