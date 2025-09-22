@@ -48,7 +48,7 @@
       "description": "Consultez les avis authentiques des autres utilisateurs."
     },
     "restaurant_analytics": {
-      "title": "Analytics pour restaurants",
+      "title": "Analyses pour restaurants",
       "description": "Analysez les performances de votre restaurant avec des données détaillées."
     },
     "smart_targeting": {
@@ -80,12 +80,12 @@
     },
     "pro": {
       "title": "Cuizly Pro",
-      "subtitle": "Pour restaurants qui veulent attirer plus de clients",
+      "subtitle": "Pour les restaurants qui veulent attirer plus de clients",
       "price": "19,99 $ CAD/mois",
       "priceNote": "ou 199,90 $ CAD/an (économisez 2 mois !) 🎉",
       "features": [
         "Tableau de bord de suivi des performances en temps réel",
-        "Sytème de visibilité et de référncement avancées",
+        "Système de visibilité et de référencement avancées",
         "Outils de gestion des offres et des menus",
         "Gestion de relation client",
         "Support client prioritaire"
@@ -93,7 +93,7 @@
       "cta": "Créer un compte"
     },
     "analytics": {
-      "title": "Cuizly Analytics+",
+      "title": "Cuizly Analyses+",
       "subtitle": "Pour optimiser votre stratégie avec les données",
       "price": "29,99$ CAD/mois",
       "priceNote": "ou 299,90$ CAD/an (économisez 2 mois !) 🎉",
@@ -102,7 +102,7 @@
         "Rapports anonymisés détaillés",
         "Analyses des tendances de consommation",
         "Aperçus précis sur les performances par segment",
-        "Accès API pour des intégrations avancées"
+        "Accès à l'API pour des intégrations avancées"
       ],
       "cta": "Rejoindre la liste d'attente"
     }
@@ -280,7 +280,7 @@
       },
       "third": {
         "title": "Cookies tiers",
-        "content": "Certains cookies peuvent être placés par des services tiers que nous utilisons, comme Google Analytics pour mesurer l'audience du site. Ces services tiers ont leurs propres politiques de confidentialité."
+        "content": "Certains cookies peuvent être placés par des services tiers que nous utilisons, comme Google Analyses pour mesurer l'audience du site. Ces services tiers ont leurs propres politiques de confidentialité."
       },
       "editor": {
         "title": "Éditeur du site",
@@ -317,7 +317,7 @@
   },
   "language": {
     "french": "Français",
-    "english": "English",
+    "english": "Anglais",
     "select": "Choisir la langue"
   },
   "menus": {
@@ -661,7 +661,7 @@
       "verificationExpired": "Vérification expirée, veuillez réessayer",
       "verificationError": "Erreur de vérification, veuillez réessayer",
       "userAlreadyRegistered": "Cet utilisateur est déjà enregistré",
-      "invalidEmail": "Email invalide",
+      "invalidEmail": "Courriel invalide",
       "weakPassword": "Mot de passe faible",
       "invalidName": "Nom invalide",
       "invalidRestaurantName": "Nom du restaurant invalide",
@@ -669,8 +669,8 @@
       "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
       "signupError": "Erreur d'inscription",
       "incorrectCredentials": "Identifiants incorrects",
-      "emailOrPasswordIncorrect": "Email ou mot de passe incorrect",
-      "emailNotConfirmed": "Veuillez confirmer votre email avant de vous connecter",
+      "emailOrPasswordIncorrect": "Courriel ou mot de passe incorrect",
+      "emailNotConfirmed": "Veuillez confirmer votre courriel avant de vous connecter",
       "tooManyRequests": "Trop de tentatives, veuillez réessayer plus tard",
       "signinError": "Erreur de connexion",
       "oauthConfigInvalid": "Configuration OAuth invalide",
@@ -682,7 +682,7 @@
     },
     "success": {
       "accountCreated": "Compte créé !",
-      "checkEmailConfirmation": "Vérifiez votre email pour confirmer votre compte"
+      "checkEmailConfirmation": "Vérifiez votre courriel pour confirmer votre compte"
     },
     "creatingAccount": "Création du compte...",
     "createAccount": "Créer mon compte",
@@ -1113,7 +1113,7 @@
     "pushNotifications": "Notifications push",
     "pushNotificationsDesc": "Recevez des notifications sur votre appareil",
     "emailNotifications": "Notifications courriel",
-    "emailNotificationsDesc": "Recevez des notifications par e-mail",
+    "emailNotificationsDesc": "Recevez des notifications par courriel",
     "cancel": "Annuler",
     "save": "Sauvegarder",
     "saveError": "Erreur lors de la sauvegarde",
@@ -1320,8 +1320,8 @@
     "notifications": "Notifications",
     "pushNotifications": "Notifications push",
     "pushNotificationsDesc": "Recevez des notifications sur votre appareil",
-    "emailNotifications": "Notifications par email",
-    "emailNotificationsDesc": "Recevez des notifications par e-mail",
+    "emailNotifications": "Notifications par courriel",
+    "emailNotificationsDesc": "Recevez des notifications par courriel",
     "securityPrivacy": "🔒 Sécurité et confidentialité",
     "changePassword": "Changer le mot de passe",
     "edit": "Modifier",
@@ -1606,7 +1606,7 @@
         "description": "Consultez les avis authentiques des autres utilisateurs."
       },
       "analytics": {
-        "title": "Analytics pour restaurants",
+        "title": "Analyses pour restaurants",
         "description": "Analysez les performances de votre restaurant avec des données détaillées."
       },
       "targeting": {
@@ -1676,7 +1676,7 @@
     "pushNotifications": "Notifications push",
     "pushNotificationsDescription": "Recevez des notifications sur votre appareil",
     "emailNotifications": "Notifications courriel",
-    "emailNotificationsDescription": "Recevez des notifications par e-mail",
+    "emailNotificationsDescription": "Recevez des notifications par courriel",
     "security": "Sécurité et confidentialité",
     "changePassword": "Changer le mot de passe",
     "modify": "Modifier",
@@ -1751,8 +1751,8 @@
       "description": "Remplissez ce formulaire pour être notifié du lancement de Cuizly Analytics+",
       "fullName": "Nom complet",
       "fullNamePlaceholder": "Iker Steen",
-      "email": "Email",
-      "emailPlaceholder": "votre@email.com",
+      "email": "Courriel",
+      "emailPlaceholder": "votre@courriel.com",
       "restaurantName": "Nom du restaurant",
       "restaurantNamePlaceholder": "Mon restaurant",
       "phone": "Téléphone",
@@ -1902,7 +1902,7 @@
     "name": "Nom",
     "address": "Adresse",
     "phone": "Téléphone",
-    "email": "Email",
+    "email": "Courriel",
     "priceRange": "Gamme de prix",
     "deliveryRadius": "Rayon de livraison",
     "cuisineType": "Type de cuisine",
