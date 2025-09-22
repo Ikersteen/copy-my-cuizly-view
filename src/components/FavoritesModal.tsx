@@ -37,12 +37,49 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
   const navigate = useNavigate();
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
+  const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
 
   useEffect(() => {
     if (open && favorites.length > 0) {
       loadFavoriteRestaurants();
     }
   }, [open, favorites]);
+
+  const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
+    try {
+      const { data } = await supabase
+        .from('comments')
+        .select('rating')
+        .eq('restaurant_id', restaurantId)
+        .not('rating', 'is', null);
+
+      if (!data || data.length === 0) return { rating: null, totalRatings: 0 };
+      
+      const average = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
+      return { 
+        rating: Math.round(average * 10) / 10,
+        totalRatings: data.length
+      };
+    } catch (error) {
+      console.error('Error fetching rating:', error);
+      return { rating: null, totalRatings: 0 };
+    }
+  };
+
+  const loadRestaurantRatings = async (restaurants: Restaurant[]) => {
+    const ratingsPromises = restaurants.map(async (restaurant) => {
+      const ratingData = await getRealRating(restaurant.id);
+      return { id: restaurant.id, ...ratingData };
+    });
+
+    const allRatings = await Promise.all(ratingsPromises);
+    const ratingsMap = allRatings.reduce((acc, rating) => {
+      acc[rating.id] = { rating: rating.rating, totalRatings: rating.totalRatings };
+      return acc;
+    }, {} as Record<string, { rating: number | null; totalRatings: number }>);
+
+    setRestaurantRatings(ratingsMap);
+  };
 
   const loadFavoriteRestaurants = async () => {
     setLoading(true);
@@ -58,6 +95,11 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
       ) || [];
       
       setFavoriteRestaurants(favoriteRestaurantsData);
+      
+      // Charger les évaluations pour ces restaurants
+      if (favoriteRestaurantsData.length > 0) {
+        await loadRestaurantRatings(favoriteRestaurantsData);
+      }
     } catch (error) {
       console.error('Error loading favorite restaurants:', error);
     } finally {
@@ -125,16 +167,36 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                 <CardContent>
                   <div className="flex items-center space-x-1 text-sm text-muted-foreground mb-3">
                     <span>{restaurant.address}</span>
+                    {(() => {
+                      const currentRating = restaurantRatings[restaurant.id];
+                      if (currentRating && currentRating.rating !== null) {
+                        return (
+                          <>
+                            <span>•</span>
+                            <div className="flex items-center space-x-1">
+                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                              <span className="font-medium">
+                                {currentRating.rating}
+                              </span>
+                            </div>
+                          </>
+                        );
+                      }
+                      return null;
+                    })()}
+                    {restaurant.price_range && (
+                      <>
+                        <span>•</span>
+                        <span className="font-bold">{restaurant.price_range}</span>
+                      </>
+                    )}
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-wrap gap-1">
-                       {restaurant.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
-                         <Badge key={idx} variant="outline" className="text-xs">
-                           {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
-                         </Badge>
-                       ))}
-                    </div>
-                    <Badge variant="secondary">{restaurant.price_range}</Badge>
+                  <div className="flex flex-wrap gap-1">
+                    {restaurant.cuisine_type?.slice(0, 2).map((cuisine, idx) => (
+                      <Badge key={idx} variant="outline" className="text-xs">
+                        {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
+                      </Badge>
+                    ))}
                   </div>
                    <Button 
                      className="w-full mt-3" 
