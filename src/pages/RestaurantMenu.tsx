@@ -272,18 +272,14 @@ export default function RestaurantMenu() {
                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
                       {restaurant.name}
                     </h1>
-                    <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <span className="text-sm">
-                          {restaurant.address}
-                          {restaurant.price_range && (
-                            <>
-                              <span className="mx-1">•</span>
-                              <span className="font-medium">{restaurant.price_range}</span>
-                            </>
-                          )}
-                        </span>
-                      </div>
+                    <div className="flex items-center space-x-2 text-muted-foreground text-sm">
+                      <span>{restaurant.address}</span>
+                      {restaurant.price_range && (
+                        <>
+                          <span>•</span>
+                          <span className="font-medium">{restaurant.price_range}</span>
+                        </>
+                      )}
                       <RatingDisplay restaurantId={restaurant.id} />
                     </div>
                   </div>

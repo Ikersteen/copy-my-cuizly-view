@@ -165,31 +165,30 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                   </p>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center space-x-1 text-sm text-muted-foreground mb-3">
-                    <span>{restaurant.address}</span>
-                    {(() => {
-                      const currentRating = restaurantRatings[restaurant.id];
-                      if (currentRating && currentRating.rating !== null) {
-                        return (
-                          <>
-                            <span>•</span>
-                            <div className="flex items-center space-x-1">
-                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                              <span className="font-medium">
-                                {currentRating.rating}
-                              </span>
-                            </div>
-                          </>
-                        );
-                      }
-                      return null;
-                    })()}
-                    {restaurant.price_range && (
-                      <>
-                        <span>•</span>
+                  <div className="space-y-0.5 mb-3">
+                    <div className="text-sm text-muted-foreground">{restaurant.address}</div>
+                    <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                      {restaurant.price_range && (
                         <span className="font-bold">{restaurant.price_range}</span>
-                      </>
-                    )}
+                      )}
+                      {(() => {
+                        const currentRating = restaurantRatings[restaurant.id];
+                        if (currentRating && currentRating.rating !== null) {
+                          return (
+                            <>
+                              {restaurant.price_range && <span>•</span>}
+                              <div className="flex items-center space-x-1">
+                                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                                <span className="font-medium">
+                                  {currentRating.rating}
+                                </span>
+                              </div>
+                            </>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </div>
                   </div>
                   <div className="flex flex-wrap gap-1">
                     {restaurant.cuisine_type?.slice(0, 2).map((cuisine, idx) => (

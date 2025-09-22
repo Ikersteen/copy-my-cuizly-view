@@ -248,31 +248,30 @@ export const SavedFavoritesSection = () => {
                       <CardTitle className="text-lg font-bold text-foreground mb-0.5 line-clamp-1">
                         {restaurant.name}
                       </CardTitle>
-                        <div className="flex items-center space-x-1">
-                          <span className="text-sm text-muted-foreground">{restaurant.address}</span>
-                          {(() => {
-                            const currentRating = restaurantRatings[restaurant.id];
-                            if (currentRating && currentRating.rating !== null) {
-                              return (
-                                <>
-                                  <span className="text-sm text-muted-foreground">•</span>
-                                  <div className="flex items-center space-x-1">
-                                    <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                                    <span className="text-sm font-medium">
-                                      {currentRating.rating}
-                                    </span>
-                                  </div>
-                                </>
-                              );
-                            }
-                            return null;
-                          })()}
-                          {restaurant.price_range && (
-                            <>
-                              <span className="text-sm text-muted-foreground">•</span>
+                        <div className="space-y-0.5">
+                          <div className="text-sm text-muted-foreground">{restaurant.address}</div>
+                          <div className="flex items-center space-x-1">
+                            {restaurant.price_range && (
                               <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
-                            </>
-                          )}
+                            )}
+                            {(() => {
+                              const currentRating = restaurantRatings[restaurant.id];
+                              if (currentRating && currentRating.rating !== null) {
+                                return (
+                                  <>
+                                    {restaurant.price_range && <span className="text-sm text-muted-foreground">•</span>}
+                                    <div className="flex items-center space-x-1">
+                                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                                      <span className="text-sm font-medium">
+                                        {currentRating.rating}
+                                      </span>
+                                    </div>
+                                  </>
+                                );
+                              }
+                              return null;
+                            })()}
+                          </div>
                         </div>
                       <CardDescription className="line-clamp-2 text-sm mt-1">
                         {getTranslatedDescription(restaurant, currentLanguage)}
