@@ -696,7 +696,7 @@ export const RecommendationCardsSection = () => {
                       <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
                         {restaurant.name}
                       </CardTitle>
-                      <div className="flex items-center space-x-1 -mt-px">
+                      <div className="flex items-center space-x-1 -mt-1">
                         <span className="text-sm text-muted-foreground">{restaurant.address}</span>
                         {restaurant.price_range && (
                           <>
