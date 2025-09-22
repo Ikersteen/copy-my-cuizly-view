@@ -295,9 +295,27 @@ async function analyzeRestaurantWithAI(
           - Un allergène : "Sécuritaire pour votre allergie à [allergène]."  
           - Plusieurs : "Sécuritaire pour vos allergies : [allergène1], [allergène2] et [allergène3]."
 
-          🍽️ CUISINES (garder format actuel):
-          - Une cuisine : "Parce que vous aimez la cuisine [type]."
-          - Plusieurs : "Parce que vous aimez la cuisine [type1], [type2] et [type3]."
+          🍽️ CUISINES (TOUJOURS en français):
+          - Une cuisine : "Parce que vous aimez la cuisine [type traduit en français]."
+          - Plusieurs : "Parce que vous aimez la cuisine [type1], [type2] et [type3] (tous en français)."
+          
+          TRADUCTIONS OBLIGATOIRES DES CUISINES:
+          - "African" → "africaine"
+          - "Asian" → "asiatique"
+          - "Italian" → "italienne"
+          - "French" → "française"
+          - "Mexican" → "mexicaine"
+          - "Indian" → "indienne"
+          - "Chinese" → "chinoise"
+          - "Japanese" → "japonaise"
+          - "Mediterranean" → "méditerranéenne"
+          - "American" → "américaine"
+          - "Thai" → "thaï"
+          - "Lebanese" → "libanaise"
+          - "Greek" → "grecque"
+          - "Spanish" → "espagnole"
+          - "Korean" → "coréenne"
+          - "Vietnamese" → "vietnamienne"
 
           💰 GAMME DE PRIX:
           - "Respecte votre budget [gamme] (ex: $$)."
@@ -311,6 +329,7 @@ async function analyzeRestaurantWithAI(
           - "Proche de votre adresse à [quartier]."
 
           RÈGLES CRITIQUES:
+          - TOUJOURS traduire les noms de cuisines en français (voir tableau ci-dessus)
           - NE PAS mentionner une préférence si elle n'est pas définie par l'utilisateur
           - Respecter l'ordre de priorité pour l'affichage
           - Maximum 2 phrases par recommandation
