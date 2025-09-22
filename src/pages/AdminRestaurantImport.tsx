@@ -28,7 +28,7 @@ export default function AdminRestaurantImport() {
   const [testMode, setTestMode] = useState(true);
   const [maxResults, setMaxResults] = useState(5);
   const [location, setLocation] = useState('Montreal, QC, Canada');
-  const [radius, setRadius] = useState(5000);
+  const [radius, setRadius] = useState(5);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [apiTestResult, setApiTestResult] = useState<any>(null);
   const [progress, setProgress] = useState(0);
@@ -170,14 +170,14 @@ export default function AdminRestaurantImport() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="radius">Rayon (mètres)</Label>
+              <Label htmlFor="radius">Rayon (kilomètres)</Label>
               <Input
                 id="radius"
                 type="number"
                 value={radius}
                 onChange={(e) => setRadius(Number(e.target.value))}
-                min="1000"
-                max="50000"
+                min="1"
+                max="50"
               />
             </div>
           </div>
