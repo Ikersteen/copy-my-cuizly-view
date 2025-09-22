@@ -1692,5 +1692,33 @@
     "declineAll": "Decline all",
     "acceptAll": "Accept all",
     "saveChoices": "Save my choices"
+  },
+  "toasts": {
+    "preferencesUpdated": "Preferences updated",
+    "preferencesSavedSuccessfully": "Preferences saved successfully"
+  },
+  "recommendations": {
+    "noRatingsYet": "No ratings yet",
+    "whyThisChoice": "Why this choice?",
+    "filters": "Filters"
+  },
+  "restaurantMenu": {
+    "details": "Details",
+    "ourMenus": "Our Menus",
+    "openingHours": "Opening Hours",
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday", 
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "cuisineTypes": "Cuisine Types",
+    "serviceTypes": "Service Types",
+    "specialties": "Specialties",
+    "comment": "Comment",
+    "addToFavorites": "Add to Favorites"
   }
 }
