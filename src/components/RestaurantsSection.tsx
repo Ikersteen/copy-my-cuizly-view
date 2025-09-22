@@ -8,10 +8,10 @@ const RestaurantsSection = () => {
   const restaurants = [
     {
       id: 1,
-      name: "Steen food",
+      name: "Steen Food",
       location: "Montréal",
       rating: 4.8,
-      cuisine: "Nganda ntaba",
+      cuisine: "Cuisine africaine",
       category: "Cuisine variée"
     },
     {
