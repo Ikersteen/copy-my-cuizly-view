@@ -20,11 +20,13 @@ interface ImportResult {
 
 export default function AdminRestaurantImport() {
   const [isImporting, setIsImporting] = useState(false);
+  const [isTestingApi, setIsTestingApi] = useState(false);
   const [testMode, setTestMode] = useState(true);
   const [maxResults, setMaxResults] = useState(5);
   const [location, setLocation] = useState('Montreal, QC, Canada');
   const [radius, setRadius] = useState(5000);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
+  const [apiTestResult, setApiTestResult] = useState<any>(null);
   const [progress, setProgress] = useState(0);
 
   const handleImport = async () => {
@@ -65,6 +67,37 @@ export default function AdminRestaurantImport() {
     } finally {
       setIsImporting(false);
       setProgress(100);
+    }
+  };
+
+  const handleTestApi = async () => {
+    setIsTestingApi(true);
+    setApiTestResult(null);
+
+    try {
+      console.log('🧪 Test de l\'API Google Maps');
+      
+      const { data, error } = await supabase.functions.invoke('test-google-api');
+
+      if (error) {
+        console.error('❌ Erreur lors du test:', error);
+        throw error;
+      }
+
+      setApiTestResult(data);
+      
+      if (data.success) {
+        toast.success('API Google Maps fonctionne correctement !');
+      } else {
+        toast.error(`Erreur API: ${data.error}`);
+      }
+
+    } catch (error) {
+      console.error('❌ Erreur test API:', error);
+      toast.error('Erreur lors du test de l\'API');
+      setApiTestResult({ success: false, error: error.message });
+    } finally {
+      setIsTestingApi(false);
     }
   };
 
@@ -159,13 +192,34 @@ export default function AdminRestaurantImport() {
         </AlertDescription>
       </Alert>
 
-      {/* Bouton d'import */}
+      {/* Test API et Bouton d'import */}
       <Card className="mb-6">
         <CardContent className="pt-6">
           <div className="flex flex-col items-center space-y-4">
+            {/* Bouton de test API */}
+            <Button
+              onClick={handleTestApi}
+              disabled={isTestingApi || isImporting}
+              variant="outline"
+              className="w-full md:w-auto"
+            >
+              {isTestingApi ? (
+                <>
+                  <Clock className="mr-2 h-4 w-4 animate-spin" />
+                  Test en cours...
+                </>
+              ) : (
+                <>
+                  <AlertCircle className="mr-2 h-4 w-4" />
+                  Tester l'API Google Maps
+                </>
+              )}
+            </Button>
+
+            {/* Bouton d'import principal */}
             <Button
               onClick={handleImport}
-              disabled={isImporting}
+              disabled={isImporting || isTestingApi}
               size="lg"
               className="w-full md:w-auto"
             >
@@ -193,6 +247,59 @@ export default function AdminRestaurantImport() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Résultats du test API */}
+      {apiTestResult && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              {apiTestResult.success ? (
+                <CheckCircle2 className="h-5 w-5 text-green-500" />
+              ) : (
+                <XCircle className="h-5 w-5 text-red-500" />
+              )}
+              Test de l'API Google Maps
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="font-medium">Status:</span>
+                <Badge variant={apiTestResult.success ? "default" : "destructive"}>
+                  {apiTestResult.success ? "✅ SUCCÈS" : "❌ ÉCHEC"}
+                </Badge>
+              </div>
+              
+              {apiTestResult.status && (
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Code HTTP:</span>
+                  <code className="bg-muted px-2 py-1 rounded">{apiTestResult.status}</code>
+                </div>
+              )}
+              
+              {apiTestResult.error && (
+                <div className="space-y-2">
+                  <span className="font-medium text-red-600">Erreur:</span>
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                    <code className="text-red-800 text-sm">{apiTestResult.error}</code>
+                  </div>
+                </div>
+              )}
+              
+              {apiTestResult.googleResponse && apiTestResult.googleResponse.results && (
+                <div className="space-y-2">
+                  <span className="font-medium text-green-600">Résultats trouvés:</span>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <p className="text-green-800 text-sm">
+                      {apiTestResult.googleResponse.results.length} restaurants trouvés à proximité
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Résultats */}
       {importResult && (
