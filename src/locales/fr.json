@@ -2085,7 +2085,10 @@
   "recommendations": {
     "noRatingsYet": "Aucune évaluation pour le moment",
     "whyThisChoice": "Pourquoi ce choix ?",
-    "filters": "Filtres"
+    "filters": "Filtres",
+    "viewProfile": "Voir le profil",
+    "generatingRecommendations": "Génération de recommandations personnalisées...",
+    "analyzingPreferences": "Notre IA analyse vos préférences et votre historique pour vous proposer les meilleurs restaurants"
   },
   "restaurantMenu": {
     "details": "Détails",
@@ -2104,7 +2107,8 @@
     "serviceTypes": "Types de service",
     "specialties": "Spécialités",
     "comment": "Commenter",
-    "addToFavorites": "Ajouter aux favoris"
+    "addToFavorites": "Ajouter aux favoris",
+    "removeFromFavorites": "Retirer des favoris"
   },
   "actions": {
     "uploading": "Téléchargement en cours...",

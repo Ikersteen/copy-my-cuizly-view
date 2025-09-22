@@ -1700,7 +1700,10 @@
   "recommendations": {
     "noRatingsYet": "No ratings yet",
     "whyThisChoice": "Why this choice?",
-    "filters": "Filters"
+    "filters": "Filters",
+    "viewProfile": "View Profile",
+    "generatingRecommendations": "Generating personalized recommendations...",
+    "analyzingPreferences": "Our AI is analyzing your preferences and history to suggest the best restaurants"
   },
   "restaurantMenu": {
     "details": "Details",
@@ -1721,6 +1724,7 @@
     "comment": "Comment",
     "addToFavorites": "Add to Favorites",
     "noMenusAvailable": "No menus available",
-    "noMenusDescription": "This restaurant has not added menus yet"
+    "noMenusDescription": "This restaurant has not added menus yet",
+    "removeFromFavorites": "Remove from Favorites"
   }
 }
