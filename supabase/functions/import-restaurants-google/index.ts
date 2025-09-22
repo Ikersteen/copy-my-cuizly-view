@@ -219,31 +219,56 @@ serve(async (req) => {
           delivery_radius: 5 // Par défaut
         };
 
+        console.log(`📝 Données à insérer pour ${restaurantName}:`, JSON.stringify(restaurantData, null, 2));
+
         if (testMode) {
-          logs.push(`🧪 [TEST] Restaurantserait inséré: ${restaurantName}`);
+          logs.push(`🧪 [TEST] Restaurant serait inséré: ${restaurantName}`);
           successCount++;
         } else {
-          // Insertion en base de données
-          const { data: insertedRestaurant, error: insertError } = await supabase
-            .from('restaurants')
-            .insert(restaurantData)
-            .select('id, name')
-            .single();
+          // Insertion en base de données avec gestion d'erreur détaillée
+          try {
+            console.log(`💾 Tentative d'insertion pour: ${restaurantName}`);
+            
+            const { data: insertedRestaurant, error: insertError } = await supabase
+              .from('restaurants')
+              .insert(restaurantData)
+              .select('id, name')
+              .single();
 
-          if (insertError) {
-            console.error(`❌ Erreur insertion ${restaurantName}:`, insertError);
-            logs.push(`❌ Erreur: ${restaurantName} - ${insertError.message}`);
+            if (insertError) {
+              console.error(`❌ Erreur insertion ${restaurantName}:`, {
+                message: insertError.message,
+                details: insertError.details,
+                hint: insertError.hint,
+                code: insertError.code
+              });
+              logs.push(`❌ Erreur DB: ${restaurantName} - ${insertError.message} (code: ${insertError.code})`);
+              errorCount++;
+            } else {
+              console.log(`✅ Restaurant inséré avec succès: ${restaurantName} (ID: ${insertedRestaurant.id})`);
+              logs.push(`✅ Succès: ${restaurantName} importé avec ID ${insertedRestaurant.id}`);
+              successCount++;
+            }
+          } catch (dbError) {
+            console.error(`💥 Exception lors de l'insertion ${restaurantName}:`, dbError);
+            logs.push(`💥 Exception DB: ${restaurantName} - ${dbError.message}`);
             errorCount++;
-          } else {
-            console.log(`✅ Restaurant inséré: ${restaurantName}`);
-            logs.push(`✅ Succès: ${restaurantName} importé avec ID ${insertedRestaurant.id}`);
-            successCount++;
           }
         }
 
       } catch (error) {
-        console.error(`❌ Erreur traitement ${place.name}:`, error);
-        logs.push(`❌ Erreur traitement "${place.name}": ${error.message}`);
+        console.error(`💥 Erreur traitement restaurant ${place.name}:`, {
+          message: error.message,
+          stack: error.stack,
+          place_data: {
+            name: place.name,
+            place_id: place.place_id,
+            types: place.types,
+            rating: place.rating,
+            price_level: place.price_level
+          }
+        });
+        logs.push(`💥 Erreur traitement "${place.name}": ${error.message}`);
         errorCount++;
       }
     }
@@ -263,15 +288,24 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error("💥 Erreur générale:", error);
+    console.error("💥 Erreur générale:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     
     return new Response(
       JSON.stringify({ 
         error: error.message,
+        errorType: error.name,
         success: 0,
         errors: 1,
         total: 0,
-        logs: [`💥 Erreur générale: ${error.message}`]
+        logs: [`💥 Erreur générale: ${error.message}`],
+        debug: {
+          timestamp: new Date().toISOString(),
+          stack: error.stack
+        }
       }),
       {
         status: 500,
