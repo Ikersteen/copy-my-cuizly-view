@@ -121,16 +121,30 @@ serve(async (req) => {
 
     // Obtenir l'utilisateur authentifié pour l'assigner comme propriétaire temporaire
     const authHeader = req.headers.get("Authorization");
+    console.log(`🔐 Auth header présent: ${authHeader ? 'OUI' : 'NON'}`);
+    
     if (!authHeader) {
-      throw new Error("Authentification requise");
+      console.error("❌ Pas d'en-tête Authorization");
+      throw new Error("Authentification requise - en-tête manquant");
     }
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser(
-      authHeader.replace("Bearer ", "")
-    );
+    // Créer un client Supabase avec l'auth header pour cet utilisateur
+    const userSupabase = createClient(supabaseUrl, supabaseServiceKey, {
+      global: {
+        headers: {
+          Authorization: authHeader
+        }
+      }
+    });
+
+    const { data: { user }, error: authError } = await userSupabase.auth.getUser();
+    
+    console.log(`👤 Utilisateur récupéré: ${user ? user.id : 'AUCUN'}`);
+    console.log(`❌ Erreur auth: ${authError ? authError.message : 'AUCUNE'}`);
 
     if (authError || !user) {
-      throw new Error("Utilisateur non authentifié");
+      console.error("❌ Authentification échouée:", authError);
+      throw new Error(`Utilisateur non authentifié: ${authError?.message || 'utilisateur null'}`);
     }
 
     console.log(`👤 Import par l'utilisateur: ${user.id}`);
