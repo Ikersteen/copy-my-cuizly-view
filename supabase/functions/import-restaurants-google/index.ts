@@ -78,36 +78,39 @@ serve(async (req) => {
     const { location, radius, maxResults, testMode } = requestBody;
 
     console.log(`📍 Recherche de restaurants près de: ${location}`);
-    console.log(`📊 Paramètres: rayon=${radius}m, max=${maxResults}, test=${testMode}`);
+    console.log(`📊 Paramètres: rayon=${radius}km, max=${maxResults}, test=${testMode}`);
 
     // Initialisation du client Supabase avec les permissions admin
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     console.log("✅ Client Supabase initialisé");
 
-    // VERSION DE TEST - CONTOURNEMENT TEMPORAIRE
-    // Utilisation de coordonnées fixes pour éviter l'API Geocoding
+    // Coordonnées fixes pour Montréal et Repentigny
     let lat: number, lng: number;
     
-    console.log(`🔧 CONTOURNEMENT TEMPORAIRE: Utilisation de coordonnées fixes pour ${location}`);
+    console.log(`🗺️ Sélection des coordonnées pour: ${location}`);
     
     if (location.toLowerCase().includes('montreal') || location.toLowerCase().includes('montréal')) {
       lat = 45.5017;  // Montréal centre-ville
       lng = -73.5673;
-      console.log(`📍 Coordonnées fixes Montréal: ${lat}, ${lng}`);
+      console.log(`📍 Coordonnées Montréal: ${lat}, ${lng}`);
     } else if (location.toLowerCase().includes('repentigny')) {
-      lat = 45.7420;  // Repentigny  
+      lat = 45.7420;  // Repentigny centre-ville
       lng = -73.4500;
-      console.log(`📍 Coordonnées fixes Repentigny: ${lat}, ${lng}`);
+      console.log(`📍 Coordonnées Repentigny: ${lat}, ${lng}`);
     } else {
-      // Fallback vers Montréal pour autres locations
+      // Par défaut Montréal si autre ville
       lat = 45.5017;
       lng = -73.5673;
-      console.log(`📍 Fallback vers Montréal pour: ${location}`);
+      console.log(`📍 Par défaut Montréal pour: ${location}`);
     }
     console.log(`🗺️ Coordonnées trouvées: ${lat}, ${lng}`);
 
-    // Recherche de restaurants via Places API
-    const placesUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=restaurant&key=${googleMapsApiKey}`;
+    // Convertir le rayon de km en mètres pour l'API Google
+    const radiusInMeters = radius * 1000;
+    console.log(`📏 Rayon: ${radius}km (${radiusInMeters}m)`);
+
+    // Recherche de restaurants via Places API (restaurants et casse-croûtes uniquement)
+    const placesUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radiusInMeters}&type=restaurant&key=${googleMapsApiKey}`;
     
     console.log(`🔍 URL Places API: ${placesUrl.replace(googleMapsApiKey, '***API_KEY***')}`);
     
@@ -333,20 +336,22 @@ serve(async (req) => {
   }
 });
 
-// Fonction utilitaire pour extraire les types de cuisine
+// Fonction utilitaire pour extraire les types de cuisine (restaurants et casse-croûtes uniquement)
 function extractCuisineTypes(types: string[]): string[] {
   const cuisineMapping: Record<string, string> = {
-    'bakery': 'Boulangerie',
-    'bar': 'Bar',
-    'cafe': 'Café',
-    'meal_delivery': 'Livraison',
-    'meal_takeaway': 'À emporter',
-    'pizza': 'Pizza',
-    'fast_food': 'Fast Food',
+    'restaurant': 'Restaurant',
+    'meal_delivery': 'Restaurant avec livraison',
+    'meal_takeaway': 'Restaurant à emporter',
+    'pizza': 'Pizzeria',
+    'fast_food': 'Casse-croûte',
     'food': 'Restaurant'
   };
 
-  const cuisines = types
+  // Filtrer pour ne garder que les restaurants et casse-croûtes
+  const validTypes = ['restaurant', 'meal_delivery', 'meal_takeaway', 'pizza', 'fast_food', 'food'];
+  const restaurantTypes = types.filter(type => validTypes.includes(type));
+  
+  const cuisines = restaurantTypes
     .map(type => cuisineMapping[type])
     .filter(Boolean);
 
