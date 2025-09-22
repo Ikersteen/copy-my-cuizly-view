@@ -196,6 +196,7 @@ serve(async (req) => {
 
         if (isDuplicate) {
           logs.push(`⚠️ Restaurant "${restaurantName}" déjà existant, ignoré`);
+          console.log(`⚠️ Restaurant "${restaurantName}" déjà dans la DB, ignoré pour éviter doublon`);
           continue;
         }
 
