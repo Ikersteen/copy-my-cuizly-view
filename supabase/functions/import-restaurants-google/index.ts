@@ -92,10 +92,20 @@ serve(async (req) => {
     // Recherche de restaurants via Places API
     const placesUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=restaurant&key=${googleMapsApiKey}`;
     
+    console.log(`🔍 URL Places API: ${placesUrl.replace(googleMapsApiKey, '***API_KEY***')}`);
+    
     const placesResponse = await fetch(placesUrl);
     const placesData = await placesResponse.json();
 
+    console.log(`📡 Réponse Places API:`, JSON.stringify(placesData, null, 2));
+    console.log(`📊 Status Places API: ${placesData.status}`);
+
     if (placesData.status !== "OK") {
+      if (placesData.status === "REQUEST_DENIED" && placesData.error_message?.includes("referer restrictions")) {
+        throw new Error(`PROBLÈME DE CONFIGURATION: Votre clé API Google a des restrictions de référent qui l'empêchent de fonctionner depuis un serveur. Vous devez soit:
+1. Créer une nouvelle clé API sans restrictions de référent pour les fonctions serveur
+2. Ou modifier les restrictions de votre clé actuelle dans Google Cloud Console`);
+      }
       throw new Error(`Erreur Places API: ${placesData.status} - ${placesData.error_message || 'Erreur inconnue'}`);
     }
 
