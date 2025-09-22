@@ -206,6 +206,44 @@ export function createAddressInput(
 }
 
 /**
+ * Format restaurant address in standard format: "263 boul brien, Repentigny, QC, Canada"
+ */
+export function formatRestaurantAddress(address: string): string {
+  if (!address) return '';
+  
+  const parsed = parseAddress(address);
+  const parts: string[] = [];
+
+  // Street address (number + name)
+  if (parsed.street_number && parsed.street_name) {
+    parts.push(`${parsed.street_number} ${parsed.street_name}`);
+  } else if (parsed.street_name) {
+    parts.push(parsed.street_name);
+  } else {
+    // If we can't parse street components, use the first part of the original address
+    const firstPart = address.split(',')[0]?.trim();
+    if (firstPart) {
+      parts.push(firstPart);
+    }
+  }
+
+  // City
+  if (parsed.city) {
+    parts.push(parsed.city);
+  }
+
+  // Province
+  if (parsed.province) {
+    parts.push(parsed.province);
+  }
+
+  // Country
+  parts.push(parsed.country || 'Canada');
+
+  return parts.join(', ');
+}
+
+/**
  * Check if two addresses are the same
  */
 export function areAddressesEqual(addr1: Partial<ParsedAddress>, addr2: Partial<ParsedAddress>): boolean {
