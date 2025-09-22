@@ -171,9 +171,15 @@ serve(async (req) => {
 
     for (const place of limitedRestaurants) {
       try {
-        // Validation et transformation des données
-        const restaurantName = place.name;
-        const address = place.vicinity || place.formatted_address || 'Adresse non disponible';
+        // Validation et transformation des données avec sécurité renforcée
+        if (!place.name || typeof place.name !== 'string') {
+          console.log(`⚠️ Restaurant ignoré: nom invalide`, place);
+          logs.push(`⚠️ Restaurant ignoré: nom invalide`);
+          continue;
+        }
+        
+        const restaurantName = place.name.trim();
+        const address = (place.vicinity || place.formatted_address || 'Adresse non disponible').trim();
         
         // Déterminer le type de cuisine basé sur les types Google
         const cuisineTypes = extractCuisineTypes(place.types);
@@ -181,18 +187,29 @@ serve(async (req) => {
         // Déterminer la gamme de prix
         const priceRange = getPriceRange(place.price_level);
 
-        // Vérifier si le restaurant existe déjà (par nom et adresse similaire)
-        const { data: existingRestaurants } = await supabase
-          .from('restaurants')
-          .select('id, name, address')
-          .ilike('name', `%${restaurantName}%`)
-          .limit(5);
+        console.log(`🔍 Vérification doublons pour: ${restaurantName}`);
+        
+        // Vérification de doublons simplifiée et sécurisée
+        let isDuplicate = false;
+        try {
+          const { data: existingRestaurants, error: searchError } = await supabase
+            .from('restaurants')
+            .select('id, name, address')
+            .eq('name', restaurantName)
+            .limit(1);
 
-        const isDuplicate = existingRestaurants?.some(existing => 
-          existing.name.toLowerCase() === restaurantName.toLowerCase() ||
-          (existing.address && address && 
-           existing.address.toLowerCase().includes(address.toLowerCase().substring(0, 20)))
-        );
+          if (searchError) {
+            console.error(`⚠️ Erreur recherche doublons pour ${restaurantName}:`, searchError);
+            // En cas d'erreur de recherche, on continue l'insertion
+            isDuplicate = false;
+          } else {
+            isDuplicate = existingRestaurants && existingRestaurants.length > 0;
+            console.log(`🔍 Doublons trouvés: ${isDuplicate ? 'OUI' : 'NON'} (${existingRestaurants?.length || 0} résultats)`);
+          }
+        } catch (searchException) {
+          console.error(`💥 Exception recherche doublons ${restaurantName}:`, searchException);
+          isDuplicate = false; // En cas d'exception, on continue
+        }
 
         if (isDuplicate) {
           logs.push(`⚠️ Restaurant "${restaurantName}" déjà existant, ignoré`);
@@ -200,17 +217,17 @@ serve(async (req) => {
           continue;
         }
 
-        // Préparer les données pour l'insertion
+        // Préparer les données pour l'insertion avec validation renforcée
         const restaurantData = {
-          name: restaurantName,
+          name: restaurantName || 'Restaurant importé',
           description: `Restaurant importé depuis Google Places. ${address}`,
           description_fr: `Restaurant importé depuis Google Places situé à ${address}`,
           description_en: `Restaurant imported from Google Places located at ${address}`,
-          address: address,
+          address: address || null,
           phone: null, // Nécessiterait Place Details API
           email: null, // Pas disponible via Places API
-          cuisine_type: cuisineTypes,
-          price_range: priceRange,
+          cuisine_type: Array.isArray(cuisineTypes) ? cuisineTypes : ['Restaurant'],
+          price_range: typeof priceRange === 'string' ? priceRange : 'moderate',
           owner_id: user_id, // Assigné à l'administrateur qui fait l'import
           is_active: true,
           dietary_restrictions: [],
