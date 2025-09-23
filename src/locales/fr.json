@@ -350,10 +350,11 @@
     "weeklyTrends": "Tendances cette semaine",
     "positiveGrowth": "de vues par rapport à la semaine dernière",
     "noChange": "Aucune évolution par rapport à la semaine dernière",
+    "noChangeVsLastWeek": "Aucun changement par rapport à la semaine dernière",
     "collectingData": "Données en cours de collecte...",
     "positiveTrend": "Tendance positive",
     "negativeTrend": "Tendance négative",
-    "stable": "Stable",
+    "stable": "Stabilité",
     "dataCollection": "Collecte de données"
   },
   "ratings": {
