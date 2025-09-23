@@ -29,33 +29,31 @@
     "description": "Cuizly révolutionne la découverte gastronomique en utilisant l'intelligence artificielle pour recommander des restaurants parfaitement adaptés aux préférences, au budget et aux envies des consommateurs."
   },
   "features": {
-    "title": "Fonctionnalités",
+    "title": "",
     "subtitle": "Des fonctionnalités pensées pour\nles restaurateurs & les foodies",
-    "list": {
-      "ai": {
-        "title": "Intelligence Artificielle",
-        "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
-      },
-      "geolocation": {
-        "title": "Géolocalisation",
-        "description": "Trouvez les meilleures offres près de chez vous à Montréal."
-      },
-      "alerts": {
-        "title": "Alertes en temps réel",
-        "description": "Soyez informé instantanément des nouvelles offres qui vous intéressent."
-      },
-      "reviews": {
-        "title": "Avis et notations",
-        "description": "Consultez les avis authentiques des autres utilisateurs."
-      },
-      "analytics": {
-        "title": "Analyses pour restaurants",
-        "description": "Analysez les performances de votre restaurant avec des données détaillées."
-      },
-      "targeting": {
-        "title": "Ciblage intelligent",
-        "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
-      }
+    "ai_recommendations": {
+      "title": "Intelligence Artificielle",
+      "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
+    },
+    "geolocation": {
+      "title": "Géolocalisation",
+      "description": "Trouvez les meilleures offres près de chez vous à Montréal."
+    },
+    "real_time_alerts": {
+      "title": "Alertes en temps réel",
+      "description": "Soyez informé instantanément des nouvelles offres qui vous intéressent."
+    },
+    "reviews_ratings": {
+      "title": "Avis et notations",
+      "description": "Consultez les avis authentiques des autres utilisateurs."
+    },
+    "restaurant_analytics": {
+      "title": "Analyses pour restaurants",
+      "description": "Analysez les performances de votre restaurant avec des données détaillées."
+    },
+    "smart_targeting": {
+      "title": "Ciblage intelligent",
+      "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
     }
   },
   "pricing": {
@@ -115,47 +113,47 @@
     "returnHome": "Retourner à l'accueil"
   },
   "privacy": {
-    "title": "Protection de vos données",
+    "title": "Politique de confidentialité",
     "lastUpdated": "Dernière mise à jour : ",
     "sections": {
       "introduction": {
-        "title": "1. Notre engagement",
-        "content": "Chez Cuizly, nous respectons votre vie privée et protégeons vos informations personnelles. Cette page vous explique simplement comment nous utilisons vos données quand vous utilisez notre application."
+        "title": "1. Introduction",
+        "content": "Cuizly Technologies (\"nous\", \"notre\" ou \"Cuizly\") respecte votre vie privée et s'engage à protéger vos données personnelles. Cette politique de confidentialité vous informe sur la façon dont nous collectons, utilisons et protégeons vos informations lorsque vous utilisez notre service."
       },
       "collection": {
-        "title": "2. Quelles informations nous collectons",
+        "title": "2. Informations que nous collectons",
         "items": [
-          "Votre nom et adresse courriel",
-          "Vos goûts culinaires et préférences alimentaires",
-          "Votre localisation (seulement si vous acceptez)",
-          "Comment vous utilisez l'application"
+          "Informations d'identification personnelle (nom, courriel)",
+          "Préférences culinaires et alimentaires",
+          "Données de localisation (avec votre consentement)",
+          "Informations d'utilisation et analytiques"
         ]
       },
       "usage": {
         "title": "3. Comment nous utilisons vos informations",
         "items": [
-          "Vous recommander des restaurants qui vous plairont",
-          "Améliorer votre expérience sur l'application",
-          "Vous envoyer des notifications utiles",
-          "Rendre notre service encore meilleur"
+          "Fournir et améliorer nos services",
+          "Personnaliser votre expérience",
+          "Vous envoyer des notifications pertinentes",
+          "Analyser l'utilisation de notre plateforme"
         ]
       },
       "sharing": {
-        "title": "4. Partage de vos informations",
-        "content": "Nous ne vendons jamais vos informations personnelles. Nous pouvons les partager uniquement dans ces cas :",
+        "title": "4. Partage d'informations",
+        "content": "Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Nous pouvons partager vos informations dans les cas suivants :",
         "items": [
-          "Si vous nous donnez votre permission",
-          "Si la loi nous l'oblige",
-          "Pour protéger la sécurité de tous"
+          "Avec votre consentement explicite",
+          "Pour se conformer aux obligations légales",
+          "Pour protéger nos droits et notre sécurité"
         ]
       },
       "rights": {
         "title": "5. Vos droits",
-        "content": "Vous pouvez à tout moment voir, corriger ou supprimer vos données personnelles. Pour cela, écrivez-nous à cuizlycanada@gmail.com."
+        "content": "Vous avez le droit d'accéder, de corriger, de supprimer ou de limiter l'utilisation de vos données personnelles. Pour exercer ces droits, contactez-nous à cuizlycanada@gmail.com."
       },
       "contact": {
-        "title": "6. Nous contacter",
-        "content": "Des questions sur vos données ? Contactez-nous :",
+        "title": "6. Contact",
+        "content": "Pour toute question concernant cette politique de confidentialité, contactez-nous à :",
         "email": "Courriel : cuizlycanada@gmail.com",
         "address": "Adresse : Montréal, QC (Canada)"
       }
@@ -166,140 +164,140 @@
     "subtitle": "Cuizly Assistant vous fait découvrir les meilleurs restos, de nouvelles saveurs et des recettes."
   },
   "mentions": {
-    "title": "Informations légales",
+    "title": "Mentions légales",
     "sections": {
       "editor": {
-        "title": "Qui sommes-nous",
-        "companyName": "Entreprise : Cuizly Technologies",
-        "legalForm": "Type : Startup canadienne",
-        "address": "Localisation : Montréal, QC (Canada)",
+        "title": "Éditeur du site",
+        "companyName": "Raison sociale : Cuizly Technologies",
+        "legalForm": "Forme juridique : Startup Indépendante",
+        "address": "Siège social : Montréal, QC (Canada)",
         "email": "Courriel : cuizlycanada@gmail.com"
       },
       "hosting": {
-        "title": "Hébergement du site",
-        "host": "Hébergé par : Supabase Inc.",
+        "title": "Hébergement",
+        "host": "Hébergeur : Supabase Inc.",
         "address": "Adresse : San Francisco, CA, États-Unis",
         "website": "Site web : https://supabase.com"
       },
       "director": {
-        "title": "Responsable du site",
-        "name": "Iker Kiomba Landu, Fondateur et Directeur Général",
+        "title": "Directeur de la publication",
+        "name": "Iker Kiomba Landu, Président Directeur Général",
         "email": "Courriel : cuizlycanada@gmail.com"
       },
       "intellectual": {
-        "title": "Contenu et droits d'auteur",
-        "content": "Tout le contenu de ce site (textes, images, logo) appartient à Cuizly Technologies et est protégé par les lois canadiennes et internationales sur les droits d'auteur."
+        "title": "Propriété intellectuelle",
+        "content": "L'ensemble de ce site relève de la législation canadienne et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques."
       },
       "personal": {
-        "title": "Vos données personnelles",
-        "content": "Selon les lois canadiennes, vous avez le droit de voir, corriger ou supprimer vos données personnelles. Pour exercer ce droit, écrivez-nous à cuizlycanada@gmail.com"
+        "title": "Données personnelles",
+        "content": "Conformément à la loi canadienne sur la protection des renseignements personnels, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit, contactez-nous à cuizlycanada@gmail.com"
       },
       "liability": {
         "title": "Responsabilité",
-        "content": "Cuizly Technologies ne peut être tenue responsable des problèmes techniques qui pourraient survenir lors de votre utilisation du site, comme des bugs ou des incompatibilités avec votre appareil."
+        "content": "Cuizly Technologies ne pourra être tenue responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications indiquées, soit de l'apparition d'un bug ou d'une incompatibilité."
       },
       "law": {
-        "title": "Lois applicables",
-        "content": "Ce site est soumis aux lois du Canada et du Québec. En cas de conflit, les tribunaux de Montréal seront compétents."
+        "title": "Droit applicable",
+        "content": "Tout litige en relation avec l'utilisation du site Cuizly est soumis au droit canadien et québécois. Il est fait attribution exclusive de juridiction aux tribunaux compétents de Montréal."
       }
     }
   },
   "terms": {
-    "title": "Règles d'utilisation",
+    "title": "Conditions d'utilisation",
     "lastUpdated": "Dernière mise à jour : ",
     "sections": {
       "acceptance": {
-        "title": "1. En utilisant Cuizly",
-        "content": "En utilisant notre application, vous acceptez de respecter ces règles et toutes les lois applicables."
+        "title": "1. Acceptation des conditions",
+        "content": "En accédant et en utilisant Cuizly, vous acceptez d'être lié par ces conditions d'utilisation et toutes les lois et réglementations applicables."
       },
       "service": {
-        "title": "2. Ce que fait Cuizly",
-        "content": "Cuizly est une application qui vous aide à découvrir des restaurants à Montréal grâce à des recommandations personnalisées créées par intelligence artificielle."
+        "title": "2. Description du service",
+        "content": "Cuizly est une plateforme qui connecte les consommateurs aux restaurants à Montréal en proposant des offres culinaires personnalisées grâce à l'intelligence artificielle."
       },
       "responsibilities": {
-        "title": "3. Vos responsabilités",
+        "title": "3. Responsabilités de l'utilisateur",
         "items": [
-          "Donner des informations vraies lors de votre inscription",
-          "Garder votre mot de passe secret et sécurisé",
-          "Utiliser l'application de façon respectueuse et légale",
-          "Ne pas essayer de perturber le fonctionnement de l'application"
+          "Fournir des informations exactes lors de l'inscription",
+          "Maintenir la sécurité de votre compte",
+          "Utiliser le service de manière légale et respectueuse",
+          "Ne pas perturber le fonctionnement de la plateforme"
         ]
       },
       "intellectual": {
-        "title": "4. Contenu de l'application",
-        "content": "Tout ce qui se trouve dans l'application Cuizly (textes, images, logo, code) appartient à Cuizly Technologies et est protégé par les lois sur les droits d'auteur."
+        "title": "4. Propriété intellectuelle",
+        "content": "Tout le contenu de Cuizly, y compris les textes, graphiques, logos et logiciels, est la propriété de Cuizly Technologies et est protégé par les lois sur la propriété intellectuelle."
       },
       "liability": {
-        "title": "5. Limites de responsabilité",
-        "content": "Cuizly ne peut pas être tenu responsable des problèmes indirects qui pourraient résulter de l'utilisation de notre application."
+        "title": "5. Limitation de responsabilité",
+        "content": "Cuizly ne peut être tenu responsable des dommages indirects, incidents ou consécutifs résultant de l'utilisation ou de l'impossibilité d'utiliser notre service."
       },
       "modifications": {
-        "title": "6. Modifications de ces règles",
-        "content": "Nous pouvons modifier ces règles à tout moment. Les nouvelles règles s'appliqueront dès qu'elles seront publiées sur cette page."
+        "title": "6. Modifications",
+        "content": "Nous nous réservons le droit de modifier ces conditions d'utilisation à tout moment. Les modifications entreront en vigueur immédiatement après leur publication sur cette page."
       },
       "contact": {
-        "title": "7. Questions",
-        "content": "Des questions sur ces règles ? Contactez-nous :",
+        "title": "7. Contact",
+        "content": "Pour toute question concernant ces conditions d'utilisation, contactez-nous à :",
         "email": "Courriel : cuizlycanada@gmail.com",
         "address": "Adresse : Montréal, QC (Canada)"
       }
     }
   },
   "cookies": {
-    "title": "Notre utilisation des cookies",
+    "title": "Politique des cookies",
     "lastUpdated": "Dernière mise à jour : ",
     "sections": {
       "what": {
         "title": "Qu'est-ce qu'un cookie ?",
-        "content": "Un cookie est un petit fichier que notre site web place sur votre appareil. Il nous aide à vous reconnaître et à mémoriser vos préférences lors de vos prochaines visites."
+        "content": "Un cookie est un petit fichier texte déposé sur votre ordinateur lors de la visite d'un site web. Il permet de reconnaître votre navigateur et de conserver certaines informations sur vos préférences ou actions passées."
       },
       "types": {
-        "title": "Quels cookies nous utilisons",
+        "title": "Types de cookies utilisés",
         "essential": {
           "title": "Cookies essentiels",
-          "content": "Ces cookies sont indispensables pour que le site fonctionne. Ils vous permettent de naviguer et d'utiliser les fonctionnalités importantes comme vous connecter en sécurité."
+          "content": "Ces cookies sont nécessaires au fonctionnement du site. Ils vous permettent de naviguer sur le site et d'utiliser ses fonctionnalités essentielles comme l'authentification et la sécurité."
         },
         "performance": {
           "title": "Cookies de performance",
-          "content": "Ces cookies nous aident à comprendre comment vous utilisez notre site (quelles pages vous visitez le plus). Cela nous aide à améliorer votre expérience."
+          "content": "Ces cookies collectent des informations sur la façon dont vous utilisez notre site, comme les pages les plus visitées. Ces données nous aident à améliorer le fonctionnement du site."
         },
         "functionality": {
           "title": "Cookies de fonctionnalité",
-          "content": "Ces cookies mémorisent vos choix (comme votre langue préférée) pour vous offrir une expérience plus personnalisée lors de vos prochaines visites."
+          "content": "Ces cookies permettent au site de se souvenir de vos choix (comme votre nom d'utilisateur ou votre langue) et de fournir des fonctionnalités améliorées et plus personnalisées."
         }
       },
       "management": {
-        "title": "Comment gérer les cookies",
-        "content1": "Vous avez le contrôle total sur les cookies. Vous pouvez les supprimer ou empêcher leur installation dans les réglages de votre navigateur.",
-        "content2": "Attention : si vous désactivez tous les cookies, certaines fonctionnalités du site pourraient ne plus marcher correctement."
+        "title": "Gestion des cookies",
+        "content1": "Vous pouvez contrôler et/ou supprimer les cookies comme vous le souhaitez. Vous pouvez supprimer tous les cookies qui sont déjà sur votre ordinateur et vous pouvez configurer la plupart des navigateurs pour empêcher leur placement.",
+        "content2": "Cependant, si vous faites cela, vous devrez peut-être ajuster manuellement certaines préférences à chaque fois que vous visitez un site et certains services et fonctionnalités peuvent ne pas fonctionner."
       },
       "disable": {
-        "title": "Comment désactiver les cookies dans votre navigateur",
-        "chrome": "Chrome : Paramètres → Confidentialité et sécurité → Cookies",
-        "firefox": "Firefox : Paramètres → Vie privée et sécurité → Cookies",
-        "safari": "Safari : Préférences → Confidentialité → Cookies",
-        "edge": "Edge : Paramètres → Cookies et autorisations"
+        "title": "Comment désactiver les cookies",
+        "chrome": "Chrome : Paramètres → Confidentialité et sécurité → Cookies et autres données de site",
+        "firefox": "Firefox : Options → Vie privée et sécurité → Cookies et données de site",
+        "safari": "Safari : Préférences → Confidentialité → Gérer les données de site web",
+        "edge": "Edge : Paramètres → Cookies et autorisations de site → Gérer et supprimer les cookies"
       },
       "third": {
-        "title": "Cookies de services externes",
-        "content": "Nous utilisons parfois des services externes (comme Google Analytics) qui peuvent aussi placer des cookies pour nous aider à analyser l'utilisation du site. Ces services ont leurs propres règles de confidentialité."
+        "title": "Cookies tiers",
+        "content": "Certains cookies peuvent être placés par des services tiers que nous utilisons, comme Google Analyses pour mesurer l'audience du site. Ces services tiers ont leurs propres politiques de confidentialité."
       },
       "editor": {
-        "title": "Qui sommes-nous",
-        "company": "Entreprise : Cuizly Technologies",
-        "form": "Type : Startup canadienne",
-        "address": "Localisation : Montréal, QC (Canada)"
+        "title": "Éditeur du site",
+        "company": "Raison sociale : Cuizly Technologies",
+        "form": "Forme juridique : Startup Indépendante",
+        "address": "Siège social : Montréal, QC (Canada)"
       },
       "director": {
-        "title": "Responsable du site",
-        "name": "Iker Kiomba Landu, Fondateur et Directeur Général",
+        "title": "Directeur de la publication",
+        "name": "Iker Kiomba Landu, Président Directeur Général",
         "email": "Courriel : cuizlycanada@gmail.com"
       },
       "contact": {
-        "title": "Questions sur les cookies",
-        "content": "Des questions sur notre utilisation des cookies ? Contactez-nous :",
+        "title": "Contact",
+        "content": "Pour toute question concernant notre utilisation des cookies, contactez-nous à :",
         "email": "Courriel : cuizlycanada@gmail.com",
-        "address": "Localisation : Montréal, QC (Canada)"
+        "address": "Siège social : Montréal, QC (Canada)"
       }
     }
   },
@@ -2191,6 +2189,11 @@
     "titleUpdated": "Titre mis à jour",
     "profileUpdated": "Profil mis à jour",
     "informationSaved": "Vos informations ont été sauvegardées avec succès"
+  },
+  "pricingLanding": {
+    "title": "Tarifs pour tous",
+    "subtitle": "Une offre gratuite pour les amateurs de cuisine, des solutions professionnelles abordables pour les restaurants.",
+    "popular": "Populaire"
   },
   "contact": {
     "title": "Contactez-nous",
