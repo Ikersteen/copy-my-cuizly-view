@@ -492,7 +492,7 @@ export const RestaurantProfileModal = ({
                     type="email"
                     value={formData.email || ""}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    placeholder="cuizlycanada@gmail.com"
+                    placeholder={t('auth.form.emailPlaceholder')}
                   />
                 </div>
             </div>
