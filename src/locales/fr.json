@@ -1098,7 +1098,7 @@
     "restaurantNameRequired": "Nom du restaurant *",
     "restaurantNamePlaceholder": "Entrez le nom de votre restaurant",
     "address": "Adresse",
-    "addressPlaceholder": "Entrez l'adresse de votre restaurant"
+    "addressPlaceholder": "Entrez l'adresse de votre restaurant",
     "deleteConfirmation": "Confirmation de suppression",
     "deleteConfirmationText": "Cette action est irréversible. Pour confirmer, tapez exactement :",
     "deleteConfirmationPhrase": "Supprimer le compte",
