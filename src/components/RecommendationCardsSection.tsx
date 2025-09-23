@@ -110,7 +110,7 @@ export const RecommendationCardsSection = () => {
     // 6. DELIVERY RADIUS - Only if user has defined a specific radius
     if (preferences?.delivery_radius && preferences.delivery_radius > 1) {
       reasons.push({
-        text: t('recommendations.reasonWithinRadius') + ` (${preferences.delivery_radius} km)`,
+        text: `Dans votre rayon (${preferences.delivery_radius} km)`,
         type: 'location'
       });
     }

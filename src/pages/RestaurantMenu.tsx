@@ -406,7 +406,7 @@ export default function RestaurantMenu() {
                 {/* Types de service */}
                 {restaurant.service_types && restaurant.service_types.length > 0 && (
                   <div className="space-y-3">
-                    <h4 className="font-medium">{t('restaurantMenu.serviceTypes')}</h4>
+                    <h4 className="font-medium">Types de service</h4>
                     <div className="flex flex-wrap gap-2">
                       {restaurant.service_types?.map((service: string, index: number) => (
                         <Badge key={`service-${index}`} variant="outline">

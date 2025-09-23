@@ -645,7 +645,7 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="delivery_radius">{t('restaurantProfile.deliveryRadius')}</Label>
+              <Label htmlFor="delivery_radius">Rayon de livraison</Label>
               <p className="text-sm text-muted-foreground">Distance maximale de livraison en kilomètres</p>
               <Input
                 id="delivery_radius"
@@ -732,7 +732,7 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
-              <Label>{t('restaurantProfile.serviceTypes')}</Label>
+              <Label>Types de service</Label>
               <div className="space-y-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {SERVICE_TYPES_OPTIONS.map((service) => {

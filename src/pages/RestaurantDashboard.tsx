@@ -261,7 +261,7 @@ const RestaurantDashboard = () => {
                       <p className="text-foreground text-sm">{restaurant.price_range || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.deliveryRadius')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Rayon de livraison</p>
                       <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
@@ -281,7 +281,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.serviceTypes')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Types de service</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).service_types?.length > 0 ? (
                           (restaurant as any).service_types.map((service: string, index: number) => (

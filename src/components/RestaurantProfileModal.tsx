@@ -653,7 +653,7 @@ export const RestaurantProfileModal = ({
 
             {/* Rayon de livraison */}
             <div className="space-y-4">
-              <Label htmlFor="delivery_radius" className="text-base font-medium">{t('restaurantProfile.deliveryRadius')}</Label>
+              <Label htmlFor="delivery_radius" className="text-base font-medium">Rayon de livraison</Label>
               <Input
                 id="delivery_radius"
                 type="number"
@@ -664,7 +664,7 @@ export const RestaurantProfileModal = ({
                 placeholder="5"
               />
               <p className="text-sm text-muted-foreground">
-                {t('restaurantProfile.deliveryRadiusDesc')}
+                Distance maximale de livraison en kilomètres
               </p>
             </div>
           </div>

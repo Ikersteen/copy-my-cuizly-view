@@ -301,12 +301,12 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   full_address: address
                 }));
               }}
-              label={t('preferences.deliveryAddress')}
-              placeholder={t('placeholders.addressInput')}
+              label="Adresse de livraison"
+              placeholder="Entrez votre adresse"
             />
             {deliveryAddress?.formatted_address && (
               <p className="text-xs text-muted-foreground mt-2">
-                📍 {t('preferences.addressSelected')}: {deliveryAddress.formatted_address}
+                📍 Adresse sélectionnée: {deliveryAddress.formatted_address}
               </p>
             )}
           </div>
@@ -316,7 +316,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Rayon de livraison */}
           <div>
             <Label className="text-base font-medium">
-              {t('preferences.deliveryRadius')}: {localPrefs.delivery_radius || 1}
+              Rayon de livraison: {localPrefs.delivery_radius || 1}
             </Label>
             <Slider
               value={[localPrefs.delivery_radius || 1]}
