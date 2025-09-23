@@ -263,10 +263,6 @@ const RestaurantDashboard = () => {
                       <p className="text-foreground text-sm">{restaurant.price_range || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Rayon de livraison</p>
-                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('restaurantInfo.notSpecified')}</p>
-                    </div>
-                    <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-2">Types de cuisine</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
