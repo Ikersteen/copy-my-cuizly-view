@@ -104,13 +104,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="/cookies" 
+                <Link 
+                  to="/cookies" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.cookiePolicy')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
