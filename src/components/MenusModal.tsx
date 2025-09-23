@@ -330,7 +330,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       <div className="relative w-32 h-32">
                         <img
                           src={newMenu.image_url}
-                          alt={t('common.preview')}
+                          alt="Preview"
                           className="w-full h-full object-cover rounded-lg"
                         />
                         <Button
@@ -453,7 +453,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         <div className="relative mb-3">
                           <img
                             src={menu.image_url}
-                            alt={t('restaurantMenu.ourMenus')}
+                            alt="Menu"
                             className="w-full h-32 object-cover rounded-lg"
                           />
                         </div>
@@ -563,7 +563,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           <div className="relative w-32 h-32">
                             <img
                               src={editingMenu.image_url}
-                              alt={t('common.preview')}
+                              alt="Preview"
                               className="w-full h-full object-cover rounded-lg"
                             />
                           </div>

@@ -430,119 +430,6 @@
     "title": "Real-time performance dashboard",
     "subtitle": "Performance insights by segment (Real-time updates)"
   },
-  "newOffer": {
-    "title": "Create New Offer",
-    "creating": "Creating...",
-    "createOffer": "Create Offer",
-    "cancel": "Cancel",
-    "placeholders": {
-      "title": "E.g.: 2 for 1 Pizza",
-      "description": "Describe your offer in detail...",
-      "selectPeriod": "Select validity period"
-    },
-    "errors": {
-      "fillTitleDescription": "Please fill in title and description",
-      "specifyDiscount": "Please specify a discount", 
-      "fixErrors": "Please fix the errors",
-      "cannotCreate": "Cannot create offer"
-    },
-    "success": {
-      "created": "Offer Created",
-      "published": "Published successfully"
-    }
-  },
-  "validation": {
-    "firstName": "First name",
-    "lastName": "Last name",
-    "username": "Username",
-    "restaurantName": "Restaurant name"
-  },
-  "common": {
-    "save": "Save",
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "delete": "Delete",
-    "add": "Add",
-    "remove": "Remove",
-    "loading": "Loading...",
-    "saving": "Saving...",
-    "creating": "Creating...",
-    "updating": "Updating...",
-    "processing": "Processing...",
-    "uploading": "Uploading...",
-    "close": "Close",
-    "confirm": "Confirm",
-    "yes": "Yes",
-    "no": "No",
-    "ok": "OK",
-    "apply": "Apply",
-    "reset": "Reset",
-    "clear": "Clear",
-    "search": "Search",
-    "filter": "Filter",
-    "sort": "Sort",
-    "view": "View",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "start": "Start",
-    "stop": "Stop",
-    "retry": "Retry",
-    "refresh": "Refresh",
-    "preview": "Preview",
-    "avatar": "Avatar",
-    "logo": "Logo",
-    "menu": "Menu",
-    "profile": "Profile"
-  },
-  "toasts": {
-    "success": "Success",
-    "conversationDeleted": "Conversation deleted",
-    "titleUpdated": "Title updated",
-    "profileUpdated": "Profile updated",
-    "informationSaved": "Your information has been saved successfully"
-  },
-  "terms": {
-    "title": "Terms of Use",
-    "lastUpdated": "Last updated: ",
-    "sections": {
-      "acceptance": {
-        "title": "1. Acceptance of Terms",
-        "content": "By accessing and using Cuizly, you agree to be bound by these terms of use and all applicable laws and regulations."
-      },
-      "service": {
-        "title": "2. Service Description",
-        "content": "Cuizly is a platform that connects consumers to restaurants in Montreal by offering personalized culinary deals through artificial intelligence."
-      },
-      "responsibilities": {
-        "title": "3. User Responsibilities",
-        "items": [
-          "Provide accurate information during registration",
-          "Maintain the security of your account",
-          "Use the service legally and respectfully",
-          "Do not disrupt the platform's operation"
-        ]
-      },
-      "intellectual": {
-        "title": "4. Intellectual Property",
-        "content": "All content on Cuizly, including text, graphics, logos and software, is the property of Cuizly Technologies and is protected by intellectual property laws."
-      },
-      "liability": {
-        "title": "5. Limitation of Liability",
-        "content": "Cuizly cannot be held responsible for indirect, incidental or consequential damages resulting from the use or inability to use our service."
-      },
-      "modifications": {
-        "title": "6. Modifications",
-        "content": "We reserve the right to modify these terms of use at any time. Changes will take effect immediately after their publication on this page."
-      },
-      "contact": {
-        "title": "7. Contact",
-        "content": "For any questions regarding these terms of use, contact us at:",
-        "email": "Email: cuizlycanada@gmail.com",
-        "address": "Address: Montreal, QC (Canada)"
-      }
-    }
-  },
   "pricingLanding": {
     "title": "Pricing for everyone",
     "subtitle": "A free offer for food lovers, affordable professional solutions for restaurants.",
@@ -570,56 +457,15 @@
       "title": "Contact Information",
       "email": {
         "label": "Email",
-        "value": "Cuizlycanada@gmail.com"
+        "value": "support@cuizly.ca"
       },
       "address": {
         "label": "Address",
-        "value": "Montreal, QC, Canada"
+        "value": "Montreal, QC<br/>Canada"
       },
       "phone": {
         "label": "Phone",
         "value": "+1 (555) 123-4567"
-      }
-    }
-  },
-  "terms": {
-    "title": "Terms of Use",
-    "lastUpdated": "Last updated: ",
-    "sections": {
-      "acceptance": {
-        "title": "1. Acceptance of Terms",
-        "content": "By accessing and using Cuizly, you agree to be bound by these terms of use and all applicable laws and regulations."
-      },
-      "service": {
-        "title": "2. Service Description",
-        "content": "Cuizly is a platform that connects consumers to restaurants in Montreal by offering personalized culinary deals through artificial intelligence."
-      },
-      "responsibilities": {
-        "title": "3. User Responsibilities",
-        "items": [
-          "Provide accurate information during registration",
-          "Maintain the security of your account",
-          "Use the service legally and respectfully",
-          "Do not disrupt the platform's operation"
-        ]
-      },
-      "intellectual": {
-        "title": "4. Intellectual Property",
-        "content": "All content on Cuizly, including text, graphics, logos and software, is the property of Cuizly Technologies and is protected by intellectual property laws."
-      },
-      "liability": {
-        "title": "5. Limitation of Liability",
-        "content": "Cuizly cannot be held responsible for indirect, incidental or consequential damages resulting from the use or inability to use our service."
-      },
-      "modifications": {
-        "title": "6. Modifications",
-        "content": "We reserve the right to modify these terms of use at any time. Changes will take effect immediately after their publication on this page."
-      },
-      "contact": {
-        "title": "7. Contact",
-        "content": "For any questions regarding these terms of use, contact us at:",
-        "email": "Email: cuizlycanada@gmail.com",
-        "address": "Address: Montreal, QC (Canada)"
       }
     }
   },
@@ -643,7 +489,7 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfUse": "Terms of Use",
     "cookiePolicy": "Cookie Policy",
-    "tagline": "Your culinary copilot with you everywhere",
+    "tagline": "Your culinary copilot in Montreal",
     "instagram": "Instagram",
     "companyName": "Cuizly Inc.",
     "allRightsReserved": "All rights reserved."

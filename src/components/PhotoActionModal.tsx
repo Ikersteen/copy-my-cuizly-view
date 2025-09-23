@@ -45,14 +45,12 @@ export const PhotoActionModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-sm bg-background border-0 shadow-2xl p-0 overflow-hidden rounded-3xl">
-        <VisuallyHidden>
-          <DialogHeader>
-            <DialogTitle>{photoTitle}</DialogTitle>
-            <DialogDescription>
-              {photoType === 'profile' ? 'Gérer votre photo de profil' : 'Gérer votre photo de couverture'}
-            </DialogDescription>
-          </DialogHeader>
-        </VisuallyHidden>
+        <DialogHeader className="sr-only">
+          <DialogTitle>{photoTitle}</DialogTitle>
+          <DialogDescription>
+            {photoType === 'profile' ? 'Gérer votre photo de profil' : 'Gérer votre photo de couverture'}
+          </DialogDescription>
+        </DialogHeader>
         
         {/* Header avec gradient moderne */}
         <div className="relative bg-gradient-to-r from-primary via-primary/90 to-primary/80 text-white p-6">

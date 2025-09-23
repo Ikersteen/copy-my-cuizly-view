@@ -193,8 +193,8 @@ export const useConversations = () => {
       }
       
       toast({
-        title: t('toasts.success'),
-        description: t('toasts.conversationDeleted'),
+        title: "Succès",
+        description: "Conversation supprimée",
       });
     } catch (error) {
       console.error('Error deleting conversation:', error);
@@ -222,8 +222,8 @@ export const useConversations = () => {
       }
       
       toast({
-        title: t('toasts.success'),
-        description: t('toasts.titleUpdated'),
+        title: "Succès",
+        description: "Titre mis à jour",
       });
     } catch (error) {
       console.error('Error updating conversation title:', error);
