@@ -2094,7 +2094,8 @@
     "cancel": "Annuler", 
     "apply": "Appliquer",
     "adjustMenuPhoto": "Ajuster la photo du menu",
-    "adjustProfilePhoto": "Ajuster la photo de profil"
+    "adjustProfilePhoto": "Ajuster le logo",
+    "adjustCoverPhoto": "Ajuster la couverture"
   },
   "restaurants": {
     "popularTitle": "Restaurants populaires",

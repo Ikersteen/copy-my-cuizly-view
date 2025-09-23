@@ -797,7 +797,7 @@ export const RestaurantProfileModal = ({
         onOpenChange={setLogoAdjustmentOpen}
         imageUrl={tempLogoUrl}
         onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'logo')}
-        title={t('restaurantProfile.adjustLogo')}
+        title={t('photoAdjustment.adjustProfilePhoto')}
       />
 
       <PhotoAdjustmentModal
@@ -805,7 +805,7 @@ export const RestaurantProfileModal = ({
         onOpenChange={setCoverAdjustmentOpen}
         imageUrl={tempCoverUrl}
         onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'cover')}
-        title={t('restaurantProfile.adjustCoverPhoto')}
+        title={t('photoAdjustment.adjustCoverPhoto')}
       />
     </Dialog>
   );
