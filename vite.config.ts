@@ -8,25 +8,20 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    // Headers de sécurité pour le développement
+    // Headers de sécurité adaptés pour le développement
     headers: {
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-      'X-Frame-Options': 'DENY',
+      'X-Frame-Options': 'SAMEORIGIN',
       'X-Content-Type-Options': 'nosniff',
-      'X-XSS-Protection': '1; mode=block',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
+      'Referrer-Policy': 'strict-origin-when-cross-origin'
     }
   },
   preview: {
-    // Headers de sécurité pour la production
+    // Headers de sécurité pour la production (adaptés)
     headers: {
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-      'X-Frame-Options': 'DENY',
+      'Strict-Transport-Security': 'max-age=3600',
+      'X-Frame-Options': 'SAMEORIGIN',
       'X-Content-Type-Options': 'nosniff',
-      'X-XSS-Protection': '1; mode=block',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
+      'Referrer-Policy': 'strict-origin-when-cross-origin'
     }
   },
   build: {
