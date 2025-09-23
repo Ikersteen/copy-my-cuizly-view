@@ -1,0 +1,725 @@
+{
+  "navigation": {
+    "home": "Home",
+    "features": "Features", 
+    "pricing": "Pricing",
+    "about": "About",
+    "team": "Team",
+    "contact": "Contact",
+    "back_home": "Home",
+    "login": "Sign in",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "preferences": "Preferences",
+    "restaurantDashboard": "Restaurant Dashboard",
+    "consumerDashboard": "Consumer Dashboard",
+    "consumerMenu": "Consumer Menu",
+    "restaurantMenu": "Restaurant Menu",
+    "theme": "Theme",
+    "languageSelector": "Language",
+    "waitlist": "Waitlist",
+    "legal": "Legal",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "mentions": "Legal Mentions",
+    "voiceChat": "Voice Chat",
+    "recommendationsTitle": "AI Recommendations",
+    "restaurantMapTitle": "Restaurants Map",
+    "favoriteRestaurantsTitle": "Favorite Restaurants"
+  },
+  "hero": {
+    "badge": "",
+    "title": {
+      "discover": "Discover your next",
+      "favorites": "culinary favorites",
+      "location": ""
+    },
+    "subtitle": "Cuizly uses AI to recommend restaurants that match your tastes, budget and cravings.",
+    "cta": "Get Started Now",
+    "createAccount": "Create Account",
+    "bookDemo": "Book a Demo"
+  },
+  "mission": {
+    "title": "Mission",
+    "subtitle": "Connecting food lovers to the best culinary experiences in Montreal",
+    "description": "Cuizly revolutionizes food discovery by using artificial intelligence to recommend restaurants perfectly tailored to consumers' preferences, budget and cravings."
+  },
+  "howItWorks": {
+    "title": "A culinary co-pilot everywhere with you",
+    "subtitle": "Cuizly Assistant helps you discover the best restaurants, new flavors and recipes.",
+    "step3Title": "Order and enjoy",
+    "step3Description": "Choose from personalized options and enjoy meals you'll love"
+  },
+  "features": {
+    "title": "Features",
+    "subtitle": "Features designed for restaurateurs & foodies",
+    "list": {
+      "ai": {
+        "title": "Artificial Intelligence",
+        "description": "Personalized recommendations based on your culinary tastes and preferences."
+      },
+      "geolocation": {
+        "title": "Geolocation",
+        "description": "Find the best deals near you in Montreal."
+      },
+      "alerts": {
+        "title": "Real-time alerts",
+        "description": "Be instantly notified of new offers that interest you."
+      },
+      "reviews": {
+        "title": "Reviews and ratings",
+        "description": "Consult authentic reviews from other users."
+      },
+      "analytics": {
+        "title": "Restaurant analytics",
+        "description": "Analyze your restaurant's performance with detailed data."
+      },
+      "targeting": {
+        "title": "Smart targeting",
+        "description": "Reach the right customers at the right time with our AI."
+      }
+    },
+    "geolocation": {
+      "title": "Geolocation",
+      "description": "Find the best deals near you in Montreal."
+    },
+    "real_time_alerts": {
+      "title": "Real-time alerts",
+      "description": "Be instantly notified of new offers that interest you."
+    },
+    "reviews_ratings": {
+      "title": "Reviews and ratings",
+      "description": "Read authentic reviews from other users."
+    },
+    "restaurant_analytics": {
+      "title": "Restaurant analytics",
+      "description": "Analyze your restaurant's performance with detailed data."
+    },
+    "smart_targeting": {
+      "title": "Smart targeting",
+      "description": "Reach the right customers at the right time with our AI."
+    }
+  },
+  "pricing": {
+    "title": "Pricing for everyone",
+    "subtitle": "A free offer for food lovers, affordable professional solutions for restaurants.",
+    "popular": "Popular",
+    "comingSoon": "Coming Soon",
+    "consumerSection": "For consumers",
+    "restaurantSection": "For restaurateurs",
+    "consumer": {
+      "title": "Cuizly Basic",
+      "subtitle": "For food lovers who want to discover Montreal",
+      "price": "Free for life",
+      "features": [
+        "Access to all exclusive offers",
+        "Personalized AI recommendations",
+        "Priority alerts on promos",
+        "Cuizly Copilot Assistant integrated",
+        "Dedicated customer support",
+        "Ad-free interface"
+      ],
+      "cta": "Start for free"
+    },
+    "pro": {
+      "title": "Cuizly Pro",
+      "subtitle": "For restaurants that want to attract more customers",
+      "price": "$9.99 CAD/month",
+      "priceNote": "or $99 CAD/year (save 2 months!) 🎉",
+      "features": [
+        "Real-time performance tracking dashboard",
+        "Advanced visibility and SEO system",
+        "Offers and menu management tools",
+        "Customer relationship management",
+        "Priority customer support"
+      ],
+      "cta": "Create account"
+    },
+    "analytics": {
+      "title": "Cuizly Analytics+",
+      "subtitle": "To optimize your strategy with data",
+      "price": "$29.99 CAD/month",
+      "priceNote": "or $299.90 CAD/year (save 2 months!) 🎉",
+      "features": [
+        "All Pro features",
+        "Detailed anonymized reports",
+        "Consumer trend analysis",
+        "Precise insights on performance per segment",
+        "API access for advanced integrations"
+      ],
+      "cta": "Join the waitlist"
+    }
+  },
+  "errors": {
+    "title": "Error",
+    "description": "An error occurred",
+    "retry": "Try again",
+    "cannotDeleteAddress": "Unable to delete address",
+    "cannotDeleteConversation": "Unable to delete conversation",
+    "cannotUpdateTitle": "Unable to update title",
+    "cannotLoadConversations": "Unable to load conversations",
+    "cannotCreateConversation": "Unable to create conversation",
+    "cannotSaveMessage": "Unable to save message",
+    "cannotLoadMessages": "Unable to load messages",
+    "cannotLoadRestaurantInfo": "Unable to load restaurant information",
+    "mustBeLoggedIn": "You must be logged in to save"
+  },
+  "analytics": {
+    "title": "Real-time performance dashboard",
+    "subtitle": "Performance insights by segment (Real-time updates)"
+  },
+  "pricingLanding": {
+    "title": "Pricing for everyone",
+    "subtitle": "A free offer for food lovers, affordable professional solutions for restaurants.",
+    "popular": "Popular"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help",
+    "form": {
+      "title": "Send us a message",
+      "description": "We'll get back to you as soon as possible",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Your last name",
+      "email": "Email",
+      "emailPlaceholder": "your.email@example.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "Subject of your message",
+      "message": "Message",
+      "messagePlaceholder": "Describe your request...",
+      "send": "Send Message"
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": {
+        "label": "Email",
+        "value": "support@cuizly.ca"
+      },
+      "address": {
+        "label": "Address",
+        "value": "Montreal, QC<br/>Canada"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "+1 (555) 123-4567"
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to discover your next favorite restaurant?",
+    "description": "Join thousands of food lovers who discover new restaurants every day with Cuizly.",
+    "button": "Get Started for Free",
+    "disclaimer": "Free forever, no credit card required",
+    "imageAlt": "People enjoying a meal together"
+  },
+  "footer": {
+    "product": "Product",
+    "features": "Features",
+    "rates": "Pricing",
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "company": "Company",
+    "team": "Team",
+    "legalNotices": "Legal Notices",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "cookiePolicy": "Cookie Policy",
+    "tagline": "Your culinary copilot in Montreal",
+    "instagram": "Instagram",
+    "companyName": "Cuizly Inc.",
+    "allRightsReserved": "All rights reserved."
+  },
+  "team": {
+    "title": "Our Team",
+    "subtitle": "Meet the passionate minds behind Cuizly who are revolutionizing food discovery in Montreal",
+    "founderName": "Iker Steen",
+    "founderTitle": "Founder & CEO",
+    "education": "Academic Background",
+    "educationDetails": "Graduate in Business Administration with specialization in Technology and Innovation from HEC Montréal",
+    "journey": "Immigration Journey",
+    "journeyDetails": "Recently immigrated to Montreal with a passion for technology and a desire to help newcomers discover the amazing food scene in the city",
+    "vision": "Vision & Mission",
+    "visionDetails": "Creating an AI-powered platform that connects food lovers to the best culinary experiences, making restaurant discovery personalized and effortless",
+    "location": "Montreal, QC, Canada",
+    "contact": "Contact",
+    "foundingYear": "Company founded",
+    "teamSize": "Team member"
+  },
+  "cookies": {
+    "title": "Cookie Policy",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "what": {
+        "title": "What are cookies?",
+        "content": "Cookies are small text files that are placed on your computer or mobile device when you visit our website. They allow us to recognize your device and remember information about your preferences or past actions."
+      },
+      "types": {
+        "title": "Types of cookies we use",
+        "essential": {
+          "title": "Essential cookies",
+          "content": "These cookies are necessary for the proper functioning of our website. They enable basic features like page navigation and access to secure areas of the website."
+        },
+        "performance": {
+          "title": "Performance cookies",
+          "content": "These cookies collect information about how you use our website, such as which pages you visit most often and if you get error messages from web pages."
+        },
+        "functionality": {
+          "title": "Functionality cookies",
+          "content": "These cookies allow the website to remember choices you make (such as your user name, language or the region you are in) and provide enhanced, more personal features."
+        }
+      },
+      "management": {
+        "title": "Cookie management",
+        "content1": "You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed.",
+        "content2": "However, if you do this, you may have to manually adjust some preferences every time you visit a site and some services and functionalities may not work."
+      },
+      "disable": {
+        "title": "How to disable cookies in your browser",
+        "chrome": "Google Chrome: Settings > Privacy and security > Cookies and other site data",
+        "firefox": "Mozilla Firefox: Settings > Privacy & Security > Cookies and Site Data",
+        "safari": "Safari: Preferences > Privacy > Manage Website Data",
+        "edge": "Microsoft Edge: Settings > Cookies and site permissions"
+      },
+      "third": {
+        "title": "Third-party cookies",
+        "content": "We may also use third-party services that place cookies on your device to help us analyze how our website is used and to improve your user experience."
+      },
+      "editor": {
+        "title": "Website Publisher",
+        "company": "Cuizly Inc.",
+        "form": "Corporation",
+        "address": "Montreal, QC, Canada"
+      },
+      "director": {
+        "title": "Publication Director",
+        "name": "Iker Steen",
+        "email": "ikersteen@gmail.com"
+      },
+      "contact": {
+        "title": "Contact",
+        "content": "For any questions regarding this cookie policy, you can contact us at:",
+        "email": "support@cuizly.ca",
+        "address": "Montreal, QC, Canada"
+      }
+    }
+  },
+  "recommendations": {
+    "title": "Discover the best Cuizly offers",
+    "nearYou": "near you",
+    "subtitle": "Artificial intelligence for your culinary discoveries",
+    "filterLocation": "Filter by location...",
+    "locationPlaceholder": "Enter an address in Montreal",
+    "cuisine": "Cuisine",
+    "restrictions": "Dietary restrictions",
+    "allergens": "Allergens",
+    "priceRange": "Price range",
+    "resetFilters": "Reset filters",
+    "rating": "Rating",
+    "starRating": "Star rating",
+    "minute": "minute",
+    "minutes": "minutes",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "filterResults": "Filter results",
+    "filtersModalTitle": "Search filters",
+    "searchFilters": "Search with filters",
+    "clearAll": "Clear all",
+    "applyFilters": "Apply filters",
+    "inYourArea": "in your area",
+    "availableRestaurants": "restaurants available",
+    "noResults": "No results found",
+    "tryAdjusting": "Try adjusting your search filters",
+    "callForPricing": "Call for pricing",
+    "bookNow": "Book now",
+    "viewProfile": "View profile",
+    "viewMenu": "View menu",
+    "loadingRecommendations": "Loading recommendations...",
+    "errorLoadingRecommendations": "Error loading recommendations",
+    "lastUpdated": "Last updated",
+    "openUntil": "Open until",
+    "closedNow": "Closed now",
+    "openNow": "Open now",
+    "opensAt": "Opens at",
+    "noRatingsYet": "No ratings yet",
+    "whyThisChoice": "Why this choice?",
+    "reasonCuisineFavorite": "Favorite cuisine",
+    "reasonCuisineFavoriteDetailed": "Because you love the cuisine",
+    "reasonPriceIdeal": "Fits your budget",
+    "reasonPerfectTiming": "Perfect timing",
+    "reasonVeryPopular": "Very popular",
+    "reasonNewDiscovery": "New discovery",
+    "reasonDietaryRestrictionFound": "Compatible with your dietary restriction",
+    "reasonDietaryRestrictionsFound": "Compatible with your dietary restrictions",
+    "reasonAllergenIdentified": "Safe for your allergy",
+    "reasonAllergenIdentifiedDetailed": "Allergen identified:",
+    "reasonAllergensIdentified": "Safe for your allergies",
+    "reasonWithinRadius": "Within your delivery radius",
+    "reasonNearAddress": "Near your address",
+    "reasonCloseToYou": "Close to the restaurant",
+    "reasonPopularRestaurant": "Popular restaurant in your area",
+    "filters": "Filters",
+    "generatingRecommendations": "Generating personalized recommendations...",
+    "analyzingPreferences": "Our AI is analyzing your preferences and history to suggest the best restaurants",
+    "evaluation": "review",
+    "evaluations": "reviews"
+  },
+  "restaurantProfile": {
+    "title": "Restaurant Profile",
+    "description": "Edit your restaurant information, logo and cover photo",
+    "images": "Restaurant Images",
+    "coverPhoto": "Cover Photo",
+    "logoPhoto": "Restaurant Logo",
+    "noCoverPhoto": "No cover photo",
+    "noLogo": "No logo",
+    "coverImageAlt": "Restaurant cover photo",
+    "logoImageAlt": "Restaurant logo",
+    "editCover": "Edit cover",
+    "addCover": "Add cover",
+    "editLogo": "Edit logo",
+    "addLogo": "Add logo",
+    "socialMediaComment": "Social Media",
+    "cancel": "Cancel",
+    "save": "Save",
+    "modify": "Edit",
+    "add": "Add",
+    "none": "None",
+    "closed": "Closed",
+    "modifyRating": "Edit your restaurant rating",
+    "rateRestaurant": "Rate this restaurant and share your experience",
+    "upload": "Upload",
+    "uploading": "Uploading...",
+    "logo": "Restaurant Logo",
+    "basicInfo": "Basic Information",
+    "restaurantName": "Restaurant Name",
+    "restaurantNameRequired": "Restaurant Name *",
+    "restaurantNamePlaceholder": "Your restaurant name",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your restaurant, your cooking style and what makes you unique...",
+    "address": "Address",
+    "addressPlaceholder": "Enter your restaurant address",
+    "phone": "Phone",
+    "email": "Email",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "socialMedia": "Social Media",
+    "openingHours": "Opening Hours",
+    "openingHoursDesc": "Set your opening hours for each day",
+    "priceRange": "Price Range",
+    "deliveryRadius": "Delivery Radius",
+    "deliveryRadiusDesc": "Maximum delivery distance in kilometers",
+    "cuisineTypes": "Cuisine Types",
+    "serviceTypes": "Service Types",
+    "specialties": "Specialties",
+    "specialtiesPlaceholder": "Add your specialties (separate with commas)",
+    "specialtiesHint": "Describe your restaurant's signature dishes",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "closed": "Closed",
+    "cuisines": "Cuisine Types",
+    "cuisinesDesc": "Select the types of cuisine you offer",
+    "selectCuisine": "Select a cuisine",
+    "specialty": "Restaurant Specialty",
+    "specialtyDesc": "Select the meal times your restaurant specializes in",
+    "restaurantSpecialty": "Restaurant Specialties",
+    "restaurantSpecialtyDesc": "What are your specialties? (e.g. Pizza, Sushi, Burgers...)",
+    "selectSpecialty": "Select a specialty",
+    "profileEmoji": "Profile Emoji",
+    "profileEmojiDesc": "Choose the emoji that will appear on your profile",
+    "logout": "Sign Out",
+    "deleteAccount": "Delete Account",
+    "deleteConfirmation": "Delete Confirmation",
+    "deleteConfirmationText": "This action is irreversible. To confirm, type exactly:",
+    "deleteConfirmationPhrase": "Delete Account",
+    "deleteConfirmationPlaceholder": "Type: Delete Account",
+    "confirmDeletion": "Confirm Deletion",
+    "confirmDeletionButton": "Confirm Permanent Deletion",
+    "deleteAccountTitle": "Are you sure?",
+    "deleteAccountDescription": "This action will permanently delete your account and all your data. This action cannot be undone.",
+    "deleteAccountDesc": "This action will permanently delete your account and all your data. This action cannot be undone.",
+    "deleteAccountCancel": "Cancel",
+    "deleteAccountConfirm": "Yes, delete my account",
+    "deletionWarning": "This action is irreversible. Type \"Delete Account\" to confirm.",
+    "deletionPlaceholder": "Type: Delete Account",
+    "uploadingCover": "Uploading cover photo...",
+    "uploadingLogo": "Uploading logo...",
+    "saving": "Saving...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "validationError": "Validation Error",
+    "validationErrorDesc": "Please correct the errors before saving",
+    "profileUpdated": "Profile Updated",
+    "profileUpdatedDesc": "Restaurant information has been successfully saved",
+    "error": "Error",
+    "selectValidImage": "Please select a valid image",
+    "imageTooLarge": "Image must be less than 5 MB",
+    "cannotSave": "Unable to save changes",
+    "cannotUpload": "Unable to upload image",
+    "cannotLogout": "Unable to sign out",
+    "cannotDelete": "Unable to delete account",
+    "logoutSuccess": "Successfully signed out",
+    "logoutSuccessDesc": "You have been successfully signed out",
+    "deletionRequested": "Deletion Requested",
+    "deletionRequestedDesc": "Your account deletion request has been recorded. Your account will be deactivated.",
+    "confirmationError": "Please type exactly the confirmation text"
+  },
+  "restaurantInfo": {
+    "title": "Restaurant Information",
+    "description": "Details about your establishment",
+    "notSpecified": "Not specified",
+    "notDefined": "Not defined"
+  },
+  "restaurantMenu": {
+    "details": "Details",
+    "ourMenus": "Our Menus",
+    "openingHours": "Opening Hours",
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday", 
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "cuisineTypes": "Cuisine Types",
+    "serviceTypes": "Service Types",
+    "specialties": "Specialties",
+    "comment": "Comment",
+    "addToFavorites": "Add to Favorites",
+    "noMenusAvailable": "No menus available",
+    "noMenusDescription": "This restaurant has not added menus yet",
+    "removeFromFavorites": "Remove from Favorites",
+    "closed": "Closed"
+  },
+  "analytics": {
+    "title": "Real-time performance dashboard",
+    "subtitle": "Performance insights by segment (Real-time updates)"
+  },
+  "newOffer": {
+    "title": "Create New Offer",
+    "creating": "Creating...",
+    "createOffer": "Create Offer",
+    "cancel": "Cancel",
+    "placeholders": {
+      "title": "E.g.: 2 for 1 Pizza",
+      "description": "Describe your offer in detail...",
+      "selectPeriod": "Select validity period"
+    },
+    "errors": {
+      "fillTitleDescription": "Please fill in title and description",
+      "specifyDiscount": "Please specify a discount", 
+      "fixErrors": "Please fix the errors",
+      "cannotCreate": "Cannot create offer"
+    },
+    "success": {
+      "created": "Offer Created",
+      "published": "Published successfully"
+    }
+  },
+  "validation": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "username": "Username",
+    "restaurantName": "Restaurant name"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "remove": "Remove",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "creating": "Creating...",
+    "updating": "Updating...",
+    "processing": "Processing...",
+    "uploading": "Uploading...",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "apply": "Apply",
+    "reset": "Reset",
+    "clear": "Clear",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "start": "Start",
+    "stop": "Stop",
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "preview": "Preview",
+    "avatar": "Avatar",
+    "logo": "Logo",
+    "menu": "Menu",
+    "profile": "Profile"
+  },
+  "toasts": {
+    "success": "Success",
+    "conversationDeleted": "Conversation deleted",
+    "titleUpdated": "Title updated",
+    "profileUpdated": "Profile updated",
+    "informationSaved": "Your information has been saved successfully"
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing and using Cuizly, you agree to be bound by these terms of use and all applicable laws and regulations."
+      },
+      "service": {
+        "title": "2. Service Description",
+        "content": "Cuizly is a platform that connects consumers to restaurants in Montreal by offering personalized culinary deals through artificial intelligence."
+      },
+      "responsibilities": {
+        "title": "3. User Responsibilities",
+        "items": [
+          "Provide accurate information during registration",
+          "Maintain the security of your account",
+          "Use the service legally and respectfully",
+          "Do not disrupt the platform's operation"
+        ]
+      },
+      "intellectual": {
+        "title": "4. Intellectual Property",
+        "content": "All content on Cuizly, including text, graphics, logos and software, is the property of Cuizly Technologies and is protected by intellectual property laws."
+      },
+      "liability": {
+        "title": "5. Limitation of Liability",
+        "content": "Cuizly cannot be held responsible for indirect, incidental or consequential damages resulting from the use or inability to use our service."
+      },
+      "modifications": {
+        "title": "6. Modifications",
+        "content": "We reserve the right to modify these terms of use at any time. Changes will take effect immediately after their publication on this page."
+      },
+      "contact": {
+        "title": "7. Contact",
+        "content": "For any questions regarding these terms of use, contact us at:",
+        "email": "Email: cuizlycanada@gmail.com",
+        "address": "Address: Montreal, QC (Canada)"
+      }
+    }
+  },
+  "pricingLanding": {
+    "title": "Pricing for everyone",
+    "subtitle": "A free offer for food lovers, affordable professional solutions for restaurants.",
+    "popular": "Popular"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help",
+    "form": {
+      "title": "Send us a message",
+      "description": "We'll get back to you as soon as possible",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Your last name",
+      "email": "Email",
+      "emailPlaceholder": "your.email@example.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "Subject of your message",
+      "message": "Message",
+      "messagePlaceholder": "Describe your request...",
+      "send": "Send Message"
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": {
+        "label": "Email",
+        "value": "Cuizlycanada@gmail.com"
+      },
+      "address": {
+        "label": "Address",
+        "value": "Montreal, QC, Canada"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "+1 (555) 123-4567"
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing and using Cuizly, you agree to be bound by these terms of use and all applicable laws and regulations."
+      },
+      "service": {
+        "title": "2. Service Description",
+        "content": "Cuizly is a platform that connects consumers to restaurants in Montreal by offering personalized culinary deals through artificial intelligence."
+      },
+      "responsibilities": {
+        "title": "3. User Responsibilities",
+        "items": [
+          "Provide accurate information during registration",
+          "Maintain the security of your account",
+          "Use the service legally and respectfully",
+          "Do not disrupt the platform's operation"
+        ]
+      },
+      "intellectual": {
+        "title": "4. Intellectual Property",
+        "content": "All content on Cuizly, including text, graphics, logos and software, is the property of Cuizly Technologies and is protected by intellectual property laws."
+      },
+      "liability": {
+        "title": "5. Limitation of Liability",
+        "content": "Cuizly cannot be held responsible for indirect, incidental or consequential damages resulting from the use or inability to use our service."
+      },
+      "modifications": {
+        "title": "6. Modifications",
+        "content": "We reserve the right to modify these terms of use at any time. Changes will take effect immediately after their publication on this page."
+      },
+      "contact": {
+        "title": "7. Contact",
+        "content": "For any questions regarding these terms of use, contact us at:",
+        "email": "Email: cuizlycanada@gmail.com",
+        "address": "Address: Montreal, QC (Canada)"
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to discover your next favorite restaurant?",
+    "description": "Join thousands of food lovers who discover new restaurants every day with Cuizly.",
+    "button": "Get Started for Free",
+    "disclaimer": "Free forever, no credit card required",
+    "imageAlt": "People enjoying a meal together"
+  },
+  "footer": {
+    "product": "Product",
+    "features": "Features",
+    "rates": "Pricing",
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "company": "Company",
+    "team": "Team",
+    "legalNotices": "Legal Notices",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "cookiePolicy": "Cookie Policy",
+    "tagline": "Your culinary copilot with you everywhere",
+    "instagram": "Instagram",
+    "companyName": "Cuizly Inc.",
+    "allRightsReserved": "All rights reserved."
+  }
+}
