@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useTranslation, I18nextProvider } from "react-i18next";
 import i18n from "@/lib/i18n";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import ScrollToTop from "@/components/ScrollToTop";
 import Header from "@/components/Header";
 import CookieBanner from "@/components/CookieBanner";
 
@@ -37,6 +38,7 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={
           <>
