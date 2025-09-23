@@ -384,6 +384,7 @@ export const RestaurantProfileModal = ({
   };
 
   return (
+  <>
     <Dialog open={open} onOpenChange={(isOpen) => {
       if (!isOpen && (logoAdjustmentOpen || coverAdjustmentOpen)) {
         // Ne pas fermer le modal principal si un modal d'ajustement est ouvert
@@ -808,5 +809,23 @@ export const RestaurantProfileModal = ({
         title={t('photoAdjustment.adjustCoverPhoto')}
       />
     </Dialog>
+    
+    {/* Photo Adjustment Modals - Outside main dialog */}
+    <PhotoAdjustmentModal
+      open={logoAdjustmentOpen}
+      onOpenChange={setLogoAdjustmentOpen}
+      imageUrl={tempLogoUrl}
+      onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'logo')}
+      title={t('photoAdjustment.adjustProfilePhoto')}
+    />
+
+    <PhotoAdjustmentModal
+      open={coverAdjustmentOpen}
+      onOpenChange={setCoverAdjustmentOpen}
+      imageUrl={tempCoverUrl}
+      onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'cover')}
+      title={t('photoAdjustment.adjustCoverPhoto')}
+    />
+  </>
   );
 };
