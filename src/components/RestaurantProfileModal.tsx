@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 import { AddressSelector } from "@/components/MontrealAddressSelector";
 import { useAddresses } from "@/hooks/useAddresses";
-import { createAddressInput, formatRestaurantAddress } from "@/lib/addressUtils";
+import { createAddressInput } from "@/lib/addressUtils";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
@@ -78,7 +78,7 @@ export const RestaurantProfileModal = ({
       setFormData({
         name: restaurant.name || "",
         description: restaurant.description || "",
-        address: formatRestaurantAddress(restaurantAddress?.formatted_address || restaurant.address || ""),
+        address: restaurantAddress?.formatted_address || restaurant.address || "",
         phone: restaurant.phone || "",
         email: restaurant.email || "",
         cuisine_type: restaurant.cuisine_type || [],
@@ -94,7 +94,7 @@ export const RestaurantProfileModal = ({
   // Mettre à jour l'adresse quand restaurantAddress change
   useEffect(() => {
     if (restaurantAddress) {
-      setFormData(prev => ({ ...prev, address: formatRestaurantAddress(restaurantAddress.formatted_address) }));
+      setFormData(prev => ({ ...prev, address: restaurantAddress.formatted_address }));
     }
   }, [restaurantAddress]);
 
