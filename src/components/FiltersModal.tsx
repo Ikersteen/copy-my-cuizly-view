@@ -34,22 +34,23 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
   });
 
   const CUISINE_OPTIONS = [
-    { key: "french", value: t('filters.cuisineTypes.french') },
-    { key: "italian", value: t('filters.cuisineTypes.italian') },
-    { key: "japanese", value: t('filters.cuisineTypes.japanese') },
-    { key: "chinese", value: t('filters.cuisineTypes.chinese') },
-    { key: "mexican", value: t('filters.cuisineTypes.mexican') },
-    { key: "indian", value: t('filters.cuisineTypes.indian') },
-    { key: "thai", value: t('filters.cuisineTypes.thai') },
-    { key: "lebanese", value: t('filters.cuisineTypes.lebanese') },
-    { key: "greek", value: t('filters.cuisineTypes.greek') },
-    { key: "american", value: t('filters.cuisineTypes.american') },
-    { key: "quebecois", value: t('filters.cuisineTypes.quebecois') },
-    { key: "korean", value: t('filters.cuisineTypes.korean') },
-    { key: "vietnamese", value: t('filters.cuisineTypes.vietnamese') },
-    { key: "spanish", value: t('filters.cuisineTypes.spanish') },
-    { key: "moroccan", value: t('filters.cuisineTypes.moroccan') },
-    { key: "turkish", value: t('filters.cuisineTypes.turkish') }
+    { key: "french", value: "Française" },
+    { key: "italian", value: "Italienne" },
+    { key: "japanese", value: "Japonaise" },
+    { key: "chinese", value: "Chinoise" },
+    { key: "mexican", value: "Mexicaine" },
+    { key: "indian", value: "Indienne" },
+    { key: "thai", value: "Thaïlandaise" },
+    { key: "lebanese", value: "Libanaise" },
+    { key: "greek", value: "Grecque" },
+    { key: "american", value: "Américaine" },
+    { key: "quebecois", value: "Québécoise" },
+    { key: "korean", value: "Coréenne" },
+    { key: "vietnamese", value: "Vietnamienne" },
+    { key: "spanish", value: "Espagnole" },
+    { key: "moroccan", value: "Marocaine" },
+    { key: "turkish", value: "Turque" },
+    { key: "african", value: "Africaine" }
   ];
 
   const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
@@ -107,7 +108,7 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
         <div className="space-y-6">
           {/* Types de cuisine */}
           <div>
-            <Label className="text-base font-medium mb-3 block">{t('filters.cuisines')}</Label>
+            <Label className="text-base font-medium mb-3 block">Cuisines</Label>
             <div className="flex flex-wrap gap-2">
               {CUISINE_OPTIONS.map(cuisine => (
                 <Badge

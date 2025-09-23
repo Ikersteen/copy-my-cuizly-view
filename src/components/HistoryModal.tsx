@@ -22,7 +22,7 @@ export const HistoryModal = ({ open, onOpenChange }: HistoryModalProps) => {
   const getSearchTypeText = (type: string) => {
     switch (type) {
       case 'restaurant': return t('history.searchTypes.restaurant');
-      case 'cuisine': return t('history.searchTypes.cuisine');
+      case 'cuisine': return 'cuisine';
       case 'location': return t('history.searchTypes.location');
       default: return type;
     }

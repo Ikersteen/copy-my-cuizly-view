@@ -319,7 +319,7 @@ export const RestaurantMenuModal = ({
               {/* Types de cuisines - Avec titre */}
               {restaurant.cuisine_type && restaurant.cuisine_type.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-foreground">{t('restaurantMenu.cuisineTypes')}</h4>
+                  <h4 className="text-sm font-medium text-foreground">Types de cuisine</h4>
                   <div className="flex flex-wrap gap-1">
                     {restaurant.cuisine_type?.map((cuisine: string, index: number) => (
                       <Badge key={index} variant="secondary" className="text-xs px-2 py-0.5">

@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { X } from "lucide-react";
 
-import { CUISINE_OPTIONS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 interface NewOfferModalProps {
   open: boolean;
@@ -226,7 +226,7 @@ export const NewOfferModal = ({
       </div>
 
       <div>
-        <Label htmlFor="cuisine_type">{t('newOffer.form.cuisineType')}</Label>
+        <Label htmlFor="cuisine_type">Type de cuisine</Label>
         <select 
           id="cuisine_type"
           value={formData.cuisine_type}
@@ -235,7 +235,9 @@ export const NewOfferModal = ({
         >
           <option value="">{t('newOffer.form.allTypes')}</option>
           {CUISINE_OPTIONS.map(cuisine => (
-            <option key={cuisine} value={cuisine}>{cuisine}</option>
+            <option key={cuisine} value={cuisine}>
+              {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || cuisine}
+            </option>
           ))}
         </select>
       </div>

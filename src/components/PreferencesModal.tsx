@@ -172,9 +172,9 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         <div className="space-y-6">
           {/* Cuisines préférées */}
           <div>
-            <Label className="text-base font-medium">{t('preferences.cuisines')}</Label>
+            <Label className="text-base font-medium">Cuisines préférées</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              {t('preferences.selectCuisines')}
+              Sélectionnez vos cuisines préférées pour des recommandations personnalisées.
             </p>
             
             {/* Selected cuisines display */}
@@ -207,7 +207,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                 }}
               >
                 <SelectTrigger className="w-full bg-background border focus:ring-0 focus:ring-offset-0 focus:outline-none">
-                  <SelectValue placeholder={t('preferences.selectCuisine')} />
+                  <SelectValue placeholder="Sélectionnez une cuisine" />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
                   {CUISINE_OPTIONS.filter(cuisine => !localPrefs.cuisine_preferences?.includes(cuisine)).map(cuisine => (

@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { X, Star } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from 'react-i18next';
+import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 interface MobileFiltersDrawerProps {
   open: boolean;
@@ -98,7 +99,7 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
         <div className="px-4 pb-4 space-y-6 overflow-y-auto flex-1">
           {/* Cuisines */}
           <div className="space-y-3">
-            <Label className="text-base font-medium">{t('filters.preferredCuisines')}</Label>
+            <Label className="text-base font-medium">Cuisines préférées</Label>
             <div className="flex flex-wrap gap-2">
               {CUISINE_OPTIONS.map((cuisine) => (
                 <Badge
@@ -107,7 +108,7 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
                   className="cursor-pointer min-h-[44px] px-4 py-2 text-sm"
                   onClick={() => toggleCuisine(cuisine)}
                 >
-                  {t(`cuisineTypes.${cuisine}`)}
+                  {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || cuisine}
                 </Badge>
               ))}
             </div>

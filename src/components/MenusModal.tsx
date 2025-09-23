@@ -347,13 +347,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 </div>
 
                 <div className="space-y-2">
-                  <Label>{t('menusModal.cuisineType')}</Label>
+                  <Label>Type de cuisine</Label>
                   <select
                     value={newMenu.cuisine_type}
                     onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
                     className="w-full px-3 py-2 border border-input bg-background rounded-md"
                   >
-                    <option value="">{t('menusModal.selectCuisineType')}</option>
+                    <option value="">Sélectionnez un type de cuisine</option>
                     {CUISINE_OPTIONS.map(cuisine => (
                       <option key={cuisine} value={cuisine}>
                         {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
@@ -572,13 +572,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     </div>
 
                     <div className="space-y-2">
-                      <Label>{t('menusModal.cuisineType')}</Label>
+                      <Label>Type de cuisine</Label>
                     <select
                       value={editingMenu.cuisine_type}
                       onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, cuisine_type: e.target.value }) : null)}
                       className="w-full px-3 py-2 border border-input bg-background rounded-md"
                     >
-                      <option value="">{t('menusModal.selectCuisineType')}</option>
+                      <option value="">Sélectionnez un type de cuisine</option>
                       {CUISINE_OPTIONS.map(cuisine => (
                         <option key={cuisine} value={cuisine}>
                           {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
