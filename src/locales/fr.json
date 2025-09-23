@@ -2196,7 +2196,8 @@
   "pricingLanding": {
     "title": "Tarifs pour tous",
     "subtitle": "Une offre gratuite pour les amateurs de cuisine, des solutions professionnelles abordables pour les restaurants.",
-    "popular": "Populaire"
+    "popular": "Populaire",
+    "backToHome": "Retour à l'accueil"
   },
   "contact": {
     "title": "Contactez-nous",

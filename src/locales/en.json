@@ -172,7 +172,8 @@
   "pricingLanding": {
     "title": "Pricing for everyone",
     "subtitle": "A free offer for food lovers, affordable professional solutions for restaurants.",
-    "popular": "Popular"
+    "popular": "Popular",
+    "backToHome": "Back to Home"
   },
   "contact": {
     "title": "Contact Us",
