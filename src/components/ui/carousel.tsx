@@ -213,10 +213,10 @@ const CarouselPrevious = React.forwardRef<
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
-    >
-      <ArrowLeft className="h-4 w-4" />
-      <span className="sr-only">Previous slide</span>
-    </Button>
+  >
+    <ArrowLeft className="h-4 w-4" />
+    <span className="sr-only">Diapositive précédente</span>
+  </Button>
   )
 })
 CarouselPrevious.displayName = "CarouselPrevious"
@@ -242,10 +242,10 @@ const CarouselNext = React.forwardRef<
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
-    >
-      <ArrowRight className="h-4 w-4" />
-      <span className="sr-only">Next slide</span>
-    </Button>
+  >
+    <ArrowRight className="h-4 w-4" />
+    <span className="sr-only">Diapositive suivante</span>
+  </Button>
   )
 })
 CarouselNext.displayName = "CarouselNext"

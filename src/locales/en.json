@@ -18,6 +18,7 @@
     "theme": "Theme",
     "languageSelector": "Language",
     "waitlist": "Waitlist",
+    "menu": "Menu",
     "legal": "Legal",
     "terms": "Terms",
     "privacy": "Privacy",
@@ -560,6 +561,24 @@
     "creating": "Creating...",
     "createOffer": "Create Offer",
     "cancel": "Cancel",
+    "form": {
+      "title": "Offer Title",
+      "description": "Description",
+      "discountPercent": "Discount (%)",
+      "discountAmount": "Discount ($)",
+      "category": "Category",
+      "cuisineType": "Cuisine Type",
+      "allTypes": "All Types",
+      "validPeriod": "Valid from ... to (max 3 days)",
+      "activateImmediately": "Activate offer immediately"
+    },
+    "categories": {
+      "general": "General",
+      "lunch": "Lunch",
+      "dinner": "Dinner",
+      "weekend": "Weekend",
+      "happyHour": "Happy Hour"
+    },
     "placeholders": {
       "title": "E.g.: 2 for 1 Pizza",
       "description": "Describe your offer in detail...",

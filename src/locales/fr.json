@@ -9,7 +9,8 @@
     "theme": "Thème",
     "languageSelector": "Langue / Language",
     "consumerMenu": "Profil Consommateur",
-    "restaurantMenu": "Profil Restaurateur"
+    "restaurantMenu": "Profil Restaurateur",
+    "menu": "Menu"
   },
   "hero": {
     "badge": "",
@@ -2177,6 +2178,24 @@
     "creating": "Création...",
     "createOffer": "Créer l'offre",
     "cancel": "Annuler",
+    "form": {
+      "title": "Titre de l'offre",
+      "description": "Description",
+      "discountPercent": "Réduction (%)",
+      "discountAmount": "Réduction ($)",
+      "category": "Catégorie",
+      "cuisineType": "Type de cuisine",
+      "allTypes": "Tous les types",
+      "validPeriod": "Valide du ... au (max 3 jours)",
+      "activateImmediately": "Activer l'offre immédiatement"
+    },
+    "categories": {
+      "general": "Général",
+      "lunch": "Dîner",
+      "dinner": "Souper",
+      "weekend": "Fin de semaine",
+      "happyHour": "Happy Hour"
+    },
     "placeholders": {
       "title": "Ex.: 2 pour 1 Pizza",
       "description": "Décrivez votre offre en détail...",

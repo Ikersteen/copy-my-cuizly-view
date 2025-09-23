@@ -211,7 +211,7 @@ const Header = () => {
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="sm" className="p-2">
                     <Menu className="h-5 w-5" />
-                    <span className="sr-only">Menu</span>
+                    <span className="sr-only">{t('navigation.menu')}</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">

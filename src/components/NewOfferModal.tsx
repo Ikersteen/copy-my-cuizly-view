@@ -149,7 +149,7 @@ export const NewOfferModal = ({
   const FormContent = () => (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="title">Offer Title *</Label>
+        <Label htmlFor="title">{t('newOffer.form.title')} *</Label>
         <Input
           id="title"
           value={formData.title}
@@ -160,7 +160,7 @@ export const NewOfferModal = ({
       </div>
 
       <div>
-        <Label htmlFor="description">Description *</Label>
+        <Label htmlFor="description">{t('newOffer.form.description')} *</Label>
         <Textarea
           id="description"
           value={formData.description}
@@ -174,7 +174,7 @@ export const NewOfferModal = ({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="discount_percentage">Discount (%)</Label>
+          <Label htmlFor="discount_percentage">{t('newOffer.form.discountPercent')}</Label>
           <Input
             id="discount_percentage"
             type="number"
@@ -191,7 +191,7 @@ export const NewOfferModal = ({
           />
         </div>
         <div>
-          <Label htmlFor="discount_amount">Discount ($)</Label>
+          <Label htmlFor="discount_amount">{t('newOffer.form.discountAmount')}</Label>
           <Input
             id="discount_amount"
             type="number"
@@ -210,30 +210,30 @@ export const NewOfferModal = ({
       </div>
 
       <div>
-        <Label htmlFor="category">Category</Label>
+        <Label htmlFor="category">{t('newOffer.form.category')}</Label>
         <select 
           id="category"
           value={formData.category}
           onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
           className={`w-full px-3 py-2 border border-input bg-background rounded-md ${isMobile ? "min-h-[48px]" : ""}`}
         >
-          <option value="general">General</option>
-          <option value="lunch">Lunch</option>
-          <option value="dinner">Dinner</option>
-          <option value="weekend">Weekend</option>
-          <option value="happy_hour">Happy Hour</option>
+          <option value="general">{t('newOffer.categories.general')}</option>
+          <option value="lunch">{t('newOffer.categories.lunch')}</option>
+          <option value="dinner">{t('newOffer.categories.dinner')}</option>
+          <option value="weekend">{t('newOffer.categories.weekend')}</option>
+          <option value="happy_hour">{t('newOffer.categories.happyHour')}</option>
         </select>
       </div>
 
       <div>
-        <Label htmlFor="cuisine_type">Cuisine Type</Label>
+        <Label htmlFor="cuisine_type">{t('newOffer.form.cuisineType')}</Label>
         <select 
           id="cuisine_type"
           value={formData.cuisine_type}
           onChange={(e) => setFormData(prev => ({ ...prev, cuisine_type: e.target.value }))}
           className={`w-full px-3 py-2 border border-input bg-background rounded-md ${isMobile ? "min-h-[48px]" : ""}`}
         >
-          <option value="">All Types</option>
+          <option value="">{t('newOffer.form.allTypes')}</option>
           {CUISINE_OPTIONS.map(cuisine => (
             <option key={cuisine} value={cuisine}>{cuisine}</option>
           ))}
@@ -244,12 +244,12 @@ export const NewOfferModal = ({
         value={dateRange}
         onChange={setDateRange}
         maxDays={3}
-        label="Valid from ... to (max 3 days)"
+        label={t('newOffer.form.validPeriod')}
         placeholder={t('newOffer.placeholders.selectPeriod')}
       />
 
       <div className="flex items-center justify-between">
-        <Label htmlFor="is_active">Activate offer immediately</Label>
+        <Label htmlFor="is_active">{t('newOffer.form.activateImmediately')}</Label>
         <Switch
           id="is_active"
           checked={formData.is_active}
@@ -268,11 +268,11 @@ export const NewOfferModal = ({
         <DrawerContent className="max-h-[90vh]">
           <DrawerClose className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-50">
             <X className="h-4 w-4" />
-            <span className="sr-only">Cancel</span>
+            <span className="sr-only">{t('newOffer.cancel')}</span>
           </DrawerClose>
           
           <DrawerHeader className="pb-4">
-            <DrawerTitle className="text-xl font-semibold">Create New Offer</DrawerTitle>
+            <DrawerTitle className="text-xl font-semibold">{t('newOffer.title')}</DrawerTitle>
           </DrawerHeader>
           
           <div className="px-4 pb-4 overflow-y-auto flex-1">
