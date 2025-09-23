@@ -371,15 +371,16 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-hidden p-0 m-4 sm:m-6">
+      <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-hidden p-0 m-4 sm:m-6 flex flex-col">
          <DialogHeader className="sr-only">
            <DialogTitle>{t('profile.userProfile')}</DialogTitle>
            <DialogDescription>
              {t('profile.profileDescription')}
            </DialogDescription>
          </DialogHeader>
+        
         {/* Header avec avatar */}
-        <div className="p-2 sm:p-4 md:p-6 lg:p-8 pb-2 sm:pb-4">
+        <div className="p-2 sm:p-4 md:p-6 lg:p-8 pb-2 sm:pb-4 flex-shrink-0">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
             <div className="relative">
               <div 
@@ -425,9 +426,8 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           </div>
         </div>
 
-        {/* Content area */}
-        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pb-2 sm:pb-4 md:pb-6 overflow-y-auto max-h-[calc(95vh-160px)] sm:max-h-[calc(95vh-200px)]">
-
+        {/* Content area - Scrollable */}
+        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pb-6 overflow-y-auto flex-1 min-h-0">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             {/* Colonne gauche - Informations personnelles */}
             <div className="space-y-6">
@@ -485,58 +485,65 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                       className="mt-1"
                     />
                      {validationErrors.username && (
-                       <p className="text-xs text-destructive mt-1">{t('profile.usernameRequired')}</p>
+                       <p className="text-xs text-destructive mt-1">{validationErrors.username}</p>
                      )}
                   </div>
 
                   <div>
                     <Label htmlFor="phone" className="text-sm font-medium">{t('profile.phone')}</Label>
-                       <Input
-                        id="phone"
-                        value={localProfile.phone}
-                        onChange={(e) => setLocalProfile(prev => ({ ...prev, phone: e.target.value }))}
-                        placeholder={t('profile.phonePlaceholder')}
-                        className="mt-1"
-                        autoComplete="off"
-                        autoCorrect="off"
-                        autoCapitalize="off"
-                        spellCheck="false"
-                      />
-                     {validationErrors.phone && (
-                       <p className="text-xs text-destructive mt-1">{t('profile.phoneInvalid')}</p>
-                     )}
-                  </div>
-
-                  <div>
-                    <Label htmlFor="email" className="text-sm font-medium">{t('profile.email')}</Label>
-                    <Input 
-                      id="email"
-                      value={user?.email || ""}
-                      disabled
-                      className="bg-muted mt-1"
+                    <Input
+                      id="phone"
+                      value={localProfile.phone}
+                      onChange={(e) => setLocalProfile(prev => ({ ...prev, phone: e.target.value }))}
+                      placeholder="+1 (514) 123-4567"
+                      className="mt-1"
                     />
+                     {validationErrors.phone && (
+                       <p className="text-xs text-destructive mt-1">{validationErrors.phone}</p>
+                     )}
                   </div>
                 </div>
               </div>
 
-
-            </div>
-
-            {/* Colonne droite - Préférences et sécurité */}
-            <div className="space-y-6">
-              {/* Notifications */}
+              {/* Section Notifications */}
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 md:p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  🔔 {t('profile.notifications')}
+                <h3 className="text-lg font-semibold mb-4">
+                  {t('profile.notifications')}
                 </h3>
+                
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
-                    <div>
-                      <Label htmlFor="push" className="font-medium">{t('profile.pushNotifications')}</Label>
-                      <p className="text-sm text-muted-foreground">{t('profile.pushNotificationsDescription')}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="email-notifications" className="text-sm font-medium">
+                        {t('profile.emailNotifications')}
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        {t('profile.emailNotificationsDescription')}
+                      </p>
                     </div>
                     <Switch
-                      id="push"
+                      id="email-notifications"
+                      checked={localProfile.notifications.email}
+                      onCheckedChange={(checked) => 
+                        setLocalProfile(prev => ({ 
+                          ...prev, 
+                          notifications: { ...prev.notifications, email: checked }
+                        }))
+                      }
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="push-notifications" className="text-sm font-medium">
+                        {t('profile.pushNotifications')}
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        {t('profile.pushNotificationsDescription')}
+                      </p>
+                    </div>
+                    <Switch
+                      id="push-notifications"
                       checked={localProfile.notifications.push}
                       onCheckedChange={(checked) => 
                         setLocalProfile(prev => ({ 
@@ -546,49 +553,41 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                       }
                     />
                   </div>
-
-                  <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
-                    <div>
-                      <Label htmlFor="email_notif" className="font-medium">{t('profile.emailNotifications')}</Label>
-                      <p className="text-sm text-muted-foreground">{t('profile.emailNotificationsDescription')}</p>
-                    </div>
-                    <Switch
-                      id="email_notif"
-                      checked={localProfile.notifications.email}
-                      onCheckedChange={(checked) =>
-                        setLocalProfile(prev => ({
-                          ...prev,
-                          notifications: { ...prev.notifications, email: checked }
-                        }))
-                      }
-                    />
-                  </div>
                 </div>
               </div>
+            </div>
 
-              {/* Sécurité */}
+            {/* Colonne droite - Sécurité et Actions */}
+            <div className="space-y-6">
+              {/* Section Sécurité */}
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 md:p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  🔒 {t('profile.security')}
+                <h3 className="text-lg font-semibold mb-4">
+                  {t('profile.security')}
                 </h3>
+                
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label>{t('profile.changePassword')}</Label>
+                    <div className="space-y-1">
+                      <Label className="text-sm font-medium">{t('profile.password')}</Label>
+                      <p className="text-xs text-muted-foreground">
+                        {t('profile.passwordDescription')}
+                      </p>
+                    </div>
                     <Button 
                       variant="outline" 
                       size="sm"
                       onClick={() => setShowPasswordSection(!showPasswordSection)}
                     >
-                      {showPasswordSection ? t('profile.cancel') : t('profile.modify')}
+                      {t('profile.modify')}
                     </Button>
                   </div>
-
+                  
                   {showPasswordSection && (
-                    <div className="space-y-4 p-4 bg-background rounded-lg border">
+                    <div className="space-y-3 pt-2 border-t">
                       <div>
-                        <Label htmlFor="newPassword" className="text-sm font-medium">{t('profile.newPassword')}</Label>
+                        <Label htmlFor="new-password" className="text-sm">{t('profile.newPassword')}</Label>
                         <Input
-                          id="newPassword"
+                          id="new-password"
                           type="password"
                           value={passwordData.newPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
@@ -597,9 +596,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="confirmPassword" className="text-sm font-medium">{t('profile.confirmPassword')}</Label>
+                        <Label htmlFor="confirm-password" className="text-sm">{t('profile.confirmPassword')}</Label>
                         <Input
-                          id="confirmPassword"
+                          id="confirm-password"
                           type="password"
                           value={passwordData.confirmPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
@@ -607,122 +606,154 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                           className="mt-1"
                         />
                       </div>
-                      <Button 
-                        onClick={handlePasswordChange} 
-                        disabled={loading || !passwordData.newPassword || !passwordData.confirmPassword}
-                        className="w-full"
-                      >
-                        {t('profile.changePasswordButton')}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button 
+                          onClick={handlePasswordChange}
+                          disabled={loading || !passwordData.newPassword || !passwordData.confirmPassword}
+                          size="sm"
+                          className="flex-1"
+                        >
+                          {t('profile.updatePassword')}
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setShowPasswordSection(false);
+                            setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+                          }}
+                        >
+                          {t('profile.cancel')}
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Actions du compte */}
+              {/* Section Actions du compte */}
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 md:p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  ⚙️ {t('profile.accountActions')}
+                  {t('profile.accountActions')}
                 </h3>
-                <div className="space-y-3">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleLogout}
-                    className="w-full justify-start"
-                  >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    {t('profile.logout')}
-                  </Button>
-                  
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setShowDeleteSection(!showDeleteSection)}
-                    className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    {t('profile.deleteAccountAction')}
-                  </Button>
-                </div>
-
-                {showDeleteSection && (
-                  <div className="mt-4 space-y-3 p-4 border rounded-lg bg-destructive/5">
-                    <div className="space-y-2">
-                      <Label className="text-destructive font-medium">{t('profile.deleteConfirmation')}</Label>
-                      <p className="text-sm text-muted-foreground">
-                        {t('profile.deleteConfirmationText')} <strong>"{t('profile.deleteConfirmationPhrase')}"</strong>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <Label className="text-sm font-medium">{t('profile.logout')}</Label>
+                      <p className="text-xs text-muted-foreground">
+                        {t('profile.logoutDescription')}
                       </p>
-                      <Input
-                        value={deleteConfirmation}
-                        onChange={(e) => setDeleteConfirmation(e.target.value)}
-                        placeholder={t('profile.deleteConfirmationPlaceholder')}
-                      />
                     </div>
-                    
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button 
-                          variant="destructive"
-                          disabled={deleteConfirmation !== t('profile.deleteConfirmationPhrase')}
-                          className="w-full"
-                        >
-                          {t('profile.confirmDeletion')}
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>{t('profile.deleteAccountTitle')}</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            {t('profile.deleteAccountDescription')}
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>{t('profile.cancel')}</AlertDialogCancel>
-                          <AlertDialogAction 
-                            onClick={handleDeleteAccount}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
-                            {t('profile.deleteAccount')}
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={handleLogout}
+                      className="flex items-center gap-2"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      {t('profile.logout')}
+                    </Button>
                   </div>
-                )}
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <Label className="text-sm font-medium text-destructive">{t('profile.deleteAccount')}</Label>
+                      <p className="text-xs text-muted-foreground">
+                        {t('profile.deleteAccountDescription')}
+                      </p>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setShowDeleteSection(!showDeleteSection)}
+                      className="border-destructive text-destructive hover:bg-destructive/10"
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      {t('profile.deleteAccount')}
+                    </Button>
+                  </div>
+                  
+                  {showDeleteSection && (
+                    <div className="space-y-3 pt-4 border-t border-destructive/20">
+                      <div>
+                        <Label className="text-destructive font-medium">{t('profile.deleteConfirmation')}</Label>
+                        <p className="text-sm text-muted-foreground">
+                          {t('profile.deleteConfirmationText')} <strong>"{t('profile.deleteConfirmationPhrase')}"</strong>
+                        </p>
+                        <Input
+                          value={deleteConfirmation}
+                          onChange={(e) => setDeleteConfirmation(e.target.value)}
+                          placeholder={t('profile.deleteConfirmationPlaceholder')}
+                        />
+                      </div>
+                      
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button 
+                            variant="destructive"
+                            disabled={deleteConfirmation !== t('profile.deleteConfirmationPhrase')}
+                            className="w-full"
+                          >
+                            {t('profile.confirmDeletion')}
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{t('profile.deleteAccountTitle')}</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {t('profile.deleteAccountDescription')}
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>{t('profile.cancel')}</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={handleDeleteAccount}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              {t('profile.deleteAccount')}
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Footer avec boutons d'action */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center pt-3 border-t bg-background/80 backdrop-blur-sm sticky bottom-0 px-4 sm:px-8 py-2 -mx-4 sm:-mx-8 -mb-4">
-            <Button 
-              variant="outline" 
-              onClick={() => onOpenChange(false)}
-              disabled={loading}
-              className="order-2 sm:order-1 h-12 sm:h-10"
-            >
-              {t('profile.cancel')}
-            </Button>
-            <Button 
-              onClick={handleSave} 
-              disabled={loading}
-              className="order-1 sm:order-2 min-w-[120px] h-12 sm:h-10 text-base sm:text-sm font-semibold bg-primary hover:bg-primary/90"
-             >
-               {loading ? t('profile.saving') : t('profile.save')}
-             </Button>
-           </div>
+        {/* Footer avec boutons d'action - Toujours visible */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center p-4 sm:p-6 border-t bg-background/95 backdrop-blur-sm flex-shrink-0">
+          <Button 
+            variant="outline" 
+            onClick={() => onOpenChange(false)}
+            disabled={loading}
+            className="order-2 sm:order-1 h-12 sm:h-10"
+          >
+            {t('profile.cancel')}
+          </Button>
+          <Button 
+            onClick={handleSave} 
+            disabled={loading}
+            className="order-1 sm:order-2 min-w-[120px] h-12 sm:h-10 text-base sm:text-sm font-semibold bg-primary hover:bg-primary/90"
+           >
+             {loading ? t('profile.saving') : t('profile.save')}
+           </Button>
          </div>
-       </DialogContent>
+        </DialogContent>
 
-       {/* Photo Action Modal */}
-       <PhotoActionModal
-         isOpen={photoModalOpen}
-         onClose={() => setPhotoModalOpen(false)}
-         currentImageUrl={localProfile.avatar_url}
-         onUpload={handleAvatarUpload}
-         onRemove={handleRemoveAvatar}
-         photoType="profile"
-         uploading={uploading}
-       />
-     </Dialog>
+        {/* Photo Action Modal */}
+        <PhotoActionModal
+          isOpen={photoModalOpen}
+          onClose={() => setPhotoModalOpen(false)}
+          currentImageUrl={localProfile.avatar_url}
+          onUpload={handleAvatarUpload}
+          onRemove={handleRemoveAvatar}
+          photoType="profile"
+          uploading={uploading}
+        />
+      </Dialog>
    );
  };
