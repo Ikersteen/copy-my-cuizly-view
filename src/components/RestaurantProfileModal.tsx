@@ -103,7 +103,7 @@ export const RestaurantProfileModal = ({
     const errors: Record<string, string> = {};
 
     if (formData.name) {
-      const nameValidation = validateTextInput(formData.name, INPUT_LIMITS.NAME, t('validation.restaurantName'));
+      const nameValidation = validateTextInput(formData.name, INPUT_LIMITS.NAME, "Restaurant name");
       if (!nameValidation.isValid) errors.name = nameValidation.error!;
     }
 
@@ -350,8 +350,8 @@ export const RestaurantProfileModal = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-         <DialogHeader>
-          <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
+        <DialogHeader>
+          <DialogTitle>Profil du restaurant</DialogTitle>
           <DialogDescription>
             {t('restaurantProfile.description')}
           </DialogDescription>
@@ -407,7 +407,7 @@ export const RestaurantProfileModal = ({
                   {formData.logo_url ? (
                     <img 
                       src={formData.logo_url} 
-                      alt={t('common.logo')}
+                      alt="Logo"
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -442,12 +442,12 @@ export const RestaurantProfileModal = ({
           {/* Informations de base */}
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">{t('restaurantProfile.restaurantNameRequired')}</Label>
+              <Label htmlFor="name">Nom du restaurant *</Label>
               <Input
                 id="name"
                 value={formData.name || ""}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder={t('restaurantProfile.restaurantNamePlaceholder')}
+                placeholder="Nom de votre restaurant"
               />
             </div>
 
@@ -466,8 +466,8 @@ export const RestaurantProfileModal = ({
               <AddressSelector
                 value={formData.address || ""}
                 onChange={(address) => setFormData(prev => ({ ...prev, address }))}
-                label={t('restaurantProfile.address')}
-                placeholder={t('restaurantProfile.addressPlaceholder')}
+                label="Adresse"
+                placeholder="Entrez l'adresse de votre restaurant"
               />
             </div>
 
@@ -664,7 +664,7 @@ export const RestaurantProfileModal = ({
                 placeholder="5"
               />
               <p className="text-sm text-muted-foreground">
-                {t('restaurantProfile.deliveryRadiusDesc')}
+                Distance maximale de livraison en kilomètres
               </p>
             </div>
           </div>
@@ -674,7 +674,7 @@ export const RestaurantProfileModal = ({
           <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-end">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                {t('restaurantProfile.cancel')}
+                Annuler
               </Button>
               <Button onClick={handleSave} disabled={loading || !formData.name}>
                 {loading ? t('restaurantProfile.saving') : t('restaurantProfile.save')}

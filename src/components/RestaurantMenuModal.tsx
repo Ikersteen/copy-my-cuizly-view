@@ -294,7 +294,7 @@ export const RestaurantMenuModal = ({
                     </div>
                   )}
                   
-                  {/* Social Media */}
+                  {/* Social Media - Juste les icônes sans texte */}
                   {(restaurant.instagram_url || restaurant.facebook_url) && (
                     <div className="flex items-center gap-2">
                       <div className="flex gap-2">
@@ -394,7 +394,7 @@ export const RestaurantMenuModal = ({
                           <div className="aspect-video mb-3 rounded-lg overflow-hidden">
                             <img
                               src={menu.image_url}
-                              alt={t('common.menu')}
+                              alt="Menu"
                               className="w-full h-full object-cover"
                             />
                           </div>

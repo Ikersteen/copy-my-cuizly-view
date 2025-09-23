@@ -95,7 +95,7 @@ export const useProfile = () => {
       
       if (!session) {
         console.error('❌ No active session');
-        throw new Error(t('errors.noActiveSession'));
+        throw new Error('Aucune session active');
       }
 
       console.log('📤 Attempting to upsert profile for user:', session.user.id);
@@ -125,8 +125,8 @@ export const useProfile = () => {
       console.log('✅ Profile updated successfully:', data);
 
       toast({
-        title: t('toasts.profileUpdated'),
-        description: t('toasts.informationSaved')
+        title: "Profil mis à jour",
+        description: "Vos informations ont été sauvegardées avec succès"
       });
       
       return { success: true };

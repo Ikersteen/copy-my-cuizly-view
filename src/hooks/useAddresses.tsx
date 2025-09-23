@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useTranslation } from 'react-i18next';
 import type { Address, AddressInput, AddressType } from '@/types/address';
 import { DEFAULT_ADDRESS_VALUES } from '@/types/address';
 
@@ -10,7 +9,6 @@ export const useAddresses = (addressType?: AddressType) => {
   const [loading, setLoading] = useState(true);
   const [primaryAddress, setPrimaryAddress] = useState<Address | null>(null);
   const { toast } = useToast();
-  const { t } = useTranslation();
 
   useEffect(() => {
     loadAddresses();
@@ -206,8 +204,8 @@ export const useAddresses = (addressType?: AddressType) => {
     } catch (error) {
       console.error('Error deleting address:', error);
       toast({
-        title: t('errors.title'),
-        description: t('errors.cannotDeleteAddress'),
+        title: 'Erreur',
+        description: 'Impossible de supprimer l\'adresse',
         variant: 'destructive'
       });
       return false;

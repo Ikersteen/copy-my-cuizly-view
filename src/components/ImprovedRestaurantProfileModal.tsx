@@ -412,12 +412,12 @@ export const ImprovedRestaurantProfileModal = ({
                     alt={t('restaurantProfile.coverImageAlt')}
                     className="w-full h-full object-cover"
                   />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-                      <Camera className="h-16 w-16 text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-500 font-medium">{t('restaurantProfile.noCoverPhoto')}</p>
-                    </div>
-                  )}
+                 ) : (
+                   <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                     <Camera className="h-16 w-16 text-gray-400 mb-2" />
+                     <p className="text-sm text-gray-500 font-medium">Aucune photo de couverture</p>
+                   </div>
+                 )}
                 
                 {/* Cover Photo Hover Effect Only - No Click */}
                 <div className="absolute inset-0 group">
@@ -438,7 +438,7 @@ export const ImprovedRestaurantProfileModal = ({
                   }}
                 >
                   <Edit2 className="h-4 w-4 mr-1" />
-                  {restaurant?.cover_image_url ? t('restaurantProfile.editCover') : t('restaurantProfile.addCover')}
+                  {restaurant?.cover_image_url ? 'Modifier' : 'Ajouter'}
                 </Button>
 
                 {/* Dark overlay for better text readability */}
@@ -793,11 +793,11 @@ export const ImprovedRestaurantProfileModal = ({
                   const specialties = e.target.value.split(',').map(s => s.trim()).filter(s => s);
                   setFormData(prev => ({ ...prev, restaurant_specialties: specialties }));
                 }}
-                placeholder={t('restaurantProfile.specialtiesPlaceholder')}
+                placeholder="Ajoutez vos spécialités (séparez par des virgules)"
                 className="min-h-[80px]"
               />
               <p className="text-xs text-muted-foreground">
-                {t('restaurantProfile.specialtiesHint')}
+                Décrivez les plats signatures de votre restaurant
               </p>
               {formData.restaurant_specialties.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
@@ -819,11 +819,11 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="flex justify-end gap-2 pt-4">
               <Button variant="outline" onClick={() => {
-              onClose?.();
-              onOpenChange?.(false);
-            }}>
-              {t('restaurantProfile.cancel')}
-            </Button>
+                onClose?.();
+                onOpenChange?.(false);
+              }}>
+                Annuler
+              </Button>
               <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
                 {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>

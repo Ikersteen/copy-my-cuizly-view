@@ -163,11 +163,11 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
                   <DialogTitle>
                     {userRating ? t('ratings.modifyRating') : t('ratings.rateRestaurant')}
                   </DialogTitle>
-                    <VisuallyHidden>
-                      <DialogDescription>
-                        {userRating ? t('restaurantProfile.modifyRating') : t('restaurantProfile.rateRestaurant')}
-                      </DialogDescription>
-                    </VisuallyHidden>
+                  <VisuallyHidden>
+                    <DialogDescription>
+                      {userRating ? 'Modifier votre évaluation du restaurant' : 'Évaluer ce restaurant et partager votre expérience'}
+                    </DialogDescription>
+                  </VisuallyHidden>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
