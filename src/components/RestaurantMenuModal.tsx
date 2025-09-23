@@ -394,7 +394,7 @@ export const RestaurantMenuModal = ({
                           <div className="aspect-video mb-3 rounded-lg overflow-hidden">
                             <img
                               src={menu.image_url}
-                              alt="Menu"
+                              alt={t('common.menu')}
                               className="w-full h-full object-cover"
                             />
                           </div>
