@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useComments } from "@/hooks/useComments";
+import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
 
 interface Restaurant {
   id: string;
@@ -30,6 +31,9 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
   const [commentText, setCommentText] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [photoAdjustmentOpen, setPhotoAdjustmentOpen] = useState(false);
+  const [tempImageUrl, setTempImageUrl] = useState("");
+  const [imageIndex, setImageIndex] = useState(0);
   const { toast } = useToast();
   
   const { comments, loading, averageRating, totalComments, addComment } = useComments(restaurant?.id);
@@ -44,7 +48,53 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
       });
       return;
     }
-    setImages(prev => [...prev, ...files.slice(0, 3 - prev.length)]);
+
+    // Process first file for adjustment
+    const file = files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: t('errors.title'),
+          description: t('comments.selectValidImage'),
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Convert file to URL for adjustment modal
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setTempImageUrl(e.target?.result as string);
+        setPhotoAdjustmentOpen(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAdjustedImageSave = async (adjustedImageData: string) => {
+    try {
+      // Convert base64 to blob
+      const response = await fetch(adjustedImageData);
+      const blob = await response.blob();
+      
+      // Create a File object from the blob
+      const adjustedFile = new File([blob], `adjusted-${Date.now()}.jpg`, { type: 'image/jpeg' });
+      
+      setImages(prev => [...prev, adjustedFile]);
+      
+      toast({
+        title: t('comments.imageAdjusted'),
+        description: t('comments.imageAddedToComment')
+      });
+    } catch (error) {
+      console.error('Error processing adjusted image:', error);
+      toast({
+        title: t('errors.title'),
+        description: t('comments.cannotProcessImage'),
+        variant: "destructive"
+      });
+    }
   };
 
   const removeImage = (index: number) => {
@@ -346,6 +396,15 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
           )}
         </div>
       </DialogContent>
+      
+      {/* Photo Adjustment Modal */}
+      <PhotoAdjustmentModal
+        open={photoAdjustmentOpen}
+        onOpenChange={setPhotoAdjustmentOpen}
+        imageUrl={tempImageUrl}
+        onSave={handleAdjustedImageSave}
+        title={t('photoAdjustment.adjustCommentPhoto')}
+      />
     </Dialog>
   );
 };

@@ -10,6 +10,7 @@ import { Upload, X, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
+import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
 
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, DIETARY_RESTRICTIONS_OPTIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_OPTIONS, ALLERGENS_TRANSLATIONS } from "@/constants/cuisineTypes";
 
@@ -43,6 +44,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     allergens: [] as string[]
   });
   const [editingMenu, setEditingMenu] = useState<Menu | null>(null);
+  const [photoAdjustmentOpen, setPhotoAdjustmentOpen] = useState(false);
+  const [tempImageUrl, setTempImageUrl] = useState("");
+  const [isEditingImage, setIsEditingImage] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -97,14 +101,31 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       return;
     }
 
+    // Convert file to URL for adjustment modal
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setTempImageUrl(e.target?.result as string);
+      setIsEditingImage(isEditing);
+      setPhotoAdjustmentOpen(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAdjustedImageSave = async (adjustedImageData: string) => {
+    if (!restaurantId) return;
+    
     setUploading(true);
     try {
-      const fileExt = file.name.split('.').pop();
+      // Convert base64 to blob
+      const response = await fetch(adjustedImageData);
+      const blob = await response.blob();
+      
+      const fileExt = blob.type.split('/')[1] || 'jpg';
       const fileName = `${restaurantId}/${Date.now()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('restaurant-images')
-        .upload(fileName, file);
+        .upload(fileName, blob);
 
       if (uploadError) throw uploadError;
 
@@ -112,7 +133,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
-      if (isEditing && editingMenu) {
+      if (isEditingImage && editingMenu) {
         setEditingMenu(prev => prev ? ({ ...prev, image_url: publicUrl }) : null);
       } else {
         setNewMenu(prev => ({ ...prev, image_url: publicUrl }));
@@ -652,6 +673,15 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
         </div>
         )}
       </DialogContent>
+      
+      {/* Photo Adjustment Modal */}
+      <PhotoAdjustmentModal
+        open={photoAdjustmentOpen}
+        onOpenChange={setPhotoAdjustmentOpen}
+        imageUrl={tempImageUrl}
+        onSave={handleAdjustedImageSave}
+        title={t('photoAdjustment.adjustMenuPhoto')}
+      />
     </Dialog>
   );
 };
