@@ -2092,7 +2092,9 @@
     "dragInstruction": "Cliquez et faites glisser l'image pour la repositionner",
     "reset": "Réinitialiser",
     "cancel": "Annuler", 
-    "apply": "Appliquer"
+    "apply": "Appliquer",
+    "adjustMenuPhoto": "Ajuster la photo du menu",
+    "adjustProfilePhoto": "Ajuster la photo de profil"
   },
   "restaurants": {
     "popularTitle": "Restaurants populaires",

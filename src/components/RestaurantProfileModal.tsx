@@ -270,6 +270,15 @@ export const RestaurantProfileModal = ({
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
+      // Update both form data and save to database
+      const updateField = type === 'cover' ? 'cover_image_url' : 'logo_url';
+      const { error: updateError } = await supabase
+        .from('restaurants')
+        .update({ [updateField]: data.publicUrl })
+        .eq('id', restaurant.id);
+
+      if (updateError) throw updateError;
+
       if (type === 'cover') {
         setFormData(prev => ({ ...prev, cover_image_url: data.publicUrl }));
       } else {
