@@ -204,10 +204,16 @@ export const RestaurantProfileModal = ({
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'cover') => {
     const file = event.target.files?.[0];
-    if (!file || !restaurant?.id) return;
+    console.log('🎯 handleFileUpload called with type:', type, 'file:', file);
+    
+    if (!file || !restaurant?.id) {
+      console.log('❌ No file or restaurant ID:', { file: !!file, restaurantId: restaurant?.id });
+      return;
+    }
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
+      console.log('❌ Invalid file type:', file.type);
       toast({
         title: t('restaurantProfile.error'),
         description: t('restaurantProfile.selectValidImage'),
@@ -218,6 +224,7 @@ export const RestaurantProfileModal = ({
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
+      console.log('❌ File too large:', file.size);
       toast({
         title: t('restaurantProfile.error'), 
         description: t('restaurantProfile.imageTooLarge'),
@@ -226,16 +233,28 @@ export const RestaurantProfileModal = ({
       return;
     }
 
+    console.log('✅ File validation passed, reading file...');
+    
     // Convert file to URL for adjustment modal
     const reader = new FileReader();
     reader.onload = (e) => {
+      const result = e.target?.result as string;
+      console.log('📸 FileReader onload, result length:', result?.length);
+      
       if (type === 'cover') {
-        setTempCoverUrl(e.target?.result as string);
+        console.log('🖼️ Setting cover URL and opening modal');
+        setTempCoverUrl(result);
         setCoverAdjustmentOpen(true);
+        console.log('📱 Cover adjustment modal state set to true');
       } else {
-        setTempLogoUrl(e.target?.result as string);
+        console.log('🏷️ Setting logo URL and opening modal');
+        setTempLogoUrl(result);
         setLogoAdjustmentOpen(true);
+        console.log('📱 Logo adjustment modal state set to true');
       }
+    };
+    reader.onerror = (error) => {
+      console.error('❌ FileReader error:', error);
     };
     reader.readAsDataURL(file);
   };
@@ -811,9 +830,13 @@ export const RestaurantProfileModal = ({
     </Dialog>
     
     {/* Photo Adjustment Modals - Outside main dialog */}
+    {console.log('🔍 Rendering adjustment modals:', { logoOpen: logoAdjustmentOpen, coverOpen: coverAdjustmentOpen, tempLogoUrl, tempCoverUrl })}
     <PhotoAdjustmentModal
       open={logoAdjustmentOpen}
-      onOpenChange={setLogoAdjustmentOpen}
+      onOpenChange={(open) => {
+        console.log('🏷️ Logo modal onOpenChange:', open);
+        setLogoAdjustmentOpen(open);
+      }}
       imageUrl={tempLogoUrl}
       onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'logo')}
       title={t('photoAdjustment.adjustProfilePhoto')}
@@ -821,7 +844,10 @@ export const RestaurantProfileModal = ({
 
     <PhotoAdjustmentModal
       open={coverAdjustmentOpen}
-      onOpenChange={setCoverAdjustmentOpen}
+      onOpenChange={(open) => {
+        console.log('🖼️ Cover modal onOpenChange:', open);
+        setCoverAdjustmentOpen(open);
+      }}
       imageUrl={tempCoverUrl}
       onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'cover')}
       title={t('photoAdjustment.adjustCoverPhoto')}
