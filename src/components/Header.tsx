@@ -2,12 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";  
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "@/hooks/useLanguage";
 
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useToast } from "@/hooks/use-toast";
@@ -25,7 +23,6 @@ import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 
 const Header = () => {
   const { t } = useTranslation();
-  const { currentLanguage, changeLanguage } = useLanguage();
   const { toast } = useToast();
   const { user, profile, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -180,32 +177,6 @@ const Header = () => {
 
               {/* Auth Actions Desktop - Public */}
               <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
-                {/* Language Selector */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="gap-1 px-2">
-                      <Globe className="h-4 w-4" />
-                      <span className="uppercase text-xs font-medium">
-                        {currentLanguage}
-                      </span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem 
-                      onClick={() => changeLanguage('fr')}
-                      className={currentLanguage === 'fr' ? 'bg-accent' : ''}
-                    >
-                      🇫🇷 Français
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => changeLanguage('en')}
-                      className={currentLanguage === 'en' ? 'bg-accent' : ''}
-                    >
-                      🇬🇧 English
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                
                 <Link to="/auth">
                   <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
                     {t('navigation.login')}
@@ -272,39 +243,6 @@ const Header = () => {
                     >
                       {t('navigation.contact')}
                     </button>
-                    
-                    {/* Mobile Language Selector */}
-                    <div className="py-2 border-b border-border">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Globe className="h-4 w-4" />
-                        <span className="text-sm font-medium">{t('navigation.languageSelector')}</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant={currentLanguage === 'fr' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            changeLanguage('fr');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          🇫🇷 FR
-                        </Button>
-                        <Button
-                          variant={currentLanguage === 'en' ? 'default' : 'outline'}
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            changeLanguage('en');
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          🇬🇧 EN
-                        </Button>
-                      </div>
-                    </div>
-                    
                     <div className="pt-4">
                       <Button 
                         className="w-full bg-foreground hover:bg-foreground/90 text-background text-lg"
