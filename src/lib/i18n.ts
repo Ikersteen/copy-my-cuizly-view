@@ -15,17 +15,26 @@ const resources = {
   }
 };
 
-// Initialize i18n for French only
+// Initialize i18n with better persistence
 i18n
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'fr', // Force French
-    fallbackLng: 'fr',
+    fallbackLng: 'en',
+    // Remove hardcoded lng to let detection work
     debug: false,
     
     interpolation: {
       escapeValue: false
+    },
+    
+    detection: {
+      // Improved detection order for better persistence
+      order: ['localStorage', 'sessionStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage', 'sessionStorage'],
+      lookupLocalStorage: 'cuizly-language',
+      lookupSessionStorage: 'cuizly-language'
     },
 
     react: {
@@ -36,7 +45,7 @@ i18n
 
     // Ensure translations are loaded synchronously
     initImmediate: false,
-    preload: ['fr'],
+    preload: ['en', 'fr'],
     
     // Load missing translations immediately
     load: 'languageOnly',
