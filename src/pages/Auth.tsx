@@ -885,10 +885,10 @@ const Auth = () => {
                              <Label htmlFor="signin-phone" className="text-sm">{t('auth.smsVerification.phoneNumber')}</Label>
                              <div className="relative">
                                <Phone className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
-                                <Input
-                                  id="signin-phone"
-                                  type="tel"
-                                  placeholder="+1 (555) 123-4567"
+                                 <Input
+                                   id="signin-phone"
+                                   type="tel"
+                                   placeholder="+1 (514) 465-4783"
                                   value={signinPhoneNumber}
                                   onChange={(e) => setSigninPhoneNumber(e.target.value)}
                                   className="pl-10 text-sm"
@@ -1184,9 +1184,9 @@ const Auth = () => {
                             <div className="relative">
                               <Phone className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
                                <Input
-                                 id="phone"
-                                 type="tel"
-                                 placeholder="+1 (555) 123-4567"
+                                  id="phone"
+                                  type="tel"
+                                  placeholder="+1 (514) 465-4783"
                                  value={phoneNumber}
                                  onChange={(e) => setPhoneNumber(e.target.value)}
                                  className="pl-10 text-sm"
