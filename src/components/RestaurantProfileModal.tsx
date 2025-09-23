@@ -384,8 +384,14 @@ export const RestaurantProfileModal = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+    <Dialog open={open} onOpenChange={(isOpen) => {
+      if (!isOpen && (logoAdjustmentOpen || coverAdjustmentOpen)) {
+        // Ne pas fermer le modal principal si un modal d'ajustement est ouvert
+        return;
+      }
+      onOpenChange(isOpen);
+    }}>
+      <DialogContent className={`max-w-2xl max-h-[90vh] overflow-y-auto ${(logoAdjustmentOpen || coverAdjustmentOpen) ? 'opacity-30 pointer-events-none' : ''}`}>
          <DialogHeader>
           <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
           <DialogDescription>

@@ -117,7 +117,7 @@ export const PhotoAdjustmentModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl z-[60]">
         <DialogHeader>
           <DialogTitle>{title || t('photoAdjustment.title')}</DialogTitle>
         </DialogHeader>
