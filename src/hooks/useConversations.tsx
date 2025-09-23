@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export interface ConversationMessage {
   id: string;
@@ -27,6 +28,7 @@ export const useConversations = () => {
   const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   // Charger toutes les conversations
   const loadConversations = async () => {
@@ -45,8 +47,8 @@ export const useConversations = () => {
     } catch (error) {
       console.error('Error loading conversations:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les conversations",
+        title: t('errors.title'),
+        description: t('errors.cannotLoadConversations'),
         variant: "destructive",
       });
     } finally {
@@ -60,8 +62,8 @@ export const useConversations = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
         toast({
-          title: "Erreur",
-          description: "Vous devez être connecté pour sauvegarder",
+          title: t('errors.title'),
+          description: t('errors.mustBeLoggedIn'),
           variant: "destructive",
         });
         return null;
@@ -89,8 +91,8 @@ export const useConversations = () => {
     } catch (error) {
       console.error('Error creating conversation:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de créer la conversation",
+        title: t('errors.title'),
+        description: t('errors.cannotCreateConversation'),
         variant: "destructive",
       });
       return null;
@@ -127,8 +129,8 @@ export const useConversations = () => {
     } catch (error) {
       console.error('Error saving message:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de sauvegarder le message",
+        title: t('errors.title'),
+        description: t('errors.cannotSaveMessage'),
         variant: "destructive",
       });
     }
@@ -167,8 +169,8 @@ export const useConversations = () => {
     } catch (error) {
       console.error('Error loading conversation messages:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les messages",
+        title: t('errors.title'),
+        description: t('errors.cannotLoadMessages'),
         variant: "destructive",
       });
       return null;
@@ -191,14 +193,14 @@ export const useConversations = () => {
       }
       
       toast({
-        title: "Succès",
-        description: "Conversation supprimée",
+        title: t('toasts.success'),
+        description: t('toasts.conversationDeleted'),
       });
     } catch (error) {
       console.error('Error deleting conversation:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de supprimer la conversation",
+        title: t('errors.title'),
+        description: t('errors.cannotDeleteConversation'),
         variant: "destructive",
       });
     }
@@ -220,14 +222,14 @@ export const useConversations = () => {
       }
       
       toast({
-        title: "Succès",
-        description: "Titre mis à jour",
+        title: t('toasts.success'),
+        description: t('toasts.titleUpdated'),
       });
     } catch (error) {
       console.error('Error updating conversation title:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de modifier le titre",
+        title: t('errors.title'),
+        description: t('errors.cannotUpdateTitle'),
         variant: "destructive",
       });
     }

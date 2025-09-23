@@ -97,17 +97,17 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     const errors: Record<string, string> = {};
 
     if (localProfile.first_name) {
-      const nameValidation = validateTextInput(localProfile.first_name, INPUT_LIMITS.NAME, "First name");
+      const nameValidation = validateTextInput(localProfile.first_name, INPUT_LIMITS.NAME, t('validation.firstName'));
       if (!nameValidation.isValid) errors.first_name = nameValidation.error!;
     }
 
     if (localProfile.last_name) {
-      const nameValidation = validateTextInput(localProfile.last_name, INPUT_LIMITS.NAME, "Last name");
+      const nameValidation = validateTextInput(localProfile.last_name, INPUT_LIMITS.NAME, t('validation.lastName'));
       if (!nameValidation.isValid) errors.last_name = nameValidation.error!;
     }
 
     if (localProfile.username) {
-      const usernameValidation = validateTextInput(localProfile.username, INPUT_LIMITS.USERNAME, "Username");
+      const usernameValidation = validateTextInput(localProfile.username, INPUT_LIMITS.USERNAME, t('validation.username'));
       if (!usernameValidation.isValid) errors.username = usernameValidation.error!;
     }
 
@@ -390,7 +390,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                   <>
                     <img 
                       src={localProfile.avatar_url} 
-                      alt="Avatar"
+                      alt={t('common.avatar')}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center">

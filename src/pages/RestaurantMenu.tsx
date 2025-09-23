@@ -142,8 +142,8 @@ export default function RestaurantMenu() {
     } catch (error) {
       console.error('Error loading restaurant:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les informations du restaurant",
+        title: t('errors.title'),
+        description: t('errors.cannotLoadRestaurantInfo'),
         variant: "destructive"
       });
     } finally {
@@ -467,7 +467,7 @@ export default function RestaurantMenu() {
                             <div className="aspect-video mb-4 rounded-lg overflow-hidden">
                               <img
                                 src={menu.image_url}
-                                alt="Menu"
+                                alt={t('common.menu')}
                                 className="w-full h-full object-cover"
                               />
                             </div>

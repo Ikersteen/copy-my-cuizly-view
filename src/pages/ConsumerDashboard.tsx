@@ -168,7 +168,7 @@ const ConsumerDashboard = () => {
                 {profile?.avatar_url ? (
                   <img 
                     src={profile.avatar_url} 
-                    alt="Profile"
+                    alt={t('common.profile')}
                     className="w-16 h-16 sm:w-12 sm:h-12 rounded-lg object-cover"
                   />
                 ) : (

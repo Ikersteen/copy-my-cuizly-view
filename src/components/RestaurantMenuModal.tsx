@@ -14,6 +14,7 @@ import { CommentModal } from "@/components/CommentModal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
+import { formatRestaurantAddress } from "@/lib/addressUtils";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 // Composant pour afficher l'évaluation avec le prix
@@ -62,7 +63,7 @@ const RatingDisplay = ({ restaurantId, priceRange, address }: { restaurantId: st
 
   return (
     <div className="flex items-center space-x-1">
-      <span className="text-sm text-muted-foreground">{address || 'Montreal'}</span>
+      <span className="text-sm text-muted-foreground">{formatRestaurantAddress(address) || 'Montreal'}</span>
       {priceRange && (
         <>
           <span className="text-muted-foreground">•</span>
@@ -293,7 +294,7 @@ export const RestaurantMenuModal = ({
                     </div>
                   )}
                   
-                  {/* Social Media - Juste les icônes sans texte */}
+                  {/* Social Media */}
                   {(restaurant.instagram_url || restaurant.facebook_url) && (
                     <div className="flex items-center gap-2">
                       <div className="flex gap-2">
@@ -393,7 +394,7 @@ export const RestaurantMenuModal = ({
                           <div className="aspect-video mb-3 rounded-lg overflow-hidden">
                             <img
                               src={menu.image_url}
-                              alt="Menu"
+                              alt={t('common.menu')}
                               className="w-full h-full object-cover"
                             />
                           </div>

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAddresses } from "@/hooks/useAddresses";
+import { formatRestaurantAddress } from "@/lib/addressUtils";
 
 
 import { OffersSection } from "@/components/OffersSection";
@@ -232,39 +233,39 @@ const RestaurantDashboard = () => {
             {restaurant && (
               <Card className="hover:shadow-lg transition-all duration-200">
                 <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Restaurant Information</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">{t('restaurantInfo.title')}</CardTitle>
                   <CardDescription className="text-sm">
-                    Details about your establishment
+                    {t('restaurantInfo.description')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Restaurant Name</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.restaurantName')}</p>
                       <p className="text-foreground text-sm sm:text-base font-medium">{restaurant.name}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Address</p>
-                      <p className="text-foreground text-sm">{restaurantAddress?.formatted_address || "Not specified"}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.address')}</p>
+                      <p className="text-foreground text-sm">{formatRestaurantAddress(restaurantAddress?.formatted_address || t('restaurantInfo.notSpecified'))}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Phone</p>
-                      <p className="text-foreground text-sm">{restaurant.phone || "Not specified"}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.phone')}</p>
+                      <p className="text-foreground text-sm">{restaurant.phone || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Email</p>
-                      <p className="text-foreground text-sm">{restaurant.email || "Not specified"}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.email')}</p>
+                      <p className="text-foreground text-sm">{restaurant.email || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Price Range</p>
-                      <p className="text-foreground text-sm">{restaurant.price_range || "Not specified"}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.priceRange')}</p>
+                      <p className="text-foreground text-sm">{restaurant.price_range || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">Delivery Radius</p>
-                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : "Not specified"}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.deliveryRadius')}</p>
+                      <p className="text-foreground text-sm">{restaurant.delivery_radius ? `${restaurant.delivery_radius} km` : t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Cuisine Type</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.cuisineTypes')}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
@@ -274,13 +275,13 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            Not defined
+                            {t('restaurantInfo.notDefined')}
                           </Badge>
                         )}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Service Types</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.serviceTypes')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).service_types?.length > 0 ? (
                           (restaurant as any).service_types.map((service: string, index: number) => (
@@ -290,13 +291,13 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            Not defined
+                            {t('restaurantInfo.notDefined')}
                           </Badge>
                         )}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Restaurant Specialty</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.specialties')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).restaurant_specialties?.length > 0 ? (
                           (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => (
@@ -306,7 +307,7 @@ const RestaurantDashboard = () => {
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs text-muted-foreground">
-                            Not defined
+                            {t('restaurantInfo.notDefined')}
                           </Badge>
                         )}
                       </div>
@@ -315,7 +316,7 @@ const RestaurantDashboard = () => {
                     {/* Social Media Icons */}
                     {(restaurant.instagram_url || restaurant.facebook_url) && (
                       <div className="md:col-span-2">
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">Social Media</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.socialMedia')}</p>
                         <div className="flex items-center gap-3">
                           {restaurant.instagram_url && (
                             <a 

@@ -68,8 +68,8 @@ export const NewOfferModal = ({
   const handleSave = async () => {
     if (!restaurantId || !formData.title || !formData.description.trim()) {
       toast({
-        title: "Error",
-        description: "Please fill in title and description",
+        title: t('errors.title'),
+        description: t('newOffer.errors.fillTitleDescription'),
         variant: "destructive"
       });
       return;
@@ -77,8 +77,8 @@ export const NewOfferModal = ({
 
     if (!formData.discount_percentage && !formData.discount_amount) {
       toast({
-        title: "Error", 
-        description: "Please specify a discount",
+        title: t('errors.title'), 
+        description: t('newOffer.errors.specifyDiscount'),
         variant: "destructive"
       });
       return;
@@ -86,8 +86,8 @@ export const NewOfferModal = ({
 
     if (!validateForm()) {
       toast({
-        title: "Validation Error",
-        description: "Please fix the errors",
+        title: t('errors.title'),
+        description: t('newOffer.errors.fixErrors'),
         variant: "destructive"
       });
       return;
@@ -115,8 +115,8 @@ export const NewOfferModal = ({
       if (error) throw error;
 
       toast({
-        title: "Offer Created",
-        description: "Published successfully"
+        title: t('newOffer.success.created'),
+        description: t('newOffer.success.published')
       });
       
       // Reset form
@@ -136,8 +136,8 @@ export const NewOfferModal = ({
     } catch (error) {
       console.error('Error creating offer:', error);
       toast({
-        title: "Error",
-        description: "Cannot create offer",
+        title: t('errors.title'),
+        description: t('newOffer.errors.cannotCreate'),
         variant: "destructive"
       });
     } finally {
@@ -154,7 +154,7 @@ export const NewOfferModal = ({
           id="title"
           value={formData.title}
           onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-          placeholder="E.g.: 2 for 1 Pizza"
+          placeholder={t('newOffer.placeholders.title')}
           className={isMobile ? "min-h-[48px]" : ""}
         />
       </div>
@@ -165,7 +165,7 @@ export const NewOfferModal = ({
           id="description"
           value={formData.description}
           onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-          placeholder="Describe your offer in detail..."
+          placeholder={t('newOffer.placeholders.description')}
           rows={3}
           required
           className={isMobile ? "min-h-[100px]" : ""}
@@ -245,7 +245,7 @@ export const NewOfferModal = ({
         onChange={setDateRange}
         maxDays={3}
         label="Valid from ... to (max 3 days)"
-        placeholder="Select validity period"
+        placeholder={t('newOffer.placeholders.selectPeriod')}
       />
 
       <div className="flex items-center justify-between">
@@ -285,10 +285,10 @@ export const NewOfferModal = ({
               disabled={loading || !formData.title || !formData.description.trim()}
               className="w-full min-h-[52px] text-base"
             >
-              {loading ? "Creating..." : "Create Offer"}
-            </Button>
-            <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full min-h-[52px] text-base">
-              Cancel
+            {loading ? t('newOffer.creating') : t('newOffer.createOffer')}
+          </Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full min-h-[52px] text-base">
+            {t('newOffer.cancel')}
             </Button>
           </DrawerFooter>
         </DrawerContent>
@@ -301,21 +301,21 @@ export const NewOfferModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Create New Offer</DialogTitle>
+          <DialogTitle>{t('newOffer.title')}</DialogTitle>
         </DialogHeader>
         
         <FormContent />
 
         <div className="flex gap-2 pt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1">
-            Cancel
+            {t('newOffer.cancel')}
           </Button>
           <Button 
             onClick={handleSave} 
             disabled={loading || !formData.title || !formData.description.trim()}
             className="flex-1"
           >
-            {loading ? "Creating..." : "Create Offer"}
+            {loading ? t('newOffer.creating') : t('newOffer.createOffer')}
           </Button>
         </div>
       </DialogContent>

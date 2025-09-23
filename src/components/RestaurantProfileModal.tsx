@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 import { AddressSelector } from "@/components/MontrealAddressSelector";
 import { useAddresses } from "@/hooks/useAddresses";
-import { createAddressInput } from "@/lib/addressUtils";
+import { createAddressInput, formatRestaurantAddress } from "@/lib/addressUtils";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
@@ -78,7 +78,7 @@ export const RestaurantProfileModal = ({
       setFormData({
         name: restaurant.name || "",
         description: restaurant.description || "",
-        address: restaurantAddress?.formatted_address || restaurant.address || "",
+        address: formatRestaurantAddress(restaurantAddress?.formatted_address || restaurant.address || ""),
         phone: restaurant.phone || "",
         email: restaurant.email || "",
         cuisine_type: restaurant.cuisine_type || [],
@@ -94,7 +94,7 @@ export const RestaurantProfileModal = ({
   // Mettre à jour l'adresse quand restaurantAddress change
   useEffect(() => {
     if (restaurantAddress) {
-      setFormData(prev => ({ ...prev, address: restaurantAddress.formatted_address }));
+      setFormData(prev => ({ ...prev, address: formatRestaurantAddress(restaurantAddress.formatted_address) }));
     }
   }, [restaurantAddress]);
 
@@ -103,7 +103,7 @@ export const RestaurantProfileModal = ({
     const errors: Record<string, string> = {};
 
     if (formData.name) {
-      const nameValidation = validateTextInput(formData.name, INPUT_LIMITS.NAME, "Restaurant name");
+      const nameValidation = validateTextInput(formData.name, INPUT_LIMITS.NAME, t('validation.restaurantName'));
       if (!nameValidation.isValid) errors.name = nameValidation.error!;
     }
 
@@ -350,8 +350,8 @@ export const RestaurantProfileModal = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Profil du restaurant</DialogTitle>
+         <DialogHeader>
+          <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
           <DialogDescription>
             {t('restaurantProfile.description')}
           </DialogDescription>
@@ -407,7 +407,7 @@ export const RestaurantProfileModal = ({
                   {formData.logo_url ? (
                     <img 
                       src={formData.logo_url} 
-                      alt="Logo"
+                      alt={t('common.logo')}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -442,12 +442,12 @@ export const RestaurantProfileModal = ({
           {/* Informations de base */}
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">Nom du restaurant *</Label>
+              <Label htmlFor="name">{t('restaurantProfile.restaurantNameRequired')}</Label>
               <Input
                 id="name"
                 value={formData.name || ""}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Nom de votre restaurant"
+                placeholder={t('restaurantProfile.restaurantNamePlaceholder')}
               />
             </div>
 
@@ -466,8 +466,8 @@ export const RestaurantProfileModal = ({
               <AddressSelector
                 value={formData.address || ""}
                 onChange={(address) => setFormData(prev => ({ ...prev, address }))}
-                label="Adresse"
-                placeholder="Entrez l'adresse de votre restaurant"
+                label={t('restaurantProfile.address')}
+                placeholder={t('restaurantProfile.addressPlaceholder')}
               />
             </div>
 
@@ -664,7 +664,7 @@ export const RestaurantProfileModal = ({
                 placeholder="5"
               />
               <p className="text-sm text-muted-foreground">
-                Distance maximale de livraison en kilomètres
+                {t('restaurantProfile.deliveryRadiusDesc')}
               </p>
             </div>
           </div>
@@ -674,7 +674,7 @@ export const RestaurantProfileModal = ({
           <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-end">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Annuler
+                {t('restaurantProfile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={loading || !formData.name}>
                 {loading ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
