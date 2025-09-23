@@ -31,9 +31,23 @@ export interface FilterOptions {
 }
 
 const CUISINE_OPTIONS = [
-  "french", "italian", "japanese", "chinese", "mexican", "indian",
-  "thai", "lebanese", "greek", "american", "quebecois", "korean",
-  "vietnamese", "spanish", "moroccan", "turkish"
+  { key: "french", value: "Française" },
+  { key: "italian", value: "Italienne" },
+  { key: "japanese", value: "Japonaise" },
+  { key: "chinese", value: "Chinoise" },
+  { key: "mexican", value: "Mexicaine" },
+  { key: "indian", value: "Indienne" },
+  { key: "thai", value: "Thaïlandaise" },
+  { key: "lebanese", value: "Libanaise" },
+  { key: "greek", value: "Grecque" },
+  { key: "american", value: "Américaine" },
+  { key: "quebecois", value: "Québécoise" },
+  { key: "korean", value: "Coréenne" },
+  { key: "vietnamese", value: "Vietnamienne" },
+  { key: "spanish", value: "Espagnole" },
+  { key: "moroccan", value: "Marocaine" },
+  { key: "turkish", value: "Turque" },
+  { key: "african", value: "Africaine" }
 ];
 
 const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
@@ -103,12 +117,12 @@ export const MobileFiltersDrawer = ({ open, onOpenChange, onApplyFilters }: Mobi
             <div className="flex flex-wrap gap-2">
               {CUISINE_OPTIONS.map((cuisine) => (
                 <Badge
-                  key={cuisine}
-                  variant={filters.cuisines.includes(cuisine) ? "default" : "outline"}
+                  key={cuisine.key}
+                  variant={filters.cuisines.includes(cuisine.value) ? "default" : "outline"}
                   className="cursor-pointer min-h-[44px] px-4 py-2 text-sm"
-                  onClick={() => toggleCuisine(cuisine)}
+                  onClick={() => toggleCuisine(cuisine.value)}
                 >
-                  {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || cuisine}
+                  {cuisine.value}
                 </Badge>
               ))}
             </div>

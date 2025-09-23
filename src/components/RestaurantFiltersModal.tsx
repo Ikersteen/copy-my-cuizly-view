@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { X, TrendingUp, DollarSign, Users, Clock } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 interface RestaurantFiltersModalProps {
   open: boolean;
@@ -17,18 +18,33 @@ interface RestaurantFiltersModalProps {
 
 export interface RestaurantFilterOptions {
   categories: string[];
+  cuisines: string[];
+  serviceTypes: string[];
   priceRange: string[];
   dateRange: string;
   activeOnly: boolean;
   sortBy: string;
 }
 
-const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
+  const CUISINE_OPTIONS = [
+    "french", "italian", "japanese", "chinese", "mexican", "indian",
+    "thai", "lebanese", "greek", "american", "quebecois", "korean",
+    "vietnamese", "spanish", "moroccan", "turkish", "african"
+  ];
+
+  const SERVICE_TYPE_OPTIONS = [
+    "breakfast_brunch", "quick_lunch", "dinner_supper", "cafe_snack", 
+    "specialized_detox_health", "late_night"
+  ];
+
+  const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 
 export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: RestaurantFiltersModalProps) => {
   const { t } = useTranslation();
   const [filters, setFilters] = useState<RestaurantFilterOptions>({
     categories: [],
+    cuisines: [],
+    serviceTypes: [],
     priceRange: [],
     dateRange: "all",
     activeOnly: true,
@@ -71,6 +87,8 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
   const handleReset = () => {
     setFilters({
       categories: [],
+      cuisines: [],
+      serviceTypes: [],
       priceRange: [],
       dateRange: "all",
       activeOnly: true,
@@ -84,6 +102,24 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
       categories: prev.categories.includes(category)
         ? prev.categories.filter(c => c !== category)
         : [...prev.categories, category]
+    }));
+  };
+
+  const toggleCuisine = (cuisine: string) => {
+    setFilters(prev => ({
+      ...prev,
+      cuisines: prev.cuisines.includes(cuisine)
+        ? prev.cuisines.filter(c => c !== cuisine)
+        : [...prev.cuisines, cuisine]
+    }));
+  };
+
+  const toggleServiceType = (serviceType: string) => {
+    setFilters(prev => ({
+      ...prev,
+      serviceTypes: prev.serviceTypes.includes(serviceType)
+        ? prev.serviceTypes.filter(s => s !== serviceType)
+        : [...prev.serviceTypes, serviceType]
     }));
   };
 
@@ -119,6 +155,44 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
                   {filters.categories.includes(category.value) && (
                     <X className="h-3 w-3 ml-1" />
                   )}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Types de cuisine */}
+          <div>
+            <Label className="text-base font-medium mb-3 block">Types de cuisine</Label>
+            <div className="flex flex-wrap gap-2">
+              {CUISINE_OPTIONS.map(cuisine => (
+                <Badge
+                  key={cuisine}
+                  variant={filters.cuisines.includes(cuisine) ? "default" : "outline"}
+                  className="cursor-pointer transition-all duration-200 hover:scale-105"
+                  onClick={() => toggleCuisine(cuisine)}
+                >
+                  {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || cuisine}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Types de service */}
+          <div>
+            <Label className="text-base font-medium mb-3 block">Types de service</Label>
+            <div className="flex flex-wrap gap-2">
+              {SERVICE_TYPE_OPTIONS.map(serviceType => (
+                <Badge
+                  key={serviceType}
+                  variant={filters.serviceTypes.includes(serviceType) ? "default" : "outline"}
+                  className="cursor-pointer transition-all duration-200 hover:scale-105"
+                  onClick={() => toggleServiceType(serviceType)}
+                >
+                  {SERVICE_TYPES_TRANSLATIONS[serviceType as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.fr || serviceType}
                 </Badge>
               ))}
             </div>
