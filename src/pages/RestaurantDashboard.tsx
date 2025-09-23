@@ -206,9 +206,11 @@ const RestaurantDashboard = () => {
             <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
               {restaurant?.name || t('restaurant.myRestaurant')}
             </h1>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              @{profile?.username || restaurant?.name?.toLowerCase().replace(/\s+/g, '') || 'restaurant'}
-            </p>
+            {profile?.username && (
+              <p className="text-sm sm:text-base text-muted-foreground">
+                @{profile.username}
+              </p>
+            )}
             {restaurantAddress?.formatted_address && (
               <p className="text-xs text-muted-foreground mt-1 flex items-start gap-1 break-words">
                 <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
