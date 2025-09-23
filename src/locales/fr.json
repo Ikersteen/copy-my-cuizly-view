@@ -2216,12 +2216,12 @@
     "info": {
       "title": "Informations de contact",
       "email": {
-        "label": "Email",
-        "value": "support@cuizly.ca"
+        "label": "Courriel",
+        "value": "Cuizlycanada@gmail.com"
       },
       "address": {
         "label": "Adresse",
-        "value": "Montréal, QC<br/>Canada"
+        "value": "Montréal, QC, Canada"
       },
       "phone": {
         "label": "Téléphone",
