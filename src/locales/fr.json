@@ -29,31 +29,33 @@
     "description": "Cuizly révolutionne la découverte gastronomique en utilisant l'intelligence artificielle pour recommander des restaurants parfaitement adaptés aux préférences, au budget et aux envies des consommateurs."
   },
   "features": {
-    "title": "",
+    "title": "Fonctionnalités",
     "subtitle": "Des fonctionnalités pensées pour\nles restaurateurs & les foodies",
-    "ai_recommendations": {
-      "title": "Intelligence Artificielle",
-      "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
-    },
-    "geolocation": {
-      "title": "Géolocalisation",
-      "description": "Trouvez les meilleures offres près de chez vous à Montréal."
-    },
-    "real_time_alerts": {
-      "title": "Alertes en temps réel",
-      "description": "Soyez informé instantanément des nouvelles offres qui vous intéressent."
-    },
-    "reviews_ratings": {
-      "title": "Avis et notations",
-      "description": "Consultez les avis authentiques des autres utilisateurs."
-    },
-    "restaurant_analytics": {
-      "title": "Analyses pour restaurants",
-      "description": "Analysez les performances de votre restaurant avec des données détaillées."
-    },
-    "smart_targeting": {
-      "title": "Ciblage intelligent",
-      "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
+    "list": {
+      "ai": {
+        "title": "Intelligence Artificielle",
+        "description": "Recommandations personnalisées basées sur vos goûts et préférences culinaires."
+      },
+      "geolocation": {
+        "title": "Géolocalisation",
+        "description": "Trouvez les meilleures offres près de chez vous à Montréal."
+      },
+      "alerts": {
+        "title": "Alertes en temps réel",
+        "description": "Soyez informé instantanément des nouvelles offres qui vous intéressent."
+      },
+      "reviews": {
+        "title": "Avis et notations",
+        "description": "Consultez les avis authentiques des autres utilisateurs."
+      },
+      "analytics": {
+        "title": "Analyses pour restaurants",
+        "description": "Analysez les performances de votre restaurant avec des données détaillées."
+      },
+      "targeting": {
+        "title": "Ciblage intelligent",
+        "description": "Atteignez la bonne clientèle au bon moment avec notre IA."
+      }
     }
   },
   "pricing": {
@@ -2189,11 +2191,6 @@
     "titleUpdated": "Titre mis à jour",
     "profileUpdated": "Profil mis à jour",
     "informationSaved": "Vos informations ont été sauvegardées avec succès"
-  },
-  "pricingLanding": {
-    "title": "Tarifs pour tous",
-    "subtitle": "Une offre gratuite pour les amateurs de cuisine, des solutions professionnelles abordables pour les restaurants.",
-    "popular": "Populaire"
   },
   "contact": {
     "title": "Contactez-nous",
