@@ -235,9 +235,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
 
   const analyticsCards = [
     {
-      title: t('analytics.totalOffers'),
+      title: "Offres totales",
       value: analytics.totalOffers,
-      subtitle: `${analytics.activeOffers} ${t('analytics.activeOffers')}`,
+      subtitle: `${analytics.activeOffers} offres actives`,
       icon: TrendingUp,
       color: "text-blue-600",
       bgColor: "bg-blue-100 dark:bg-blue-100",
@@ -245,9 +245,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'totalOffers'
     },
     {
-      title: t('analytics.menusAdded'),
+      title: "Menus ajoutés",
       value: analytics.totalMenus,
-      subtitle: `${analytics.activeMenus} ${t('analytics.activeMenus')}`,
+      subtitle: `${analytics.activeMenus} menus actifs`,
       icon: Calendar,
       color: "text-green-600",
       bgColor: "bg-green-100 dark:bg-green-100",
@@ -255,9 +255,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'totalMenus'
     },
     {
-      title: t('analytics.profileViews'),
+      title: "Vues du profil",
       value: analytics.profileViews,
-      subtitle: t('analytics.totalViews'),
+      subtitle: "Vues totales",
       icon: Eye,
       color: "text-purple-600",
       bgColor: "bg-purple-100 dark:bg-purple-100",
@@ -265,9 +265,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'profileViews'
     },
     {
-      title: t('analytics.averageRating'),
+      title: "Note moyenne",
       value: analytics.avgRating.toFixed(1),
-      subtitle: t('analytics.outOfStars'),
+      subtitle: "sur 5 étoiles",
       icon: Star,
       color: "text-orange-600",
       bgColor: "bg-orange-100 dark:bg-orange-100",
@@ -339,7 +339,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
             <div className="text-center md:text-left order-2 md:order-1">
               <div className="flex items-center gap-2 mb-1">
                 <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-900">
-                  {i18n.language === 'fr' ? 'Tendances cette semaine' : 'Weekly trends'}
+                  Tendances cette semaine
                 </h4>
                 {analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth > 0 ? (
                   <TrendingUp className="h-4 w-4 text-green-500" />
@@ -356,12 +356,12 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
               <p className="text-xs text-gray-700 dark:text-gray-700">
                 {analytics.weeklyGrowth !== undefined ? (
                   analytics.weeklyGrowth > 0 ? 
-                    `+${analytics.weeklyGrowth}% ${t('analytics.viewsVsLastWeek')}` :
+                    `+${analytics.weeklyGrowth}% vs la semaine dernière` :
                   analytics.weeklyGrowth < 0 ?
-                    `${analytics.weeklyGrowth}% ${t('analytics.viewsVsLastWeek')}` :
-                    t('analytics.noChangeVsLastWeek')
+                    `${analytics.weeklyGrowth}% vs la semaine dernière` :
+                    "Aucun changement vs la semaine dernière"
                 ) : (
-                  t('actions.collectingData')
+                  "Collecte des données..."
                 )}
               </p>
             </div>
@@ -380,11 +380,11 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                 `}
               >
                 {analytics.weeklyGrowth !== undefined ? (
-                  analytics.weeklyGrowth > 0 ? t('analytics.positiveTrend') : 
-                  analytics.weeklyGrowth < 0 ? t('analytics.negativeTrend') :
-                  t('analytics.stable')
+                  analytics.weeklyGrowth > 0 ? "Tendance positive" : 
+                  analytics.weeklyGrowth < 0 ? "Tendance négative" :
+                  "Stable"
                 ) : (
-                  t('analytics.dataCollection')
+                  "Collecte de données"
                 )}
               </Badge>
             </div>

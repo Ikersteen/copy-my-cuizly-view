@@ -316,7 +316,7 @@ const RestaurantDashboard = () => {
                     {/* Social Media Icons */}
                     {(restaurant.instagram_url || restaurant.facebook_url) && (
                       <div className="md:col-span-2">
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.socialMedia')}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">Réseaux sociaux</p>
                         <div className="flex items-center gap-3">
                           {restaurant.instagram_url && (
                             <a 
