@@ -70,8 +70,7 @@ export const ImprovedRestaurantProfileModal = ({
       friday: { open: "09:00", close: "17:00", closed: false },
       saturday: { open: "09:00", close: "17:00", closed: false },
       sunday: { open: "09:00", close: "17:00", closed: true }
-    },
-    delivery_radius: 5
+    }
   });
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -140,8 +139,7 @@ export const ImprovedRestaurantProfileModal = ({
           friday: { open: "09:00", close: "17:00", closed: false },
           saturday: { open: "09:00", close: "17:00", closed: false },
           sunday: { open: "09:00", close: "17:00", closed: true }
-        },
-        delivery_radius: data.delivery_radius || 5
+        }
       });
     } catch (error) {
       console.error('Error loading restaurant:', error);
@@ -354,8 +352,7 @@ export const ImprovedRestaurantProfileModal = ({
         allergens: formData.allergens,
         service_types: formData.service_types,
         price_range: formData.price_range || null,
-        opening_hours: formData.opening_hours,
-        delivery_radius: formData.delivery_radius
+        opening_hours: formData.opening_hours
       };
 
       const { error } = await supabase
@@ -673,19 +670,6 @@ export const ImprovedRestaurantProfileModal = ({
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="delivery_radius">Rayon de livraison</Label>
-              <p className="text-sm text-muted-foreground">Distance maximale de livraison en kilomètres</p>
-              <Input
-                id="delivery_radius"
-                type="number"
-                min="1"
-                max="50"
-                value={formData.delivery_radius}
-                onChange={(e) => setFormData(prev => ({ ...prev, delivery_radius: parseInt(e.target.value) || 5 }))}
-                placeholder="5"
-              />
-            </div>
 
             <div className="space-y-2">
               <Label>Gamme de prix</Label>
