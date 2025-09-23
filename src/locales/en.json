@@ -470,7 +470,13 @@
     "logoutSuccessDesc": "You have been successfully signed out",
     "deletionRequested": "Deletion Requested",
     "deletionRequestedDesc": "Your account deletion request has been recorded. Your account will be deactivated.",
-    "confirmationError": "Please type exactly the confirmation text"
+    "confirmationError": "Please type exactly the confirmation text",
+    "success": "Success",
+    "imageUploaded": "Image uploaded successfully",
+    "imageRemoved": "Image removed successfully",
+    "saved": "Profile saved", 
+    "savedSuccessfully": "Restaurant information has been saved successfully",
+    "saveError": "Error saving profile"
   },
   "restaurantInfo": {
     "title": "Restaurant Information",
