@@ -49,6 +49,7 @@ export const ImprovedRestaurantProfileModal = ({
   const [restaurant, setRestaurant] = useState<any>(null);
   const [formData, setFormData] = useState({
     name: "",
+    username: "",
     description: "",
     phone: "",
     email: "",
@@ -108,9 +109,17 @@ export const ImprovedRestaurantProfileModal = ({
 
       if (error) throw error;
 
+      // Also load profile data for username
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('user_id', session.user.id)
+        .single();
+
       setRestaurant(data);
       setFormData({
         name: data.name || "",
+        username: profileData?.username || "",
         description: data.description || "",
         phone: data.phone || "",
         email: data.email || "",
@@ -356,6 +365,16 @@ export const ImprovedRestaurantProfileModal = ({
 
       if (error) throw error;
 
+      // Update username in profiles table
+      if (formData.username.trim()) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ username: formData.username.trim() })
+          .eq('user_id', session.user.id);
+        
+        if (profileError) throw profileError;
+      }
+
       await loadRestaurant();
       
       toast({
@@ -493,6 +512,16 @@ export const ImprovedRestaurantProfileModal = ({
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="Nom de votre restaurant"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="username">Nom d'utilisateur</Label>
+              <Input
+                id="username"
+                value={formData.username}
+                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                placeholder="@nomdutilisateur"
               />
             </div>
 
