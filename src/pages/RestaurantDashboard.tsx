@@ -270,7 +270,9 @@ const RestaurantDashboard = () => {
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
                             <Badge key={index} variant="outline" className="text-xs">
-                              {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                              {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || 
+                               CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.en || 
+                               cuisine}
                             </Badge>
                           ))
                         ) : (
@@ -286,7 +288,9 @@ const RestaurantDashboard = () => {
                         {(restaurant as any).service_types?.length > 0 ? (
                           (restaurant as any).service_types.map((service: string, index: number) => (
                             <Badge key={index} variant="outline" className="text-xs">
-                              {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
+                              {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.fr || 
+                               SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.en || 
+                               service}
                             </Badge>
                           ))
                         ) : (
@@ -348,7 +352,9 @@ const RestaurantDashboard = () => {
                         <div className="flex flex-wrap gap-1">
                           {restaurant.dietary_restrictions.map((restriction, index) => (
                             <Badge key={index} variant="secondary" className="text-xs">
-                              {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || restriction}
+                              {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.fr || 
+                               DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.en || 
+                               restriction}
                             </Badge>
                           ))}
                         </div>
@@ -360,7 +366,9 @@ const RestaurantDashboard = () => {
                         <div className="flex flex-wrap gap-1">
                           {restaurant.allergens.map((allergen, index) => (
                             <Badge key={index} variant="destructive" className="text-xs">
-                              {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || allergen}
+                              {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.fr || 
+                               ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.en || 
+                               allergen}
                             </Badge>
                           ))}
                         </div>

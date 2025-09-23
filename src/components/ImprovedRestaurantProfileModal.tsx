@@ -671,7 +671,9 @@ export const ImprovedRestaurantProfileModal = ({
                 <SelectContent>
                   {PRICE_RANGE_OPTIONS.map((range) => (
                     <SelectItem key={range} value={range}>
-                      {PRICE_RANGE_TRANSLATIONS[range as keyof typeof PRICE_RANGE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || range}
+                       {PRICE_RANGE_TRANSLATIONS[range as keyof typeof PRICE_RANGE_TRANSLATIONS]?.fr || 
+                        PRICE_RANGE_TRANSLATIONS[range as keyof typeof PRICE_RANGE_TRANSLATIONS]?.en || 
+                        range}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -705,7 +707,9 @@ export const ImprovedRestaurantProfileModal = ({
                             {isSelected && <span className="text-xs text-primary">✓</span>}
                           </div>
                           <span className="text-left truncate">
-                            {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                            {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || 
+                             CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.en || 
+                             cuisine}
                           </span>
                         </div>
                       </Button>
@@ -716,7 +720,9 @@ export const ImprovedRestaurantProfileModal = ({
                   <div className="flex flex-wrap gap-1">
                     {formData.cuisine_type.map((cuisine) => (
                       <Badge key={cuisine} variant="secondary" className="text-xs">
-                        {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                         {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || 
+                          CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.en || 
+                          cuisine}
                         <X 
                           className="h-3 w-3 ml-1 cursor-pointer hover:bg-secondary-foreground/20 rounded" 
                           onClick={() => setFormData(prev => ({ 
@@ -758,7 +764,9 @@ export const ImprovedRestaurantProfileModal = ({
                             {isSelected && <span className="text-xs text-primary">✓</span>}
                           </div>
                           <span className="text-left truncate">
-                            {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
+                            {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.fr || 
+                             SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.en || 
+                             service}
                           </span>
                         </div>
                       </Button>
@@ -769,7 +777,9 @@ export const ImprovedRestaurantProfileModal = ({
                   <div className="flex flex-wrap gap-1">
                     {formData.service_types.map((service) => (
                       <Badge key={service} variant="secondary" className="text-xs">
-                        {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
+                         {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.fr || 
+                          SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.en || 
+                          service}
                         <X 
                           className="h-3 w-3 ml-1 cursor-pointer hover:bg-secondary-foreground/20 rounded" 
                           onClick={() => setFormData(prev => ({ 
