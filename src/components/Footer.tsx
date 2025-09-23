@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -85,22 +86,22 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.legal')}</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <a 
-                  href="/privacy" 
+                <Link 
+                  to="/privacy" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.privacyPolicy')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a 
-                  href="/terms" 
+                <Link 
+                  to="/terms" 
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.termsOfUse')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a 
