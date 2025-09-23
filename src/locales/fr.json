@@ -571,6 +571,8 @@
     "ratingAdded": "Évaluation ajoutée",
     "thankYouRating": "Merci pour votre évaluation !",
     "cannotAddRating": "Impossible d'ajouter l'évaluation",
+    "preferencesUpdated": "Préférences mises à jour",
+    "preferencesSavedSuccessfully": "Préférences sauvegardées avec succès",
     "preferencesUpdateError": "Impossible de sauvegarder vos préférences",
     "preferencesSavedTemporarily": "Préférences sauvegardées temporairement",
     "connectionProblem": "Problème de connexion",
@@ -2123,10 +2125,6 @@
       "notConnected": "Utilisateur non connecté",
       "connectionFailed": "Erreur de connexion"
     }
-  },
-  "toasts": {
-    "preferencesUpdated": "Préférences mises à jour",
-    "preferencesSavedSuccessfully": "Préférences sauvegardées avec succès"
   },
   "recommendations": {
     "noRatingsYet": "Aucune évaluation pour le moment",
