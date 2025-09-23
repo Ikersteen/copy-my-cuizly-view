@@ -4,14 +4,10 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 // Import translation files
 import frTranslations from '@/locales/fr.json';
-import enTranslations from '@/locales/en.json';
 
 const resources = {
   fr: {
     translation: frTranslations
-  },
-  en: {
-    translation: enTranslations
   }
 };
 
