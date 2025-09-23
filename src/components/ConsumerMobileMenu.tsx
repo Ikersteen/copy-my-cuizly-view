@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, User, Settings, LayoutDashboard, LogOut, Globe, Home } from "lucide-react";
-import { useLanguage } from "@/hooks/useLanguage";
+import { Menu, User, Settings, LayoutDashboard, LogOut, Home } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +17,6 @@ export const ConsumerMobileMenu = ({
   onPreferencesClick,
 }: ConsumerMobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { currentLanguage, changeLanguage } = useLanguage();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -113,42 +111,6 @@ export const ConsumerMobileMenu = ({
               </Button>
             </div>
 
-            {/* Bottom Section - Language */}
-            <div className="border-t border-border pt-4 space-y-4">
-              {/* Language Selector */}
-              <div className="space-y-2 pb-4">
-                <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4" />
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {t('navigation.languageSelector')}
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant={currentLanguage === 'fr' ? 'default' : 'outline'}
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => {
-                      changeLanguage('fr');
-                      setIsOpen(false);
-                    }}
-                  >
-                    🇫🇷 FR
-                  </Button>
-                  <Button
-                    variant={currentLanguage === 'en' ? 'default' : 'outline'}
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => {
-                      changeLanguage('en');
-                      setIsOpen(false);
-                    }}
-                  >
-                    🇬🇧 EN
-                  </Button>
-                </div>
-              </div>
-            </div>
           </div>
         </SheetContent>
       </Sheet>
