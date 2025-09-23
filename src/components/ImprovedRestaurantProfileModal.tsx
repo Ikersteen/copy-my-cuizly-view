@@ -17,7 +17,6 @@ import { useAddresses } from "@/hooks/useAddresses";
 import { createAddressInput } from "@/lib/addressUtils";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
-import { PhotoActionModal } from "@/components/PhotoActionModal";
 
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, SERVICE_TYPES_OPTIONS, SERVICE_TYPES_TRANSLATIONS, PRICE_RANGE_OPTIONS, PRICE_RANGE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
@@ -80,7 +79,7 @@ export const ImprovedRestaurantProfileModal = ({
   const [photoModalType, setPhotoModalType] = useState<'logo' | 'cover'>('logo');
 
   // Debug log for modal state
-  console.log('Modal states:', { photoModalOpen, photoModalType });
+  // console.log('Modal states:', { photoModalOpen, photoModalType });
 
   useEffect(() => {
     if (modalIsOpen) {
@@ -148,8 +147,127 @@ export const ImprovedRestaurantProfileModal = ({
     }
   };
 
-  // Handle image upload
-  const handleImageUpload = async (file: File, imageType: 'logo' | 'cover') => {
+  // Handle file upload with adjustment modal
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'cover') => {
+    const file = event.target.files?.[0];
+    console.log('🎯 handleFileUpload called with type:', type, 'file:', file);
+    
+    if (!file) {
+      console.log('❌ No file selected');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      console.log('❌ Invalid file type:', file.type);
+      toast({
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.selectValidImage'),
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      console.log('❌ File too large:', file.size);
+      toast({
+        title: t('restaurantProfile.error'), 
+        description: t('restaurantProfile.imageTooLarge'),
+        variant: "destructive"
+      });
+      return;
+    }
+
+    console.log('✅ File validation passed, reading file...');
+    
+    // Convert file to URL for adjustment modal
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      console.log('📸 FileReader onload, result length:', result?.length);
+      
+      if (type === 'cover') {
+        console.log('🖼️ Setting cover URL and opening modal');
+        setTempCoverUrl(result);
+        setCoverAdjustmentOpen(true);
+        console.log('📱 Cover adjustment modal state set to true');
+      } else {
+        console.log('🏷️ Setting logo URL and opening modal');
+        setTempLogoUrl(result);
+        setLogoAdjustmentOpen(true);
+        console.log('📱 Logo adjustment modal state set to true');
+      }
+    };
+    reader.onerror = (error) => {
+      console.error('❌ FileReader error:', error);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAdjustedImageSave = async (adjustedImageData: string, type: 'logo' | 'cover') => {
+    console.log('💾 Saving adjusted image for type:', type);
+    
+    if (type === 'cover') {
+      setUploadingCover(true);
+    } else {
+      setUploadingLogo(true);
+    }
+    
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('No session');
+
+      // Convert base64 to blob
+      const response = await fetch(adjustedImageData);
+      const blob = await response.blob();
+      
+      const fileExt = blob.type.split('/')[1] || 'jpg';
+      const fileName = `${session.user.id}/${type}-${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('restaurant-images')
+        .upload(fileName, blob);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('restaurant-images')
+        .getPublicUrl(fileName);
+
+      // Update database
+      const updateField = type === 'cover' ? 'cover_image_url' : 'logo_url';
+      const { error: updateError } = await supabase
+        .from('restaurants')
+        .update({ [updateField]: data.publicUrl })
+        .eq('owner_id', session.user.id);
+
+      if (updateError) throw updateError;
+
+      // Update form data
+      setFormData(prev => ({ ...prev, [updateField]: data.publicUrl }));
+      
+      toast({
+        title: t('restaurantProfile.profileUpdated'),
+        description: type === 'cover' ? t('restaurantProfile.uploadingCover') : t('restaurantProfile.uploadingLogo')
+      });
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      toast({
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotUpload'),
+        variant: "destructive"
+      });
+    } finally {
+      if (type === 'cover') {
+        setUploadingCover(false);
+        setCoverAdjustmentOpen(false);
+      } else {
+        setUploadingLogo(false);
+        setLogoAdjustmentOpen(false);
+      }
+    }
+  };
     console.log('Starting image upload:', { imageType, fileName: file.name, fileSize: file.size });
     
     try {
@@ -448,9 +566,12 @@ export const ImprovedRestaurantProfileModal = ({
                   onMouseDown={() => console.log('🟡 Button mouse down')}
                   onMouseUp={() => console.log('🟡 Button mouse up')}
                   onClick={() => {
-                    console.log('🟢 BOUTON CLIQUÉ!');
-                    setPhotoModalType('cover');
-                    setPhotoModalOpen(true);
+                    // Use file input instead
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = 'image/*';
+                    input.onchange = (e) => handleFileUpload(e as any, 'cover');
+                    input.click();
                   }}
                 >
                   <Edit2 className="h-4 w-4 mr-1" />
@@ -483,8 +604,12 @@ export const ImprovedRestaurantProfileModal = ({
                   <div 
                     className="absolute inset-0 cursor-pointer group rounded-full overflow-hidden"
                     onClick={() => {
-                      setPhotoModalType('logo');
-                      setPhotoModalOpen(true);
+                      // Use file input for logo
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = 'image/*';
+                      input.onchange = (e) => handleFileUpload(e as any, 'logo');
+                      input.click();
                     }}
                   >
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center">
@@ -856,18 +981,21 @@ export const ImprovedRestaurantProfileModal = ({
       </div>
       </DialogContent>
 
-      {/* Photo Action Modal */}
-      <PhotoActionModal
-        isOpen={photoModalOpen}
-        onClose={() => {
-          console.log('PhotoActionModal closing');
-          setPhotoModalOpen(false);
-        }}
-        currentImageUrl={photoModalType === 'logo' ? restaurant?.logo_url : restaurant?.cover_image_url}
-        onUpload={(file) => handleImageUpload(file, photoModalType)}
-        onRemove={() => handleImageRemove(photoModalType)}
-        photoType={photoModalType === 'logo' ? 'profile' : 'cover'}
-        uploading={photoModalType === 'logo' ? uploadingLogo : uploadingCover}
+      {/* Photo Adjustment Modals */}
+      <PhotoAdjustmentModal
+        open={logoAdjustmentOpen}
+        onOpenChange={setLogoAdjustmentOpen}
+        imageUrl={tempLogoUrl}
+        onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'logo')}
+        title={t('photoAdjustment.adjustProfilePhoto')}
+      />
+
+      <PhotoAdjustmentModal
+        open={coverAdjustmentOpen}
+        onOpenChange={setCoverAdjustmentOpen}
+        imageUrl={tempCoverUrl}
+        onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'cover')}
+        title={t('photoAdjustment.adjustCoverPhoto')}
       />
     </Dialog>
   );
