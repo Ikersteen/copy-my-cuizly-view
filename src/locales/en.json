@@ -165,6 +165,74 @@
     "cannotLoadRestaurantInfo": "Unable to load restaurant information",
     "mustBeLoggedIn": "You must be logged in to save"
   },
+  "analytics": {
+    "title": "Real-time performance dashboard",
+    "subtitle": "Performance insights by segment (Real-time updates)"
+  },
+  "pricingLanding": {
+    "title": "Pricing for everyone",
+    "subtitle": "A free offer for food lovers, affordable professional solutions for restaurants.",
+    "popular": "Popular"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help",
+    "form": {
+      "title": "Send us a message",
+      "description": "We'll get back to you as soon as possible",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Your last name",
+      "email": "Email",
+      "emailPlaceholder": "your.email@example.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "Subject of your message",
+      "message": "Message",
+      "messagePlaceholder": "Describe your request...",
+      "send": "Send Message"
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": {
+        "label": "Email",
+        "value": "support@cuizly.ca"
+      },
+      "address": {
+        "label": "Address",
+        "value": "Montreal, QC<br/>Canada"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "+1 (555) 123-4567"
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to discover your next favorite restaurant?",
+    "description": "Join thousands of food lovers who discover new restaurants every day with Cuizly.",
+    "button": "Get Started for Free",
+    "disclaimer": "Free forever, no credit card required",
+    "imageAlt": "People enjoying a meal together"
+  },
+  "footer": {
+    "product": "Product",
+    "features": "Features",
+    "rates": "Pricing",
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "company": "Company",
+    "team": "Team",
+    "legalNotices": "Legal Notices",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "cookiePolicy": "Cookie Policy",
+    "tagline": "Your culinary copilot in Montreal",
+    "instagram": "Instagram",
+    "companyName": "Cuizly Inc.",
+    "allRightsReserved": "All rights reserved."
+  },
   "recommendations": {
     "title": "Discover the best Cuizly offers",
     "nearYou": "near you",
@@ -357,5 +425,73 @@
     "noMenusDescription": "This restaurant has not added menus yet",
     "removeFromFavorites": "Remove from Favorites",
     "closed": "Closed"
+  },
+  "analytics": {
+    "title": "Real-time performance dashboard",
+    "subtitle": "Performance insights by segment (Real-time updates)"
+  },
+  "pricingLanding": {
+    "title": "Pricing for everyone",
+    "subtitle": "A free offer for food lovers, affordable professional solutions for restaurants.",
+    "popular": "Popular"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help",
+    "form": {
+      "title": "Send us a message",
+      "description": "We'll get back to you as soon as possible",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Your last name",
+      "email": "Email",
+      "emailPlaceholder": "your.email@example.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "Subject of your message",
+      "message": "Message",
+      "messagePlaceholder": "Describe your request...",
+      "send": "Send Message"
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": {
+        "label": "Email",
+        "value": "support@cuizly.ca"
+      },
+      "address": {
+        "label": "Address",
+        "value": "Montreal, QC<br/>Canada"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "+1 (555) 123-4567"
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to discover your next favorite restaurant?",
+    "description": "Join thousands of food lovers who discover new restaurants every day with Cuizly.",
+    "button": "Get Started for Free",
+    "disclaimer": "Free forever, no credit card required",
+    "imageAlt": "People enjoying a meal together"
+  },
+  "footer": {
+    "product": "Product",
+    "features": "Features",
+    "rates": "Pricing",
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "company": "Company",
+    "team": "Team",
+    "legalNotices": "Legal Notices",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "cookiePolicy": "Cookie Policy",
+    "tagline": "Your culinary copilot in Montreal",
+    "instagram": "Instagram",
+    "companyName": "Cuizly Inc.",
+    "allRightsReserved": "All rights reserved."
   }
 }

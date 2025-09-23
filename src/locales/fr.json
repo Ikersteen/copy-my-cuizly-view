@@ -2113,5 +2113,73 @@
     "collectingData": "Données en cours de collecte...",
     "generatingRecommendations": "Génération de recommandations personnalisées...",
     "analyzingPreferences": "Notre IA analyse vos préférences et votre historique pour vous proposer les meilleurs restaurants"
+  },
+  "analytics": {
+    "title": "Tableau de performance en temps réel",
+    "subtitle": "Aperçus sur les performances par segment (Mise à jour en temps réel)"
+  },
+  "pricingLanding": {
+    "title": "Tarifs pour tous",
+    "subtitle": "Une offre gratuite pour les amateurs de cuisine, des solutions professionnelles abordables pour les restaurants.",
+    "popular": "Populaire"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Nous sommes là pour vous aider",
+    "form": {
+      "title": "Envoyez-nous un message",
+      "description": "Nous vous répondrons dans les plus brefs délais",
+      "firstName": "Prénom",
+      "firstNamePlaceholder": "Votre prénom",
+      "lastName": "Nom",
+      "lastNamePlaceholder": "Votre nom",
+      "email": "Email",
+      "emailPlaceholder": "votre.email@exemple.com",
+      "subject": "Sujet",
+      "subjectPlaceholder": "Sujet de votre message",
+      "message": "Message",
+      "messagePlaceholder": "Décrivez votre demande...",
+      "send": "Envoyer le message"
+    },
+    "info": {
+      "title": "Informations de contact",
+      "email": {
+        "label": "Email",
+        "value": "support@cuizly.ca"
+      },
+      "address": {
+        "label": "Adresse",
+        "value": "Montréal, QC<br/>Canada"
+      },
+      "phone": {
+        "label": "Téléphone",
+        "value": "+1 (555) 123-4567"
+      }
+    }
+  },
+  "cta": {
+    "title": "Prêt à découvrir votre prochain restaurant préféré ?",
+    "description": "Rejoignez des milliers d'amateurs de cuisine qui découvrent de nouveaux restaurants chaque jour avec Cuizly.",
+    "button": "Commencer gratuitement",
+    "disclaimer": "Gratuit pour toujours, pas de carte de crédit requise",
+    "imageAlt": "Personnes profitant d'un repas ensemble"
+  },
+  "footer": {
+    "product": "Produit",
+    "features": "Fonctionnalités",
+    "rates": "Tarifs",
+    "support": "Support",
+    "contactUs": "Nous contacter",
+    "company": "Entreprise",
+    "team": "Équipe",
+    "legalNotices": "Mentions légales",
+    "legal": "Légal",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfUse": "Conditions d'utilisation",
+    "cookiePolicy": "Politique des cookies",
+    "tagline": "Votre copilote culinaire à Montréal",
+    "instagram": "Instagram",
+    "companyName": "Cuizly Inc.",
+    "allRightsReserved": "Tous droits réservés."
   }
 }
