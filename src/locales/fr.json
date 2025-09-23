@@ -2118,6 +2118,78 @@
     "title": "Tableau de performance en temps réel",
     "subtitle": "Aperçus sur les performances par segment (Mise à jour en temps réel)"
   },
+  "newOffer": {
+    "title": "Créer une nouvelle offre",
+    "creating": "Création...",
+    "createOffer": "Créer l'offre",
+    "cancel": "Annuler",
+    "placeholders": {
+      "title": "Ex.: 2 pour 1 Pizza",
+      "description": "Décrivez votre offre en détail...",
+      "selectPeriod": "Sélectionner la période de validité"
+    },
+    "errors": {
+      "fillTitleDescription": "Veuillez remplir le titre et la description",
+      "specifyDiscount": "Veuillez spécifier une remise",
+      "fixErrors": "Veuillez corriger les erreurs",
+      "cannotCreate": "Impossible de créer l'offre"
+    },
+    "success": {
+      "created": "Offre créée",
+      "published": "Publiée avec succès"
+    }
+  },
+  "validation": {
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "username": "Nom d'utilisateur",
+    "restaurantName": "Nom du restaurant"
+  },
+  "common": {
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "add": "Ajouter",
+    "remove": "Retirer",
+    "loading": "Chargement...",
+    "saving": "Sauvegarde...",
+    "creating": "Création...",
+    "updating": "Mise à jour...",
+    "processing": "Traitement...",
+    "uploading": "Téléchargement...",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non",
+    "ok": "OK",
+    "apply": "Appliquer",
+    "reset": "Réinitialiser",
+    "clear": "Effacer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "view": "Voir",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "start": "Commencer",
+    "stop": "Arrêter",
+    "retry": "Réessayer",
+    "refresh": "Actualiser",
+    "preview": "Aperçu",
+    "avatar": "Avatar",
+    "logo": "Logo",
+    "menu": "Menu",
+    "profile": "Profil"
+  },
+  "toasts": {
+    "success": "Succès",
+    "conversationDeleted": "Conversation supprimée",
+    "titleUpdated": "Titre mis à jour",
+    "profileUpdated": "Profil mis à jour",
+    "informationSaved": "Vos informations ont été sauvegardées avec succès"
+  },
   "pricingLanding": {
     "title": "Tarifs pour tous",
     "subtitle": "Une offre gratuite pour les amateurs de cuisine, des solutions professionnelles abordables pour les restaurants.",
@@ -2144,12 +2216,12 @@
     "info": {
       "title": "Informations de contact",
       "email": {
-        "label": "Email",
-        "value": "support@cuizly.ca"
+        "label": "Courriel",
+        "value": "Cuizlycanada@gmail.com"
       },
       "address": {
         "label": "Adresse",
-        "value": "Montréal, QC<br/>Canada"
+        "value": "Montréal, QC, Canada"
       },
       "phone": {
         "label": "Téléphone",

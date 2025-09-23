@@ -103,7 +103,7 @@ export const RestaurantProfileModal = ({
     const errors: Record<string, string> = {};
 
     if (formData.name) {
-      const nameValidation = validateTextInput(formData.name, INPUT_LIMITS.NAME, "Restaurant name");
+      const nameValidation = validateTextInput(formData.name, INPUT_LIMITS.NAME, t('validation.restaurantName'));
       if (!nameValidation.isValid) errors.name = nameValidation.error!;
     }
 
@@ -407,7 +407,7 @@ export const RestaurantProfileModal = ({
                   {formData.logo_url ? (
                     <img 
                       src={formData.logo_url} 
-                      alt="Logo"
+                      alt={t('common.logo')}
                       className="w-full h-full object-cover"
                     />
                   ) : (
