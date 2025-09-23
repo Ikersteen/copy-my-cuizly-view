@@ -243,12 +243,6 @@ export const RestaurantMenuModal = ({
               <div className="grid grid-cols-2 gap-4 text-sm">
                 {/* Left Column */}
                 <div className="space-y-3">
-                  {/* Delivery Time */}
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    <span>{restaurant.delivery_radius ? `${restaurant.delivery_radius * 5}-${restaurant.delivery_radius * 8} min` : '25-40 min'}</span>
-                  </div>
-                  
                   {/* Opening Hours */}
                   {restaurant.opening_hours && (
                     <div className="flex items-start gap-2">

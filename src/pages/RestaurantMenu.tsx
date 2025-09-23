@@ -314,12 +314,6 @@ export default function RestaurantMenu() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* Left Column */}
                   <div className="space-y-4">
-                    {/* Delivery Time */}
-                    <div className="flex items-center gap-3">
-                      <Clock className="h-5 w-5 text-muted-foreground" />
-                      <span>{restaurant.delivery_radius ? `${restaurant.delivery_radius * 5}-${restaurant.delivery_radius * 8} min` : '25-40 min'}</span>
-                    </div>
-                    
                     {/* Opening Hours */}
                     {restaurant.opening_hours && (
                       <div className="flex items-start gap-3">
