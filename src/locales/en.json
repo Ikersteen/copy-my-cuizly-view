@@ -233,6 +233,80 @@
     "companyName": "Cuizly Inc.",
     "allRightsReserved": "All rights reserved."
   },
+  "team": {
+    "title": "Our Team",
+    "subtitle": "Meet the passionate minds behind Cuizly who are revolutionizing food discovery in Montreal",
+    "founderName": "Iker Steen",
+    "founderTitle": "Founder & CEO",
+    "education": "Academic Background",
+    "educationDetails": "Graduate in Business Administration with specialization in Technology and Innovation from HEC Montréal",
+    "journey": "Immigration Journey",
+    "journeyDetails": "Recently immigrated to Montreal with a passion for technology and a desire to help newcomers discover the amazing food scene in the city",
+    "vision": "Vision & Mission",
+    "visionDetails": "Creating an AI-powered platform that connects food lovers to the best culinary experiences, making restaurant discovery personalized and effortless",
+    "location": "Montreal, QC, Canada",
+    "contact": "Contact",
+    "foundingYear": "Company founded",
+    "teamSize": "Team member"
+  },
+  "cookies": {
+    "title": "Cookie Policy",
+    "lastUpdated": "Last updated: ",
+    "sections": {
+      "what": {
+        "title": "What are cookies?",
+        "content": "Cookies are small text files that are placed on your computer or mobile device when you visit our website. They allow us to recognize your device and remember information about your preferences or past actions."
+      },
+      "types": {
+        "title": "Types of cookies we use",
+        "essential": {
+          "title": "Essential cookies",
+          "content": "These cookies are necessary for the proper functioning of our website. They enable basic features like page navigation and access to secure areas of the website."
+        },
+        "performance": {
+          "title": "Performance cookies",
+          "content": "These cookies collect information about how you use our website, such as which pages you visit most often and if you get error messages from web pages."
+        },
+        "functionality": {
+          "title": "Functionality cookies",
+          "content": "These cookies allow the website to remember choices you make (such as your user name, language or the region you are in) and provide enhanced, more personal features."
+        }
+      },
+      "management": {
+        "title": "Cookie management",
+        "content1": "You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed.",
+        "content2": "However, if you do this, you may have to manually adjust some preferences every time you visit a site and some services and functionalities may not work."
+      },
+      "disable": {
+        "title": "How to disable cookies in your browser",
+        "chrome": "Google Chrome: Settings > Privacy and security > Cookies and other site data",
+        "firefox": "Mozilla Firefox: Settings > Privacy & Security > Cookies and Site Data",
+        "safari": "Safari: Preferences > Privacy > Manage Website Data",
+        "edge": "Microsoft Edge: Settings > Cookies and site permissions"
+      },
+      "third": {
+        "title": "Third-party cookies",
+        "content": "We may also use third-party services that place cookies on your device to help us analyze how our website is used and to improve your user experience."
+      },
+      "editor": {
+        "title": "Website Publisher",
+        "company": "Cuizly Inc.",
+        "form": "Corporation",
+        "address": "Montreal, QC, Canada"
+      },
+      "director": {
+        "title": "Publication Director",
+        "name": "Iker Steen",
+        "email": "ikersteen@gmail.com"
+      },
+      "contact": {
+        "title": "Contact",
+        "content": "For any questions regarding this cookie policy, you can contact us at:",
+        "email": "support@cuizly.ca",
+        "address": "Montreal, QC, Canada"
+      }
+    }
+  },
   "recommendations": {
     "title": "Discover the best Cuizly offers",
     "nearYou": "near you",
