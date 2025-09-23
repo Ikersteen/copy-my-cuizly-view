@@ -2,49 +2,25 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Define basic translations inline to avoid import issues
+// Import translation files
+import frTranslations from '@/locales/fr.json';
+import enTranslations from '@/locales/en.json';
+
 const resources = {
   fr: {
-    translation: {
-      "navigation": {
-        "pricing": "Tarifs",
-        "features": "Fonctionnalités", 
-        "contact": "Contact",
-        "dashboard": "Tableau de bord",
-        "login": "Se connecter",
-        "signup": "S'inscrire"
-      },
-      "common": {
-        "loading": "Chargement...",
-        "error": "Une erreur est survenue"
-      }
-    }
+    translation: frTranslations
   },
   en: {
-    translation: {
-      "navigation": {
-        "pricing": "Pricing",
-        "features": "Features",
-        "contact": "Contact", 
-        "dashboard": "Dashboard",
-        "login": "Login",
-        "signup": "Sign Up"
-      },
-      "common": {
-        "loading": "Loading...",
-        "error": "An error occurred"
-      }
-    }
+    translation: enTranslations
   }
 };
 
-// Initialize i18n 
+// Initialize i18n for French only
 i18n
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'fr',
+    lng: 'fr', // Force French
     fallbackLng: 'fr',
     debug: false,
     
@@ -53,38 +29,18 @@ i18n
     },
 
     react: {
-      useSuspense: false
+      useSuspense: false,
+      bindI18n: 'languageChanged loaded',
+      bindI18nStore: 'added removed',
     },
 
-    detection: {
-      order: ['localStorage', 'sessionStorage', 'navigator'],
-      caches: ['localStorage', 'sessionStorage'],
-      lookupLocalStorage: 'cuizly-language',
-      lookupSessionStorage: 'cuizly-language',
-    }
-  });
-
-// Load full translations after initialization
-const loadFullTranslations = async () => {
-  try {
-    const [frRes, enRes] = await Promise.all([
-      fetch('/locales/fr.json'),
-      fetch('/locales/en.json')
-    ]);
+    // Ensure translations are loaded synchronously
+    initImmediate: false,
+    preload: ['fr'],
     
-    const [frData, enData] = await Promise.all([
-      frRes.json(),
-      enRes.json()
-    ]);
-
-    i18n.addResourceBundle('fr', 'translation', frData, true, true);
-    i18n.addResourceBundle('en', 'translation', enData, true, true);
-  } catch (error) {
-    console.warn('Could not load full translations:', error);
-  }
-};
-
-// Load full translations asynchronously
-loadFullTranslations();
+    // Load missing translations immediately
+    load: 'languageOnly',
+    cleanCode: true
+  });
 
 export default i18n;
