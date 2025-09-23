@@ -377,12 +377,12 @@ export const RestaurantMenuModal = ({
               ) : menus.length === 0 ? (
                 <Card>
                    <CardContent className="p-8 text-center">
-                     <h4 className="text-lg font-medium text-muted-foreground mb-2">
-                       {t('restaurantMenu.noMenusAvailable')}
-                     </h4>
-                     <p className="text-sm text-muted-foreground">
-                       {t('restaurantMenu.noMenusDescription')}
-                     </p>
+                      <h4 className="text-lg font-medium text-muted-foreground mb-2">
+                        Aucun menu disponible
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        Aucun menu n'a encore été ajouté pour ce restaurant.
+                      </p>
                    </CardContent>
                 </Card>
               ) : (
