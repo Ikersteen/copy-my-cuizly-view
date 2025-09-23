@@ -309,7 +309,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           </div>
         ) : (
           <div className="space-y-6">
-          {/* Ajouter un nouveau menu */}
+          {/* Add a new menu */}
           <Card>
             <CardContent className="p-4 space-y-4">
               <h3 className="font-medium">{t('menusModal.addNewMenu')}</h3>

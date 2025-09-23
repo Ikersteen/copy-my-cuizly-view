@@ -142,8 +142,8 @@ export default function RestaurantMenu() {
     } catch (error) {
       console.error('Error loading restaurant:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les informations du restaurant",
+        title: t('errors.title'),
+        description: t('errors.cannotLoadRestaurantInfo'),
         variant: "destructive"
       });
     } finally {

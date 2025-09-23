@@ -95,7 +95,7 @@ export const useProfile = () => {
       
       if (!session) {
         console.error('❌ No active session');
-        throw new Error('Aucune session active');
+        throw new Error(t('errors.noActiveSession'));
       }
 
       console.log('📤 Attempting to upsert profile for user:', session.user.id);

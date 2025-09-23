@@ -294,7 +294,7 @@ export const RestaurantMenuModal = ({
                     </div>
                   )}
                   
-                  {/* Social Media - Juste les icônes sans texte */}
+                  {/* Social Media */}
                   {(restaurant.instagram_url || restaurant.facebook_url) && (
                     <div className="flex items-center gap-2">
                       <div className="flex gap-2">
