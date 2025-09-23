@@ -20,6 +20,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from '@/hooks/useLanguage';
+import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
 
 interface Restaurant {
   id: string;
@@ -63,6 +64,10 @@ export const RestaurantProfileModal = ({
   const [showDeleteSection, setShowDeleteSection] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [logoAdjustmentOpen, setLogoAdjustmentOpen] = useState(false);
+  const [coverAdjustmentOpen, setCoverAdjustmentOpen] = useState(false);
+  const [tempLogoUrl, setTempLogoUrl] = useState("");
+  const [tempCoverUrl, setTempCoverUrl] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -221,6 +226,23 @@ export const RestaurantProfileModal = ({
       return;
     }
 
+    // Convert file to URL for adjustment modal
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (type === 'cover') {
+        setTempCoverUrl(e.target?.result as string);
+        setCoverAdjustmentOpen(true);
+      } else {
+        setTempLogoUrl(e.target?.result as string);
+        setLogoAdjustmentOpen(true);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAdjustedImageSave = async (adjustedImageData: string, type: 'logo' | 'cover') => {
+    if (!restaurant?.id) return;
+    
     if (type === 'cover') {
       setUploadingCover(true);
     } else {
@@ -231,11 +253,16 @@ export const RestaurantProfileModal = ({
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('No session');
 
-      const fileName = `${session.user.id}/${type}-${Date.now()}.${file.type.split('/')[1]}`;
+      // Convert base64 to blob
+      const response = await fetch(adjustedImageData);
+      const blob = await response.blob();
+      
+      const fileExt = blob.type.split('/')[1] || 'jpg';
+      const fileName = `${session.user.id}/${type}-${Date.now()}.${fileExt}`;
       
       const { error: uploadError } = await supabase.storage
         .from('restaurant-images')
-        .upload(fileName, file);
+        .upload(fileName, blob);
 
       if (uploadError) throw uploadError;
 
@@ -748,6 +775,23 @@ export const RestaurantProfileModal = ({
           </div>
         </div>
       </DialogContent>
+
+      {/* Photo Adjustment Modals */}
+      <PhotoAdjustmentModal
+        open={logoAdjustmentOpen}
+        onOpenChange={setLogoAdjustmentOpen}
+        imageUrl={tempLogoUrl}
+        onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'logo')}
+        title={t('restaurantProfile.adjustLogo')}
+      />
+
+      <PhotoAdjustmentModal
+        open={coverAdjustmentOpen}
+        onOpenChange={setCoverAdjustmentOpen}
+        imageUrl={tempCoverUrl}
+        onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'cover')}
+        title={t('restaurantProfile.adjustCoverPhoto')}
+      />
     </Dialog>
   );
 };

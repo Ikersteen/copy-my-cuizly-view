@@ -8,12 +8,14 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Trash2, User as UserIcon, Camera, Upload, X } from "lucide-react";
+import { LogOut, Trash2, User as UserIcon, Camera, Upload, X, Plus } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 import { validateTextInput, validatePhone, validatePassword, INPUT_LIMITS } from "@/lib/validation";
 import { useTranslation } from 'react-i18next';
 import { PhotoActionModal } from "@/components/PhotoActionModal";
+import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
+import { Badge } from "@/components/ui/badge";
 
 interface ProfileModalProps {
   open: boolean;
@@ -31,6 +33,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     phone: "",
     username: "",
     avatar_url: "",
+    specialties: [] as string[],
     notifications: {
       push: false,
       email: false
@@ -49,6 +52,9 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [uploading, setUploading] = useState(false);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
+  const [photoAdjustmentOpen, setPhotoAdjustmentOpen] = useState(false);
+  const [tempImageUrl, setTempImageUrl] = useState("");
+  const [newSpecialty, setNewSpecialty] = useState("");
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -68,6 +74,7 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
         phone: profile.phone || "",
         username: profile.username || "",
         avatar_url: profile.avatar_url || "",
+        specialties: [], // Initialize empty, could be expanded later
         notifications: {
           push: false,
           email: false
@@ -322,14 +329,30 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       return;
     }
 
+    // Convert file to URL for adjustment modal
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setTempImageUrl(e.target?.result as string);
+      setPhotoAdjustmentOpen(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAdjustedImageSave = async (adjustedImageData: string) => {
+    if (!user) return;
+    
     setUploading(true);
     try {
-      const fileExt = file.name.split('.').pop();
+      // Convert base64 to blob
+      const response = await fetch(adjustedImageData);
+      const blob = await response.blob();
+      
+      const fileExt = blob.type.split('/')[1] || 'jpg';
       const fileName = `${user.id}/avatar-${Date.now()}.${fileExt}`;
       
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(fileName, file);
+        .upload(fileName, blob);
 
       if (uploadError) throw uploadError;
 
@@ -367,6 +390,23 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
       title: t('profile.avatarRemoved'),
       description: t('profile.avatarRemovedSuccess')
     });
+  };
+
+  const addSpecialty = () => {
+    if (newSpecialty.trim() && localProfile.specialties.length < 2 && !localProfile.specialties.includes(newSpecialty.trim())) {
+      setLocalProfile(prev => ({
+        ...prev,
+        specialties: [...prev.specialties, newSpecialty.trim()]
+      }));
+      setNewSpecialty("");
+    }
+  };
+
+  const removeSpecialty = (index: number) => {
+    setLocalProfile(prev => ({
+      ...prev,
+      specialties: prev.specialties.filter((_, i) => i !== index)
+    }));
   };
 
   return (
@@ -487,10 +527,64 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
                      {validationErrors.username && (
                        <p className="text-xs text-destructive mt-1">{validationErrors.username}</p>
                      )}
-                  </div>
+                   </div>
 
-                  <div>
-                    <Label htmlFor="phone" className="text-sm font-medium">{t('profile.phone')}</Label>
+                   {/* Spécialités Section */}
+                   <div>
+                     <Label className="text-sm font-medium">{t('profile.specialties')} (Max 2)</Label>
+                     
+                     {/* Display selected specialties */}
+                     {localProfile.specialties.length > 0 && (
+                       <div className="flex flex-wrap gap-2 mt-2 mb-3">
+                         {localProfile.specialties.map((specialty, index) => (
+                           <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                             {specialty}
+                             <button
+                               type="button"
+                               onClick={() => removeSpecialty(index)}
+                               className="ml-1 hover:text-destructive"
+                             >
+                               <X className="h-3 w-3" />
+                             </button>
+                           </Badge>
+                         ))}
+                       </div>
+                     )}
+                     
+                     {/* Add specialty input */}
+                     {localProfile.specialties.length < 2 && (
+                       <div className="flex gap-2">
+                         <Input
+                           value={newSpecialty}
+                           onChange={(e) => setNewSpecialty(e.target.value)}
+                           placeholder={t('profile.addSpecialtyPlaceholder')}
+                           className="flex-1"
+                           onKeyPress={(e) => {
+                             if (e.key === 'Enter') {
+                               e.preventDefault();
+                               addSpecialty();
+                             }
+                           }}
+                         />
+                         <Button
+                           type="button"
+                           variant="outline"
+                           size="sm"
+                           onClick={addSpecialty}
+                           disabled={!newSpecialty.trim() || localProfile.specialties.length >= 2}
+                         >
+                           <Plus className="h-4 w-4" />
+                         </Button>
+                       </div>
+                     )}
+                     
+                     <p className="text-xs text-muted-foreground mt-1">
+                       {t('profile.specialtiesHint')} ({localProfile.specialties.length}/2)
+                     </p>
+                   </div>
+
+                   <div>
+                     <Label htmlFor="phone" className="text-sm font-medium">{t('profile.phone')}</Label>
                     <Input
                       id="phone"
                       value={localProfile.phone}
@@ -753,6 +847,15 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
           onRemove={handleRemoveAvatar}
           photoType="profile"
           uploading={uploading}
+        />
+
+        {/* Photo Adjustment Modal */}
+        <PhotoAdjustmentModal
+          open={photoAdjustmentOpen}
+          onOpenChange={setPhotoAdjustmentOpen}
+          imageUrl={tempImageUrl}
+          onSave={handleAdjustedImageSave}
+          title={t('profile.adjustProfilePhoto')}
         />
       </Dialog>
    );
