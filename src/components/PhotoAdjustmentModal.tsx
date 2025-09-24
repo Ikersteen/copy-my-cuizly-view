@@ -68,48 +68,46 @@ export const PhotoAdjustmentModal = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size to match the image natural dimensions or reasonable size
     const img = imageRef.current;
-    const maxWidth = 1200;
-    const maxHeight = 900;
+    const originalWidth = img.naturalWidth;
+    const originalHeight = img.naturalHeight;
     
-    let { naturalWidth: width, naturalHeight: height } = img;
+    // Calculate the dimensions needed to fit the transformed image
+    const scaleRatio = scale[0] / 100;
+    const rotationRad = (rotation * Math.PI) / 180;
     
-    if (width > maxWidth || height > maxHeight) {
-      const ratio = Math.min(maxWidth / width, maxHeight / height);
-      width *= ratio;
-      height *= ratio;
-    }
+    // Calculate bounding box for rotated image
+    const cos = Math.abs(Math.cos(rotationRad));
+    const sin = Math.abs(Math.sin(rotationRad));
+    const rotatedWidth = (originalWidth * cos + originalHeight * sin) * scaleRatio;
+    const rotatedHeight = (originalWidth * sin + originalHeight * cos) * scaleRatio;
     
-    canvas.width = width;
-    canvas.height = height;
+    // Set canvas size to accommodate the full transformed image
+    canvas.width = Math.ceil(rotatedWidth);
+    canvas.height = Math.ceil(rotatedHeight);
 
     // Clear canvas with transparent background
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Calculate scale factor between preview (300px height) and canvas
-    const previewHeight = 300;
-    const scaleFactorX = canvas.width / (canvas.width * (previewHeight / canvas.height));
-    const scaleFactorY = canvas.height / previewHeight;
-    
-    // Convert preview position to canvas coordinates
-    const canvasPositionX = (position.x / scaleFactorX);
-    const canvasPositionY = (position.y / scaleFactorY);
+    // Calculate position scaling from preview to final canvas
+    const previewContainer = 300; // preview height
+    const previewScale = previewContainer / Math.max(originalWidth, originalHeight);
+    const finalPositionX = position.x / previewScale;
+    const finalPositionY = position.y / previewScale;
 
-    // Apply transformations in correct order
+    // Apply transformations
     ctx.save();
     
     // Move to center of canvas
     ctx.translate(canvas.width / 2, canvas.height / 2);
     
     // Apply user transformations
-    ctx.rotate((rotation * Math.PI) / 180);
-    ctx.scale(scale[0] / 100, scale[0] / 100);
-    ctx.translate(canvasPositionX, canvasPositionY);
+    ctx.rotate(rotationRad);
+    ctx.scale(scaleRatio, scaleRatio);
+    ctx.translate(finalPositionX, finalPositionY);
     
-    // Move back and draw image
-    ctx.translate(-canvas.width / 2, -canvas.height / 2);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    // Draw image centered
+    ctx.drawImage(img, -originalWidth / 2, -originalHeight / 2, originalWidth, originalHeight);
     
     ctx.restore();
 
