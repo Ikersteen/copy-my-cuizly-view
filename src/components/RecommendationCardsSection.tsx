@@ -13,7 +13,6 @@ import { CUISINE_TRANSLATIONS, CUISINE_OPTIONS } from "@/constants/cuisineTypes"
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
-import { formatRestaurantAddress } from "@/lib/addressUtils";
 
 interface Restaurant {
   id: string;
@@ -702,7 +701,7 @@ export const RecommendationCardsSection = () => {
                         {restaurant.name}
                       </CardTitle>
                       <div className="flex items-center space-x-1 mt-0.5">
-                        <span className="text-sm text-muted-foreground">{formatRestaurantAddress(restaurant.address)}</span>
+                        <span className="text-sm text-muted-foreground">{restaurant.address}</span>
                       </div>
                       <CardDescription className="line-clamp-2 text-sm mt-1">
                         {getTranslatedDescription(restaurant, currentLanguage)}

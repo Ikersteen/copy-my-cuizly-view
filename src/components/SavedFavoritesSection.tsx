@@ -11,7 +11,6 @@ import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
-import { formatRestaurantAddress } from "@/lib/addressUtils";
 
 interface Restaurant {
   id: string;
@@ -250,7 +249,7 @@ export const SavedFavoritesSection = () => {
                         {restaurant.name}
                       </CardTitle>
                         <div className="space-y-0.5">
-                          <div className="text-sm text-muted-foreground">{formatRestaurantAddress(restaurant.address)}</div>
+                          <div className="text-sm text-muted-foreground">{restaurant.address}</div>
                           <div className="flex items-center space-x-1">
                             {restaurant.price_range && (
                               <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
