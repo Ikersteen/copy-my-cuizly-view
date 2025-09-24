@@ -313,23 +313,6 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Rayon de livraison */}
-          <div>
-            <Label className="text-base font-medium">
-              Rayon de livraison: {localPrefs.delivery_radius || 1}
-            </Label>
-            <Slider
-              value={[localPrefs.delivery_radius || 1]}
-              onValueChange={([value]) => setLocalPrefs(prev => ({ ...prev, delivery_radius: value }))}
-              max={25}
-              min={1}
-              step={1}
-              className="mt-3"
-            />
-          </div>
-
-          <Separator />
-
           {/* Moments de repas favoris */}
           <div>
             <Label className="text-base font-medium">{t('preferences.mealTimes')}</Label>
