@@ -17,6 +17,7 @@ import { useAddresses } from "@/hooks/useAddresses";
 import { createAddressInput } from "@/lib/addressUtils";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
+import { validateFileUpload } from "@/lib/security";
 
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, SERVICE_TYPES_OPTIONS, SERVICE_TYPES_TRANSLATIONS, PRICE_RANGE_OPTIONS, PRICE_RANGE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
@@ -163,23 +164,13 @@ export const ImprovedRestaurantProfileModal = ({
       return;
     }
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      console.log('❌ Invalid file type:', file.type);
+    // Use centralized validation from security module
+    const validation = validateFileUpload(file);
+    if (!validation.isValid) {
+      console.log('❌ File validation failed:', validation.error);
       toast({
         title: t('restaurantProfile.error'),
-        description: t('restaurantProfile.selectValidImage'),
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      console.log('❌ File too large:', file.size);
-      toast({
-        title: t('restaurantProfile.error'), 
-        description: t('restaurantProfile.imageTooLarge'),
+        description: validation.error || t('restaurantProfile.invalidFile'),
         variant: "destructive"
       });
       return;
@@ -192,6 +183,16 @@ export const ImprovedRestaurantProfileModal = ({
     reader.onload = (e) => {
       const result = e.target?.result as string;
       console.log('📸 FileReader onload, result length:', result?.length);
+      
+      if (!result) {
+        console.error('❌ FileReader result is empty');
+        toast({
+          title: t('restaurantProfile.error'),
+          description: t('restaurantProfile.cannotReadFile'),
+          variant: "destructive"
+        });
+        return;
+      }
       
       if (type === 'cover') {
         console.log('🖼️ Setting cover URL and opening modal');
@@ -207,6 +208,11 @@ export const ImprovedRestaurantProfileModal = ({
     };
     reader.onerror = (error) => {
       console.error('❌ FileReader error:', error);
+      toast({
+        title: t('restaurantProfile.error'),
+        description: t('restaurantProfile.cannotReadFile'),
+        variant: "destructive"
+      });
     };
     reader.readAsDataURL(file);
   };

@@ -12,6 +12,7 @@ import { LogOut, Trash2, User as UserIcon, Camera, Upload, X, Plus } from "lucid
 import { useProfile } from "@/hooks/useProfile";
 import type { User } from "@supabase/supabase-js";
 import { validateTextInput, validatePhone, validatePassword, INPUT_LIMITS } from "@/lib/validation";
+import { validateFileUpload } from "@/lib/security";
 import { useTranslation } from 'react-i18next';
 import { PhotoActionModal } from "@/components/PhotoActionModal";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
@@ -309,21 +310,12 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
   const handleAvatarUpload = async (file: File) => {
     if (!user) return;
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
+    // Use centralized validation from security module
+    const validation = validateFileUpload(file);
+    if (!validation.isValid) {
       toast({
         title: t('errors.title'),
-        description: t('profile.selectValidImage'),
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast({
-        title: t('errors.title'),
-        description: t('profile.imageTooLarge'),
+        description: validation.error || t('profile.invalidFile'),
         variant: "destructive"
       });
       return;
@@ -332,8 +324,18 @@ export const ProfileModal = ({ open, onOpenChange }: ProfileModalProps) => {
     // Convert file to URL for adjustment modal
     const reader = new FileReader();
     reader.onload = (e) => {
-      setTempImageUrl(e.target?.result as string);
-      setPhotoAdjustmentOpen(true);
+      const result = e.target?.result as string;
+      if (result) {
+        setTempImageUrl(result);
+        setPhotoAdjustmentOpen(true);
+      }
+    };
+    reader.onerror = () => {
+      toast({
+        title: t('errors.title'),
+        description: t('profile.cannotReadFile'),
+        variant: "destructive"
+      });
     };
     reader.readAsDataURL(file);
   };
