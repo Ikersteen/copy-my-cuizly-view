@@ -227,47 +227,96 @@ export const ImprovedRestaurantProfileModal = ({
     }
     
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('No session');
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error('❌ Session error:', sessionError);
+        throw new Error(`Session error: ${sessionError.message}`);
+      }
+      
+      if (!session) {
+        console.error('❌ No session found');
+        throw new Error('No session');
+      }
+
+      console.log('✅ Session found, converting image...');
 
       // Convert base64 to blob
       const response = await fetch(adjustedImageData);
+      if (!response.ok) {
+        console.error('❌ Failed to convert base64 to blob');
+        throw new Error('Failed to convert image data');
+      }
+      
       const blob = await response.blob();
+      console.log('📄 Blob created:', { size: blob.size, type: blob.type });
       
       const fileExt = blob.type.split('/')[1] || 'jpg';
       const fileName = `${session.user.id}/${type}-${Date.now()}.${fileExt}`;
       
-      const { error: uploadError } = await supabase.storage
+      console.log('📤 Starting upload to:', fileName);
+
+      const { error: uploadError, data: uploadData } = await supabase.storage
         .from('restaurant-images')
-        .upload(fileName, blob);
+        .upload(fileName, blob, {
+          contentType: blob.type,
+          upsert: false
+        });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('❌ Upload error:', uploadError);
+        throw new Error(`Upload failed: ${uploadError.message}`);
+      }
 
-      const { data } = supabase.storage
+      console.log('✅ Upload successful:', uploadData);
+
+      const { data: urlData } = supabase.storage
         .from('restaurant-images')
         .getPublicUrl(fileName);
 
+      console.log('🔗 Public URL generated:', urlData.publicUrl);
+
       // Update database
       const updateField = type === 'cover' ? 'cover_image_url' : 'logo_url';
+      console.log('💾 Updating database field:', updateField);
+      
       const { error: updateError } = await supabase
         .from('restaurants')
-        .update({ [updateField]: data.publicUrl })
+        .update({ 
+          [updateField]: urlData.publicUrl,
+          updated_at: new Date().toISOString()
+        })
         .eq('owner_id', session.user.id);
 
-      if (updateError) throw updateError;
+      if (updateError) {
+        console.error('❌ Database update error:', updateError);
+        throw new Error(`Database update failed: ${updateError.message}`);
+      }
 
-      // Update form data
-      setFormData(prev => ({ ...prev, [updateField]: data.publicUrl }));
+      console.log('✅ Database updated successfully');
+
+      // Update form data and restaurant state
+      setFormData(prev => ({ ...prev, [updateField]: urlData.publicUrl }));
+      setRestaurant(prev => ({ ...prev, [updateField]: urlData.publicUrl }));
       
       toast({
-        title: t('restaurantProfile.profileUpdated'),
-        description: type === 'cover' ? t('restaurantProfile.uploadingCover') : t('restaurantProfile.uploadingLogo')
+        title: t('restaurantProfile.success'),
+        description: type === 'cover' ? t('restaurantProfile.coverUploaded') : t('restaurantProfile.logoUploaded')
       });
+
+      // Reload restaurant data to ensure consistency
+      await loadRestaurant();
+      
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('❌ Complete upload process failed:', error);
+      
+      let errorMessage = t('restaurantProfile.cannotUpload');
+      if (error instanceof Error) {
+        errorMessage = `${t('restaurantProfile.cannotUpload')}: ${error.message}`;
+      }
+      
       toast({
         title: t('restaurantProfile.error'),
-        description: t('restaurantProfile.cannotUpload'),
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
