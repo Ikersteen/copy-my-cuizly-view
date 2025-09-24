@@ -217,6 +217,19 @@ export const ImprovedRestaurantProfileModal = ({
     reader.readAsDataURL(file);
   };
 
+  // Helper function to convert base64 to blob
+  const base64ToBlob = (base64Data: string): Blob => {
+    const arr = base64Data.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/jpeg';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  };
+
   const handleAdjustedImageSave = async (adjustedImageData: string, type: 'logo' | 'cover') => {
     console.log('💾 Saving adjusted image for type:', type);
     
@@ -240,14 +253,8 @@ export const ImprovedRestaurantProfileModal = ({
 
       console.log('✅ Session found, converting image...');
 
-      // Convert base64 to blob
-      const response = await fetch(adjustedImageData);
-      if (!response.ok) {
-        console.error('❌ Failed to convert base64 to blob');
-        throw new Error('Failed to convert image data');
-      }
-      
-      const blob = await response.blob();
+      // Convert base64 to blob directly (avoiding CSP issues with fetch on data URI)
+      const blob = base64ToBlob(adjustedImageData);
       console.log('📄 Blob created:', { size: blob.size, type: blob.type });
       
       const fileExt = blob.type.split('/')[1] || 'jpg';

@@ -111,14 +111,26 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     reader.readAsDataURL(file);
   };
 
+  // Helper function to convert base64 to blob
+  const base64ToBlob = (base64Data: string): Blob => {
+    const arr = base64Data.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/jpeg';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  };
+
   const handleAdjustedImageSave = async (adjustedImageData: string) => {
     if (!restaurantId) return;
     
     setUploading(true);
     try {
-      // Convert base64 to blob
-      const response = await fetch(adjustedImageData);
-      const blob = await response.blob();
+      // Convert base64 to blob directly (avoiding CSP issues)
+      const blob = base64ToBlob(adjustedImageData);
       
       const fileExt = blob.type.split('/')[1] || 'jpg';
       const fileName = `${restaurantId}/${Date.now()}.${fileExt}`;
