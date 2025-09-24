@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import type { Address, AddressInput, AddressType } from '@/types/address';
-import { DEFAULT_ADDRESS_VALUES } from '@/types/address';
+
 
 export const useAddresses = (addressType?: AddressType) => {
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -101,9 +101,9 @@ export const useAddresses = (addressType?: AddressType) => {
       }
 
       const newAddress = {
-        ...DEFAULT_ADDRESS_VALUES,
         ...addressInput,
         user_id: session.user.id,
+        is_active: true,
       };
 
       const { data, error } = await supabase
