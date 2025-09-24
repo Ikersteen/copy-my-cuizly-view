@@ -75,8 +75,8 @@ export const useAddresses = (addressType?: AddressType) => {
     } catch (error) {
       console.error('Error loading addresses:', error);
       toast({
-        title: 'Erreur',
-        description: 'Impossible de charger les adresses',
+        title: t('common.error'),
+        description: t('addresses.cannotLoad'),
         variant: 'destructive'
       });
     } finally {
@@ -117,16 +117,16 @@ export const useAddresses = (addressType?: AddressType) => {
       await loadAddresses();
 
       toast({
-        title: 'Succès',
-        description: 'Adresse créée avec succès'
+        title: t('common.success'),
+        description: t('addresses.createdSuccessfully')
       });
 
       return { ...data, address_type: data.address_type as AddressType };
     } catch (error) {
       console.error('Error creating address:', error);
       toast({
-        title: 'Erreur',
-        description: 'Impossible de créer l\'adresse',
+        title: t('common.error'),
+        description: t('addresses.cannotCreate'),
         variant: 'destructive'
       });
       return null;
@@ -164,16 +164,16 @@ export const useAddresses = (addressType?: AddressType) => {
       await loadAddresses();
 
       toast({
-        title: 'Succès',
-        description: 'Adresse mise à jour avec succès'
+        title: t('common.success'),
+        description: t('addresses.updatedSuccessfully')
       });
 
       return true;
     } catch (error) {
       console.error('Error updating address:', error);
       toast({
-        title: 'Erreur',
-        description: 'Impossible de mettre à jour l\'adresse',
+        title: t('common.error'),
+        description: t('addresses.cannotUpdate'),
         variant: 'destructive'
       });
       return false;
@@ -198,16 +198,16 @@ export const useAddresses = (addressType?: AddressType) => {
       await loadAddresses();
 
       toast({
-        title: 'Succès',
-        description: 'Adresse supprimée avec succès'
+        title: t('common.success'),
+        description: t('addresses.deletedSuccessfully')
       });
 
       return true;
     } catch (error) {
       console.error('Error deleting address:', error);
       toast({
-        title: t('errors.title'),
-        description: t('errors.cannotDeleteAddress'),
+        title: t('common.error'),
+        description: t('addresses.cannotDelete'),
         variant: 'destructive'
       });
       return false;

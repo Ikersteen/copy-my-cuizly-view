@@ -1613,6 +1613,8 @@
     "statusChanged": "Statut modifié",
     "menuActivated": "activé",
     "menuDeactivated": "désactivé",
+    "menuActivatedDesc": "Le menu a été activé avec succès",
+    "menuDeactivatedDesc": "Le menu a été désactivé avec succès",
     "statusChangedSuccessfully": "avec succès",
     "errorChangingStatus": "Erreur lors de la modification",
     "cannotChangeStatus": "Impossible de modifier le statut",
@@ -2059,7 +2061,14 @@
   "addresses": {
     "placeholder": "Commencez à taper une adresse à Montréal...",
     "label": "Adresse",
-    "tip": "💡 Astuce: Utilisez les suggestions pour une meilleure précision de localisation"
+    "tip": "💡 Astuce: Utilisez les suggestions pour une meilleure précision de localisation",
+    "cannotLoad": "Impossible de charger les adresses",
+    "createdSuccessfully": "Adresse créée avec succès",
+    "cannotCreate": "Impossible de créer l'adresse",
+    "updatedSuccessfully": "Adresse mise à jour avec succès",
+    "cannotUpdate": "Impossible de mettre à jour l'adresse", 
+    "deletedSuccessfully": "Adresse supprimée avec succès",
+    "cannotDelete": "Impossible de supprimer l'adresse"
   },
   "photos": {
     "profilePhoto": "Photo de profil",
