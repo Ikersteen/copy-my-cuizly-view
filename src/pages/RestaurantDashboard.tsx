@@ -248,7 +248,12 @@ const RestaurantDashboard = () => {
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.address')}</p>
-                      <p className="text-foreground text-sm">{formatRestaurantAddress(restaurantAddress?.formatted_address || t('restaurantInfo.notSpecified'))}</p>
+                      <p className="text-foreground text-sm">
+                        {restaurantAddress?.formatted_address 
+                          ? formatRestaurantAddress(restaurantAddress.formatted_address)
+                          : t('restaurantInfo.notSpecified')
+                        }
+                      </p>
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.phone')}</p>

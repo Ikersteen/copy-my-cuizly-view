@@ -28,10 +28,22 @@ export function parseAddress(formattedAddress: string): ParsedAddress {
     }
   }
 
-  // Second to last is usually the city
+  // Handle postal code that might be in its own part
+  // Look for postal codes in the parts before province
+  for (let i = parts.length - 3; i >= 0; i--) {
+    const part = parts[i];
+    const postalMatch = part.match(/^([A-Z]\d[A-Z]\s?\d[A-Z]\d)$/);
+    if (postalMatch) {
+      result.postal_code = postalMatch[1].replace(/\s/g, '');
+      break;
+    }
+  }
+
+  // Second to last is usually the city (unless it's a postal code)
   if (parts.length >= 2) {
     const cityPart = parts[parts.length - 2];
-    if (cityPart && !cityPart.match(/^[A-Z]{2}/)) {
+    // Only use as city if it's not a postal code pattern and not a province
+    if (cityPart && !cityPart.match(/^[A-Z]{2}$/) && !cityPart.match(/^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/)) {
       result.city = cityPart;
     }
   }
@@ -42,27 +54,29 @@ export function parseAddress(formattedAddress: string): ParsedAddress {
   if (addressParts.length >= 1) {
     const streetPart = addressParts[0];
     
-    // Check for apartment unit in the street part (e.g., "131 Rue Louvain, #101")
-    const apartmentMatch = streetPart.match(/^(.+?),?\s*[#]?(\d+[A-Za-z]?)$/);
-    let streetAddress = streetPart;
-    
-    if (apartmentMatch) {
-      streetAddress = apartmentMatch[1].trim();
-      result.apartment_unit = apartmentMatch[2];
-    }
-    
-    // Parse street address for number and name
-    const streetMatch = streetAddress.match(/^(\d+)\s+(.+)$/);
+    // Parse street address for number and name (no apartment in first part)
+    const streetMatch = streetPart.match(/^(\d+)\s+(.+)$/);
     if (streetMatch) {
       result.street_number = streetMatch[1];
       result.street_name = streetMatch[2];
     } else {
-      result.street_name = streetAddress;
+      result.street_name = streetPart;
     }
     
-    // Second part could be neighborhood
+    // Check if second part is apartment unit (starts with # or is just digits)
     if (addressParts.length >= 2) {
-      result.neighborhood = addressParts[1];
+      const secondPart = addressParts[1];
+      if (secondPart.match(/^#?\d+[A-Za-z]?$/)) {
+        result.apartment_unit = secondPart.replace('#', '');
+        
+        // Third part could be neighborhood if it exists
+        if (addressParts.length >= 3) {
+          result.neighborhood = addressParts[2];
+        }
+      } else {
+        // Second part is neighborhood
+        result.neighborhood = secondPart;
+      }
     }
   }
 
