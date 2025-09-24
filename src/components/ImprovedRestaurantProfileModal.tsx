@@ -77,6 +77,12 @@ export const ImprovedRestaurantProfileModal = ({
   const [uploadingCover, setUploadingCover] = useState(false);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const [photoModalType, setPhotoModalType] = useState<'logo' | 'cover'>('logo');
+  
+  // Photo adjustment modal states
+  const [logoAdjustmentOpen, setLogoAdjustmentOpen] = useState(false);
+  const [coverAdjustmentOpen, setCoverAdjustmentOpen] = useState(false);
+  const [tempLogoUrl, setTempLogoUrl] = useState<string>('');
+  const [tempCoverUrl, setTempCoverUrl] = useState<string>('');
 
   // Debug log for modal state
   // console.log('Modal states:', { photoModalOpen, photoModalType });
@@ -268,122 +274,6 @@ export const ImprovedRestaurantProfileModal = ({
       }
     }
   };
-    console.log('Starting image upload:', { imageType, fileName: file.name, fileSize: file.size });
-    
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log('Session check:', { hasSession: !!session, userId: session?.user?.id });
-      
-      if (!session) {
-        console.error('No session found');
-        toast({
-          title: t('restaurantProfile.error'),
-          description: t('auth.userNotAuthenticated'),
-          variant: "destructive"
-        });
-        return;
-      }
-
-      const setUploading = imageType === 'logo' ? setUploadingLogo : setUploadingCover;
-      setUploading(true);
-      console.log('Set uploading state to true');
-
-      // Validate file
-      if (!file.type.startsWith('image/')) {
-        console.error('Invalid file type:', file.type);
-        toast({
-          title: t('restaurantProfile.error'),
-          description: t('restaurantProfile.selectValidImage'),
-          variant: "destructive"
-        });
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        console.error('File too large:', file.size);
-        toast({
-          title: t('restaurantProfile.error'),
-          description: t('restaurantProfile.imageTooLarge'),
-          variant: "destructive"
-        });
-        return;
-      }
-
-      // Create unique filename
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${session.user.id}/${imageType}_${Date.now()}.${fileExt}`;
-      console.log('Generated fileName:', fileName);
-
-      // Upload to Supabase Storage
-      console.log('Starting upload to bucket: restaurant-images');
-      const { error: uploadError } = await supabase.storage
-        .from('restaurant-images')
-        .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
-
-      if (uploadError) {
-        console.error('Upload error:', uploadError);
-        throw uploadError;
-      }
-      
-      console.log('Upload successful, getting public URL');
-
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('restaurant-images')
-        .getPublicUrl(fileName);
-      
-      console.log('Public URL generated:', publicUrl);
-
-      // Update restaurant in database
-      const updateField = imageType === 'logo' ? 'logo_url' : 'cover_image_url';
-      console.log('Updating restaurant database:', { updateField, publicUrl });
-      
-      const { error: updateError } = await supabase
-        .from('restaurants')
-        .update({ 
-          [updateField]: publicUrl,
-          updated_at: new Date().toISOString()
-        })
-        .eq('owner_id', session.user.id);
-
-      if (updateError) {
-        console.error('Database update error:', updateError);
-        throw updateError;
-      }
-
-      console.log('Database update successful');
-
-      // Update local state
-      setRestaurant((prev: any) => ({
-        ...prev,
-        [updateField]: publicUrl
-      }));
-
-      toast({
-        title: t('restaurantProfile.success'),
-        description: t('restaurantProfile.imageUploaded'),
-      });
-
-      // Reload restaurant data
-      await loadRestaurant();
-      if (onUpdate) onUpdate();
-
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      toast({
-        title: t('restaurantProfile.error'),
-        description: t('restaurantProfile.uploadError'),
-        variant: "destructive"
-      });
-    } finally {
-      const setUploading = imageType === 'logo' ? setUploadingLogo : setUploadingCover;
-      setUploading(false);
-      console.log('Set uploading state to false');
-    }
-  };
 
   // Handle image removal
   const handleImageRemove = async (imageType: 'logo' | 'cover') => {
@@ -509,7 +399,8 @@ export const ImprovedRestaurantProfileModal = ({
   };
 
   return (
-    <Dialog open={modalIsOpen} onOpenChange={handleClose}>
+    <>
+      <Dialog open={modalIsOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0">
         <DialogTitle className="sr-only">Profil du restaurant</DialogTitle>
         <DialogDescription className="sr-only">
@@ -980,24 +871,25 @@ export const ImprovedRestaurantProfileModal = ({
         )}
       </div>
       </DialogContent>
-
-      {/* Photo Adjustment Modals */}
-      <PhotoAdjustmentModal
-        open={logoAdjustmentOpen}
-        onOpenChange={setLogoAdjustmentOpen}
-        imageUrl={tempLogoUrl}
-        onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'logo')}
-        title={t('photoAdjustment.adjustProfilePhoto')}
-      />
-
-      <PhotoAdjustmentModal
-        open={coverAdjustmentOpen}
-        onOpenChange={setCoverAdjustmentOpen}
-        imageUrl={tempCoverUrl}
-        onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'cover')}
-        title={t('photoAdjustment.adjustCoverPhoto')}
-      />
     </Dialog>
+
+    {/* Photo Adjustment Modals */}
+    <PhotoAdjustmentModal
+      open={logoAdjustmentOpen}
+      onOpenChange={setLogoAdjustmentOpen}
+      imageUrl={tempLogoUrl}
+      onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'logo')}
+      title={t('photoAdjustment.adjustProfilePhoto')}
+    />
+
+    <PhotoAdjustmentModal
+      open={coverAdjustmentOpen}
+      onOpenChange={setCoverAdjustmentOpen}
+      imageUrl={tempCoverUrl}
+      onSave={(adjustedData) => handleAdjustedImageSave(adjustedData, 'cover')}
+      title={t('photoAdjustment.adjustCoverPhoto')}
+    />
+    </>
   );
 };
 
