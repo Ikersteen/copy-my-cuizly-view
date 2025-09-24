@@ -676,7 +676,7 @@ export const RecommendationCardsSection = () => {
           {recommendedRestaurants.map((restaurant) => (
             <Card 
               key={restaurant.id}
-              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80 h-fit"
+              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80"
             >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
@@ -758,7 +758,7 @@ export const RecommendationCardsSection = () => {
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-2">
                   {restaurant.cuisine_type?.sort((a, b) => {
                     const indexA = CUISINE_OPTIONS.indexOf(a);
