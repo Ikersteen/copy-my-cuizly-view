@@ -11,7 +11,7 @@ export function parseAddress(formattedAddress: string): ParsedAddress {
   const parts = formattedAddress.split(',').map(part => part.trim());
   
   const result: ParsedAddress = {
-    city: 'Montréal',
+    city: '',
     province: 'QC',
     country: 'Canada'
   };
