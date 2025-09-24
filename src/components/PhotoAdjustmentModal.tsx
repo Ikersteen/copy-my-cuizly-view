@@ -70,8 +70,8 @@ export const PhotoAdjustmentModal = ({
 
     // Set canvas size to match the image natural dimensions or reasonable size
     const img = imageRef.current;
-    const maxWidth = 1200; // Increased from 800
-    const maxHeight = 900;  // Increased from 600
+    const maxWidth = 1200;
+    const maxHeight = 900;
     
     let { naturalWidth: width, naturalHeight: height } = img;
     
@@ -87,15 +87,30 @@ export const PhotoAdjustmentModal = ({
     // Clear canvas with transparent background
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Apply transformations
+    // Calculate scale factor between preview (300px height) and canvas
+    const previewHeight = 300;
+    const scaleFactorX = canvas.width / (canvas.width * (previewHeight / canvas.height));
+    const scaleFactorY = canvas.height / previewHeight;
+    
+    // Convert preview position to canvas coordinates
+    const canvasPositionX = (position.x / scaleFactorX);
+    const canvasPositionY = (position.y / scaleFactorY);
+
+    // Apply transformations in correct order
     ctx.save();
+    
+    // Move to center of canvas
     ctx.translate(canvas.width / 2, canvas.height / 2);
+    
+    // Apply user transformations
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(scale[0] / 100, scale[0] / 100);
-    ctx.translate(-canvas.width / 2 + position.x, -canvas.height / 2 + position.y);
+    ctx.translate(canvasPositionX, canvasPositionY);
     
-    // Draw image
+    // Move back and draw image
+    ctx.translate(-canvas.width / 2, -canvas.height / 2);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    
     ctx.restore();
 
     // Detect if image has transparency or if original was PNG
