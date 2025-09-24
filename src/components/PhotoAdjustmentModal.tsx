@@ -149,7 +149,7 @@ export const PhotoAdjustmentModal = ({
                 ref={imageRef}
                 src={imageUrl}
                 alt={t('photoAdjustment.preview')}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-contain"
                 style={{
                   transform: `translate(${position.x}px, ${position.y}px) scale(${scale[0] / 100}) rotate(${rotation}deg)`,
                   transformOrigin: 'center'
