@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { RotateCw, ZoomIn, ZoomOut, Move, Save } from "lucide-react";
+import { RotateCw, ZoomIn, ZoomOut, Move } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
 interface PhotoAdjustmentModalProps {
@@ -27,11 +27,8 @@ export const PhotoAdjustmentModal = ({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [isAutoSaving, setIsAutoSaving] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -59,13 +56,9 @@ export const PhotoAdjustmentModal = ({
     setRotation(0);
     setPosition({ x: 0, y: 0 });
     setImageLoaded(false);
-    setHasChanges(false);
-    if (autoSaveTimeoutRef.current) {
-      clearTimeout(autoSaveTimeoutRef.current);
-    }
   };
 
-  const handleSave = useCallback(() => {
+  const handleSave = () => {
     if (!canvasRef.current || !imageRef.current || !imageLoaded) {
       console.error('Canvas, image, or image not loaded');
       return;
@@ -130,51 +123,9 @@ export const PhotoAdjustmentModal = ({
       : canvas.toDataURL('image/jpeg', 0.95); // Higher quality JPEG
       
     console.log('💾 Generated image data length:', adjustedImageData.length);
-    setIsAutoSaving(true);
     onSave(adjustedImageData);
-    setTimeout(() => {
-      setIsAutoSaving(false);
-      setHasChanges(false);
-      onOpenChange(false);
-      resetAdjustments();
-    }, 500);
-  }, [scale, rotation, position, imageLoaded, imageUrl, onSave, onOpenChange]);
-
-  // Auto-save when adjustments change
-  const triggerAutoSave = useCallback(() => {
-    setHasChanges(true);
-    if (autoSaveTimeoutRef.current) {
-      clearTimeout(autoSaveTimeoutRef.current);
-    }
-    
-    autoSaveTimeoutRef.current = setTimeout(() => {
-      if (imageLoaded) {
-        handleSave();
-      }
-    }, 1500); // Auto-save after 1.5 seconds of inactivity
-  }, [handleSave, imageLoaded]);
-
-  // Track changes in adjustments
-  useEffect(() => {
-    if (imageLoaded && (scale[0] !== 100 || rotation !== 0 || position.x !== 0 || position.y !== 0)) {
-      triggerAutoSave();
-    }
-  }, [scale, rotation, position, imageLoaded, triggerAutoSave]);
-
-  // Clean up timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (autoSaveTimeoutRef.current) {
-        clearTimeout(autoSaveTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const handleManualSave = () => {
-    if (autoSaveTimeoutRef.current) {
-      clearTimeout(autoSaveTimeoutRef.current);
-    }
-    handleSave();
+    onOpenChange(false);
+    resetAdjustments();
   };
 
   return (
@@ -254,36 +205,18 @@ export const PhotoAdjustmentModal = ({
             </div>
           </div>
 
-          {/* Auto-save Status & Action Buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              {isAutoSaving ? (
-                <>
-                  <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
-                  <span>{t('photoAdjustment.autoSaving')}</span>
-                </>
-              ) : hasChanges ? (
-                <>
-                  <Save className="h-4 w-4 text-primary" />
-                  <span>{t('photoAdjustment.willAutoSave')}</span>
-                </>
-              ) : (
-                <span>{t('photoAdjustment.ready')}</span>
-              )}
-            </div>
-            
+          {/* Action Buttons */}
+          <div className="flex justify-between">
+            <Button variant="outline" onClick={resetAdjustments}>
+              {t('photoAdjustment.reset')}
+            </Button>
             <div className="space-x-2">
-              <Button variant="outline" onClick={resetAdjustments}>
-                {t('photoAdjustment.reset')}
-              </Button>
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                {t('photoAdjustment.close')}
+                {t('photoAdjustment.cancel')}
               </Button>
-              {hasChanges && (
-                <Button onClick={handleManualSave} disabled={!imageLoaded || isAutoSaving}>
-                  {t('photoAdjustment.saveNow')}
-                </Button>
-              )}
+              <Button onClick={handleSave} disabled={!imageLoaded}>
+                {t('photoAdjustment.apply')}
+              </Button>
             </div>
           </div>
         </div>
