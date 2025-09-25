@@ -829,6 +829,7 @@ const Auth = () => {
                     <Label className="text-sm text-foreground">{t('auth.form.securityVerification')}</Label>
                     <div className="flex justify-center">
                         <HCaptcha
+                          key={`signin-${currentLanguage}`}
                           ref={hcaptchaRef}
                           sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
                           languageOverride={currentLanguage === 'fr' ? 'fr' : 'en'}
@@ -1127,6 +1128,7 @@ const Auth = () => {
                     <Label className="text-sm text-foreground">{t('auth.form.securityVerification')}</Label>
                     <div className="flex justify-center">
                         <HCaptcha
+                          key={`signup-${currentLanguage}`}
                           ref={hcaptchaRef}
                           sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
                           languageOverride={currentLanguage === 'fr' ? 'fr' : 'en'}
