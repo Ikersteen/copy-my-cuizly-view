@@ -24,7 +24,7 @@ const HeroSection = () => {
   };
   
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-12 sm:py-16 md:py-20">
+    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-12 sm:py-16 lg:py-12">
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 text-center mobile-friendly-spacing">
 
