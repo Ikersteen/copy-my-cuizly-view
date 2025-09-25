@@ -2172,6 +2172,8 @@
     "closed": "Fermé"
   },
   "actions": {
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
     "uploading": "Téléchargement en cours...",
     "loading": "Chargement...",
     "refreshing": "Actualisation...",
