@@ -47,11 +47,3 @@ export interface ParsedAddress {
   postal_code?: string;
   country: string;
 }
-
-export const DEFAULT_ADDRESS_VALUES = {
-  city: 'Montréal',
-  province: 'QC',
-  country: 'Canada',
-  is_primary: true,
-  is_active: true,
-} as const;

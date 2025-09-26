@@ -134,11 +134,11 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         await updateDeliveryAddress(newAddress);
       }
       
-      onOpenChange(false);
-      toast({
-        title: t('toasts.preferencesUpdated'),
-        description: t('toasts.preferencesSavedSuccessfully')
-      });
+    onOpenChange(false);
+    toast({
+      title: t('toasts.preferencesUpdated') || 'Préférences mises à jour',
+      description: t('toasts.preferencesSavedSuccessfully') || 'Préférences sauvegardées avec succès'
+    });
     } catch (error) {
       console.error('Error saving preferences:', error);
       toast({
