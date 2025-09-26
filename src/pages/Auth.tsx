@@ -828,26 +828,25 @@ const Auth = () => {
                   <div className="space-y-2">
                     <Label className="text-sm text-foreground">{t('auth.form.securityVerification')}</Label>
                     <div className="flex justify-center">
-                        <HCaptcha
-                          key={`signin-${currentLanguage}`}
-                          ref={hcaptchaRef}
-                          sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
-                          languageOverride={currentLanguage === 'fr' ? 'fr' : 'en'}
-                          onVerify={(token) => {
-                            setHcaptchaToken(token);
-                            setCaptchaError(null);
-                          }}
-                          onExpire={() => {
-                            setHcaptchaToken(null);
-                            setCaptchaError(t('auth.errors.verificationExpired'));
-                          }}
-                          onError={() => {
-                            setHcaptchaToken(null);
-                            setCaptchaError(t('auth.errors.verificationError'));
-                          }}
-                          theme="light"
-                          size="normal"
-                        />
+                       <HCaptcha
+                         ref={hcaptchaRef}
+                         sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
+                         onVerify={(token) => {
+                           setHcaptchaToken(token);
+                           setCaptchaError(null);
+                         }}
+                         onExpire={() => {
+                           setHcaptchaToken(null);
+                           setCaptchaError(t('auth.errors.verificationExpired'));
+                         }}
+                         onError={() => {
+                           setHcaptchaToken(null);
+                           setCaptchaError(t('auth.errors.verificationError'));
+                         }}
+                         theme="light"
+                         size="normal"
+                         languageOverride={currentLanguage}
+                       />
                     </div>
                     {captchaError && (
                       <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 mt-2">
@@ -1127,26 +1126,25 @@ const Auth = () => {
                   <div className="space-y-2">
                     <Label className="text-sm text-foreground">{t('auth.form.securityVerification')}</Label>
                     <div className="flex justify-center">
-                        <HCaptcha
-                          key={`signup-${currentLanguage}`}
-                          ref={hcaptchaRef}
-                          sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
-                          languageOverride={currentLanguage === 'fr' ? 'fr' : 'en'}
-                          onVerify={(token) => {
-                            setHcaptchaToken(token);
-                            setCaptchaError(null);
-                          }}
-                          onExpire={() => {
-                            setHcaptchaToken(null);
-                            setCaptchaError(t('auth.errors.verificationExpired'));
-                          }}
-                          onError={() => {
-                            setHcaptchaToken(null);
-                            setCaptchaError(t('auth.errors.verificationError'));
-                          }}
-                          theme="light"
-                          size="normal"
-                        />
+                       <HCaptcha
+                         ref={hcaptchaRef}
+                         sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
+                         onVerify={(token) => {
+                           setHcaptchaToken(token);
+                           setCaptchaError(null);
+                         }}
+                         onExpire={() => {
+                           setHcaptchaToken(null);
+                           setCaptchaError(t('auth.errors.verificationExpired'));
+                         }}
+                         onError={() => {
+                           setHcaptchaToken(null);
+                           setCaptchaError(t('auth.errors.verificationError'));
+                         }}
+                         theme="light"
+                         size="normal"
+                         languageOverride={currentLanguage}
+                       />
                     </div>
                     {captchaError && (
                       <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 mt-2">

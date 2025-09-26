@@ -245,7 +245,6 @@ const Waitlist = () => {
                   <Label>{t('waitlist.form.security')} {t('waitlist.form.required')}</Label>
                   <div className="captcha-container">
                      <HCaptcha
-                       key={`waitlist-${currentLanguage}`}
                        ref={hcaptchaRef}
                        sitekey="30de45b6-4d34-4bd6-99b0-4cea109482b8"
                        languageOverride={currentLanguage === 'fr' ? 'fr' : 'en'}

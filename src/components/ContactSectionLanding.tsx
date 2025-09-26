@@ -16,7 +16,7 @@ const ContactSectionLanding = () => {
   };
 
   return (
-    <section id="contact" className="py-12 sm:py-16 lg:py-12 bg-background">
+    <section id="contact" className="py-16 sm:py-20 bg-background">
       <div className="max-w-4xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">

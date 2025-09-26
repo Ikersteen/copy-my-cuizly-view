@@ -15,6 +15,7 @@ import { ConsumerMobileMenu } from "@/components/ConsumerMobileMenu";
 import { RestaurantMobileMenu } from "@/components/RestaurantMobileMenu";
 import { MenusModal } from "@/components/MenusModal";
 import { PreferencesModal } from "@/components/PreferencesModal";
+import { ProfileModal } from "@/components/ProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 
@@ -26,6 +27,7 @@ const Header = () => {
   const { user, profile, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [showNewOffer, setShowNewOffer] = useState(false);
   const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
   const [showMenus, setShowMenus] = useState(false);
@@ -191,6 +193,7 @@ const Header = () => {
               <>
                 {isConsumer && (
                   <ConsumerMobileMenu 
+                    onProfileClick={() => setShowProfile(true)}
                     onPreferencesClick={() => setShowPreferences(true)}
                   />
                 )}
@@ -272,6 +275,10 @@ const Header = () => {
               <PreferencesModal 
                 open={showPreferences} 
                 onOpenChange={setShowPreferences}
+              />
+              <ProfileModal 
+                open={showProfile} 
+                onOpenChange={setShowProfile}
               />
             </>
           )}

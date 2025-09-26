@@ -13,6 +13,7 @@ import { CUISINE_TRANSLATIONS, CUISINE_OPTIONS } from "@/constants/cuisineTypes"
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
+import { formatRestaurantAddress } from "@/lib/addressUtils";
 
 interface Restaurant {
   id: string;
@@ -676,7 +677,7 @@ export const RecommendationCardsSection = () => {
           {recommendedRestaurants.map((restaurant) => (
             <Card 
               key={restaurant.id}
-              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80 h-fit"
+              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80"
             >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
@@ -701,7 +702,7 @@ export const RecommendationCardsSection = () => {
                         {restaurant.name}
                       </CardTitle>
                       <div className="flex items-center space-x-1 mt-0.5">
-                        <span className="text-sm text-muted-foreground">{restaurant.address}</span>
+                        <span className="text-sm text-muted-foreground">{formatRestaurantAddress(restaurant.address)}</span>
                       </div>
                       <CardDescription className="line-clamp-2 text-sm mt-1">
                         {getTranslatedDescription(restaurant, currentLanguage)}
@@ -758,7 +759,7 @@ export const RecommendationCardsSection = () => {
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-2">
                   {restaurant.cuisine_type?.sort((a, b) => {
                     const indexA = CUISINE_OPTIONS.indexOf(a);

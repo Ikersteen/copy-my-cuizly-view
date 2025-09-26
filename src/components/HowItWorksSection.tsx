@@ -22,7 +22,7 @@ const HowItWorksSection = () => {
   const steps = [];
 
   return (
-    <section className="py-12 sm:py-16 lg:py-12 bg-gradient-card">
+    <section className="py-16 sm:py-20 bg-gradient-card">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Content */}
         <div className="mx-auto">
