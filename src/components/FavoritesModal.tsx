@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useNavigate } from "react-router-dom";
-import { formatRestaurantAddress } from "@/lib/addressUtils";
 
 interface FavoritesModalProps {
   open: boolean;
@@ -167,7 +166,7 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-0.5 mb-3">
-                    <div className="text-sm text-muted-foreground">{formatRestaurantAddress(restaurant.address)}</div>
+                    <div className="text-sm text-muted-foreground">{restaurant.address}</div>
                     <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                       {restaurant.price_range && (
                         <span className="font-bold">{restaurant.price_range}</span>

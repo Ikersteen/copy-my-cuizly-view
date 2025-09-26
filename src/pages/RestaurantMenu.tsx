@@ -13,7 +13,6 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
-import { formatRestaurantAddress } from "@/lib/addressUtils";
 
 const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
   const [rating, setRating] = useState<number | null>(null);
@@ -274,7 +273,7 @@ export default function RestaurantMenu() {
                       {restaurant.name}
                     </h1>
                     <div className="space-y-1 text-muted-foreground text-sm">
-                      <div>{formatRestaurantAddress(restaurant.address)}</div>
+                      <div>{restaurant.address}</div>
                       <div className="flex items-center space-x-2">
                         {restaurant.price_range && (
                           <span className="font-medium">{restaurant.price_range}</span>
