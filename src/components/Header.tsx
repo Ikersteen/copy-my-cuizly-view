@@ -19,6 +19,7 @@ import { NewOfferModal } from "@/components/NewOfferModal";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
+import { ConsumerProfileModal } from "@/components/ConsumerProfileModal";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -30,6 +31,7 @@ const Header = () => {
   const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
   const [showMenus, setShowMenus] = useState(false);
   const [restaurant, setRestaurant] = useState(null);
+  const [showConsumerProfile, setShowConsumerProfile] = useState(false);
   
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
@@ -143,7 +145,12 @@ const Header = () => {
               <div className="flex-1"></div>
               
               {/* Desktop: Show role-specific header */}
-              {isConsumer && <AuthenticatedConsumerHeader />}
+              {isConsumer && (
+                <AuthenticatedConsumerHeader 
+                  onProfileClick={() => setShowConsumerProfile(true)}
+                  onPreferencesClick={() => setShowPreferences(true)}
+                />
+              )}
               {isRestaurant && <AuthenticatedRestaurantHeader />}
             </>
           ) : (
@@ -191,6 +198,7 @@ const Header = () => {
               <>
                 {isConsumer && (
                   <ConsumerMobileMenu 
+                    onProfileClick={() => setShowConsumerProfile(true)}
                     onPreferencesClick={() => setShowPreferences(true)}
                   />
                 )}
@@ -269,6 +277,10 @@ const Header = () => {
         <>
           {isConsumer && (
             <>
+              <ConsumerProfileModal 
+                open={showConsumerProfile} 
+                onOpenChange={setShowConsumerProfile}
+              />
               <PreferencesModal 
                 open={showPreferences} 
                 onOpenChange={setShowPreferences}
