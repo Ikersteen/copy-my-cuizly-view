@@ -82,24 +82,15 @@ export const secureLogout = async (): Promise<void> => {
 
 // Secure file upload validation
 export const validateFileUpload = (file: File): { isValid: boolean; error?: string } => {
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB (increased for better UX)
-  const ALLOWED_TYPES = [
-    'image/jpeg', 
-    'image/jpg',
-    'image/png', 
-    'image/webp', 
-    'image/gif',
-    'image/avif',  // Support for AVIF (modern format)
-    'image/heic',  // Support for HEIC (iPhone photos)
-    'image/heif'   // Support for HEIF
-  ];
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
   
   if (file.size > MAX_FILE_SIZE) {
-    return { isValid: false, error: 'La taille du fichier doit être inférieure à 10MB' };
+    return { isValid: false, error: 'File size must be less than 5MB' };
   }
   
   if (!ALLOWED_TYPES.includes(file.type)) {
-    return { isValid: false, error: 'Formats supportés : JPEG, PNG, WebP, GIF, AVIF, HEIC' };
+    return { isValid: false, error: 'Only JPEG, PNG, WebP, and GIF images are allowed' };
   }
   
   return { isValid: true };

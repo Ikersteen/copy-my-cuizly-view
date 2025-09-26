@@ -11,7 +11,7 @@ export function parseAddress(formattedAddress: string): ParsedAddress {
   const parts = formattedAddress.split(',').map(part => part.trim());
   
   const result: ParsedAddress = {
-    city: '',
+    city: 'Montréal',
     province: 'QC',
     country: 'Canada'
   };
@@ -28,33 +28,23 @@ export function parseAddress(formattedAddress: string): ParsedAddress {
     }
   }
 
-  // Handle postal code that might be in its own part
-  // Look for postal codes in the parts before province
-  for (let i = parts.length - 3; i >= 0; i--) {
-    const part = parts[i];
-    const postalMatch = part.match(/^([A-Z]\d[A-Z]\s?\d[A-Z]\d)$/);
-    if (postalMatch) {
-      result.postal_code = postalMatch[1].replace(/\s/g, '');
-      break;
-    }
-  }
-
-  // Second to last is usually the city (unless it's a postal code)
+  // Second to last is usually the city
   if (parts.length >= 2) {
     const cityPart = parts[parts.length - 2];
-    // Only use as city if it's not a postal code pattern and not a province
-    if (cityPart && !cityPart.match(/^[A-Z]{2}$/) && !cityPart.match(/^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/)) {
+    if (cityPart && !cityPart.match(/^[A-Z]{2}/)) {
       result.city = cityPart;
     }
   }
 
-  // Process remaining parts for street address and apartment unit
+  // Process remaining parts
   const addressParts = parts.slice(0, -2);
   
-  if (addressParts.length >= 1) {
+  if (addressParts.length >= 2) {
+    // First part: street address, Second part: neighborhood
     const streetPart = addressParts[0];
+    result.neighborhood = addressParts[1];
     
-    // Parse street address for number and name (no apartment in first part)
+    // Parse street address for number and name
     const streetMatch = streetPart.match(/^(\d+)\s+(.+)$/);
     if (streetMatch) {
       result.street_number = streetMatch[1];
@@ -62,21 +52,16 @@ export function parseAddress(formattedAddress: string): ParsedAddress {
     } else {
       result.street_name = streetPart;
     }
-    
-    // Check if second part is apartment unit (starts with # or is just digits)
-    if (addressParts.length >= 2) {
-      const secondPart = addressParts[1];
-      if (secondPart.match(/^#?\d+[A-Za-z]?$/)) {
-        result.apartment_unit = secondPart.replace('#', '');
-        
-        // Third part could be neighborhood if it exists
-        if (addressParts.length >= 3) {
-          result.neighborhood = addressParts[2];
-        }
-      } else {
-        // Second part is neighborhood
-        result.neighborhood = secondPart;
-      }
+  } else if (addressParts.length === 1) {
+    // Could be just neighborhood or just street
+    const part = addressParts[0];
+    const streetMatch = part.match(/^(\d+)\s+(.+)$/);
+    if (streetMatch) {
+      result.street_number = streetMatch[1];
+      result.street_name = streetMatch[2];
+    } else {
+      // Assume it's a neighborhood if no number
+      result.neighborhood = part;
     }
   }
 
@@ -221,7 +206,7 @@ export function createAddressInput(
 }
 
 /**
- * Format restaurant address in standard format: "131 Rue Louvain, #101, Repentigny, QC J6A 0A1, Canada"
+ * Format restaurant address in standard format: "263 boul brien, Repentigny, QC, Canada"
  */
 export function formatRestaurantAddress(address: string): string {
   if (!address) return '';
@@ -231,23 +216,9 @@ export function formatRestaurantAddress(address: string): string {
 
   // Street address (number + name)
   if (parsed.street_number && parsed.street_name) {
-    let streetAddress = `${parsed.street_number} ${parsed.street_name}`;
-    
-    // Add apartment unit if present
-    if (parsed.apartment_unit) {
-      streetAddress += `, #${parsed.apartment_unit}`;
-    }
-    
-    parts.push(streetAddress);
+    parts.push(`${parsed.street_number} ${parsed.street_name}`);
   } else if (parsed.street_name) {
-    let streetAddress = parsed.street_name;
-    
-    // Add apartment unit if present
-    if (parsed.apartment_unit) {
-      streetAddress += `, #${parsed.apartment_unit}`;
-    }
-    
-    parts.push(streetAddress);
+    parts.push(parsed.street_name);
   } else {
     // If we can't parse street components, use the first part of the original address
     const firstPart = address.split(',')[0]?.trim();
@@ -261,12 +232,10 @@ export function formatRestaurantAddress(address: string): string {
     parts.push(parsed.city);
   }
 
-  // Province and postal code
-  let provincePart = parsed.province || 'QC';
-  if (parsed.postal_code) {
-    provincePart += ` ${parsed.postal_code}`;
+  // Province
+  if (parsed.province) {
+    parts.push(parsed.province);
   }
-  parts.push(provincePart);
 
   // Country
   parts.push(parsed.country || 'Canada');

@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 import { AddressSelector } from "@/components/MontrealAddressSelector";
 import { useAddresses } from "@/hooks/useAddresses";
-import { createAddressInput } from "@/lib/addressUtils";
+import { createAddressInput, formatRestaurantAddress } from "@/lib/addressUtils";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
@@ -83,7 +83,7 @@ export const RestaurantProfileModal = ({
       setFormData({
         name: restaurant.name || "",
         description: restaurant.description || "",
-        address: restaurantAddress?.formatted_address || restaurant.address || "",
+        address: formatRestaurantAddress(restaurantAddress?.formatted_address || restaurant.address || ""),
         phone: restaurant.phone || "",
         email: restaurant.email || "",
         cuisine_type: restaurant.cuisine_type || [],
@@ -99,7 +99,7 @@ export const RestaurantProfileModal = ({
   // Mettre à jour l'adresse quand restaurantAddress change
   useEffect(() => {
     if (restaurantAddress) {
-      setFormData(prev => ({ ...prev, address: restaurantAddress.formatted_address }));
+      setFormData(prev => ({ ...prev, address: formatRestaurantAddress(restaurantAddress.formatted_address) }));
     }
   }, [restaurantAddress]);
 
@@ -171,29 +171,14 @@ export const RestaurantProfileModal = ({
       if (updateError) throw updateError;
 
       // Handle address update separately
-      console.log('Debug address save:', { 
-        address, 
-        currentAddress: restaurantAddress?.formatted_address,
-        hasCurrentAddress: !!restaurantAddress 
-      });
-      
       if (address && address !== restaurantAddress?.formatted_address) {
-        console.log('Updating address...');
         if (restaurantAddress) {
-          console.log('Updating existing address:', restaurantAddress.id);
-          const result = await updateAddressHook(restaurantAddress.id!, { 
+          await updateAddressHook(restaurantAddress.id!, { 
             formatted_address: address 
           });
-          console.log('Address update result:', result);
         } else {
-          console.log('Creating new address:', address);
-          const addressInput = createAddressInput(address, 'restaurant', true);
-          console.log('Address input:', addressInput);
-          const result = await createAddress(addressInput);
-          console.log('Address creation result:', result);
+          await createAddress(createAddressInput(address, 'restaurant', true));
         }
-      } else {
-        console.log('No address update needed');
       }
 
 

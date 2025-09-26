@@ -576,7 +576,6 @@
     "preferencesUpdateError": "Impossible de sauvegarder vos préférences",
     "preferencesSavedTemporarily": "Préférences sauvegardées temporairement",
     "connectionProblem": "Problème de connexion",
-    "cannotLoadPreferences": "Impossible de charger les préférences",
     "cannotLoadProfile": "Impossible de charger le profil. Veuillez rafraîchir la page.",
     "sessionExpired": "Session expirée",
     "pleaseSignInAgain": "Veuillez vous reconnecter",
@@ -1007,8 +1006,6 @@
     "rateRestaurant": "Évaluer ce restaurant et partager votre expérience",
     "upload": "Télécharger",
     "uploading": "Téléchargement...",
-    "logoUploaded": "Logo téléchargé avec succès",
-    "coverUploaded": "Photo de couverture téléchargée avec succès",
     "logo": "Logo du restaurant",
     "basicInfo": "Informations de base",
     "restaurantName": "Nom du restaurant",
@@ -1614,8 +1611,6 @@
     "statusChanged": "Statut modifié",
     "menuActivated": "activé",
     "menuDeactivated": "désactivé",
-    "menuActivatedDesc": "Le menu a été activé avec succès",
-    "menuDeactivatedDesc": "Le menu a été désactivé avec succès",
     "statusChangedSuccessfully": "avec succès",
     "errorChangingStatus": "Erreur lors de la modification",
     "cannotChangeStatus": "Impossible de modifier le statut",
@@ -2062,14 +2057,7 @@
   "addresses": {
     "placeholder": "Commencez à taper une adresse à Montréal...",
     "label": "Adresse",
-    "tip": "💡 Astuce: Utilisez les suggestions pour une meilleure précision de localisation",
-    "cannotLoad": "Impossible de charger les adresses",
-    "createdSuccessfully": "Adresse créée avec succès",
-    "cannotCreate": "Impossible de créer l'adresse",
-    "updatedSuccessfully": "Adresse mise à jour avec succès",
-    "cannotUpdate": "Impossible de mettre à jour l'adresse", 
-    "deletedSuccessfully": "Adresse supprimée avec succès",
-    "cannotDelete": "Impossible de supprimer l'adresse"
+    "tip": "💡 Astuce: Utilisez les suggestions pour une meilleure précision de localisation"
   },
   "photos": {
     "profilePhoto": "Photo de profil",
@@ -2173,8 +2161,6 @@
     "closed": "Fermé"
   },
   "actions": {
-    "save": "Sauvegarder",
-    "cancel": "Annuler",
     "uploading": "Téléchargement en cours...",
     "loading": "Chargement...",
     "refreshing": "Actualisation...",

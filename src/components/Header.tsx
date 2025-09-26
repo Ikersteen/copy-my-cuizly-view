@@ -15,11 +15,11 @@ import { ConsumerMobileMenu } from "@/components/ConsumerMobileMenu";
 import { RestaurantMobileMenu } from "@/components/RestaurantMobileMenu";
 import { MenusModal } from "@/components/MenusModal";
 import { PreferencesModal } from "@/components/PreferencesModal";
+import { ProfileModal } from "@/components/ProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
-import { ConsumerProfileModal } from "@/components/ConsumerProfileModal";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -27,11 +27,11 @@ const Header = () => {
   const { user, profile, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [showNewOffer, setShowNewOffer] = useState(false);
   const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
   const [showMenus, setShowMenus] = useState(false);
   const [restaurant, setRestaurant] = useState(null);
-  const [showConsumerProfile, setShowConsumerProfile] = useState(false);
   
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
@@ -145,12 +145,7 @@ const Header = () => {
               <div className="flex-1"></div>
               
               {/* Desktop: Show role-specific header */}
-              {isConsumer && (
-                <AuthenticatedConsumerHeader 
-                  onProfileClick={() => setShowConsumerProfile(true)}
-                  onPreferencesClick={() => setShowPreferences(true)}
-                />
-              )}
+              {isConsumer && <AuthenticatedConsumerHeader />}
               {isRestaurant && <AuthenticatedRestaurantHeader />}
             </>
           ) : (
@@ -198,7 +193,7 @@ const Header = () => {
               <>
                 {isConsumer && (
                   <ConsumerMobileMenu 
-                    onProfileClick={() => setShowConsumerProfile(true)}
+                    onProfileClick={() => setShowProfile(true)}
                     onPreferencesClick={() => setShowPreferences(true)}
                   />
                 )}
@@ -277,13 +272,13 @@ const Header = () => {
         <>
           {isConsumer && (
             <>
-              <ConsumerProfileModal 
-                open={showConsumerProfile} 
-                onOpenChange={setShowConsumerProfile}
-              />
               <PreferencesModal 
                 open={showPreferences} 
                 onOpenChange={setShowPreferences}
+              />
+              <ProfileModal 
+                open={showProfile} 
+                onOpenChange={setShowProfile}
               />
             </>
           )}
