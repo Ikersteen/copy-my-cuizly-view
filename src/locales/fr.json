@@ -1008,7 +1008,6 @@
     "upload": "Télécharger",
     "uploading": "Téléchargement...",
     "logoUploaded": "Logo téléchargé avec succès",
-    "coverUploaded": "Photo de couverture téléchargée avec succès",
     "logo": "Logo du restaurant",
     "basicInfo": "Informations de base",
     "restaurantName": "Nom du restaurant",
@@ -2105,6 +2104,11 @@
     "reset": "Réinitialiser",
     "cancel": "Annuler", 
     "apply": "Appliquer",
+    "autoSaving": "Sauvegarde en cours...",
+    "willAutoSave": "Se sauvegarde automatiquement",
+    "ready": "Prêt",
+    "close": "Fermer",
+    "saveNow": "Sauvegarder maintenant",
     "adjustMenuPhoto": "Ajuster la photo du menu",
     "adjustProfilePhoto": "Ajuster le logo",
     "adjustCoverPhoto": "Ajuster la couverture"
@@ -2173,8 +2177,6 @@
     "closed": "Fermé"
   },
   "actions": {
-    "save": "Sauvegarder",
-    "cancel": "Annuler",
     "uploading": "Téléchargement en cours...",
     "loading": "Chargement...",
     "refreshing": "Actualisation...",

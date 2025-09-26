@@ -404,7 +404,6 @@ export const ImprovedRestaurantProfileModal = ({
         hasCurrentAddress: !!restaurantAddress 
       });
       
-      let addressUpdated = false;
       if (address && address !== restaurantAddress?.formatted_address) {
         console.log('Updating address...');
         if (restaurantAddress) {
@@ -413,14 +412,12 @@ export const ImprovedRestaurantProfileModal = ({
             formatted_address: address 
           });
           console.log('Address update result:', result);
-          addressUpdated = !!result;
         } else {
           console.log('Creating new address:', address);
           const addressInput = createAddressInput(address, 'restaurant', true);
           console.log('Address input:', addressInput);
           const result = await createAddress(addressInput);
           console.log('Address creation result:', result);
-          addressUpdated = !!result;
         }
       } else {
         console.log('No address update needed');
@@ -462,13 +459,10 @@ export const ImprovedRestaurantProfileModal = ({
 
       await loadRestaurant();
       
-      // Only show success toast if no address was updated (address hooks show their own toast)
-      if (!addressUpdated) {
-        toast({
-          title: t('restaurantProfile.saved'),
-          description: t('restaurantProfile.savedSuccessfully')
-        });
-      }
+      toast({
+        title: t('restaurantProfile.saved'),
+        description: t('restaurantProfile.savedSuccessfully')
+      });
     } catch (error) {
       console.error('Error saving restaurant:', error);
       toast({

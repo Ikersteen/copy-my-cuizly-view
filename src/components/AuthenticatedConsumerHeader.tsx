@@ -50,44 +50,5 @@ export const AuthenticatedConsumerHeader = ({
     }
   };
 
-  return (
-    <div className="flex items-center gap-2">
-      {/* Language Toggle */}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => changeLanguage(currentLanguage === 'fr' ? 'en' : 'fr')}
-        className="flex items-center gap-1"
-      >
-        <Globe className="h-4 w-4" />
-        <span className="text-xs font-medium">
-          {currentLanguage === 'fr' ? 'EN' : 'FR'}
-        </span>
-      </Button>
-
-      {/* Profile Menu */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="flex items-center gap-2">
-            <User className="h-4 w-4" />
-            <span className="hidden sm:inline">{t('common.profile')}</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48">
-          <DropdownMenuItem onClick={() => handleAction(onPreferencesClick)}>
-            <Settings className="mr-2 h-4 w-4" />
-            {t('navigation.preferences')}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleAction(onOffersClick)}>
-            <Gift className="mr-2 h-4 w-4" />
-            {t('navigation.offers')}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            {t('auth.logout')}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
+  return null;
 };
