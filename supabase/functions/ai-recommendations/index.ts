@@ -419,7 +419,7 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
   const popularityScore = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
 
   return `
-🎯 MISSION: Analyser la compatibilité restaurant-utilisateur selon la hiérarchie de priorités
+🎯 MISSION: Analyser la compatibilité restaurant-utilisateur avec pondération STRICTE
 
 📊 RESTAURANT À ANALYSER:
 • Nom: ${restaurant.name}
@@ -432,38 +432,48 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 • Notes: ${restaurant.rating_count || 0} avis (moyenne: ${restaurant.average_rating || 'N/A'})
 
 👤 PROFIL UTILISATEUR:
-• Cuisines préférées: ${preferences.cuisine_preferences?.join(', ') || 'Aucune préférence'}
-• Budget souhaité: ${preferences.price_range || 'Flexible'}
 • Restrictions alimentaires: ${preferences.dietary_restrictions?.join(', ') || 'Aucune'}
 • Allergènes à éviter: ${preferences.allergens?.join(', ') || 'Aucun'}
+• Cuisines préférées: ${preferences.cuisine_preferences?.join(', ') || 'Aucune préférence'}
+• Budget souhaité: ${preferences.price_range || 'Flexible'}
 • Moments de repas favoris: ${preferences.favorite_meal_times?.join(', ') || 'Flexible'}
-• Adresse complète: ${preferences.full_address || 'Non spécifiée'}
-• Quartier: ${preferences.neighborhood || 'Non spécifié'}
-• Code postal: ${preferences.postal_code || 'Non spécifié'}
-• Rayon de livraison: ${preferences.delivery_radius || 'Non spécifié'} km
+• Adresse: ${preferences.full_address || preferences.neighborhood || 'Non spécifiée'}
 
-⏰ CONTEXTE ACTUEL:
-• Heure: ${currentHour}h (période: ${currentMealTime})
-• Timing optimal: ${isMealTimeMatch ? '✅ OUI' : '❌ NON'}
+⏰ CONTEXTE: ${currentHour}h (période: ${currentMealTime})
 
-🔍 CORRESPONDANCES DÉTECTÉES PAR CATÉGORIE:
+🎯 PONDÉRATION OBLIGATOIRE (100 points max):
 
-1. 🔒 RESTRICTIONS/ALLERGÈNES: ${checkSafetyCompatibility(restaurant, preferences)}
-2. 🍽️ CUISINES: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')} (${cuisineMatches.length} correspondance${cuisineMatches.length > 1 ? 's' : ''})` : '❌ Aucune'}
-3. ⏰ MOMENTS: ${isMealTimeMatch ? '✅ Compatible avec tes horaires' : '❌ Pas optimal'}
-4. 📍 LOCALISATION: ${checkLocationCompatibility(restaurant, preferences)}
-5. 💰 BUDGET: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
-6. 🎉 PROMOTIONS: 🔍 À vérifier
+🔒 1. SÉCURITÉ ALIMENTAIRE (50 POINTS - 50%):
+   • Restrictions alimentaires: ${checkSafetyCompatibility(restaurant, preferences)}
+   • Allergènes compatibles: ${preferences.allergens?.length ? (restaurant.allergens?.some(a => preferences.allergens!.includes(a)) ? '❌ DANGER' : '✅ SÉCURITAIRE') : '✅ Aucun allergène'}
+   ⚠️ SI ALLERGÈNES INCOMPATIBLES = SCORE 0 IMMÉDIAT
 
-🎯 DÉTECTION DE CAS:
-- Nombre de cuisines matchant: ${cuisineMatches.length}
-- Nombre de restrictions: ${preferences.dietary_restrictions?.length || 0}
-- Nombre d'allergènes: ${preferences.allergens?.length || 0}
-- Nombre de moments favoris: ${preferences.favorite_meal_times?.length || 0}
+🍽️ 2. PRÉFÉRENCES PERSONNELLES (35 POINTS - 35%):
+   A) Cuisine préférée (25 points): ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')}` : '❌ Aucune correspondance'}
+   B) Budget après cuisine (10 points): ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
 
-🎯 INSTRUCTIONS FINALES:
-Applique la logique CAS 1 ou CAS 2 selon le nombre de critères par catégorie.
-Respecte l'ordre de priorité strict et les phrases exactes définies.
+⏰ 3. CONTEXTE (15 POINTS - 15%):
+   A) Timing repas (10 points): ${isMealTimeMatch ? '✅ Moment optimal' : '❌ Pas le bon moment'}
+   B) Localisation (5 points): ${checkLocationCompatibility(restaurant, preferences)}
+
+🎯 CALCUL DU SCORE:
+1. Vérifie d'abord la SÉCURITÉ (allergènes = 0 si incompatible)
+2. Attribue 0-50 points pour sécurité alimentaire 
+3. Attribue 0-25 points pour cuisine préférée
+4. Attribue 0-10 points pour budget (après cuisine)
+5. Attribue 0-10 points pour timing
+6. Attribue 0-5 points pour localisation
+
+Score minimum d'affichage: 40/100
+
+Génère EXACTEMENT ce format JSON:
+{
+  "score": [nombre entre 0-100],
+  "reasons": ["phrase explicative priorité 1", "phrase explicative priorité 2"],
+  "sentiment_analysis": "positive/neutral/negative",
+  "preference_match": [0-1 décimal],
+  "quality_prediction": [0-1 décimal]
+}
   `;
 }
 
