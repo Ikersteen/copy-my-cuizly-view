@@ -31,9 +31,11 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
     first_name: "",
     last_name: "",
     username: "",
-    phone: "",
+    email: "",
     avatar_url: ""
   });
+  
+  const [userEmail, setUserEmail] = useState("");
   
   const [notificationSettings, setNotificationSettings] = useState({
     email: false,
@@ -51,7 +53,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
         first_name: profile.first_name || "",
         last_name: profile.last_name || "",
         username: profile.username || "",
-        phone: profile.phone || "",
+        email: "",
         avatar_url: profile.avatar_url || ""
       });
       
@@ -61,6 +63,18 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
       });
     }
   }, [isOpen, profile, preferences]);
+
+  useEffect(() => {
+    const getUserEmail = async () => {
+      if (isOpen) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user?.email) {
+          setUserEmail(user.email);
+        }
+      }
+    };
+    getUserEmail();
+  }, [isOpen]);
 
   const handleSave = async () => {
     try {
@@ -242,10 +256,10 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 
                 {/* User Info */}
                 <h2 className="text-2xl font-bold text-foreground">
-                  {profile?.first_name ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name}` : ''}` : profile?.username || 'Profil utilisateur'}
+                  @{profile?.username || 'utilisateur'}
                 </h2>
                 <DialogDescription className="text-muted-foreground">
-                  @{profile?.username || 'utilisateur'} • {profile?.phone || 'ikersteen@gmail.com'}
+                  {userEmail || 'Email non disponible'}
                 </DialogDescription>
               </div>
             </DialogTitle>
@@ -307,12 +321,13 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-sm font-medium">Téléphone</Label>
+                  <Label htmlFor="email" className="text-sm font-medium">Courriel</Label>
                   <Input
-                    id="phone"
-                    value={formData.phone}
-                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                    placeholder="+1 (514) 123-4567"
+                    id="email"
+                    type="email"
+                    value={formData.email || userEmail}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="votre@courriel.com"
                     className="h-10"
                   />
                 </div>
