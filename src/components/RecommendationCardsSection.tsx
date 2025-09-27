@@ -676,7 +676,7 @@ export const RecommendationCardsSection = () => {
           {recommendedRestaurants.map((restaurant) => (
             <Card 
               key={restaurant.id}
-              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80 h-fit"
+              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80 min-h-96 flex flex-col"
             >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
