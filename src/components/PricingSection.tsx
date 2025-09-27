@@ -22,7 +22,6 @@ const PricingSection = () => {
       title: t('pricing.pro.title'),
       subtitle: t('pricing.pro.subtitle'),
       price: t('pricing.pro.price'),
-      priceNote: t('pricing.pro.priceNote'),
       features: t('pricing.pro.features', { returnObjects: true }) as string[],
       cta: t('pricing.pro.cta')
     },

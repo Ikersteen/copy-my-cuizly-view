@@ -72,7 +72,6 @@ const PricingSectionLanding = () => {
       titleKey: "pricing.pro.title",
       subtitleKey: "pricing.pro.subtitle",
       priceKey: "pricing.pro.price",
-      priceNoteKey: "pricing.pro.priceNote",
       featuresKeys: [
         "pricing.pro.features.0",
         "pricing.pro.features.1",
@@ -111,9 +110,6 @@ const PricingSectionLanding = () => {
                 <CardTitle className="text-xl font-bold text-foreground">{t(plan.titleKey)}</CardTitle>
                 <p className="text-cuizly-neutral text-sm sm:text-base">{t(plan.subtitleKey)}</p>
                 <div className="text-2xl sm:text-3xl font-bold text-foreground mt-3 sm:mt-4">{t(plan.priceKey)}</div>
-                {plan.priceNoteKey && (
-                  <p className="text-xs sm:text-sm text-cuizly-neutral">{t(plan.priceNoteKey)}</p>
-                )}
               </CardHeader>
               <CardContent className="pt-0">
                 <ul className="space-y-2 sm:space-y-3 mb-6">
