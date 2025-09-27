@@ -330,7 +330,7 @@ export default function RestaurantMenu() {
                                      {typeof hours === 'object' && hours !== null ? 
                                        (hours as any).closed ? 
                                          t('restaurantMenu.closed') : 
-                                         `${(hours as any).open || '00:00'}-${(hours as any).close || '23:59'}` 
+                                         `${(hours as any).open || '00:00'} - ${(hours as any).close || '23:59'}` 
                                        : hours as string}
                                    </span>
                                  </div>
