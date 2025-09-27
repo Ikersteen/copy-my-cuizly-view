@@ -32,6 +32,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
     last_name: "",
     username: "",
     email: "",
+    phone: "",
     avatar_url: ""
   });
   
@@ -54,6 +55,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
         last_name: profile.last_name || "",
         username: profile.username || "",
         email: "",
+        phone: profile.phone || "",
         avatar_url: profile.avatar_url || ""
       });
       
@@ -318,6 +320,18 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                     value={formData.email || userEmail}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="votre@courriel.com"
+                    className="h-10"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-sm font-medium">Numéro de téléphone</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                    placeholder="+1 (XXX) XXX-XXXX"
                     className="h-10"
                   />
                 </div>
