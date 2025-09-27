@@ -304,6 +304,7 @@
   "common": {
     "loading": "Chargement...",
     "error": "Une erreur est survenue",
+    "success": "Succès",
     "retry": "Réessayer",
     "close": "Fermer",
     "save": "Sauvegarder",
