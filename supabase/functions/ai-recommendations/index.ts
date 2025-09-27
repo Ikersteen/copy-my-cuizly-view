@@ -232,30 +232,29 @@ async function analyzeRestaurantWithAI(
           MISSION: Analyze compatibility between a restaurant and user preferences according to priority hierarchy.
           
           PRIORITY HIERARCHY (MANDATORY - in this exact order):
-          1. 🔒 RESTRICTIONS / ALLERGENS (safety first - 30%)
-          2. 🍽️ PREFERRED CUISINE (main pleasure - 25%) 
-          3. ⏰ TIMING (temporal relevance - 20%)
-          4. 📍 LOCATION (distance - 15%)
-          5. 💰 BUDGET (financial respect - 10%)
-          6. 🎉 PROMO (bonus - 5%)
+          1. 🔒 DIETARY RESTRICTIONS (safety first - 25%)
+          2. 🚫 ALLERGENS TO AVOID (safety second - 25%)
+          3. 🍽️ PREFERRED CUISINE (taste preferences - 20%) 
+          4. 💰 PRICE RANGE (budget respect - 15%)
+          5. ⏰ MEAL TIMING (temporal relevance - 10%)
+          6. 📍 DELIVERY ADDRESS (location - 5%)
 
           AUTHORIZED PHRASES (use EXACTLY these phrases):
-          - Restrictions: "Fits your vegetarian preferences" / "Fits your vegan preferences" / "Fits your gluten-free preferences"
+          - Dietary Restrictions: "Compatible with your [restriction] preferences"
           - Allergens: "Safe from your declared allergens" 
           - Cuisine: "Because you love [name] cuisine"
-          - Timing: "Open at the right time for you"
-          - Location: "Less than 2 km from you" / "In your favorite neighborhood"
-          - Budget: "Fits your [range] budget"
-          - Promo: "On sale today"
-          - Default: "New discovery recommended"
+          - Price Range: "Fits your [range] budget"
+          - Meal Timing: "Perfect for your preferred meal time"
+          - Location: "Within your delivery area"
+          - Default: "New restaurant to discover"
           
           SCORING ACCORDING TO HIERARCHY:
-          - Compatible restrictions/allergens: +30 points
-          - Exactly preferred cuisine: +25 points
-          - Optimal timing: +20 points  
-          - Close location: +15 points
-          - Compatible budget: +10 points
-          - Active promo: +5 points
+          - Compatible dietary restrictions: +25 points
+          - Safe from allergens: +25 points
+          - Exactly preferred cuisine: +20 points
+          - Compatible price range: +15 points
+          - Optimal meal timing: +10 points  
+          - Within delivery area: +5 points
           - Base score: 20 points
           
           STRICT RULES:
@@ -277,13 +276,12 @@ async function analyzeRestaurantWithAI(
           MISSION: Analyser les préférences utilisateur et expliquer pourquoi ce restaurant est recommandé selon l'ordre de priorité strict.
           
           ORDRE DE PRIORITÉS STRICT (NE MENTIONNER QUE SI L'UTILISATEUR A DÉFINI CETTE PRÉFÉRENCE):
-          1. 🔒 RESTRICTIONS ALIMENTAIRES (priorité absolue)
-          2. 🚫 ALLERGÈNES À ÉVITER (sécurité absolue)  
-          3. 🍽️ CUISINES PRÉFÉRÉES (garder explication actuelle)
-          4. 💰 GAMME DE PRIX
-          5. ⏰ MOMENTS DE REPAS FAVORIS
-          6. 📍 RAYON DE LIVRAISON
-          7. 🏠 ADRESSE
+          1. 🔒 RESTRICTIONS ALIMENTAIRES (priorité absolue - 25%)
+          2. 🚫 ALLERGÈNES À ÉVITER (sécurité absolue - 25%)  
+          3. 🍽️ CUISINES PRÉFÉRÉES (goûts personnels - 20%)
+          4. 💰 GAMME DE PRIX (budget - 15%)
+          5. ⏰ MOMENTS DE REPAS FAVORIS (contexte temporel - 10%)
+          6. 📍 ADRESSE DE LIVRAISON (proximité - 5%)
 
           PHRASES EXPLICITES PAR PRÉFÉRENCE DÉFINIE:
 
@@ -318,15 +316,15 @@ async function analyzeRestaurantWithAI(
           - "Vietnamese" → "vietnamienne"
 
           💰 GAMME DE PRIX:
-          - "Respecte votre budget [gamme] (ex: $$)."
+          - "Compatible avec votre budget [gamme] (ex: $$)."
 
           ⏰ MOMENTS FAVORIS:
           - Un moment : "Parfait pour votre moment favori : [moment]."
           - Plusieurs : "Parfait pour vos moments favoris : [moment1] et [moment2]."
 
-          📍 RAYON/ADRESSE:
-          - "Dans votre rayon de livraison de [X] km."
-          - "Proche de votre adresse à [quartier]."
+          📍 ADRESSE DE LIVRAISON:
+          - "Dans votre zone de livraison."
+          - "Accessible depuis votre adresse."
 
           RÈGLES CRITIQUES:
           - TOUJOURS traduire les noms de cuisines en français (voir tableau ci-dessus)
@@ -552,29 +550,52 @@ function getCurrentMealTime(hour: number): string {
 }
 
 function calculateFallbackScore(restaurant: Restaurant, preferences: UserPreferences): number {
-  let score = 40; // Score de base plus élevé - tous les restaurants ont une valeur
+  let score = 20; // Score de base
   const currentHour = new Date().getHours();
   const currentMealTime = getCurrentMealTime(currentHour);
 
-  // 1. Bonus sécurité alimentaire (pas de restrictions = plus de choix)
-  if (!preferences?.dietary_restrictions?.length && !preferences?.allergens?.length) {
-    score += 20; // Bonus pour flexibilité alimentaire
+  // 1. RESTRICTIONS ALIMENTAIRES (priorité absolue - 25%)
+  if (preferences?.dietary_restrictions?.length && restaurant.dietary_restrictions?.length) {
+    const compatibleRestrictions = preferences.dietary_restrictions.filter(restriction =>
+      restaurant.dietary_restrictions!.includes(restriction)
+    );
+    if (compatibleRestrictions.length > 0) {
+      score += 25; // Bonus maximal pour sécurité alimentaire
+    }
+  } else if (!preferences?.dietary_restrictions?.length) {
+    // Bonus léger si pas de restrictions (plus de choix)
+    score += 5;
   }
 
-  // 2. Correspondance cuisine (30 points max)
-  if (preferences.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
-    const exactMatches = restaurant.cuisine_type.filter(cuisine =>
+  // 2. ALLERGÈNES À ÉVITER (sécurité absolue - 25%)
+  if (preferences?.allergens?.length && restaurant.allergens?.length) {
+    const conflictingAllergens = preferences.allergens.filter(allergen =>
+      restaurant.allergens!.includes(allergen)
+    );
+    if (conflictingAllergens.length === 0) {
+      score += 25; // Bonus maximal pour sécurité allergènes
+    } else {
+      score -= 50; // Pénalité sévère si allergènes présents
+    }
+  } else if (!preferences?.allergens?.length) {
+    // Bonus léger si pas d'allergènes déclarés
+    score += 5;
+  }
+
+  // 3. CUISINES PRÉFÉRÉES (goûts personnels - 20%)
+  if (preferences?.cuisine_preferences?.length && restaurant.cuisine_type?.length) {
+    const matchingCuisines = restaurant.cuisine_type.filter(cuisine =>
       preferences.cuisine_preferences!.includes(cuisine)
     );
-    if (exactMatches.length > 0) {
-      score += Math.min(exactMatches.length * 15, 30);
+    if (matchingCuisines.length > 0) {
+      score += Math.min(matchingCuisines.length * 10, 20); // Max 20 points
     }
   }
 
-  // 3. Correspondance budget (20 points)  
-  if (preferences.price_range && restaurant.price_range) {
+  // 4. GAMME DE PRIX (budget - 15%)
+  if (preferences?.price_range && restaurant.price_range) {
     if (preferences.price_range === restaurant.price_range) {
-      score += 20;
+      score += 15; // Bonus maximal pour budget exact
     } else {
       // Bonus partiel si budget compatible (restaurant moins cher)
       const priceOrder = ['$', '$$', '$$$', '$$$$'];
@@ -582,28 +603,26 @@ function calculateFallbackScore(restaurant: Restaurant, preferences: UserPrefere
       const restaurantIndex = priceOrder.indexOf(restaurant.price_range);
       
       if (restaurantIndex !== -1 && userIndex !== -1 && restaurantIndex <= userIndex) {
-        score += 10; // Demi-points pour compatible mais pas exact
+        score += 8; // Demi-points pour compatible mais pas exact
       }
     }
   }
 
-  // 4. Timing optimal (10 points)
-  if (preferences.favorite_meal_times?.includes(currentMealTime)) {
+  // 5. MOMENTS DE REPAS FAVORIS (contexte temporel - 10%)
+  if (preferences?.favorite_meal_times?.includes(currentMealTime)) {
     score += 10;
   }
 
-  // 5. Qualité et popularité (10 points max)
-  if (restaurant.average_rating && restaurant.rating_count) {
-    const qualityScore = (restaurant.average_rating / 5) * 5;
-    const trustScore = Math.min(restaurant.rating_count / 10, 3);
-    const popularityScore = Math.min((restaurant.profile_views || 0) / 100, 2);
-    score += Math.min(qualityScore + trustScore + popularityScore, 10);
-  }
-
-  // 6. Bonus localisation (15 points max)
+  // 6. ADRESSE DE LIVRAISON (proximité - 5%)
   score += calculateLocationScore(restaurant, preferences);
 
-  return Math.min(Math.round(score), 100);
+  // Bonus qualité (non prioritaire mais utile pour départager)
+  if (restaurant.average_rating && restaurant.rating_count) {
+    const qualityBonus = Math.min((restaurant.average_rating / 5) * 3, 3);
+    score += qualityBonus;
+  }
+
+  return Math.min(Math.max(Math.round(score), 0), 100);
 }
 
 function calculateLocationScore(restaurant: Restaurant, preferences: UserPreferences): number {
@@ -613,17 +632,17 @@ function calculateLocationScore(restaurant: Restaurant, preferences: UserPrefere
   
   const restaurantAddress = restaurant.address.toLowerCase();
   
-  // Même rue = score maximal (15 points)
+  // Même rue = score maximal (5 points - priorité 6)
   if (preferences.street && restaurantAddress.includes(preferences.street.toLowerCase())) {
-    locationScore += 15;
-  }
-  // Même quartier = score élevé (10 points)
-  else if (preferences.neighborhood && restaurantAddress.includes(preferences.neighborhood.toLowerCase())) {
-    locationScore += 10;
-  }
-  // Dans Montréal = score de base (5 points)
-  else if (restaurantAddress.includes('montréal') || restaurantAddress.includes('montreal')) {
     locationScore += 5;
+  }
+  // Même quartier = score élevé (3 points)
+  else if (preferences.neighborhood && restaurantAddress.includes(preferences.neighborhood.toLowerCase())) {
+    locationScore += 3;
+  }
+  // Dans Montréal = score de base (1 point)
+  else if (restaurantAddress.includes('montréal') || restaurantAddress.includes('montreal')) {
+    locationScore += 1;
   }
   
   return locationScore;
