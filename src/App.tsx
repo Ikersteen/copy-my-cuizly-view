@@ -182,7 +182,7 @@ const AppContent = () => {
             <VoiceChat />
           </>
         } />
-        <Route path="/email-confirme" element={<EmailConfirmed />} />
+        <Route path="/courriel-confirme" element={<EmailConfirmed />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}

@@ -14,7 +14,7 @@ export const routeTranslations = {
   '/voice': '/assistant-vocal',
   '/dashboard': '/tableau-de-bord',
   '/restaurant': '/restaurant',
-  '/email-confirmed': '/email-confirme'
+  '/email-confirmed': '/courriel-confirme'
 } as const;
 
 // French → English routes (reverse mapping)
