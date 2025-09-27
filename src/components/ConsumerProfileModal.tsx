@@ -319,6 +319,42 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
               </div>
 
 
+              {/* Notifications Card */}
+              <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Bell className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                    <div>
+                      <p className="font-medium text-sm">Notifications courriel</p>
+                    </div>
+                    <Switch
+                      checked={notificationSettings.email}
+                      onCheckedChange={(checked) => 
+                        setNotificationSettings(prev => ({ ...prev, email: checked }))
+                      }
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                    <div>
+                      <p className="font-medium text-sm">Notifications push</p>
+                    </div>
+                    <Switch
+                      checked={notificationSettings.push}
+                      onCheckedChange={(checked) => 
+                        setNotificationSettings(prev => ({ ...prev, push: checked }))
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* Account Actions Card */}
               <div className="bg-card border border-border rounded-xl p-6 space-y-4">
                 <div className="flex items-center gap-3 mb-4">
@@ -330,12 +366,8 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Shield className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium text-sm">Mot de passe</p>
-                        <p className="text-xs text-muted-foreground">Modifiez votre mot de passe pour sécuriser votre compte</p>
-                      </div>
+                    <div>
+                      <p className="font-medium text-sm">Mot de passe</p>
                     </div>
                     <Button 
                       variant="outline" 
@@ -348,32 +380,22 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <LogOut className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium text-sm">Se déconnecter</p>
-                        <p className="text-xs text-muted-foreground">Déconnectez-vous de votre session actuelle</p>
-                      </div>
+                    <div>
+                      <p className="font-medium text-sm">Se déconnecter</p>
                     </div>
                     <Button variant="outline" size="sm" onClick={handleLogout} className="shrink-0">
-                      Se déconnecter
+                      Déconnexion
                     </Button>
                   </div>
 
                   <div className="flex items-start justify-between p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
-                    <div className="flex items-start gap-3 flex-1 mr-4">
-                      <Trash2 className="h-5 w-5 text-destructive mt-0.5 shrink-0" />
-                      <div>
-                        <p className="font-medium text-sm text-destructive">Supprimer le compte</p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande.
-                        </p>
-                      </div>
+                    <div className="flex-1 mr-4">
+                      <p className="font-medium text-sm text-destructive">Supprimer le compte</p>
                     </div>
                     <AlertDialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
                       <AlertDialogTrigger asChild>
                         <Button variant="destructive" size="sm" className="shrink-0">
-                          Supprimer le compte
+                          Supprimer
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
@@ -394,50 +416,6 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
-                  </div>
-                </div>
-              </div>
-
-              {/* Notifications Card */}
-              <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Bell className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Mail className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium text-sm">Notifications courriel</p>
-                        <p className="text-xs text-muted-foreground">Recevez des notifications par courriel</p>
-                      </div>
-                    </div>
-                    <Switch
-                      checked={notificationSettings.email}
-                      onCheckedChange={(checked) => 
-                        setNotificationSettings(prev => ({ ...prev, email: checked }))
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Bell className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium text-sm">Notifications push</p>
-                        <p className="text-xs text-muted-foreground">Recevez des notifications sur votre appareil</p>
-                      </div>
-                    </div>
-                    <Switch
-                      checked={notificationSettings.push}
-                      onCheckedChange={(checked) => 
-                        setNotificationSettings(prev => ({ ...prev, push: checked }))
-                      }
-                    />
                   </div>
                 </div>
               </div>
