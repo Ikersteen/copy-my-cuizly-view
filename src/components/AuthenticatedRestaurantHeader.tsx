@@ -10,6 +10,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { generateUserUrl } from "@/lib/urlUtils";
 import { useState, useEffect } from "react";
+import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 interface AuthenticatedRestaurantHeaderProps {
   onNewOfferClick?: () => void;
@@ -29,6 +30,10 @@ export const AuthenticatedRestaurantHeader = ({
   const { profile: userProfile } = useProfile();
   const { profile, user } = useUserProfile();
   const [restaurant, setRestaurant] = useState<any>(null);
+  
+  // Get localized routes
+  const homeRoute = useLocalizedRoute('/');
+  const dashboardRoute = useLocalizedRoute('/dashboard');
 
   // Load restaurant data
   useEffect(() => {
@@ -56,7 +61,7 @@ export const AuthenticatedRestaurantHeader = ({
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      navigate("/");
+      navigate(homeRoute);
       toast({
         title: t('dashboard.logoutSuccess'),
         description: t('dashboard.logoutSuccessDesc'),
@@ -86,7 +91,7 @@ export const AuthenticatedRestaurantHeader = ({
         navigate(personalizedUrl);
       } else {
         // Fallback to generic dashboard
-        navigate("/dashboard");
+        navigate(dashboardRoute);
       }
     }
   };

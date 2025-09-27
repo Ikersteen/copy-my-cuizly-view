@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { generateUserUrl } from "@/lib/urlUtils";
+import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 interface AuthenticatedConsumerHeaderProps {
   onProfileClick?: () => void;
@@ -27,11 +28,15 @@ export const AuthenticatedConsumerHeader = ({
   const { toast } = useToast();
   const { profile: userProfile } = useProfile();
   const { profile } = useUserProfile();
+  
+  // Get localized routes
+  const homeRoute = useLocalizedRoute('/');
+  const dashboardRoute = useLocalizedRoute('/dashboard');
 
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      navigate("/");
+      navigate(homeRoute);
       toast({
         title: t('dashboard.logoutSuccess'),
         description: t('dashboard.logoutSuccessDesc'),
@@ -61,7 +66,7 @@ export const AuthenticatedConsumerHeader = ({
         navigate(personalizedUrl);
       } else {
         // Fallback to generic dashboard
-        navigate("/dashboard");
+        navigate(dashboardRoute);
       }
     }
   };

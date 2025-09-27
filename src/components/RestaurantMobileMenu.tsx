@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 interface RestaurantMobileMenuProps {
   onNewOfferClick: () => void;
@@ -22,11 +23,15 @@ export const RestaurantMobileMenu = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  // Get localized routes
+  const homeRoute = useLocalizedRoute('/');
+  const dashboardRoute = useLocalizedRoute('/dashboard');
 
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      navigate("/");
+      navigate(homeRoute);
       toast({
         title: t('dashboard.logoutSuccess'),
         description: t('dashboard.logoutSuccessDesc'),
@@ -70,7 +75,7 @@ export const RestaurantMobileMenu = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(() => navigate('/'))}
+                onClick={() => handleMenuClick(() => navigate(homeRoute))}
               >
                 <Home className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('navigation.back_home')}</span>
@@ -107,8 +112,8 @@ export const RestaurantMobileMenu = ({
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
                 onClick={() => handleMenuClick(() => {
-                  console.log('Clicking dashboard button, navigating to /dashboard');
-                  navigate('/dashboard');
+                  console.log('Clicking dashboard button, navigating to dashboard');
+                  navigate(dashboardRoute);
                 })}
               >
                 <LayoutDashboard className="h-5 w-5 mr-3" />

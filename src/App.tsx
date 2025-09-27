@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import { useTranslation, I18nextProvider } from "react-i18next";
 import i18n from "@/lib/i18n";
+import { routeTranslations } from "@/lib/routeTranslations";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import ScrollToTop from "@/components/ScrollToTop";
 import Header from "@/components/Header";
@@ -46,14 +47,9 @@ const AppContent = () => {
             <Index />
           </>
         } />
+        {/* English routes */}
         <Route path="/auth" element={<Auth />} />
         <Route path="/dashboard" element={
-          <>
-            <Header />
-            <Dashboard />
-          </>
-        } />
-        <Route path="/tableau-de-bord/:slug" element={
           <>
             <Header />
             <Dashboard />
@@ -128,6 +124,65 @@ const AppContent = () => {
         } />
         <Route path="/restaurant/:id" element={<RestaurantMenu />} />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
+
+        {/* French routes */}
+        <Route path="/connexion" element={<Auth />} />
+        <Route path="/tableau-de-bord" element={
+          <>
+            <Header />
+            <Dashboard />
+          </>
+        } />
+        <Route path="/tableau-de-bord/:slug" element={
+          <>
+            <Header />
+            <Dashboard />
+          </>
+        } />
+        <Route path="/tarifs" element={
+          <>
+            <Header />
+            <Pricing />
+          </>
+        } />
+        <Route path="/fonctionnalites" element={
+          <>
+            <Header />
+            <Features />
+          </>
+        } />
+        <Route path="/equipe" element={
+          <>
+            <Header />
+            <Team />
+          </>
+        } />
+        <Route path="/mentions-legales" element={
+          <>
+            <Header />
+            <Legal />
+          </>
+        } />
+        <Route path="/confidentialite" element={
+          <>
+            <Header />
+            <Privacy />
+          </>
+        } />
+        <Route path="/conditions" element={
+          <>
+            <Header />
+            <Terms />
+          </>
+        } />
+        <Route path="/liste-attente" element={<Waitlist />} />
+        <Route path="/assistant-vocal" element={
+          <>
+            <Header />
+            <VoiceChat />
+          </>
+        } />
+        <Route path="/email-confirme" element={<EmailConfirmed />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}

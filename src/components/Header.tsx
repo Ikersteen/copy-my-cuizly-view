@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
+import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useToast } from "@/hooks/use-toast";
@@ -35,6 +36,10 @@ const Header = () => {
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Get localized routes
+  const authRoute = useLocalizedRoute('/auth');
+  const dashboardRoute = useLocalizedRoute('/dashboard');
 
   // Load restaurant data when user is a restaurant owner
   const loadRestaurantData = async (userId: string) => {
@@ -78,11 +83,11 @@ const Header = () => {
   };
 
   const handleSwitchToRestaurant = () => {
-    navigate('/auth');
+    navigate(authRoute);
   };
 
   const handleSwitchToConsumer = () => {
-    navigate('/auth');
+    navigate(authRoute);
   };
 
   // Utilise le même logo que le footer partout
@@ -176,7 +181,7 @@ const Header = () => {
 
               {/* Auth Actions Desktop - Public */}
               <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
-                <Link to="/auth">
+                <Link to={authRoute}>
                   <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
                     {t('navigation.login')}
                   </Button>
@@ -245,7 +250,7 @@ const Header = () => {
                     <div className="pt-4">
                       <Button 
                         className="w-full bg-foreground hover:bg-foreground/90 text-background text-lg"
-                        onClick={() => handleNavigate("/auth")}
+                        onClick={() => handleNavigate(authRoute)}
                       >
                         {t('navigation.login')}
                       </Button>

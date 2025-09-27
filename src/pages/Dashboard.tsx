@@ -5,6 +5,7 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { useProfile } from "@/hooks/useProfile";
 import { generateUserUrl, extractSlugFromUrl } from "@/lib/urlUtils";
 import { useTranslation } from "react-i18next";
+import { useLocalizedRoute } from "@/lib/routeTranslations";
 import ConsumerDashboard from "./ConsumerDashboard";
 import RestaurantDashboard from "./RestaurantDashboard";
 
@@ -16,13 +17,16 @@ const Dashboard = () => {
   const { i18n, t } = useTranslation();
   const [restaurant, setRestaurant] = useState<any>(null);
   const [redirecting, setRedirecting] = useState(false);
+  
+  // Get localized routes
+  const authRoute = useLocalizedRoute('/auth');
 
   // Redirect to auth if not authenticated
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      navigate("/auth");
+      navigate(authRoute);
     }
-  }, [loading, isAuthenticated, navigate]);
+  }, [loading, isAuthenticated, navigate, authRoute]);
 
   // Load restaurant data if user is restaurant owner
   useEffect(() => {

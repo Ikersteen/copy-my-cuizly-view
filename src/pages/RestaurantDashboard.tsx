@@ -16,6 +16,7 @@ import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS, DIETARY_RESTRICTIONS_
 import LoadingSpinner from "@/components/LoadingSpinner";
 import type { User } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
+import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 interface Restaurant {
   id: string;
@@ -50,6 +51,10 @@ const RestaurantDashboard = () => {
   const { primaryAddress: restaurantAddress } = useAddresses('restaurant');
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  
+  // Get localized routes
+  const homeRoute = useLocalizedRoute('/');
+  const authRoute = useLocalizedRoute('/auth');
 
   useEffect(() => {
     loadData();
@@ -72,13 +77,13 @@ const RestaurantDashboard = () => {
       if (sessionError) {
         console.error('Session error:', sessionError);
         // Redirection avec navigate
-        navigate('/auth');
+        navigate(authRoute);
         return;
       }
 
       if (!session?.user) {
         console.warn('No valid session found');
-        navigate('/auth');
+        navigate(authRoute);
         return;
       }
 
@@ -158,7 +163,7 @@ const RestaurantDashboard = () => {
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      navigate('/');
+      navigate(homeRoute);
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
     }

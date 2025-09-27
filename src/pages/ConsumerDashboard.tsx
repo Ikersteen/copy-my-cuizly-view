@@ -23,6 +23,7 @@ import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 import type { User } from "@supabase/supabase-js";
 
@@ -46,6 +47,10 @@ const ConsumerDashboard = () => {
   
   const { toast } = useToast();
   const { t } = useTranslation();
+  
+  // Get localized routes
+  const homeRoute = useLocalizedRoute('/');
+  const voiceRoute = useLocalizedRoute('/voice');
 
 
   // Timeout to prevent infinite loading
@@ -135,12 +140,12 @@ const ConsumerDashboard = () => {
       setUser(null);
       
       // Redirection avec navigate au lieu de window.location.href
-      navigate("/");
+      navigate(homeRoute);
     } catch (error) {
       console.error('Error logging out:', error);
       // Force logout même en cas d'erreur
       setUser(null);
-      navigate("/");
+      navigate(homeRoute);
     }
   };
 
@@ -234,7 +239,7 @@ const ConsumerDashboard = () => {
 
       {/* Floating Voice Assistant Button - Redirects to new interface */}
       <Button
-        onClick={() => navigate('/voice')}
+        onClick={() => navigate(voiceRoute)}
         className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 z-50"
         aria-label={t('accessibility.voiceAssistant')}
       >
