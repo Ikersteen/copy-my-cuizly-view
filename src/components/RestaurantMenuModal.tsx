@@ -252,9 +252,9 @@ export const RestaurantMenuModal = ({
                            const hours = restaurant.opening_hours[day];
                            if (!hours) return null;
                            return (
-                             <div key={day} className="flex justify-between text-muted-foreground">
-                               <span>{t(`restaurantMenu.days.${day}`)}: </span>
-                               <span>
+                              <div key={day} className="text-muted-foreground">
+                                <span>{t(`restaurantMenu.days.${day}`)}: </span>
+                                <span>
                                  {typeof hours === 'object' && hours !== null ? 
                                    (hours as any).closed ? 
                                      t('restaurantMenu.closed') : 
