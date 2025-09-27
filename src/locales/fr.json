@@ -581,7 +581,6 @@
     "preview": "Aperçu"
   },
   "toasts": {
-    "success": "Succès",
     "error": "Erreur",
     "cannotLoadComments": "Impossible de charger les commentaires",
     "cannotAddComment": "Impossible d'ajouter le commentaire",
@@ -604,9 +603,8 @@
     "cannotLoadProfile": "Impossible de charger le profil. Veuillez rafraîchir la page.",
     "sessionExpired": "Session expirée",
     "pleaseSignInAgain": "Veuillez vous reconnecter",
-    "oauthError": "Erreur OAuth",
-    "conversationDeleted": "Conversation supprimée",
-    "titleUpdated": "Titre mis à jour"
+    "cannotLoadPreferences": "Impossible de charger les préférences. Veuillez rafraîchir la page.",
+    "oauthError": "Erreur OAuth"
   },
   "montreal": {
     "streets": [
@@ -2293,6 +2291,13 @@
     "logo": "Logo",
     "menu": "Menu",
     "profile": "Profil"
+  },
+  "toasts": {
+    "success": "Succès",
+    "conversationDeleted": "Conversation supprimée",
+    "titleUpdated": "Titre mis à jour",
+    "profileUpdated": "Profil mis à jour",
+    "informationSaved": "Vos informations ont été sauvegardées avec succès"
   },
   "pricingLanding": {
     "title": "Tarifs pour tous",

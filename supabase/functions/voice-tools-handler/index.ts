@@ -17,7 +17,7 @@ serve(async (req) => {
     
     console.log(`🔧 Tool call: ${toolName} (Language: ${language})`, toolArgs);
 
-    let result: any = { message: "Tool executed successfully" };
+    let result = { message: "Tool executed successfully" };
 
     // Messages selon la langue détectée
     const messages = {
@@ -37,16 +37,16 @@ serve(async (req) => {
 
     switch (toolName) {
       case 'get_recommendations':
-        const { cuisine, location, budget: recBudget } = toolArgs;
+        const { cuisine, location, budget } = toolArgs;
         result = {
           message: `${msg.recommendations}${cuisine ? ` - ${cuisine}` : ''}${location ? ` dans ${location}` : ''} :`,
-          data: [
+          restaurants: [
             {
               name: "Joe Beef",
               address: "2491 Rue Notre-Dame Ouest, Montréal",
               cuisine: cuisine || (language === 'en' ? "French bistro" : "Bistro français"),
               neighborhood: location || "Little Burgundy", 
-              budget: recBudget || (language === 'en' ? "High (60-90$ per person)" : "Élevé (60-90$ par personne)"),
+              budget: budget || (language === 'en' ? "High (60-90$ per person)" : "Élevé (60-90$ par personne)"),
               rating: 4.7,
               description: language === 'en' ? 
                 "Creative cuisine with quality local products. Reservations strongly recommended." :
@@ -57,7 +57,7 @@ serve(async (req) => {
               address: "3895 Boulevard Saint-Laurent, Montréal",
               cuisine: cuisine || (language === 'en' ? "Traditional deli" : "Deli traditionnel"),
               neighborhood: location || "Plateau-Mont-Royal",
-              budget: recBudget || (language === 'en' ? "Budget (15-25$ per person)" : "Économique (15-25$ par personne)"),
+              budget: budget || (language === 'en' ? "Budget (15-25$ per person)" : "Économique (15-25$ par personne)"),
               rating: 4.3,
               description: language === 'en' ?
                 "Legendary smoked meat since 1928. Authentic atmosphere, generous portions." :
@@ -68,7 +68,7 @@ serve(async (req) => {
               address: "900 Place Jean-Paul-Riopelle, Montréal", 
               cuisine: cuisine || (language === 'en' ? "Fine dining" : "Haute gastronomie"),
               neighborhood: location || "Centre-ville",
-              budget: recBudget || (language === 'en' ? "Premium (100-150$ per person)" : "Premium (100-150$ par personne)"),
+              budget: budget || (language === 'en' ? "Premium (100-150$ per person)" : "Premium (100-150$ par personne)"),
               rating: 4.8,
               description: language === 'en' ?
                 "Montreal's top fine dining restaurant. Innovative Quebec cuisine." :
@@ -88,40 +88,40 @@ serve(async (req) => {
         let frScore = 0;
         let enScore = 0;
         
-        words.forEach((word: string) => {
+        words.forEach(word => {
           if (frenchWords.includes(word)) frScore++;
           if (englishWords.includes(word)) enScore++;
         });
         
         const detectedLang = frScore > enScore ? 'fr' : 'en';
         result = {
-          detected_language: detectedLang,
+          language: detectedLang,
           confidence: Math.max(frScore, enScore) / words.length,
           message: `Language detected: ${detectedLang === 'fr' ? 'Français' : 'English'}`
         };
         break;
       case 'get_restaurant_recommendations':
-        const { cuisine: restoCuisine, neighborhood, budget: restoBudget, dietary_restrictions } = toolArgs;
+        const { cuisine: restoCuisine, neighborhood, budget, dietary_restrictions } = toolArgs;
         
         // Détecter si c'est pour Repentigny ou Montréal
-        const isRepentignyResto = neighborhood && (
+        const isRepentigny = neighborhood && (
           neighborhood.toLowerCase().includes('repentigny') ||
           neighborhood.toLowerCase().includes('j5y') ||
           neighborhood.toLowerCase().includes('j6a') ||
           neighborhood.toLowerCase().includes('j6b')
         );
         
-        if (isRepentignyResto) {
+        if (isRepentigny) {
           result = {
             message: `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''} à Repentigny avec adresses complètes :`,
-            data: [
+            restaurants: [
               {
                 name: "Restaurant Chez Cora",
                 address: "335 Boulevard Iberville, Repentigny, QC J6A 2B6",
                 phone: "(450) 582-6672",
                 cuisine: restoCuisine || "Déjeuners et brunchs",
                 neighborhood: "Centre-ville Repentigny",
-                budget: restoBudget || "Économique (15-25$ par personne)",
+                budget: budget || "Économique (15-25$ par personne)",
                 rating: 4.2,
                 hours: "Lun-Dim 6h-15h",
                 description: "Spécialiste des déjeuners créatifs et brunchs généreux. Fruits frais et plats colorés.",
@@ -133,7 +133,7 @@ serve(async (req) => {
                 phone: "(450) 585-4848",
                 cuisine: restoCuisine || "Grillades et BBQ",
                 neighborhood: "Centre-ville Repentigny",
-                budget: restoBudget || "Moyen (30-45$ par personne)",
+                budget: budget || "Moyen (30-45$ par personne)",
                 rating: 4.0,
                 hours: "Lun-Dim 11h30-22h",
                 description: "Spécialités de grillades, côtes levées et steaks. Ambiance décontractée.",
@@ -145,7 +145,7 @@ serve(async (req) => {
                 phone: "(450) 585-3434",
                 cuisine: restoCuisine || "Italien moderne",
                 neighborhood: "Repentigny",
-                budget: restoBudget || "Moyen (25-40$ par personne)",
+                budget: budget || "Moyen (25-40$ par personne)",
                 rating: 4.1,
                 hours: "Lun-Dim 11h-22h",
                 description: "Cuisine italienne moderne avec bar à pain gratuit. Parfait pour les familles.",
@@ -156,14 +156,14 @@ serve(async (req) => {
         } else {
           result = {
             message: `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''}${neighborhood ? ` dans ${neighborhood}` : ''} avec adresses complètes :`,
-            data: [
+            restaurants: [
               {
                 name: "Restaurant Le Bremner",
                 address: "117 Rue Saint-Paul Ouest, Montréal, QC H2Y 1Z5",
                 phone: "(514) 544-0100",
                 cuisine: restoCuisine || "Fruits de mer",
                 neighborhood: neighborhood || "Vieux-Montréal",
-                budget: restoBudget || "Moyen (35-55$ par personne)",
+                budget: budget || "Moyen (35-55$ par personne)",
                 rating: 4.5,
                 hours: "Mar-Sam 17h30-22h30",
                 description: "Excellents fruits de mer dans une ambiance chaleureuse. Spécialités : huîtres, homard, poissons frais.",
@@ -175,7 +175,7 @@ serve(async (req) => {
                 phone: "(514) 935-6504", 
                 cuisine: restoCuisine || "Bistro français",
                 neighborhood: neighborhood || "Little Burgundy",
-                budget: restoBudget || "Élevé (60-90$ par personne)",
+                budget: budget || "Élevé (60-90$ par personne)",
                 rating: 4.7,
                 hours: "Mar-Sam 17h-23h",
                 description: "Cuisine créative avec produits locaux de qualité. Réservation fortement recommandée.",
@@ -187,7 +187,7 @@ serve(async (req) => {
                 phone: "(514) 842-4813",
                 cuisine: restoCuisine || "Deli traditionnel",
                 neighborhood: neighborhood || "Plateau-Mont-Royal", 
-                budget: restoBudget || "Économique (15-25$ par personne)",
+                budget: budget || "Économique (15-25$ par personne)",
                 rating: 4.3,
                 hours: "Dim-Mer 10h30-0h30, Jeu-Sam 10h30-3h30",
                 description: "Légendaire smoked meat depuis 1928. Ambiance authentique, portions généreuses.",
@@ -201,17 +201,17 @@ serve(async (req) => {
       case 'get_grocery_shopping_help':
         const { recipe_type, ingredients, neighborhood: shopNeighborhood, budget: shopBudget } = toolArgs;
         
-        const isRepentignyShop = shopNeighborhood && (
+        const isRepentigny = shopNeighborhood && (
           shopNeighborhood.toLowerCase().includes('repentigny') ||
           shopNeighborhood.toLowerCase().includes('j5y') ||
           shopNeighborhood.toLowerCase().includes('j6a') ||
           shopNeighborhood.toLowerCase().includes('j6b')
         );
         
-        if (isRepentignyShop) {
+        if (isRepentigny) {
           result = {
             message: `Voici où faire vos courses pour ${recipe_type || 'votre recette'} à Repentigny :`,
-            data: {
+            shopping_guide: {
               recipe_type: recipe_type,
               total_budget_estimate: shopBudget === 'économique' ? '25-40$' : shopBudget === 'moyen' ? '40-65$' : '65-100$',
               stores: [
@@ -256,7 +256,7 @@ serve(async (req) => {
         } else {
           result = {
             message: `Voici où faire vos courses pour ${recipe_type || 'votre recette'}${shopNeighborhood ? ` dans ${shopNeighborhood}` : ''} :`,
-            data: {
+            shopping_guide: {
               recipe_type: recipe_type,
               total_budget_estimate: shopBudget === 'économique' ? '25-40$' : shopBudget === 'moyen' ? '40-65$' : '65-100$',
               stores: [
@@ -304,17 +304,17 @@ serve(async (req) => {
       case 'get_market_locations':
         const { store_type, specialty, neighborhood: marketNeighborhood } = toolArgs;
         
-        const isRepentignyMarket = marketNeighborhood && (
+        const isRepentigny = marketNeighborhood && (
           marketNeighborhood.toLowerCase().includes('repentigny') ||
           marketNeighborhood.toLowerCase().includes('j5y') ||
           marketNeighborhood.toLowerCase().includes('j6a') ||
           marketNeighborhood.toLowerCase().includes('j6b')
         );
         
-        if (isRepentignyMarket) {
+        if (isRepentigny) {
           result = {
             message: `Voici les meilleurs ${store_type}s${specialty ? ` pour ${specialty}` : ''} à Repentigny :`,
-            data: [
+            locations: [
               {
                 name: store_type === 'marché' ? "Fruiterie Repentigny" : store_type === 'boucherie' ? "Boucherie Chez Mario" : store_type === 'poissonnerie' ? "Poissonnerie du Village" : store_type === 'boulangerie' ? "Boulangerie Première Moisson" : "Maxi Repentigny",
                 address: store_type === 'marché' ? "525 Boulevard Iberville, Repentigny, QC J6A 2B7" : store_type === 'boucherie' ? "380 Boulevard Iberville, Repentigny, QC J6A 2B6" : store_type === 'poissonnerie' ? "290 Boulevard Iberville, Repentigny, QC J6A 2B5" : store_type === 'boulangerie' ? "350 Boulevard Iberville, Repentigny, QC J6A 2B6" : "1020 Boulevard Iberville, Repentigny, QC J6A 2B9",
@@ -339,7 +339,7 @@ serve(async (req) => {
         } else {
           result = {
             message: `Voici les meilleurs ${store_type}s${specialty ? ` pour ${specialty}` : ''}${marketNeighborhood ? ` dans ${marketNeighborhood}` : ''} :`,
-            data: [
+            locations: [
               {
                 name: store_type === 'marché' ? "Marché Atwater" : store_type === 'boucherie' ? "Boucherie Lawrence" : store_type === 'poissonnerie' ? "Poissonnerie Antoine" : store_type === 'boulangerie' ? "Boulangerie St-Méthode" : "Épicerie Latina",
                 address: store_type === 'marché' ? "138 Avenue Atwater, Montréal, QC H4C 2G3" : store_type === 'boucherie' ? "5237 Boulevard Saint-Laurent, Montréal, QC H2T 1S4" : store_type === 'poissonnerie' ? "1840 René-Lévesque Blvd E, Montréal, QC H2K 4M5" : store_type === 'boulangerie' ? "1 Place du Commerce, Montréal, QC H3E 1A2" : "185 Boulevard Saint-Laurent, Montréal, QC H2X 3G7",
@@ -378,7 +378,7 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('❌ Error in voice-tools-handler:', error);
-    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }), {
+    return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

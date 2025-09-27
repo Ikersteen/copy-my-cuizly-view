@@ -223,7 +223,7 @@ Base de données Cuizly : Tu as accès aux restaurants de Montréal et Repentign
   } catch (error) {
     console.error('Error in cuizly-voice-chat function:', error);
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : String(error) }),
+      JSON.stringify({ error: error.message }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
