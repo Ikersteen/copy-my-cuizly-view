@@ -53,47 +53,42 @@ const Dashboard = () => {
 
   // Redirect to personalized URL if user is on generic dashboard
   useEffect(() => {
-    console.log('🔄 Redirection check:', { 
-      loading, 
-      redirecting, 
-      isAuthenticated, 
-      hasProfile: !!profile, 
-      hasUserProfile: !!userProfile,
-      currentPath: window.location.pathname 
-    });
-
-    if (loading || redirecting || !isAuthenticated || !profile) {
-      return;
-    }
-
-    const currentPath = window.location.pathname;
-    const currentSlug = extractSlugFromUrl(currentPath);
-    
-    // If user is on generic /dashboard or /tableau-de-bord without slug, redirect to personalized URL
-    if (currentPath === '/dashboard' || currentPath === '/tableau-de-bord') {
-      console.log('📍 Generic dashboard detected, redirecting...');
-      setRedirecting(true);
+    if (!loading && !redirecting && isAuthenticated && profile && userProfile) {
+      const currentPath = window.location.pathname;
+      const currentSlug = extractSlugFromUrl(currentPath);
       
-      // Use a timeout to ensure state updates are processed
-      setTimeout(() => {
+      // If user is on generic /dashboard or /tableau-de-bord without slug, redirect to personalized URL
+      if (currentPath === '/dashboard' || currentPath === '/tableau-de-bord') {
+        setRedirecting(true);
         const personalizedUrl = generateUserUrl(
           profile.user_type,
           userProfile,
           restaurant,
           i18n.language
         );
-        console.log('🎯 Redirecting to:', personalizedUrl);
         navigate(personalizedUrl, { replace: true });
-      }, 100);
-      return;
+        return;
+      }
+      
+      // If user has a slug but profile data suggests it should be different, update if needed
+      if (currentSlug) {
+        const expectedUrl = generateUserUrl(
+          profile.user_type,
+          userProfile,
+          restaurant,
+          i18n.language
+        );
+        const expectedSlug = extractSlugFromUrl(expectedUrl);
+        
+        // Only redirect if the slug is significantly different (not just language path difference)
+        if (expectedSlug && currentSlug !== expectedSlug) {
+          setRedirecting(true);
+          navigate(expectedUrl, { replace: true });
+          return;
+        }
+      }
     }
-    
-    // Reset redirecting state if we're already on the right path
-    if (redirecting && currentSlug) {
-      console.log('✅ Already on personalized URL, resetting redirect state');
-      setRedirecting(false);
-    }
-  }, [loading, isAuthenticated, profile, userProfile, restaurant, i18n.language, navigate, redirecting]);
+  }, [loading, redirecting, isAuthenticated, profile, userProfile, restaurant, i18n.language, navigate]);
 
   // Set dynamic page title based on personalized URL
   useEffect(() => {
@@ -114,12 +109,11 @@ const Dashboard = () => {
   }, [profile, userProfile, restaurant, t]);
 
   if (redirecting) {
-    console.log('🔄 Showing redirect loading screen');
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
           <div className="text-center">
             <div className="space-y-2">
-            <p className="text-cuizly-neutral font-medium">Redirection en cours...</p>
+            <p className="text-cuizly-neutral font-medium">Chargement de votre tableau de bord...</p>
             <div className="flex justify-center space-x-1">
               <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce"></div>
               <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -130,8 +124,6 @@ const Dashboard = () => {
       </div>
     );
   }
-
-  console.log('🎯 Rendering dashboard for user type:', profile?.user_type);
 
   // Render appropriate dashboard based on user type
   return profile?.user_type === 'restaurant_owner' ? <RestaurantDashboard /> : <ConsumerDashboard />;
