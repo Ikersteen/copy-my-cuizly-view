@@ -85,7 +85,7 @@ export const ConsumerMobileMenu = ({
                 onClick={() => handleMenuClick(onProfileClick)}
               >
                 <User className="h-5 w-5 mr-3" />
-                <span className="text-base">{t('profile.title')}</span>
+                <span className="text-base">{t('profile.title', 'Profil')}</span>
               </Button>
 
               <Button
