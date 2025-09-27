@@ -443,14 +443,14 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 
 🎯 PONDÉRATION OBLIGATOIRE (100 points max):
 
-🔒 1. SÉCURITÉ ALIMENTAIRE (50 POINTS - 50%):
+🍽️ 1. PRÉFÉRENCES PERSONNELLES (50 POINTS - 50%):
+   A) Cuisine préférée (35 points): ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')}` : '❌ Aucune correspondance'}
+   B) Budget après cuisine (15 points): ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
+
+🔒 2. SÉCURITÉ ALIMENTAIRE (35 POINTS - 35%):
    • Restrictions alimentaires: ${checkSafetyCompatibility(restaurant, preferences)}
    • Allergènes compatibles: ${preferences.allergens?.length ? (restaurant.allergens?.some(a => preferences.allergens!.includes(a)) ? '❌ DANGER' : '✅ SÉCURITAIRE') : '✅ Aucun allergène'}
    ⚠️ SI ALLERGÈNES INCOMPATIBLES = SCORE 0 IMMÉDIAT
-
-🍽️ 2. PRÉFÉRENCES PERSONNELLES (35 POINTS - 35%):
-   A) Cuisine préférée (25 points): ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')}` : '❌ Aucune correspondance'}
-   B) Budget après cuisine (10 points): ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
 
 ⏰ 3. CONTEXTE (15 POINTS - 15%):
    A) Timing repas (10 points): ${isMealTimeMatch ? '✅ Moment optimal' : '❌ Pas le bon moment'}
@@ -458,9 +458,9 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 
 🎯 CALCUL DU SCORE:
 1. Vérifie d'abord la SÉCURITÉ (allergènes = 0 si incompatible)
-2. Attribue 0-50 points pour sécurité alimentaire 
-3. Attribue 0-25 points pour cuisine préférée
-4. Attribue 0-10 points pour budget (après cuisine)
+2. Attribue 0-35 points pour cuisine préférée (priorité absolue)
+3. Attribue 0-15 points pour budget (après cuisine)
+4. Attribue 0-35 points pour sécurité alimentaire
 5. Attribue 0-10 points pour timing
 6. Attribue 0-5 points pour localisation
 
