@@ -1994,10 +1994,6 @@
     "voiceAssistant": "Assistant vocal",
     "backToTop": "Retour en haut de la page"
   },
-  "auth": {
-    "consumer": "Tableau de bord Consommateur",
-    "restaurantOwner": "Tableau de bord Restaurateur"
-  },
   "placeholders": {
     "searchConversation": "Rechercher une conversation...",
     "addressInput": "Commencez à taper votre adresse (Montréal ou Repentigny)..."

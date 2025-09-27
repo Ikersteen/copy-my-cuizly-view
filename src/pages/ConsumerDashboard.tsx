@@ -36,7 +36,7 @@ const ConsumerDashboard = () => {
   
   
   const { preferences, loading: preferencesLoading } = useUserPreferences();
-  const { profile, loading: profileLoading, loadProfile } = useProfile();
+  const { profile, loading: profileLoading } = useProfile();
   const { offers: allOffers } = useOffers();
   const { offers: trendingOffers } = useOffers('trending');
   const { offers: fastOffers } = useOffers('fast');
@@ -70,14 +70,6 @@ const ConsumerDashboard = () => {
       clearInterval(pollInterval);
     };
   }, []);
-
-  // Force reload profile if not loaded
-  useEffect(() => {
-    if (!profile && !profileLoading) {
-      console.log('Forcing profile reload...');
-      loadProfile();
-    }
-  }, [profile, profileLoading, loadProfile]);
 
   const loadData = async () => {
     try {
