@@ -169,7 +169,7 @@ export const useUserPreferences = () => {
               }
             });
           } else {
-            console.log('Creating default preferences...');
+            console.log('🆕 No existing preferences found, creating default preferences...');
             // Create default preferences with upsert to avoid conflicts
             const newPreferences = {
               ...defaultPreferences,
@@ -182,8 +182,12 @@ export const useUserPreferences = () => {
               .select()
               .single();
 
-            if (createError) throw createError;
-            console.log('Default preferences created:', created);
+            if (createError) {
+              console.error('Error creating default preferences:', createError);
+              throw createError;
+            }
+            
+            console.log('✅ Default preferences created successfully:', created);
             setPreferences({
               ...created,
               notification_preferences: created.notification_preferences as any || {
@@ -238,9 +242,49 @@ export const useUserPreferences = () => {
         return;
       }
 
-      if (!preferences?.id) return;
+      console.log('🔄 Updating preferences with:', updates);
+      console.log('Current preferences state:', preferences);
 
-      console.log('Updating preferences with:', updates);
+      // Si pas d'ID, créer les préférences d'abord
+      if (!preferences?.id) {
+        console.log('⚠️ No preferences ID found, creating new preferences...');
+        const newPreferences = {
+          ...defaultPreferences,
+          ...updates,
+          user_id: session.user.id
+        };
+        
+        const { data: created, error: createError } = await supabase
+          .from('user_preferences')
+          .upsert(newPreferences, { onConflict: 'user_id' })
+          .select()
+          .single();
+
+        if (createError) throw createError;
+        
+        console.log('✅ New preferences created:', created);
+        
+        const updatedPreferences = {
+          ...created,
+          notification_preferences: created.notification_preferences as any || {
+            push: false,
+            email: false
+          }
+        };
+        
+        setPreferences(updatedPreferences);
+        
+        console.log('💾 Emitting global preferences update event');
+        window.dispatchEvent(new CustomEvent('preferencesUpdated', { 
+          detail: { preferences: updatedPreferences } 
+        }));
+        
+        toast({
+          title: t('toasts.preferencesUpdated') || 'Préférences mises à jour',
+          description: t('toasts.preferencesSavedSuccessfully') || 'Préférences sauvegardées avec succès'
+        });
+        return;
+      }
 
       const { data, error } = await supabase
         .from('user_preferences')
