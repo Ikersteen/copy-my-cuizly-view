@@ -227,7 +227,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                       <User className="h-12 w-12 text-muted-foreground" />
                     )}
                   </div>
-                  <div className="absolute -bottom-2 -right-2 flex gap-2">
+                  <div className="absolute -bottom-2 -right-2">
                     <Button
                       variant="secondary"
                       size="icon"
@@ -241,25 +241,15 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                         <Camera className="h-4 w-4" />
                       )}
                     </Button>
-                    {formData.avatar_url && (
-                      <Button
-                        variant="secondary"
-                        size="icon"
-                        className="h-10 w-10 rounded-full shadow-lg bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        onClick={handleRemoveAvatar}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
                   </div>
                 </div>
                 
                 {/* User Info */}
                 <h2 className="text-2xl font-bold text-foreground">
-                  @{profile?.username || 'utilisateur'}
+                  @{formData.username || profile?.username || 'utilisateur'}
                 </h2>
                 <DialogDescription className="text-muted-foreground">
-                  {userEmail || 'Email non disponible'}
+                  {formData.email || userEmail || 'Email non disponible'}
                 </DialogDescription>
               </div>
             </DialogTitle>
