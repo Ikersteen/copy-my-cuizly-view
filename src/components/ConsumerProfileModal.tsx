@@ -196,22 +196,28 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold flex items-center gap-2">
-              <User className="h-5 w-5" />
-              {profile?.first_name || profile?.username || t('profile.title')}
+        <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto p-0">
+          <DialogHeader className="px-6 py-4 border-b bg-gradient-to-r from-background to-muted/20">
+            <DialogTitle className="text-lg font-semibold flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <User className="h-4 w-4 text-primary" />
+              </div>
+              <div>
+                <div>{profile?.first_name ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name}` : ''}` : profile?.username || t('profile.title')}</div>
+                <DialogDescription className="text-sm text-muted-foreground">
+                  @{profile?.username || 'utilisateur'} • {profile?.phone || 'ikersteen@gmail.com'}
+                </DialogDescription>
+              </div>
             </DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground">
-              @{profile?.username || 'utilisateur'}
-            </DialogDescription>
           </DialogHeader>
+          
+          <div className="px-6 py-4">
 
-          <div className="space-y-6 py-4">
-            {/* Profile Picture */}
-            <div className="flex flex-col items-center space-y-4">
+          <div className="py-2">
+            {/* Profile Picture Section */}
+            <div className="flex flex-col items-center space-y-4 mb-8">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden border-4 border-background shadow-lg">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden border-2 border-background shadow-lg">
                   {formData.avatar_url ? (
                     <img 
                       src={formData.avatar_url} 
@@ -219,31 +225,31 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <User className="h-8 w-8 text-muted-foreground" />
+                    <User className="h-6 w-6 text-muted-foreground" />
                   )}
                 </div>
-                <div className="absolute -bottom-2 -right-2 flex gap-1">
+                <div className="absolute -bottom-1 -right-1 flex gap-1">
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="h-8 w-8 rounded-full shadow-md"
+                    className="h-6 w-6 rounded-full shadow-md"
                     onClick={() => document.getElementById('avatar-upload')?.click()}
                     disabled={uploadingAvatar}
                   >
                     {uploadingAvatar ? (
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-current" />
                     ) : (
-                      <Camera className="h-4 w-4" />
+                      <Camera className="h-3 w-3" />
                     )}
                   </Button>
                   {formData.avatar_url && (
                     <Button
                       variant="destructive"
                       size="icon"
-                      className="h-8 w-8 rounded-full shadow-md"
+                      className="h-6 w-6 rounded-full shadow-md"
                       onClick={handleRemoveAvatar}
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-3 w-3" />
                     </Button>
                   )}
                 </div>
@@ -257,194 +263,213 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
               />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Informations personnelles */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <User className="h-5 w-5 text-primary" />
-                  <h3 className="text-lg font-semibold">{t('profile.personalInfo')}</h3>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="first_name">{t('profile.firstName')}</Label>
-                    <Input
-                      id="first_name"
-                      value={formData.first_name}
-                      onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
-                      placeholder={t('profile.firstNamePlaceholder')}
-                    />
+            {/* Main Content Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Left Column - Personal Information */}
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <User className="h-4 w-4 text-primary" />
+                    <h3 className="font-semibold text-foreground">{t('profile.personalInfo')}</h3>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="last_name">{t('profile.lastName')}</Label>
-                    <Input
-                      id="last_name"
-                      value={formData.last_name}
-                      onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
-                      placeholder={t('profile.lastNamePlaceholder')}
-                    />
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <Label htmlFor="first_name" className="text-sm">{t('profile.firstName')}</Label>
+                        <Input
+                          id="first_name"
+                          value={formData.first_name}
+                          onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
+                          placeholder={t('profile.firstNamePlaceholder')}
+                          className="h-9"
+                        />
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <Label htmlFor="last_name" className="text-sm">{t('profile.lastName')}</Label>
+                        <Input
+                          id="last_name"
+                          value={formData.last_name}
+                          onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
+                          placeholder={t('profile.lastNamePlaceholder')}
+                          className="h-9"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <Label htmlFor="username" className="text-sm">{t('profile.username')}</Label>
+                      <Input
+                        id="username"
+                        value={formData.username}
+                        onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                        placeholder={t('profile.usernamePlaceholder')}
+                        className="h-9"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <Label htmlFor="phone" className="text-sm">{t('profile.phone')}</Label>
+                      <Input
+                        id="phone"
+                        value={formData.phone}
+                        onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                        placeholder="+1 (514) 123-4567"
+                        className="h-9"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="username">{t('profile.username')}</Label>
-                  <Input
-                    id="username"
-                    value={formData.username}
-                    onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                    placeholder={t('profile.usernamePlaceholder')}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone">{t('profile.phone')}</Label>
-                  <Input
-                    id="phone"
-                    value={formData.phone}
-                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                    placeholder="+1 (514) 123-4567"
-                  />
-                </div>
-
-                {/* Sécurité et confidentialité */}
-                <Separator className="my-6" />
-                
-                <div className="flex items-center gap-2 mb-4">
-                  <Shield className="h-5 w-5 text-primary" />
-                  <h3 className="text-lg font-semibold">{t('profile.security')}</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <div>
-                      <p className="font-medium">{t('profile.password')}</p>
-                      <p className="text-sm text-muted-foreground">{t('profile.passwordDescription')}</p>
+                {/* Security Section */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Shield className="h-4 w-4 text-primary" />
+                    <h3 className="font-semibold text-foreground">{t('profile.security')}</h3>
+                  </div>
+                  
+                  <div className="p-3 border rounded-lg bg-card">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-sm">{t('profile.password')}</p>
+                        <p className="text-xs text-muted-foreground">{t('profile.passwordDescription')}</p>
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setShowPasswordModal(true)}
+                      >
+                        {t('profile.modify')}
+                      </Button>
                     </div>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setShowPasswordModal(true)}
-                    >
-                      <Edit2 className="h-4 w-4 mr-2" />
-                      {t('profile.modify')}
-                    </Button>
                   </div>
                 </div>
               </div>
 
-              {/* Actions du compte et Notifications */}
-              <div className="space-y-4">
-                {/* Actions du compte */}
-                <div className="flex items-center gap-2 mb-4">
-                  <LogOut className="h-5 w-5 text-primary" />
-                  <h3 className="text-lg font-semibold">{t('profile.accountActions')}</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <div>
-                      <p className="font-medium">{t('profile.logout')}</p>
-                      <p className="text-sm text-muted-foreground">{t('profile.logoutDescription')}</p>
-                    </div>
-                    <Button variant="outline" onClick={handleLogout}>
-                      <LogOut className="h-4 w-4 mr-2" />
-                      {t('profile.logout')}
-                    </Button>
+              {/* Right Column - Account Actions & Notifications */}
+              <div className="space-y-6">
+                {/* Account Actions */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <LogOut className="h-4 w-4 text-primary" />
+                    <h3 className="font-semibold text-foreground">{t('profile.accountActions')}</h3>
                   </div>
-
-                  <div className="p-3 border border-destructive/20 rounded-lg bg-destructive/5">
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="font-medium text-destructive">{t('profile.deleteAccount')}</p>
-                      <AlertDialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="destructive" size="sm">
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            {t('profile.deleteAccount')}
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>{t('profile.deleteAccountConfirm')}</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              {t('profile.deleteAccountDescription')}
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
-                            <AlertDialogAction 
-                              onClick={handleDeleteAccount}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                            >
-                              {t('profile.confirmDelete')}
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                  
+                  <div className="space-y-3">
+                    <div className="p-3 border rounded-lg bg-card">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-sm">{t('dashboard.logout')}</p>
+                          <p className="text-xs text-muted-foreground">Déconnectez-vous de votre session actuelle</p>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={handleLogout}>
+                          {t('dashboard.logout')}
+                        </Button>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      {t('profile.deleteAccountExplanation')}
-                    </p>
+
+                    <div className="p-3 border border-destructive/20 rounded-lg bg-destructive/5">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <p className="font-medium text-sm text-destructive">{t('profile.deleteAccount')}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, toutes vos données seront définitivement supprimées.
+                          </p>
+                        </div>
+                        <AlertDialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="sm">
+                              {t('profile.deleteAccount')}
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>{t('profile.deleteAccountConfirm')}</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {t('profile.deleteAccountDescription')}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={handleDeleteAccount}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                {t('profile.confirmDelete')}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Notifications */}
-                <Separator className="my-6" />
-                
-                <div className="flex items-center gap-2 mb-4">
-                  <Bell className="h-5 w-5 text-primary" />
-                  <h3 className="text-lg font-semibold">{t('profile.notifications')}</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Mail className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">{t('profile.emailNotifications')}</p>
-                        <p className="text-sm text-muted-foreground">{t('profile.emailNotificationsDesc')}</p>
-                      </div>
-                    </div>
-                    <Switch
-                      checked={notificationSettings.email}
-                      onCheckedChange={(checked) => 
-                        setNotificationSettings(prev => ({ ...prev, email: checked }))
-                      }
-                    />
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Bell className="h-4 w-4 text-primary" />
+                    <h3 className="font-semibold text-foreground">{t('profile.notifications')}</h3>
                   </div>
-
-                  <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Bell className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">{t('profile.pushNotifications')}</p>
-                        <p className="text-sm text-muted-foreground">{t('profile.pushNotificationsDesc')}</p>
+                  
+                  <div className="space-y-3">
+                    <div className="p-3 border rounded-lg bg-card">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Mail className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <p className="font-medium text-sm">{t('profile.emailNotifications')}</p>
+                            <p className="text-xs text-muted-foreground">Recevez des notifications par courriel</p>
+                          </div>
+                        </div>
+                        <Switch
+                          checked={notificationSettings.email}
+                          onCheckedChange={(checked) => 
+                            setNotificationSettings(prev => ({ ...prev, email: checked }))
+                          }
+                        />
                       </div>
                     </div>
-                    <Switch
-                      checked={notificationSettings.push}
-                      onCheckedChange={(checked) => 
-                        setNotificationSettings(prev => ({ ...prev, push: checked }))
-                      }
-                    />
+
+                    <div className="p-3 border rounded-lg bg-card">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Bell className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <p className="font-medium text-sm">{t('profile.pushNotifications')}</p>
+                            <p className="text-xs text-muted-foreground">Recevez des notifications sur votre appareil</p>
+                          </div>
+                        </div>
+                        <Switch
+                          checked={notificationSettings.push}
+                          onCheckedChange={(checked) => 
+                            setNotificationSettings(prev => ({ ...prev, push: checked }))
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
+          </div>
+
           {/* Actions */}
-          <div className="flex justify-between pt-4 border-t">
-            <Button variant="outline" onClick={onClose}>
-              {t('common.cancel')}
+          <div className="flex justify-between px-6 py-4 border-t bg-muted/30">
+            <Button variant="outline" onClick={onClose} className="min-w-[100px]">
+              Annuler
             </Button>
-            <Button onClick={handleSave} disabled={saving}>
+            <Button onClick={handleSave} disabled={saving} className="min-w-[120px]">
               {saving ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
-                  {t('common.saving')}
+                  Sauvegarde...
                 </>
               ) : (
-                t('common.save')
+                "Sauvegarder"
               )}
             </Button>
           </div>
