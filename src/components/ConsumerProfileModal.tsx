@@ -242,10 +242,10 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 
                 {/* User Info */}
                 <h2 className="text-2xl font-bold text-foreground">
-                  @{profile?.username || 'utilisateur'}
+                  {profile?.first_name ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name}` : ''}` : profile?.username || 'Profil utilisateur'}
                 </h2>
                 <DialogDescription className="text-muted-foreground">
-                  @{profile?.username || 'utilisateur'}
+                  @{profile?.username || 'utilisateur'} • {profile?.phone || 'ikersteen@gmail.com'}
                 </DialogDescription>
               </div>
             </DialogTitle>
