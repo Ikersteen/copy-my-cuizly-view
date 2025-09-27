@@ -120,14 +120,10 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
   const handleSave = async () => {
     try {
-      console.log('🔄 PreferencesModal: Starting save process...');
-      console.log('🔍 PreferencesModal: Current localPrefs:', localPrefs);
-      console.log('🔍 PreferencesModal: Current preferences from hook:', preferences);
+      console.log('Saving preferences:', localPrefs);
       
       // Update main preferences (excluding legacy address fields)
       const { street, full_address, neighborhood, postal_code, ...prefsToSave } = localPrefs;
-      
-      console.log('💾 PreferencesModal: Saving preferences:', prefsToSave);
       await updatePreferences(prefsToSave);
       
       // Update delivery address if it was provided
@@ -135,14 +131,16 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
       const newAddress = (localPrefs as any).full_address || "";
       
       if (newAddress && newAddress !== currentAddress) {
-        console.log('📍 PreferencesModal: Updating delivery address:', newAddress);
         await updateDeliveryAddress(newAddress);
       }
       
-      console.log('✅ PreferencesModal: Save completed successfully');
-      onOpenChange(false);
+    onOpenChange(false);
+    toast({
+      title: t('toasts.preferencesUpdated') || 'Préférences mises à jour',
+      description: t('toasts.preferencesSavedSuccessfully') || 'Préférences sauvegardées avec succès'
+    });
     } catch (error) {
-      console.error('❌ PreferencesModal: Error saving preferences:', error);
+      console.error('Error saving preferences:', error);
       toast({
         title: t('toasts.error'),
         description: t('preferences.saveError'),
