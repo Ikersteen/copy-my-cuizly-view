@@ -270,55 +270,55 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <User className="h-4 w-4 text-primary" />
-                    <h3 className="font-semibold text-foreground">{t('profile.personalInfo')}</h3>
+                    <h3 className="font-semibold text-foreground">Informations personnelles</h3>
                   </div>
                   
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-1">
-                        <Label htmlFor="first_name" className="text-sm">{t('profile.firstName')}</Label>
-                        <Input
-                          id="first_name"
-                          value={formData.first_name}
-                          onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
-                          placeholder={t('profile.firstNamePlaceholder')}
-                          className="h-9"
-                        />
-                      </div>
-                      
-                      <div className="space-y-1">
-                        <Label htmlFor="last_name" className="text-sm">{t('profile.lastName')}</Label>
-                        <Input
-                          id="last_name"
-                          value={formData.last_name}
-                          onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
-                          placeholder={t('profile.lastNamePlaceholder')}
-                          className="h-9"
-                        />
-                      </div>
-                    </div>
-
                     <div className="space-y-1">
-                      <Label htmlFor="username" className="text-sm">{t('profile.username')}</Label>
+                      <Label htmlFor="first_name" className="text-sm">Prénom</Label>
                       <Input
-                        id="username"
-                        value={formData.username}
-                        onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                        placeholder={t('profile.usernamePlaceholder')}
+                        id="first_name"
+                        value={formData.first_name}
+                        onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
+                        placeholder="Iker"
                         className="h-9"
                       />
                     </div>
-
+                    
                     <div className="space-y-1">
-                      <Label htmlFor="phone" className="text-sm">{t('profile.phone')}</Label>
+                      <Label htmlFor="last_name" className="text-sm">Nom</Label>
                       <Input
-                        id="phone"
-                        value={formData.phone}
-                        onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                        placeholder="+1 (514) 123-4567"
+                        id="last_name"
+                        value={formData.last_name}
+                        onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
+                        placeholder="Votre nom"
                         className="h-9"
                       />
                     </div>
+                    </div>
+
+                  <div className="space-y-1">
+                    <Label htmlFor="username" className="text-sm">Nom d'utilisateur</Label>
+                    <Input
+                      id="username"
+                      value={formData.username}
+                      onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                      placeholder="Iker"
+                      className="h-9"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <Label htmlFor="phone" className="text-sm">Téléphone</Label>
+                    <Input
+                      id="phone"
+                      value={formData.phone}
+                      onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                      placeholder="+1 (514) 123-4567"
+                      className="h-9"
+                    />
+                  </div>
                   </div>
                 </div>
 
@@ -326,24 +326,24 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <Shield className="h-4 w-4 text-primary" />
-                    <h3 className="font-semibold text-foreground">{t('profile.security')}</h3>
+                    <h3 className="font-semibold text-foreground">Sécurité et confidentialité</h3>
                   </div>
                   
-                  <div className="p-3 border rounded-lg bg-card">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-sm">{t('profile.password')}</p>
-                        <p className="text-xs text-muted-foreground">{t('profile.passwordDescription')}</p>
+                      <div className="p-3 border rounded-lg bg-card">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium text-sm">Mot de passe</p>
+                            <p className="text-xs text-muted-foreground">Modifiez votre mot de passe pour sécuriser votre compte</p>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => setShowPasswordModal(true)}
+                          >
+                            Modifier
+                          </Button>
+                        </div>
                       </div>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => setShowPasswordModal(true)}
-                      >
-                        {t('profile.modify')}
-                      </Button>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -353,18 +353,18 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <LogOut className="h-4 w-4 text-primary" />
-                    <h3 className="font-semibold text-foreground">{t('profile.accountActions')}</h3>
+                    <h3 className="font-semibold text-foreground">Actions du compte</h3>
                   </div>
                   
                   <div className="space-y-3">
                     <div className="p-3 border rounded-lg bg-card">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium text-sm">{t('dashboard.logout')}</p>
+                          <p className="font-medium text-sm">Se déconnecter</p>
                           <p className="text-xs text-muted-foreground">Déconnectez-vous de votre session actuelle</p>
                         </div>
                         <Button variant="outline" size="sm" onClick={handleLogout}>
-                          {t('dashboard.logout')}
+                          Se déconnecter
                         </Button>
                       </div>
                     </div>
@@ -372,7 +372,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                     <div className="p-3 border border-destructive/20 rounded-lg bg-destructive/5">
                       <div className="flex items-start justify-between mb-2">
                         <div>
-                          <p className="font-medium text-sm text-destructive">{t('profile.deleteAccount')}</p>
+                          <p className="font-medium text-sm text-destructive">Supprimer le compte</p>
                           <p className="text-xs text-muted-foreground mt-1">
                             Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, toutes vos données seront définitivement supprimées.
                           </p>
@@ -380,26 +380,26 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                         <AlertDialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
                           <AlertDialogTrigger asChild>
                             <Button variant="destructive" size="sm">
-                              {t('profile.deleteAccount')}
+                              Supprimer le compte
                             </Button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>{t('profile.deleteAccountConfirm')}</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                {t('profile.deleteAccountDescription')}
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
-                              <AlertDialogAction 
-                                onClick={handleDeleteAccount}
-                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                              >
-                                {t('profile.confirmDelete')}
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Êtes-vous sûr de vouloir supprimer votre compte ?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, toutes vos données seront définitivement supprimées.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Annuler</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={handleDeleteAccount}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Supprimer le compte
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
                         </AlertDialog>
                       </div>
                     </div>
@@ -410,7 +410,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <Bell className="h-4 w-4 text-primary" />
-                    <h3 className="font-semibold text-foreground">{t('profile.notifications')}</h3>
+                    <h3 className="font-semibold text-foreground">Notifications</h3>
                   </div>
                   
                   <div className="space-y-3">
@@ -419,7 +419,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                         <div className="flex items-center gap-3">
                           <Mail className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="font-medium text-sm">{t('profile.emailNotifications')}</p>
+                            <p className="font-medium text-sm">Notifications courriel</p>
                             <p className="text-xs text-muted-foreground">Recevez des notifications par courriel</p>
                           </div>
                         </div>
@@ -437,7 +437,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                         <div className="flex items-center gap-3">
                           <Bell className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="font-medium text-sm">{t('profile.pushNotifications')}</p>
+                            <p className="font-medium text-sm">Notifications push</p>
                             <p className="text-xs text-muted-foreground">Recevez des notifications sur votre appareil</p>
                           </div>
                         </div>
@@ -480,25 +480,25 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
       <Dialog open={showPasswordModal} onOpenChange={setShowPasswordModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t('profile.changePassword')}</DialogTitle>
+            <DialogTitle>Changer le mot de passe</DialogTitle>
             <DialogDescription>
-              {t('profile.changePasswordDesc')}
+              Modifiez votre mot de passe pour sécuriser votre compte
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <Alert>
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                {t('profile.passwordChangeNotice')}
+                Un lien de réinitialisation sera envoyé à votre adresse courriel
               </AlertDescription>
             </Alert>
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setShowPasswordModal(false)}>
-              {t('common.cancel')}
+              Annuler
             </Button>
             <Button onClick={() => setShowPasswordModal(false)}>
-              {t('profile.sendResetEmail')}
+              Envoyer le lien
             </Button>
           </div>
         </DialogContent>
