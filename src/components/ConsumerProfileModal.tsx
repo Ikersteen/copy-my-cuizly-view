@@ -318,33 +318,6 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 </div>
               </div>
 
-              {/* Security Card */}
-              <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Shield className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground">Sécurité et confidentialité</h3>
-                </div>
-                
-                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Shield className="h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <p className="font-medium text-sm">Mot de passe</p>
-                      <p className="text-xs text-muted-foreground">Modifiez votre mot de passe pour sécuriser votre compte</p>
-                    </div>
-                  </div>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => setShowPasswordModal(true)}
-                    className="shrink-0"
-                  >
-                    Modifier
-                  </Button>
-                </div>
-              </div>
 
               {/* Account Actions Card */}
               <div className="bg-card border border-border rounded-xl p-6 space-y-4">
@@ -356,6 +329,24 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 </div>
                 
                 <div className="space-y-3">
+                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Shield className="h-5 w-5 text-muted-foreground" />
+                      <div>
+                        <p className="font-medium text-sm">Mot de passe</p>
+                        <p className="text-xs text-muted-foreground">Modifiez votre mot de passe pour sécuriser votre compte</p>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setShowPasswordModal(true)}
+                      className="shrink-0"
+                    >
+                      Modifier
+                    </Button>
+                  </div>
+
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
                     <div className="flex items-center gap-3">
                       <LogOut className="h-5 w-5 text-muted-foreground" />
