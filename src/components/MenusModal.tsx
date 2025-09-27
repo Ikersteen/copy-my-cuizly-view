@@ -273,7 +273,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       await loadMenus();
       toast({
         title: t('menus.statusChanged'),
-        description: !isActive ? t('menus.menuActivatedDesc') : t('menus.menuDeactivatedDesc')
+        description: `Menu ${!isActive ? t('menus.menuActivated') : t('menus.menuDeactivated')} ${t('menus.statusChangedSuccessfully')}`
       });
     } catch (error) {
       console.error('Erreur lors de la modification:', error);

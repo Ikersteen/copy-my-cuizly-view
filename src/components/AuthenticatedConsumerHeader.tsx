@@ -50,40 +50,5 @@ export const AuthenticatedConsumerHeader = ({
     }
   };
 
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="relative h-8 w-8 rounded-full">
-          <User className="h-4 w-4" />
-          <span className="sr-only">{t('navigation.openUserMenu')}</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuItem onClick={() => handleAction(onProfileClick)}>
-          <User className="mr-2 h-4 w-4" />
-          <span>{t('navigation.profile')}</span>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem onClick={() => handleAction(onPreferencesClick)}>
-          <Settings className="mr-2 h-4 w-4" />
-          <span>{t('dashboard.preferences')}</span>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem onClick={() => handleAction(onOffersClick)}>
-          <Gift className="mr-2 h-4 w-4" />
-          <span>{t('dashboard.offers')}</span>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem onClick={() => changeLanguage(currentLanguage === 'fr' ? 'en' : 'fr')}>
-          <Globe className="mr-2 h-4 w-4" />
-          <span>{currentLanguage === 'fr' ? 'English' : 'Français'}</span>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>{t('dashboard.logout')}</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
+  return null;
 };

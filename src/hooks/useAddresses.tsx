@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import type { Address, AddressInput, AddressType } from '@/types/address';
-
+import { DEFAULT_ADDRESS_VALUES } from '@/types/address';
 
 export const useAddresses = (addressType?: AddressType) => {
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -75,8 +75,8 @@ export const useAddresses = (addressType?: AddressType) => {
     } catch (error) {
       console.error('Error loading addresses:', error);
       toast({
-        title: t('common.error'),
-        description: t('addresses.cannotLoad'),
+        title: 'Erreur',
+        description: 'Impossible de charger les adresses',
         variant: 'destructive'
       });
     } finally {
@@ -101,9 +101,9 @@ export const useAddresses = (addressType?: AddressType) => {
       }
 
       const newAddress = {
+        ...DEFAULT_ADDRESS_VALUES,
         ...addressInput,
         user_id: session.user.id,
-        is_active: true,
       };
 
       const { data, error } = await supabase
@@ -117,16 +117,16 @@ export const useAddresses = (addressType?: AddressType) => {
       await loadAddresses();
 
       toast({
-        title: t('common.success'),
-        description: t('addresses.createdSuccessfully')
+        title: 'Succès',
+        description: 'Adresse créée avec succès'
       });
 
       return { ...data, address_type: data.address_type as AddressType };
     } catch (error) {
       console.error('Error creating address:', error);
       toast({
-        title: t('common.error'),
-        description: t('addresses.cannotCreate'),
+        title: 'Erreur',
+        description: 'Impossible de créer l\'adresse',
         variant: 'destructive'
       });
       return null;
@@ -164,16 +164,16 @@ export const useAddresses = (addressType?: AddressType) => {
       await loadAddresses();
 
       toast({
-        title: t('common.success'),
-        description: t('addresses.updatedSuccessfully')
+        title: 'Succès',
+        description: 'Adresse mise à jour avec succès'
       });
 
       return true;
     } catch (error) {
       console.error('Error updating address:', error);
       toast({
-        title: t('common.error'),
-        description: t('addresses.cannotUpdate'),
+        title: 'Erreur',
+        description: 'Impossible de mettre à jour l\'adresse',
         variant: 'destructive'
       });
       return false;
@@ -198,16 +198,16 @@ export const useAddresses = (addressType?: AddressType) => {
       await loadAddresses();
 
       toast({
-        title: t('common.success'),
-        description: t('addresses.deletedSuccessfully')
+        title: 'Succès',
+        description: 'Adresse supprimée avec succès'
       });
 
       return true;
     } catch (error) {
       console.error('Error deleting address:', error);
       toast({
-        title: t('common.error'),
-        description: t('addresses.cannotDelete'),
+        title: t('errors.title'),
+        description: t('errors.cannotDeleteAddress'),
         variant: 'destructive'
       });
       return false;

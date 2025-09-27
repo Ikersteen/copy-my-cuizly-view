@@ -23,7 +23,7 @@ import { AllMenusSection } from "@/components/AllMenusSection";
 import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
 import LoadingSpinner from "@/components/LoadingSpinner";
-
+import { UserAddressDisplay } from "@/components/UserAddressDisplay";
 import type { User } from "@supabase/supabase-js";
 
 const ConsumerDashboard = () => {
@@ -185,6 +185,7 @@ const ConsumerDashboard = () => {
                 <p className="text-sm sm:text-base text-muted-foreground">
                   {profile?.username ? `@${profile.username}` : ""}
                 </p>
+                <UserAddressDisplay className="mt-1" />
               </div>
             </div>
           </div>

@@ -15,9 +15,10 @@ import { ConsumerMobileMenu } from "@/components/ConsumerMobileMenu";
 import { RestaurantMobileMenu } from "@/components/RestaurantMobileMenu";
 import { MenusModal } from "@/components/MenusModal";
 import { PreferencesModal } from "@/components/PreferencesModal";
+import { ProfileModal } from "@/components/ProfileModal";
 import { NewOfferModal } from "@/components/NewOfferModal";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
-import { ConsumerProfileModal } from "@/components/ConsumerProfileModal";
+
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 
 const Header = () => {
@@ -26,9 +27,9 @@ const Header = () => {
   const { user, profile, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [showNewOffer, setShowNewOffer] = useState(false);
   const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
-  const [showConsumerProfile, setShowConsumerProfile] = useState(false);
   const [showMenus, setShowMenus] = useState(false);
   const [restaurant, setRestaurant] = useState(null);
   
@@ -190,12 +191,12 @@ const Header = () => {
             {isAuthenticated ? (
               // Authenticated mobile menu - role specific
               <>
-          {isConsumer && (
-            <ConsumerMobileMenu 
-              onProfileClick={() => setShowConsumerProfile(true)}
-              onPreferencesClick={() => setShowPreferences(true)}
-            />
-          )}
+                {isConsumer && (
+                  <ConsumerMobileMenu 
+                    onProfileClick={() => setShowProfile(true)}
+                    onPreferencesClick={() => setShowPreferences(true)}
+                  />
+                )}
                 {isRestaurant && (
                   <RestaurantMobileMenu 
                     onNewOfferClick={() => setShowNewOffer(true)}
@@ -275,15 +276,12 @@ const Header = () => {
                 open={showPreferences} 
                 onOpenChange={setShowPreferences}
               />
+              <ProfileModal 
+                open={showProfile} 
+                onOpenChange={setShowProfile}
+              />
             </>
           )}
-          {isConsumer && (
-            <ConsumerProfileModal 
-              open={showConsumerProfile}
-              onOpenChange={setShowConsumerProfile}
-            />
-          )}
-
           {isRestaurant && (
             <>
               <NewOfferModal 

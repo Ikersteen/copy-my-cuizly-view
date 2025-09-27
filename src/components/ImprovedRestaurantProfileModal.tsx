@@ -398,32 +398,14 @@ export const ImprovedRestaurantProfileModal = ({
       const { address, ...restaurantData } = formData;
       
       // Handle address update separately
-      console.log('Debug address save:', { 
-        address, 
-        currentAddress: restaurantAddress?.formatted_address,
-        hasCurrentAddress: !!restaurantAddress 
-      });
-      
-      let addressUpdated = false;
       if (address && address !== restaurantAddress?.formatted_address) {
-        console.log('Updating address...');
         if (restaurantAddress) {
-          console.log('Updating existing address:', restaurantAddress.id);
-          const result = await updateAddressHook(restaurantAddress.id!, { 
+          await updateAddressHook(restaurantAddress.id!, { 
             formatted_address: address 
           });
-          console.log('Address update result:', result);
-          addressUpdated = !!result;
         } else {
-          console.log('Creating new address:', address);
-          const addressInput = createAddressInput(address, 'restaurant', true);
-          console.log('Address input:', addressInput);
-          const result = await createAddress(addressInput);
-          console.log('Address creation result:', result);
-          addressUpdated = !!result;
+          await createAddress(createAddressInput(address, 'restaurant', true));
         }
-      } else {
-        console.log('No address update needed');
       }
 
       // Update other restaurant data
@@ -462,13 +444,10 @@ export const ImprovedRestaurantProfileModal = ({
 
       await loadRestaurant();
       
-      // Only show success toast if no address was updated (address hooks show their own toast)
-      if (!addressUpdated) {
-        toast({
-          title: t('restaurantProfile.saved'),
-          description: t('restaurantProfile.savedSuccessfully')
-        });
-      }
+      toast({
+        title: t('restaurantProfile.saved'),
+        description: t('restaurantProfile.savedSuccessfully')
+      });
     } catch (error) {
       console.error('Error saving restaurant:', error);
       toast({
@@ -484,22 +463,17 @@ export const ImprovedRestaurantProfileModal = ({
   return (
     <>
       <Dialog open={modalIsOpen} onOpenChange={handleClose}>
-      <DialogContent 
-        className="max-w-4xl max-h-[95vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0"
-        aria-describedby="restaurant-profile-description"
-      >
-        <DialogHeader className="sr-only">
-          <DialogTitle>Profil du restaurant</DialogTitle>
-          <DialogDescription id="restaurant-profile-description">
-            Modifiez les informations de votre restaurant, ajoutez des photos et gérez vos paramètres.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0">
+        <DialogTitle className="sr-only">Profil du restaurant</DialogTitle>
+        <DialogDescription className="sr-only">
+          Modifiez les informations de votre restaurant, ajoutez des photos et gérez vos paramètres.
+        </DialogDescription>
         
         {/* Header with padding */}
         <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
-          <div className="flex items-center justify-center">
-            <h2 className="text-xl font-semibold text-center">Profil du restaurant</h2>
-          </div>
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold text-center">Profil du restaurant</DialogTitle>
+          </DialogHeader>
         </div>
 
         {/* Content area */}

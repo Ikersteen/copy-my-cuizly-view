@@ -232,8 +232,8 @@ export const useUserPreferences = () => {
         }
         
         toast({
-          title: t('toasts.preferencesUpdated') || 'Préférences mises à jour',
-          description: t('toasts.preferencesSavedTemporarily') || 'Préférences sauvegardées temporairement',
+          title: t('toasts.preferencesUpdated'),
+          description: t('toasts.preferencesSavedTemporarily'),
         });
         return;
       }
@@ -270,8 +270,8 @@ export const useUserPreferences = () => {
       }));
       
       toast({
-        title: t('toasts.preferencesUpdated') || 'Préférences mises à jour',
-        description: t('toasts.preferencesSavedSuccessfully') || 'Préférences sauvegardées avec succès'
+        title: t('toasts.preferencesUpdated'),
+        description: t('toasts.preferencesSavedSuccessfully')
       });
     } catch (error) {
       console.error('Erreur lors de la mise à jour:', error);
