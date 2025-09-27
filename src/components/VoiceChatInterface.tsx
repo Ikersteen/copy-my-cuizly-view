@@ -38,7 +38,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [inputMode, setInputMode] = useState<'voice' | 'text'>('voice');
+  const [inputMode, setInputMode] = useState<'voice' | 'text'>('text');
   const [isConversationActive, setIsConversationActive] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [textInput, setTextInput] = useState('');
@@ -721,104 +721,37 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         </div>
 
         <div className="flex-shrink-0 border-t border-border bg-background px-6 py-6">
-          <div className="flex justify-center mb-4">
-            <div className="flex bg-muted rounded-full p-1">
+          <form onSubmit={handleTextSubmit} className="space-y-4">
+            <div className="flex gap-3">
+              <Input
+                value={textInput}
+                onChange={(e) => setTextInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder={t('voiceChat.inputPlaceholder')}
+                disabled={isProcessing}
+                autoComplete="on"
+                autoCorrect="on"
+                autoCapitalize="sentences"
+                spellCheck="true"
+                className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
               <Button
-                variant={inputMode === 'voice' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setInputMode('voice')}
-                className="rounded-full px-4 flex items-center justify-center"
+                type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
+                onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
+                disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim()}
+                className="rounded-full w-10 h-10 p-0 flex items-center justify-center"
               >
-                <Mic className="w-4 h-4 mr-1" />
-                Vocal
-              </Button>
-              <Button
-                variant={inputMode === 'text' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setInputMode('text')}
-                className="rounded-full px-4 flex items-center justify-center"
-              >
-                <Keyboard className="w-4 h-4 mr-1" />
-                Texte
+                {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
+                  <Square className="w-3.5 h-3.5 fill-white dark:fill-black" />
+                ) : (
+                  <Send className="w-3.5 h-3.5" />
+                )}
               </Button>
             </div>
-          </div>
-
-           {inputMode === 'voice' ? (
-            <>
-              <div className="flex items-center justify-center">
-                <div className="relative">
-                  <Button
-                    onClick={toggleConversation}
-                    disabled={isProcessing}
-                    className={`w-20 h-20 rounded-full transition-all duration-300 relative z-10 ${
-                      isProcessing
-                        ? 'bg-muted cursor-not-allowed'
-                        : isRecording
-                        ? 'bg-blue-500 hover:bg-blue-600 shadow-xl shadow-blue-500/25 text-white'
-                        : 'bg-red-500 hover:bg-red-600 shadow-xl shadow-red-500/25 text-white'
-                    }`}
-                  >
-                    {isProcessing ? (
-                      <div className="relative">
-                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
-                      </div>
-                    ) : isRecording ? (
-                      <Mic className="w-8 h-8 text-white transition-transform duration-200" />
-                    ) : (
-                      <MicOff className="w-8 h-8 text-white transition-transform duration-200" />
-                    )}
-                  </Button>
-                  
-                  {/* Indicateur de parole AI */}
-                  {isSpeaking && (
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                      <div className="flex items-center gap-1 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
-                        <Volume2 className="w-3 h-3" />
-                        IA parle
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="text-center mt-4">
-                {/* Texte supprimé */}
-              </div>
-            </>
-          ) : (
-            <form onSubmit={handleTextSubmit} className="space-y-4">
-              <div className="flex gap-3">
-                <Input
-                  value={textInput}
-                  onChange={(e) => setTextInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder={t('voiceChat.inputPlaceholder')}
-                  disabled={isProcessing}
-                  autoComplete="on"
-                  autoCorrect="on"
-                  autoCapitalize="sentences"
-                  spellCheck="true"
-                  className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
-                />
-                <Button
-                  type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
-                  onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
-                  disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim()}
-                  className="rounded-full w-10 h-10 p-0 flex items-center justify-center"
-                >
-                  {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
-                    <Square className="w-3.5 h-3.5 fill-white dark:fill-black" />
-                  ) : (
-                    <Send className="w-3.5 h-3.5" />
-                  )}
-                </Button>
-              </div>
-              <div className="text-center space-y-1 px-4 mx-auto max-w-xs sm:max-w-none">
-                {/* Texte supprimé */}
-              </div>
-            </form>
-          )}
+            <div className="text-center space-y-1 px-4 mx-auto max-w-xs sm:max-w-none">
+              {/* Texte supprimé */}
+            </div>
+          </form>
         </div>
         
         {/* Disclaimer */}

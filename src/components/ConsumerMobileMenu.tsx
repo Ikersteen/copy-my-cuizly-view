@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, User, Settings, LayoutDashboard, LogOut, Home } from "lucide-react";
+import { Menu, Settings, LayoutDashboard, LogOut, Home } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 interface ConsumerMobileMenuProps {
-  onProfileClick: () => void;
   onPreferencesClick: () => void;
 }
 
 export const ConsumerMobileMenu = ({
-  onProfileClick,
   onPreferencesClick,
 }: ConsumerMobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,15 +70,6 @@ export const ConsumerMobileMenu = ({
               >
                 <Home className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('navigation.back_home')}</span>
-              </Button>
-
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(onProfileClick)}
-              >
-                <User className="h-5 w-5 mr-3" />
-                <span className="text-base">{t('dashboard.profile')}</span>
               </Button>
 
               <Button

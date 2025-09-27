@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Camera, Trash2, Upload, X, Image, Edit3 } from "lucide-react";
@@ -24,18 +25,37 @@ export const PhotoActionModal = ({
   uploading
 }: PhotoActionModalProps) => {
   const { t } = useTranslation();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      onUpload(file);
-      onClose();
+      setSelectedFile(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
     }
+  };
+
+  const handleSave = async () => {
+    if (selectedFile) {
+      await onUpload(selectedFile);
+      handleCancel();
+    }
+  };
+
+  const handleCancel = () => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    onClose();
   };
 
   const handleRemove = async () => {
     await onRemove();
-    onClose();
+    handleCancel();
   };
 
   const photoTitle = photoType === 'profile' ? t('photos.profilePhoto') : t('photos.coverPhoto');
@@ -43,7 +63,7 @@ export const PhotoActionModal = ({
   const imageSize = photoType === 'profile' ? 'w-48 h-48' : 'w-80 h-48';
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleCancel}>
       <DialogContent className="max-w-sm bg-background border-0 shadow-2xl p-0 overflow-hidden rounded-3xl">
         <VisuallyHidden>
           <DialogHeader>
@@ -59,7 +79,7 @@ export const PhotoActionModal = ({
           <Button
             variant="ghost"
             size="icon"
-            onClick={onClose}
+            onClick={handleCancel}
             className="absolute right-4 top-4 text-white hover:bg-white/20 rounded-full h-8 w-8"
           >
             <X className="h-4 w-4" />
@@ -85,7 +105,13 @@ export const PhotoActionModal = ({
         <div className="flex justify-center p-8 bg-gradient-to-br from-muted/50 to-background">
           <div className="relative">
             <div className={`${imageSize} border-4 border-white shadow-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 ${photoType === 'cover' ? 'rounded-2xl' : 'rounded-full'}`}>
-              {currentImageUrl ? (
+              {previewUrl ? (
+                <img 
+                  src={previewUrl} 
+                  alt={photoTitle}
+                  className="w-full h-full object-cover"
+                />
+              ) : currentImageUrl ? (
                 <img 
                   src={currentImageUrl} 
                   alt={photoTitle}
@@ -105,52 +131,78 @@ export const PhotoActionModal = ({
 
         {/* Action Buttons avec design moderne */}
         <div className="p-6 space-y-3 bg-background">
-          {/* Upload/Modify Button */}
-          <div className="relative">
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              id="photo-upload"
-              onChange={handleFileSelect}
-              disabled={uploading}
-            />
-            <Button
-              className="w-full h-14 text-base font-medium bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
-              onClick={() => document.getElementById('photo-upload')?.click()}
-              disabled={uploading}
-            >
-              <div className="flex items-center justify-center gap-3">
-                {uploading ? (
-                  <>
-                    <div className="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full" />
-                    <span>{t('actions.uploading')}</span>
-                  </>
-                ) : (
-                  <>
+          {selectedFile ? (
+            // Show save/cancel buttons when file is selected
+            <>
+              <Button
+                className="w-full h-14 text-base font-medium bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                onClick={handleSave}
+                disabled={uploading}
+              >
+                <div className="flex items-center justify-center gap-3">
+                  {uploading ? (
+                    <>
+                      <div className="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full" />
+                      <span>{t('actions.uploading')}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-5 w-5" />
+                      <span>{t('actions.save')}</span>
+                    </>
+                  )}
+                </div>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full h-12 text-base font-medium rounded-xl transition-all duration-200"
+                onClick={handleCancel}
+                disabled={uploading}
+              >
+                {t('actions.cancel')}
+              </Button>
+            </>
+          ) : (
+            // Show upload/modify button when no file selected
+            <>
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id="photo-upload"
+                  onChange={handleFileSelect}
+                  disabled={uploading}
+                />
+                <Button
+                  className="w-full h-14 text-base font-medium bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                  onClick={() => document.getElementById('photo-upload')?.click()}
+                  disabled={uploading}
+                >
+                  <div className="flex items-center justify-center gap-3">
                     {currentImageUrl ? (
                       <Edit3 className="h-5 w-5" />
                     ) : (
                       <Upload className="h-5 w-5" />
                     )}
                     <span>{currentImageUrl ? t('photos.modifyPhoto') : t('photos.choosePhoto')}</span>
-                  </>
-                )}
+                  </div>
+                </Button>
               </div>
-            </Button>
-          </div>
 
-          {/* Remove Button - Only show if there's an existing image */}
-          {currentImageUrl && (
-            <Button
-              variant="outline"
-              className="w-full h-12 text-base font-medium border-destructive/20 text-destructive hover:bg-destructive/5 hover:border-destructive/40 rounded-xl transition-all duration-200"
-              onClick={handleRemove}
-              disabled={uploading}
-            >
-              <Trash2 className="h-4 w-4 mr-3" />
-              {t('photos.deletePhoto')}
-            </Button>
+              {/* Remove Button - Only show if there's an existing image */}
+              {currentImageUrl && (
+                <Button
+                  variant="outline"
+                  className="w-full h-12 text-base font-medium border-destructive/20 text-destructive hover:bg-destructive/5 hover:border-destructive/40 rounded-xl transition-all duration-200"
+                  onClick={handleRemove}
+                  disabled={uploading}
+                >
+                  <Trash2 className="h-4 w-4 mr-3" />
+                  {t('photos.deletePhoto')}
+                </Button>
+              )}
+            </>
           )}
         </div>
       </DialogContent>
