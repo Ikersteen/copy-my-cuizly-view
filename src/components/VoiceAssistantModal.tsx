@@ -189,7 +189,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
 
           {/* Messages */}
           {messages.length > 0 && (
-            <div className="max-h-48 overflow-y-auto space-y-2 bg-muted/30 rounded-lg p-3">
+            <div className="max-h-48 overflow-y-auto scrollbar-hide space-y-2 bg-muted/30 rounded-lg p-3">
               {messages.map((message, index) => (
                 <div key={index} className={`text-sm ${
                   message.role === 'system' 

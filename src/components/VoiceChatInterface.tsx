@@ -602,7 +602,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   return (
     <div className="h-full bg-background flex flex-col">
       <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full min-h-0">
-        <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6">
+        <div className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 space-y-6">
           
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
