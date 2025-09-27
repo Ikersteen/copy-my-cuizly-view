@@ -29,15 +29,12 @@ import type { User } from "@supabase/supabase-js";
 
 const ConsumerDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const [forceLoaded, setForceLoaded] = useState(false);
   
-  
-  const { preferences, loading: preferencesLoading } = useUserPreferences();
-  const { profile, loading: profileLoading } = useProfile();
+  const { preferences } = useUserPreferences();
+  const { profile } = useProfile();
   const { offers: allOffers } = useOffers();
   const { offers: trendingOffers } = useOffers('trending');
   const { offers: fastOffers } = useOffers('fast');
@@ -53,27 +50,8 @@ const ConsumerDashboard = () => {
   const voiceRoute = useLocalizedRoute('/voice');
 
 
-  // Timeout to prevent infinite loading
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      console.log('Loading timeout reached, forcing content display');
-      setForceLoaded(true);
-    }, 8000); // 8 seconds timeout
-
-    return () => clearTimeout(timeoutId);
-  }, []);
-
   useEffect(() => {
     loadData();
-    
-    // Set up polling for better reliability
-    const pollInterval = setInterval(() => {
-      loadData();
-    }, 300000); // Refresh every 5 minutes
-
-    return () => {
-      clearInterval(pollInterval);
-    };
   }, []);
 
   const loadData = async () => {
@@ -99,8 +77,6 @@ const ConsumerDashboard = () => {
         description: t('auth.errors.checkInternetConnection'),
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -148,17 +124,6 @@ const ConsumerDashboard = () => {
       navigate(homeRoute);
     }
   };
-
-  if ((loading || preferencesLoading || profileLoading) && !forceLoaded) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground animate-pulse">Préparation de votre expérience personnalisée...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">

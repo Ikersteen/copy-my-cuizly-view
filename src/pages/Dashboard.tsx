@@ -108,7 +108,7 @@ const Dashboard = () => {
     }
   }, [profile, userProfile, restaurant, t]);
 
-  if (loading || redirecting) {
+  if (redirecting) {
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
           <div className="text-center">

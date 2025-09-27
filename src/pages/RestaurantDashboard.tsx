@@ -44,7 +44,6 @@ interface Restaurant {
 const RestaurantDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
-  const [loading, setLoading] = useState(true);
   
   const { toast } = useToast();
   const { profile, updateProfile } = useProfile();
@@ -58,15 +57,6 @@ const RestaurantDashboard = () => {
 
   useEffect(() => {
     loadData();
-    
-    // Set up polling fallback immediately instead of relying on WebSocket
-    const pollInterval = setInterval(() => {
-      loadData();
-    }, 30000); // Refresh every 30 seconds
-
-    return () => {
-      clearInterval(pollInterval);
-    };
   }, []);
 
   const loadData = async () => {
@@ -139,8 +129,6 @@ const RestaurantDashboard = () => {
         description: t('errors.unexpectedError'),
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -148,17 +136,6 @@ const RestaurantDashboard = () => {
   // handleActionClick function removed as no longer needed
 
 
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <LoadingSpinner size="xl" />
-          <p className="text-muted-foreground">Chargement de votre tableau de bord...</p>
-        </div>
-      </div>
-    );
-  }
 
   const handleLogout = async () => {
     try {
