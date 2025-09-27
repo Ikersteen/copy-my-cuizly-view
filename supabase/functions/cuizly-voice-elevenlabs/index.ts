@@ -99,12 +99,12 @@ serve(async (req) => {
     );
     
   } catch (error) {
-    console.error('❌ Function error:', error.message);
-    console.error('❌ Stack trace:', error.stack);
+    console.error('❌ Function error:', error instanceof Error ? error.message : String(error));
+    console.error('❌ Stack trace:', error instanceof Error ? error.stack : 'No stack trace');
     
     return new Response(
       JSON.stringify({ 
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         success: false,
         timestamp: new Date().toISOString()
       }),

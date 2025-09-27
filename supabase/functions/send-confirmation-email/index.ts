@@ -64,8 +64,8 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({
         error: {
-          http_code: error.code,
-          message: error.message,
+          http_code: (error as any).code || 500,
+          message: error instanceof Error ? error.message : String(error),
         },
       }),
       {

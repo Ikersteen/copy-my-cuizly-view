@@ -66,7 +66,7 @@ Exemple: "Salut! Je suis ton assistant Cuizly. Qu'est-ce qui te ferait plaisir d
     });
   } catch (error) {
     console.error("❌ Error in voice-token-generator:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
