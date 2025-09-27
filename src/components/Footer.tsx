@@ -1,8 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { useLocalizedRoute } from '@/lib/routeTranslations';
 
 const Footer = () => {
   const { t } = useTranslation();
+  
+  // Get localized routes
+  const featuresRoute = useLocalizedRoute('/features');
+  const pricingRoute = useLocalizedRoute('/pricing');
+  const contactRoute = useLocalizedRoute('/contact');
+  const teamRoute = useLocalizedRoute('/team');
+  const mentionsRoute = useLocalizedRoute('/mentions');
+  const privacyRoute = useLocalizedRoute('/privacy');
+  const termsRoute = useLocalizedRoute('/terms');
+  const cookiesRoute = useLocalizedRoute('/cookies');
   
   return (
     <footer className="relative bg-card border-t border-border/50 overflow-hidden">
@@ -24,7 +35,7 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
-                  to="/features" 
+                  to={featuresRoute}
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.features')}
@@ -33,7 +44,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link 
-                  to="/pricing" 
+                  to={pricingRoute}
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.rates')}
@@ -48,7 +59,7 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
-                  to="/contact" 
+                  to={contactRoute}
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.contactUs')}
@@ -63,7 +74,7 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
-                  to="/team" 
+                  to={teamRoute}
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.team')}
@@ -72,7 +83,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link 
-                  to="/mentions" 
+                  to={mentionsRoute}
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.legalNotices')}
@@ -87,7 +98,7 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
-                  to="/privacy" 
+                  to={privacyRoute}
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.privacyPolicy')}
@@ -96,7 +107,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link 
-                  to="/terms" 
+                  to={termsRoute}
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.termsOfUse')}
@@ -105,7 +116,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link 
-                  to="/cookies" 
+                  to={cookiesRoute}
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.cookiePolicy')}
