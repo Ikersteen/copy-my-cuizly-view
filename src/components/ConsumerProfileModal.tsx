@@ -97,8 +97,8 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
       });
       
       toast({
-        title: t('profile.updateSuccess'),
-        description: t('profile.updateSuccessDesc')
+        title: t('profile.updateSuccess', 'Profil mis à jour'),
+        description: t('profile.updateSuccessDesc', 'Vos informations ont été sauvegardées avec succès')
       });
       
     } catch (error) {
