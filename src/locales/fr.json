@@ -14,20 +14,6 @@
     "openUserMenu": "Ouvrir le menu utilisateur",
     "profile": "Mon profil"
   },
-    "editProfile": "Modifier mon profil",
-    "avatar": "Photo de profil",
-    "avatarHint": "Cliquez sur l'appareil photo pour changer votre photo",
-    "firstName": "Prénom",
-    "lastName": "Nom",
-    "phone": "Téléphone",
-    "firstNamePlaceholder": "Votre prénom",
-    "lastNamePlaceholder": "Votre nom",
-    "phonePlaceholder": "Votre numéro de téléphone",
-    "profileUpdated": "Profil mis à jour",
-    "profileUpdatedDesc": "Vos informations ont été sauvegardées avec succès",
-    "avatarUpdated": "Photo de profil mise à jour",
-    "avatarUpdatedDesc": "Votre nouvelle photo a été téléchargée avec succès"
-  },
   "hero": {
     "badge": "",
     "title": {
@@ -455,16 +441,6 @@
     "unexpectedError": "Une erreur inattendue s'est produite",
     "general": "Une erreur s'est produite. Veuillez réessayer.",
     "loadOffers": "Impossible de charger les offres",
-    "networkError": "Erreur de connexion réseau",
-    "serverError": "Erreur du serveur",
-    "validationError": "Erreur de validation"
-  },
-  "errors": {
-    "uploadError": "Erreur de téléchargement",
-    "uploadErrorDesc": "Impossible de télécharger le fichier",
-    "updateError": "Erreur de mise à jour",
-    "updateErrorDesc": "Impossible de sauvegarder les modifications",
-    "generic": "Une erreur est survenue",
     "networkError": "Erreur de connexion réseau",
     "serverError": "Erreur du serveur",
     "validationError": "Erreur de validation"
