@@ -388,8 +388,8 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                     </Button>
                   </div>
 
-                  <div className="flex items-start justify-between p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
-                    <div className="flex-1 mr-4">
+                  <div className="flex items-center justify-between p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+                    <div>
                       <p className="font-medium text-sm text-destructive">Supprimer le compte</p>
                     </div>
                     <AlertDialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
