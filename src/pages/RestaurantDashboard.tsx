@@ -46,7 +46,7 @@ const RestaurantDashboard = () => {
   const [loading, setLoading] = useState(true);
   
   const { toast } = useToast();
-  const { profile, updateProfile } = useProfile();
+  const { profile, updateProfile, loadProfile, loading: profileLoading } = useProfile();
   const { primaryAddress: restaurantAddress } = useAddresses('restaurant');
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -63,6 +63,14 @@ const RestaurantDashboard = () => {
       clearInterval(pollInterval);
     };
   }, []);
+
+  // Force reload profile if not loaded
+  useEffect(() => {
+    if (!profile && !profileLoading) {
+      console.log('Forcing profile reload...');
+      loadProfile();
+    }
+  }, [profile, profileLoading, loadProfile]);
 
   const loadData = async () => {
     try {
