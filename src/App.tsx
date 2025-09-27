@@ -53,6 +53,18 @@ const AppContent = () => {
             <Dashboard />
           </>
         } />
+        <Route path="/tableau-de-bord/:slug" element={
+          <>
+            <Header />
+            <Dashboard />
+          </>
+        } />
+        <Route path="/dashboard/:slug" element={
+          <>
+            <Header />
+            <Dashboard />
+          </>
+        } />
         <Route path="/pricing" element={
           <>
             <Header />
