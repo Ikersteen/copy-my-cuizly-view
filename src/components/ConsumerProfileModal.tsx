@@ -196,69 +196,69 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto p-0">
-          <DialogHeader className="px-6 py-8 text-center bg-background">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader className="px-6 py-6 border-b bg-gradient-to-br from-background via-muted/5 to-muted/10">
             <DialogTitle className="text-center">
-              <div className="flex flex-col items-center space-y-3">
-                {/* Profile Picture */}
-                <div className="relative mb-4">
-                  <div className="w-32 h-32 rounded-full bg-muted flex items-center justify-center overflow-hidden shadow-xl">
-                    {formData.avatar_url ? (
-                      <img 
-                        src={formData.avatar_url} 
-                        alt="Photo de profil"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <User className="h-12 w-12 text-muted-foreground" />
-                    )}
-                  </div>
-                  <div className="absolute -bottom-2 -right-2 flex gap-2">
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      className="h-10 w-10 rounded-full shadow-lg bg-background border border-border hover:bg-muted"
-                      onClick={() => document.getElementById('avatar-upload')?.click()}
-                      disabled={uploadingAvatar}
-                    >
-                      {uploadingAvatar ? (
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
-                      ) : (
-                        <Camera className="h-4 w-4" />
-                      )}
-                    </Button>
-                    {formData.avatar_url && (
-                      <Button
-                        variant="secondary"
-                        size="icon"
-                        className="h-10 w-10 rounded-full shadow-lg bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        onClick={handleRemoveAvatar}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-                
-                {/* User Info */}
-                <h2 className="text-2xl font-bold text-foreground">
+              <div className="flex flex-col items-center space-y-2">
+                <h2 className="text-xl font-semibold text-foreground">
                   {profile?.first_name ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name}` : ''}` : profile?.username || 'Profil utilisateur'}
                 </h2>
-                <DialogDescription className="text-muted-foreground">
+                <DialogDescription className="text-sm text-muted-foreground">
                   @{profile?.username || 'utilisateur'} • {profile?.phone || 'ikersteen@gmail.com'}
                 </DialogDescription>
               </div>
             </DialogTitle>
           </DialogHeader>
           
-          <div className="px-6">
-            <input
-              id="avatar-upload"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarUpload}
-            />
+          <div className="px-6 py-6">
+            {/* Profile Picture Section */}
+            <div className="flex flex-col items-center space-y-4 mb-8">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden border-4 border-background shadow-lg ring-2 ring-muted">
+                  {formData.avatar_url ? (
+                    <img 
+                      src={formData.avatar_url} 
+                      alt="Photo de profil"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="h-8 w-8 text-muted-foreground" />
+                  )}
+                </div>
+                <div className="absolute -bottom-1 -right-1 flex gap-1">
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    className="h-8 w-8 rounded-full shadow-lg border-2 border-background"
+                    onClick={() => document.getElementById('avatar-upload')?.click()}
+                    disabled={uploadingAvatar}
+                  >
+                    {uploadingAvatar ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+                    ) : (
+                      <Camera className="h-4 w-4" />
+                    )}
+                  </Button>
+                  {formData.avatar_url && (
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="h-8 w-8 rounded-full shadow-lg border-2 border-background"
+                      onClick={handleRemoveAvatar}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <input
+                id="avatar-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarUpload}
+              />
+            </div>
 
             {/* Content Grid */}
             <div className="space-y-6">
