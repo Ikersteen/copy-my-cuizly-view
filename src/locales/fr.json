@@ -444,6 +444,7 @@
     "validationError": "Erreur de validation"
   },
   "profile": {
+    "title": "Profil",
     "logoutSuccess": "Déconnexion réussie",
     "seeYouSoon": "À bientôt sur Cuizly !",
     "deleteRequestRegistered": "Demande de suppression enregistrée",
