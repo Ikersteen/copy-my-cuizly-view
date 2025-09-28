@@ -471,10 +471,9 @@ export const RecommendationCardsSection = () => {
         return;
       }
 
-      // Sort by score and take top restaurants
+      // Sort by score - show ALL restaurants matching user preferences
       const topRestaurants = scoredRestaurants
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 7); // Limit to 7 restaurants matching user preferences
+        .sort((a, b) => b.score - a.score); // No limit - show all matching restaurants
 
       // Load ratings for recommended restaurants
       const ratingsPromises = topRestaurants.map(async (restaurant) => {
