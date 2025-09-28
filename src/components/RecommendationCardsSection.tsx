@@ -224,26 +224,23 @@ export const RecommendationCardsSection = () => {
 
           const menus = menusData || [];
 
-          // Prioritize restaurants matching user's cuisine preferences
-          let prioritizedRestaurants = [...restaurantsData];
+          // Filter restaurants based on user preferences first
+          let filteredRestaurants = [...restaurantsData];
+          
+          // If user has cuisine preferences, show ALL restaurants matching those preferences
           if (preferences.cuisine_preferences?.length) {
-            prioritizedRestaurants = restaurantsData.sort((a, b) => {
-              const aMatches = a.cuisine_type?.some(cuisine => 
+            filteredRestaurants = restaurantsData.filter(restaurant =>
+              restaurant.cuisine_type?.some(cuisine => 
                 preferences.cuisine_preferences?.includes(cuisine)
-              ) || false;
-              const bMatches = b.cuisine_type?.some(cuisine => 
-                preferences.cuisine_preferences?.includes(cuisine)
-              ) || false;
-              
-              if (aMatches && !bMatches) return -1;
-              if (!aMatches && bMatches) return 1;
-              return 0;
-            });
+              )
+            );
+            console.log(`🎯 Filtering by cuisine preferences: ${preferences.cuisine_preferences.join(', ')}`);
+            console.log(`📊 Found ${filteredRestaurants.length} restaurants matching cuisine preferences`);
           }
 
           const { data: aiResult, error: aiError } = await supabase.functions.invoke('ai-recommendations', {
             body: {
-              restaurants: prioritizedRestaurants.slice(0, 20),
+              restaurants: filteredRestaurants, // No more slice limit - analyze ALL matching restaurants
               preferences: preferences,
               userId: (await supabase.auth.getUser()).data.user?.id
             }
