@@ -6,6 +6,11 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+interface ToolResult {
+  message: string;
+  [key: string]: any;
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -17,7 +22,7 @@ serve(async (req) => {
     
     console.log(`🔧 Tool call: ${toolName} (Language: ${language})`, toolArgs);
 
-    let result = { message: "Tool executed successfully" };
+    let result: ToolResult = { message: "Tool executed successfully" };
 
     // Messages selon la langue détectée
     const messages = {
@@ -37,7 +42,7 @@ serve(async (req) => {
 
     switch (toolName) {
       case 'get_recommendations':
-        const { cuisine, location, budget } = toolArgs;
+        const { cuisine, location, budget: recommendationBudget } = toolArgs;
         result = {
           message: `${msg.recommendations}${cuisine ? ` - ${cuisine}` : ''}${location ? ` dans ${location}` : ''} :`,
           restaurants: [
@@ -46,7 +51,7 @@ serve(async (req) => {
               address: "2491 Rue Notre-Dame Ouest, Montréal",
               cuisine: cuisine || (language === 'en' ? "French bistro" : "Bistro français"),
               neighborhood: location || "Little Burgundy", 
-              budget: budget || (language === 'en' ? "High (60-90$ per person)" : "Élevé (60-90$ par personne)"),
+              budget: recommendationBudget || (language === 'en' ? "High (60-90$ per person)" : "Élevé (60-90$ par personne)"),
               rating: 4.7,
               description: language === 'en' ? 
                 "Creative cuisine with quality local products. Reservations strongly recommended." :
@@ -57,7 +62,7 @@ serve(async (req) => {
               address: "3895 Boulevard Saint-Laurent, Montréal",
               cuisine: cuisine || (language === 'en' ? "Traditional deli" : "Deli traditionnel"),
               neighborhood: location || "Plateau-Mont-Royal",
-              budget: budget || (language === 'en' ? "Budget (15-25$ per person)" : "Économique (15-25$ par personne)"),
+              budget: recommendationBudget || (language === 'en' ? "Budget (15-25$ per person)" : "Économique (15-25$ par personne)"),
               rating: 4.3,
               description: language === 'en' ?
                 "Legendary smoked meat since 1928. Authentic atmosphere, generous portions." :
@@ -68,7 +73,7 @@ serve(async (req) => {
               address: "900 Place Jean-Paul-Riopelle, Montréal", 
               cuisine: cuisine || (language === 'en' ? "Fine dining" : "Haute gastronomie"),
               neighborhood: location || "Centre-ville",
-              budget: budget || (language === 'en' ? "Premium (100-150$ per person)" : "Premium (100-150$ par personne)"),
+              budget: recommendationBudget || (language === 'en' ? "Premium (100-150$ per person)" : "Premium (100-150$ par personne)"),
               rating: 4.8,
               description: language === 'en' ?
                 "Montreal's top fine dining restaurant. Innovative Quebec cuisine." :
@@ -88,20 +93,21 @@ serve(async (req) => {
         let frScore = 0;
         let enScore = 0;
         
-        words.forEach(word => {
+        words.forEach((word: string) => {
           if (frenchWords.includes(word)) frScore++;
           if (englishWords.includes(word)) enScore++;
         });
         
         const detectedLang = frScore > enScore ? 'fr' : 'en';
         result = {
+          message: `Language detected: ${detectedLang === 'fr' ? 'Français' : 'English'}`,
           language: detectedLang,
-          confidence: Math.max(frScore, enScore) / words.length,
-          message: `Language detected: ${detectedLang === 'fr' ? 'Français' : 'English'}`
+          confidence: Math.max(frScore, enScore) / words.length
         };
         break;
+
       case 'get_restaurant_recommendations':
-        const { cuisine: restoCuisine, neighborhood, budget, dietary_restrictions } = toolArgs;
+        const { cuisine: restoCuisine, neighborhood, budget: restaurantBudget, dietary_restrictions } = toolArgs;
         
         // Détecter si c'est pour Repentigny ou Montréal
         const isRepentigny = neighborhood && (
@@ -121,7 +127,7 @@ serve(async (req) => {
                 phone: "(450) 582-6672",
                 cuisine: restoCuisine || "Déjeuners et brunchs",
                 neighborhood: "Centre-ville Repentigny",
-                budget: budget || "Économique (15-25$ par personne)",
+                budget: restaurantBudget || "Économique (15-25$ par personne)",
                 rating: 4.2,
                 hours: "Lun-Dim 6h-15h",
                 description: "Spécialiste des déjeuners créatifs et brunchs généreux. Fruits frais et plats colorés.",
@@ -133,7 +139,7 @@ serve(async (req) => {
                 phone: "(450) 585-4848",
                 cuisine: restoCuisine || "Grillades et BBQ",
                 neighborhood: "Centre-ville Repentigny",
-                budget: budget || "Moyen (30-45$ par personne)",
+                budget: restaurantBudget || "Moyen (30-45$ par personne)",
                 rating: 4.0,
                 hours: "Lun-Dim 11h30-22h",
                 description: "Spécialités de grillades, côtes levées et steaks. Ambiance décontractée.",
@@ -145,7 +151,7 @@ serve(async (req) => {
                 phone: "(450) 585-3434",
                 cuisine: restoCuisine || "Italien moderne",
                 neighborhood: "Repentigny",
-                budget: budget || "Moyen (25-40$ par personne)",
+                budget: restaurantBudget || "Moyen (25-40$ par personne)",
                 rating: 4.1,
                 hours: "Lun-Dim 11h-22h",
                 description: "Cuisine italienne moderne avec bar à pain gratuit. Parfait pour les familles.",
@@ -163,7 +169,7 @@ serve(async (req) => {
                 phone: "(514) 544-0100",
                 cuisine: restoCuisine || "Fruits de mer",
                 neighborhood: neighborhood || "Vieux-Montréal",
-                budget: budget || "Moyen (35-55$ par personne)",
+                budget: restaurantBudget || "Moyen (35-55$ par personne)",
                 rating: 4.5,
                 hours: "Mar-Sam 17h30-22h30",
                 description: "Excellents fruits de mer dans une ambiance chaleureuse. Spécialités : huîtres, homard, poissons frais.",
@@ -175,7 +181,7 @@ serve(async (req) => {
                 phone: "(514) 935-6504", 
                 cuisine: restoCuisine || "Bistro français",
                 neighborhood: neighborhood || "Little Burgundy",
-                budget: budget || "Élevé (60-90$ par personne)",
+                budget: restaurantBudget || "Élevé (60-90$ par personne)",
                 rating: 4.7,
                 hours: "Mar-Sam 17h-23h",
                 description: "Cuisine créative avec produits locaux de qualité. Réservation fortement recommandée.",
@@ -187,7 +193,7 @@ serve(async (req) => {
                 phone: "(514) 842-4813",
                 cuisine: restoCuisine || "Deli traditionnel",
                 neighborhood: neighborhood || "Plateau-Mont-Royal", 
-                budget: budget || "Économique (15-25$ par personne)",
+                budget: restaurantBudget || "Économique (15-25$ par personne)",
                 rating: 4.3,
                 hours: "Dim-Mer 10h30-0h30, Jeu-Sam 10h30-3h30",
                 description: "Légendaire smoked meat depuis 1928. Ambiance authentique, portions généreuses.",
@@ -201,14 +207,14 @@ serve(async (req) => {
       case 'get_grocery_shopping_help':
         const { recipe_type, ingredients, neighborhood: shopNeighborhood, budget: shopBudget } = toolArgs;
         
-        const isRepentigny = shopNeighborhood && (
+        const isShopRepentigny = shopNeighborhood && (
           shopNeighborhood.toLowerCase().includes('repentigny') ||
           shopNeighborhood.toLowerCase().includes('j5y') ||
           shopNeighborhood.toLowerCase().includes('j6a') ||
           shopNeighborhood.toLowerCase().includes('j6b')
         );
         
-        if (isRepentigny) {
+        if (isShopRepentigny) {
           result = {
             message: `Voici où faire vos courses pour ${recipe_type || 'votre recette'} à Repentigny :`,
             shopping_guide: {
@@ -304,14 +310,14 @@ serve(async (req) => {
       case 'get_market_locations':
         const { store_type, specialty, neighborhood: marketNeighborhood } = toolArgs;
         
-        const isRepentigny = marketNeighborhood && (
+        const isMarketRepentigny = marketNeighborhood && (
           marketNeighborhood.toLowerCase().includes('repentigny') ||
           marketNeighborhood.toLowerCase().includes('j5y') ||
           marketNeighborhood.toLowerCase().includes('j6a') ||
           marketNeighborhood.toLowerCase().includes('j6b')
         );
         
-        if (isRepentigny) {
+        if (isMarketRepentigny) {
           result = {
             message: `Voici les meilleurs ${store_type}s${specialty ? ` pour ${specialty}` : ''} à Repentigny :`,
             locations: [
@@ -341,23 +347,23 @@ serve(async (req) => {
             message: `Voici les meilleurs ${store_type}s${specialty ? ` pour ${specialty}` : ''}${marketNeighborhood ? ` dans ${marketNeighborhood}` : ''} :`,
             locations: [
               {
-                name: store_type === 'marché' ? "Marché Atwater" : store_type === 'boucherie' ? "Boucherie Lawrence" : store_type === 'poissonnerie' ? "Poissonnerie Antoine" : store_type === 'boulangerie' ? "Boulangerie St-Méthode" : "Épicerie Latina",
-                address: store_type === 'marché' ? "138 Avenue Atwater, Montréal, QC H4C 2G3" : store_type === 'boucherie' ? "5237 Boulevard Saint-Laurent, Montréal, QC H2T 1S4" : store_type === 'poissonnerie' ? "1840 René-Lévesque Blvd E, Montréal, QC H2K 4M5" : store_type === 'boulangerie' ? "1 Place du Commerce, Montréal, QC H3E 1A2" : "185 Boulevard Saint-Laurent, Montréal, QC H2X 3G7",
-                phone: store_type === 'marché' ? "(514) 937-7754" : store_type === 'boucherie' ? "(514) 277-2727" : store_type === 'poissonnerie' ? "(514) 522-2019" : store_type === 'boulangerie' ? "(514) 932-0328" : "(514) 848-1078",
-                hours: store_type === 'marché' ? "7h-18h tous les jours" : "9h-18h mar-sam, 10h-17h dim",
-                specialty: specialty || (store_type === 'marché' ? "Produits locaux et fermiers" : store_type === 'boucherie' ? "Viandes de qualité, agneau, bœuf vieilli" : "Poissons frais, fruits de mer"),
-                price_range: "Moyen",
-                metro: store_type === 'marché' ? "Station Lionel-Groulx" : "Station Laurier",
-                description: `${store_type === 'marché' ? "Grand marché public avec vendors locaux" : store_type === 'boucherie' ? "Boucherie artisanale reconnue" : "Spécialiste réputé"}, ${specialty || "excellente qualité"}`
+                name: store_type === 'marché' ? "Marché Jean-Talon" : store_type === 'boucherie' ? "Boucherie Lawrence" : store_type === 'poissonnerie' ? "Poissonnerie Nouveau Falero" : store_type === 'boulangerie' ? "Première Moisson" : "IGA Extra",
+                address: store_type === 'marché' ? "7070 Avenue Henri-Julien, Montréal, QC H2S 3S3" : store_type === 'boucherie' ? "5237 Boulevard Saint-Laurent, Montréal, QC H2T 1S4" : store_type === 'poissonnerie' ? "1475 Rue Laurier Est, Montréal, QC H2J 1H7" : store_type === 'boulangerie' ? "860 Avenue Laurier Ouest, Montréal, QC H2V 2L1" : "1376 Avenue Laurier Est, Montréal, QC H2J 1H8",
+                phone: store_type === 'marché' ? "(514) 937-7754" : store_type === 'boucherie' ? "(514) 274-2619" : store_type === 'poissonnerie' ? "(514) 277-7373" : store_type === 'boulangerie' ? "(514) 271-3371" : "(514) 524-3334",
+                hours: store_type === 'marché' ? "7h-18h (été), 8h-17h (hiver)" : "9h-19h mar-sam, 9h-17h dim",
+                specialty: specialty || (store_type === 'marché' ? "Produits frais locaux, fruits/légumes de saison" : store_type === 'boucherie' ? "Viandes de première qualité, charcuteries artisanales" : "Poissons frais quotidiens, fruits de mer"),
+                price_range: "Moyen à élevé",
+                metro: store_type === 'marché' ? "Station Jean-Talon (ligne orange)" : store_type === 'boucherie' ? "Station Laurier (ligne orange)" : "Station Laurier (ligne orange)",
+                description: `${store_type === 'marché' ? "Le plus grand marché public de Montréal" : store_type === 'boucherie' ? "Boucherie réputée depuis 1957" : "Spécialiste reconnu"}, ${specialty || "excellente réputation"}`
               },
               {
-                name: store_type === 'marché' ? "Marché Jean-Talon" : store_type === 'boucherie' ? "Boucherie Charcuterie Hongroise" : store_type === 'poissonnerie' ? "La Mer" : store_type === 'boulangerie' ? "Première Moisson" : "Fruiterie 440",
-                address: store_type === 'marché' ? "7070 Avenue Henri-Julien, Montréal, QC H2S 3S3" : store_type === 'boucherie' ? "3843 Boulevard Saint-Laurent, Montréal, QC H2W 1Y1" : store_type === 'poissonnerie' ? "1840 René-Lévesque Blvd E, Montréal, QC H2K 4M5" : store_type === 'boulangerie' ? "860 Avenue du Mont-Royal Est, Montréal, QC H2J 1X1" : "3588 Boulevard Saint-Laurent, Montréal, QC H2X 2V1",
-                phone: store_type === 'marché' ? "(514) 937-7754" : store_type === 'boucherie' ? "(514) 844-6734" : "(514) 522-3003",
-                hours: store_type === 'marché' ? "7h-18h (été), 8h-17h (hiver)" : "9h-18h mar-sam",
-                specialty: specialty || (store_type === 'marché' ? "Plus grand marché de Montréal" : store_type === 'boucherie' ? "Spécialités hongroises, saucisses" : "Poissons importés, caviar"),
-                metro: store_type === 'marché' ? "Station Jean-Talon" : "Station Sherbrooke",
-                description: `${store_type === 'marché' ? "Incontournable pour produits frais" : "Spécialiste reconnu"}, ${specialty || "large choix"}`
+                name: store_type === 'marché' ? "Marché Atwater" : store_type === 'boucherie' ? "Boucherie Côte-des-Neiges" : store_type === 'poissonnerie' ? "Fish Market" : store_type === 'boulangerie' ? "Boulangerie Guillaume" : "Metro Plus",
+                address: store_type === 'marché' ? "138 Avenue Atwater, Montréal, QC H4C 2G3" : store_type === 'boucherie' ? "5719 Chemin de la Côte-des-Neiges, Montréal, QC H3S 1Y8" : store_type === 'poissonnerie' ? "1840 René-Lévesque Boulevard E, Montréal, QC H2K 4P7" : store_type === 'boulangerie' ? "5134 Boulevard Saint-Laurent, Montréal, QC H2T 1R8" : "4999 Rue Sainte-Catherine Ouest, Montréal, QC H3Z 1T3",
+                phone: store_type === 'marché' ? "(514) 937-7754" : store_type === 'boucherie' ? "(514) 739-5750" : "(514) 522-3474",
+                hours: store_type === 'marché' ? "7h-18h lun-mer, 7h-20h jeu-ven, 7h-17h sam-dim" : "8h-20h lun-ven, 8h-18h sam-dim",
+                specialty: specialty || (store_type === 'marché' ? "Marché historique avec tours des guichets" : store_type === 'boucherie' ? "Service personnalisé, coupes sur mesure" : "Sélection variée, prix abordables"),
+                metro: store_type === 'marché' ? "Station Lionel-Groulx (lignes orange/verte)" : store_type === 'boucherie' ? "Station Côte-des-Neiges (ligne bleue)" : "Station Vendôme (ligne orange)",
+                description: `${store_type === 'marché' ? "Marché historique au cœur de Montréal" : "Commerce de quartier apprécié"}, ${specialty || "service de qualité"}`
               }
             ]
           };
@@ -365,19 +371,15 @@ serve(async (req) => {
         break;
 
       default:
-        result = { 
-          message: language === 'en' ? 
-            `Tool ${toolName} not recognized` : 
-            `Outil ${toolName} non reconnu` 
-        };
+        result = { message: "Outil non reconnu" };
     }
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
-  } catch (error) {
-    console.error('❌ Error in voice-tools-handler:', error);
+  } catch (error: any) {
+    console.error('Error in voice-tools-handler:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

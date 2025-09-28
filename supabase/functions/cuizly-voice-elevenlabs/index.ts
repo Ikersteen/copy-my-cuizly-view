@@ -98,7 +98,7 @@ serve(async (req) => {
       },
     );
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Function error:', error.message);
     console.error('❌ Stack trace:', error.stack);
     

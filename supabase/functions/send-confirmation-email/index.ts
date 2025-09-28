@@ -101,7 +101,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (error) {
       throw error
     }
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
     return new Response(
       JSON.stringify({
