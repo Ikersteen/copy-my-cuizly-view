@@ -517,10 +517,18 @@ export const RecommendationCardsSection = () => {
 
   // Load recommendations when preferences change
   useEffect(() => {
-    if (preferences?.id) {
+    if (preferences) {
+      console.log('🔄 Preferences changed, auto-reloading recommendations');
       generateRecommendations();
     }
-  }, [preferences?.id, generateRecommendations]);
+  }, [
+    preferences?.cuisine_preferences, 
+    preferences?.dietary_restrictions, 
+    preferences?.allergens, 
+    preferences?.price_range, 
+    preferences?.favorite_meal_times,
+    generateRecommendations
+  ]);
 
   // Listen for preference updates + SYSTÈME REAL-TIME COMPLET
   useEffect(() => {
