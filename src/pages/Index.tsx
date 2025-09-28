@@ -1,7 +1,10 @@
-import YelpHeroSection from "@/components/YelpHeroSection";
-import RestaurantsDiscoverySection from "@/components/RestaurantsDiscoverySection";
-import FeaturedRestaurantsSection from "@/components/FeaturedRestaurantsSection";
-import CategoriesSection from "@/components/CategoriesSection";
+import HeroSection from "@/components/HeroSection";
+import HowItWorksSection from "@/components/HowItWorksSection";
+import FeaturesSectionLanding from "@/components/FeaturesSectionLanding";
+import PerformanceDashboardSection from "@/components/PerformanceDashboardSection";
+import PricingSectionLanding from "@/components/PricingSectionLanding";
+import ContactSectionLanding from "@/components/ContactSectionLanding";
+import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import { useTranslation } from "react-i18next";
 
@@ -10,10 +13,14 @@ const Index = () => {
 
   return (
     <>
-      <YelpHeroSection />
-      <CategoriesSection />
-      <FeaturedRestaurantsSection />
-      <RestaurantsDiscoverySection />
+      <HeroSection />
+      
+      <FeaturesSectionLanding />
+      <PerformanceDashboardSection />
+      <HowItWorksSection />
+      <PricingSectionLanding />
+      <ContactSectionLanding />
+      <CTASection />
       <Footer />
     </>
   );
