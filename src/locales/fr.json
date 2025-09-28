@@ -582,6 +582,7 @@
   },
   "toasts": {
     "error": "Erreur",
+    "success": "Succès",
     "cannotLoadComments": "Impossible de charger les commentaires",
     "cannotAddComment": "Impossible d'ajouter le commentaire",
     "addedToFavorites": "Ajouté aux favoris",
@@ -596,8 +597,6 @@
     "ratingAdded": "Évaluation ajoutée",
     "thankYouRating": "Merci pour votre évaluation !",
     "cannotAddRating": "Impossible d'ajouter l'évaluation",
-    "preferencesUpdated": "Préférences mises à jour",
-    "preferencesSavedSuccessfully": "Préférences sauvegardées avec succès",
     "preferencesUpdateError": "Impossible de sauvegarder vos préférences",
     "preferencesSavedTemporarily": "Préférences sauvegardées temporairement",
     "connectionProblem": "Problème de connexion",
@@ -605,8 +604,9 @@
     "cannotLoadProfile": "Impossible de charger le profil. Veuillez rafraîchir la page.",
     "sessionExpired": "Session expirée",
     "pleaseSignInAgain": "Veuillez vous reconnecter",
-    "cannotLoadPreferences": "Impossible de charger les préférences. Veuillez rafraîchir la page.",
-    "oauthError": "Erreur OAuth"
+    "oauthError": "Erreur OAuth",
+    "conversationDeleted": "Conversation supprimée",
+    "titleUpdated": "Titre mis à jour"
   },
   "montreal": {
     "streets": [
@@ -2293,13 +2293,6 @@
     "logo": "Logo",
     "menu": "Menu",
     "profile": "Profil"
-  },
-  "toasts": {
-    "success": "Succès",
-    "conversationDeleted": "Conversation supprimée",
-    "titleUpdated": "Titre mis à jour",
-    "profileUpdated": "Profil mis à jour",
-    "informationSaved": "Vos informations ont été sauvegardées avec succès"
   },
   "pricingLanding": {
     "title": "Tarifs pour tous",
