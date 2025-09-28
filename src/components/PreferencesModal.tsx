@@ -35,7 +35,7 @@ const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];
 export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const { preferences, updatePreferences, getDeliveryAddress, updateDeliveryAddress } = useUserPreferences();
+  const { preferences, updatePreferences, getDeliveryAddress, updateDeliveryAddress, deleteDeliveryAddress } = useUserPreferences();
   const { primaryAddress: deliveryAddress } = useAddresses('user_delivery');
   const { toast } = useToast();
   const [localPrefs, setLocalPrefs] = useState<Partial<UserPreferences>>({});
@@ -126,12 +126,17 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
       const { street, full_address, neighborhood, postal_code, ...prefsToSave } = localPrefs;
       await updatePreferences(prefsToSave);
       
-      // Update delivery address if it was provided
+      // Handle delivery address changes
       const currentAddress = deliveryAddress?.formatted_address || "";
       const newAddress = (localPrefs as any).full_address || "";
       
       if (newAddress && newAddress !== currentAddress) {
+        // User provided a new address - update it
         await updateDeliveryAddress(newAddress);
+      } else if (!newAddress && currentAddress) {
+        // User cleared the address - delete it
+        console.log('Deleting delivery address...');
+        await deleteDeliveryAddress();
       }
       
     onOpenChange(false);

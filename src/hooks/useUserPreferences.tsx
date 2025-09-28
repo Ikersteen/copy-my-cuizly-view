@@ -51,7 +51,8 @@ export const useUserPreferences = () => {
   const { 
     getPrimaryAddressByType, 
     createAddress, 
-    updateAddress: updateAddressHook 
+    updateAddress: updateAddressHook,
+    deleteAddress
   } = useAddresses('user_delivery');
 
   // Listen for data restoration after auth
@@ -304,6 +305,15 @@ export const useUserPreferences = () => {
     }
   };
 
+  const deleteDeliveryAddress = async () => {
+    const existingAddress = getDeliveryAddress();
+    
+    if (existingAddress) {
+      return deleteAddress(existingAddress.id!);
+    }
+    return true; // Nothing to delete
+  };
+
   return {
     preferences,
     loading,
@@ -311,6 +321,7 @@ export const useUserPreferences = () => {
     loadPreferences,
     // Address methods
     getDeliveryAddress,
-    updateDeliveryAddress
+    updateDeliveryAddress,
+    deleteDeliveryAddress
   };
 };
