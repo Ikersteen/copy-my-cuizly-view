@@ -784,7 +784,7 @@ export const RecommendationCardsSection = () => {
                   })}
                 </div>
 
-                <div className="mt-5">
+                <div className="mt-5 mb-6">
                 {(() => {
                   const reasons = restaurant.reasons || [];
                   
