@@ -590,6 +590,8 @@
     "profileUpdated": "Profil mis à jour",
     "informationSaved": "Vos informations ont été sauvegardées",
     "cannotSaveProfile": "Impossible de sauvegarder le profil",
+    "preferencesUpdated": "Préférences mises à jour",
+    "preferencesSavedSuccessfully": "Vos préférences ont été sauvegardées avec succès",
     "cannotLoadRatings": "Impossible de charger les évaluations",
     "ratingAdded": "Évaluation ajoutée",
     "thankYouRating": "Merci pour votre évaluation !",
