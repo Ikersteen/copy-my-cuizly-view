@@ -10,6 +10,9 @@ import { routeTranslations } from "@/lib/routeTranslations";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import ScrollToTop from "@/components/ScrollToTop";
 import Header from "@/components/Header";
+import IOSHeader from "@/components/IOSHeader";
+import HeaderWrapper from "@/components/HeaderWrapper";
+import { useIsMobile } from "@/hooks/use-mobile";
 import CookieBanner from "@/components/CookieBanner";
 
 import Index from "./pages/Index";
@@ -43,7 +46,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={
           <>
-            <Header />
+            <HeaderWrapper />
             <Index />
           </>
         } />
