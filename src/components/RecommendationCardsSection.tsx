@@ -758,7 +758,8 @@ export const RecommendationCardsSection = () => {
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 flex flex-col h-full">
+                <div className="flex-1">
                 <div className="grid grid-cols-3 gap-2">
                   {restaurant.cuisine_type?.sort((a, b) => {
                     const indexA = CUISINE_OPTIONS.indexOf(a);
@@ -845,9 +846,10 @@ export const RecommendationCardsSection = () => {
                        </div>
                     </div>
                   );
-                })()}
+                 })()}
+                 </div>
 
-                 <Button 
+                 <Button
                    className="w-full h-10 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
                    onClick={() => {
                      trackProfileView(restaurant.id);

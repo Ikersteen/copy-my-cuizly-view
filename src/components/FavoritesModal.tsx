@@ -197,9 +197,8 @@ export const FavoritesModal = ({ open, onOpenChange }: FavoritesModalProps) => {
                       </Badge>
                     ))}
                   </div>
-                   <Button 
-                     className="w-full mt-3" 
-                     size="sm"
+                    <Button 
+                      className="w-full mt-3 h-10" 
                      onClick={() => {
                        // Track profile view
                        trackProfileView(restaurant.id);

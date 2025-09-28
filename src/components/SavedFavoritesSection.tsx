@@ -294,8 +294,7 @@ export const SavedFavoritesSection = () => {
 
               <CardContent className="space-y-4">
                 <Button
-                  className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
-                  size="sm"
+                   className="w-full h-10 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
                   onClick={() => {
                     // Track profile view
                     trackProfileView(restaurant.id);
