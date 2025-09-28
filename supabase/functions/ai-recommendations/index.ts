@@ -184,11 +184,11 @@ serve(async (req) => {
 
     // Log pour analytics
     if (userId) {
-      await logRecommendationInteraction(userId, sortedRestaurants.slice(0, 5));
+      await logRecommendationInteraction(userId, sortedRestaurants);
     }
 
     return new Response(JSON.stringify({
-      recommendations: sortedRestaurants.slice(0, 5), // Maximum 5 recommandations
+      recommendations: sortedRestaurants, // Show ALL safe restaurants, no limit
       total_analyzed: restaurants.length,
       ai_powered: true
     }), {
