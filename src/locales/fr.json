@@ -1517,6 +1517,9 @@
     "noCoverImage": "Aucune image de couverture"
   },
   "restaurantInfo": {
+    "title": "Informations du restaurant",
+    "description": "Gérez les informations de votre restaurant",
+    "notDefined": "Non défini",
     "openingHours": "Heures d'ouverture",
     "closed": "Fermé",
     "notSpecified": "Non spécifié",
