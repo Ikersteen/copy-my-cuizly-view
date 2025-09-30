@@ -162,7 +162,7 @@ const RestaurantDashboard = () => {
             ) : (
               <div className="text-muted-foreground text-center">
                 <Camera className="h-8 w-8 mx-auto mb-2" />
-                <p className="text-sm">No cover image</p>
+                <p className="text-sm">{t('dashboard.noCoverImage')}</p>
               </div>
             )}
           </div>

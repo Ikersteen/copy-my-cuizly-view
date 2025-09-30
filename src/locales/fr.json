@@ -1513,7 +1513,8 @@
     "notDefined": "Non défini",
     "restaurantSpecialty": "Spécialité du restaurant",
     "description": "Description",
-    "noMoreEndlesssearches": "Fini les recherches interminables :"
+    "noMoreEndlesssearches": "Fini les recherches interminables :",
+    "noCoverImage": "Aucune image de couverture"
   },
   "offers": {
     "myOffers": "Mes offres",
