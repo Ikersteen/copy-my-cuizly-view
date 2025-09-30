@@ -1514,9 +1514,12 @@
     "restaurantSpecialty": "Spécialité du restaurant",
     "description": "Description",
     "noMoreEndlesssearches": "Fini les recherches interminables :",
-    "noCoverImage": "Aucune image de couverture",
+    "noCoverImage": "Aucune image de couverture"
+  },
+  "restaurantInfo": {
     "openingHours": "Heures d'ouverture",
     "closed": "Fermé",
+    "notSpecified": "Non spécifié",
     "days": {
       "monday": "Lundi",
       "tuesday": "Mardi",
