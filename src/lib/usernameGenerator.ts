@@ -1,17 +1,24 @@
 /**
- * Generate a random username in the format: word + 4 random digits
- * Example: chef1234, resto5678, etc.
+ * Generate a random username with random letters and numbers
+ * Example: xdtglp2V55Z37
  */
 export const generateRandomUsername = (): string => {
-  const words = [
-    'chef', 'resto', 'food', 'gourmet', 'saveur', 
-    'cuisine', 'taste', 'menu', 'cook', 'dine'
-  ];
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numbers = '0123456789';
   
-  const randomWord = words[Math.floor(Math.random() * words.length)];
-  const randomNumbers = Math.floor(1000 + Math.random() * 9000); // 4 digits between 1000-9999
+  let username = '';
   
-  return `${randomWord}${randomNumbers}`;
+  // Generate 8 random letters
+  for (let i = 0; i < 8; i++) {
+    username += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  
+  // Generate 5 random numbers
+  for (let i = 0; i < 5; i++) {
+    username += numbers.charAt(Math.floor(Math.random() * numbers.length));
+  }
+  
+  return username;
 };
 
 /**
