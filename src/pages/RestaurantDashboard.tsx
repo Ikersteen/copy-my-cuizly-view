@@ -224,30 +224,30 @@ const RestaurantDashboard = () => {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.restaurantName')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.restaurantName')}</p>
                       <p className="text-foreground text-sm sm:text-base font-medium">{restaurant.name}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.address')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.address')}</p>
                       <p className="text-foreground text-sm">
                         {restaurantAddress?.formatted_address || t('restaurantInfo.notSpecified')
                         }
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.phone')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.phone')}</p>
                       <p className="text-foreground text-sm">{restaurant.phone || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.email')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.email')}</p>
                       <p className="text-foreground text-sm">{restaurant.email || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-1">{t('restaurantProfile.priceRange')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.priceRange')}</p>
                       <p className="text-foreground text-sm">{restaurant.price_range || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Types de cuisine</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">Types de cuisine</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
@@ -265,7 +265,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">Types de service</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">Types de service</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).service_types?.length > 0 ? (
                           (restaurant as any).service_types.map((service: string, index: number) => (
@@ -283,7 +283,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.specialties')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">{t('restaurantProfile.specialties')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).restaurant_specialties?.length > 0 ? (
                           (restaurant as any).restaurant_specialties.map((specialty: string, index: number) => (
@@ -301,7 +301,7 @@ const RestaurantDashboard = () => {
                     
                     {/* Opening Hours */}
                     <div className="md:col-span-2">
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantInfo.openingHours')}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">{t('restaurantInfo.openingHours')}</p>
                       {restaurant.opening_hours ? (
                         <div className="space-y-2">
                           {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
@@ -327,7 +327,7 @@ const RestaurantDashboard = () => {
                     {/* Social Media Icons */}
                     {(restaurant.instagram_url || restaurant.facebook_url) && (
                       <div className="md:col-span-2">
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">Réseaux sociaux</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">Réseaux sociaux</p>
                         <div className="flex items-center gap-3">
                           {restaurant.instagram_url && (
                             <a 
