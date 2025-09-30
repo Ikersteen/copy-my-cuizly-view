@@ -41,4 +41,32 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/auth" />
     <xhtml:link rel="alternate" hreflang="en" href="https://cuizly.ca/auth" />
   </url>
+  <url>
+    <loc>https://cuizly.ca/mentions-legales</loc>
+    <lastmod>2025-09-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/mentions-legales" />
+  </url>
+  <url>
+    <loc>https://cuizly.ca/politique-confidentialite</loc>
+    <lastmod>2025-09-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/politique-confidentialite" />
+  </url>
+  <url>
+    <loc>https://cuizly.ca/conditions-utilisation</loc>
+    <lastmod>2025-09-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/conditions-utilisation" />
+  </url>
+  <url>
+    <loc>https://cuizly.ca/politique-de-cookies</loc>
+    <lastmod>2025-09-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cuizly.ca/politique-de-cookies" />
+  </url>
 </urlset>

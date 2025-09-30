@@ -109,7 +109,19 @@ const AppContent = () => {
             <Mentions />
           </>
         } />
+        <Route path="/mentions-legales" element={
+          <>
+            <Header />
+            <Mentions />
+          </>
+        } />
         <Route path="/cookies" element={
+          <>
+            <Header />
+            <Cookies />
+          </>
+        } />
+        <Route path="/politique-de-cookies" element={
           <>
             <Header />
             <Cookies />
@@ -157,16 +169,22 @@ const AppContent = () => {
             <Team />
           </>
         } />
-        <Route path="/mentions-legales" element={
+        <Route path="/politique-confidentialite" element={
           <>
             <Header />
-            <Legal />
+            <Privacy />
           </>
         } />
         <Route path="/confidentialite" element={
           <>
             <Header />
             <Privacy />
+          </>
+        } />
+        <Route path="/conditions-utilisation" element={
+          <>
+            <Header />
+            <Terms />
           </>
         } />
         <Route path="/conditions" element={

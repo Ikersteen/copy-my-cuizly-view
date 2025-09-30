@@ -5,7 +5,7 @@ const Legal = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/mentions');
+    navigate('/mentions-legales');
   }, [navigate]);
 
   return null;
