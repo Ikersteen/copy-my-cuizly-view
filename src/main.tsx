@@ -14,7 +14,22 @@ document.title = 'Cuizly';
 // Ensure i18n is ready and language is loaded before rendering
 const renderApp = () => {
   createRoot(document.getElementById("root")!).render(
-    <Suspense fallback={<div>Chargement...</div>}>
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-6 animate-fade-in">
+          <img 
+            src="/cuizly-logo-official.png" 
+            alt="Cuizly" 
+            className="w-32 h-32 object-contain animate-pulse"
+          />
+          <div className="flex gap-2">
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+          </div>
+        </div>
+      </div>
+    }>
       <App />
     </Suspense>
   );
