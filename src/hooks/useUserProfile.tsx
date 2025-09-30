@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 
 interface Profile {
   user_type: 'consumer' | 'restaurant_owner';
+  username?: string;
 }
 
 export const useUserProfile = () => {
@@ -75,7 +76,7 @@ export const useUserProfile = () => {
         try {
           const { data, error } = await supabase
             .from('profiles')
-            .select('user_type')
+            .select('user_type, username')
             .eq('user_id', userId)
             .maybeSingle();
           

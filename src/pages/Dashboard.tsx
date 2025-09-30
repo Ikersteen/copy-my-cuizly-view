@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
 import { usePersonalizedUrl, extractSlugFromUrl } from "@/lib/urlUtils";
+import { generateUniqueUsername } from "@/lib/usernameGenerator";
 import ConsumerDashboard from "./ConsumerDashboard";
 import RestaurantDashboard from "./RestaurantDashboard";
 
@@ -30,10 +31,35 @@ const Dashboard = () => {
     }
   }, [loading, isAuthenticated, navigate, authRoute]);
 
-  // Load restaurant data if user is restaurant owner
+  // Ensure user has a username and load restaurant data
   useEffect(() => {
-    const loadRestaurant = async () => {
-      if (profile?.user_type === 'restaurant_owner' && user?.id) {
+    const initializeProfile = async () => {
+      if (!user?.id || !profile) return;
+      
+      // Check if username is missing and generate one
+      if (!profile.username) {
+        try {
+          const newUsername = await generateUniqueUsername(supabase);
+          
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update({ username: newUsername })
+            .eq('user_id', user.id);
+          
+          if (updateError) {
+            console.error('Error updating username:', updateError);
+          } else {
+            console.log('Generated username:', newUsername);
+            // Force profile refresh to get the new username
+            window.location.reload();
+          }
+        } catch (error) {
+          console.error('Error generating username:', error);
+        }
+      }
+      
+      // Load restaurant data if user is restaurant owner
+      if (profile.user_type === 'restaurant_owner') {
         try {
           const { data: restaurantData } = await supabase
             .from('restaurants')
@@ -49,7 +75,7 @@ const Dashboard = () => {
     };
 
     if (!loading && isAuthenticated && profile) {
-      loadRestaurant();
+      initializeProfile();
     }
   }, [loading, isAuthenticated, profile, user?.id]);
 
