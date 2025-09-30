@@ -1514,7 +1514,18 @@
     "restaurantSpecialty": "Spécialité du restaurant",
     "description": "Description",
     "noMoreEndlesssearches": "Fini les recherches interminables :",
-    "noCoverImage": "Aucune image de couverture"
+    "noCoverImage": "Aucune image de couverture",
+    "openingHours": "Heures d'ouverture",
+    "closed": "Fermé",
+    "days": {
+      "monday": "Lundi",
+      "tuesday": "Mardi",
+      "wednesday": "Mercredi",
+      "thursday": "Jeudi",
+      "friday": "Vendredi",
+      "saturday": "Samedi",
+      "sunday": "Dimanche"
+    }
   },
   "offers": {
     "myOffers": "Mes offres",

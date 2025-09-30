@@ -299,6 +299,29 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     
+                    {/* Opening Hours */}
+                    <div className="md:col-span-2">
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantInfo.openingHours')}</p>
+                      {restaurant.opening_hours ? (
+                        <div className="space-y-2">
+                          {Object.entries(restaurant.opening_hours as Record<string, any>).map(([day, hours]) => (
+                            <div key={day} className="flex justify-between items-center text-sm">
+                              <span className="font-medium capitalize text-foreground">{t(`restaurantInfo.days.${day}`)}</span>
+                              <span className="text-muted-foreground">
+                                {hours.closed ? (
+                                  <span className="text-muted-foreground">{t('restaurantInfo.closed')}</span>
+                                ) : (
+                                  <span>{hours.open} - {hours.close}</span>
+                                )}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-foreground text-sm">{t('restaurantInfo.notSpecified')}</p>
+                      )}
+                    </div>
+                    
                     {/* Social Media Icons */}
                     {(restaurant.instagram_url || restaurant.facebook_url) && (
                       <div className="md:col-span-2">
