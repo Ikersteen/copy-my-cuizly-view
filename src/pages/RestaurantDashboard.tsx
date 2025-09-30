@@ -308,15 +308,13 @@ const RestaurantDashboard = () => {
                             const hours = (restaurant.opening_hours as Record<string, any>)[day];
                             if (!hours) return null;
                             return (
-                              <div key={day} className="flex items-center gap-4 text-sm">
-                                <span className="font-medium capitalize text-foreground min-w-[80px]">{t(`restaurantInfo.days.${day}`)}</span>
-                                <span className="text-muted-foreground">
-                                  {hours.closed ? (
-                                    <span className="text-muted-foreground">{t('restaurantInfo.closed')}</span>
-                                  ) : (
-                                    <span>{hours.open} - {hours.close}</span>
-                                  )}
-                                </span>
+                              <div key={day} className="text-sm text-foreground">
+                                <span className="font-medium capitalize">{t(`restaurantInfo.days.${day}`)}</span>:{' '}
+                                {hours.closed ? (
+                                  <span className="text-muted-foreground">{t('restaurantInfo.closed')}</span>
+                                ) : (
+                                  <span className="text-muted-foreground">{hours.open} - {hours.close}</span>
+                                )}
                               </div>
                             );
                           })}
