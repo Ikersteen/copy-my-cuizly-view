@@ -185,11 +185,11 @@ const RestaurantDashboard = () => {
         <div className="mb-8 ml-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
-              {profile?.username || restaurant?.name || t('restaurant.myRestaurant')}
+              {restaurant?.name || t('restaurant.myRestaurant')}
             </h1>
-            {profile?.username && restaurant?.name && (
+            {profile?.username && (
               <p className="text-sm sm:text-base text-muted-foreground">
-                {restaurant.name}
+                @{profile.username}
               </p>
             )}
             {restaurantAddress?.formatted_address && (
