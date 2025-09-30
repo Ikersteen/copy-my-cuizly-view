@@ -118,9 +118,8 @@ serve(async (req) => {
         );
         
         if (isRepentigny) {
-          result = {
-            message: `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''} à Repentigny avec adresses complètes :`,
-            restaurants: [
+          result.message = `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''} à Repentigny avec adresses complètes :`;
+          result.restaurants = [
               {
                 name: "Restaurant Chez Cora",
                 address: "335 Boulevard Iberville, Repentigny, QC J6A 2B6",
@@ -157,12 +156,10 @@ serve(async (req) => {
                 description: "Cuisine italienne moderne avec bar à pain gratuit. Parfait pour les familles.",
                 metro: "Accessible en voiture, stationnement gratuit"
               }
-            ]
-          };
+            ];
         } else {
-          result = {
-            message: `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''}${neighborhood ? ` dans ${neighborhood}` : ''} avec adresses complètes :`,
-            restaurants: [
+          result.message = `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''}${neighborhood ? ` dans ${neighborhood}` : ''} avec adresses complètes :`;
+          result.restaurants = [
               {
                 name: "Restaurant Le Bremner",
                 address: "117 Rue Saint-Paul Ouest, Montréal, QC H2Y 1Z5",
@@ -199,13 +196,12 @@ serve(async (req) => {
                 description: "Légendaire smoked meat depuis 1928. Ambiance authentique, portions généreuses.",
                 metro: "Station Sherbrooke (ligne orange)"
               }
-            ]
-          };
+            ];
         }
         break;
 
       case 'get_grocery_shopping_help':
-        const { recipe_type, ingredients, neighborhood: shopNeighborhood, budget: shopBudget } = toolArgs;
+        const { recipe_type, ingredients, neighborhood: shopNeighborhood, budget: groceryBudget } = toolArgs;
         
         const isShopRepentigny = shopNeighborhood && (
           shopNeighborhood.toLowerCase().includes('repentigny') ||
@@ -219,7 +215,7 @@ serve(async (req) => {
             message: `Voici où faire vos courses pour ${recipe_type || 'votre recette'} à Repentigny :`,
             shopping_guide: {
               recipe_type: recipe_type,
-              total_budget_estimate: shopBudget === 'économique' ? '25-40$' : shopBudget === 'moyen' ? '40-65$' : '65-100$',
+              total_budget_estimate: groceryBudget === 'économique' ? '25-40$' : groceryBudget === 'moyen' ? '40-65$' : '65-100$',
               stores: [
                 {
                   type: "Épicerie générale",
@@ -256,7 +252,7 @@ serve(async (req) => {
                 ingredient: ing,
                 best_places: ["Maxi pour économiser", "IGA pour la fraîcheur", "Fruiterie pour fruits/légumes"],
                 price_tip: "Comparer les prix, profiter des spéciaux"
-              })) : []
+              })) : [] as any[]
             }
           };
         } else {
@@ -264,7 +260,7 @@ serve(async (req) => {
             message: `Voici où faire vos courses pour ${recipe_type || 'votre recette'}${shopNeighborhood ? ` dans ${shopNeighborhood}` : ''} :`,
             shopping_guide: {
               recipe_type: recipe_type,
-              total_budget_estimate: shopBudget === 'économique' ? '25-40$' : shopBudget === 'moyen' ? '40-65$' : '65-100$',
+              total_budget_estimate: groceryBudget === 'économique' ? '25-40$' : groceryBudget === 'moyen' ? '40-65$' : '65-100$',
               stores: [
                 {
                   type: "Épicerie générale",
@@ -301,7 +297,7 @@ serve(async (req) => {
                 ingredient: ing,
                 best_places: ["Marché Jean-Talon pour fraîcheur", "IGA pour commodité", "Milano si spécialisé"],
                 price_tip: "Comparer les prix, acheter de saison"
-              })) : []
+              })) : [] as any[]
             }
           };
         }

@@ -116,8 +116,8 @@ serve(async (req) => {
 
     console.log(`🔒 FILTRAGE DE SÉCURITÉ COMPLÉTÉ: ${restaurants.length} restaurants → ${safeRestaurants.length} restaurants sécuritaires`);
     console.log('📊 RÉSULTATS FILTRAGE:');
-    console.log(`  - Exclusions allergènes: ${restaurants.length - safeRestaurants.length - (restaurants.filter(r => preferences?.dietary_restrictions?.length && (!r.dietary_restrictions?.length || !preferences.dietary_restrictions.some((restriction: string) => r.dietary_restrictions!.includes(restriction)))).length || 0)}`);
-    console.log(`  - Exclusions restrictions: ${restaurants.filter(r => preferences?.dietary_restrictions?.length && (!r.dietary_restrictions?.length || !preferences.dietary_restrictions.some((restriction: string) => r.dietary_restrictions!.includes(restriction)))).length || 0}`);
+    console.log(`  - Exclusions allergènes: ${restaurants.length - safeRestaurants.length - (restaurants.filter((r: Restaurant) => preferences?.dietary_restrictions?.length && (!r.dietary_restrictions?.length || !preferences.dietary_restrictions.some((restriction: string) => r.dietary_restrictions!.includes(restriction)))).length || 0)}`);
+    console.log(`  - Exclusions restrictions: ${restaurants.filter((r: Restaurant) => preferences?.dietary_restrictions?.length && (!r.dietary_restrictions?.length || !preferences.dietary_restrictions.some((restriction: string) => r.dietary_restrictions!.includes(restriction)))).length || 0}`);
     console.log(`  - Restaurants SÛRS: ${safeRestaurants.length}`);
 
     if (safeRestaurants.length === 0) {
@@ -162,9 +162,9 @@ serve(async (req) => {
             preference_match: aiScore.preference_match,
             quality_prediction: aiScore.quality_prediction
           };
-        } catch (error: any) {
+        } catch (error) {
           console.error(`Error analyzing restaurant ${restaurant.id}:`, error);
-          console.error('Error details:', error.message);
+          console.error('Error details:', error instanceof Error ? error.message : String(error));
           
           // Fallback with personalized reasons instead of "Analyse traditionnelle"
           const fallbackReasons = generateFallbackReasons(restaurant, preferences, language);
@@ -196,10 +196,10 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error in AI recommendations:', error);
     return new Response(JSON.stringify({ 
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       fallback: true 
     }), {
       status: 500,
@@ -959,12 +959,12 @@ function calculateBudgetMatch(restaurant: Restaurant, preferences: UserPreferenc
 function calculateDeliveryMatch(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): { match: boolean, phrase: string } {
   const phrases = EXPLANATION_PHRASES[language as keyof typeof EXPLANATION_PHRASES] || EXPLANATION_PHRASES.fr;
   
-  if (!preferences.delivery_radius || !restaurant.delivery_radius) {
+  if (!preferences.delivery_radius) {
     return { match: false, phrase: '' };
   }
 
-  // Vérifier si l'utilisateur est dans la zone de livraison du restaurant
-  if (preferences.delivery_radius <= restaurant.delivery_radius) {
+  // Simplified delivery match without delivery_radius property
+  if (preferences.delivery_radius > 0) {
     if (preferences.delivery_radius <= 1) {
       return { 
         match: true, 
