@@ -131,6 +131,11 @@ export const useComments = (restaurantId?: string) => {
     }
   };
 
+  // Load initial comments
+  useEffect(() => {
+    fetchComments();
+  }, [restaurantId]);
+
   // Set up hyper-reactive real-time updates for comments and ratings
   useEffect(() => {
     if (!restaurantId) return;

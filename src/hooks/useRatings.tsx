@@ -143,6 +143,11 @@ export const useRatings = (restaurantId?: string) => {
     }
   };
 
+  // Load initial ratings
+  useEffect(() => {
+    fetchRatings();
+  }, [restaurantId]);
+
   // Set up real-time updates for ratings  
   useEffect(() => {
     if (!restaurantId) return;
