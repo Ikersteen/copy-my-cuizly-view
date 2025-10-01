@@ -38,19 +38,6 @@ const Team = () => {
             </CardHeader>
 
             <CardContent className="space-y-6 sm:space-y-8">
-              {/* Academic Background */}
-              <div className="bg-muted/30 rounded-xl p-4 sm:p-6">
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl sm:text-2xl">🎓</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-base sm:text-lg mb-2">{t('team.education')}</h3>
-                    <p className="text-sm sm:text-base text-muted-foreground">{t('team.educationDetails')}</p>
-                  </div>
-                </div>
-              </div>
-
               {/* Immigration Story */}
               <div className="bg-muted/30 rounded-xl p-4 sm:p-6">
                 <div className="flex items-start gap-3 sm:gap-4">
@@ -126,7 +113,7 @@ const Team = () => {
               <p className="text-sm sm:text-base text-muted-foreground">{t('team.foundingYear')}</p>
             </div>
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">1</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">2</div>
               <p className="text-sm sm:text-base text-muted-foreground">{t('team.teamSize')}</p>
             </div>
             <div className="text-center">
