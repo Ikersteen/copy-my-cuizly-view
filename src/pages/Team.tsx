@@ -56,12 +56,12 @@ const Team = () => {
               </div>
 
               {/* Location & Contact */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6">
-                <div className="flex items-center gap-2 text-muted-foreground justify-center sm:justify-start">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6 justify-center items-center">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-4 w-4" />
                   <span className="text-sm">{t('team.location')}</span>
                 </div>
-                <div className="flex gap-2 justify-center sm:justify-start">
+                <div className="flex gap-2">
                   <Button 
                     variant="outline" 
                     size="sm" 
