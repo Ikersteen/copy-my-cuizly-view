@@ -284,7 +284,7 @@
       },
       "service": {
         "title": "2) Description du Service",
-        "content": "Cuizly est une plateforme qui connecte les consommateurs à des restaurants à Montréal et propose des recommandations et offres culinaires personnalisées grâce à l'IA. Certaines fonctionnalités (ex. réservations, commandes, comptes restaurateurs) peuvent être déployées progressivement."
+        "content": "Cuizly est une plateforme qui connecte les consommateurs à des restaurants au Québec et propose des recommandations et offres culinaires personnalisées grâce à l'IA. Certaines fonctionnalités (ex. réservations, commandes, comptes restaurateurs) peuvent être déployées progressivement."
       },
       "eligibility": {
         "title": "3) Admissibilité et Compte",
