@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import heroRestaurantImage from "@/assets/hero-restaurant.jpg";
+import heroRestaurantImage from "@/assets/get-cuizly-restaurant.jpg";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 import { useState } from "react";
