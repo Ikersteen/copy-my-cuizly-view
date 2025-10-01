@@ -25,56 +25,81 @@ const Mentions = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('mentions.sections.editor.title')}</h2>
             <div className="text-cuizly-neutral space-y-2">
-              <p><strong>{t('mentions.sections.editor.companyName')}</strong></p>
-              <p><strong>{t('mentions.sections.editor.legalForm')}</strong></p>
-              <p><strong>{t('mentions.sections.editor.address')}</strong></p>
-              <p><strong>{t('mentions.sections.editor.email')}</strong></p>
+              <p>{t('mentions.sections.editor.companyName')}</p>
+              <p>{t('mentions.sections.editor.legalForm')}</p>
+              <p>{t('mentions.sections.editor.address')}</p>
+              <p>{t('mentions.sections.editor.email')}</p>
             </div>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('mentions.sections.hosting.title')}</h2>
             <div className="text-cuizly-neutral space-y-2">
-              <p><strong>{t('mentions.sections.hosting.host')}</strong></p>
-              <p><strong>{t('mentions.sections.hosting.address')}</strong></p>
-              <p><strong>{t('mentions.sections.hosting.website')}</strong></p>
+              <p>{t('mentions.sections.hosting.host')}</p>
+              <p>{t('mentions.sections.hosting.address')}</p>
+              <p>{t('mentions.sections.hosting.website')}</p>
             </div>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('mentions.sections.director.title')}</h2>
-            <div className="text-cuizly-neutral">
+            <div className="text-cuizly-neutral space-y-2">
               <p>{t('mentions.sections.director.name')}</p>
+              <p>{t('mentions.sections.director.function')}</p>
               <p>{t('mentions.sections.director.email')}</p>
             </div>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('mentions.sections.intellectual.title')}</h2>
-            <p className="text-cuizly-neutral">
-              {t('mentions.sections.intellectual.content')}
-            </p>
+            <div className="text-cuizly-neutral space-y-4">
+              <p>{t('mentions.sections.intellectual.intro')}</p>
+              <p>{t('mentions.sections.intellectual.p1')}</p>
+              <p>{t('mentions.sections.intellectual.p2')}</p>
+            </div>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('mentions.sections.userContent.title')}</h2>
+            <div className="text-cuizly-neutral space-y-4">
+              <p>{t('mentions.sections.userContent.intro')}</p>
+              <p className="font-semibold">{t('mentions.sections.userContent.guarantee')}</p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>{t('mentions.sections.userContent.guaranteeItems.0')}</li>
+                <li>{t('mentions.sections.userContent.guaranteeItems.1')}</li>
+                <li>{t('mentions.sections.userContent.guaranteeItems.2')}</li>
+              </ul>
+              <p>{t('mentions.sections.userContent.rights')}</p>
+              <p>{t('mentions.sections.userContent.moderation')}</p>
+              <p>{t('mentions.sections.userContent.responsibility')}</p>
+            </div>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('mentions.sections.personal.title')}</h2>
-            <p className="text-cuizly-neutral">
-              {t('mentions.sections.personal.content')}
-            </p>
+            <div className="text-cuizly-neutral space-y-4">
+              <p>{t('mentions.sections.personal.content')}</p>
+              <p>{t('mentions.sections.personal.contact')}</p>
+              <p>{t('mentions.sections.personal.link')}</p>
+            </div>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('mentions.sections.liability.title')}</h2>
-            <p className="text-cuizly-neutral">
-              {t('mentions.sections.liability.content')}
-            </p>
+            <div className="text-cuizly-neutral space-y-4">
+              <p>{t('mentions.sections.liability.availability')}</p>
+              <p>{t('mentions.sections.liability.usage')}</p>
+              <p>{t('mentions.sections.liability.equipment')}</p>
+              <p>{t('mentions.sections.liability.externalLinks')}</p>
+            </div>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('mentions.sections.law.title')}</h2>
-            <p className="text-cuizly-neutral">
-              {t('mentions.sections.law.content')}
-            </p>
+            <div className="text-cuizly-neutral space-y-4">
+              <p>{t('mentions.sections.law.applicableLaw')}</p>
+              <p>{t('mentions.sections.law.jurisdiction')}</p>
+            </div>
           </section>
         </div>
       </div>

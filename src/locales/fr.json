@@ -216,38 +216,60 @@
     "title": "Mentions légales",
     "sections": {
       "editor": {
-        "title": "Éditeur du site",
-        "companyName": "Raison sociale : Cuizly Technologies",
-        "legalForm": "Forme juridique : Startup Indépendante",
-        "address": "Siège social : Montréal, QC (Canada)",
+        "title": "1. Éditeur du site",
+        "companyName": "Raison sociale : Cuizly Technologies Inc.",
+        "legalForm": "Forme juridique : Startup indépendante",
+        "address": "Siège social : Montréal, QC, Canada",
         "email": "Courriel : cuizlycanada@gmail.com"
       },
       "hosting": {
-        "title": "Hébergement",
+        "title": "2. Hébergement",
         "host": "Hébergeur : Supabase Inc.",
-        "address": "Adresse : San Francisco, CA, États-Unis",
+        "address": "Adresse : San Francisco, Californie, États-Unis",
         "website": "Site web : https://supabase.com"
       },
       "director": {
-        "title": "Directeur de la publication",
-        "name": "Iker Kiomba Landu, Président Directeur Général",
+        "title": "3. Directeur de la publication",
+        "name": "Nom : Iker Kiomba Landu",
+        "function": "Fonction : Président Directeur Général",
         "email": "Courriel : cuizlycanada@gmail.com"
       },
       "intellectual": {
-        "title": "Propriété intellectuelle",
-        "content": "L'ensemble de ce site relève de la législation canadienne et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques."
+        "title": "4. Propriété intellectuelle",
+        "intro": "L'ensemble du site Cuizly.ca (textes, images, logos, graphismes, vidéos, codes sources, structure, bases de données, etc.) est protégé par la législation canadienne et internationale sur le droit d'auteur et la propriété intellectuelle.",
+        "p1": "Toute reproduction, représentation, modification, publication, transmission ou dénaturation, totale ou partielle du site ou de son contenu, est interdite sans autorisation écrite préalable de Cuizly Technologies.",
+        "p2": "Les marques, logos et autres signes distinctifs présents sur le site sont la propriété de Cuizly ou de tiers ayant autorisé leur usage."
+      },
+      "userContent": {
+        "title": "5. Contenus utilisateurs (avis, photos, contributions)",
+        "intro": "Les utilisateurs peuvent publier du contenu (avis, commentaires, photos, descriptions, etc.) sur le site ou l'application.",
+        "guarantee": "En publiant du contenu, vous garantissez que :",
+        "guaranteeItems": [
+          "vous disposez de tous les droits nécessaires (ex. sur vos photos, textes, vidéos),",
+          "ce contenu est exact et ne viole pas les droits de tiers (droits d'auteur, droit à l'image, marques, etc.),",
+          "ce contenu n'est pas diffamatoire, haineux, discriminatoire, illégal ou contraire aux bonnes mœurs."
+        ],
+        "rights": "Vous conservez vos droits sur vos contributions, mais vous accordez à Cuizly une licence mondiale, gratuite, non exclusive et transférable pour utiliser, reproduire, modifier, publier, traduire, distribuer et afficher ce contenu dans le cadre du service (notamment pour le rendre visible à d'autres utilisateurs).",
+        "moderation": "Modération : Cuizly se réserve le droit de modérer, refuser, supprimer ou désactiver tout contenu utilisateur qui enfreindrait la loi, les droits de tiers ou ces mentions légales, sans préavis ni indemnité.",
+        "responsibility": "Les utilisateurs restent seuls responsables des contenus qu'ils publient. Cuizly ne saurait être tenu responsable des contenus publiés par des tiers."
       },
       "personal": {
-        "title": "Données personnelles",
-        "content": "Conformément à la loi canadienne sur la protection des renseignements personnels, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit, contactez-nous à cuizlycanada@gmail.com"
+        "title": "6. Données personnelles",
+        "content": "Conformément aux lois applicables au Québec et au Canada (Loi 25, LPRPDE/PIPEDA), vous disposez d'un droit d'accès, de rectification, de portabilité et de suppression de vos données personnelles.",
+        "contact": "Pour exercer vos droits : cuizlycanada@gmail.com",
+        "link": "Pour plus d'informations, consultez notre Politique de confidentialité."
       },
       "liability": {
-        "title": "Responsabilité",
-        "content": "Cuizly Technologies ne pourra être tenue responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications indiquées, soit de l'apparition d'un bug ou d'une incompatibilité."
+        "title": "7. Responsabilité",
+        "availability": "Disponibilité : Cuizly s'efforce de maintenir le site accessible, mais ne peut garantir l'absence d'interruptions, d'erreurs techniques ou de bugs.",
+        "usage": "Utilisation : L'utilisateur est seul responsable de l'usage qu'il fait du site et des informations disponibles.",
+        "equipment": "Matériel : Cuizly ne pourra être tenu responsable des dommages directs ou indirects causés au matériel de l'utilisateur (ex. incompatibilités, virus, pertes de données).",
+        "externalLinks": "Liens externes : Le site peut contenir des liens vers des sites tiers. Cuizly décline toute responsabilité concernant le contenu ou le fonctionnement de ces sites."
       },
       "law": {
-        "title": "Droit applicable",
-        "content": "Tout litige en relation avec l'utilisation du site Cuizly est soumis au droit canadien et québécois. Il est fait attribution exclusive de juridiction aux tribunaux compétents de Montréal."
+        "title": "8. Droit applicable et juridiction",
+        "applicableLaw": "Les présentes mentions légales sont régies par le droit québécois et canadien.",
+        "jurisdiction": "Tout litige lié à l'utilisation du site sera soumis aux tribunaux compétents du district judiciaire de Montréal (QC)."
       }
     }
   },
