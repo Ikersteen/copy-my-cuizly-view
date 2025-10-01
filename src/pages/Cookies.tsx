@@ -23,14 +23,16 @@ const Cookies = () => {
         
         <div className="prose prose-gray max-w-none">
           <p className="text-cuizly-neutral mb-6">
-            {t('cookies.lastUpdated')}{new Date().toLocaleDateString('fr-CA')}
+            {t('cookies.lastUpdated')}
           </p>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('cookies.sections.what.title')}</h2>
-            <p className="text-cuizly-neutral">
-              {t('cookies.sections.what.content')}
-            </p>
+            {(t('cookies.sections.what.paragraphs', { returnObjects: true }) as string[]).map((paragraph: string, index: number) => (
+              <p key={index} className="text-cuizly-neutral mb-4">
+                {paragraph}
+              </p>
+            ))}
           </section>
 
           <section className="mb-8">
@@ -38,52 +40,84 @@ const Cookies = () => {
             
             <div className="mb-6">
               <h3 className="text-xl font-semibold text-foreground mb-2">{t('cookies.sections.types.essential.title')}</h3>
-              <p className="text-cuizly-neutral">
+              <p className="text-cuizly-neutral mb-2">
                 {t('cookies.sections.types.essential.content')}
               </p>
+              <ul className="list-disc pl-6 space-y-1 text-cuizly-neutral">
+                {(t('cookies.sections.types.essential.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
             </div>
 
             <div className="mb-6">
               <h3 className="text-xl font-semibold text-foreground mb-2">{t('cookies.sections.types.performance.title')}</h3>
-              <p className="text-cuizly-neutral">
+              <p className="text-cuizly-neutral mb-2">
                 {t('cookies.sections.types.performance.content')}
+              </p>
+              <p className="text-cuizly-neutral italic">
+                {t('cookies.sections.types.performance.objective')}
               </p>
             </div>
 
             <div className="mb-6">
               <h3 className="text-xl font-semibold text-foreground mb-2">{t('cookies.sections.types.functionality.title')}</h3>
-              <p className="text-cuizly-neutral">
+              <p className="text-cuizly-neutral mb-2">
                 {t('cookies.sections.types.functionality.content')}
+              </p>
+              <p className="text-cuizly-neutral italic">
+                {t('cookies.sections.types.functionality.objective')}
+              </p>
+            </div>
+
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold text-foreground mb-2">{t('cookies.sections.types.thirdParty.title')}</h3>
+              <p className="text-cuizly-neutral mb-2">
+                {t('cookies.sections.types.thirdParty.content')}
+              </p>
+              <ul className="list-disc pl-6 space-y-1 text-cuizly-neutral mb-2">
+                {(t('cookies.sections.types.thirdParty.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+              <p className="text-cuizly-neutral">
+                {t('cookies.sections.types.thirdParty.footer')}
               </p>
             </div>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('cookies.sections.management.title')}</h2>
-            <p className="text-cuizly-neutral mb-4">
-              {t('cookies.sections.management.content1')}
+            <p className="text-cuizly-neutral mb-3">
+              {t('cookies.sections.management.content')}
             </p>
-            
-            <p className="text-cuizly-neutral mb-4">
-              {t('cookies.sections.management.content2')}
+            <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral mb-3">
+              {(t('cookies.sections.management.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+            <p className="text-cuizly-neutral">
+              {t('cookies.sections.management.warning')}
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('cookies.sections.disable.title')}</h2>
             <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
-              <li><strong>{t('cookies.sections.disable.chrome')}</strong></li>
-              <li><strong>{t('cookies.sections.disable.firefox')}</strong></li>
-              <li><strong>{t('cookies.sections.disable.safari')}</strong></li>
-              <li><strong>{t('cookies.sections.disable.edge')}</strong></li>
+              <li><strong>Chrome</strong> : {t('cookies.sections.disable.chrome')}</li>
+              <li><strong>Firefox</strong> : {t('cookies.sections.disable.firefox')}</li>
+              <li><strong>Safari</strong> : {t('cookies.sections.disable.safari')}</li>
+              <li><strong>Edge</strong> : {t('cookies.sections.disable.edge')}</li>
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('cookies.sections.third.title')}</h2>
-            <p className="text-cuizly-neutral">
-              {t('cookies.sections.third.content')}
-            </p>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('cookies.sections.retention.title')}</h2>
+            <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
+              {(t('cookies.sections.retention.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
           </section>
 
           <section className="mb-8">
@@ -92,14 +126,8 @@ const Cookies = () => {
               {t('cookies.sections.editor.company')}
               <br />{t('cookies.sections.editor.form')}
               <br />{t('cookies.sections.editor.address')}
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('cookies.sections.director.title')}</h2>
-            <p className="text-cuizly-neutral">
-              {t('cookies.sections.director.name')}
-              <br />{t('cookies.sections.director.email')}
+              <br /><br />{t('cookies.sections.editor.director')}
+              <br />{t('cookies.sections.editor.directorName')}
             </p>
           </section>
 

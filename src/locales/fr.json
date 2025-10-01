@@ -374,60 +374,83 @@
     }
   },
   "cookies": {
-    "title": "Politique des cookies",
-    "lastUpdated": "Dernière mise à jour : ",
+    "title": "Politique des cookies de Cuizly",
+    "lastUpdated": "Dernière mise à jour : 30 septembre 2025",
     "sections": {
       "what": {
-        "title": "Qu'est-ce qu'un cookie ?",
-        "content": "Un cookie est un petit fichier texte déposé sur votre ordinateur lors de la visite d'un site web. Il permet de reconnaître votre navigateur et de conserver certaines informations sur vos préférences ou actions passées."
+        "title": "1. Qu'est-ce qu'un cookie ?",
+        "paragraphs": [
+          "Un cookie est un petit fichier texte enregistré sur votre appareil (ordinateur, tablette, mobile) lorsque vous visitez un site web. Il permet de reconnaître votre navigateur, de mémoriser vos préférences et d'améliorer votre expérience utilisateur.",
+          "Les cookies peuvent être temporaires (cookies de session supprimés à la fermeture du navigateur) ou persistants (cookies conservés jusqu'à leur expiration ou suppression manuelle)."
+        ]
       },
       "types": {
-        "title": "Types de cookies utilisés",
+        "title": "2. Types de cookies que nous utilisons",
         "essential": {
-          "title": "Cookies essentiels",
-          "content": "Ces cookies sont nécessaires au fonctionnement du site. Ils vous permettent de naviguer sur le site et d'utiliser ses fonctionnalités essentielles comme l'authentification et la sécurité."
+          "title": "a) Cookies essentiels",
+          "content": "Indispensables au fonctionnement du site. Ils permettent par exemple :",
+          "items": [
+            "l'authentification et la gestion de sessions,",
+            "la sécurité (prévenir les accès frauduleux),",
+            "l'accès aux fonctionnalités de base."
+          ]
         },
         "performance": {
-          "title": "Cookies de performance",
-          "content": "Ces cookies collectent des informations sur la façon dont vous utilisez notre site, comme les pages les plus visitées. Ces données nous aident à améliorer le fonctionnement du site."
+          "title": "b) Cookies de performance",
+          "content": "Ils collectent des informations sur la manière dont les visiteurs utilisent le site (pages visitées, erreurs rencontrées, temps de navigation).",
+          "objective": "Objectif : améliorer la performance, l'ergonomie et la rapidité du site."
         },
         "functionality": {
-          "title": "Cookies de fonctionnalité",
-          "content": "Ces cookies permettent au site de se souvenir de vos choix (comme votre nom d'utilisateur ou votre langue) et de fournir des fonctionnalités améliorées et plus personnalisées."
+          "title": "c) Cookies de fonctionnalité",
+          "content": "Ils permettent de mémoriser vos choix et préférences (langue, identifiant, emplacement).",
+          "objective": "Objectif : offrir une expérience personnalisée et fluide."
+        },
+        "thirdParty": {
+          "title": "d) Cookies tiers",
+          "content": "Certains cookies sont placés par des prestataires tiers :",
+          "items": [
+            "Google Analytics (analyse d'audience),",
+            "éventuels outils marketing ou publicitaires (ex. campagnes ciblées)."
+          ],
+          "footer": "Ces tiers appliquent leurs propres politiques de confidentialité. Nous vous recommandons de les consulter."
         }
       },
       "management": {
-        "title": "Gestion des cookies",
-        "content1": "Vous pouvez contrôler et/ou supprimer les cookies comme vous le souhaitez. Vous pouvez supprimer tous les cookies qui sont déjà sur votre ordinateur et vous pouvez configurer la plupart des navigateurs pour empêcher leur placement.",
-        "content2": "Cependant, si vous faites cela, vous devrez peut-être ajuster manuellement certaines préférences à chaque fois que vous visitez un site et certains services et fonctionnalités peuvent ne pas fonctionner."
+        "title": "3. Gestion de vos préférences",
+        "content": "Vous pouvez contrôler et/ou supprimer les cookies comme vous le souhaitez :",
+        "items": [
+          "Supprimer tous les cookies déjà installés.",
+          "Configurer la plupart des navigateurs pour bloquer leur installation."
+        ],
+        "warning": "⚠️ Si vous désactivez les cookies essentiels, certaines parties du site risquent de ne plus fonctionner correctement."
       },
       "disable": {
-        "title": "Comment désactiver les cookies",
+        "title": "4. Comment désactiver les cookies (guides rapides)",
         "chrome": "Chrome : Paramètres → Confidentialité et sécurité → Cookies et autres données de site",
         "firefox": "Firefox : Options → Vie privée et sécurité → Cookies et données de site",
         "safari": "Safari : Préférences → Confidentialité → Gérer les données de site web",
         "edge": "Edge : Paramètres → Cookies et autorisations de site → Gérer et supprimer les cookies"
       },
-      "third": {
-        "title": "Cookies tiers",
-        "content": "Certains cookies peuvent être placés par des services tiers que nous utilisons, comme Google Analyses pour mesurer l'audience du site. Ces services tiers ont leurs propres politiques de confidentialité."
+      "retention": {
+        "title": "5. Durée de conservation des cookies",
+        "items": [
+          "Cookies de session : supprimés à la fermeture du navigateur.",
+          "Cookies persistants : conservés 12 mois maximum, sauf si vous les supprimez avant."
+        ]
       },
       "editor": {
-        "title": "Éditeur du site",
-        "company": "Raison sociale : Cuizly Technologies",
-        "form": "Forme juridique : Startup Indépendante",
-        "address": "Siège social : Montréal, QC (Canada)"
-      },
-      "director": {
-        "title": "Directeur de la publication",
-        "name": "Iker Kiomba Landu, Président Directeur Général",
-        "email": "Courriel : cuizlycanada@gmail.com"
+        "title": "6. Éditeur du site",
+        "company": "Raison sociale : Cuizly Technologies Inc.",
+        "form": "Forme juridique : Incorporation",
+        "address": "Siège social : Montréal, QC, Canada",
+        "director": "Directeur de la publication :",
+        "directorName": "Iker Kiomba Landu – Président Directeur Général"
       },
       "contact": {
-        "title": "Contact",
-        "content": "Pour toute question concernant notre utilisation des cookies, contactez-nous à :",
+        "title": "7. Contact",
+        "content": "Pour toute question sur l'utilisation des cookies :",
         "email": "Courriel : cuizlycanada@gmail.com",
-        "address": "Siège social : Montréal, QC (Canada)"
+        "address": "Adresse : Montréal, QC, Canada"
       }
     }
   },
