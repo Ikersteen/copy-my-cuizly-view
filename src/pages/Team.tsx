@@ -28,16 +28,7 @@ const Team = () => {
       <section className="py-6 sm:py-8 lg:py-12 bg-background">
         <div className="max-w-3xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           <Card className="max-w-3xl mx-auto shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
-            <CardHeader className="text-center pb-4 sm:pb-6">
-              <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-center mb-2">
-                {t('team.founderName')}
-              </CardTitle>
-              <CardDescription className="text-base sm:text-lg font-medium text-primary">
-                {t('team.founderTitle')}
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-6 sm:space-y-8">
+            <CardContent className="space-y-6 sm:space-y-8 pt-6">
               {/* Immigration Story */}
               <div className="bg-muted/30 rounded-xl p-4 sm:p-6">
                 <div className="flex items-start gap-3 sm:gap-4">
