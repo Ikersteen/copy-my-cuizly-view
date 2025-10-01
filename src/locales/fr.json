@@ -203,43 +203,124 @@
     }
   },
   "terms": {
-    "title": "Conditions d'utilisation",
-    "lastUpdated": "Dernière mise à jour : ",
+    "title": "Conditions d'utilisation de Cuizly",
+    "lastUpdated": "Dernière mise à jour : 2025-09-30",
+    "intro": "Bienvenue sur Cuizly (le « Service »), exploité par Cuizly Technologie Inc. (« Cuizly », « nous », « notre»). En accédant au Service, vous acceptez les présentes Conditions.",
     "sections": {
       "acceptance": {
-        "title": "1. Acceptation des conditions",
-        "content": "En accédant et en utilisant Cuizly, vous acceptez d'être lié par ces conditions d'utilisation et toutes les lois et réglementations applicables."
+        "title": "1) Acceptation des Conditions",
+        "content": "En accédant ou en utilisant le Service (site, app iOS, API, contenus), vous confirmez avoir lu, compris et accepté ces Conditions ainsi que les politiques qui y sont référencées (p. ex. Politique de confidentialité). Si vous n'acceptez pas, n'utilisez pas le Service."
       },
       "service": {
-        "title": "2. Description du service",
-        "content": "Cuizly est une plateforme qui connecte les consommateurs aux restaurants à Montréal en proposant des offres culinaires personnalisées grâce à l'intelligence artificielle."
+        "title": "2) Description du Service",
+        "content": "Cuizly est une plateforme qui connecte les consommateurs à des restaurants à Montréal et propose des recommandations et offres culinaires personnalisées grâce à l'IA. Certaines fonctionnalités (ex. réservations, commandes, comptes restaurateurs) peuvent être déployées progressivement."
       },
-      "responsibilities": {
-        "title": "3. Responsabilités de l'utilisateur",
+      "eligibility": {
+        "title": "3) Admissibilité et Compte",
         "items": [
-          "Fournir des informations exactes lors de l'inscription",
-          "Maintenir la sécurité de votre compte",
-          "Utiliser le service de manière légale et respectueuse",
-          "Ne pas perturber le fonctionnement de la plateforme"
+          "Vous devez avoir 18 ans et plus (ou l'autorisation d'un parent/tuteur si vous avez entre 14 et 17 ans).",
+          "Vous vous engagez à fournir des informations exactes et à les tenir à jour.",
+          "Vous êtes responsable de la confidentialité de vos identifiants et de l'activité réalisée sous votre compte.",
+          "Nous pouvons suspendre ou résilier un compte en cas de violation."
+        ]
+      },
+      "acceptable": {
+        "title": "4) Utilisation acceptable",
+        "intro": "Il est interdit de :",
+        "items": [
+          "Perturber ou tenter de perturber le Service, contourner les mesures de sécurité, procéder à de la rétro-ingénierie non autorisée.",
+          "Télécharger, publier ou transmettre du contenu illégal, diffamatoire, haineux, trompeur ou portant atteinte à des droits de tiers.",
+          "Utiliser le Service d'une manière contraire aux lois applicables (Québec/Canada) ou aux présentes Conditions."
         ]
       },
       "intellectual": {
-        "title": "4. Propriété intellectuelle",
-        "content": "Tout le contenu de Cuizly, y compris les textes, graphiques, logos et logiciels, est la propriété de Cuizly Technologies et est protégé par les lois sur la propriété intellectuelle."
+        "title": "5) Contenus et Propriété intellectuelle",
+        "paragraphs": [
+          "L'ensemble des textes, visuels, logos, interfaces, logiciels et autres éléments du Service est la propriété de Cuizly ou de ses concédants et est protégé par les lois sur la propriété intellectuelle.",
+          "Sous réserve de votre respect des Conditions, Cuizly vous concède une licence limitée, non exclusive, non transférable pour accéder et utiliser le Service à des fins personnelles et non commerciales.",
+          "Vous ne pouvez pas reproduire, distribuer, modifier, louer, vendre ou créer des œuvres dérivées du Service sans autorisation écrite."
+        ]
+      },
+      "userContent": {
+        "title": "6) Contenus fournis par l'utilisateur",
+        "paragraphs": [
+          "Vous pouvez publier des avis, préférences, photos, etc. Vous conservez vos droits sur ces contenus.",
+          "Vous accordez à Cuizly une licence mondiale, non exclusive, gratuite, transférable et sous-licenciable pour utiliser, reproduire, modifier, publier, traduire, distribuer et afficher ces contenus dans le cadre du Service.",
+          "Vous garantissez disposer de tous les droits nécessaires et que vos contenus ne violent aucun droit ni loi."
+        ]
+      },
+      "thirdParty": {
+        "title": "7) Informations, Offres et Restaurants tiers",
+        "paragraphs": [
+          "Les menus, prix, disponibilités, temps d'attente, réductions, allergènes et autres informations affichées peuvent provenir de tiers et peuvent changer sans préavis.",
+          "Cuizly fait des efforts raisonnables pour l'exactitude, sans garantie d'exhaustivité.",
+          "Les restaurants sont responsables de leurs produits, de la qualité de service et du respect des normes sanitaires.",
+          "Allergies & restrictions : vérifiez toujours directement auprès du restaurant avant de commander ou consommer. Les recommandations IA sont indicatives."
+        ]
+      },
+      "payment": {
+        "title": "8) Fonctionnalités de paiement et de réservation (si disponibles)",
+        "paragraphs": [
+          "Les paiements, réservations ou commandes peuvent être traités via des prestataires tiers. Des conditions et frais supplémentaires peuvent s'appliquer.",
+          "Les politiques d'annulation/remboursement relèvent du restaurant ou du prestataire tiers concerné. Cuizly n'est pas partie aux transactions restaurateur-client, sauf mention expresse."
+        ]
+      },
+      "privacy": {
+        "title": "9) Données, vie privée et IA",
+        "paragraphs": [
+          "L'utilisation du Service implique le traitement de données personnelles (préférences, localisation approximative, historiques, etc.) pour fournir des recommandations.",
+          "Consultez la Politique de confidentialité (liée séparément) pour savoir quelles données sont collectées, pourquoi, comment elles sont conservées et vos droits.",
+          "Les recommandations générées par l'IA sont basées sur des signaux et données disponibles et peuvent comporter des marges d'erreur."
+        ]
+      },
+      "thirdPartyServices": {
+        "title": "10) Services et contenus de tiers",
+        "content": "Le Service peut intégrer des données ou liens de tiers (p. ex. cartes, avis, sites externes). Cuizly n'endosse pas ces tiers, n'en contrôle pas le contenu et décline toute responsabilité à leur égard. L'utilisation de services tiers est régie par leurs propres conditions."
+      },
+      "warranties": {
+        "title": "11) Exclusions de garanties",
+        "content": "Le Service est fourni « tel quel » et « selon disponibilité ». Dans la mesure permise par la loi, Cuizly décline toute garantie expresse ou implicite, y compris de qualité marchande, d'adéquation à un usage particulier et d'absence de contrefaçon. Nous ne garantissons pas que le Service sera ininterrompu, sécurisé ou exempt d'erreurs."
       },
       "liability": {
-        "title": "5. Limitation de responsabilité",
-        "content": "Cuizly ne peut être tenu responsable des dommages indirects, incidents ou consécutifs résultant de l'utilisation ou de l'impossibilité d'utiliser notre service."
+        "title": "12) Limitation de responsabilité",
+        "paragraphs": [
+          "Dans la mesure permise par la loi, Cuizly, ses dirigeants, employés, partenaires et mandataires ne seront pas responsables des dommages indirects, spéciaux, accessoires, punitifs ou consécutifs, ni de toute perte de profits, de données, d'achalandage ou d'opportunités, découlant de l'utilisation ou de l'impossibilité d'utiliser le Service.",
+          "Si notre responsabilité est retenue malgré ce qui précède, elle sera limitée au plus élevé entre (a) 100 $ CAD et (b) le total des frais que vous avez payés à Cuizly au cours des 12 derniers mois, le tout sous réserve des lois impératives applicables au Québec."
+        ]
+      },
+      "indemnification": {
+        "title": "13) Indemnisation",
+        "content": "Vous acceptez d'indemniser et de tenir indemnes Cuizly et ses affiliés contre toute réclamation, perte, responsabilité, frais (y compris honoraires juridiques raisonnables) découlant de votre utilisation du Service, de vos contenus ou de votre violation des présentes Conditions ou des lois applicables."
       },
       "modifications": {
-        "title": "6. Modifications",
-        "content": "Nous nous réservons le droit de modifier ces conditions d'utilisation à tout moment. Les modifications entreront en vigueur immédiatement après leur publication sur cette page."
+        "title": "14) Modifications du Service et des Conditions",
+        "content": "Nous pouvons adapter, suspendre ou interrompre le Service (en tout ou en partie) et mettre à jour ces Conditions. Les modifications prennent effet dès leur publication sur cette page avec la date de mise à jour. L'utilisation continue du Service après publication vaut acceptation des Conditions révisées."
+      },
+      "termination": {
+        "title": "15) Résiliation",
+        "content": "Nous pouvons résilier ou suspendre l'accès au Service à tout moment en cas de violation des Conditions ou pour des motifs légitimes. Vous pouvez cesser d'utiliser le Service et, le cas échéant, supprimer votre compte via les paramètres ou en nous contactant."
+      },
+      "law": {
+        "title": "16) Droit applicable et litiges",
+        "content": "Ces Conditions sont régies par les lois du Québec et du Canada applicables, sans égard aux principes de conflits de lois. Tout litige sera soumis aux tribunaux du district judiciaire de Montréal (QC), sous réserve des règles impératives de protection du consommateur."
+      },
+      "communications": {
+        "title": "17) Communications électroniques et avis",
+        "content": "En utilisant le Service, vous consentez à recevoir des communications électroniques (courriels, notifications in-app) relatives au Service. Vous pouvez gérer certaines préférences de communication dans vos paramètres."
+      },
+      "reporting": {
+        "title": "18) Signalement et retrait de contenu",
+        "content": "Si vous estimez qu'un contenu porte atteinte à des droits (p. ex. propriété intellectuelle), écrivez-nous avec les détails pertinents. Nous appliquerons un processus de notification et, le cas échéant, de retrait raisonnable."
+      },
+      "general": {
+        "title": "19) Dispositions générales",
+        "content": "Si une disposition est jugée invalide, les autres restent pleinement en vigueur. L'absence d'exercice d'un droit par Cuizly ne vaut pas renonciation. Vous ne pouvez pas céder vos droits/obligations sans notre accord écrit; nous pouvons céder ces Conditions dans le cadre d'une réorganisation ou d'une opération corporative."
       },
       "contact": {
-        "title": "7. Contact",
-        "content": "Pour toute question concernant ces conditions d'utilisation, contactez-nous à :",
+        "title": "20) Contact",
+        "content": "Pour toute question :",
         "email": "Courriel : cuizlycanada@gmail.com",
-        "address": "Adresse : Montréal, QC (Canada)"
+        "address": "Adresse : Montréal, QC, Canada"
       }
     }
   },
