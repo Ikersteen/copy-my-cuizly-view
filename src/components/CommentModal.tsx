@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Star, Camera, X, Send, User } from "lucide-react";
+import { Star, Camera, X, Send } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useComments } from "@/hooks/useComments";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface Restaurant {
   id: string;
@@ -346,9 +347,10 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                   <div key={comment.id} className="border rounded-lg p-4 space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                          <User className="h-4 w-4 text-primary" />
-                        </div>
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={comment.profiles?.avatar_url} />
+                          <AvatarFallback />
+                        </Avatar>
                         <span className="font-medium text-sm">
                           {getUserDisplayName(comment)}
                         </span>

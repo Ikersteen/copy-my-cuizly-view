@@ -15,6 +15,7 @@ export interface CommentWithProfile {
     user_id?: string;
     display_name?: string;
     username?: string;
+    avatar_url?: string;
   };
 }
 
