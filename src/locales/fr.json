@@ -113,49 +113,98 @@
     "returnHome": "Retourner à l'accueil"
   },
   "privacy": {
-    "title": "Politique de confidentialité",
-    "lastUpdated": "Dernière mise à jour : ",
+    "title": "Politique de confidentialité de Cuizly",
+    "lastUpdated": "Dernière mise à jour : 2025-09-30",
     "sections": {
       "introduction": {
         "title": "1. Introduction",
-        "content": "Cuizly Technologies (\"nous\", \"notre\" ou \"Cuizly\") respecte votre vie privée et s'engage à protéger vos données personnelles. Cette politique de confidentialité vous informe sur la façon dont nous collectons, utilisons et protégeons vos informations lorsque vous utilisez notre service."
+        "content": "Cuizly Technologies Inc. (« Cuizly », « nous », « notre ») respecte votre vie privée et s'engage à protéger vos données personnelles. La présente politique explique quelles informations nous collectons, comment nous les utilisons, avec qui nous les partageons et quels sont vos droits en vertu des lois applicables (Québec et Canada)."
       },
       "collection": {
         "title": "2. Informations que nous collectons",
+        "content": "Nous pouvons recueillir les catégories suivantes :",
         "items": [
-          "Informations d'identification personnelle (nom, courriel)",
-          "Préférences culinaires et alimentaires",
-          "Données de localisation (avec votre consentement)",
-          "Informations d'utilisation et analytiques"
+          "Informations d'identification : nom, prénom, adresse courriel, mot de passe chiffré.",
+          "Préférences culinaires et alimentaires : cuisines favorites, restrictions, allergènes.",
+          "Données de localisation : uniquement avec votre consentement explicite (p. ex. rayon de livraison, quartier).",
+          "Informations d'utilisation : pages visitées, restaurants consultés, interactions avec l'application.",
+          "Données analytiques et techniques : type d'appareil, système d'exploitation, identifiants de connexion, cookies."
         ]
       },
       "usage": {
         "title": "3. Comment nous utilisons vos informations",
+        "content": "Vos données servent à :",
         "items": [
-          "Fournir et améliorer nos services",
-          "Personnaliser votre expérience",
-          "Vous envoyer des notifications pertinentes",
-          "Analyser l'utilisation de notre plateforme"
+          "Fournir, personnaliser et améliorer le Service.",
+          "Générer des recommandations personnalisées via l'IA.",
+          "Vous envoyer des notifications pertinentes (ex. offres, rappels).",
+          "Analyser l'utilisation pour améliorer nos fonctionnalités.",
+          "Assurer la sécurité et prévenir la fraude."
         ]
       },
       "sharing": {
         "title": "4. Partage d'informations",
-        "content": "Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers. Nous pouvons partager vos informations dans les cas suivants :",
+        "intro": "Nous ne vendons pas vos données personnelles.",
+        "content": "Nous pouvons partager vos informations uniquement :",
         "items": [
-          "Avec votre consentement explicite",
-          "Pour se conformer aux obligations légales",
-          "Pour protéger nos droits et notre sécurité"
+          "Avec votre consentement explicite.",
+          "Avec des prestataires de services tiers (hébergement, paiement, analytique) qui sont tenus de respecter la confidentialité.",
+          "Pour nous conformer à une obligation légale ou protéger nos droits.",
+          "Dans le cadre d'une fusion, acquisition ou réorganisation de Cuizly (avec préavis raisonnable)."
         ]
       },
+      "cookies": {
+        "title": "5. Cookies et technologies similaires",
+        "content": "Nous utilisons des cookies et technologies semblables pour :",
+        "items": [
+          "Maintenir votre session active.",
+          "Analyser la performance et l'usage.",
+          "Personnaliser le contenu."
+        ],
+        "footer": "Vous pouvez gérer vos préférences via les paramètres de votre navigateur ou de l'application."
+      },
       "rights": {
-        "title": "5. Vos droits",
-        "content": "Vous avez le droit d'accéder, de corriger, de supprimer ou de limiter l'utilisation de vos données personnelles. Pour exercer ces droits, contactez-nous à cuizlycanada@gmail.com."
+        "title": "6. Vos droits",
+        "content": "Conformément aux lois du Québec et du Canada, vous pouvez :",
+        "items": [
+          "Accéder à vos données personnelles.",
+          "Corriger ou mettre à jour vos informations.",
+          "Retirer votre consentement (dans la mesure permise par la loi).",
+          "Demander la suppression ou la limitation du traitement de vos données."
+        ],
+        "footer": "Pour exercer vos droits : cuizlycanada@gmail.com"
+      },
+      "security": {
+        "title": "7. Sécurité des données",
+        "content": "Nous utilisons des mesures techniques et organisationnelles (chiffrement, contrôles d'accès, audits internes) pour protéger vos données. Aucun système n'étant invulnérable, nous ne pouvons garantir une sécurité absolue."
+      },
+      "retention": {
+        "title": "8. Conservation des données",
+        "paragraphs": [
+          "Vos données sont conservées aussi longtemps que nécessaire pour fournir le Service, ou conformément aux obligations légales.",
+          "En cas d'inactivité prolongée, votre compte pourra être supprimé après un préavis."
+        ]
+      },
+      "minors": {
+        "title": "9. Données des mineurs",
+        "paragraphs": [
+          "Le Service n'est pas destiné aux enfants de moins de 15 ans.",
+          "Les utilisateurs de 15 ans et moins doivent obtenir le consentement d'un parent ou tuteur."
+        ]
+      },
+      "transfers": {
+        "title": "10. Transferts hors Québec/Canada",
+        "content": "Certains prestataires de services peuvent être situés hors du Québec/Canada. Dans ce cas, vos données peuvent être transférées à l'extérieur, mais toujours avec des protections contractuelles et légales appropriées."
+      },
+      "modifications": {
+        "title": "11. Modifications de la Politique",
+        "content": "Nous pouvons mettre à jour cette Politique de confidentialité. Toute modification sera publiée avec une nouvelle date de mise à jour. Votre utilisation continue du Service après publication vaut acceptation."
       },
       "contact": {
-        "title": "6. Contact",
-        "content": "Pour toute question concernant cette politique de confidentialité, contactez-nous à :",
+        "title": "12. Contact",
+        "content": "Pour toute question, demande ou plainte :",
         "email": "Courriel : cuizlycanada@gmail.com",
-        "address": "Adresse : Montréal, QC (Canada)"
+        "address": "Adresse : Montréal, QC, Canada"
       }
     }
   },

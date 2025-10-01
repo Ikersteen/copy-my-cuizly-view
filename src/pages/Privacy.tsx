@@ -23,7 +23,7 @@ const Privacy = () => {
         
         <div className="prose prose-gray max-w-none">
           <p className="text-cuizly-neutral mb-6">
-            {t('privacy.lastUpdated')}{new Date().toLocaleDateString('fr-CA')}
+            {t('privacy.lastUpdated')}
           </p>
 
           <section className="mb-8">
@@ -35,6 +35,9 @@ const Privacy = () => {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.collection.title')}</h2>
+            <p className="text-cuizly-neutral mb-4">
+              {t('privacy.sections.collection.content')}
+            </p>
             <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
               {(t('privacy.sections.collection.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
                 <li key={index}>{item}</li>
@@ -44,6 +47,9 @@ const Privacy = () => {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.usage.title')}</h2>
+            <p className="text-cuizly-neutral mb-4">
+              {t('privacy.sections.usage.content')}
+            </p>
             <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral">
               {(t('privacy.sections.usage.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
                 <li key={index}>{item}</li>
@@ -53,6 +59,9 @@ const Privacy = () => {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.sharing.title')}</h2>
+            <p className="text-cuizly-neutral mb-4">
+              {t('privacy.sections.sharing.intro')}
+            </p>
             <p className="text-cuizly-neutral mb-4">
               {t('privacy.sections.sharing.content')}
             </p>
@@ -64,9 +73,71 @@ const Privacy = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.rights.title')}</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.cookies.title')}</h2>
+            <p className="text-cuizly-neutral mb-4">
+              {t('privacy.sections.cookies.content')}
+            </p>
+            <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral mb-4">
+              {(t('privacy.sections.cookies.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
             <p className="text-cuizly-neutral">
+              {t('privacy.sections.cookies.footer')}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.rights.title')}</h2>
+            <p className="text-cuizly-neutral mb-4">
               {t('privacy.sections.rights.content')}
+            </p>
+            <ul className="list-disc pl-6 space-y-2 text-cuizly-neutral mb-4">
+              {(t('privacy.sections.rights.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+            <p className="text-cuizly-neutral">
+              {t('privacy.sections.rights.footer')}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.security.title')}</h2>
+            <p className="text-cuizly-neutral">
+              {t('privacy.sections.security.content')}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.retention.title')}</h2>
+            {(t('privacy.sections.retention.paragraphs', { returnObjects: true }) as string[]).map((paragraph: string, index: number) => (
+              <p key={index} className="text-cuizly-neutral mb-4">
+                {paragraph}
+              </p>
+            ))}
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.minors.title')}</h2>
+            {(t('privacy.sections.minors.paragraphs', { returnObjects: true }) as string[]).map((paragraph: string, index: number) => (
+              <p key={index} className="text-cuizly-neutral mb-4">
+                {paragraph}
+              </p>
+            ))}
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.transfers.title')}</h2>
+            <p className="text-cuizly-neutral">
+              {t('privacy.sections.transfers.content')}
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">{t('privacy.sections.modifications.title')}</h2>
+            <p className="text-cuizly-neutral">
+              {t('privacy.sections.modifications.content')}
             </p>
           </section>
 
