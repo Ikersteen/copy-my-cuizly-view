@@ -35,11 +35,11 @@ const HowItWorksSection = () => {
 
           {/* Demo Image */}
           <div className="mb-12 max-w-5xl mx-auto">
-            <div className="bg-card rounded-2xl shadow-xl p-8 border">
+            <div className="bg-card rounded-2xl shadow-xl p-3 sm:p-8 border">
               <img 
                 src="/lovable-uploads/cuizly-assistance-interface.png" 
                 alt="Interface Cuizly Assistant" 
-                className="w-full h-auto object-cover rounded-xl scale-105"
+                className="w-full h-auto object-cover rounded-xl scale-110 sm:scale-105"
               />
             </div>
           </div>
