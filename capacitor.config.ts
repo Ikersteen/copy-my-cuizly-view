@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.60f3fd4ff08c4873a7f5daf2554dba18',
+  appId: 'com.cuizly.app',
   appName: 'getcuizly',
   webDir: 'dist',
   server: {
