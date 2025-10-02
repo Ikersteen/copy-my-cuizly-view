@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   MapPin, Clock, Star, Heart, Settings, 
-  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut, Mic, CheckCircle
+  TrendingUp, Zap, Gift, History, User as UserIcon, LogOut, Sparkles, CheckCircle
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -208,7 +208,7 @@ const ConsumerDashboard = () => {
         className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 z-50"
         aria-label={t('accessibility.voiceAssistant')}
       >
-        <Mic className="w-6 h-6" />
+        <Sparkles className="w-6 h-6" />
       </Button>
 
     </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Mic, MicOff, X } from 'lucide-react';
+import { Sparkles, MicOff, X } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { supabase } from '@/integrations/supabase/client';
@@ -170,7 +170,7 @@ const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen, onClo
                   </>
                 ) : (
                   <>
-                    <Mic className="w-4 h-4 mr-2" />
+                    <Sparkles className="w-4 h-4 mr-2" />
                     {t('voiceAssistant.startConversation')}
                   </>
                 )}

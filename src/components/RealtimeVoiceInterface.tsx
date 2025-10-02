@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Mic, MicOff, Volume2, VolumeX, User as UserIcon } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, User as UserIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
@@ -199,7 +199,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
             isSpeaking ? (
               <Volume2 className="w-8 h-8 text-white animate-pulse" />
             ) : (
-              <Mic className="w-8 h-8 text-white" />
+              <Sparkles className="w-8 h-8 text-white" />
             )
           ) : (
             <MicOff className="w-8 h-8 text-white/70" />
@@ -305,7 +305,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
               onClick={startConversation}
               className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <Mic className="w-5 h-5 mr-2" />
+              <Sparkles className="w-5 h-5 mr-2" />
               {t('voiceAssistant.available')}
             </Button>
           ) : (

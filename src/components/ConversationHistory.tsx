@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import { 
   MessageSquare, 
-  Mic, 
+  Sparkles, 
   Trash2,
   Edit, 
   Calendar,
@@ -168,7 +168,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
                           </div>
                           <Badge variant={conversation.type === 'voice' ? 'default' : 'secondary'} className="text-xs">
                             {conversation.type === 'voice' ? (
-                              <><Mic className="w-3 h-3 mr-1" /> {t('conversations.vocal')}</>
+                              <><Sparkles className="w-3 h-3 mr-1" /> {t('conversations.vocal')}</>
                             ) : (
                               <><MessageSquare className="w-3 h-3 mr-1" /> {t('conversations.text')}</>
                             )}
