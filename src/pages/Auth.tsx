@@ -17,6 +17,9 @@ import { useEmailNotifications } from "@/hooks/useEmailNotifications";
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useDataPersistence } from "@/hooks/useDataPersistence";
+import { useGoogleAuthMobile } from '@/hooks/useGoogleAuthMobile';
+import { Capacitor } from '@capacitor/core';
+import { getLocalizedRoute } from '@/lib/routeTranslations';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -462,22 +465,48 @@ const Auth = () => {
     }
   };
 
+  const { signInWithGoogle: signInWithGoogleMobile } = useGoogleAuthMobile();
+  
   const handleGoogleAuth = async () => {
     console.log("🔵 [Google Auth] Starting Google connection");
     
     try {
       setIsLoading(true);
       
-      // Log de l'URL de redirection
+      // Sur mobile, utiliser le plugin Capacitor
+      if (Capacitor.isNativePlatform()) {
+        console.log("🔵 [Google Auth] Using Capacitor plugin for native platform");
+        const { data, error } = await signInWithGoogleMobile();
+        
+        if (error) {
+          throw error;
+        }
+        
+        console.log("🟢 [Google Auth] Mobile authentication successful");
+        
+        // Créer ou mettre à jour le profil utilisateur
+        if (data?.user) {
+          // Ajouter le user_type aux métadonnées si nécessaire
+          if (!data.user.user_metadata?.user_type) {
+            const { error: updateError } = await supabase.auth.updateUser({
+              data: { user_type: userType }
+            });
+            if (updateError) {
+              console.error("🔴 [Google Auth] Error updating user metadata:", updateError);
+            }
+          }
+          await createUserProfile(data.user);
+        }
+        
+        // Redirection vers le dashboard
+        navigate(getLocalizedRoute('/dashboard'));
+        return;
+      }
+      
+      // Sur web, utiliser la méthode OAuth classique
+      console.log("🔵 [Google Auth] Using web OAuth flow");
       const redirectUrl = `${window.location.origin}/dashboard`;
       console.log("🔵 [Google Auth] Configured redirect URL:", redirectUrl);
-      console.log("🔵 [Google Auth] Current origin:", window.location.origin);
-      
-      // Vérification préliminaire de la session actuelle
-      const { data: currentSession } = await supabase.auth.getSession();
-      console.log("🔵 [Google Auth] Current session before OAuth:", currentSession?.session ? "Connected" : "Disconnected");
-      
-      console.log("🔵 [Google Auth] Launching signInWithOAuth...");
       
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -490,18 +519,12 @@ const Auth = () => {
         }
       });
       
-      console.log("🔵 [Google Auth] OAuth response received");
-      console.log("🔵 [Google Auth] Data:", data);
-      
       if (error) {
         console.error("🔴 [Google Auth] OAuth error:", error);
-        console.error("🔴 [Google Auth] Error message:", error.message);
-        console.error("🔴 [Google Auth] Status:", error.status);
         throw error;
       }
       
-      console.log("🟢 [Google Auth] OAuth initiated successfully, redirecting...");
-      console.log("🟢 [Google Auth] Generated URL:", data?.url);
+      console.log("🟢 [Google Auth] OAuth initiated successfully");
       
     } catch (error: any) {
       console.error("🔴 [Google Auth] Error in handleGoogleAuth:", error);
@@ -510,13 +533,10 @@ const Auth = () => {
       
       if (error.message?.includes("provider is not enabled")) {
         errorMessage = "Google OAuth is not configured for this application";
-        console.error("🔴 [Google Auth] Google provider not enabled");
       } else if (error.message?.includes("invalid_request")) {
         errorMessage = t('auth.errors.oauthConfigInvalid');
-        console.error("🔴 [Google Auth] Invalid OAuth configuration");
       } else if (error.message?.includes("redirect_uri")) {
         errorMessage = t('auth.errors.redirectUriUnauthorized');
-        console.error("🔴 [Google Auth] Issue with redirect URL");
       }
 
       toast({
