@@ -18,12 +18,6 @@ const config: CapacitorConfig = {
       forceCodeForRefreshToken: true,
     },
   },
-  ios: {
-    scheme: 'com.cuizly.app'
-  },
-  android: {
-    scheme: 'com.cuizly.app'
-  }
 };
 
 export default config;
