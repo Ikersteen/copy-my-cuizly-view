@@ -739,10 +739,6 @@ export type Database = {
           | { encrypted_text: string }
         Returns: string
       }
-      detect_address_enumeration: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
       detect_suspicious_admin_activity: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -816,7 +812,6 @@ export type Database = {
       get_public_user_names: {
         Args: { user_ids: string[] }
         Returns: {
-          avatar_url: string
           display_name: string
           user_id: string
           username: string
@@ -1025,10 +1020,6 @@ export type Database = {
       }
       verify_admin_access: {
         Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      verify_secure_address_access: {
-        Args: { p_address_id?: string; p_user_id: string }
         Returns: boolean
       }
       verify_secure_admin_access: {
