@@ -8,6 +8,12 @@ const config: CapacitorConfig = {
     url: "https://60f3fd4f-f08c-4873-a7f5-daf2554dba18.lovableproject.com?forceHideBadge=true",
     cleartext: true
   },
+  ios: {
+    scheme: 'com.cuizly.app'
+  },
+  android: {
+    scheme: 'com.cuizly.app'
+  },
   plugins: {
     SplashScreen: {
       launchShowDuration: 0,

@@ -138,18 +138,55 @@ const Auth = () => {
               }
             }
 
-            console.log("🟢 [Auth State Change] Redirecting to /dashboard");
+            console.log("🟢 [Auth State Change] Preparing personalized redirect...");
             
             // Restore temporary data after successful authentication
             setTimeout(() => {
               restoreDataAfterAuth();
             }, 500);
             
-            navigate('/dashboard');
+            // Get personalized dashboard URL
+            const dashboardRoute = getLocalizedRoute('/dashboard', currentLanguage as 'fr' | 'en');
+            
+            // Fetch profile to generate personalized URL
+            const { data: userProfile } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('user_id', session.user.id)
+              .single();
+            
+            if (userProfile) {
+              // Import generateUserUrl dynamically to avoid circular dependencies
+              const { generateUserUrl } = await import('@/lib/urlUtils');
+              
+              // Get restaurant data if user is restaurant owner
+              let restaurant = null;
+              if (userProfile.user_type === 'restaurant_owner') {
+                const { data: restaurantData } = await supabase
+                  .from('restaurants')
+                  .select('*')
+                  .eq('owner_id', session.user.id)
+                  .maybeSingle();
+                restaurant = restaurantData;
+              }
+              
+              const personalizedUrl = generateUserUrl(
+                userProfile.user_type,
+                userProfile,
+                restaurant,
+                currentLanguage
+              );
+              
+              console.log("🟢 [Auth State Change] Redirecting to:", personalizedUrl);
+              navigate(personalizedUrl);
+            } else {
+              navigate(dashboardRoute);
+            }
           } catch (error) {
             console.error("🔴 [Auth State Change] Error handling connection:", error);
             // Même en cas d'erreur, rediriger vers le dashboard
-            navigate('/dashboard');
+            const dashboardRoute = getLocalizedRoute('/dashboard', currentLanguage as 'fr' | 'en');
+            navigate(dashboardRoute);
           }
         }
       }
@@ -170,14 +207,15 @@ const Auth = () => {
         console.log("🔵 [Auth Effect] Existing session:", !!session);
         
         if (session) {
-          console.log("🟢 [Auth Effect] Session found, redirecting to /dashboard");
+          console.log("🟢 [Auth Effect] Session found, preparing redirect");
           
           // Restore temporary data
           setTimeout(() => {
             restoreDataAfterAuth();
           }, 500);
           
-          navigate('/dashboard');
+          const dashboardRoute = getLocalizedRoute('/dashboard', currentLanguage as 'fr' | 'en');
+          navigate(dashboardRoute);
         }
       } catch (error) {
         console.error("🔴 [Auth Effect] Error in checkAuth:", error);
@@ -322,7 +360,8 @@ const Auth = () => {
           userType: userType,
         });
         
-        navigate('/dashboard');
+        const dashboardRoute = getLocalizedRoute('/dashboard', currentLanguage as 'fr' | 'en');
+        navigate(dashboardRoute);
       }
     } catch (error: any) {
       let errorMessage = t('auth.errors.genericError');
@@ -438,7 +477,8 @@ const Auth = () => {
       if (error) throw error;
 
       if (data.user) {
-        navigate('/dashboard');
+        const dashboardRoute = getLocalizedRoute('/dashboard', currentLanguage as 'fr' | 'en');
+        navigate(dashboardRoute);
       }
     } catch (error: any) {
       let errorMessage = t('auth.errors.incorrectCredentials');
