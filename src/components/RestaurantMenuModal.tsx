@@ -62,36 +62,36 @@ const RatingDisplay = ({ restaurantId, priceRange, address }: { restaurantId: st
   }, [restaurantId]);
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="space-y-1">
+      {/* Address on its own line */}
       {address && (
-        <>
-          <button 
-            onClick={() => openDirections(address)}
-            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
-          >
-            <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
-            <span className="group-hover:underline">{address}</span>
-          </button>
-          <span className="text-muted-foreground">•</span>
-        </>
+        <button 
+          onClick={() => openDirections(address)}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer group w-full text-left"
+        >
+          <MapPin className="h-4 w-4 flex-shrink-0" />
+          <span className="group-hover:underline">{address}</span>
+        </button>
       )}
       {!address && <span className="text-sm text-muted-foreground">Montreal</span>}
-      {priceRange && (
-        <>
+      
+      {/* Price range and rating on second line */}
+      <div className="flex items-center space-x-1">
+        {priceRange && (
           <Badge variant="secondary">
             {priceRange}
           </Badge>
-        </>
-      )}
-      {rating && totalRatings > 0 && (
-        <>
-          <span className="text-muted-foreground">•</span>
-          <div className="flex items-center space-x-1">
-            <Star className="h-4 w-4 fill-current text-yellow-500" />
-            <span className="text-sm font-medium">{rating}</span>
-          </div>
-        </>
-      )}
+        )}
+        {rating && totalRatings > 0 && (
+          <>
+            <span className="text-muted-foreground">•</span>
+            <div className="flex items-center space-x-1">
+              <Star className="h-4 w-4 fill-current text-yellow-500" />
+              <span className="text-sm font-medium">{rating}</span>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
