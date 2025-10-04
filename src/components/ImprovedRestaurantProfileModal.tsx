@@ -407,17 +407,16 @@ export const ImprovedRestaurantProfileModal = ({
       let addressUpdated = false;
       if (address && address !== restaurantAddress?.formatted_address) {
         console.log('Updating address...');
+        const addressInput = createAddressInput(address, 'restaurant', true);
+        console.log('Address input:', addressInput);
+        
         if (restaurantAddress) {
           console.log('Updating existing address:', restaurantAddress.id);
-          const result = await updateAddressHook(restaurantAddress.id!, { 
-            formatted_address: address 
-          });
+          const result = await updateAddressHook(restaurantAddress.id!, addressInput);
           console.log('Address update result:', result);
           addressUpdated = !!result;
         } else {
-          console.log('Creating new address:', address);
-          const addressInput = createAddressInput(address, 'restaurant', true);
-          console.log('Address input:', addressInput);
+          console.log('Creating new address');
           const result = await createAddress(addressInput);
           console.log('Address creation result:', result);
           addressUpdated = !!result;
