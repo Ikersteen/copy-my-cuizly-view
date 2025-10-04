@@ -725,7 +725,6 @@
     "passwordChangeNotice": "Un lien de réinitialisation sera envoyé à votre adresse courriel",
     "sendResetEmail": "Envoyer le lien",
     "avatarUpdated": "Avatar mis à jour",
-    "avatarUploadSuccess": "Avatar téléchargé avec succès",
     "avatarRemoved": "Avatar supprimé",
     "avatarRemovedSuccess": "Avatar supprimé du profil",
     "cannotUploadAvatar": "Impossible de télécharger l'avatar"
