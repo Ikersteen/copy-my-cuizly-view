@@ -134,7 +134,7 @@ export const useProfile = () => {
       console.error('❌ updateProfile error:', error);
       toast({
         title: t('errors.title'),
-        description: t('profile.cannotSaveProfile'),
+        description: t('toasts.cannotSaveProfile'),
         variant: "destructive"
       });
       return { success: false, error };

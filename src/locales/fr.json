@@ -620,6 +620,7 @@
     "correctErrors": "Veuillez corriger les erreurs avant de sauvegarder",
     "sessionNotFound": "Session utilisateur introuvable",
     "loadSession": "Impossible de charger la session utilisateur",
+    "noActiveSession": "Aucune session active",
     "passwordError": "Erreur de mot de passe",
     "passwordMismatch": "Les mots de passe ne correspondent pas",
     "cannotChangePassword": "Impossible de changer le mot de passe",
