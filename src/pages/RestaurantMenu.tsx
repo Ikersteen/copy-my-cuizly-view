@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, ArrowLeft } from "lucide-react";
+import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, ArrowLeft, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -13,6 +13,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { openDirections } from "@/utils/mapUtils";
 
 const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
   const [rating, setRating] = useState<number | null>(null);
@@ -273,7 +274,13 @@ export default function RestaurantMenu() {
                       {restaurant.name}
                     </h1>
                     <div className="space-y-1 text-muted-foreground text-sm">
-                      <div>{restaurant.address}</div>
+                      <button 
+                        onClick={() => openDirections(restaurant.address)}
+                        className="flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer group text-left"
+                      >
+                        <MapPin className="h-4 w-4 flex-shrink-0" />
+                        <span className="group-hover:underline">{restaurant.address}</span>
+                      </button>
                       <div className="flex items-center space-x-2">
                         {restaurant.price_range && (
                           <span className="font-medium">{restaurant.price_range}</span>
