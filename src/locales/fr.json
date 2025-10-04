@@ -2392,7 +2392,11 @@
     "generatingRecommendations": "Génération de recommandations personnalisées...",
     "analyzingPreferences": "Notre IA analyse vos préférences et votre historique pour vous proposer les meilleurs restaurants",
     "evaluation": "évaluation",
-    "evaluations": "évaluations"
+    "evaluations": "évaluations",
+    "noRecommendationsTitle": "Aucune recommandation disponible",
+    "noRecommendationsDesc": "Nous n'avons trouvé aucun restaurant correspondant à vos préférences pour le moment. Essayez de modifier vos filtres ou de rafraîchir les recommandations.",
+    "modifyPreferences": "Modifier les préférences",
+    "refreshRecommendations": "Rafraîchir les recommandations"
   },
   "restaurantMenu": {
     "details": "Détails",
