@@ -20,6 +20,7 @@ import { useDataPersistence } from "@/hooks/useDataPersistence";
 import { useGoogleAuthMobile } from '@/hooks/useGoogleAuthMobile';
 import { Capacitor } from '@capacitor/core';
 import { getLocalizedRoute } from '@/lib/routeTranslations';
+import { generateUserUrl } from '@/lib/urlUtils';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -360,8 +361,31 @@ const Auth = () => {
           userType: userType,
         });
         
-        const dashboardRoute = getLocalizedRoute('/dashboard', currentLanguage as 'fr' | 'en');
-        navigate(dashboardRoute);
+        // Generate personalized dashboard URL
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', data.user.id)
+          .single();
+        
+        let restaurantData = null;
+        if (userType === 'restaurant_owner') {
+          const { data: restaurant } = await supabase
+            .from('restaurants')
+            .select('*')
+            .eq('owner_id', data.user.id)
+            .single();
+          restaurantData = restaurant;
+        }
+        
+        const personalizedUrl = generateUserUrl(
+          userType,
+          profileData,
+          restaurantData,
+          currentLanguage as 'fr' | 'en'
+        );
+        
+        navigate(personalizedUrl);
       }
     } catch (error: any) {
       let errorMessage = t('auth.errors.genericError');
