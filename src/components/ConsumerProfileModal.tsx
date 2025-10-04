@@ -87,6 +87,11 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
       
       // Si la mise à jour du profil échoue, on arrête
       if (!result.success) {
+        toast({
+          title: t('errors.title'),
+          description: t('toasts.cannotSaveProfile'),
+          variant: "destructive"
+        });
         return;
       }
       
@@ -99,8 +104,18 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
         }
       });
       
+      toast({
+        title: t('profile.updateSuccess', 'Profil mis à jour'),
+        description: t('profile.updateSuccessDesc', 'Vos informations ont été sauvegardées avec succès')
+      });
+      
     } catch (error) {
       console.error('Error updating profile:', error);
+      toast({
+        title: t('errors.title'),
+        description: t('toasts.cannotSaveProfile'),
+        variant: "destructive"
+      });
     } finally {
       setSaving(false);
     }
