@@ -84,7 +84,11 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
       
       // Update profile
       if (formData) {
-        await updateProfile(formData);
+        const result = await updateProfile(formData);
+        if (!result.success) {
+          setSaving(false);
+          return; // Stop here if profile update failed
+        }
       }
       
       // Update notification preferences

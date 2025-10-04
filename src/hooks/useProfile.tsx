@@ -127,11 +127,6 @@ export const useProfile = () => {
       return { success: true };
     } catch (error) {
       console.error('❌ updateProfile error:', error);
-      toast({
-        title: t('errors.title'),
-        description: t('toasts.cannotSaveProfile'),
-        variant: "destructive"
-      });
       return { success: false, error };
     }
   };
