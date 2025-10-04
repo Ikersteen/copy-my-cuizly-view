@@ -12,6 +12,7 @@ export interface UserProfile {
   phone?: string;
   username?: string;
   avatar_url?: string;
+  email?: string;
 }
 
 export const useProfile = () => {

@@ -54,7 +54,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
         first_name: profile.first_name || "",
         last_name: profile.last_name || "",
         username: profile.username || "",
-        email: "",
+        email: profile.email || "",
         phone: profile.phone || "",
         avatar_url: profile.avatar_url || ""
       });
@@ -82,11 +82,8 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
     try {
       setSaving(true);
       
-      // Remove email from formData as it's managed by Supabase Auth
-      const { email, ...profileData } = formData;
-      
-      // Update profile
-      const result = await updateProfile(profileData);
+      // Update profile (email is now part of profiles table)
+      const result = await updateProfile(formData);
       
       // Si la mise à jour du profil échoue, on arrête
       if (!result.success) {
