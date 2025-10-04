@@ -123,11 +123,6 @@ export const useProfile = () => {
       // Update local state immediately
       setProfile(data);
       console.log('✅ Profile updated successfully:', data);
-
-      toast({
-        title: t('toasts.profileUpdated'),
-        description: t('toasts.informationSaved')
-      });
       
       return { success: true };
     } catch (error) {
