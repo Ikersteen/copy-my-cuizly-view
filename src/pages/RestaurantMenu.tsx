@@ -276,10 +276,9 @@ export default function RestaurantMenu() {
                     <div className="space-y-1 text-muted-foreground text-sm">
                       <button 
                         onClick={() => openDirections(restaurant.address)}
-                        className="flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer group text-left"
+                        className="text-primary hover:underline transition-all cursor-pointer text-left"
                       >
-                        <MapPin className="h-4 w-4 flex-shrink-0" />
-                        <span className="group-hover:underline">{restaurant.address}</span>
+                        {restaurant.address}
                       </button>
                       <div className="flex items-center space-x-2">
                         {restaurant.price_range && (
