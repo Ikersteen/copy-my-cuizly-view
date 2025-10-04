@@ -120,16 +120,16 @@ export const useProfile = () => {
         throw error;
       }
 
-      // Update local state immediately
-      setProfile(data);
-      console.log('✅ Profile updated successfully:', data);
+    // Update local state immediately
+    setProfile(data);
+    console.log('✅ Profile updated successfully:', data);
 
-      toast({
-        title: t('toasts.profileUpdated'),
-        description: t('toasts.informationSaved')
-      });
-      
-      return { success: true };
+    toast({
+      title: t('toasts.profileUpdated'),
+      description: t('toasts.informationSaved')
+    });
+    
+    return { success: true };
     } catch (error) {
       console.error('❌ updateProfile error:', error);
       toast({

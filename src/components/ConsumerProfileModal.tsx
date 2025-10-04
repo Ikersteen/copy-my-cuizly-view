@@ -83,8 +83,11 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
       setSaving(true);
       
       // Update profile
-      if (formData) {
-        await updateProfile(formData);
+      const result = await updateProfile(formData);
+      
+      // Si la mise à jour du profil échoue, on arrête
+      if (!result.success) {
+        return;
       }
       
       // Update notification preferences
@@ -96,18 +99,8 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
         }
       });
       
-      toast({
-        title: t('profile.updateSuccess', 'Profil mis à jour'),
-        description: t('profile.updateSuccessDesc', 'Vos informations ont été sauvegardées avec succès')
-      });
-      
     } catch (error) {
       console.error('Error updating profile:', error);
-      toast({
-        title: t('profile.updateError'),
-        description: t('profile.updateErrorDesc'),
-        variant: "destructive"
-      });
     } finally {
       setSaving(false);
     }
