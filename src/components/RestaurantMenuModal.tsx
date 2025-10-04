@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Info, Menu, MessageCircle } from "lucide-react";
+import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Info, Menu, MessageCircle, MapPin, Navigation } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -15,6 +15,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { openDirections } from "@/utils/mapUtils";
 
 // Composant pour afficher l'évaluation avec le prix
 const RatingDisplay = ({ restaurantId, priceRange, address }: { restaurantId: string; priceRange?: string; address?: string }) => {
@@ -62,10 +63,21 @@ const RatingDisplay = ({ restaurantId, priceRange, address }: { restaurantId: st
 
   return (
     <div className="flex items-center space-x-1">
-      <span className="text-sm text-muted-foreground">{address || 'Montreal'}</span>
+      {address && (
+        <>
+          <button 
+            onClick={() => openDirections(address)}
+            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+          >
+            <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
+            <span className="group-hover:underline">{address}</span>
+          </button>
+          <span className="text-muted-foreground">•</span>
+        </>
+      )}
+      {!address && <span className="text-sm text-muted-foreground">Montreal</span>}
       {priceRange && (
         <>
-          <span className="text-muted-foreground">•</span>
           <Badge variant="secondary">
             {priceRange}
           </Badge>
