@@ -86,8 +86,14 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
       if (formData) {
         const result = await updateProfile(formData);
         if (!result.success) {
+          // Show error notification if profile update failed
+          toast({
+            title: t('profile.updateError'),
+            description: t('profile.updateErrorDesc'),
+            variant: "destructive"
+          });
           setSaving(false);
-          return; // Stop here if profile update failed
+          return;
         }
       }
       
@@ -100,6 +106,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
         }
       });
       
+      // Show success notification only if everything succeeded
       toast({
         title: t('profile.updateSuccess', 'Profil mis à jour'),
         description: t('profile.updateSuccessDesc', 'Vos informations ont été sauvegardées avec succès')
