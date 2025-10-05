@@ -478,26 +478,22 @@ export const ImprovedRestaurantProfileModal = ({
           </DialogDescription>
         </DialogHeader>
         
-        {/* Header with padding */}
-        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
-          <div className="flex items-center justify-center">
-            <h2 className="text-xl font-semibold text-center">Profil du restaurant</h2>
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           </div>
-        </div>
-
-        {/* Content area */}
-        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pb-2 sm:pb-4 md:pb-6">
-          {loading ? (
-            <div className="space-y-4">
-              <div className="animate-pulse space-y-4">
-                <div className="h-4 bg-muted rounded w-3/4"></div>
-                <div className="h-10 bg-muted rounded"></div>
-                <div className="h-4 bg-muted rounded w-1/2"></div>
-                <div className="h-20 bg-muted rounded"></div>
+        ) : (
+          <>
+            {/* Header with padding */}
+            <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
+              <div className="flex items-center justify-center">
+                <h2 className="text-xl font-semibold text-center">Profil du restaurant</h2>
               </div>
             </div>
-          ) : (
-            <div className="space-y-6">
+
+            {/* Content area */}
+            <div className="px-2 sm:px-4 md:px-6 lg:px-8 pb-2 sm:pb-4 md:pb-6">
+              <div className="space-y-6">
             {/* Facebook-style Header with Cover Photo and Logo */}
             <div className="relative">
               {/* Cover Photo Background */}
@@ -938,9 +934,10 @@ export const ImprovedRestaurantProfileModal = ({
                 {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>
             </div>
-          </div>
-        )}
-      </div>
+              </div>
+            </div>
+            </>
+          )}
       </DialogContent>
     </Dialog>
 
