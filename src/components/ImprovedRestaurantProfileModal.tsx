@@ -43,7 +43,8 @@ export const ImprovedRestaurantProfileModal = ({
   const { primaryAddress: restaurantAddress, createAddress, updateAddress: updateAddressHook } = useAddresses('restaurant');
   
   // Handle both prop formats
-  const modalIsOpen = isOpen ?? open ?? false;
+  const requestedOpen = isOpen ?? open ?? false;
+  const [actuallyOpen, setActuallyOpen] = useState(false);
   const handleClose = onClose ?? (() => onOpenChange?.(false));
   
   const [restaurant, setRestaurant] = useState<any>(null);
@@ -89,10 +90,13 @@ export const ImprovedRestaurantProfileModal = ({
   // console.log('Modal states:', { photoModalOpen, photoModalType });
 
   useEffect(() => {
-    if (modalIsOpen) {
+    if (requestedOpen) {
+      setActuallyOpen(false);
       loadRestaurant();
+    } else {
+      setActuallyOpen(false);
     }
-  }, [modalIsOpen]);
+  }, [requestedOpen]);
 
   useEffect(() => {
     if (restaurantAddress) {
@@ -151,6 +155,7 @@ export const ImprovedRestaurantProfileModal = ({
       console.error('Error loading restaurant:', error);
     } finally {
       setLoading(false);
+      setActuallyOpen(true);
     }
   };
 
@@ -466,7 +471,7 @@ export const ImprovedRestaurantProfileModal = ({
 
   return (
     <>
-      <Dialog open={modalIsOpen} onOpenChange={handleClose}>
+      <Dialog open={actuallyOpen} onOpenChange={handleClose}>
       <DialogContent 
         className="max-w-4xl max-h-[95vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0"
         aria-describedby="restaurant-profile-description"
@@ -478,22 +483,16 @@ export const ImprovedRestaurantProfileModal = ({
           </DialogDescription>
         </DialogHeader>
         
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        {/* Header with padding */}
+        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
+          <div className="flex items-center justify-center">
+            <h2 className="text-xl font-semibold text-center">Profil du restaurant</h2>
           </div>
-        ) : (
-          <>
-            {/* Header with padding */}
-            <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
-              <div className="flex items-center justify-center">
-                <h2 className="text-xl font-semibold text-center">Profil du restaurant</h2>
-              </div>
-            </div>
+        </div>
 
-            {/* Content area */}
-            <div className="px-2 sm:px-4 md:px-6 lg:px-8 pb-2 sm:pb-4 md:pb-6">
-              <div className="space-y-6">
+        {/* Content area */}
+        <div className="px-2 sm:px-4 md:px-6 lg:px-8 pb-2 sm:pb-4 md:pb-6">
+          <div className="space-y-6">
             {/* Facebook-style Header with Cover Photo and Logo */}
             <div className="relative">
               {/* Cover Photo Background */}
@@ -934,10 +933,8 @@ export const ImprovedRestaurantProfileModal = ({
                 {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>
             </div>
-              </div>
-            </div>
-            </>
-          )}
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
 
