@@ -643,12 +643,15 @@ export const ImprovedRestaurantProfileModal = ({
               )}
             </div>
 
-            <AddressSelector
-              value={formData.address}
-              onChange={(address) => setFormData(prev => ({ ...prev, address }))}
-              label="Adresse"
-              placeholder="Entrez l'adresse de votre restaurant"
-            />
+            <div className="space-y-2">
+              <Label htmlFor="address">Adresse</Label>
+              <Input
+                id="address"
+                value={formData.address}
+                onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
+                placeholder="Entrez l'adresse complète de votre restaurant"
+              />
+            </div>
 
             <div className="space-y-2">
               <Label htmlFor="phone">{t('restaurantProfile.phone')}</Label>
