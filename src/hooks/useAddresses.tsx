@@ -57,7 +57,13 @@ export const useAddresses = (addressType?: AddressType) => {
 
       const { data, error } = await query;
 
-      if (error) throw error;
+      if (error) {
+        // Ne pas afficher de toast si l'erreur est juste qu'il n'y a pas de données
+        // ou que l'utilisateur n'a pas encore de session valide
+        console.error('Error loading addresses:', error);
+        setLoading(false);
+        return;
+      }
 
       const typedAddresses = (data || []).map(addr => ({
         ...addr,
@@ -73,12 +79,8 @@ export const useAddresses = (addressType?: AddressType) => {
       setPrimaryAddress(primary || null);
 
     } catch (error) {
-      console.error('Error loading addresses:', error);
-      toast({
-        title: t('common.error'),
-        description: t('addresses.cannotLoad'),
-        variant: 'destructive'
-      });
+      console.error('Unexpected error loading addresses:', error);
+      // Ne pas afficher de toast au chargement, seulement lors des actions utilisateur
     } finally {
       setLoading(false);
     }
