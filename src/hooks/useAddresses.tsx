@@ -118,11 +118,6 @@ export const useAddresses = (addressType?: AddressType) => {
 
       await loadAddresses();
 
-      toast({
-        title: t('common.success'),
-        description: t('addresses.createdSuccessfully')
-      });
-
       return { ...data, address_type: data.address_type as AddressType };
     } catch (error) {
       console.error('Error creating address:', error);
