@@ -157,6 +157,9 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
         setRating(0);
         setCommentText("");
         setImages([]);
+        
+        // Close modal after successful submission
+        onOpenChange(false);
       }
       
     } catch (error) {

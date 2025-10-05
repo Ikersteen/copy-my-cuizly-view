@@ -109,6 +109,9 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
         description: t('profile.updateSuccessDesc', 'Vos informations ont été sauvegardées avec succès')
       });
       
+      // Close modal after successful save
+      onClose();
+      
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
