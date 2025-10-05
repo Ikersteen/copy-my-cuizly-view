@@ -473,6 +473,13 @@ export const ImprovedRestaurantProfileModal = ({
         className="max-w-4xl max-h-[95vh] overflow-y-auto [&>button]:w-8 [&>button]:h-8 p-0"
         aria-describedby="restaurant-profile-description"
       >
+        <DialogHeader className="sr-only">
+          <DialogTitle>Profil du restaurant</DialogTitle>
+          <DialogDescription id="restaurant-profile-description">
+            Modifiez les informations de votre restaurant, ajoutez des photos et gérez vos paramètres.
+          </DialogDescription>
+        </DialogHeader>
+        
         {/* Header with padding */}
         <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
           <div className="flex items-center justify-center">
