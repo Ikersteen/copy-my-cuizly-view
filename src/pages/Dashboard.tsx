@@ -50,8 +50,7 @@ const Dashboard = () => {
             console.error('Error updating username:', updateError);
           } else {
             console.log('Generated username:', newUsername);
-            // Force profile refresh to get the new username
-            window.location.reload();
+            // Éviter le rechargement complet - le profile sera mis à jour via realtime
           }
         } catch (error) {
           console.error('Error generating username:', error);

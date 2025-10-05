@@ -3,10 +3,10 @@ import App from './App.tsx'
 import './index.css'
 import i18n from './lib/i18n' // Initialize i18n
 import { Suspense } from 'react'
-import { initSentry } from './lib/sentry'
 
-// Initialiser Sentry pour le monitoring de sécurité A+
-initSentry();
+// Sentry désactivé temporairement - à configurer avec un vrai DSN
+// import { initSentry } from './lib/sentry'
+// initSentry();
 
 // Set document title in French
 document.title = 'Cuizly';
