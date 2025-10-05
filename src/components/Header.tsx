@@ -298,7 +298,11 @@ const Header = () => {
                 open={showRestaurantProfile}
                 onOpenChange={setShowRestaurantProfile}
                 restaurant={null}
-                onUpdate={() => {}}
+                onUpdate={() => {
+                  if (user?.id) {
+                    loadRestaurantData(user.id);
+                  }
+                }}
               />
               <MenusModal 
                 open={showMenus}

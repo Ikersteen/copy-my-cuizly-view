@@ -59,6 +59,20 @@ const RestaurantDashboard = () => {
     loadData();
   }, []);
 
+  // Reload data when component becomes visible again (e.g., after closing a modal)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadData();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
   const loadData = async () => {
     try {
       // Check if we have a valid session with proper error handling
@@ -192,12 +206,12 @@ const RestaurantDashboard = () => {
                 @{profile.username}
               </p>
             )}
-            {restaurantAddress?.formatted_address && (
+            {restaurantAddress?.formatted_address || restaurant?.address ? (
               <p className="text-xs text-muted-foreground mt-1 flex items-start gap-1 break-words">
                 <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                <span className="break-words">{restaurantAddress.formatted_address}</span>
+                <span className="break-words">{restaurantAddress?.formatted_address || restaurant?.address}</span>
               </p>
-            )}
+            ) : null}
           </div>
         </div>
 
@@ -230,8 +244,7 @@ const RestaurantDashboard = () => {
                     <div>
                       <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.address')}</p>
                       <p className="text-foreground text-sm">
-                        {restaurantAddress?.formatted_address || t('restaurantInfo.notSpecified')
-                        }
+                        {restaurantAddress?.formatted_address || restaurant.address || t('restaurantInfo.notSpecified')}
                       </p>
                     </div>
                     <div>
