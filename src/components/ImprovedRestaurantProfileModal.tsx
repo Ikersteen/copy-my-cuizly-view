@@ -459,8 +459,6 @@ export const ImprovedRestaurantProfileModal = ({
         if (profileError) throw profileError;
       }
 
-      await loadRestaurant();
-      
       // Only show success toast if no address was updated (address hooks show their own toast)
       if (!addressUpdated) {
         toast({
@@ -469,8 +467,9 @@ export const ImprovedRestaurantProfileModal = ({
         });
       }
 
-      // Close modal after successful save
+      // Close modal and trigger parent update
       handleClose();
+      if (onUpdate) onUpdate();
     } catch (error) {
       console.error('Error saving restaurant:', error);
       toast({
