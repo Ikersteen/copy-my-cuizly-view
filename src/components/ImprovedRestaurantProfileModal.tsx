@@ -12,7 +12,7 @@ import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, F
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
-import { AddressSelector } from "@/components/MontrealAddressSelector";
+import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 import { useAddresses } from "@/hooks/useAddresses";
 import { createAddressInput } from "@/lib/addressUtils";
 import { Separator } from "@/components/ui/separator";
@@ -643,15 +643,12 @@ export const ImprovedRestaurantProfileModal = ({
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="address">Adresse</Label>
-              <Input
-                id="address"
-                value={formData.address}
-                onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                placeholder="Entrez l'adresse complète de votre restaurant"
-              />
-            </div>
+            <AddressAutocomplete
+              value={formData.address}
+              onChange={(address) => setFormData(prev => ({ ...prev, address }))}
+              label="Adresse"
+              placeholder="Entrez l'adresse de votre restaurant"
+            />
 
             <div className="space-y-2">
               <Label htmlFor="phone">{t('restaurantProfile.phone')}</Label>
