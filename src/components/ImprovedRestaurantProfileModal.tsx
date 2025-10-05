@@ -468,6 +468,9 @@ export const ImprovedRestaurantProfileModal = ({
           description: t('restaurantProfile.savedSuccessfully')
         });
       }
+
+      // Close modal after successful save
+      handleClose();
     } catch (error) {
       console.error('Error saving restaurant:', error);
       toast({
