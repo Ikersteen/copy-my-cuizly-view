@@ -443,13 +443,11 @@ export const ImprovedRestaurantProfileModal = ({
         if (profileError) throw profileError;
       }
 
-      // Only show success toast if no address was updated (address hooks show their own toast)
-      if (!addressUpdated) {
-        toast({
-          title: t('restaurantProfile.saved'),
-          description: t('restaurantProfile.savedSuccessfully')
-        });
-      }
+      // Always show success toast for profile save
+      toast({
+        title: t('restaurantProfile.saved'),
+        description: t('restaurantProfile.savedSuccessfully')
+      });
 
       // Close modal and trigger parent update
       handleClose();
