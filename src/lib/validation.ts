@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 // Input length limits for security
 export const INPUT_LIMITS = {
   TITLE: 100,
-  DESCRIPTION: 1000,
+  DESCRIPTION: 500,
   NAME: 80,
   ADDRESS: 200,
   PHONE: 20,

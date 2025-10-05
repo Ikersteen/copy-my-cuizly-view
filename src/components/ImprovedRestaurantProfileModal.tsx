@@ -615,28 +615,28 @@ export const ImprovedRestaurantProfileModal = ({
               <div className="flex justify-between items-center">
                 <Label htmlFor="description">{t('restaurantProfile.description')}</Label>
                 <span className={`text-xs ${
-                  formData.description.length > 280 
+                  formData.description.length > 450 
                     ? 'text-orange-500' 
                     : 'text-muted-foreground'
                 }`}>
-                  {formData.description.length}/300
+                  {formData.description.length}/500
                 </span>
               </div>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => {
-                  if (e.target.value.length <= 300) {
+                  if (e.target.value.length <= 500) {
                     setFormData(prev => ({ ...prev, description: e.target.value }));
                   }
                 }}
                 placeholder={t('restaurantProfile.descriptionPlaceholder')}
                 className="min-h-[120px]"
-                maxLength={300}
+                maxLength={500}
               />
-              {formData.description.length > 280 && (
+              {formData.description.length > 450 && (
                 <p className="text-xs text-muted-foreground">
-                  {300 - formData.description.length} caractères restants
+                  {500 - formData.description.length} caractères restants
                 </p>
               )}
             </div>
