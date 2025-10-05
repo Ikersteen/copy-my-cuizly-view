@@ -394,13 +394,10 @@ export const ImprovedRestaurantProfileModal = ({
 
     setSaving(true);
     try {
-      // Update restaurant data (excluding address)
-      const { address, ...restaurantData } = formData;
-      
       // Handle address update separately
       let addressUpdated = false;
-      if (address?.trim()) {
-        const addressInput = createAddressInput(address, 'restaurant', true);
+      if (formData.address?.trim()) {
+        const addressInput = createAddressInput(formData.address, 'restaurant', true);
         
         if (restaurantAddress) {
           const result = await updateAddressHook(restaurantAddress.id!, addressInput);
@@ -411,10 +408,11 @@ export const ImprovedRestaurantProfileModal = ({
         }
       }
 
-      // Update other restaurant data
+      // Update other restaurant data (including address for compatibility)
       const updateData = {
         name: formData.name.trim(),
         description: formData.description?.trim() || null,
+        address: formData.address?.trim() || null,
         phone: formData.phone?.trim() || null,
         email: formData.email?.trim() || null,
         cuisine_type: formData.cuisine_type,
