@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
+import { Store } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -42,11 +43,7 @@ const AvatarFallback = React.forwardRef<
     )}
     {...props}
   >
-    <img 
-      src="/lovable-uploads/cuizly-chef-icon.jpg" 
-      alt="Chef Hat" 
-      className="w-1/2 h-1/2 object-contain"
-    />
+    <Store className="w-1/2 h-1/2 text-muted-foreground" />
   </AvatarPrimitive.Fallback>
 ))
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
