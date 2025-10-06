@@ -754,7 +754,11 @@
     "photos": "Photos (optionnel)",
     "clickToAddPhotos": "Cliquez pour ajouter des photos",
     "commentImage": "Image du commentaire",
-    "uploadImages": "Upload des images..."
+    "uploadImages": "Upload des images...",
+    "imageAdjusted": "Image ajustée",
+    "imageAddedToComment": "L'image a été ajoutée à votre commentaire",
+    "cannotProcessImage": "Impossible de traiter l'image",
+    "selectValidImage": "Veuillez sélectionner une image valide"
   },
   "menusModal": {
     "menuImage": "Image du menu",
@@ -2167,6 +2171,7 @@
     }
   },
   "errors": {
+    "title": "Erreur",
     "connectionError": "Erreur de connexion",
     "checkInternetConnection": "Vérifiez votre connexion internet",
     "systemError": "Erreur système",

@@ -75,12 +75,16 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
   const handleAdjustedImageSave = async (adjustedImageData: string) => {
     try {
+      console.log('🎨 Début traitement image ajustée, taille data:', adjustedImageData.length);
+      
       // Convert base64 to blob
       const response = await fetch(adjustedImageData);
       const blob = await response.blob();
+      console.log('📦 Blob créé, type:', blob.type, 'taille:', blob.size);
       
       // Create a File object from the blob
       const adjustedFile = new File([blob], `adjusted-${Date.now()}.jpg`, { type: 'image/jpeg' });
+      console.log('📄 File créé:', adjustedFile.name, 'type:', adjustedFile.type, 'taille:', adjustedFile.size);
       
       setImages(prev => [...prev, adjustedFile]);
       
@@ -88,8 +92,11 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
         title: t('comments.imageAdjusted'),
         description: t('comments.imageAddedToComment')
       });
+      
+      console.log('✅ Image ajoutée avec succès aux images');
     } catch (error) {
-      console.error('Error processing adjusted image:', error);
+      console.error('❌ Erreur détaillée lors du traitement de l\'image:', error);
+      console.error('Stack trace:', error instanceof Error ? error.stack : 'Pas de stack trace');
       toast({
         title: t('errors.title'),
         description: t('comments.cannotProcessImage'),
