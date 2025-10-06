@@ -59,7 +59,8 @@ export const useComments = (restaurantId?: string) => {
           profiles: publicNames?.find(p => p.user_id === comment.user_id) || {
             user_id: comment.user_id,
             display_name: 'Utilisateur anonyme',
-            username: 'anonyme'
+            username: 'anonyme',
+            avatar_url: undefined
           }
         }));
 
