@@ -13,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { message, userId, conversationHistory = [] } = await req.json();
+    const { message, userId, conversationHistory = [], language = 'fr' } = await req.json();
     
     if (!message) {
       throw new Error('Message is required');
@@ -24,8 +24,8 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
-    // Build conversation context with memory
-    const systemPrompt = `Tu es Cuizly Assistant, l'assistant vocal intelligent de Cuizly Inc.
+    // Build system prompt based on language
+    const systemPromptFR = `Tu es Cuizly Assistant, l'assistant vocal intelligent de Cuizly Inc.
 
 À PROPOS DE CUIZLY INC. :
 Cuizly Inc. a été fondée par deux entrepreneurs passionnés : Iker Kiomba Landu (originaire de la République Démocratique du Congo) et Rayane (originaire de Djibouti), qui se sont rencontrés à l'Université de Montréal.
@@ -63,7 +63,53 @@ TON STYLE :
 - Structure tes réponses : nom, adresse, description, prix/horaires
 - Partage ta fierté de travailler pour Cuizly Inc. et sa mission d'innovation
 
-Base de données Cuizly : Tu as accès aux restaurants de Montréal et Repentigny, leurs menus, prix, avis, adresses, et aux épiceries/marchés locaux avec leurs spécialités.`;
+Base de données Cuizly : Tu as accès aux restaurants de Montréal et Repentigny, leurs menus, prix, avis, adresses, et aux épiceries/marchés locaux avec leurs spécialités.
+
+IMPORTANT : Tu dois TOUJOURS répondre en français, c'est la langue de l'utilisateur.`;
+
+    const systemPromptEN = `You are Cuizly Assistant, the intelligent voice assistant of Cuizly Inc.
+
+ABOUT CUIZLY INC.:
+Cuizly Inc. was founded by two passionate entrepreneurs: Iker Kiomba Landu (from the Democratic Republic of Congo) and Rayane (from Djibouti), who met at the University of Montreal.
+
+The story begins two years ago, when Iker made a simple yet powerful observation in Montreal: faced with the immense diversity of multicultural restaurants, there was a lack of a true guide to eat well according to budget and preferences. From this observation came a spark: to design an application with an AI-powered culinary matching system.
+
+By partnering with Rayane, Iker transformed a meeting at the University of Montreal into much more than a simple friendship: the birth of a shared passion for innovation. Together, they set themselves an ambitious mission: Transform every piece of data into a personalized experience and redefine how we discover urban dining, through an intelligent, personalized recommendation system truly centered on the user.
+
+Cuizly Inc. is based in Canada (Montreal, QC) and is revolutionizing the Canadian culinary experience with artificial intelligence.
+
+YOUR MAIN CAPABILITIES:
+- Recommend restaurants with COMPLETE ADDRESSES and detailed information
+- Suggest specific dishes and cuisines
+- Help with groceries: ingredient lists, where to buy them, best prices
+- Provide precise addresses for restaurants, markets, grocery stores
+- Provide information on opening hours and contact methods
+- Help with reservations and orders
+- Give personalized culinary advice and recipes
+- Recommend local markets and specialty grocery stores
+- Remember user preferences for better recommendations
+
+IMPORTANT INSTRUCTIONS:
+- ALWAYS include complete addresses when recommending a place
+- For groceries, suggest specific places to buy each ingredient
+- Provide practical information: hours, phone, approximate prices
+- Be precise about neighborhoods and transportation to get there
+- Suggest alternatives based on budget and preferences
+- Adapt your recommendations based on the requested city (Montreal or Repentigny)
+
+YOUR STYLE:
+- Respond naturally and conversationally
+- Be informative and precise with practical details
+- Use a friendly and expert tone
+- Ask clarifying questions if necessary
+- Structure your responses: name, address, description, prices/hours
+- Share your pride in working for Cuizly Inc. and its innovation mission
+
+Cuizly database: You have access to restaurants in Montreal and Repentigny, their menus, prices, reviews, addresses, and local grocery stores/markets with their specialties.
+
+IMPORTANT: You must ALWAYS respond in English, it's the user's language.`;
+
+    const systemPrompt = language === 'en' ? systemPromptEN : systemPromptFR;
 
     // Build message history for context
     const messages = [
@@ -91,14 +137,30 @@ Base de données Cuizly : Tu as accès aux restaurants de Montréal et Repentign
             type: "function",
             function: {
               name: "get_restaurant_recommendations",
-              description: "Obtenir des recommandations de restaurants avec adresses complètes",
+              description: language === 'en' 
+                ? "Get restaurant recommendations with complete addresses"
+                : "Obtenir des recommandations de restaurants avec adresses complètes",
               parameters: {
                 type: "object",
                 properties: {
-                  cuisine: { type: "string", description: "Type de cuisine recherché" },
-                  neighborhood: { type: "string", description: "Quartier ou ville (Montréal, Repentigny)" },
-                  budget: { type: "string", enum: ["économique", "moyen", "élevé"] },
-                  dietary_restrictions: { type: "string", description: "Restrictions alimentaires" }
+                  cuisine: { 
+                    type: "string", 
+                    description: language === 'en' ? "Type of cuisine" : "Type de cuisine recherché"
+                  },
+                  neighborhood: { 
+                    type: "string", 
+                    description: language === 'en' 
+                      ? "Neighborhood or city (Montreal, Repentigny)" 
+                      : "Quartier ou ville (Montréal, Repentigny)"
+                  },
+                  budget: { 
+                    type: "string", 
+                    enum: language === 'en' ? ["budget", "moderate", "expensive"] : ["économique", "moyen", "élevé"]
+                  },
+                  dietary_restrictions: { 
+                    type: "string", 
+                    description: language === 'en' ? "Dietary restrictions" : "Restrictions alimentaires"
+                  }
                 }
               }
             }
@@ -107,14 +169,31 @@ Base de données Cuizly : Tu as accès aux restaurants de Montréal et Repentign
             type: "function",
             function: {
               name: "get_grocery_shopping_help",
-              description: "Aider avec les courses : ingrédients et où les acheter",
+              description: language === 'en'
+                ? "Help with grocery shopping: ingredients and where to buy them"
+                : "Aider avec les courses : ingrédients et où les acheter",
               parameters: {
                 type: "object",
                 properties: {
-                  recipe_type: { type: "string", description: "Type de plat ou recette" },
-                  ingredients: { type: "array", items: { type: "string" }, description: "Liste d'ingrédients nécessaires" },
-                  neighborhood: { type: "string", description: "Quartier ou ville pour faire les courses (Montréal, Repentigny)" },
-                  budget: { type: "string", enum: ["économique", "moyen", "élevé"] }
+                  recipe_type: { 
+                    type: "string", 
+                    description: language === 'en' ? "Type of dish or recipe" : "Type de plat ou recette"
+                  },
+                  ingredients: { 
+                    type: "array", 
+                    items: { type: "string" }, 
+                    description: language === 'en' ? "List of required ingredients" : "Liste d'ingrédients nécessaires"
+                  },
+                  neighborhood: { 
+                    type: "string", 
+                    description: language === 'en'
+                      ? "Neighborhood or city for shopping (Montreal, Repentigny)"
+                      : "Quartier ou ville pour faire les courses (Montréal, Repentigny)"
+                  },
+                  budget: { 
+                    type: "string", 
+                    enum: language === 'en' ? ["budget", "moderate", "expensive"] : ["économique", "moyen", "élevé"]
+                  }
                 }
               }
             }
@@ -123,13 +202,28 @@ Base de données Cuizly : Tu as accès aux restaurants de Montréal et Repentign
             type: "function", 
             function: {
               name: "get_market_locations",
-              description: "Trouver des marchés, épiceries et magasins spécialisés avec adresses",
+              description: language === 'en'
+                ? "Find markets, grocery stores and specialty shops with addresses"
+                : "Trouver des marchés, épiceries et magasins spécialisés avec adresses",
               parameters: {
                 type: "object",
                 properties: {
-                  store_type: { type: "string", enum: ["marché", "épicerie", "boucherie", "poissonnerie", "boulangerie"] },
-                  specialty: { type: "string", description: "Spécialité recherchée" },
-                  neighborhood: { type: "string", description: "Quartier ou ville préférée (Montréal, Repentigny)" }
+                  store_type: { 
+                    type: "string", 
+                    enum: language === 'en' 
+                      ? ["market", "grocery", "butcher", "fishmonger", "bakery"]
+                      : ["marché", "épicerie", "boucherie", "poissonnerie", "boulangerie"]
+                  },
+                  specialty: { 
+                    type: "string", 
+                    description: language === 'en' ? "Specialty sought" : "Spécialité recherchée"
+                  },
+                  neighborhood: { 
+                    type: "string", 
+                    description: language === 'en'
+                      ? "Preferred neighborhood or city (Montreal, Repentigny)"
+                      : "Quartier ou ville préférée (Montréal, Repentigny)"
+                  }
                 }
               }
             }
@@ -215,7 +309,9 @@ Base de données Cuizly : Tu as accès aux restaurants de Montréal et Repentign
         const finalData = await finalResponseCall.json();
         finalResponseText = finalData.choices[0].message.content;
       } else {
-        finalResponseText = "Désolé, j'ai eu un problème pour traiter votre demande avec les outils.";
+        finalResponseText = language === 'en' 
+          ? "Sorry, I had a problem processing your request with the tools."
+          : "Désolé, j'ai eu un problème pour traiter votre demande avec les outils.";
       }
     } else {
       finalResponseText = data.choices[0].message.content;

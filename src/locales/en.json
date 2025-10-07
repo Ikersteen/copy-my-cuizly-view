@@ -1004,7 +1004,7 @@
   "voiceAssistant": {
     "title": "Cuizly Voice Assistant",
     "demo": {
-      "subtitle": "Speak naturally to Cuizly and get personalized recommendations"
+      "subtitle": "Speak naturally to Cuizly and get personalized recommendations. The assistant automatically adapts to your language (French or English)."
     },
     "features": {
       "naturalConversation": {
@@ -1049,7 +1049,7 @@
   "voiceChat": {
     "title": "Voice Assistant",
     "mainTitle": "Cuizly Voice Assistant",
-    "description": "Speak naturally to Cuizly to discover the best restaurants around you, explore new flavors or even get recipe ideas.",
+    "description": "Speak naturally to Cuizly to discover the best restaurants around you, explore new flavors or even get recipe ideas. The assistant automatically adapts to your language.",
     "clickToSpeak": "Click to speak",
     "askRecommendations": "Ask for restaurant recommendations or ask your culinary questions",
     "recording": "🎤 Listening...",

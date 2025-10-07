@@ -28,7 +28,7 @@ interface VoiceChatInterfaceProps {
 
 const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -366,7 +366,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         body: { 
           message: transcription,
           userId,
-          conversationHistory: messages.slice(-5)
+          conversationHistory: messages.slice(-5),
+          language: i18n.language === 'en' ? 'en' : 'fr'
         }
       });
 
@@ -440,7 +441,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         body: { 
           message: text,
           userId,
-          conversationHistory: messages.slice(-5)
+          conversationHistory: messages.slice(-5),
+          language: i18n.language === 'en' ? 'en' : 'fr'
         }
       });
 

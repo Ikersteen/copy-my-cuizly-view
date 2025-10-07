@@ -1018,7 +1018,7 @@
   "voiceAssistant": {
     "title": "Cuizly Assistant Vocale",
     "demo": {
-      "subtitle": "Parlez naturellement à Cuizly et obtenez des recommandations personnalisées"
+      "subtitle": "Parlez naturellement à Cuizly et obtenez des recommandations personnalisées. L'assistant s'adapte automatiquement à votre langue (français ou anglais)."
     },
     "features": {
       "naturalConversation": {
@@ -1065,7 +1065,7 @@
   "voiceChat": {
     "title": "Assistant Vocal",
     "mainTitle": "Assistant Vocal Cuizly",
-    "description": "Parlez naturellement à Cuizly pour découvrir les meilleurs restaurants autour de vous, explorer de nouvelles saveurs ou même obtenir des idées de recettes.",
+    "description": "Parlez naturellement à Cuizly pour découvrir les meilleurs restaurants autour de vous, explorer de nouvelles saveurs ou même obtenir des idées de recettes. L'assistant s'adapte automatiquement à votre langue.",
     "clickToSpeak": "Cliquez pour parler",
     "askRecommendations": "Demandez des recommandations de restaurants ou posez vos questions culinaires",
     "recording": "🎤 Écoute en cours...",
