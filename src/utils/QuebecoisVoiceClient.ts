@@ -9,7 +9,7 @@ interface VoiceActivityConfig {
 export class VoiceActivityDetector {
   private audioContext: AudioContext;
   private analyser: AnalyserNode;
-  private dataArray: Uint8Array;
+  private dataArray: Uint8Array<ArrayBuffer>;
   private config: VoiceActivityConfig;
   private consecutiveActiveFrames = 0;
   private isActive = false;
@@ -36,7 +36,9 @@ export class VoiceActivityDetector {
     this.analyser = audioContext.createAnalyser();
     this.analyser.fftSize = this.config.bufferLength * 2;
     this.analyser.smoothingTimeConstant = 0.1;
-    this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+    // Créer explicitement avec ArrayBuffer pour éviter ArrayBufferLike
+    const buffer = new ArrayBuffer(this.analyser.frequencyBinCount);
+    this.dataArray = new Uint8Array(buffer);
     
     // Connecter la source à l'analyseur
     source.connect(this.analyser);
@@ -130,7 +132,7 @@ export class InterruptibleAudioQueue {
 
     try {
       const wavData = this.createWavFromPCM(audioData);
-      const audioBuffer = await this.audioContext.decodeAudioData(wavData.buffer);
+      const audioBuffer = await this.audioContext.decodeAudioData(wavData.buffer.slice(0) as ArrayBuffer);
       
       this.currentSource = this.audioContext.createBufferSource();
       this.currentSource.buffer = audioBuffer;

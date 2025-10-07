@@ -500,10 +500,8 @@ const Auth = () => {
 
       if (error) throw error;
 
-      if (data.user) {
-        const dashboardRoute = getLocalizedRoute('/dashboard', currentLanguage as 'fr' | 'en');
-        navigate(dashboardRoute);
-      }
+      // La redirection sera gérée automatiquement par onAuthStateChange
+      // qui créera l'URL personnalisée appropriée
     } catch (error: any) {
       let errorMessage = t('auth.errors.incorrectCredentials');
       
@@ -562,8 +560,8 @@ const Auth = () => {
           await createUserProfile(data.user);
         }
         
-        // Redirection vers le dashboard
-        navigate(getLocalizedRoute('/dashboard'));
+        // La redirection sera gérée automatiquement par onAuthStateChange
+        // qui créera l'URL personnalisée appropriée
         return;
       }
       
