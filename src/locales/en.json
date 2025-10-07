@@ -1721,6 +1721,24 @@
     "generatingRecommendations": "Generating personalized recommendations...",
     "analyzingPreferences": "Our AI is analyzing your preferences and history to suggest the best restaurants"
   },
+  "team": {
+    "badge": "Our team",
+    "title": "The team behind Cuizly",
+    "subtitle": "The two founders reinventing the culinary experience in Canada with AI.",
+    "meetFounder": "Meet the founder",
+    "founderIntro": "The vision of a passionate student transforming the Montreal dining experience",
+    "founderName": "Iker Kiomba Landu",
+    "founderTitle": "CEO & Co-founder of Cuizly",
+    "journey": "The spark",
+    "journeyDetails": "Two years ago, Iker, originally from the Democratic Republic of Congo, made a simple yet powerful observation about Montreal: faced with the immense diversity of multicultural restaurants, there was a lack of a true guide to eat well according to budget and preferences. From this observation came a spark: to design an application with an AI-powered culinary matching system.",
+    "vision": "The vision",
+    "visionDetails": "By partnering with Rayane, his co-founder from Djibouti, Iker transformed a meeting at the University of Montreal into much more than a simple friendship: the birth of a shared passion for innovation. Together, they set themselves an ambitious mission: Transform every piece of data into a personalized experience and redefine how we discover urban dining, through an intelligent, personalized recommendation system truly centered on the user.",
+    "location": "Montreal, QC",
+    "contact": "Contact",
+    "foundingYear": "Founding year",
+    "teamSize": "Founding members",
+    "basedIn": "Based in Canada"
+  },
   "footer": {
     "product": "Product",
     "features": "Features",
