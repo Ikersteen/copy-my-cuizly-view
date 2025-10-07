@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import { validateTextInput, INPUT_LIMITS } from "@/lib/validation";
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from "@/hooks/use-mobile";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
@@ -287,8 +287,9 @@ export const NewOfferModal = ({
               disabled={loading || !formData.title || !formData.description.trim()}
               className="w-full min-h-[52px] text-base"
             >
-            {loading ? t('newOffer.creating') : t('newOffer.createOffer')}
-          </Button>
+              {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              {loading ? t('newOffer.creating') : t('newOffer.createOffer')}
+            </Button>
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full min-h-[52px] text-base">
             {t('newOffer.cancel')}
             </Button>
@@ -317,6 +318,7 @@ export const NewOfferModal = ({
             disabled={loading || !formData.title || !formData.description.trim()}
             className="flex-1"
           >
+            {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             {loading ? t('newOffer.creating') : t('newOffer.createOffer')}
           </Button>
         </div>

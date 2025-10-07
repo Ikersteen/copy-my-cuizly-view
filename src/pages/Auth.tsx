@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowLeft, Mail, Lock, User, Building, Eye, EyeOff, Phone, MessageCircle } from "lucide-react";
+import { ArrowLeft, Mail, Lock, User, Building, Eye, EyeOff, Phone, MessageCircle, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -990,11 +990,12 @@ const Auth = () => {
                            )}
                            
                            <Button
-                             type="button"
+                           type="button"
                              onClick={sendSigninSMSVerification}
                              disabled={signinSmsLoading || !signinPhoneNumber.trim()}
                              className="w-full"
                            >
+                             {signinSmsLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                              {signinSmsLoading ? t('auth.smsVerification.sending') : t('auth.smsVerification.sendCode')}
                            </Button>
                          </div>
@@ -1035,11 +1036,12 @@ const Auth = () => {
                                {t('auth.smsVerification.changeNumber')}
                              </Button>
                              <Button
-                               type="button"
+                             type="button"
                                onClick={verifySigninSMSCode}
                                disabled={signinSmsLoading || signinVerificationCode.length !== 6}
                                className="flex-1"
                              >
+                               {signinSmsLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                                {signinSmsLoading ? t('auth.smsVerification.verifying') : t('auth.smsVerification.verify')}
                              </Button>
                            </div>
@@ -1061,6 +1063,7 @@ const Auth = () => {
                    )}
 
                    <Button type="submit" className="w-full text-sm" disabled={isLoading || !hcaptchaToken || !signinPhoneVerified}>
+                     {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                      {isLoading ? t('auth.form.signingIn') : t('auth.form.signin')}
                    </Button>
                 </form>
@@ -1288,11 +1291,12 @@ const Auth = () => {
                           )}
                           
                           <Button
-                            type="button"
+                          type="button"
                             onClick={sendSMSVerification}
                             disabled={smsLoading || !phoneNumber.trim()}
                             className="w-full"
                           >
+                            {smsLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                             {smsLoading ? t('auth.smsVerification.sending') : t('auth.smsVerification.sendCode')}
                           </Button>
                         </div>
@@ -1333,11 +1337,12 @@ const Auth = () => {
                               {t('auth.smsVerification.changeNumber')}
                             </Button>
                             <Button
-                              type="button"
+                            type="button"
                               onClick={verifySMSCode}
                               disabled={smsLoading || verificationCode.length !== 6}
                               className="flex-1"
                             >
+                              {smsLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                               {smsLoading ? t('auth.smsVerification.verifying') : t('auth.smsVerification.verify')}
                             </Button>
                           </div>
@@ -1373,6 +1378,7 @@ const Auth = () => {
                       className="w-full text-sm" 
                       disabled={isLoading || !hcaptchaToken || !phoneVerified}
                     >
+                      {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                       {isLoading ? t('auth.creatingAccount') : t('auth.createAccount')}
                     </Button>
                   )}

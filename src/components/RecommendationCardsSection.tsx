@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Star, MapPin, ChefHat, Filter, Heart, ArrowRight } from "lucide-react";
+import { Sparkles, Star, MapPin, ChefHat, Filter, Heart, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -678,7 +678,11 @@ export const RecommendationCardsSection = () => {
                     disabled={loading}
                     className="flex items-center gap-2"
                   >
-                    <Sparkles className="h-4 w-4" />
+                    {loading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-4 w-4" />
+                    )}
                     {t('recommendations.refreshRecommendations')}
                   </Button>
                 </div>

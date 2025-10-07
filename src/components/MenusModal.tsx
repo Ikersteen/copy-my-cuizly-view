@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Upload, X, Plus, Trash2 } from "lucide-react";
+import { Upload, X, Plus, Trash2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
@@ -450,7 +450,11 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     disabled={loading || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim() || menus.length >= 5}
                     className="w-full"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
+                    {loading ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Plus className="h-4 w-4 mr-2" />
+                    )}
                     Ajouter ce menu
                   </Button>
                 </div>
@@ -675,6 +679,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                        disabled={loading || !editingMenu?.description?.trim()}
                        className="w-full"
                      >
+                       {loading ? (
+                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                       ) : null}
                        Sauvegarder les modifications
                      </Button>
                    </div>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, CheckCircle2, Users } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Users, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -287,6 +287,7 @@ const Waitlist = () => {
                     className="flex-1 bg-cuizly-analytics hover:bg-cuizly-analytics/90 text-white"
                     disabled={isSubmitting || !formData.email || !formData.name || !formData.company_name || !formData.phone || !formData.address || !formData.restaurant_type || !hcaptchaToken}
                   >
+                    {isSubmitting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                     {isSubmitting ? t('waitlist.form.submitting') : t('waitlist.form.submit')}
                   </Button>
                 </div>

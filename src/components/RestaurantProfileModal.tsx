@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, X, Upload, LogOut, Trash2, ChevronDown } from "lucide-react";
+import { Camera, X, Upload, LogOut, Trash2, ChevronDown, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { validateTextInput, validateEmail, validatePhone, sanitizeStringArray, INPUT_LIMITS } from "@/lib/validation";
 import { AddressSelector } from "@/components/MontrealAddressSelector";
@@ -753,6 +753,7 @@ export const RestaurantProfileModal = ({
                 {t('restaurantProfile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={loading || !formData.name}>
+                {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                 {loading ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
               </Button>
             </div>

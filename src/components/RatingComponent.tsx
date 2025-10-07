@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from "@/components/ui/button";  
 import { Textarea } from "@/components/ui/textarea";
-import { Star } from "lucide-react";
+import { Star, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -191,6 +191,7 @@ export const RatingComponent = ({ restaurantId, showAddRating = true }: RatingCo
                       onClick={handleSubmitRating}
                       disabled={selectedRating === 0 || submitting}
                     >
+                      {submitting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                       {submitting ? t('ratings.inProgress') : t('ratings.publish')}
                     </Button>
                   </div>

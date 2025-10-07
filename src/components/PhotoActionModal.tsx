@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Camera, Trash2, Upload, X, Image, Edit3 } from "lucide-react";
+import { Camera, Trash2, Upload, X, Image, Edit3, Loader2 } from "lucide-react";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import { useTranslation } from 'react-i18next';
 
@@ -142,7 +142,7 @@ export const PhotoActionModal = ({
                 <div className="flex items-center justify-center gap-3">
                   {uploading ? (
                     <>
-                      <div className="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full" />
+                      <Loader2 className="h-5 w-5 animate-spin" />
                       <span>{t('actions.uploading')}</span>
                     </>
                   ) : (
