@@ -31,6 +31,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
   const [hoverRating, setHoverRating] = useState(0);
   const [commentText, setCommentText] = useState("");
   const [images, setImages] = useState<File[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [photoAdjustmentOpen, setPhotoAdjustmentOpen] = useState(false);
   const [tempImageUrl, setTempImageUrl] = useState("");
@@ -75,8 +76,6 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
   const handleAdjustedImageSave = async (adjustedImageData: string) => {
     try {
-      console.log('🎨 Début traitement image ajustée, taille data:', adjustedImageData.length);
-      
       // Extract base64 data from data URL (avoid CSP issues with fetch)
       const base64Data = adjustedImageData.split(',')[1];
       const mimeType = adjustedImageData.split(',')[0].split(':')[1].split(';')[0];
@@ -90,23 +89,22 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
       
       // Create blob
       const blob = new Blob([bytes], { type: mimeType });
-      console.log('📦 Blob créé, type:', blob.type, 'taille:', blob.size);
       
       // Create a File object from the blob
       const adjustedFile = new File([blob], `adjusted-${Date.now()}.jpg`, { type: 'image/jpeg' });
-      console.log('📄 File créé:', adjustedFile.name, 'type:', adjustedFile.type, 'taille:', adjustedFile.size);
       
+      // Add the file to images
       setImages(prev => [...prev, adjustedFile]);
+      
+      // Add the preview URL (using the original data URL for preview)
+      setImagePreviewUrls(prev => [...prev, adjustedImageData]);
       
       toast({
         title: t('comments.imageAdjusted'),
         description: t('comments.imageAddedToComment')
       });
-      
-      console.log('✅ Image ajoutée avec succès aux images');
     } catch (error) {
-      console.error('❌ Erreur détaillée lors du traitement de l\'image:', error);
-      console.error('Stack trace:', error instanceof Error ? error.stack : 'Pas de stack trace');
+      console.error('❌ Erreur lors du traitement de l\'image:', error);
       toast({
         title: t('errors.title'),
         description: t('comments.cannotProcessImage'),
@@ -117,6 +115,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
 
   const removeImage = (index: number) => {
     setImages(prev => prev.filter((_, i) => i !== index));
+    setImagePreviewUrls(prev => prev.filter((_, i) => i !== index));
   };
 
   const uploadImages = async (): Promise<string[]> => {
@@ -158,9 +157,12 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
       return;
     }
 
-    setUploading(images.length > 0);
-
     try {
+      // Activer l'état uploading seulement pendant l'upload réel
+      if (images.length > 0) {
+        setUploading(true);
+      }
+      
       const imageUrls = await uploadImages();
       
       const success = await addComment(
@@ -170,13 +172,16 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
       );
 
       if (success) {
-        // Reset form
+        // Reset form mais garder le modal ouvert pour voir le commentaire
         setRating(0);
         setCommentText("");
         setImages([]);
+        setImagePreviewUrls([]);
         
-        // Close modal after successful submission
-        onOpenChange(false);
+        toast({
+          title: t('comments.added'),
+          description: t('comments.seeYourComment')
+        });
       }
       
     } catch (error) {
@@ -288,12 +293,12 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
             <div className="space-y-2">
               <Label>{t('comments.photos')}</Label>
               <div className="space-y-3">
-                {images.length > 0 && (
+                {imagePreviewUrls.length > 0 && (
                   <div className="grid grid-cols-3 gap-2">
-                    {images.map((image, index) => (
+                    {imagePreviewUrls.map((previewUrl, index) => (
                       <div key={index} className="relative">
                         <img
-                          src={URL.createObjectURL(image)}
+                          src={previewUrl}
                           alt={`Upload ${index + 1}`}
                           className="w-full h-20 object-cover rounded-lg"
                         />
@@ -309,7 +314,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                   </div>
                 )}
                 
-                {images.length < 3 && (
+                {imagePreviewUrls.length < 3 && (
                   <label className="block">
                     <input
                       type="file"

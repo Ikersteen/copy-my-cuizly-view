@@ -738,6 +738,7 @@
     "clientComments": "Commentaires clients",
     "added": "Commentaire ajouté",
     "addedSuccess": "Votre commentaire a été ajouté avec succès",
+    "seeYourComment": "Vous pouvez voir votre commentaire ci-dessous",
     "limitReached": "Limite atteinte",
     "maxImages": "Maximum 3 images autorisées",
     "error": "Erreur",
