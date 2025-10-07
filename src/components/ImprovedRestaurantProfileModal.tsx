@@ -477,16 +477,16 @@ export const ImprovedRestaurantProfileModal = ({
         aria-describedby="restaurant-profile-description"
       >
         <DialogHeader className="sr-only">
-          <DialogTitle>Profil du restaurant</DialogTitle>
+          <DialogTitle>{t('restaurantProfile.title')}</DialogTitle>
           <DialogDescription id="restaurant-profile-description">
-            Modifiez les informations de votre restaurant, ajoutez des photos et gérez vos paramètres.
+            {t('restaurantProfile.description')}
           </DialogDescription>
         </DialogHeader>
         
         {/* Header with padding */}
         <div className="px-2 sm:px-4 md:px-6 lg:px-8 pt-2 sm:pt-4">
           <div className="flex items-center justify-center">
-            <h2 className="text-xl font-semibold text-center">Profil du restaurant</h2>
+            <h2 className="text-xl font-semibold text-center">{t('restaurantProfile.title')}</h2>
           </div>
         </div>
 

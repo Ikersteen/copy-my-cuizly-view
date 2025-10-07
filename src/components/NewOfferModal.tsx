@@ -226,8 +226,8 @@ export const NewOfferModal = ({
       </div>
 
       <div>
-        <Label htmlFor="cuisine_type">Type de cuisine</Label>
-        <select 
+        <Label htmlFor="cuisine_type">{t('newOffer.form.cuisineType')}</Label>
+        <select
           id="cuisine_type"
           value={formData.cuisine_type}
           onChange={(e) => setFormData(prev => ({ ...prev, cuisine_type: e.target.value }))}
@@ -236,7 +236,7 @@ export const NewOfferModal = ({
           <option value="">{t('newOffer.form.allTypes')}</option>
           {CUISINE_OPTIONS.map(cuisine => (
             <option key={cuisine} value={cuisine}>
-              {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || cuisine}
+              {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
             </option>
           ))}
         </select>

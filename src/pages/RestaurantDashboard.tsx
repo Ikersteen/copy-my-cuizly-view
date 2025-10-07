@@ -260,7 +260,7 @@ const RestaurantDashboard = () => {
                       <p className="text-foreground text-sm">{restaurant.price_range || t('restaurantInfo.notSpecified')}</p>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">Types de cuisine</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">{t('restaurantProfile.cuisineTypes')}</p>
                       <div className="flex flex-wrap gap-1">
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
@@ -278,7 +278,7 @@ const RestaurantDashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">Types de service</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">{t('restaurantProfile.serviceTypes')}</p>
                       <div className="flex flex-wrap gap-1">
                         {(restaurant as any).service_types?.length > 0 ? (
                           (restaurant as any).service_types.map((service: string, index: number) => (
@@ -340,7 +340,7 @@ const RestaurantDashboard = () => {
                     {/* Social Media Icons */}
                     {(restaurant.instagram_url || restaurant.facebook_url) && (
                       <div className="md:col-span-2">
-                        <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">Réseaux sociaux</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">{t('restaurantProfile.socialMedia')}</p>
                         <div className="flex items-center gap-3">
                           {restaurant.instagram_url && (
                             <a 
@@ -368,7 +368,7 @@ const RestaurantDashboard = () => {
                     
                     {restaurant.dietary_restrictions?.length > 0 && (
                       <div>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">Dietary Restrictions</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.dietaryRestrictions')}</p>
                         <div className="flex flex-wrap gap-1">
                           {restaurant.dietary_restrictions.map((restriction, index) => (
                             <Badge key={index} variant="secondary" className="text-xs">
@@ -382,7 +382,7 @@ const RestaurantDashboard = () => {
                     )}
                     {restaurant.allergens?.length > 0 && (
                       <div>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">Allergens</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2">{t('restaurantProfile.allergens')}</p>
                         <div className="flex flex-wrap gap-1">
                           {restaurant.allergens.map((allergen, index) => (
                             <Badge key={index} variant="destructive" className="text-xs">
