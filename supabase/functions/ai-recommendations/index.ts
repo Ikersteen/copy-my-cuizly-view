@@ -610,9 +610,6 @@ function getCurrentMealTime(hour: number, language: string = 'fr'): string {
     return 'Soirée tardive';
   }
 }
-  if (hour >= 22 || hour < 2) return 'Repas tardif';
-  return 'Détox';
-}
 
 function calculateFallbackScore(restaurant: Restaurant, preferences: UserPreferences): number {
   let score = 40; // Score de base plus élevé - tous les restaurants ont une valeur
