@@ -1036,7 +1036,46 @@
         "title": "Budget option",
         "question": "What are good affordable restaurants?"
       }
-    }
+    },
+    "connectionError": "Connection error",
+    "smartAssistant": "Smart voice assistant",
+    "conversationActive": "Active conversation - Speak when you want",
+    "connectionFailed": "Unable to start real-time voice conversation",
+    "transcriptionFailed": "Transcription failed",
+    "noTranscription": "No transcription received",
+    "aiProcessingFailed": "AI processing failed",
+    "noAiResponse": "No AI response received"
+  },
+  "voiceChat": {
+    "title": "Voice Assistant",
+    "mainTitle": "Cuizly Voice Assistant",
+    "description": "Speak naturally to Cuizly to discover the best restaurants around you, explore new flavors or even get recipe ideas.",
+    "clickToSpeak": "Click to speak",
+    "askRecommendations": "Ask for restaurant recommendations or ask your culinary questions",
+    "recording": "🎤 Listening...",
+    "processing": "🧠 Processing...",
+    "processingAudio": "Processing audio...",
+    "voiceMessage": "Voice message",
+    "assistantSpeaking": "🗣️ Assistant responding...",
+    "stopSpeech": "Stop",
+    "listeningTitle": "Listening...",
+    "listeningDescription": "Speak now, click to stop",
+    "microphoneError": "Error",
+    "microphoneErrorDescription": "Unable to access microphone",
+    "processingInProgress": "Processing...",
+    "clickToTalk": "Click to talk",
+    "errors": {
+      "voiceProcessing": {
+        "title": "Error",
+        "description": "Problem during voice processing"
+      },
+      "audioPlayback": {
+        "title": "Audio error",
+        "description": "Unable to play voice response"
+      }
+    },
+    "disclaimer": "Cuizly can sometimes make mistakes, remember to verify important information.",
+    "inputPlaceholder": "Ask Cuizly a question"
   },
   "preferences": {
     "title": "My preferences",
