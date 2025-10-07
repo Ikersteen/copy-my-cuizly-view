@@ -87,7 +87,7 @@ export const RestaurantMobileMenu = ({
                 onClick={() => handleMenuClick(onNewOfferClick)}
               >
                 <Plus className="h-5 w-5 mr-3" />
-                <span className="text-base">Nouvelle offre</span>
+                <span className="text-base">{t('filters.newOffer')}</span>
               </Button>
 
               <Button
@@ -96,7 +96,7 @@ export const RestaurantMobileMenu = ({
                 onClick={() => handleMenuClick(onRestaurantProfileClick)}
               >
                 <ChefHat className="h-5 w-5 mr-3" />
-                <span className="text-base">Profil du restaurant</span>
+                <span className="text-base">{t('filters.restaurantProfile')}</span>
               </Button>
 
               <Button
@@ -105,7 +105,7 @@ export const RestaurantMobileMenu = ({
                 onClick={() => handleMenuClick(onMenusClick)}
               >
                 <BookOpen className="h-5 w-5 mr-3" />
-                <span className="text-base">Gérer les menus</span>
+                <span className="text-base">{t('filters.manageMenus')}</span>
               </Button>
 
               <Button
