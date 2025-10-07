@@ -17,7 +17,6 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import type { User } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface Restaurant {
   id: string;
@@ -198,8 +197,7 @@ const RestaurantDashboard = () => {
 
         {/* Restaurant Information Section - Between logo and welcome message */}
         <div className="mb-8 ml-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
+          <div>
             <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
               {restaurant?.name || t('restaurant.myRestaurant')}
             </h1>
@@ -214,8 +212,6 @@ const RestaurantDashboard = () => {
                 <span className="break-words">{restaurantAddress?.formatted_address || restaurant?.address}</span>
               </p>
             ) : null}
-            </div>
-            <LanguageSwitcher />
           </div>
         </div>
 

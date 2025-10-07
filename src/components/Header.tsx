@@ -20,6 +20,7 @@ import { NewOfferModal } from "@/components/NewOfferModal";
 import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
 import { ConsumerProfileModal } from "@/components/ConsumerProfileModal";
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -181,6 +182,7 @@ const Header = () => {
 
               {/* Auth Actions Desktop - Public */}
               <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+                <LanguageSwitcher />
                 <Link to={authRoute}>
                   <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
                     {t('navigation.login')}
@@ -220,7 +222,11 @@ const Header = () => {
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                   <div className="flex flex-col space-y-4 mt-8">
-                    <button
+                    <div className="flex items-center justify-between pb-2 border-b border-border">
+                      <span className="text-sm font-medium text-muted-foreground">{t('language.select')}</span>
+                      <LanguageSwitcher />
+                    </div>
+                    <button 
                       onClick={() => {
                         document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
                         setIsSheetOpen(false);
