@@ -152,6 +152,11 @@ const Header = () => {
               {/* Desktop: Show role-specific header */}
               {isConsumer && <AuthenticatedConsumerHeader />}
               {isRestaurant && <AuthenticatedRestaurantHeader />}
+              
+              {/* Language Switcher - Always visible for authenticated users */}
+              <div className="flex items-center ml-2">
+                <LanguageSwitcher />
+              </div>
             </>
           ) : (
             // Public navigation - show for non-authenticated users
@@ -182,12 +187,16 @@ const Header = () => {
 
               {/* Auth Actions Desktop - Public */}
               <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
-                <LanguageSwitcher />
                 <Link to={authRoute}>
                   <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
                     {t('navigation.login')}
                   </Button>
                 </Link>
+              </div>
+              
+              {/* Language Switcher - Always visible for non-authenticated */}
+              <div className="flex items-center ml-2">
+                <LanguageSwitcher />
               </div>
             </>
           )}

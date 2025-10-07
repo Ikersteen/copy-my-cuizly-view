@@ -7,7 +7,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface RestaurantMobileMenuProps {
   onNewOfferClick: () => void;
@@ -69,12 +68,6 @@ export const RestaurantMobileMenu = ({
               <h2 className="text-lg font-semibold text-cuizly-primary">
                 {t('navigation.restaurantMenu')}
               </h2>
-            </div>
-            
-            {/* Language Selector */}
-            <div className="flex items-center justify-between py-3 border-b border-border">
-              <span className="text-sm font-medium text-muted-foreground">{t('language.select')}</span>
-              <LanguageSwitcher />
             </div>
 
             {/* Main Menu Items */}
