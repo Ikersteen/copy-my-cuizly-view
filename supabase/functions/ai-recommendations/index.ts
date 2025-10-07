@@ -411,7 +411,7 @@ async function analyzeRestaurantWithAI(
 
 function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): string {
   const currentHour = new Date().getHours();
-  const currentMealTime = getCurrentMealTime(currentHour);
+  const currentMealTime = getCurrentMealTime(currentHour, language);
   const isMealTimeMatch = preferences.favorite_meal_times?.includes(currentMealTime) || false;
   
   // Calculer les correspondances pour aide au scoring
@@ -421,7 +421,56 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
   const budgetMatch = preferences.price_range === restaurant.price_range;
   const popularityScore = (restaurant.profile_views || 0) + (restaurant.menu_views || 0);
 
-  return `
+  if (language === 'en') {
+    return `
+🎯 MISSION: Analyze restaurant-user compatibility according to priority hierarchy
+
+📊 RESTAURANT TO ANALYZE:
+• Name: ${restaurant.name}
+• Cuisine: ${restaurant.cuisine_type?.join(', ') || 'Not specified'}
+• Price: ${restaurant.price_range || 'Not specified'}
+• Description: ${restaurant.description || 'None'}
+• Accepted restrictions: ${restaurant.dietary_restrictions?.join(', ') || 'Not specified'}
+• Allergens present: ${restaurant.allergens?.join(', ') || 'Not specified'}
+• Popularity: ${popularityScore} total views
+• Ratings: ${restaurant.rating_count || 0} reviews (average: ${restaurant.average_rating || 'N/A'})
+
+👤 USER PROFILE:
+• Preferred cuisines: ${preferences.cuisine_preferences?.join(', ') || 'No preference'}
+• Desired budget: ${preferences.price_range || 'Flexible'}
+• Dietary restrictions: ${preferences.dietary_restrictions?.join(', ') || 'None'}
+• Allergens to avoid: ${preferences.allergens?.join(', ') || 'None'}
+• Favorite meal times: ${preferences.favorite_meal_times?.join(', ') || 'Flexible'}
+• Full address: ${preferences.full_address || 'Not specified'}
+• Neighborhood: ${preferences.neighborhood || 'Not specified'}
+• Postal code: ${preferences.postal_code || 'Not specified'}
+• Delivery radius: ${preferences.delivery_radius || 'Not specified'} km
+
+⏰ CURRENT CONTEXT:
+• Time: ${currentHour}h (period: ${currentMealTime})
+• Optimal timing: ${isMealTimeMatch ? '✅ YES' : '❌ NO'}
+
+🔍 DETECTED MATCHES BY CATEGORY:
+
+1. 🔒 RESTRICTIONS/ALLERGENS: ${checkSafetyCompatibility(restaurant, preferences, language)}
+2. 🍽️ CUISINES: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')} (${cuisineMatches.length} match${cuisineMatches.length > 1 ? 'es' : ''})` : '❌ None'}
+3. ⏰ TIMING: ${isMealTimeMatch ? '✅ Compatible with your schedule' : '❌ Not optimal'}
+4. 📍 LOCATION: ${checkLocationCompatibility(restaurant, preferences, language)}
+5. 💰 BUDGET: ${budgetMatch ? '✅ Compatible' : '❌ Different'}
+6. 🎉 PROMOTIONS: 🔍 To check
+
+🎯 CASE DETECTION:
+- Number of matching cuisines: ${cuisineMatches.length}
+- Number of restrictions: ${preferences.dietary_restrictions?.length || 0}
+- Number of allergens: ${preferences.allergens?.length || 0}
+- Number of favorite times: ${preferences.favorite_meal_times?.length || 0}
+
+🎯 FINAL INSTRUCTIONS:
+Apply CASE 1 or CASE 2 logic according to the number of criteria per category.
+Respect the strict priority order and exact phrases defined.
+    `;
+  } else {
+    return `
 🎯 MISSION: Analyser la compatibilité restaurant-utilisateur selon la hiérarchie de priorités
 
 📊 RESTAURANT À ANALYSER:
@@ -451,10 +500,10 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 
 🔍 CORRESPONDANCES DÉTECTÉES PAR CATÉGORIE:
 
-1. 🔒 RESTRICTIONS/ALLERGÈNES: ${checkSafetyCompatibility(restaurant, preferences)}
+1. 🔒 RESTRICTIONS/ALLERGÈNES: ${checkSafetyCompatibility(restaurant, preferences, language)}
 2. 🍽️ CUISINES: ${cuisineMatches.length > 0 ? `✅ ${cuisineMatches.join(', ')} (${cuisineMatches.length} correspondance${cuisineMatches.length > 1 ? 's' : ''})` : '❌ Aucune'}
 3. ⏰ MOMENTS: ${isMealTimeMatch ? '✅ Compatible avec tes horaires' : '❌ Pas optimal'}
-4. 📍 LOCALISATION: ${checkLocationCompatibility(restaurant, preferences)}
+4. 📍 LOCALISATION: ${checkLocationCompatibility(restaurant, preferences, language)}
 5. 💰 BUDGET: ${budgetMatch ? '✅ Compatible' : '❌ Différent'}
 6. 🎉 PROMOTIONS: 🔍 À vérifier
 
@@ -467,17 +516,18 @@ function createAnalysisPrompt(restaurant: Restaurant, preferences: UserPreferenc
 🎯 INSTRUCTIONS FINALES:
 Applique la logique CAS 1 ou CAS 2 selon le nombre de critères par catégorie.
 Respecte l'ordre de priorité strict et les phrases exactes définies.
-  `;
+    `;
+  }
 }
 
-function checkSafetyCompatibility(restaurant: Restaurant, preferences: UserPreferences): string {
+function checkSafetyCompatibility(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): string {
   // Check dietary restrictions compatibility
   if (preferences?.dietary_restrictions?.length && restaurant.dietary_restrictions?.length) {
     const compatible = preferences.dietary_restrictions.some(restriction =>
       restaurant.dietary_restrictions!.includes(restriction)
     );
-    if (compatible) return '✅ Restrictions respectées';
-    else return '⚠️ Restrictions non respectées';
+    if (compatible) return language === 'en' ? '✅ Restrictions respected' : '✅ Restrictions respectées';
+    else return language === 'en' ? '⚠️ Restrictions not respected' : '⚠️ Restrictions non respectées';
   }
   
   // Check allergens safety
@@ -485,29 +535,29 @@ function checkSafetyCompatibility(restaurant: Restaurant, preferences: UserPrefe
     const hasConflict = preferences.allergens.some(allergen =>
       restaurant.allergens!.includes(allergen)
     );
-    if (!hasConflict) return '✅ Sécuritaire (allergènes)';
-    else return '⚠️ Allergènes présents';
+    if (!hasConflict) return language === 'en' ? '✅ Safe (allergens)' : '✅ Sécuritaire (allergènes)';
+    else return language === 'en' ? '⚠️ Allergens present' : '⚠️ Allergènes présents';
   }
   
   // Si pas de restrictions/allergènes = PARFAIT (plus de choix disponibles)
   if (!preferences?.dietary_restrictions?.length && !preferences?.allergens?.length) {
-    return '✅ AUCUNE restriction = Tous les plats disponibles';
+    return language === 'en' ? '✅ NO restrictions = All dishes available' : '✅ AUCUNE restriction = Tous les plats disponibles';
   }
   
   // Si utilisateur a des restrictions mais restaurant ne les spécifie pas
   if (preferences?.dietary_restrictions?.length && !restaurant.dietary_restrictions?.length) {
-    return '⚠️ Restrictions utilisateur non confirmées par restaurant';
+    return language === 'en' ? '⚠️ User restrictions not confirmed by restaurant' : '⚠️ Restrictions utilisateur non confirmées par restaurant';
   }
   
   // Si utilisateur a des allergènes mais restaurant ne les spécifie pas
   if (preferences?.allergens?.length && !restaurant.allergens?.length) {
-    return '⚠️ Allergènes utilisateur non confirmés par restaurant';
+    return language === 'en' ? '⚠️ User allergens not confirmed by restaurant' : '⚠️ Allergènes utilisateur non confirmés par restaurant';
   }
   
-  return '✅ Sécurité alimentaire OK';
+  return language === 'en' ? '✅ Food safety OK' : '✅ Sécurité alimentaire OK';
 }
 
-function checkLocationCompatibility(restaurant: Restaurant, preferences: UserPreferences): string {
+function checkLocationCompatibility(restaurant: Restaurant, preferences: UserPreferences, language: string = 'fr'): string {
   // Si l'utilisateur a une adresse complète
   if (preferences.full_address) {
     const userNeighborhood = preferences.neighborhood?.toLowerCase() || '';
@@ -516,38 +566,50 @@ function checkLocationCompatibility(restaurant: Restaurant, preferences: UserPre
     
     // Vérifier si même rue (score très élevé)
     if (userStreet && restaurantAddress.includes(userStreet)) {
-      return '✅ Même rue que vous';
+      return language === 'en' ? '✅ Same street as you' : '✅ Même rue que vous';
     }
     
     // Vérifier si même quartier (score élevé)
     if (userNeighborhood && restaurantAddress.includes(userNeighborhood)) {
-      return '✅ Dans votre quartier';
+      return language === 'en' ? '✅ In your neighborhood' : '✅ Dans votre quartier';
     }
     
     // Vérifier dans le rayon de livraison
     if (preferences.delivery_radius) {
-      return `🔍 À analyser dans votre rayon de ${preferences.delivery_radius} km`;
+      return language === 'en' 
+        ? `🔍 To analyze within your ${preferences.delivery_radius} km radius`
+        : `🔍 À analyser dans votre rayon de ${preferences.delivery_radius} km`;
     }
     
-    return '📍 Localisation à Montréal';
+    return language === 'en' ? '📍 Location in Montreal' : '📍 Localisation à Montréal';
   }
   
   // Si seulement une rue basique
   if (preferences.street) {
     const restaurantAddress = restaurant.address?.toLowerCase() || '';
     if (restaurantAddress.includes(preferences.street.toLowerCase())) {
-      return '✅ Sur votre rue préférée';
+      return language === 'en' ? '✅ On your favorite street' : '✅ Sur votre rue préférée';
     }
   }
   
-  return '❌ Localisation non définie';
+  return language === 'en' ? '❌ Location not defined' : '❌ Localisation non définie';
 }
 
-function getCurrentMealTime(hour: number): string {
-  if (hour >= 6 && hour < 11) return 'Déjeuner / Brunch';
-  if (hour >= 11 && hour < 15) return 'Déjeuner rapide';
-  if (hour >= 15 && hour < 17) return 'Collation';
-  if (hour >= 17 && hour < 22) return 'Dîner / Souper';
+function getCurrentMealTime(hour: number, language: string = 'fr'): string {
+  if (language === 'en') {
+    if (hour >= 6 && hour < 11) return 'Breakfast / Brunch';
+    if (hour >= 11 && hour < 15) return 'Quick lunch';
+    if (hour >= 15 && hour < 17) return 'Snack';
+    if (hour >= 17 && hour < 22) return 'Dinner / Supper';
+    return 'Late night';
+  } else {
+    if (hour >= 6 && hour < 11) return 'Déjeuner / Brunch';
+    if (hour >= 11 && hour < 15) return 'Déjeuner rapide';
+    if (hour >= 15 && hour < 17) return 'Collation';
+    if (hour >= 17 && hour < 22) return 'Dîner / Souper';
+    return 'Soirée tardive';
+  }
+}
   if (hour >= 22 || hour < 2) return 'Repas tardif';
   return 'Détox';
 }

@@ -29,7 +29,7 @@ interface Restaurant {
 }
 
 export const RecommendationCardsSection = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentLanguage } = useLanguage();
   const navigate = useNavigate();
   const { preferences } = useUserPreferences();
@@ -242,7 +242,8 @@ export const RecommendationCardsSection = () => {
             body: {
               restaurants: filteredRestaurants, // No more slice limit - analyze ALL matching restaurants
               preferences: preferences,
-              userId: (await supabase.auth.getUser()).data.user?.id
+              userId: (await supabase.auth.getUser()).data.user?.id,
+              language: i18n.language === 'en' ? 'en' : 'fr'
             }
           });
 
