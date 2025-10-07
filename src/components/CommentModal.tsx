@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Star, Camera, X, Send } from "lucide-react";
+import { Star, Camera, X, Send, Loader2 } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -340,13 +340,11 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
               className="w-full"
             >
               {uploading ? (
-                t('comments.uploadImages')
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
               ) : (
-                <>
-                  <Send className="h-4 w-4 mr-2" />
-                  {t('comments.publishComment')}
-                </>
+                <Send className="h-4 w-4 mr-2" />
               )}
+              {t('comments.publishComment')}
             </Button>
           </form>
 
