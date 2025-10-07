@@ -737,13 +737,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 autoCorrect="on"
                 autoCapitalize="sentences"
                 spellCheck="true"
-                className="flex-1 rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="flex-1 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0"
               />
               <Button
                 type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
                 onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
                 disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim()}
-                className="rounded-xl px-6 h-10 flex items-center justify-center"
+                className="rounded-lg px-6 h-10 flex items-center justify-center"
               >
                 {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
                   <Square className="w-3.5 h-3.5 fill-white dark:fill-black" />
