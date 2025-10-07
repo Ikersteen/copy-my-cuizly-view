@@ -1709,7 +1709,12 @@
     "saving": "Sauvegarde...",
     "save": "Sauvegarder",
     "selectValidImage": "Veuillez sélectionner une image valide",
-    "imageTooLarge": "L'image doit faire moins de 5 Mo"
+    "imageTooLarge": "L'image doit faire moins de 5 Mo",
+    "password": "Mot de passe",
+    "logoutButton": "Déconnexion",
+    "deleteAccountTitle": "Êtes-vous sûr de vouloir supprimer votre compte ?",
+    "deleteAccountDescription": "Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, toutes vos données seront définitivement supprimées.",
+    "deleteAccountButton": "Supprimer le compte"
   },
   "dashboard": {
     "hello": "Bonjour",
@@ -1898,6 +1903,8 @@
     "close": "Fermer",
     "addNew": "Ajouter un nouveau menu",
     "maxSize": "Taille maximum: 5MB",
+    "noMenusAvailable": "Aucun menu disponible",
+    "noMenusYet": "Aucun menu n'a encore été ajouté pour ce restaurant.",
     "uploading": "Téléchargement en cours...",
     "describeMenu": "Décrivez ce menu... (obligatoire)",
     "addThisMenu": "Ajouter ce menu",
@@ -2461,7 +2468,10 @@
   },
   "analytics": {
     "title": "Tableau de performance en temps réel",
-    "subtitle": "Aperçus sur les performances par segment (Mise à jour en temps réel)"
+    "subtitle": "Aperçus sur les performances par segment (Mise à jour en temps réel)",
+    "vsLastWeek": "vs la semaine dernière",
+    "noChange": "Aucun changement vs la semaine dernière",
+    "collectingData": "Collecte des données..."
   },
   "newOffer": {
     "title": "Créer une nouvelle offre",

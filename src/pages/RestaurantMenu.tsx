@@ -450,10 +450,10 @@ export default function RestaurantMenu() {
                   <Card>
                      <CardContent className="p-12 text-center">
                         <h4 className="text-lg font-medium text-muted-foreground mb-3">
-                          Aucun menu disponible
+                          {t('menus.noMenusAvailable')}
                         </h4>
                         <p className="text-muted-foreground">
-                          Aucun menu n'a encore été ajouté pour ce restaurant.
+                          {t('menus.noMenusYet')}
                         </p>
                      </CardContent>
                   </Card>

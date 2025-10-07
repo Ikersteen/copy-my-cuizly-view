@@ -397,7 +397,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
                     <div>
-                      <p className="font-medium text-sm">Mot de passe</p>
+                      <p className="font-medium text-sm">{t('profile.password')}</p>
                     </div>
                     <Button 
                       variant="outline" 
@@ -405,43 +405,43 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                       onClick={() => setShowPasswordModal(true)}
                       className="shrink-0"
                     >
-                      Modifier
+                      {t('profile.edit')}
                     </Button>
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
                     <div>
-                      <p className="font-medium text-sm">Se déconnecter</p>
+                      <p className="font-medium text-sm">{t('profile.logout')}</p>
                     </div>
                     <Button variant="outline" size="sm" onClick={handleLogout} className="shrink-0">
-                      Déconnexion
+                      {t('profile.logoutButton')}
                     </Button>
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
                     <div>
-                      <p className="font-medium text-sm text-destructive">Supprimer le compte</p>
+                      <p className="font-medium text-sm text-destructive">{t('profile.deleteAccount')}</p>
                     </div>
                     <AlertDialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
                       <AlertDialogTrigger asChild>
                         <Button variant="destructive" size="sm" className="shrink-0">
-                          Supprimer
+                          {t('profile.delete')}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Êtes-vous sûr de vouloir supprimer votre compte ?</AlertDialogTitle>
+                          <AlertDialogTitle>{t('profile.deleteAccountTitle')}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Votre compte sera programmé pour suppression dans 30 jours. Durant cette période, vous pouvez vous reconnecter pour annuler cette demande. Après 30 jours, toutes vos données seront définitivement supprimées.
+                            {t('profile.deleteAccountDescription')}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Annuler</AlertDialogCancel>
+                          <AlertDialogCancel>{t('profile.cancel')}</AlertDialogCancel>
                           <AlertDialogAction 
                             onClick={handleDeleteAccount}
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           >
-                            Supprimer le compte
+                            {t('profile.deleteAccountButton')}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

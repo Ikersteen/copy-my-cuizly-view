@@ -356,12 +356,12 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
               <p className="text-xs text-gray-700 dark:text-gray-700">
                 {analytics.weeklyGrowth !== undefined ? (
                   analytics.weeklyGrowth > 0 ? 
-                    `+${analytics.weeklyGrowth}% vs la semaine dernière` :
+                    `+${analytics.weeklyGrowth}% ${t('analytics.vsLastWeek')}` :
                   analytics.weeklyGrowth < 0 ?
-                    `${analytics.weeklyGrowth}% vs la semaine dernière` :
-                    "Aucun changement vs la semaine dernière"
+                    `${analytics.weeklyGrowth}% ${t('analytics.vsLastWeek')}` :
+                    t('analytics.noChange')
                 ) : (
-                  "Collecte des données..."
+                  t('analytics.collectingData')
                 )}
               </p>
             </div>

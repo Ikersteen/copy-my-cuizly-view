@@ -383,10 +383,10 @@ export const RestaurantMenuModal = ({
                 <Card>
                    <CardContent className="p-8 text-center">
                       <h4 className="text-lg font-medium text-muted-foreground mb-2">
-                        Aucun menu disponible
+                        {t('menus.noMenusAvailable')}
                       </h4>
                       <p className="text-sm text-muted-foreground">
-                        Aucun menu n'a encore été ajouté pour ce restaurant.
+                        {t('menus.noMenusYet')}
                       </p>
                    </CardContent>
                 </Card>
