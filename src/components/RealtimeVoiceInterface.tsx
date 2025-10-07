@@ -306,7 +306,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
           {!isConnected ? (
             <Button
               onClick={startConversation}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Sparkles className="w-5 h-5 mr-2" />
               {t('voiceAssistant.available')}
@@ -315,7 +315,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
             <Button
               onClick={endConversation}
               variant="destructive"
-              className="px-8 py-4 rounded-lg font-medium"
+              className="px-8 py-4 rounded-full font-medium"
             >
               <MicOff className="w-5 h-5 mr-2" />
               {t('voiceAssistant.endConversation')}
