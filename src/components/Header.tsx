@@ -222,11 +222,7 @@ const Header = () => {
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                   <div className="flex flex-col space-y-4 mt-8">
-                    <div className="flex items-center justify-between pb-2 border-b border-border">
-                      <span className="text-sm font-medium text-muted-foreground">{t('language.select')}</span>
-                      <LanguageSwitcher />
-                    </div>
-                    <button 
+                    <button
                       onClick={() => {
                         document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
                         setIsSheetOpen(false);
