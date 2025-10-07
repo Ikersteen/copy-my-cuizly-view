@@ -77,9 +77,19 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
     try {
       console.log('🎨 Début traitement image ajustée, taille data:', adjustedImageData.length);
       
-      // Convert base64 to blob
-      const response = await fetch(adjustedImageData);
-      const blob = await response.blob();
+      // Extract base64 data from data URL (avoid CSP issues with fetch)
+      const base64Data = adjustedImageData.split(',')[1];
+      const mimeType = adjustedImageData.split(',')[0].split(':')[1].split(';')[0];
+      
+      // Convert base64 to binary
+      const binaryString = atob(base64Data);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      
+      // Create blob
+      const blob = new Blob([bytes], { type: mimeType });
       console.log('📦 Blob créé, type:', blob.type, 'taille:', blob.size);
       
       // Create a File object from the blob
