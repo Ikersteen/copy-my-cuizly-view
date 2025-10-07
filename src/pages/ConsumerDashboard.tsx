@@ -24,6 +24,7 @@ import { SavedFavoritesSection } from "@/components/SavedFavoritesSection";
 import { OffersSection } from "@/components/OffersSection";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 import type { User } from "@supabase/supabase-js";
 
@@ -132,6 +133,9 @@ const ConsumerDashboard = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <LanguageSwitcher />
+            </div>
             <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
               {/* Photo de profil */}
               <div className="flex justify-start">
