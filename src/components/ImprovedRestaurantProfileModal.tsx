@@ -585,22 +585,22 @@ export const ImprovedRestaurantProfileModal = ({
 
             {/* Rest of the form */}
             <div className="space-y-2">
-              <Label htmlFor="name">Nom du restaurant</Label>
+              <Label htmlFor="name">{t('restaurantProfile.restaurantName')}</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Nom de votre restaurant"
+                placeholder={t('restaurantProfile.restaurantNamePlaceholder')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="username">Nom d'utilisateur</Label>
+              <Label htmlFor="username">{t('restaurantProfile.username')}</Label>
               <Input
                 id="username"
                 value={formData.username}
                 onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                placeholder="@nomdutilisateur"
+                placeholder={t('restaurantProfile.usernamePlaceholder')}
               />
             </div>
 
@@ -629,7 +629,7 @@ export const ImprovedRestaurantProfileModal = ({
               />
               {formData.description.length > 450 && (
                 <p className="text-xs text-muted-foreground">
-                  {500 - formData.description.length} caractères restants
+                  {t('restaurantProfile.charactersRemaining', { count: 500 - formData.description.length })}
                 </p>
               )}
             </div>
@@ -637,8 +637,8 @@ export const ImprovedRestaurantProfileModal = ({
             <AddressAutocomplete
               value={formData.address}
               onChange={(address) => setFormData(prev => ({ ...prev, address }))}
-              label="Adresse"
-              placeholder="Entrez l'adresse de votre restaurant"
+              label={t('restaurantProfile.address')}
+              placeholder={t('restaurantProfile.addressPlaceholder')}
             />
 
             <div className="space-y-2">
@@ -676,7 +676,7 @@ export const ImprovedRestaurantProfileModal = ({
                 type="url"
                 value={formData.instagram_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
-                placeholder="https://instagram.com/votre-restaurant"
+                placeholder={t('restaurantProfile.instagramPlaceholder')}
               />
             </div>
 
@@ -690,13 +690,13 @@ export const ImprovedRestaurantProfileModal = ({
                 type="url"
                 value={formData.facebook_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
-                placeholder="https://facebook.com/votre-restaurant"
+                placeholder={t('restaurantProfile.facebookPlaceholder')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Heures d'ouverture</Label>
-              <p className="text-sm text-muted-foreground">Définissez vos heures d'ouverture pour chaque jour de la semaine</p>
+              <Label>{t('restaurantProfile.openingHours')}</Label>
+              <p className="text-sm text-muted-foreground">{t('restaurantProfile.openingHoursDescription')}</p>
               <div className="space-y-2">
                 {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
                   const hours = formData.opening_hours[day as keyof typeof formData.opening_hours];

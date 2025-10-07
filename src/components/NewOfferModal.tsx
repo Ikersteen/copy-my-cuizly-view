@@ -14,6 +14,7 @@ import { validateTextInput, INPUT_LIMITS } from "@/lib/validation";
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { X, Loader2 } from "lucide-react";
+import i18n from '@/lib/i18n';
 
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
