@@ -53,55 +53,27 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
     return entry ? entry[0] : translatedName;
   };
 
-  const DIETARY_OPTIONS = [
-    { key: "vegetarian", value: t('preferences.dietaryOptions.vegetarian') },
-    { key: "vegan", value: t('preferences.dietaryOptions.vegan') },
-    { key: "glutenFree", value: t('preferences.dietaryOptions.glutenFree') },
-    { key: "halal", value: t('preferences.dietaryOptions.halal') },
-    { key: "kosher", value: t('preferences.dietaryOptions.kosher') },
-    { key: "paleo", value: t('preferences.dietaryOptions.paleo') },
-    { key: "keto", value: t('preferences.dietaryOptions.keto') },
-    { key: "lactoseFree", value: t('preferences.dietaryOptions.lactoseFree') },
-    { key: "pescatarian", value: t('preferences.dietaryOptions.pescatarian') },
-    { key: "lowSodium", value: t('preferences.dietaryOptions.lowSodium') },
-    { key: "fruitarian", value: t('preferences.dietaryOptions.fruitarian') },
-    { key: "carnivore", value: t('preferences.dietaryOptions.carnivore') },
-    { key: "detox", value: t('preferences.dietaryOptions.detox') },
-    { key: "spicy", value: t('preferences.dietaryOptions.spicy') },
-    { key: "notSpicy", value: t('preferences.dietaryOptions.notSpicy') },
-    { key: "lowSugar", value: t('preferences.dietaryOptions.lowSugar') }
+  // Dietary options with keys for storage
+  const DIETARY_KEYS = [
+    "vegetarian", "vegan", "glutenFree", "halal", "kosher", "paleo",
+    "keto", "lactoseFree", "pescatarian", "lowSodium", "fruitarian",
+    "carnivore", "detox", "spicy", "notSpicy", "lowSugar"
   ];
 
-  const ALLERGEN_OPTIONS = [
-    { key: "peanuts", value: t('preferences.allergenOptions.peanuts') },
-    { key: "nuts", value: t('preferences.allergenOptions.nuts') },
-    { key: "milk", value: t('preferences.allergenOptions.milk') },
-    { key: "eggs", value: t('preferences.allergenOptions.eggs') },
-    { key: "wheat", value: t('preferences.allergenOptions.wheat') },
-    { key: "soy", value: t('preferences.allergenOptions.soy') },
-    { key: "fish", value: t('preferences.allergenOptions.fish') },
-    { key: "seafood", value: t('preferences.allergenOptions.seafood') },
-    { key: "sesame", value: t('preferences.allergenOptions.sesame') },
-    { key: "sulfites", value: t('preferences.allergenOptions.sulfites') },
-    { key: "mustard", value: t('preferences.allergenOptions.mustard') },
-    { key: "lupin", value: t('preferences.allergenOptions.lupin') },
-    { key: "celery", value: t('preferences.allergenOptions.celery') },
-    { key: "gluten", value: t('preferences.allergenOptions.gluten') },
-    { key: "corn", value: t('preferences.allergenOptions.corn') },
-    { key: "legumes", value: t('preferences.allergenOptions.legumes') },
-    { key: "kiwi", value: t('preferences.allergenOptions.kiwi') },
-    { key: "banana", value: t('preferences.allergenOptions.banana') },
-    { key: "stoneFruits", value: t('preferences.allergenOptions.stoneFruits') }
+  const ALLERGEN_KEYS = [
+    "peanuts", "nuts", "milk", "eggs", "wheat", "soy", "fish",
+    "seafood", "sesame", "sulfites", "mustard", "lupin", "celery",
+    "gluten", "corn", "legumes", "kiwi", "banana", "stoneFruits"
   ];
 
-  const MEAL_TIMES = [
-    { key: "breakfast", value: t('preferences.mealTimeOptions.breakfast') },
-    { key: "quickLunch", value: t('preferences.mealTimeOptions.quickLunch') },
-    { key: "dinner", value: t('preferences.mealTimeOptions.dinner') },
-    { key: "snack", value: t('preferences.mealTimeOptions.snack') },
-    { key: "detox", value: t('preferences.mealTimeOptions.detox') },
-    { key: "lateNight", value: t('preferences.mealTimeOptions.lateNight') }
+  const MEAL_TIME_KEYS = [
+    "breakfast", "quickLunch", "dinner", "snack", "detox", "lateNight"
   ];
+
+  // Helper functions to get translated values
+  const getDietaryLabel = (key: string) => t(`preferences.dietaryOptions.${key}`);
+  const getAllergenLabel = (key: string) => t(`preferences.allergenOptions.${key}`);
+  const getMealTimeLabel = (key: string) => t(`preferences.mealTimeOptions.${key}`);
 
   // Reset local preferences on modal open
   useEffect(() => {
@@ -234,16 +206,19 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               {t('preferences.dietaryRestrictionsDesc')}
             </p>
             <div className="flex flex-wrap gap-2">
-              {DIETARY_OPTIONS.sort((a, b) => a.value.localeCompare(b.value)).map(diet => (
-                <Badge
-                  key={diet.key}
-                  variant={(localPrefs.dietary_restrictions || []).includes(diet.value) ? "default" : "outline"}
-                  className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleArrayItem(localPrefs.dietary_restrictions || [], diet.value, 'dietary_restrictions')}
-                >
-                  {diet.value}
-                </Badge>
-              ))}
+              {DIETARY_KEYS.sort((a, b) => getDietaryLabel(a).localeCompare(getDietaryLabel(b))).map(key => {
+                const label = getDietaryLabel(key);
+                return (
+                  <Badge
+                    key={key}
+                    variant={(localPrefs.dietary_restrictions || []).includes(label) ? "default" : "outline"}
+                    className="cursor-pointer transition-all duration-200 hover:scale-105"
+                    onClick={() => toggleArrayItem(localPrefs.dietary_restrictions || [], label, 'dietary_restrictions')}
+                  >
+                    {label}
+                  </Badge>
+                );
+              })}
             </div>
           </div>
 
@@ -256,16 +231,19 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               {t('preferences.allergensDesc')}
             </p>
             <div className="flex flex-wrap gap-2">
-              {ALLERGEN_OPTIONS.sort((a, b) => a.value.localeCompare(b.value)).map(allergen => (
-                <Badge
-                  key={allergen.key}
-                  variant={(localPrefs.allergens || []).includes(allergen.value) ? "destructive" : "outline"}
-                  className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleArrayItem(localPrefs.allergens || [], allergen.value, 'allergens')}
-                >
-                  {allergen.value}
-                </Badge>
-              ))}
+              {ALLERGEN_KEYS.sort((a, b) => getAllergenLabel(a).localeCompare(getAllergenLabel(b))).map(key => {
+                const label = getAllergenLabel(key);
+                return (
+                  <Badge
+                    key={key}
+                    variant={(localPrefs.allergens || []).includes(label) ? "destructive" : "outline"}
+                    className="cursor-pointer transition-all duration-200 hover:scale-105"
+                    onClick={() => toggleArrayItem(localPrefs.allergens || [], label, 'allergens')}
+                  >
+                    {label}
+                  </Badge>
+                );
+              })}
             </div>
           </div>
 
@@ -325,16 +303,19 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               {t('preferences.mealTimesDesc')}
             </p>
             <div className="flex flex-wrap gap-2">
-              {MEAL_TIMES.map(time => (
-                <Badge
-                  key={time.key}
-                  variant={(localPrefs.favorite_meal_times || []).includes(time.value) ? "default" : "outline"}
-                  className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => toggleArrayItem(localPrefs.favorite_meal_times || [], time.value, 'favorite_meal_times')}
-                >
-                  {time.value}
-                </Badge>
-              ))}
+              {MEAL_TIME_KEYS.map(key => {
+                const label = getMealTimeLabel(key);
+                return (
+                  <Badge
+                    key={key}
+                    variant={(localPrefs.favorite_meal_times || []).includes(label) ? "default" : "outline"}
+                    className="cursor-pointer transition-all duration-200 hover:scale-105"
+                    onClick={() => toggleArrayItem(localPrefs.favorite_meal_times || [], label, 'favorite_meal_times')}
+                  >
+                    {label}
+                  </Badge>
+                );
+              })}
             </div>
           </div>
 
