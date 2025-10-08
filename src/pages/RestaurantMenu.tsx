@@ -203,10 +203,10 @@ export default function RestaurantMenu() {
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-cuizly-neutral mb-4">Restaurant introuvable</h1>
+          <h1 className="text-2xl font-bold text-cuizly-neutral mb-4">{t('restaurant.notFound')}</h1>
           <Button onClick={() => navigate(-1)} variant="outline">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour
+            {t('common.back')}
           </Button>
         </div>
       </div>
@@ -223,7 +223,7 @@ export default function RestaurantMenu() {
           className="mb-4 text-cuizly-neutral hover:text-cuizly-primary"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Retour
+          {t('common.back')}
         </Button>
       </div>
 

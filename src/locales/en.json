@@ -481,6 +481,7 @@
     "error": "An error occurred",
     "success": "Success",
     "retry": "Retry",
+    "back": "Back",
     "close": "Close",
     "save": "Save",
     "cancel": "Cancel",
@@ -1741,6 +1742,7 @@
     "socialMedia": "Social media",
     "dietaryRestrictions": "Dietary restrictions",
     "allergens": "Allergens",
+    "notFound": "Restaurant not found",
     "notSpecified": "Not specified",
     "notSpecifiedFeminine": "Not specified",
     "notDefined": "Not defined"
