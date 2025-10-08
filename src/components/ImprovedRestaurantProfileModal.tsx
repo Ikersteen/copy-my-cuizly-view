@@ -925,7 +925,7 @@ export const ImprovedRestaurantProfileModal = ({
               {t('restaurantProfile.cancel')}
             </Button>
               <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
-                {saving ? t('restaurantProfile.saving') : t('restaurantProfile.save')}
+                {t('restaurantProfile.save')}
               </Button>
             </div>
           </div>
