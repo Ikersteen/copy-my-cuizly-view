@@ -498,6 +498,8 @@
     "updating": "Mise à jour...",
     "processing": "Traitement...",
     "uploading": "Téléchargement...",
+    "chooseFile": "Choisir le fichier",
+    "noFileSelected": "aucun fichier sélectionné",
     "yes": "Oui",
     "no": "Non",
     "ok": "OK",

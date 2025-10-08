@@ -498,6 +498,8 @@
     "updating": "Updating...",
     "processing": "Processing...",
     "uploading": "Uploading...",
+    "chooseFile": "Choose file",
+    "noFileSelected": "no file selected",
     "yes": "Yes",
     "no": "No",
     "ok": "OK",
