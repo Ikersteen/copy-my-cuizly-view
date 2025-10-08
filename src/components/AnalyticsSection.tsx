@@ -255,9 +255,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'totalMenus'
     },
     {
-      title: "Vues du profil",
+      title: t('analytics.profileViews'),
       value: analytics.profileViews,
-      subtitle: "Vues totales",
+      subtitle: t('analytics.totalViews'),
       icon: Eye,
       color: "text-purple-600",
       bgColor: "bg-purple-100 dark:bg-purple-100",
@@ -380,11 +380,11 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
                 `}
               >
                 {analytics.weeklyGrowth !== undefined ? (
-                  analytics.weeklyGrowth > 0 ? "Tendance positive" : 
-                  analytics.weeklyGrowth < 0 ? "Tendance négative" :
-                  "Stable"
+                  analytics.weeklyGrowth > 0 ? t('analytics.positiveTrend') : 
+                  analytics.weeklyGrowth < 0 ? t('analytics.negativeTrend') :
+                  t('analytics.stable')
                 ) : (
-                  "Collecte de données"
+                  t('analytics.collectingData')
                 )}
               </Badge>
             </div>

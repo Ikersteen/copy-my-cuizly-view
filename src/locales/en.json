@@ -1381,6 +1381,8 @@
     "openingHoursDesc": "Set your opening hours for each day",
     "openingHoursDescription": "Set your opening hours for each day of the week",
     "priceRange": "Price range",
+    "priceRangeDesc": "Select the price range that matches your restaurant",
+    "priceRangePlaceholder": "Choose a price range",
     "deliveryRadius": "Delivery radius",
     "deliveryRadiusDesc": "Maximum delivery distance in kilometers",
     "cuisineTypes": "Cuisine types",

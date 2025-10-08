@@ -754,14 +754,14 @@ export const ImprovedRestaurantProfileModal = ({
 
 
             <div className="space-y-2">
-              <Label>Gamme de prix</Label>
-              <p className="text-sm text-muted-foreground">Sélectionnez la gamme de prix qui correspond à votre restaurant</p>
+              <Label>{t('restaurantProfile.priceRange')}</Label>
+              <p className="text-sm text-muted-foreground">{t('restaurantProfile.priceRangeDesc')}</p>
               <Select 
                 value={formData.price_range} 
                 onValueChange={(value) => setFormData(prev => ({ ...prev, price_range: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Choisissez une gamme de prix" />
+                  <SelectValue placeholder={t('restaurantProfile.priceRangePlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {PRICE_RANGE_OPTIONS.map((range) => (
