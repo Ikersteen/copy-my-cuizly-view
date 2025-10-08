@@ -516,7 +516,10 @@
     "avatar": "Avatar",
     "logo": "Logo",
     "menu": "Menu",
-    "profile": "Profile"
+    "profile": "Profile",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "language": {
     "french": "French",
@@ -666,7 +669,9 @@
     "usernamePlaceholder": "Your username",
     "phonePlaceholder": "+1 (XXX) XXX-XXXX",
     "phone": "Phone",
+    "phoneNumber": "Phone number",
     "email": "Email",
+    "emailPlaceholder": "your@email.com",
     "firstNameRequired": "First name is required",
     "lastNameRequired": "Last name is required",
     "usernameRequired": "Username is required",
@@ -678,6 +683,9 @@
     "emailNotificationsDescription": "Receive email notifications",
     "security": "Security",
     "changePassword": "Change password",
+    "changePasswordDesc": "Update your password to secure your account",
+    "resetLinkInfo": "A reset link will be sent to your email address",
+    "sendLink": "Send link",
     "modify": "Modify",
     "newPassword": "New password",
     "confirmPassword": "Confirm password",

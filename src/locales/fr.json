@@ -516,7 +516,10 @@
     "avatar": "Avatar",
     "logo": "Logo",
     "menu": "Menu",
-    "profile": "Profil"
+    "profile": "Profil",
+    "cancel": "Annuler",
+    "save": "Sauvegarder",
+    "saving": "Sauvegarde..."
   },
   "language": {
     "french": "Français",
@@ -1989,7 +1992,9 @@
     "usernameRequired": "Le nom d'utilisateur est requis",
     "phoneInvalid": "Numéro de téléphone invalide",
     "phone": "Téléphone",
+    "phoneNumber": "Numéro de téléphone",
     "email": "Adresse courriel",
+    "emailPlaceholder": "votre@courriel.com",
     "emojiAvatar": "Avatar emoji",
     "chooseEmoji": "Choisissez votre emoji",
     "selected": "Sélectionné :",
@@ -2000,6 +2005,9 @@
     "emailNotificationsDescription": "Recevez des notifications par courriel",
     "security": "Sécurité et confidentialité",
     "changePassword": "Changer le mot de passe",
+    "changePasswordDesc": "Modifiez votre mot de passe pour sécuriser votre compte",
+    "resetLinkInfo": "Un lien de réinitialisation sera envoyé à votre adresse courriel",
+    "sendLink": "Envoyer le lien",
     "modify": "Modifier",
     "newPassword": "Nouveau mot de passe",
     "newPasswordPlaceholder": "Nouveau mot de passe",

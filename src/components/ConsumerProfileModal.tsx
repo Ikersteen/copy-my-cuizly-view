@@ -290,53 +290,53 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="first_name" className="text-sm font-medium">Prénom</Label>
+                    <Label htmlFor="first_name" className="text-sm font-medium">{t('profile.firstName')}</Label>
                     <Input
                       id="first_name"
                       value={formData.first_name}
                       onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
-                      placeholder="Votre prénom"
+                      placeholder={t('profile.firstNamePlaceholder')}
                       className="h-10"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="last_name" className="text-sm font-medium">Nom</Label>
+                    <Label htmlFor="last_name" className="text-sm font-medium">{t('profile.lastName')}</Label>
                     <Input
                       id="last_name"
                       value={formData.last_name}
                       onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
-                      placeholder="Votre nom"
+                      placeholder={t('profile.lastNamePlaceholder')}
                       className="h-10"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-sm font-medium">Nom d'utilisateur</Label>
+                  <Label htmlFor="username" className="text-sm font-medium">{t('profile.username')}</Label>
                   <Input
                     id="username"
                     value={formData.username}
                     onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                    placeholder="Votre nom d'utilisateur"
+                    placeholder={t('profile.usernamePlaceholder')}
                     className="h-10"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">Courriel</Label>
+                  <Label htmlFor="email" className="text-sm font-medium">{t('profile.email')}</Label>
                   <Input
                     id="email"
                     type="email"
                     value={formData.email || userEmail}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    placeholder="votre@courriel.com"
+                    placeholder={t('profile.emailPlaceholder')}
                     className="h-10"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-sm font-medium">Numéro de téléphone</Label>
+                  <Label htmlFor="phone" className="text-sm font-medium">{t('profile.phoneNumber')}</Label>
                   <Input
                     id="phone"
                     type="tel"
@@ -455,16 +455,16 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
           {/* Actions */}
           <div className="flex justify-between px-6 py-4 border-t bg-muted/30">
             <Button variant="outline" onClick={onClose} className="min-w-[100px]">
-              Annuler
+              {t('common.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={saving} className="min-w-[120px]">
               {saving ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
-                  Sauvegarde...
+                  {t('common.saving')}
                 </>
               ) : (
-                "Sauvegarder"
+                t('common.save')
               )}
             </Button>
           </div>
@@ -475,25 +475,25 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
       <Dialog open={showPasswordModal} onOpenChange={setShowPasswordModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Changer le mot de passe</DialogTitle>
+            <DialogTitle>{t('profile.changePassword')}</DialogTitle>
             <DialogDescription>
-              Modifiez votre mot de passe pour sécuriser votre compte
+              {t('profile.changePasswordDesc')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <Alert>
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                Un lien de réinitialisation sera envoyé à votre adresse courriel
+                {t('profile.resetLinkInfo')}
               </AlertDescription>
             </Alert>
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setShowPasswordModal(false)}>
-              Annuler
+              {t('common.cancel')}
             </Button>
             <Button onClick={() => setShowPasswordModal(false)}>
-              Envoyer le lien
+              {t('profile.sendLink')}
             </Button>
           </div>
         </DialogContent>

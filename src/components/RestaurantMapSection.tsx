@@ -122,7 +122,7 @@ const RestaurantMapSection = () => {
                     <div className="flex items-center justify-center h-full text-muted-foreground">
                        <div className="text-center">
                          <MapPin className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                         <p>Recherche de restaurants...</p>
+                         <p>{t('googleMap.loadingRestaurants')}</p>
                        </div>
                     </div>
                   ) : (
