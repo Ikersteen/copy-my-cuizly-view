@@ -177,9 +177,9 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         <div className="space-y-6">
           {/* Cuisines préférées */}
           <div>
-            <Label className="text-base font-medium">Cuisines préférées</Label>
+            <Label className="text-base font-medium">{t('preferences.preferredCuisines')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Sélectionnez vos cuisines préférées pour des recommandations personnalisées.
+              {t('preferences.preferredCuisinesDesc')}
             </p>
             
             {/* Selected cuisines display */}
@@ -212,7 +212,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                 }}
               >
                 <SelectTrigger className="w-full bg-background border focus:ring-0 focus:ring-offset-0 focus:outline-none">
-                  <SelectValue placeholder="Sélectionnez une cuisine" />
+                  <SelectValue placeholder={t('preferences.selectCuisine')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border z-50">
                   {CUISINE_OPTIONS.filter(cuisine => !localPrefs.cuisine_preferences?.includes(cuisine)).map(cuisine => (
@@ -306,12 +306,12 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   full_address: address
                 }));
               }}
-              label="Adresse de livraison"
-              placeholder="Entrez votre adresse"
+              label={t('preferences.deliveryAddress')}
+              placeholder={t('preferences.enterAddress')}
             />
             {deliveryAddress?.formatted_address && (
               <p className="text-xs text-muted-foreground mt-2">
-                📍 Adresse sélectionnée: {deliveryAddress.formatted_address}
+                📍 {t('preferences.selectedAddress')}: {deliveryAddress.formatted_address}
               </p>
             )}
           </div>
