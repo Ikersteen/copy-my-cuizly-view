@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,8 +48,6 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
   const [tempImageUrl, setTempImageUrl] = useState("");
   const [isEditingImage, setIsEditingImage] = useState(false);
   const { toast } = useToast();
-  const newMenuFileInputRef = useRef<HTMLInputElement>(null);
-  const editMenuFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (open && restaurantId) {
@@ -353,24 +351,12 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                 <div className="space-y-2">
                   <Label>{t('menusModal.menuImage')}</Label>
                   <div className="flex flex-col space-y-2">
-                    <input
-                      ref={newMenuFileInputRef}
+                    <Input
                       type="file"
                       accept="image/*"
                       onChange={(e) => handleImageUpload(e, false)}
                       disabled={uploading}
-                      className="hidden"
                     />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => newMenuFileInputRef.current?.click()}
-                      disabled={uploading}
-                      className="w-full justify-start"
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      {newMenu.image_url ? t('menusModal.changeImage') : t('menusModal.chooseFile')}
-                    </Button>
                      <p className="text-xs text-muted-foreground">{t('menusModal.maxSize')}</p>
                      {uploading && <p className="text-sm text-muted-foreground">{t('menusModal.uploading')}</p>}
                     {newMenu.image_url && (
@@ -602,24 +588,12 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       <div className="space-y-2">
                         <Label>{t('menusModal.menuImage')}</Label>
                         <div className="flex flex-col space-y-2">
-                          <input
-                            ref={editMenuFileInputRef}
+                          <Input
                             type="file"
                             accept="image/*"
                             onChange={(e) => handleImageUpload(e, true)}
                             disabled={uploading}
-                            className="hidden"
                           />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => editMenuFileInputRef.current?.click()}
-                            disabled={uploading}
-                            className="w-full justify-start"
-                          >
-                            <Upload className="h-4 w-4 mr-2" />
-                            {editingMenu.image_url ? t('menusModal.changeImage') : t('menusModal.chooseFile')}
-                          </Button>
                            <p className="text-xs text-muted-foreground">{t('menusModal.maxSize')}</p>
                            {uploading && <p className="text-sm text-muted-foreground">{t('menusModal.uploading')}</p>}
                           {editingMenu.image_url && (
