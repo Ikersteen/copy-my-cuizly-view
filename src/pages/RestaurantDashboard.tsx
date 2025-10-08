@@ -265,8 +265,7 @@ const RestaurantDashboard = () => {
                         {restaurant.cuisine_type?.length > 0 ? (
                           restaurant.cuisine_type.map((cuisine, index) => (
                             <Badge key={index} variant="outline" className="text-xs">
-                              {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || 
-                               CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.en || 
+                              {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || 
                                cuisine}
                             </Badge>
                           ))
@@ -283,8 +282,7 @@ const RestaurantDashboard = () => {
                         {(restaurant as any).service_types?.length > 0 ? (
                           (restaurant as any).service_types.map((service: string, index: number) => (
                             <Badge key={index} variant="outline" className="text-xs">
-                              {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.fr || 
-                               SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.en || 
+                              {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || 
                                service}
                             </Badge>
                           ))
