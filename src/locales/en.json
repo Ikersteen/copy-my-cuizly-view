@@ -1098,6 +1098,45 @@
     "disclaimer": "Cuizly can sometimes make mistakes, remember to verify important information.",
     "inputPlaceholder": "Ask Cuizly a question"
   },
+  "restaurantFilters": {
+    "title": "Filter your offers and menus",
+    "categories": "Categories",
+    "cuisineTypes": "Cuisine Types",
+    "serviceTypes": "Service Types",
+    "priceRange": "Price Range",
+    "period": "Period",
+    "options": "Options",
+    "showActiveOnly": "Show active items only",
+    "hideDisabled": "Hide disabled offers and menus",
+    "sortBy": "Sort by",
+    "reset": "Reset",
+    "apply": "Apply filters",
+    "categoryOptions": {
+      "promotion": "Promotion",
+      "new": "New",
+      "popular": "Popular",
+      "specialty": "Specialty",
+      "dailyMenu": "Daily menu",
+      "vegetarian": "Vegetarian",
+      "vegan": "Vegan",
+      "glutenFree": "Gluten-free",
+      "halal": "Halal",
+      "kosher": "Kosher"
+    },
+    "dateRanges": {
+      "today": "Today",
+      "week": "This week",
+      "month": "This month",
+      "all": "All"
+    },
+    "sortOptions": {
+      "newest": "Most recent",
+      "popular": "Most popular",
+      "priceAsc": "Price ascending",
+      "priceDesc": "Price descending",
+      "views": "Number of views"
+    }
+  },
   "preferences": {
     "title": "My preferences",
     "description": "Configure your culinary preferences for personalized recommendations",

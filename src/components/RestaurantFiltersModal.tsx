@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { X, TrendingUp, DollarSign, Users, Clock } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import i18n from '@/lib/i18n';
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 interface RestaurantFiltersModalProps {
@@ -164,7 +165,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
 
           {/* Types de cuisine */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Types de cuisine</Label>
+            <Label className="text-base font-medium mb-3 block">{t('restaurantFilters.cuisineTypes')}</Label>
             <div className="flex flex-wrap gap-2">
               {CUISINE_OPTIONS.map(cuisine => (
                 <Badge
@@ -173,7 +174,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
                   className="cursor-pointer transition-all duration-200 hover:scale-105"
                   onClick={() => toggleCuisine(cuisine)}
                 >
-                  {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.fr || cuisine}
+                  {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
                 </Badge>
               ))}
             </div>
@@ -183,7 +184,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
 
           {/* Types de service */}
           <div>
-            <Label className="text-base font-medium mb-3 block">Types de service</Label>
+            <Label className="text-base font-medium mb-3 block">{t('restaurantFilters.serviceTypes')}</Label>
             <div className="flex flex-wrap gap-2">
               {SERVICE_TYPE_OPTIONS.map(serviceType => (
                 <Badge
@@ -192,7 +193,7 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
                   className="cursor-pointer transition-all duration-200 hover:scale-105"
                   onClick={() => toggleServiceType(serviceType)}
                 >
-                  {SERVICE_TYPES_TRANSLATIONS[serviceType as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.fr || serviceType}
+                  {SERVICE_TYPES_TRANSLATIONS[serviceType as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || serviceType}
                 </Badge>
               ))}
             </div>

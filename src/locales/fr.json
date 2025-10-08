@@ -1434,6 +1434,8 @@
   "restaurantFilters": {
     "title": "Filtrer vos offres et menus",
     "categories": "Catégories",
+    "cuisineTypes": "Types de cuisine",
+    "serviceTypes": "Types de service",
     "priceRange": "Gamme de prix",
     "period": "Période",
     "options": "Options",
