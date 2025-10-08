@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Star, Camera, X, Send, Loader2 } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useComments } from "@/hooks/useComments";
@@ -27,6 +28,7 @@ interface CommentModalProps {
 
 export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalProps) => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [commentText, setCommentText] = useState("");
@@ -408,7 +410,7 @@ export const CommentModal = ({ open, onOpenChange, restaurant }: CommentModalPro
                     )}
 
                     <span className="text-xs text-muted-foreground">
-                      {new Date(comment.created_at).toLocaleDateString('fr-FR', {
+                      {new Date(comment.created_at).toLocaleDateString(currentLanguage === 'fr' ? 'fr-FR' : 'en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'

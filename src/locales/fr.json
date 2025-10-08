@@ -584,7 +584,8 @@
     "inProgress": "En cours...",
     "publish": "Publier",
     "customerReviews": "Avis des clients",
-    "anonymousUser": "Utilisateur anonyme"
+    "anonymousUser": "Utilisateur anonyme",
+    "anonymous": "anonyme"
   },
   "favorites": {
     "title": "Mes restaurants favoris",

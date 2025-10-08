@@ -54,8 +54,8 @@ export const useRatings = (restaurantId?: string) => {
           ...rating,
           profiles: publicNames?.find(p => p.user_id === rating.user_id) || {
             user_id: rating.user_id,
-            display_name: 'Utilisateur anonyme',
-            username: 'anonyme'
+            display_name: t('ratings.anonymousUser'),
+            username: t('ratings.anonymous')
           }
         }));
 
