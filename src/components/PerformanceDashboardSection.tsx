@@ -3,7 +3,7 @@ import performanceImage from '@/assets/cuizly-tableau-performances.jpg';
 import performanceMobileImage from '@/assets/cuizly-performance-mobile.jpg';
 
 const PerformanceDashboardSection = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="py-12 sm:py-16 lg:py-12">
