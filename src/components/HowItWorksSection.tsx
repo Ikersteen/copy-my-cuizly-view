@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 
 const HowItWorksSection = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   
   // Fonction pour mettre en évidence "Assistant" en bleu
   const highlightAssistance = (text: string) => {
@@ -37,7 +37,7 @@ const HowItWorksSection = () => {
           <div className="mb-12 max-w-5xl mx-auto">
             <div className="bg-card rounded-2xl shadow-xl p-3 sm:p-8 border">
               <img 
-                src={i18n.language === 'en' ? '/lovable-uploads/cuizly-assistance-interface-en.png' : '/lovable-uploads/cuizly-assistance-interface.png'}
+                src="/lovable-uploads/cuizly-assistance-interface.png"
                 alt="Interface Cuizly Assistant" 
                 className="w-full h-auto object-cover rounded-xl scale-[1.02] sm:scale-105"
               />
