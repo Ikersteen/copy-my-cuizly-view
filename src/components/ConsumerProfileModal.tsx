@@ -285,7 +285,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <User className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground">Informations personnelles</h3>
+                  <h3 className="text-lg font-semibold text-foreground">{t('profile.personalInformation')}</h3>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -355,13 +355,13 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <Bell className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
+                  <h3 className="text-lg font-semibold text-foreground">{t('profile.notifications')}</h3>
                 </div>
                 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
                     <div>
-                      <p className="font-medium text-sm">Notifications courriel</p>
+                      <p className="font-medium text-sm">{t('profile.emailNotifications')}</p>
                     </div>
                     <Switch
                       checked={notificationSettings.email}
@@ -373,7 +373,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
 
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
                     <div>
-                      <p className="font-medium text-sm">Notifications push</p>
+                      <p className="font-medium text-sm">{t('profile.pushNotifications')}</p>
                     </div>
                     <Switch
                       checked={notificationSettings.push}
@@ -391,7 +391,7 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <LogOut className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground">Actions du compte</h3>
+                  <h3 className="text-lg font-semibold text-foreground">{t('profile.accountActions')}</h3>
                 </div>
                 
                 <div className="space-y-3">

@@ -388,10 +388,10 @@ export default function RestaurantMenu() {
                   </div>
                 </div>
 
-                {/* Types de cuisines */}
+                {/* Cuisine types */}
                 {restaurant.cuisine_type && restaurant.cuisine_type.length > 0 && (
                   <div className="space-y-3">
-                    <h4 className="font-medium">Types de cuisine</h4>
+                    <h4 className="font-medium">{t('restaurant.cuisineType')}</h4>
                     <div className="flex flex-wrap gap-2">
                       {restaurant.cuisine_type?.map((cuisine: string, index: number) => (
                         <Badge key={index} variant="secondary">
@@ -402,10 +402,10 @@ export default function RestaurantMenu() {
                   </div>
                 )}
 
-                {/* Types de service */}
+                {/* Service types */}
                 {restaurant.service_types && restaurant.service_types.length > 0 && (
                   <div className="space-y-3">
-                    <h4 className="font-medium">Types de service</h4>
+                    <h4 className="font-medium">{t('restaurant.serviceTypes')}</h4>
                     <div className="flex flex-wrap gap-2">
                       {restaurant.service_types?.map((service: string, index: number) => (
                         <Badge key={`service-${index}`} variant="outline">

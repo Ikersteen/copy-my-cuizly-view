@@ -776,7 +776,7 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
-              <Label>Types de cuisine</Label>
+              <Label>{t('restaurant.cuisineType')}</Label>
               <div className="space-y-3">
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {CUISINE_OPTIONS.map((cuisine) => {
@@ -833,7 +833,7 @@ export const ImprovedRestaurantProfileModal = ({
             </div>
 
             <div className="space-y-2">
-              <Label>Types de service</Label>
+              <Label>{t('restaurant.serviceTypes')}</Label>
               <div className="space-y-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {SERVICE_TYPES_OPTIONS.map((service) => {

@@ -1997,6 +1997,7 @@
     "lastNameRequired": "Le nom est requis", 
     "usernameRequired": "Le nom d'utilisateur est requis",
     "phoneInvalid": "Numéro de téléphone invalide",
+    "personalInformation": "Informations personnelles",
     "phone": "Téléphone",
     "phoneNumber": "Numéro de téléphone",
     "email": "Adresse courriel",

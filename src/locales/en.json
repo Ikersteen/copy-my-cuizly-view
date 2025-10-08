@@ -678,6 +678,7 @@
     "lastNameRequired": "Last name is required",
     "usernameRequired": "Username is required",
     "phoneInvalid": "Invalid phone number",
+    "personalInformation": "Personal information",
     "notifications": "Notifications",
     "pushNotifications": "Push notifications",
     "pushNotificationsDescription": "Receive notifications about new offers and updates",

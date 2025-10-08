@@ -321,10 +321,10 @@ export const RestaurantMenuModal = ({
                 </div>
               </div>
 
-              {/* Types de cuisines - Avec titre */}
+              {/* Cuisine types */}
               {restaurant.cuisine_type && restaurant.cuisine_type.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-foreground">Types de cuisine</h4>
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurant.cuisineType')}</h4>
                   <div className="flex flex-wrap gap-1">
                     {restaurant.cuisine_type?.map((cuisine: string, index: number) => (
                       <Badge key={index} variant="secondary" className="text-xs px-2 py-0.5">
@@ -335,10 +335,10 @@ export const RestaurantMenuModal = ({
                 </div>
               )}
 
-              {/* Types de service - Avec titre */}
+              {/* Service types */}
               {restaurant.service_types && restaurant.service_types.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-foreground">Types de service</h4>
+                  <h4 className="text-sm font-medium text-foreground">{t('restaurant.serviceTypes')}</h4>
                   <div className="flex flex-wrap gap-1">
                     {restaurant.service_types?.map((service: string, index: number) => (
                       <Badge key={`service-${index}`} variant="outline" className="text-xs px-2 py-0.5">
