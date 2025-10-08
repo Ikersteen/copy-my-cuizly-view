@@ -1455,34 +1455,43 @@
     "expiredOn": "Expired on"
   },
   "newOffer": {
-    "createNew": "Create a new offer",
-    "title": "Offer title",
-    "titleRequired": "required",
-    "titlePlaceholder": "E.g.: Pizza 2 for 1",
-    "description": "Description",
-    "descriptionRequired": "required",
-    "descriptionPlaceholder": "Describe your offer in detail...",
-    "discountPercent": "Discount (%)",
-    "discountAmount": "Discount ($)",
-    "category": "Category",
-    "cuisineType": "Cuisine type",
-    "general": "General",
-    "lunch": "Lunch",
-    "dinner": "Dinner",
-    "weekend": "Weekend",
-    "happyHour": "Happy Hour",
-    "allTypes": "All types",
-    "validPeriod": "Valid from ... to (max 3 days)",
-    "selectPeriod": "Select validity period",
-    "activateImmediately": "Activate offer immediately",
-    "cancel": "Cancel",
+    "title": "Create a new offer",
     "creating": "Creating...",
     "createOffer": "Create offer",
-    "fillTitleDescription": "Please fill in offer title and description",
-    "specifyDiscount": "Please specify a percentage or discount amount",
-    "offerCreated": "Offer created",
-    "publishedSuccessfully": "Your new offer has been successfully published",
-    "cannotCreate": "Unable to create offer"
+    "cancel": "Cancel",
+    "form": {
+      "title": "Offer title",
+      "description": "Description",
+      "discountPercent": "Discount (%)",
+      "discountAmount": "Discount ($)",
+      "category": "Category",
+      "cuisineType": "Cuisine type",
+      "allTypes": "All types",
+      "validPeriod": "Valid from ... to (max 3 days)",
+      "activateImmediately": "Activate offer immediately"
+    },
+    "categories": {
+      "general": "General",
+      "lunch": "Lunch",
+      "dinner": "Dinner",
+      "weekend": "Weekend",
+      "happyHour": "Happy Hour"
+    },
+    "placeholders": {
+      "title": "E.g.: 2 for 1 Pizza",
+      "description": "Describe your offer in detail...",
+      "selectPeriod": "Select validity period"
+    },
+    "errors": {
+      "fillTitleDescription": "Please fill in offer title and description",
+      "specifyDiscount": "Please specify a percentage or discount amount",
+      "fixErrors": "Please fix the errors",
+      "cannotCreate": "Unable to create offer"
+    },
+    "success": {
+      "created": "Offer created",
+      "published": "Published successfully"
+    }
   },
   "filters": {
     "newOffer": "New offer",
