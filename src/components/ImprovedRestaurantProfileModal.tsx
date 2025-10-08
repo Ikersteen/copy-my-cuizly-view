@@ -727,6 +727,12 @@ export const ImprovedRestaurantProfileModal = ({
                               newHours[day as keyof typeof newHours].open = e.target.value;
                               setFormData(prev => ({ ...prev, opening_hours: newHours }));
                             }}
+                            onPaste={(e) => {
+                              const pastedText = e.clipboardData.getData('text');
+                              const newHours = { ...formData.opening_hours };
+                              newHours[day as keyof typeof newHours].open = pastedText;
+                              setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                            }}
                             className="w-24"
                           />
                           <span className="text-sm text-muted-foreground">à</span>
@@ -736,6 +742,12 @@ export const ImprovedRestaurantProfileModal = ({
                             onChange={(e) => {
                               const newHours = { ...formData.opening_hours };
                               newHours[day as keyof typeof newHours].close = e.target.value;
+                              setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                            }}
+                            onPaste={(e) => {
+                              const pastedText = e.clipboardData.getData('text');
+                              const newHours = { ...formData.opening_hours };
+                              newHours[day as keyof typeof newHours].close = pastedText;
                               setFormData(prev => ({ ...prev, opening_hours: newHours }));
                             }}
                             className="w-24"
