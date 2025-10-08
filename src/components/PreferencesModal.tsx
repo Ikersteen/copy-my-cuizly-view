@@ -21,7 +21,7 @@ interface PreferencesModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// Liste des rues de Montréal (échantillon)
+// Montreal streets list (sample)
 const montrealStreets = [
   "Rue Saint-Denis", "Boulevard Saint-Laurent", "Rue Sainte-Catherine", 
   "Avenue du Mont-Royal", "Rue Sherbrooke", "Boulevard René-Lévesque",
@@ -103,7 +103,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
     { key: "lateNight", value: t('preferences.mealTimeOptions.lateNight') }
   ];
 
-  // Réinitialiser les préférences locales à chaque ouverture du modal
+  // Reset local preferences on modal open
   useEffect(() => {
     if (open && preferences) {
       setLocalPrefs({
@@ -141,8 +141,8 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
       
     onOpenChange(false);
     toast({
-      title: t('toasts.preferencesUpdated') || 'Préférences mises à jour',
-      description: t('toasts.preferencesSavedSuccessfully') || 'Préférences sauvegardées avec succès'
+      title: t('toasts.preferencesUpdated'),
+      description: t('toasts.preferencesSavedSuccessfully')
     });
     } catch (error) {
       console.error('Error saving preferences:', error);
@@ -175,7 +175,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Cuisines préférées */}
+          {/* Preferred cuisines */}
           <div>
             <Label className="text-base font-medium">{t('preferences.preferredCuisines')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
@@ -227,7 +227,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Restrictions alimentaires */}
+          {/* Dietary restrictions */}
           <div>
             <Label className="text-base font-medium">{t('preferences.dietaryRestrictions')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
@@ -249,7 +249,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Allergènes */}
+          {/* Allergens */}
           <div>
             <Label className="text-base font-medium">{t('preferences.allergens')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
@@ -271,7 +271,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Gamme de prix */}
+          {/* Price range */}
           <div>
             <Label className="text-base font-medium">{t('preferences.priceRange')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
@@ -296,7 +296,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Adresse de livraison */}
+          {/* Delivery address */}
           <div>
             <AddressSelector
               value={deliveryAddress?.formatted_address || ""}
@@ -318,7 +318,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
           <Separator />
 
-          {/* Moments de repas favoris */}
+          {/* Favorite meal times */}
           <div>
             <Label className="text-base font-medium">{t('preferences.mealTimes')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
