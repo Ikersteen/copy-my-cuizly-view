@@ -769,7 +769,7 @@
     "selectValidImage": "Veuillez sélectionner une image valide"
   },
   "menusModal": {
-    "title": "Gestion des menus",
+    "title": "Menus",
     "description": "Ajoutez jusqu'à 5 photos de vos menus avec leurs descriptions",
     "addNewMenu": "Ajouter un nouveau menu",
     "menuImage": "Image du menu",
