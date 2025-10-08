@@ -235,9 +235,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
 
   const analyticsCards = [
     {
-      title: "Offres totales",
+      title: t('analytics.totalOffers'),
       value: analytics.totalOffers,
-      subtitle: `${analytics.activeOffers} offres actives`,
+      subtitle: `${analytics.activeOffers} ${t('analytics.activeOffers')}`,
       icon: TrendingUp,
       color: "text-blue-600",
       bgColor: "bg-blue-100 dark:bg-blue-100",
@@ -245,9 +245,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'totalOffers'
     },
     {
-      title: "Menus ajoutés",
+      title: t('analytics.addedMenus'),
       value: analytics.totalMenus,
-      subtitle: `${analytics.activeMenus} menus actifs`,
+      subtitle: `${analytics.activeMenus} ${t('analytics.activeMenus')}`,
       icon: Calendar,
       color: "text-green-600",
       bgColor: "bg-green-100 dark:bg-green-100",
@@ -265,9 +265,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
       trendKey: 'profileViews'
     },
     {
-      title: "Note moyenne",
+      title: t('analytics.averageRating'),
       value: analytics.avgRating.toFixed(1),
-      subtitle: "sur 5 étoiles",
+      subtitle: t('analytics.outOf5Stars'),
       icon: Star,
       color: "text-orange-600",
       bgColor: "bg-orange-100 dark:bg-orange-100",
@@ -339,7 +339,7 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
             <div className="text-center md:text-left order-2 md:order-1">
               <div className="flex items-center gap-2 mb-1">
                 <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-900">
-                  Tendances cette semaine
+                  {t('analytics.weeklyTrends')}
                 </h4>
                 {analytics.weeklyGrowth !== undefined && analytics.weeklyGrowth > 0 ? (
                   <TrendingUp className="h-4 w-4 text-green-500" />
