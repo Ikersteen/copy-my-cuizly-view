@@ -54,7 +54,11 @@ export const ConsumerMobileMenu = ({
     <div>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="sm" className="p-2">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="p-2 shadow-[0_0_10px_rgba(255,255,255,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.5)] hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.6)] transition-shadow duration-300"
+          >
             <Menu className="h-5 w-5" />
             <span className="sr-only">{t('navigation.consumerMenu')}</span>
           </Button>

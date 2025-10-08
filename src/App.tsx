@@ -35,7 +35,11 @@ const queryClient = new QueryClient();
 const AppContent = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const showScrollToTop = !location.pathname.includes('/auth') && !location.pathname.includes('/dashboard') && !location.pathname.includes('/voice');
+  const showScrollToTop = !location.pathname.includes('/auth') && 
+                          !location.pathname.includes('/dashboard') && 
+                          !location.pathname.includes('/tableau-de-bord') && 
+                          !location.pathname.includes('/voice') &&
+                          !location.pathname.includes('/assistant-vocal');
 
   return (
     <div className="min-h-screen bg-background">
