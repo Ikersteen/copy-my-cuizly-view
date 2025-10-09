@@ -1,7 +1,7 @@
 export const CUISINE_OPTIONS = [
   "african", "mexican", "italian", "moroccan", "chinese", "turkish", "lebanese", "indian",
   "korean", "vietnamese", "thai", "japanese", "greek", "quebecois", "french",
-  "american", "spanish", "portuguese", "tunisian", "caribbean"
+  "american", "spanish", "portuguese", "tunisian", "caribbean", "peruvian"
 ];
 
 export const CUISINE_TRANSLATIONS = {
@@ -24,7 +24,8 @@ export const CUISINE_TRANSLATIONS = {
   turkish: { fr: "Turque", en: "Turkish" },
   african: { fr: "Africaine", en: "African" },
   tunisian: { fr: "Tunisienne", en: "Tunisian" },
-  caribbean: { fr: "Caribéenne", en: "Caribbean" }
+  caribbean: { fr: "Caribéenne", en: "Caribbean" },
+  peruvian: { fr: "Péruvienne", en: "Peruvian" }
 };
 
 export const DIETARY_RESTRICTIONS_OPTIONS = [
