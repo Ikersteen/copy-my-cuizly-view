@@ -725,10 +725,14 @@ export const ImprovedRestaurantProfileModal = ({
                               setFormData(prev => ({ ...prev, opening_hours: newHours }));
                             }}
                             onPaste={(e) => {
-                              const pastedText = e.clipboardData.getData('text');
-                              const newHours = { ...formData.opening_hours };
-                              newHours[day as keyof typeof newHours].open = pastedText;
-                              setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                              e.preventDefault();
+                              const pastedText = e.clipboardData.getData('text').trim();
+                              // Valider le format HH:MM
+                              if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(pastedText)) {
+                                const newHours = { ...formData.opening_hours };
+                                newHours[day as keyof typeof newHours].open = pastedText;
+                                setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                              }
                             }}
                             className="w-24"
                           />
@@ -742,10 +746,14 @@ export const ImprovedRestaurantProfileModal = ({
                               setFormData(prev => ({ ...prev, opening_hours: newHours }));
                             }}
                             onPaste={(e) => {
-                              const pastedText = e.clipboardData.getData('text');
-                              const newHours = { ...formData.opening_hours };
-                              newHours[day as keyof typeof newHours].close = pastedText;
-                              setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                              e.preventDefault();
+                              const pastedText = e.clipboardData.getData('text').trim();
+                              // Valider le format HH:MM
+                              if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(pastedText)) {
+                                const newHours = { ...formData.opening_hours };
+                                newHours[day as keyof typeof newHours].close = pastedText;
+                                setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                              }
                             }}
                             className="w-24"
                           />
