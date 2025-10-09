@@ -314,9 +314,6 @@ export const ImprovedRestaurantProfileModal = ({
         title: t('restaurantProfile.success'),
         description: type === 'cover' ? t('restaurantProfile.coverUploaded') : t('restaurantProfile.logoUploaded')
       });
-
-      // Reload restaurant data to ensure consistency
-      await loadRestaurant();
       
     } catch (error) {
       console.error('❌ Complete upload process failed:', error);
