@@ -410,6 +410,68 @@ export type Database = {
         }
         Relationships: []
       }
+      reservations: {
+        Row: {
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string | null
+          id: string
+          party_size: number
+          reservation_date: string
+          reservation_time: string
+          restaurant_id: string
+          special_requests: string | null
+          status: Database["public"]["Enums"]["reservation_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_phone?: string | null
+          id?: string
+          party_size: number
+          reservation_date: string
+          reservation_time: string
+          restaurant_id: string
+          special_requests?: string | null
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string | null
+          id?: string
+          party_size?: number
+          reservation_date?: string
+          reservation_time?: string
+          restaurant_id?: string
+          special_requests?: string | null
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurant_analytics: {
         Row: {
           average_rating: number | null
@@ -448,6 +510,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      restaurant_availability: {
+        Row: {
+          created_at: string
+          day_of_week: number
+          id: string
+          is_available: boolean
+          max_capacity: number
+          restaurant_id: string
+          time_slot: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: number
+          id?: string
+          is_available?: boolean
+          max_capacity: number
+          restaurant_id: string
+          time_slot: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: number
+          id?: string
+          is_available?: boolean
+          max_capacity?: number
+          restaurant_id?: string
+          time_slot?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_availability_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       restaurants: {
         Row: {
@@ -736,6 +839,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      check_reservation_availability: {
+        Args: {
+          p_date: string
+          p_party_size: number
+          p_restaurant_id: string
+          p_time: string
+        }
+        Returns: boolean
+      }
       decrypt_pii: {
         Args:
           | { encrypted_data: string; secret_key?: string }
@@ -766,6 +878,13 @@ export type Database = {
       encrypt_pii: {
         Args: { data: string; secret_key?: string } | { plain_text: string }
         Returns: string
+      }
+      get_available_time_slots: {
+        Args: { p_date: string; p_party_size: number; p_restaurant_id: string }
+        Returns: {
+          available_spots: number
+          time_slot: string
+        }[]
       }
       get_offers_with_restaurant_names: {
         Args: { category_filter?: string }
@@ -1053,6 +1172,12 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      reservation_status:
+        | "pending"
+        | "confirmed"
+        | "cancelled"
+        | "completed"
+        | "no_show"
       user_type: "consumer" | "restaurant_owner"
     }
     CompositeTypes: {
@@ -1182,6 +1307,13 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      reservation_status: [
+        "pending",
+        "confirmed",
+        "cancelled",
+        "completed",
+        "no_show",
+      ],
       user_type: ["consumer", "restaurant_owner"],
     },
   },
