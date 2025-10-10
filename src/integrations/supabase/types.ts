@@ -954,6 +954,7 @@ export type Database = {
           parking: string
           phone: string
           price_range: string
+          reservations_enabled: boolean
           restaurant_specialties: string[]
           service_types: string[]
           updated_at: string
