@@ -37,6 +37,8 @@ interface Restaurant {
   cover_image_url?: string;
   instagram_url?: string;
   facebook_url?: string;
+  dress_code?: string;
+  parking?: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -312,18 +314,18 @@ const RestaurantDashboard = () => {
                     </div>
 
                     {/* Dress Code */}
-                    {(restaurant as any).dress_code && (
+                    {restaurant.dress_code && (
                       <div>
                         <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.dressCode')}</p>
-                        <p className="text-foreground text-sm">{(restaurant as any).dress_code}</p>
+                        <p className="text-foreground text-sm">{restaurant.dress_code}</p>
                       </div>
                     )}
 
                     {/* Parking */}
-                    {(restaurant as any).parking && (
+                    {restaurant.parking && (
                       <div>
                         <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.parking')}</p>
-                        <p className="text-foreground text-sm">{(restaurant as any).parking}</p>
+                        <p className="text-foreground text-sm">{restaurant.parking}</p>
                       </div>
                     )}
                     

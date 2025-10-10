@@ -127,6 +127,8 @@ interface Restaurant {
   restaurant_specialties?: string[];
   instagram_url?: string;
   facebook_url?: string;
+  dress_code?: string;
+  parking?: string;
 }
 
 interface RestaurantMenuModalProps {
@@ -357,18 +359,18 @@ export const RestaurantMenuModal = ({
               )}
 
               {/* Dress Code */}
-              {(restaurant as any).dress_code && (
+              {restaurant.dress_code && (
                 <div className="text-xs">
                   <span className="font-medium text-foreground">{t('restaurantProfile.dressCode')}:</span>{' '}
-                  <span className="text-muted-foreground">{(restaurant as any).dress_code}</span>
+                  <span className="text-muted-foreground">{restaurant.dress_code}</span>
                 </div>
               )}
 
               {/* Parking */}
-              {(restaurant as any).parking && (
+              {restaurant.parking && (
                 <div className="text-xs">
                   <span className="font-medium text-foreground">{t('restaurantProfile.parking')}:</span>{' '}
-                  <span className="text-muted-foreground">{(restaurant as any).parking}</span>
+                  <span className="text-muted-foreground">{restaurant.parking}</span>
                 </div>
               )}
             </TabsContent>
