@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 export interface Reservation {
   id: string;
@@ -57,10 +56,6 @@ export const useReservations = (userId?: string, restaurantId?: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
-      toast.success("Réservation créée avec succès");
-    },
-    onError: (error: Error) => {
-      toast.error("Erreur lors de la création de la réservation: " + error.message);
     },
   });
 
@@ -78,10 +73,6 @@ export const useReservations = (userId?: string, restaurantId?: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
-      toast.success("Réservation mise à jour");
-    },
-    onError: (error: Error) => {
-      toast.error("Erreur lors de la mise à jour: " + error.message);
     },
   });
 
@@ -103,10 +94,6 @@ export const useReservations = (userId?: string, restaurantId?: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
-      toast.success("Réservation annulée");
-    },
-    onError: (error: Error) => {
-      toast.error("Erreur lors de l'annulation: " + error.message);
     },
   });
 

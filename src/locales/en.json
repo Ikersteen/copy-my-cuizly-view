@@ -1809,6 +1809,8 @@
     "successMessage": "Your reservation has been confirmed successfully",
     "error": "Reservation error",
     "errorMessage": "An error occurred while making the reservation",
+    "statusUpdated": "Reservation status updated",
+    "updateError": "Error updating reservation",
     "enableReservations": "Enable reservations",
     "disableReservations": "Disable reservations",
     "reservationsEnabled": "Reservations enabled",

@@ -2251,6 +2251,8 @@
     "successMessage": "Votre réservation a été confirmée avec succès",
     "error": "Erreur de réservation",
     "errorMessage": "Une erreur est survenue lors de la réservation",
+    "statusUpdated": "Statut de la réservation mis à jour",
+    "updateError": "Erreur lors de la mise à jour",
     "enableReservations": "Activer les réservations",
     "disableReservations": "Désactiver les réservations",
     "reservationsEnabled": "Réservations activées",

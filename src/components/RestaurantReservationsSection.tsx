@@ -5,12 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Users, Phone, Mail } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 interface RestaurantReservationsSectionProps {
   restaurantId: string;
 }
 
 export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReservationsSectionProps) => {
+  const { t } = useTranslation();
   const { reservations, isLoading, updateReservation } = useReservations(undefined, restaurantId);
 
   const getStatusColor = (status: string) => {
@@ -46,7 +49,12 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
-    await updateReservation.mutateAsync({ id, status: newStatus as any });
+    try {
+      await updateReservation.mutateAsync({ id, status: newStatus as any });
+      toast.success(t("reservation.statusUpdated"));
+    } catch (error) {
+      toast.error(t("reservation.updateError"));
+    }
   };
 
   if (isLoading) {
