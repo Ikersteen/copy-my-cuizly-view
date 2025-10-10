@@ -408,52 +408,63 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   </div>
                 </div>
 
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>{t('menusModal.cuisineType')}</Label>
+                    <select
+                      value={newMenu.cuisine_type}
+                      onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
+                      className="w-full px-3 py-2 border border-input bg-background rounded-md"
+                    >
+                      <option value="">{t('menusModal.selectCuisineType')}</option>
+                      {CUISINE_OPTIONS.map(cuisine => (
+                        <option key={cuisine} value={cuisine}>
+                          {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
+                        </option>
+                      ))}
+                     </select>
+                </div>
+
                 <div className="space-y-2">
-                  <Label>{t('menusModal.cuisineType')}</Label>
-                  <select
-                    value={newMenu.cuisine_type}
-                    onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
-                    className="w-full px-3 py-2 border border-input bg-background rounded-md"
-                  >
-                    <option value="">{t('menusModal.selectCuisineType')}</option>
-                    {CUISINE_OPTIONS.map(cuisine => (
-                      <option key={cuisine} value={cuisine}>
-                        {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
-                      </option>
-                    ))}
-                   </select>
+                  <Label>{t('menusModal.category')}</Label>
+                  <Input
+                    value={newMenu.category}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, category: e.target.value }))}
+                    placeholder={t('menusModal.categoryPlaceholder')}
+                  />
+                </div>
 
-          <Label>{t('menusModal.category')}</Label>
-          <Input
-            value={newMenu.category}
-            onChange={(e) => setNewMenu(prev => ({ ...prev, category: e.target.value }))}
-            placeholder={t('menusModal.categoryPlaceholder')}
-          />
+                <div className="space-y-2">
+                  <Label>{t('menusModal.subcategory')}</Label>
+                  <Input
+                    value={newMenu.subcategory}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, subcategory: e.target.value }))}
+                    placeholder={t('menusModal.subcategoryPlaceholder')}
+                  />
+                </div>
 
-          <Label>{t('menusModal.subcategory')}</Label>
-          <Input
-            value={newMenu.subcategory}
-            onChange={(e) => setNewMenu(prev => ({ ...prev, subcategory: e.target.value }))}
-            placeholder={t('menusModal.subcategoryPlaceholder')}
-          />
+                <div className="space-y-2">
+                  <Label>{t('menusModal.pdfMenuUrl')}</Label>
+                  <Input
+                    type="url"
+                    value={newMenu.pdf_menu_url}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, pdf_menu_url: e.target.value }))}
+                    placeholder={t('menusModal.pdfMenuUrlPlaceholder')}
+                  />
+                </div>
 
-          <Label>{t('menusModal.pdfMenuUrl')}</Label>
-          <Input
-            type="url"
-            value={newMenu.pdf_menu_url}
-            onChange={(e) => setNewMenu(prev => ({ ...prev, pdf_menu_url: e.target.value }))}
-            placeholder={t('menusModal.pdfMenuUrlPlaceholder')}
-          />
-
-          <Label>{t('menusModal.description')} *</Label>
-          <Textarea
-            value={newMenu.description}
-            onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
-            placeholder={t('cuisines.describeMenu')}
-            className="min-h-[80px]"
-            required
-          />
-                  
+                <div className="space-y-2">
+                  <Label>{t('menusModal.description')} *</Label>
+                  <Textarea
+                    value={newMenu.description}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, description: e.target.value }))}
+                    placeholder={t('cuisines.describeMenu')}
+                    className="min-h-[80px]"
+                    required
+                  />
+                </div>
+                   
+                <div className="space-y-2">
                   <Label>{t('menusModal.dietaryCompatible')}</Label>
                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {DIETARY_RESTRICTIONS_OPTIONS.sort().map(restriction => (
@@ -472,11 +483,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           >
                             {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                           </Badge>
-                    ))}
-                  </div>
+                     ))}
+                   </div>
+                 </div>
 
-                  <Label>{t('menusModal.allergensPresent')}</Label>
-                  <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                 <div className="space-y-2">
+                   <Label>{t('menusModal.allergensPresent')}</Label>
+                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
                     {ALLERGENS_OPTIONS.sort().map(allergen => (
                       <Badge
                         key={allergen}
@@ -493,10 +506,11 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       >
                         {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                       </Badge>
-                    ))}
-                  </div>
+                     ))}
+                   </div>
+                 </div>
 
-                   <Button 
+                   <Button
                      onClick={handleAddMenu}
                      disabled={loading || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim() || menus.length >= 200}
                      className="w-full"
