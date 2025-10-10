@@ -866,6 +866,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      create_restaurant_slug: {
+        Args: { restaurant_name: string }
+        Returns: string
+      }
       decrypt_pii: {
         Args:
           | { encrypted_data: string; secret_key?: string }
@@ -937,17 +941,21 @@ export type Database = {
           description_en: string
           description_fr: string
           dietary_restrictions: string[]
+          dress_code: string
           email: string
+          facebook_url: string
           id: string
+          instagram_url: string
           is_active: boolean
           logo_url: string
           name: string
           opening_hours: Json
           owner_id: string
+          parking: string
           phone: string
           price_range: string
-          reservations_enabled: boolean
           restaurant_specialties: string[]
+          service_types: string[]
           updated_at: string
         }[]
       }
@@ -958,6 +966,38 @@ export type Database = {
           display_name: string
           user_id: string
           username: string
+        }[]
+      }
+      get_restaurant_by_slug: {
+        Args: { restaurant_slug: string }
+        Returns: {
+          address: string
+          allergens: string[]
+          cover_image_url: string
+          created_at: string
+          cuisine_type: string[]
+          delivery_radius: number
+          description: string
+          description_en: string
+          description_fr: string
+          dietary_restrictions: string[]
+          dress_code: string
+          email: string
+          facebook_url: string
+          id: string
+          instagram_url: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          opening_hours: Json
+          owner_id: string
+          parking: string
+          phone: string
+          price_range: string
+          reservations_enabled: boolean
+          restaurant_specialties: string[]
+          service_types: string[]
+          updated_at: string
         }[]
       }
       get_restaurant_contact_info: {
