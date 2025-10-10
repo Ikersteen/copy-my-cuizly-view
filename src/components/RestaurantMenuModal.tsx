@@ -447,40 +447,42 @@ export const RestaurantMenuModal = ({
                           </div>
                         )}
                         
-                        <div className="space-y-2">
-                          <div className="flex flex-col gap-1">
-                            {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
+                          <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
+                              {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
+                                <div className="text-xs text-muted-foreground">
+                                  <span className="font-semibold">{t('menus.dietaryRestrictions')}</span> {menu.dietary_restrictions.map(dr => 
+                                    DIETARY_RESTRICTIONS_TRANSLATIONS[dr as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[currentLanguage] || dr
+                                  ).join(', ')}
+                                </div>
+                              )}
+                              {menu.allergens && menu.allergens.length > 0 && (
+                                <div className="text-xs text-muted-foreground">
+                                  <span className="font-semibold">{t('menus.allergens')}</span> {menu.allergens.map(allergen => 
+                                    ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[currentLanguage] || allergen
+                                  ).join(', ')}
+                                </div>
+                              )}
                               <div className="text-xs text-muted-foreground">
-                                <span className="font-medium">{t('menus.dietaryRestrictions')}:</span> {menu.dietary_restrictions.map(dr => 
-                                  DIETARY_RESTRICTIONS_TRANSLATIONS[dr as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[currentLanguage] || dr
-                                ).join(', ')}
+                                <span className="font-semibold">{t('restaurant.cuisineType')}</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
                               </div>
-                            )}
-                            {menu.allergens && menu.allergens.length > 0 && (
-                              <div className="text-xs text-muted-foreground">
-                                <span className="font-medium">{t('menus.allergens')}:</span> {menu.allergens.map(allergen => 
-                                  ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[currentLanguage] || allergen
-                                ).join(', ')}
-                              </div>
-                            )}
-                            <div className="text-xs text-muted-foreground">
-                              <span className="font-medium">{t('restaurant.cuisineType')}:</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
                             </div>
+                            {menu.description && (
+                              <p className="text-sm text-foreground line-clamp-3">
+                                <span className="font-semibold">{t('menus.description')}</span> {menu.description}
+                              </p>
+                            )}
+                            {menu.pdf_menu_url && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full text-xs"
+                                onClick={() => window.open(menu.pdf_menu_url, '_blank')}
+                              >
+                                {t('menusModal.viewPdfMenu')}
+                              </Button>
+                            )}
                           </div>
-                          <p className="text-sm text-foreground line-clamp-3">
-                            {menu.description}
-                          </p>
-                          {menu.pdf_menu_url && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="w-full text-xs"
-                              onClick={() => window.open(menu.pdf_menu_url, '_blank')}
-                            >
-                              {t('menusModal.viewPdfMenu')}
-                            </Button>
-                          )}
-                        </div>
                       </CardContent>
                     </Card>
                   ))}

@@ -511,25 +511,27 @@ export default function RestaurantMenu() {
                             <div className="flex flex-col gap-2">
                               {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
                                 <div className="text-sm text-muted-foreground">
-                                  <span className="font-medium">{t('menus.dietaryRestrictions')}:</span> {menu.dietary_restrictions.map(dr => 
+                                  <span className="font-semibold">{t('menus.dietaryRestrictions')}</span> {menu.dietary_restrictions.map(dr => 
                                     DIETARY_RESTRICTIONS_TRANSLATIONS[dr as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[currentLanguage] || dr
                                   ).join(', ')}
                                 </div>
                               )}
                               {menu.allergens && menu.allergens.length > 0 && (
                                 <div className="text-sm text-muted-foreground">
-                                  <span className="font-medium">{t('menus.allergens')}:</span> {menu.allergens.map(allergen => 
+                                  <span className="font-semibold">{t('menus.allergens')}</span> {menu.allergens.map(allergen => 
                                     ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[currentLanguage] || allergen
                                   ).join(', ')}
                                 </div>
                               )}
                               <div className="text-sm text-muted-foreground">
-                                <span className="font-medium">{t('restaurant.cuisineType')}:</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
+                                <span className="font-semibold">{t('restaurant.cuisineType')}</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
                               </div>
                             </div>
-                            <p className="text-sm text-foreground line-clamp-3">
-                              {menu.description}
-                            </p>
+                            {menu.description && (
+                              <p className="text-sm text-foreground line-clamp-3">
+                                <span className="font-semibold">{t('menus.description')}</span> {menu.description}
+                              </p>
+                            )}
                             {menu.pdf_menu_url && (
                               <Button
                                 variant="outline"
