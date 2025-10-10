@@ -2293,11 +2293,15 @@
   },
   "map": {
     "directions": "Itinéraire",
-    "mapView": "Vue de la carte"
+    "mapView": "Vue de la carte",
+    "openExternal": "Ouvrir dans Maps",
+    "loadError": "Erreur de chargement de la carte"
   },
   "social": {
     "viewInstagram": "Voir le profil Instagram",
-    "viewFacebook": "Voir la page Facebook"
+    "viewFacebook": "Voir la page Facebook",
+    "redirectMessage": "Vous allez être redirigé vers {{platform}} pour voir ce contenu.",
+    "openButton": "Ouvrir {{platform}}"
   },
   "accessibility": {
     "voiceAssistant": "Assistant vocal",

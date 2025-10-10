@@ -13,7 +13,8 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
-import { openDirections } from "@/utils/mapUtils";
+import { EmbeddedMapModal } from "@/components/EmbeddedMapModal";
+import { SocialMediaModal } from "@/components/SocialMediaModal";
 import { ReservationModal } from "@/components/ReservationModal";
 
 const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
@@ -117,6 +118,9 @@ export default function RestaurantMenu() {
   const [menusLoading, setMenusLoading] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [showMapModal, setShowMapModal] = useState(false);
+  const [showInstagramModal, setShowInstagramModal] = useState(false);
+  const [showFacebookModal, setShowFacebookModal] = useState(false);
   const { toggleFavorite, isFavorite } = useFavorites();
   const { toast } = useToast();
   const { currentLanguage } = useLanguage();
@@ -280,7 +284,7 @@ export default function RestaurantMenu() {
                     </h1>
                     <div className="space-y-1 text-muted-foreground text-sm">
                       <button 
-                        onClick={() => openDirections(restaurant.address)}
+                        onClick={() => setShowMapModal(true)}
                         className="text-primary hover:underline transition-all cursor-pointer text-left"
                       >
                         {restaurant.address}
@@ -376,16 +380,20 @@ export default function RestaurantMenu() {
                       <div className="flex items-center gap-3">
                         <div className="flex gap-3">
                           {restaurant.instagram_url && (
-                            <a href={restaurant.instagram_url} target="_blank" rel="noopener noreferrer"
-                               className="w-8 h-8 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform">
+                            <button 
+                              onClick={() => setShowInstagramModal(true)}
+                              className="w-8 h-8 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform"
+                            >
                               <Instagram className="h-4 w-4 text-white" />
-                            </a>
+                            </button>
                           )}
                           {restaurant.facebook_url && (
-                            <a href={restaurant.facebook_url} target="_blank" rel="noopener noreferrer"
-                               className="w-8 h-8 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform">
+                            <button 
+                              onClick={() => setShowFacebookModal(true)}
+                              className="w-8 h-8 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform"
+                            >
                               <Facebook className="h-4 w-4 text-white" />
-                            </a>
+                            </button>
                           )}
                         </div>
                       </div>
@@ -573,6 +581,34 @@ export default function RestaurantMenu() {
           restaurantName={restaurant.name}
           openingHours={restaurant.opening_hours}
         />
+      )}
+
+      {restaurant && (
+        <>
+          <EmbeddedMapModal
+            open={showMapModal}
+            onOpenChange={setShowMapModal}
+            address={restaurant.address}
+          />
+          
+          {restaurant.instagram_url && (
+            <SocialMediaModal
+              open={showInstagramModal}
+              onOpenChange={setShowInstagramModal}
+              url={restaurant.instagram_url}
+              type="instagram"
+            />
+          )}
+          
+          {restaurant.facebook_url && (
+            <SocialMediaModal
+              open={showFacebookModal}
+              onOpenChange={setShowFacebookModal}
+              url={restaurant.facebook_url}
+              type="facebook"
+            />
+          )}
+        </>
       )}
     </div>
   );

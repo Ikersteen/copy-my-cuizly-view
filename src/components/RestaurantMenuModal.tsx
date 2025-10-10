@@ -15,10 +15,16 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
-import { openDirections } from "@/utils/mapUtils";
+import { EmbeddedMapModal } from "@/components/EmbeddedMapModal";
+import { SocialMediaModal } from "@/components/SocialMediaModal";
 
 // Composant pour afficher l'évaluation avec le prix
-const RatingDisplay = ({ restaurantId, priceRange, address }: { restaurantId: string; priceRange?: string; address?: string }) => {
+const RatingDisplay = ({ restaurantId, priceRange, address, onMapClick }: { 
+  restaurantId: string; 
+  priceRange?: string; 
+  address?: string;
+  onMapClick?: () => void;
+}) => {
   const [rating, setRating] = useState<number | null>(null);
   const [totalRatings, setTotalRatings] = useState(0);
 
@@ -64,9 +70,9 @@ const RatingDisplay = ({ restaurantId, priceRange, address }: { restaurantId: st
   return (
     <div className="space-y-1">
       {/* Address on its own line */}
-      {address && (
+      {address && onMapClick && (
         <button 
-          onClick={() => openDirections(address)}
+          onClick={onMapClick}
           className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer group w-full text-left"
         >
           <MapPin className="h-4 w-4 flex-shrink-0" />
@@ -145,6 +151,9 @@ export const RestaurantMenuModal = ({
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
+  const [showMapModal, setShowMapModal] = useState(false);
+  const [showInstagramModal, setShowInstagramModal] = useState(false);
+  const [showFacebookModal, setShowFacebookModal] = useState(false);
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const { toast } = useToast();
   const { currentLanguage } = useLanguage();
@@ -214,7 +223,12 @@ export const RestaurantMenuModal = ({
             )}
             <div className="min-w-0 flex-1">
               <DialogTitle className="text-xl font-bold truncate">{restaurant.name}</DialogTitle>
-              <RatingDisplay restaurantId={restaurant.id} priceRange={restaurant.price_range} address={restaurant.address} />
+              <RatingDisplay 
+                restaurantId={restaurant.id} 
+                priceRange={restaurant.price_range} 
+                address={restaurant.address}
+                onMapClick={() => setShowMapModal(true)}
+              />
             </div>
             {/* Retirer le petit coeur rouge - supprimé */}
           </div>
@@ -306,16 +320,20 @@ export const RestaurantMenuModal = ({
                     <div className="flex items-center gap-2">
                       <div className="flex gap-2">
                         {restaurant.instagram_url && (
-                          <a href={restaurant.instagram_url} target="_blank" rel="noopener noreferrer"
-                             className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                          <button 
+                            onClick={() => setShowInstagramModal(true)}
+                            className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform"
+                          >
                             <Instagram className="h-3 w-3 text-white" />
-                          </a>
+                          </button>
                         )}
                         {restaurant.facebook_url && (
-                          <a href={restaurant.facebook_url} target="_blank" rel="noopener noreferrer"
-                             className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center">
+                          <button 
+                            onClick={() => setShowFacebookModal(true)}
+                            className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform"
+                          >
                             <Facebook className="h-3 w-3 text-white" />
-                          </a>
+                          </button>
                         )}
                       </div>
                     </div>
@@ -483,6 +501,30 @@ export const RestaurantMenuModal = ({
           onOpenChange={setShowCommentModal}
           restaurant={restaurant}
         />
+
+        <EmbeddedMapModal
+          open={showMapModal}
+          onOpenChange={setShowMapModal}
+          address={restaurant.address}
+        />
+
+        {restaurant.instagram_url && (
+          <SocialMediaModal
+            open={showInstagramModal}
+            onOpenChange={setShowInstagramModal}
+            url={restaurant.instagram_url}
+            type="instagram"
+          />
+        )}
+
+        {restaurant.facebook_url && (
+          <SocialMediaModal
+            open={showFacebookModal}
+            onOpenChange={setShowFacebookModal}
+            url={restaurant.facebook_url}
+            type="facebook"
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

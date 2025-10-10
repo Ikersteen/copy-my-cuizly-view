@@ -1854,11 +1854,15 @@
   },
   "map": {
     "directions": "Directions",
-    "mapView": "Map view"
+    "mapView": "Map view",
+    "openExternal": "Open in Maps",
+    "loadError": "Error loading map"
   },
   "social": {
     "viewInstagram": "View Instagram profile",
-    "viewFacebook": "View Facebook page"
+    "viewFacebook": "View Facebook page",
+    "redirectMessage": "You will be redirected to {{platform}} to view this content.",
+    "openButton": "Open {{platform}}"
   },
   "accessibility": {
     "voiceAssistant": "Voice assistant",
