@@ -1794,6 +1794,7 @@
   "reservation": {
     "title": "Book at {{restaurantName}}",
     "makeReservation": "Book",
+    "reservations": "Reservations",
     "date": "Reservation date",
     "time": "Time",
     "partySize": "Number of people",

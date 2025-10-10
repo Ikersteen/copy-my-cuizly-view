@@ -2236,6 +2236,7 @@
   "reservation": {
     "title": "Réserver chez {{restaurantName}}",
     "makeReservation": "Réserver",
+    "reservations": "Réservations",
     "date": "Date de réservation",
     "time": "Heure",
     "partySize": "Nombre de personnes",
