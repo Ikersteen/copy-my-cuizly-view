@@ -866,6 +866,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      create_restaurant_slug: {
+        Args: { restaurant_name: string }
+        Returns: string
+      }
       decrypt_pii: {
         Args:
           | { encrypted_data: string; secret_key?: string }
@@ -982,6 +986,7 @@ export type Database = {
           logo_url: string
           name: string
           opening_hours: Json
+          owner_id: string
           parking: string
           phone: string
           price_range: string
