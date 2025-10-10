@@ -1244,7 +1244,7 @@
     }
   },
   "restaurantProfile": {
-    "title": "Profil",
+    "title": "Profil du restaurant",
     "description": "Modifiez les informations de votre restaurant, votre logo et votre photo de couverture",
     "images": "Images du restaurant",
     "coverPhoto": "Photo de couverture",
@@ -1363,7 +1363,7 @@
     "cannotSave": "Impossible de sauvegarder les modifications",
     "cannotLogout": "Impossible de se déconnecter",
     "cannotDelete": "Impossible de supprimer le compte",
-    "title": "Profil",
+    "title": "Profil du restaurant",
     "coverPhoto": "Photo de couverture",
     "uploadingCover": "Téléchargement de la couverture...",
     "uploadingLogo": "Téléchargement du logo...",

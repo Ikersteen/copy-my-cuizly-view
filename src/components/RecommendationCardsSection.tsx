@@ -903,15 +903,7 @@ export const RecommendationCardsSection = () => {
                       className="flex-1"
                       onClick={() => {
                         trackProfileView(restaurant.id);
-                        const slug = restaurant.name
-                          .toLowerCase()
-                          .normalize('NFD')
-                          .replace(/[\u0300-\u036f]/g, '')
-                          .replace(/[^a-z0-9\s-]/g, '')
-                          .replace(/\s+/g, '-')
-                          .replace(/-+/g, '-')
-                          .replace(/^-|-$/g, '');
-                        navigate(`/restaurant/${slug}`);
+                        navigate(`/restaurant/${restaurant.id}`);
                       }}
                     >
                       {t('recommendations.viewProfile')}
