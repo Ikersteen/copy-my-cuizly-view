@@ -547,7 +547,8 @@
     "allergens": "Allergènes :",
     "menuImage": "Image du menu",
     "noMenusAvailable": "Aucun menu disponible",
-    "noMenusYet": "Ce restaurant n'a pas encore ajouté de menus"
+    "noMenusYet": "Ce restaurant n'a pas encore ajouté de menus",
+    "viewPdfMenu": "Voir le menu PDF"
   },
   "analytics": {
     "title": "Tableau de performance en temps réel",

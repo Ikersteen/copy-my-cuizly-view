@@ -110,6 +110,7 @@ interface Menu {
   is_active: boolean;
   dietary_restrictions?: string[];
   allergens?: string[];
+  pdf_menu_url?: string;
 }
 
 interface Restaurant {
@@ -172,7 +173,7 @@ export const RestaurantMenuModal = ({
     try {
       const { data, error } = await supabase
         .from('menus')
-        .select('id, image_url, description, cuisine_type, is_active, dietary_restrictions, allergens')
+        .select('id, image_url, description, cuisine_type, is_active, dietary_restrictions, allergens, pdf_menu_url')
         .eq('restaurant_id', restaurant.id)
         .eq('is_active', true)
         .order('created_at', { ascending: false });
@@ -303,7 +304,12 @@ export const RestaurantMenuModal = ({
                   {restaurant.email && (
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-muted-foreground" />
-                      <span className="truncate">{restaurant.email}</span>
+                      <a 
+                        href={`mailto:${restaurant.email}`}
+                        className="truncate text-xs hover:text-primary transition-colors"
+                      >
+                        {restaurant.email}
+                      </a>
                     </div>
                   )}
                   
@@ -469,6 +475,17 @@ export const RestaurantMenuModal = ({
                           <p className="text-sm text-foreground line-clamp-3">
                             {menu.description}
                           </p>
+                          {menu.pdf_menu_url && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-full text-xs"
+                              onClick={() => window.open(menu.pdf_menu_url, '_blank')}
+                            >
+                              <ChefHat className="h-3 w-3 mr-2" />
+                              {t('menusModal.viewPdfMenu')}
+                            </Button>
+                          )}
                         </div>
                       </CardContent>
                     </Card>

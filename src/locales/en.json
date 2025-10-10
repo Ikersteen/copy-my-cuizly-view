@@ -547,7 +547,8 @@
     "allergens": "Allergens:",
     "menuImage": "Menu image",
     "noMenusAvailable": "No menus available",
-    "noMenusYet": "This restaurant hasn't added any menus yet"
+    "noMenusYet": "This restaurant hasn't added any menus yet",
+    "viewPdfMenu": "View PDF menu"
   },
   "analytics": {
     "title": "Real-time Performance Dashboard",
