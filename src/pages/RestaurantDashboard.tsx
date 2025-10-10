@@ -225,6 +225,20 @@ const RestaurantDashboard = () => {
 
         {/* Section analytics */}
         <AnalyticsSection restaurantId={restaurant?.id} />
+        
+        {/* Paramètres de réservation */}
+        {restaurant?.id && (
+          <div className="mb-8">
+            <ReservationSettingsSection restaurantId={restaurant.id} />
+          </div>
+        )}
+        
+        {/* Section réservations */}
+        {restaurant?.id && (
+          <div className="mb-8">
+            <RestaurantReservationsSection restaurantId={restaurant.id} />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
 
@@ -366,16 +380,6 @@ const RestaurantDashboard = () => {
                         </div>
                       </div>
                     )}
-                    
-                    {/* Reservation Settings */}
-                    <div className="md:col-span-2 pt-4 border-t">
-                      <ReservationSettingsSection restaurantId={restaurant.id} />
-                    </div>
-                    
-                    {/* Reservations List */}
-                    <div className="md:col-span-2 pt-4 border-t">
-                      <RestaurantReservationsSection restaurantId={restaurant.id} />
-                    </div>
                     
                     {restaurant.dietary_restrictions?.length > 0 && (
                       <div>

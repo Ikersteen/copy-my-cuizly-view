@@ -1,3 +1,4 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
@@ -50,32 +51,41 @@ export const ReservationSettingsSection = ({ restaurantId }: ReservationSettings
 
   if (isLoading) {
     return (
-      <div>
-        <h3 className="text-lg font-semibold mb-4">{t("reservation.reservationSettings")}</h3>
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="h-6 w-6 animate-spin" />
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("reservation.reservationSettings")}</CardTitle>
+          <CardDescription>{t("reservation.reservationSettingsDesc")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin" />
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4">{t("reservation.reservationSettings")}</h3>
-      <p className="text-sm text-muted-foreground mb-4">{t("reservation.reservationSettingsDesc")}</p>
-      <div className="flex items-center justify-between">
-        <Label htmlFor="reservations-toggle" className="cursor-pointer">
-          {restaurant?.reservations_enabled 
-            ? t("reservation.disableReservations")
-            : t("reservation.enableReservations")}
-        </Label>
-        <Switch
-          id="reservations-toggle"
-          checked={restaurant?.reservations_enabled || false}
-          onCheckedChange={(checked) => updateReservationSettings.mutate(checked)}
-          disabled={updateReservationSettings.isPending}
-        />
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("reservation.reservationSettings")}</CardTitle>
+        <CardDescription>{t("reservation.reservationSettingsDesc")}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="reservations-toggle" className="cursor-pointer">
+            {restaurant?.reservations_enabled 
+              ? t("reservation.disableReservations")
+              : t("reservation.enableReservations")}
+          </Label>
+          <Switch
+            id="reservations-toggle"
+            checked={restaurant?.reservations_enabled || false}
+            onCheckedChange={(checked) => updateReservationSettings.mutate(checked)}
+            disabled={updateReservationSettings.isPending}
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
