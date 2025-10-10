@@ -889,7 +889,7 @@ export const RecommendationCardsSection = () => {
                       }}
                     >
                       <Calendar className="h-4 w-4 mr-2" />
-                      Réserver
+                      {t('reservation.makeReservation')}
                     </Button>
                     <Button
                       className="flex-1"
