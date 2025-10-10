@@ -28,6 +28,7 @@ interface Restaurant {
   score?: number;
   reasons?: (string | { text: string; type: string })[];
   reservations_enabled?: boolean;
+  opening_hours?: any;
 }
 
 export const RecommendationCardsSection = () => {
@@ -42,7 +43,7 @@ export const RecommendationCardsSection = () => {
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [reservationRestaurant, setReservationRestaurant] = useState<{ id: string; name: string } | null>(null);
+  const [reservationRestaurant, setReservationRestaurant] = useState<{ id: string; name: string; opening_hours?: any } | null>(null);
 
   // Generate detailed, explanatory reasons for restaurant recommendations
   // Following strict priority order: Dietary restrictions, Allergens, Cuisines, Price, Timing, Location, Address
@@ -887,7 +888,11 @@ export const RecommendationCardsSection = () => {
                         className="flex-1"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setReservationRestaurant({ id: restaurant.id, name: restaurant.name });
+                          setReservationRestaurant({ 
+                            id: restaurant.id, 
+                            name: restaurant.name,
+                            opening_hours: restaurant.opening_hours 
+                          });
                         }}
                       >
                         <Calendar className="h-4 w-4 mr-1" />
@@ -934,6 +939,7 @@ export const RecommendationCardsSection = () => {
           onClose={() => setReservationRestaurant(null)}
           restaurantId={reservationRestaurant.id}
           restaurantName={reservationRestaurant.name}
+          openingHours={reservationRestaurant.opening_hours}
         />
       )}
     </section>

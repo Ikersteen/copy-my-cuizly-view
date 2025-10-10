@@ -15,6 +15,7 @@ interface ReservationModalProps {
   onClose: () => void;
   restaurantId: string;
   restaurantName: string;
+  openingHours?: any;
 }
 
 export const ReservationModal = ({
@@ -22,18 +23,33 @@ export const ReservationModal = ({
   onClose,
   restaurantId,
   restaurantName,
+  openingHours,
 }: ReservationModalProps) => {
   const { t } = useTranslation();
   const { user } = useUserProfile();
   const { createReservation } = useReservations(user?.id);
   
   const [date, setDate] = useState<Date>();
-  const [time, setTime] = useState("");
   const [partySize, setPartySize] = useState("2");
   const [name, setName] = useState("");
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState("");
   const [specialRequests, setSpecialRequests] = useState("");
+
+  // Calculer l'heure d'ouverture par défaut basée sur le jour actuel
+  const getDefaultTime = () => {
+    const now = new Date();
+    const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const dayName = dayNames[now.getDay()];
+    
+    if (openingHours && openingHours[dayName] && !openingHours[dayName].closed) {
+      return openingHours[dayName].open;
+    }
+    
+    return "12:00";
+  };
+
+  const [time, setTime] = useState(getDefaultTime());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,14 +89,16 @@ export const ReservationModal = ({
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
-            <div>
-              <Label>{t("reservation.date")}</Label>
+            <div className="flex justify-center">
+              <Label className="mb-2 block text-center w-full">{t("reservation.date")}</Label>
+            </div>
+            <div className="flex justify-center">
               <Calendar
                 mode="single"
                 selected={date}
                 onSelect={setDate}
                 disabled={(date) => date < new Date()}
-                className="rounded-md border"
+                className="rounded-md border pointer-events-auto"
               />
             </div>
 
@@ -92,6 +110,7 @@ export const ReservationModal = ({
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 required
+                className="text-base"
               />
             </div>
 

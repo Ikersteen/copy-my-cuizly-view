@@ -553,6 +553,7 @@ export default function RestaurantMenu() {
           onClose={() => setShowReservationModal(false)}
           restaurantId={restaurant.id}
           restaurantName={restaurant.name}
+          openingHours={restaurant.opening_hours}
         />
       )}
     </div>
