@@ -58,12 +58,21 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
   };
 
   if (isLoading) {
-    return <div className="text-center py-8">Chargement des réservations...</div>;
+    return (
+      <Card>
+        <CardContent className="py-8 text-center">
+          <div className="text-muted-foreground">Chargement des réservations...</div>
+        </CardContent>
+      </Card>
+    );
   }
 
   if (!reservations || reservations.length === 0) {
     return (
       <Card>
+        <CardHeader>
+          <CardTitle className="text-xl">{t("reservation.reservations")}</CardTitle>
+        </CardHeader>
         <CardContent className="py-8 text-center text-muted-foreground">
           Aucune réservation pour le moment
         </CardContent>
@@ -72,23 +81,23 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Réservations</h2>
-      
-      <div className="grid gap-4">
-        {reservations.map((reservation) => (
-          <Card key={reservation.id}>
-            <CardHeader>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl">{t("reservation.reservations")}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          {reservations.map((reservation) => (
+            <div key={reservation.id} className="border rounded-lg p-4 space-y-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <CardTitle className="text-lg">{reservation.customer_name}</CardTitle>
+                  <h3 className="text-lg font-semibold">{reservation.customer_name}</h3>
                   <Badge className={getStatusColor(reservation.status)}>
                     {getStatusLabel(reservation.status)}
                   </Badge>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
+              
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -159,10 +168,10 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
                   </Button>
                 </div>
               )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
