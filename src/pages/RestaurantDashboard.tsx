@@ -34,6 +34,7 @@ interface Restaurant {
   opening_hours?: any;
   delivery_radius?: number;
   is_active: boolean;
+  reservations_enabled: boolean;
   logo_url?: string;
   cover_image_url?: string;
   instagram_url?: string;
