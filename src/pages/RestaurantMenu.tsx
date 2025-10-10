@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, ArrowLeft, MapPin, Calendar } from "lucide-react";
+import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, ArrowLeft, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -14,7 +14,6 @@ import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { openDirections } from "@/utils/mapUtils";
-import { ReservationModal } from "@/components/ReservationModal";
 
 const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
   const [rating, setRating] = useState<number | null>(null);
@@ -113,7 +112,6 @@ export default function RestaurantMenu() {
   const [loading, setLoading] = useState(true);
   const [menusLoading, setMenusLoading] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [showReservationModal, setShowReservationModal] = useState(false);
   const { toggleFavorite, isFavorite } = useFavorites();
   const { toast } = useToast();
   const { currentLanguage } = useLanguage();
@@ -511,14 +509,6 @@ export default function RestaurantMenu() {
             <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t">
               <Button 
                 className="flex-1"
-                onClick={() => setShowReservationModal(true)}
-                variant="default"
-              >
-                <Calendar className="h-4 w-4 mr-2" />
-                Réserver
-              </Button>
-              <Button 
-                className="flex-1"
                 onClick={() => setShowCommentModal(true)}
                 variant="outline"
               >
@@ -543,15 +533,6 @@ export default function RestaurantMenu() {
         onOpenChange={setShowCommentModal}
         restaurant={restaurant}
       />
-      
-      {restaurant && (
-        <ReservationModal
-          isOpen={showReservationModal}
-          onClose={() => setShowReservationModal(false)}
-          restaurantId={restaurant.id}
-          restaurantName={restaurant.name}
-        />
-      )}
     </div>
   );
 }

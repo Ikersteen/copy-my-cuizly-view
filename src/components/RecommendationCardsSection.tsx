@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Star, MapPin, ChefHat, Filter, Heart, ArrowRight, Loader2, Calendar } from "lucide-react";
+import { Sparkles, Star, MapPin, ChefHat, Filter, Heart, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -13,7 +13,6 @@ import { CUISINE_TRANSLATIONS, CUISINE_OPTIONS } from "@/constants/cuisineTypes"
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
-import { ReservationModal } from "./ReservationModal";
 
 interface Restaurant {
   id: string;
@@ -41,7 +40,6 @@ export const RecommendationCardsSection = () => {
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [reservationRestaurant, setReservationRestaurant] = useState<{ id: string; name: string } | null>(null);
 
   // Generate detailed, explanatory reasons for restaurant recommendations
   // Following strict priority order: Dietary restrictions, Allergens, Cuisines, Price, Timing, Location, Address
@@ -879,28 +877,15 @@ export const RecommendationCardsSection = () => {
                   </div>
                   </div>
 
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      className="flex-1"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setReservationRestaurant({ id: restaurant.id, name: restaurant.name });
-                      }}
-                    >
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Réserver
-                    </Button>
-                    <Button
-                      className="flex-1"
-                      onClick={() => {
-                        trackProfileView(restaurant.id);
-                        navigate(`/restaurant/${restaurant.id}`);
-                      }}
-                    >
-                      {t('recommendations.viewProfile')}
-                    </Button>
-                  </div>
+                  <Button
+                   className="w-full h-10 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200"
+                   onClick={() => {
+                     trackProfileView(restaurant.id);
+                     navigate(`/restaurant/${restaurant.id}`);
+                   }}
+                  >
+                    {t('recommendations.viewProfile')}
+                  </Button>
               </CardContent>
             </Card>
           ))}
@@ -924,15 +909,6 @@ export const RecommendationCardsSection = () => {
         onOpenChange={setShowFilters}
         onApplyFilters={handleApplyFilters}
       />
-      
-      {reservationRestaurant && (
-        <ReservationModal
-          isOpen={!!reservationRestaurant}
-          onClose={() => setReservationRestaurant(null)}
-          restaurantId={reservationRestaurant.id}
-          restaurantName={reservationRestaurant.name}
-        />
-      )}
     </section>
   );
 };
