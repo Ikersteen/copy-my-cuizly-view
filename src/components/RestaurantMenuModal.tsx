@@ -438,7 +438,10 @@ export const RestaurantMenuModal = ({
                     <Card key={menu.id} className="hover:shadow-lg transition-shadow">
                       <CardContent className="p-4">
                         {menu.image_url && (
-                          <div className="aspect-video mb-3 rounded-lg overflow-hidden">
+                          <div 
+                            className="aspect-video mb-3 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                            onClick={() => window.open(menu.image_url, '_blank')}
+                          >
                             <img
                               src={menu.image_url}
                               alt={t('common.menu')}

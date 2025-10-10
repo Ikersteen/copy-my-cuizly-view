@@ -543,9 +543,9 @@
     "loading": "Loading menus...",
     "unknownRestaurant": "Unknown restaurant",
     "comment": "Comment",
-    "dietaryRestrictions": "Dietary restrictions :",
-    "allergens": "Allergens :",
-    "description": "Description :",
+    "dietaryRestrictions": "Dietary restrictions:",
+    "allergens": "Allergens:",
+    "description": "Description:",
     "menuImage": "Menu image",
     "noMenusAvailable": "No menus available",
     "noMenusYet": "This restaurant hasn't added any menus yet",
@@ -1794,7 +1794,7 @@
     "priceRange": "Price range",
     "deliveryRadius": "Delivery radius",
     "cuisineTypes": "Cuisine types",
-    "cuisineType": "Cuisine type :",
+    "cuisineType": "Cuisine type:",
     "serviceTypes": "Service types",
     "specialty": "Restaurant specialty",
     "socialMedia": "Social media",
@@ -1857,7 +1857,8 @@
     "directions": "Directions",
     "mapView": "Map view",
     "openExternal": "Open in Maps",
-    "loadError": "Error loading map"
+    "loadError": "Error loading map",
+    "apiKeyError": "Verify that your Google Maps API key is correctly configured"
   },
   "social": {
     "viewInstagram": "View Instagram profile",

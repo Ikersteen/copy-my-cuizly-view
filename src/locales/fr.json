@@ -2285,7 +2285,8 @@
     "directions": "Itinéraire",
     "mapView": "Vue de la carte",
     "openExternal": "Ouvrir dans Maps",
-    "loadError": "Erreur de chargement de la carte"
+    "loadError": "Erreur lors du chargement de la carte",
+    "apiKeyError": "Vérifiez que votre clé API Google Maps est correctement configurée"
   },
   "social": {
     "viewInstagram": "Voir le profil Instagram",

@@ -48,7 +48,10 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
           )}
           {error && (
             <div className="w-full h-full flex items-center justify-center bg-muted">
-              <p className="text-destructive">{t('map.loadError')}</p>
+              <div className="text-center p-6">
+                <p className="text-destructive mb-2">{t('map.loadError')}</p>
+                <p className="text-muted-foreground text-sm">{t('map.apiKeyError')}</p>
+              </div>
             </div>
           )}
           {apiKey && !loading && !error && (
