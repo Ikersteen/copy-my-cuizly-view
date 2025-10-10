@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -63,6 +64,7 @@ export const ImprovedRestaurantProfileModal = ({
     instagram_url: "",
     facebook_url: "",
     price_range: "" as string,
+    reservations_enabled: false,
     opening_hours: {
       monday: { open: "09:00", close: "17:00", closed: false },
       tuesday: { open: "09:00", close: "17:00", closed: false },
@@ -141,6 +143,7 @@ export const ImprovedRestaurantProfileModal = ({
         dietary_restrictions: data.dietary_restrictions || [],
         allergens: data.allergens || [],
         price_range: data.price_range || "",
+        reservations_enabled: data.reservations_enabled || false,
         opening_hours: (data.opening_hours && typeof data.opening_hours === 'object') ? data.opening_hours as any : {
           monday: { open: "09:00", close: "17:00", closed: false },
           tuesday: { open: "09:00", close: "17:00", closed: false },
@@ -425,6 +428,7 @@ export const ImprovedRestaurantProfileModal = ({
         allergens: formData.allergens,
         service_types: formData.service_types,
         price_range: formData.price_range || null,
+        reservations_enabled: formData.reservations_enabled,
         opening_hours: formData.opening_hours
       };
 
@@ -690,6 +694,33 @@ export const ImprovedRestaurantProfileModal = ({
                 placeholder={t('restaurantProfile.facebookPlaceholder')}
               />
             </div>
+
+            <Separator />
+
+            <div className="space-y-3">
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-1">
+                  {t("reservation.reservationSettings")}
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  {t("reservation.reservationSettingsDesc")}
+                </p>
+              </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="reservations-toggle" className="cursor-pointer text-sm">
+                  {formData.reservations_enabled 
+                    ? t("reservation.disableReservations")
+                    : t("reservation.enableReservations")}
+                </Label>
+                <Switch
+                  id="reservations-toggle"
+                  checked={formData.reservations_enabled}
+                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, reservations_enabled: checked }))}
+                />
+              </div>
+            </div>
+
+            <Separator />
 
             <div className="space-y-2">
               <Label>{t('restaurantProfile.openingHours')}</Label>
