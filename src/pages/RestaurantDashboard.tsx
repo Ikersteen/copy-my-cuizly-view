@@ -310,6 +310,22 @@ const RestaurantDashboard = () => {
                         )}
                       </div>
                     </div>
+
+                    {/* Dress Code */}
+                    {(restaurant as any).dress_code && (
+                      <div>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.dressCode')}</p>
+                        <p className="text-foreground text-sm">{(restaurant as any).dress_code}</p>
+                      </div>
+                    )}
+
+                    {/* Parking */}
+                    {(restaurant as any).parking && (
+                      <div>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-1">{t('restaurantProfile.parking')}</p>
+                        <p className="text-foreground text-sm">{(restaurant as any).parking}</p>
+                      </div>
+                    )}
                     
                     {/* Opening Hours */}
                     <div className="md:col-span-2">
