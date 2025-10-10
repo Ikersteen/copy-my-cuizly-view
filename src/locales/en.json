@@ -1833,7 +1833,28 @@
     "reservationsEnabled": "Reservations enabled",
     "reservationsDisabled": "Reservations disabled",
     "reservationSettings": "Reservation settings",
-    "reservationSettingsDesc": "Manage the activation of the reservation system for your restaurant"
+    "reservationSettingsDesc": "Manage the activation of the reservation system for your restaurant",
+    "myReservations": "My Reservations",
+    "viewAllReservations": "View all your past and upcoming reservations",
+    "noReservations": "No reservations at the moment",
+    "errorLoading": "Error loading reservations",
+    "guests": "guests",
+    "cancellationReason": "Cancellation reason",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "no_show": "No show"
+    }
+  },
+  "map": {
+    "directions": "Directions",
+    "mapView": "Map view"
+  },
+  "social": {
+    "viewInstagram": "View Instagram profile",
+    "viewFacebook": "View Facebook page"
   },
   "accessibility": {
     "voiceAssistant": "Voice assistant",

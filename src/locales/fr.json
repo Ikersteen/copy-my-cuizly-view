@@ -1171,13 +1171,6 @@
     },
     "createOffer": {
       "cancel": "Annuler"
-    },
-  "restaurantProfile": {
-    "dressCode": "Code vestimentaire",
-    "dressCodePlaceholder": "Ex: Décontracté, Élégant, Formel...",
-    "parking": "Stationnement",
-    "parkingPlaceholder": "Ex: Stationnement gratuit disponible, Valet disponible...",
-      "cancel": "Annuler"
     }
   },
   "team": {
@@ -1421,7 +1414,11 @@
     "logoutSuccessDesc": "Vous avez été déconnecté avec succès",
     "deletionRequested": "Suppression demandée",
     "deletionRequestedDesc": "Votre demande de suppression de compte a été enregistrée. Votre compte sera désactivé.",
-    "confirmationError": "Veuillez taper exactement le texte de confirmation"
+    "confirmationError": "Veuillez taper exactement le texte de confirmation",
+    "dressCode": "Code vestimentaire",
+    "dressCodePlaceholder": "Ex: Décontracté, Élégant, Formel...",
+    "parking": "Stationnement",
+    "parkingPlaceholder": "Ex: Stationnement gratuit disponible, Valet disponible..."
   },
   "restaurantInfo": {
     "title": "Informations du restaurant",
@@ -2275,7 +2272,28 @@
     "reservationsEnabled": "Réservations activées",
     "reservationsDisabled": "Réservations désactivées",
     "reservationSettings": "Paramètres de réservation",
-    "reservationSettingsDesc": "Gérez l'activation du système de réservation pour votre restaurant"
+    "reservationSettingsDesc": "Gérez l'activation du système de réservation pour votre restaurant",
+    "myReservations": "Mes réservations",
+    "viewAllReservations": "Consultez toutes vos réservations passées et à venir",
+    "noReservations": "Aucune réservation pour le moment",
+    "errorLoading": "Erreur lors du chargement des réservations",
+    "guests": "personnes",
+    "cancellationReason": "Raison de l'annulation",
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmée",
+      "cancelled": "Annulée",
+      "completed": "Complétée",
+      "no_show": "Absent"
+    }
+  },
+  "map": {
+    "directions": "Itinéraire",
+    "mapView": "Vue de la carte"
+  },
+  "social": {
+    "viewInstagram": "Voir le profil Instagram",
+    "viewFacebook": "Voir la page Facebook"
   },
   "accessibility": {
     "voiceAssistant": "Assistant vocal",
