@@ -362,122 +362,122 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
             <CardContent className="p-4 space-y-4">
               <h3 className="font-medium">{t('menusModal.addNewMenu')}</h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  {newMenu.image_url && (
-                    <div className="relative w-full aspect-video">
-                      <img
-                        src={newMenu.image_url}
-                        alt={t('menusModal.preview')}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="absolute -top-2 -right-2 h-6 w-6 p-0"
-                        onClick={() => setNewMenu(prev => ({ ...prev, image_url: "" }))}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label>{t('menusModal.menuImage')}</Label>
-                    <input
-                      ref={newMenuFileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImageUpload(e, false)}
-                      disabled={uploading}
-                      className="hidden"
+              <div className="space-y-4">
+                {newMenu.image_url && (
+                  <div className="relative w-full max-w-md aspect-video">
+                    <img
+                      src={newMenu.image_url}
+                      alt={t('menusModal.preview')}
+                      className="w-full h-full object-cover rounded-lg"
                     />
                     <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => newMenuFileInputRef.current?.click()}
-                      disabled={uploading}
-                      className="w-full"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute -top-2 -right-2 h-6 w-6 p-0"
+                      onClick={() => setNewMenu(prev => ({ ...prev, image_url: "" }))}
                     >
-                      <Upload className="h-4 w-4 mr-2" />
-                      {newMenu.image_url ? t('common.changeImage') : t('common.chooseFile')}
+                      <X className="h-3 w-3" />
                     </Button>
-                    <p className="text-xs text-muted-foreground">{t('menusModal.maxSize')}</p>
-                    {uploading && <p className="text-sm text-muted-foreground">{t('menusModal.uploading')}</p>}
                   </div>
+                )}
 
-                  <div className="space-y-2">
-                    <Label>{t('menusModal.cuisineType')}</Label>
-                    <select
-                      value={newMenu.cuisine_type}
-                      onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
-                      className="w-full px-3 py-2 border border-input bg-background rounded-md"
-                    >
-                      <option value="">{t('menusModal.selectCuisineType')}</option>
-                      {CUISINE_OPTIONS.map(cuisine => (
-                        <option key={cuisine} value={cuisine}>
-                          {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                <div className="space-y-2">
+                  <Label>{t('menusModal.menuImage')}</Label>
+                  <input
+                    ref={newMenuFileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, false)}
+                    disabled={uploading}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => newMenuFileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full max-w-md"
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    {newMenu.image_url ? t('common.changeImage') : t('common.chooseFile')}
+                  </Button>
+                  <p className="text-xs text-muted-foreground">{t('menusModal.maxSize')}</p>
+                  {uploading && <p className="text-sm text-muted-foreground">{t('menusModal.uploading')}</p>}
+                </div>
 
-                  <div className="space-y-2">
-                    <Label>{t('menusModal.category')}</Label>
-                    <Input
-                      value={newMenu.category}
-                      onChange={(e) => setNewMenu(prev => ({ ...prev, category: e.target.value }))}
-                      placeholder={t('menusModal.categoryPlaceholder')}
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label>{t('menusModal.cuisineType')}</Label>
+                  <select
+                    value={newMenu.cuisine_type}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, cuisine_type: e.target.value }))}
+                    className="w-full max-w-md px-3 py-2 border border-input bg-background rounded-md"
+                  >
+                    <option value="">{t('menusModal.selectCuisineType')}</option>
+                    {CUISINE_OPTIONS.map(cuisine => (
+                      <option key={cuisine} value={cuisine}>
+                        {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                  <div className="space-y-2">
-                    <Label>{t('menusModal.subcategory')}</Label>
-                    <Input
-                      value={newMenu.subcategory}
-                      onChange={(e) => setNewMenu(prev => ({ ...prev, subcategory: e.target.value }))}
-                      placeholder={t('menusModal.subcategoryPlaceholder')}
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label>{t('menusModal.category')}</Label>
+                  <Input
+                    value={newMenu.category}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, category: e.target.value }))}
+                    placeholder={t('menusModal.categoryPlaceholder')}
+                    className="max-w-md"
+                  />
+                </div>
 
-                  <div className="space-y-2">
-                    <Label>{t('menusModal.pdfMenuUrl')}</Label>
-                    <Input
-                      type="url"
-                      value={newMenu.pdf_menu_url}
-                      onChange={(e) => setNewMenu(prev => ({ ...prev, pdf_menu_url: e.target.value }))}
-                      placeholder={t('menusModal.pdfMenuUrlPlaceholder')}
-                    />
-                  </div>
-                   
+                <div className="space-y-2">
+                  <Label>{t('menusModal.subcategory')}</Label>
+                  <Input
+                    value={newMenu.subcategory}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, subcategory: e.target.value }))}
+                    placeholder={t('menusModal.subcategoryPlaceholder')}
+                    className="max-w-md"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>{t('menusModal.pdfMenuUrl')}</Label>
+                  <Input
+                    type="url"
+                    value={newMenu.pdf_menu_url}
+                    onChange={(e) => setNewMenu(prev => ({ ...prev, pdf_menu_url: e.target.value }))}
+                    placeholder={t('menusModal.pdfMenuUrlPlaceholder')}
+                    className="max-w-md"
+                  />
+                </div>
+                 
                 <div className="space-y-2">
                   <Label>{t('menusModal.dietaryCompatible')}</Label>
-                  <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                  <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px] max-w-2xl">
                     {DIETARY_RESTRICTIONS_OPTIONS.sort().map(restriction => (
-                          <Badge
-                            key={restriction}
-                            variant={newMenu.dietary_restrictions.includes(restriction) ? "default" : "outline"}
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setNewMenu(prev => ({
-                                ...prev,
-                                dietary_restrictions: prev.dietary_restrictions.includes(restriction)
-                                  ? prev.dietary_restrictions.filter(r => r !== restriction)
-                                  : [...prev.dietary_restrictions, restriction]
-                              }));
-                            }}
-                          >
-                            {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
-                          </Badge>
-                     ))}
-                   </div>
-                 </div>
+                      <Badge
+                        key={restriction}
+                        variant={newMenu.dietary_restrictions.includes(restriction) ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setNewMenu(prev => ({
+                            ...prev,
+                            dietary_restrictions: prev.dietary_restrictions.includes(restriction)
+                              ? prev.dietary_restrictions.filter(r => r !== restriction)
+                              : [...prev.dietary_restrictions, restriction]
+                          }));
+                        }}
+                      >
+                        {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
 
-                 <div className="space-y-2">
-                   <Label>{t('menusModal.allergensPresent')}</Label>
-                   <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                <div className="space-y-2">
+                  <Label>{t('menusModal.allergensPresent')}</Label>
+                  <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px] max-w-2xl">
                     {ALLERGENS_OPTIONS.sort().map(allergen => (
                       <Badge
                         key={allergen}
@@ -494,23 +494,22 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                       >
                         {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                       </Badge>
-                     ))}
-                   </div>
-                 </div>
-
-                   <Button
-                     onClick={handleAddMenu}
-                     disabled={loading || !newMenu.image_url || !newMenu.cuisine_type.trim() || menus.length >= 200}
-                     className="w-full"
-                   >
-                    {loading ? (
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    ) : (
-                      <Plus className="h-4 w-4 mr-2" />
-                    )}
-                    {t('menusModal.addThisMenu')}
-                  </Button>
+                    ))}
+                  </div>
                 </div>
+
+                <Button
+                  onClick={handleAddMenu}
+                  disabled={loading || !newMenu.image_url || !newMenu.cuisine_type.trim() || menus.length >= 200}
+                  className="w-full max-w-md"
+                >
+                  {loading ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <Plus className="h-4 w-4 mr-2" />
+                  )}
+                  {t('menusModal.addThisMenu')}
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -652,146 +651,145 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                    </Button>
                  </div>
                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        {editingMenu.image_url && (
-                          <div className="relative w-full aspect-video">
-                            <img
-                              src={editingMenu.image_url}
-                              alt={t('menusModal.preview')}
-                              className="w-full h-full object-cover rounded-lg"
-                            />
-                          </div>
-                        )}
+                  <div className="space-y-4">
+                    {editingMenu.image_url && (
+                      <div className="relative w-full max-w-md aspect-video">
+                        <img
+                          src={editingMenu.image_url}
+                          alt={t('menusModal.preview')}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
                       </div>
+                    )}
 
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>{t('menusModal.menuImage')}</Label>
-                          <input
-                            ref={editMenuFileInputRef}
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleImageUpload(e, true)}
-                            disabled={uploading}
-                            className="hidden"
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => editMenuFileInputRef.current?.click()}
-                            disabled={uploading}
-                            className="w-full"
+                    <div className="space-y-2">
+                      <Label>{t('menusModal.menuImage')}</Label>
+                      <input
+                        ref={editMenuFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(e, true)}
+                        disabled={uploading}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => editMenuFileInputRef.current?.click()}
+                        disabled={uploading}
+                        className="w-full max-w-md"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        {editingMenu.image_url ? t('common.changeImage') : t('common.chooseFile')}
+                      </Button>
+                      <p className="text-xs text-muted-foreground">{t('menusModal.maxSize')}</p>
+                      {uploading && <p className="text-sm text-muted-foreground">{t('menusModal.uploading')}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>{t('menusModal.cuisineType')}</Label>
+                      <select
+                        value={editingMenu.cuisine_type}
+                        onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, cuisine_type: e.target.value }) : null)}
+                        className="w-full max-w-md px-3 py-2 border border-input bg-background rounded-md"
+                      >
+                        <option value="">{t('menusModal.selectCuisineType')}</option>
+                        {CUISINE_OPTIONS.map(cuisine => (
+                          <option key={cuisine} value={cuisine}>
+                            {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>{t('menusModal.category')}</Label>
+                      <Input
+                        value={editingMenu.category || ""}
+                        onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, category: e.target.value }) : null)}
+                        placeholder={t('menusModal.categoryPlaceholder')}
+                        className="max-w-md"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>{t('menusModal.subcategory')}</Label>
+                      <Input
+                        value={editingMenu.subcategory || ""}
+                        onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, subcategory: e.target.value }) : null)}
+                        placeholder={t('menusModal.subcategoryPlaceholder')}
+                        className="max-w-md"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>{t('menusModal.pdfMenuUrl')}</Label>
+                      <Input
+                        type="url"
+                        value={editingMenu.pdf_menu_url || ""}
+                        onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, pdf_menu_url: e.target.value }) : null)}
+                        placeholder={t('menusModal.pdfMenuUrlPlaceholder')}
+                        className="max-w-md"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>{t('menusModal.dietaryCompatible')}</Label>
+                      <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px] max-w-2xl">
+                        {DIETARY_RESTRICTIONS_OPTIONS.sort().map(restriction => (
+                          <Badge
+                            key={restriction}
+                            variant={editingMenu.dietary_restrictions?.includes(restriction) ? "default" : "outline"}
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setEditingMenu(prev => prev ? ({
+                                ...prev,
+                                dietary_restrictions: prev.dietary_restrictions?.includes(restriction)
+                                  ? prev.dietary_restrictions.filter(r => r !== restriction)
+                                  : [...(prev.dietary_restrictions || []), restriction]
+                              }) : null);
+                            }}
                           >
-                            <Upload className="h-4 w-4 mr-2" />
-                            {editingMenu.image_url ? t('common.changeImage') : t('common.chooseFile')}
-                          </Button>
-                          <p className="text-xs text-muted-foreground">{t('menusModal.maxSize')}</p>
-                          {uploading && <p className="text-sm text-muted-foreground">{t('menusModal.uploading')}</p>}
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>{t('menusModal.cuisineType')}</Label>
-                          <select
-                            value={editingMenu.cuisine_type}
-                            onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, cuisine_type: e.target.value }) : null)}
-                            className="w-full px-3 py-2 border border-input bg-background rounded-md"
-                          >
-                            <option value="">{t('menusModal.selectCuisineType')}</option>
-                            {CUISINE_OPTIONS.map(cuisine => (
-                              <option key={cuisine} value={cuisine}>
-                                {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>{t('menusModal.category')}</Label>
-                          <Input
-                            value={editingMenu.category || ""}
-                            onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, category: e.target.value }) : null)}
-                            placeholder={t('menusModal.categoryPlaceholder')}
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>{t('menusModal.subcategory')}</Label>
-                          <Input
-                            value={editingMenu.subcategory || ""}
-                            onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, subcategory: e.target.value }) : null)}
-                            placeholder={t('menusModal.subcategoryPlaceholder')}
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>{t('menusModal.pdfMenuUrl')}</Label>
-                          <Input
-                            type="url"
-                            value={editingMenu.pdf_menu_url || ""}
-                            onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, pdf_menu_url: e.target.value }) : null)}
-                            placeholder={t('menusModal.pdfMenuUrlPlaceholder')}
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>{t('menusModal.dietaryCompatible')}</Label>
-                          <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                            {DIETARY_RESTRICTIONS_OPTIONS.sort().map(restriction => (
-                              <Badge
-                                key={restriction}
-                                variant={editingMenu.dietary_restrictions?.includes(restriction) ? "default" : "outline"}
-                                className="cursor-pointer"
-                                onClick={() => {
-                                  setEditingMenu(prev => prev ? ({
-                                    ...prev,
-                                    dietary_restrictions: prev.dietary_restrictions?.includes(restriction)
-                                      ? prev.dietary_restrictions.filter(r => r !== restriction)
-                                      : [...(prev.dietary_restrictions || []), restriction]
-                                  }) : null);
-                                }}
-                              >
-                                {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>{t('menusModal.allergensPresent')}</Label>
-                          <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
-                            {ALLERGENS_OPTIONS.sort().map(allergen => (
-                              <Badge
-                                key={allergen}
-                                variant={editingMenu.allergens?.includes(allergen) ? "default" : "outline"}
-                                className="cursor-pointer"
-                                onClick={() => {
-                                  setEditingMenu(prev => prev ? ({
-                                    ...prev,
-                                    allergens: prev.allergens?.includes(allergen)
-                                      ? prev.allergens.filter(a => a !== allergen)
-                                      : [...(prev.allergens || []), allergen]
-                                  }) : null);
-                                }}
-                              >
-                                {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-
-                        <Button 
-                          onClick={handleEditMenu}
-                          disabled={loading}
-                          className="w-full"
-                        >
-                          {loading ? (
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          ) : null}
-                          {t('menusModal.saveChanges')}
-                        </Button>
+                            {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
+                          </Badge>
+                        ))}
                       </div>
-                </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>{t('menusModal.allergensPresent')}</Label>
+                      <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px] max-w-2xl">
+                        {ALLERGENS_OPTIONS.sort().map(allergen => (
+                          <Badge
+                            key={allergen}
+                            variant={editingMenu.allergens?.includes(allergen) ? "default" : "outline"}
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setEditingMenu(prev => prev ? ({
+                                ...prev,
+                                allergens: prev.allergens?.includes(allergen)
+                                  ? prev.allergens.filter(a => a !== allergen)
+                                  : [...(prev.allergens || []), allergen]
+                              }) : null);
+                            }}
+                          >
+                            {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Button 
+                      onClick={handleEditMenu}
+                      disabled={loading}
+                      className="w-full max-w-md"
+                    >
+                      {loading ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      ) : null}
+                      {t('menusModal.saveChanges')}
+                    </Button>
+                  </div>
               </CardContent>
             </Card>
           )}
