@@ -1,0 +1,10 @@
+{
+  "map": {
+    "directions": { "fr": "Itinéraire", "en": "Directions" },
+    "mapView": { "fr": "Vue de la carte", "en": "Map view" }
+  },
+  "social": {
+    "viewInstagram": { "fr": "Voir le profil Instagram", "en": "View Instagram profile" },
+    "viewFacebook": { "fr": "Voir la page Facebook", "en": "View Facebook page" }
+  }
+}

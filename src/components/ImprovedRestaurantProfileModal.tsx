@@ -65,6 +65,8 @@ export const ImprovedRestaurantProfileModal = ({
     facebook_url: "",
     price_range: "" as string,
     reservations_enabled: false,
+    dress_code: "",
+    parking: "",
     opening_hours: {
       monday: { open: "09:00", close: "17:00", closed: false },
       tuesday: { open: "09:00", close: "17:00", closed: false },
@@ -144,6 +146,8 @@ export const ImprovedRestaurantProfileModal = ({
         allergens: data.allergens || [],
         price_range: data.price_range || "",
         reservations_enabled: data.reservations_enabled || false,
+        dress_code: (data as any).dress_code || "",
+        parking: (data as any).parking || "",
         opening_hours: (data.opening_hours && typeof data.opening_hours === 'object') ? data.opening_hours as any : {
           monday: { open: "09:00", close: "17:00", closed: false },
           tuesday: { open: "09:00", close: "17:00", closed: false },
@@ -429,6 +433,8 @@ export const ImprovedRestaurantProfileModal = ({
         service_types: formData.service_types,
         price_range: formData.price_range || null,
         reservations_enabled: formData.reservations_enabled,
+        dress_code: formData.dress_code?.trim() || null,
+        parking: formData.parking?.trim() || null,
         opening_hours: formData.opening_hours
       };
 
@@ -692,6 +698,32 @@ export const ImprovedRestaurantProfileModal = ({
                 value={formData.facebook_url}
                 onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
                 placeholder={t('restaurantProfile.facebookPlaceholder')}
+              />
+            </div>
+
+            <Separator />
+
+            {/* Code vestimentaire */}
+            <div className="space-y-2">
+              <Label htmlFor="dress_code">{t('restaurantProfile.dressCode')}</Label>
+              <Textarea
+                id="dress_code"
+                value={formData.dress_code || ""}
+                onChange={(e) => setFormData(prev => ({ ...prev, dress_code: e.target.value }))}
+                placeholder={t('restaurantProfile.dressCodePlaceholder')}
+                rows={2}
+              />
+            </div>
+
+            {/* Stationnement */}
+            <div className="space-y-2">
+              <Label htmlFor="parking">{t('restaurantProfile.parking')}</Label>
+              <Textarea
+                id="parking"
+                value={formData.parking || ""}
+                onChange={(e) => setFormData(prev => ({ ...prev, parking: e.target.value }))}
+                placeholder={t('restaurantProfile.parkingPlaceholder')}
+                rows={2}
               />
             </div>
 

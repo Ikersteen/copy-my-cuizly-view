@@ -1357,6 +1357,10 @@
     }
   },
   "restaurantProfile": {
+    "dressCode": "Dress Code",
+    "dressCodePlaceholder": "Ex: Casual, Smart casual, Formal...",
+    "parking": "Parking",
+    "parkingPlaceholder": "Ex: Free parking available, Valet available...",
     "title": "Restaurant Profile",
     "description": "Edit your restaurant information, logo and cover photo",
     "images": "Restaurant images",

@@ -1172,7 +1172,11 @@
     "createOffer": {
       "cancel": "Annuler"
     },
-    "restaurantProfile": {
+  "restaurantProfile": {
+    "dressCode": "Code vestimentaire",
+    "dressCodePlaceholder": "Ex: Décontracté, Élégant, Formel...",
+    "parking": "Stationnement",
+    "parkingPlaceholder": "Ex: Stationnement gratuit disponible, Valet disponible...",
       "cancel": "Annuler"
     }
   },

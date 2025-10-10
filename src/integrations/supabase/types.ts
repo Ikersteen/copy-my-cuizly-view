@@ -573,6 +573,7 @@ export type Database = {
           description_en: string | null
           description_fr: string | null
           dietary_restrictions: string[] | null
+          dress_code: string | null
           email: string | null
           facebook_url: string | null
           id: string
@@ -582,6 +583,7 @@ export type Database = {
           name: string
           opening_hours: Json | null
           owner_id: string
+          parking: string | null
           phone: string | null
           price_range: string | null
           reservations_enabled: boolean
@@ -600,6 +602,7 @@ export type Database = {
           description_en?: string | null
           description_fr?: string | null
           dietary_restrictions?: string[] | null
+          dress_code?: string | null
           email?: string | null
           facebook_url?: string | null
           id?: string
@@ -609,6 +612,7 @@ export type Database = {
           name: string
           opening_hours?: Json | null
           owner_id: string
+          parking?: string | null
           phone?: string | null
           price_range?: string | null
           reservations_enabled?: boolean
@@ -627,6 +631,7 @@ export type Database = {
           description_en?: string | null
           description_fr?: string | null
           dietary_restrictions?: string[] | null
+          dress_code?: string | null
           email?: string | null
           facebook_url?: string | null
           id?: string
@@ -636,6 +641,7 @@ export type Database = {
           name?: string
           opening_hours?: Json | null
           owner_id?: string
+          parking?: string | null
           phone?: string | null
           price_range?: string | null
           reservations_enabled?: boolean

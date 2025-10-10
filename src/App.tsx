@@ -29,6 +29,7 @@ import VoiceChat from "./pages/VoiceChat";
 import RestaurantMenu from "./pages/RestaurantMenu";
 import EmailConfirmed from "./pages/EmailConfirmed";
 import RestaurantReservations from "./pages/RestaurantReservations";
+import ConsumerReservations from "./pages/ConsumerReservations";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -146,6 +147,12 @@ const AppContent = () => {
             <RestaurantReservations />
           </>
         } />
+        <Route path="/my-reservations" element={
+          <>
+            <Header />
+            <ConsumerReservations />
+          </>
+        } />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
 
         {/* French routes */}
@@ -215,6 +222,12 @@ const AppContent = () => {
           <>
             <Header />
             <RestaurantReservations />
+          </>
+        } />
+        <Route path="/mes-reservations" element={
+          <>
+            <Header />
+            <ConsumerReservations />
           </>
         } />
         <Route path="/courriel-confirme" element={<EmailConfirmed />} />

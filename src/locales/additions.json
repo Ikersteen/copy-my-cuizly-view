@@ -1,0 +1,66 @@
+{
+  "fr": {
+    "restaurantProfile": {
+      "dressCode": "Code vestimentaire",
+      "dressCodePlaceholder": "Ex: Décontracté, Élégant, Formel...",
+      "parking": "Stationnement",
+      "parkingPlaceholder": "Ex: Stationnement gratuit disponible, Valet disponible..."
+    },
+    "reservation": {
+      "myReservations": "Mes réservations",
+      "viewAllReservations": "Consultez toutes vos réservations passées et à venir",
+      "noReservations": "Aucune réservation pour le moment",
+      "errorLoading": "Erreur lors du chargement des réservations",
+      "guests": "personnes",
+      "phone": "Téléphone",
+      "cancellationReason": "Raison de l'annulation",
+      "status": {
+        "pending": "En attente",
+        "confirmed": "Confirmée",
+        "cancelled": "Annulée",
+        "completed": "Complétée",
+        "no_show": "Absent"
+      }
+    },
+    "map": {
+      "directions": "Itinéraire",
+      "mapView": "Vue de la carte"
+    },
+    "social": {
+      "viewInstagram": "Voir le profil Instagram",
+      "viewFacebook": "Voir la page Facebook"
+    }
+  },
+  "en": {
+    "restaurantProfile": {
+      "dressCode": "Dress Code",
+      "dressCodePlaceholder": "Ex: Casual, Smart casual, Formal...",
+      "parking": "Parking",
+      "parkingPlaceholder": "Ex: Free parking available, Valet available..."
+    },
+    "reservation": {
+      "myReservations": "My Reservations",
+      "viewAllReservations": "View all your past and upcoming reservations",
+      "noReservations": "No reservations at the moment",
+      "errorLoading": "Error loading reservations",
+      "guests": "guests",
+      "phone": "Phone",
+      "cancellationReason": "Cancellation reason",
+      "status": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "cancelled": "Cancelled",
+        "completed": "Completed",
+        "no_show": "No show"
+      }
+    },
+    "map": {
+      "directions": "Directions",
+      "mapView": "Map view"
+    },
+    "social": {
+      "viewInstagram": "View Instagram profile",
+      "viewFacebook": "View Facebook page"
+    }
+  }
+}

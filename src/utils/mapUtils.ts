@@ -1,4 +1,11 @@
-// Fonction pour ouvrir l'itinéraire vers une adresse
+// Fonction pour obtenir l'URL de la carte intégrée
+// Cette fonction retourne l'adresse formatée pour être utilisée avec EmbeddedMapModal
+export const getEmbeddedMapUrl = (address: string): string => {
+  if (!address) return '';
+  return address;
+};
+
+// Fonction pour ouvrir l'itinéraire vers une adresse (legacy - à remplacer par EmbeddedMapModal)
 export const openDirections = (address: string) => {
   if (!address) return;
 

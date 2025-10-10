@@ -56,7 +56,7 @@ export const RestaurantProfileModal = ({
   const { currentLanguage } = useLanguage();
   const { updateProfile } = useProfile();
   const { primaryAddress: restaurantAddress, createAddress, updateAddress: updateAddressHook } = useAddresses('restaurant');
-  const [formData, setFormData] = useState<Partial<Restaurant>>({});
+  const [formData, setFormData] = useState<Partial<Restaurant & { dress_code?: string; parking?: string }>>({});
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
@@ -91,7 +91,9 @@ export const RestaurantProfileModal = ({
         cover_image_url: restaurant.cover_image_url || "",
         chef_emoji_color: "",
         delivery_radius: restaurant.delivery_radius || 5,
-        restaurant_specialties: restaurant.restaurant_specialties || []
+        restaurant_specialties: restaurant.restaurant_specialties || [],
+        dress_code: (restaurant as any).dress_code || "",
+        parking: (restaurant as any).parking || ""
       });
     }
   }, [restaurant, open, restaurantAddress]);
@@ -160,7 +162,9 @@ export const RestaurantProfileModal = ({
         cuisine_type: formData.cuisine_type ? sanitizeStringArray(formData.cuisine_type) : formData.cuisine_type,
         dietary_restrictions: formData.dietary_restrictions || [],
         allergens: formData.allergens || [],
-        restaurant_specialties: formData.restaurant_specialties || []
+        restaurant_specialties: formData.restaurant_specialties || [],
+        dress_code: formData.dress_code ? validateTextInput(formData.dress_code, INPUT_LIMITS.DESCRIPTION).sanitized : formData.dress_code,
+        parking: formData.parking ? validateTextInput(formData.parking, INPUT_LIMITS.DESCRIPTION).sanitized : formData.parking
       };
 
       const { error: updateError } = await supabase
@@ -720,6 +724,32 @@ export const RestaurantProfileModal = ({
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <Separator />
+
+          {/* Code vestimentaire */}
+          <div className="space-y-2">
+            <Label htmlFor="dress_code">{t('restaurantProfile.dressCode')}</Label>
+            <Textarea
+              id="dress_code"
+              value={formData.dress_code || ""}
+              onChange={(e) => setFormData(prev => ({ ...prev, dress_code: e.target.value }))}
+              placeholder={t('restaurantProfile.dressCodePlaceholder')}
+              rows={2}
+            />
+          </div>
+
+          {/* Stationnement */}
+          <div className="space-y-2">
+            <Label htmlFor="parking">{t('restaurantProfile.parking')}</Label>
+            <Textarea
+              id="parking"
+              value={formData.parking || ""}
+              onChange={(e) => setFormData(prev => ({ ...prev, parking: e.target.value }))}
+              placeholder={t('restaurantProfile.parkingPlaceholder')}
+              rows={2}
+            />
           </div>
 
           <Separator />
