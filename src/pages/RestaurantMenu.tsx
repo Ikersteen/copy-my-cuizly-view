@@ -508,28 +508,23 @@ export default function RestaurantMenu() {
                           )}
                           
                           <div className="space-y-3">
-                            <div className="flex flex-wrap gap-2 items-start">
-                              <Badge variant="outline">
-                                {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
-                              </Badge>
-                              <div className="flex flex-col gap-2 flex-1 min-w-0">
+                            <div className="flex flex-col gap-2">
                               {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
                                 <div className="text-sm text-muted-foreground">
-                                  <span className="font-medium">{t('menus.dietaryRestrictions')}</span> {menu.dietary_restrictions.map(dr => 
+                                  <span className="font-medium">{t('menus.dietaryRestrictions')}:</span> {menu.dietary_restrictions.map(dr => 
                                     DIETARY_RESTRICTIONS_TRANSLATIONS[dr as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[currentLanguage] || dr
                                   ).join(', ')}
                                 </div>
                               )}
-                               {menu.allergens && menu.allergens.length > 0 && (
-                                 <div className="text-sm text-muted-foreground">
-                                   <div className="flex items-center gap-2">
-                                     <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
-                                     <span className="font-medium">{t('menus.allergens')}</span> {menu.allergens.map(allergen => 
-                                       ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[currentLanguage] || allergen
-                                     ).join(', ')}
-                                   </div>
-                                 </div>
-                               )}
+                              {menu.allergens && menu.allergens.length > 0 && (
+                                <div className="text-sm text-muted-foreground">
+                                  <span className="font-medium">{t('menus.allergens')}:</span> {menu.allergens.map(allergen => 
+                                    ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[currentLanguage] || allergen
+                                  ).join(', ')}
+                                </div>
+                              )}
+                              <div className="text-sm text-muted-foreground">
+                                <span className="font-medium">{t('restaurant.cuisineType')}:</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
                               </div>
                             </div>
                             <p className="text-sm text-foreground line-clamp-3">
@@ -542,7 +537,6 @@ export default function RestaurantMenu() {
                                 className="w-full"
                                 onClick={() => window.open(menu.pdf_menu_url, '_blank')}
                               >
-                                <ChefHat className="h-4 w-4 mr-2" />
                                 {t('menusModal.viewPdfMenu')}
                               </Button>
                             )}
