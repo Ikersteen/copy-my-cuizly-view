@@ -12,7 +12,7 @@ import { CommentModal } from "@/components/CommentModal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
-import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { EmbeddedMapModal } from "@/components/EmbeddedMapModal";
 import { SocialMediaModal } from "@/components/SocialMediaModal";
 import { ReservationModal } from "@/components/ReservationModal";
@@ -507,19 +507,23 @@ export default function RestaurantMenu() {
                                 {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
                               </Badge>
                               <div className="flex flex-col gap-2 flex-1 min-w-0">
-                                {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
-                                  <div className="text-sm text-muted-foreground">
-                                    <span className="font-medium">{t('menus.dietaryRestrictions')}</span> {menu.dietary_restrictions.join(', ')}
-                                  </div>
-                                )}
-                                 {menu.allergens && menu.allergens.length > 0 && (
-                                   <div className="text-sm text-muted-foreground">
-                                     <div className="flex items-center gap-2">
-                                       <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
-                                       <span className="font-medium">{t('menus.allergens')}</span> {menu.allergens.join(', ')}
-                                     </div>
+                              {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
+                                <div className="text-sm text-muted-foreground">
+                                  <span className="font-medium">{t('menus.dietaryRestrictions')}</span> {menu.dietary_restrictions.map(dr => 
+                                    DIETARY_RESTRICTIONS_TRANSLATIONS[dr as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[currentLanguage] || dr
+                                  ).join(', ')}
+                                </div>
+                              )}
+                               {menu.allergens && menu.allergens.length > 0 && (
+                                 <div className="text-sm text-muted-foreground">
+                                   <div className="flex items-center gap-2">
+                                     <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                                     <span className="font-medium">{t('menus.allergens')}</span> {menu.allergens.map(allergen => 
+                                       ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[currentLanguage] || allergen
+                                     ).join(', ')}
                                    </div>
-                                 )}
+                                 </div>
+                               )}
                               </div>
                             </div>
                             <p className="text-sm text-foreground line-clamp-3">

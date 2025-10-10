@@ -533,9 +533,9 @@
   },
   "menus": {
     "title": "Tous les menus disponibles",
-      "cuisineTypes": "Types de cuisine",
-      "serviceTypes": "Types de service", 
-      "specialties": "Spécialités",
+    "cuisineTypes": "Types de cuisine",
+    "serviceTypes": "Types de service", 
+    "specialties": "Spécialités",
     "subtitle": "Découvrez les délicieux menus proposés par nos restaurants partenaires",
     "noMenus": "Aucun menu disponible",
     "comeBack": "Ce restaurant n'a pas encore ajouté de menus",
@@ -545,7 +545,9 @@
     "comment": "Commentaire",
     "dietaryRestrictions": "Restrictions alimentaires :",
     "allergens": "Allergènes :",
-    "menuImage": "Image du menu"
+    "menuImage": "Image du menu",
+    "noMenusAvailable": "Aucun menu disponible",
+    "noMenusYet": "Ce restaurant n'a pas encore ajouté de menus"
   },
   "analytics": {
     "title": "Tableau de performance en temps réel",

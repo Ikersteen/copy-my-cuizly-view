@@ -538,14 +538,16 @@
     "specialties": "Specialties",
     "subtitle": "Discover the delicious menus offered by our partner restaurants",
     "noMenus": "No menus available",
-    "comeBack": "This restaurant hasn't added menus yet",
+    "comeBack": "This restaurant hasn't added any menus yet",
     "addedOn": "Added on",
     "loading": "Loading menus...",
     "unknownRestaurant": "Unknown restaurant",
     "comment": "Comment",
     "dietaryRestrictions": "Dietary restrictions:",
     "allergens": "Allergens:",
-    "menuImage": "Menu image"
+    "menuImage": "Menu image",
+    "noMenusAvailable": "No menus available",
+    "noMenusYet": "This restaurant hasn't added any menus yet"
   },
   "analytics": {
     "title": "Real-time Performance Dashboard",
