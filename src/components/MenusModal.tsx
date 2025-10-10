@@ -576,12 +576,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                              📄 {t('menusModal.viewPdfMenu')}
                            </a>
                          )}
-                      </div>
-                      <p className="text-sm text-foreground mb-3">
-                        {menu.description}
-                      </p>
-                      
-                      {(menu.dietary_restrictions?.length > 0 || menu.allergens?.length > 0) && (
+                       </div>
+                       
+                       {(menu.dietary_restrictions?.length > 0 || menu.allergens?.length > 0) && (
                         <div className="mb-3 space-y-2">
                            {menu.dietary_restrictions?.length > 0 && (
                              <div>
