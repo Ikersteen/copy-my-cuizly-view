@@ -1,10 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTranslation } from "react-i18next";
-import GoogleMap from "@/components/GoogleMap";
-import { useGoogleMapsKey } from "@/hooks/useGoogleMapsKey";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
+import { useGoogleMapsKey } from "@/hooks/useGoogleMapsKey";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface EmbeddedMapModalProps {
   open: boolean;
@@ -24,6 +23,9 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
       : `https://maps.google.com/?q=${encodedAddress}`;
     window.open(url, '_blank');
   };
+
+  const encodedAddress = encodeURIComponent(address);
+  const mapEmbedUrl = apiKey ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodedAddress}` : '';
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -55,10 +57,15 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
             </div>
           )}
           {apiKey && !loading && !error && (
-            <GoogleMap 
-              apiKey={apiKey}
-              center={{ lat: 45.5017, lng: -73.5673 }}
-              zoom={15}
+            <iframe
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src={mapEmbedUrl}
+              title={`Carte de ${address}`}
             />
           )}
         </div>
