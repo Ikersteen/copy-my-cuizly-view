@@ -847,6 +847,7 @@
     "pdfMenuUrl": "PDF menu link (optional)",
     "pdfMenuUrlPlaceholder": "https://example.com/menu.pdf",
     "viewPdfMenu": "View PDF menu",
+    "viewMenu": "View menu",
     "dietaryCompatible": "Compatible diets",
     "allergensPresent": "Allergens present",
     "addThisMenu": "Add this menu",

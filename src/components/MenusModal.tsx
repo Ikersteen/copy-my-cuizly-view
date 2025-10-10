@@ -546,60 +546,44 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         </div>
                       )}
                       
-                       <div className="space-y-2">
-                         <div className="flex items-center justify-between">
-                            <Badge variant="outline" className="text-sm">
-                          {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || menu.cuisine_type}
-                         </Badge>
-                         <Badge 
-                           variant={menu.is_active ? "default" : "secondary"}
-                           className="text-sm"
-                         >
-                           {menu.is_active ? t('menusModal.activeStatus') : t('menusModal.inactiveStatus')}
-                         </Badge>
-                         </div>
-                         {menu.category && (
-                           <div className="text-sm text-muted-foreground">
-                             {menu.category}{menu.subcategory && <span> › {menu.subcategory}</span>}
-                           </div>
-                         )}
-                         {menu.pdf_menu_url && (
-                           <a 
-                             href={menu.pdf_menu_url} 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
-                           >
-                             📄 {t('menusModal.viewPdfMenu')}
-                           </a>
-                         )}
-                         
-                        {menu.dietary_restrictions?.length > 0 && (
-                          <div className="pt-2">
-                            <p className="text-sm text-muted-foreground mb-2">{t('menusModal.dietaryCompatible')}</p>
-                            <div className="flex flex-wrap gap-1.5">
-                              {menu.dietary_restrictions.map(restriction => (
-                                <Badge key={restriction} variant="default" className="text-sm">
-                                  {DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
-                                </Badge>
-                              ))}
-                            </div>
+                        <div className="space-y-1.5">
+                          <div className="text-sm text-foreground">
+                            <span className="text-muted-foreground">{t('menusModal.cuisineType')} :</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || menu.cuisine_type}
                           </div>
-                        )}
-                        
-                        {menu.allergens?.length > 0 && (
-                          <div className="pt-2">
-                            <p className="text-sm text-muted-foreground mb-2">{t('menusModal.allergensPresent')}</p>
-                            <div className="flex flex-wrap gap-1.5">
-                              {menu.allergens.map(allergen => (
-                                <Badge key={allergen} variant="outline" className="text-sm">
-                                  {ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
-                                </Badge>
-                              ))}
+                          
+                          {menu.category && (
+                            <div className="text-sm text-foreground">
+                              {menu.category}{menu.subcategory && <span> › {menu.subcategory}</span>}
                             </div>
-                          </div>
-                        )}
-                       </div>
+                          )}
+                          
+                          {menu.dietary_restrictions?.length > 0 && (
+                            <div className="text-sm text-foreground">
+                              <span className="text-muted-foreground">{t('menusModal.dietaryCompatible')} :</span> {menu.dietary_restrictions.map(restriction => 
+                                DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']
+                              ).join(', ')}
+                            </div>
+                          )}
+                          
+                          {menu.allergens?.length > 0 && (
+                            <div className="text-sm text-foreground">
+                              <span className="text-muted-foreground">{t('menusModal.allergensPresent')} :</span> {menu.allergens.map(allergen => 
+                                ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']
+                              ).join(', ')}
+                            </div>
+                          )}
+                          
+                          {menu.pdf_menu_url && (
+                            <a 
+                              href={menu.pdf_menu_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
+                            >
+                              📄 {t('menusModal.viewMenu')}
+                            </a>
+                          )}
+                        </div>
 
                       <div className="flex gap-2">
                         <Button
