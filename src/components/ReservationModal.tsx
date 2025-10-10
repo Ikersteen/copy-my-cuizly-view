@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { useReservations } from "@/hooks/useReservations";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 interface ReservationModalProps {
   isOpen: boolean;
@@ -21,6 +23,7 @@ export const ReservationModal = ({
   restaurantId,
   restaurantName,
 }: ReservationModalProps) => {
+  const { t } = useTranslation();
   const { user } = useUserProfile();
   const { createReservation } = useReservations(user?.id);
   
@@ -37,32 +40,41 @@ export const ReservationModal = ({
     
     if (!date || !time || !user?.id) return;
 
-    await createReservation.mutateAsync({
-      restaurant_id: restaurantId,
-      user_id: user.id,
-      reservation_date: date.toISOString().split("T")[0],
-      reservation_time: time,
-      party_size: parseInt(partySize),
-      customer_name: name,
-      customer_email: email,
-      customer_phone: phone || undefined,
-      special_requests: specialRequests || undefined,
-    });
+    try {
+      await createReservation.mutateAsync({
+        restaurant_id: restaurantId,
+        user_id: user.id,
+        reservation_date: date.toISOString().split("T")[0],
+        reservation_time: time,
+        party_size: parseInt(partySize),
+        customer_name: name,
+        customer_email: email,
+        customer_phone: phone || undefined,
+        special_requests: specialRequests || undefined,
+      });
 
-    onClose();
+      toast.success(t("reservation.success"), {
+        description: t("reservation.successMessage"),
+      });
+      onClose();
+    } catch (error) {
+      toast.error(t("reservation.error"), {
+        description: t("reservation.errorMessage"),
+      });
+    }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Réserver chez {restaurantName}</DialogTitle>
+          <DialogTitle>{t("reservation.title", { restaurantName })}</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <Label>Date de réservation</Label>
+              <Label>{t("reservation.date")}</Label>
               <Calendar
                 mode="single"
                 selected={date}
@@ -73,7 +85,7 @@ export const ReservationModal = ({
             </div>
 
             <div>
-              <Label htmlFor="time">Heure</Label>
+              <Label htmlFor="time">{t("reservation.time")}</Label>
               <Input
                 id="time"
                 type="time"
@@ -84,7 +96,7 @@ export const ReservationModal = ({
             </div>
 
             <div>
-              <Label htmlFor="partySize">Nombre de personnes</Label>
+              <Label htmlFor="partySize">{t("reservation.partySize")}</Label>
               <Input
                 id="partySize"
                 type="number"
@@ -97,7 +109,7 @@ export const ReservationModal = ({
             </div>
 
             <div>
-              <Label htmlFor="name">Nom complet</Label>
+              <Label htmlFor="name">{t("reservation.fullName")}</Label>
               <Input
                 id="name"
                 value={name}
@@ -107,7 +119,7 @@ export const ReservationModal = ({
             </div>
 
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("reservation.email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -118,7 +130,7 @@ export const ReservationModal = ({
             </div>
 
             <div>
-              <Label htmlFor="phone">Téléphone (optionnel)</Label>
+              <Label htmlFor="phone">{t("reservation.phoneOptional")}</Label>
               <Input
                 id="phone"
                 type="tel"
@@ -128,12 +140,12 @@ export const ReservationModal = ({
             </div>
 
             <div>
-              <Label htmlFor="specialRequests">Demandes spéciales (optionnel)</Label>
+              <Label htmlFor="specialRequests">{t("reservation.specialRequests")}</Label>
               <Textarea
                 id="specialRequests"
                 value={specialRequests}
                 onChange={(e) => setSpecialRequests(e.target.value)}
-                placeholder="Allergies, occasions spéciales, etc."
+                placeholder={t("reservation.specialRequestsPlaceholder")}
                 rows={3}
               />
             </div>
@@ -141,10 +153,10 @@ export const ReservationModal = ({
 
           <div className="flex gap-3 justify-end">
             <Button type="button" variant="outline" onClick={onClose}>
-              Annuler
+              {t("reservation.cancel")}
             </Button>
             <Button type="submit" disabled={!date || !time}>
-              Confirmer la réservation
+              {t("reservation.confirm")}
             </Button>
           </div>
         </form>

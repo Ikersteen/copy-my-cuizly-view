@@ -2233,6 +2233,25 @@
     "notSpecifiedFeminine": "Non renseignée",
     "notDefined": "Non défini"
   },
+  "reservation": {
+    "title": "Réserver chez {{restaurantName}}",
+    "makeReservation": "Réserver",
+    "date": "Date de réservation",
+    "time": "Heure",
+    "partySize": "Nombre de personnes",
+    "fullName": "Nom complet",
+    "email": "Courriel",
+    "phone": "Téléphone",
+    "phoneOptional": "Téléphone (optionnel)",
+    "specialRequests": "Demandes spéciales (optionnel)",
+    "specialRequestsPlaceholder": "Allergies, occasions spéciales, etc.",
+    "cancel": "Annuler",
+    "confirm": "Confirmer la réservation",
+    "success": "Réservation confirmée",
+    "successMessage": "Votre réservation a été confirmée avec succès",
+    "error": "Erreur de réservation",
+    "errorMessage": "Une erreur est survenue lors de la réservation"
+  },
   "accessibility": {
     "voiceAssistant": "Assistant vocal",
     "backToTop": "Retour en haut de la page"

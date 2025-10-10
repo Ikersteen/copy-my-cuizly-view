@@ -1791,6 +1791,25 @@
     "notSpecifiedFeminine": "Not specified",
     "notDefined": "Not defined"
   },
+  "reservation": {
+    "title": "Book at {{restaurantName}}",
+    "makeReservation": "Book",
+    "date": "Reservation date",
+    "time": "Time",
+    "partySize": "Number of people",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "phoneOptional": "Phone (optional)",
+    "specialRequests": "Special requests (optional)",
+    "specialRequestsPlaceholder": "Allergies, special occasions, etc.",
+    "cancel": "Cancel",
+    "confirm": "Confirm reservation",
+    "success": "Reservation confirmed",
+    "successMessage": "Your reservation has been confirmed successfully",
+    "error": "Reservation error",
+    "errorMessage": "An error occurred while making the reservation"
+  },
   "accessibility": {
     "voiceAssistant": "Voice assistant",
     "backToTop": "Back to top"
