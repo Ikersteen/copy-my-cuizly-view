@@ -103,6 +103,7 @@ interface Restaurant {
   restaurant_specialties?: string[];
   instagram_url?: string;
   facebook_url?: string;
+  reservations_enabled?: boolean;
 }
 
 export default function RestaurantMenu() {
@@ -509,14 +510,16 @@ export default function RestaurantMenu() {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t">
-              <Button 
-                className="flex-1"
-                onClick={() => setShowReservationModal(true)}
-                variant="default"
-              >
-                <Calendar className="h-4 w-4 mr-2" />
-                {t('reservation.makeReservation')}
-              </Button>
+              {restaurant?.reservations_enabled && (
+                <Button 
+                  className="flex-1"
+                  onClick={() => setShowReservationModal(true)}
+                  variant="default"
+                >
+                  <Calendar className="h-4 w-4 mr-1" />
+                  {t('reservation.makeReservation')}
+                </Button>
+              )}
               <Button 
                 className="flex-1"
                 onClick={() => setShowCommentModal(true)}

@@ -575,6 +575,7 @@ export type Database = {
           owner_id: string
           phone: string | null
           price_range: string | null
+          reservations_enabled: boolean
           restaurant_specialties: string[] | null
           service_types: string[] | null
           updated_at: string
@@ -601,6 +602,7 @@ export type Database = {
           owner_id: string
           phone?: string | null
           price_range?: string | null
+          reservations_enabled?: boolean
           restaurant_specialties?: string[] | null
           service_types?: string[] | null
           updated_at?: string
@@ -627,6 +629,7 @@ export type Database = {
           owner_id?: string
           phone?: string | null
           price_range?: string | null
+          reservations_enabled?: boolean
           restaurant_specialties?: string[] | null
           service_types?: string[] | null
           updated_at?: string

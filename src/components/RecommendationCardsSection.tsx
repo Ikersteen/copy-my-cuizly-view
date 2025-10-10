@@ -27,6 +27,7 @@ interface Restaurant {
   logo_url?: string;
   score?: number;
   reasons?: (string | { text: string; type: string })[];
+  reservations_enabled?: boolean;
 }
 
 export const RecommendationCardsSection = () => {
@@ -880,17 +881,19 @@ export const RecommendationCardsSection = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      className="flex-1"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setReservationRestaurant({ id: restaurant.id, name: restaurant.name });
-                      }}
-                    >
-                      <Calendar className="h-4 w-4 mr-2" />
-                      {t('reservation.makeReservation')}
-                    </Button>
+                    {restaurant.reservations_enabled && (
+                      <Button
+                        variant="outline"
+                        className="flex-1"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setReservationRestaurant({ id: restaurant.id, name: restaurant.name });
+                        }}
+                      >
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {t('reservation.makeReservation')}
+                      </Button>
+                    )}
                     <Button
                       className="flex-1"
                       onClick={() => {

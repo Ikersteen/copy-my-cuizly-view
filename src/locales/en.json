@@ -1808,7 +1808,13 @@
     "success": "Reservation confirmed",
     "successMessage": "Your reservation has been confirmed successfully",
     "error": "Reservation error",
-    "errorMessage": "An error occurred while making the reservation"
+    "errorMessage": "An error occurred while making the reservation",
+    "enableReservations": "Enable reservations",
+    "disableReservations": "Disable reservations",
+    "reservationsEnabled": "Reservations enabled",
+    "reservationsDisabled": "Reservations disabled",
+    "reservationSettings": "Reservation settings",
+    "reservationSettingsDesc": "Manage the activation of the reservation system for your restaurant"
   },
   "accessibility": {
     "voiceAssistant": "Voice assistant",

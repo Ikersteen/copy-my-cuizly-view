@@ -10,6 +10,7 @@ import { useAddresses } from "@/hooks/useAddresses";
 import { OffersSection } from "@/components/OffersSection";
 import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { RestaurantReservationsSection } from "@/components/RestaurantReservationsSection";
+import { ReservationSettingsSection } from "@/components/ReservationSettingsSection";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
 import { useTranslation } from 'react-i18next';
@@ -223,6 +224,13 @@ const RestaurantDashboard = () => {
 
         {/* Section analytics */}
         <AnalyticsSection restaurantId={restaurant?.id} />
+        
+        {/* Paramètres de réservation */}
+        {restaurant?.id && (
+          <div className="mb-8">
+            <ReservationSettingsSection restaurantId={restaurant.id} />
+          </div>
+        )}
         
         {/* Section réservations */}
         {restaurant?.id && (
