@@ -355,6 +355,22 @@ export const RestaurantMenuModal = ({
                   <span className="font-medium">{t('restaurantMenu.specialties')}:</span> {restaurant.restaurant_specialties.join(' • ')}
                 </div>
               )}
+
+              {/* Dress Code */}
+              {(restaurant as any).dress_code && (
+                <div className="text-xs">
+                  <span className="font-medium text-foreground">{t('restaurantProfile.dressCode')}:</span>{' '}
+                  <span className="text-muted-foreground">{(restaurant as any).dress_code}</span>
+                </div>
+              )}
+
+              {/* Parking */}
+              {(restaurant as any).parking && (
+                <div className="text-xs">
+                  <span className="font-medium text-foreground">{t('restaurantProfile.parking')}:</span>{' '}
+                  <span className="text-muted-foreground">{(restaurant as any).parking}</span>
+                </div>
+              )}
             </TabsContent>
 
             {/* Menus Tab */}
