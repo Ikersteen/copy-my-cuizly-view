@@ -15,6 +15,8 @@ import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { openDirections } from "@/utils/mapUtils";
 import { ReservationModal } from "@/components/ReservationModal";
+import { EmbeddedMapModal } from "@/components/EmbeddedMapModal";
+import { SocialMediaModal } from "@/components/SocialMediaModal";
 
 const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
   const [rating, setRating] = useState<number | null>(null);
@@ -104,10 +106,12 @@ interface Restaurant {
   instagram_url?: string;
   facebook_url?: string;
   reservations_enabled?: boolean;
+  dress_code?: string;
+  parking?: string;
 }
 
 export default function RestaurantMenu() {
-  const { id } = useParams<{ id: string }>();
+  const { id: urlParam } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [menus, setMenus] = useState<Menu[]>([]);
@@ -115,28 +119,51 @@ export default function RestaurantMenu() {
   const [menusLoading, setMenusLoading] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [showMapModal, setShowMapModal] = useState(false);
+  const [showSocialModal, setShowSocialModal] = useState(false);
+  const [socialModalType, setSocialModalType] = useState<'instagram' | 'facebook'>('instagram');
+  const [socialModalUrl, setSocialModalUrl] = useState('');
   const { toggleFavorite, isFavorite } = useFavorites();
   const { toast } = useToast();
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (id) {
+    if (urlParam) {
       loadRestaurant();
+    }
+  }, [urlParam]);
+
+  useEffect(() => {
+    if (restaurant?.id) {
       loadMenus();
     }
-  }, [id]);
+  }, [restaurant?.id]);
 
   const loadRestaurant = async () => {
-    if (!id) return;
+    if (!urlParam) return;
     
     setLoading(true);
     try {
-      const { data, error } = await supabase.rpc('get_public_restaurants');
-
-      if (error) throw error;
+      // Check if urlParam is a UUID (old format) or a slug (new format)
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(urlParam);
       
-      const restaurant = data?.find(r => r.id === id);
+      let restaurant;
+      
+      if (isUUID) {
+        // Old format: direct ID lookup
+        const { data, error } = await supabase.rpc('get_public_restaurants');
+        if (error) throw error;
+        restaurant = data?.find(r => r.id === urlParam);
+      } else {
+        // New format: slug lookup
+        const { data, error } = await supabase.rpc('get_restaurant_by_slug', {
+          restaurant_slug: urlParam
+        });
+        if (error) throw error;
+        restaurant = data?.[0];
+      }
+      
       if (!restaurant) {
         throw new Error('Restaurant not found');
       }
@@ -155,14 +182,14 @@ export default function RestaurantMenu() {
   };
 
   const loadMenus = async () => {
-    if (!id) return;
+    if (!restaurant?.id) return;
     
     setMenusLoading(true);
     try {
       const { data, error } = await supabase
         .from('menus')
         .select('id, image_url, description, cuisine_type, is_active, dietary_restrictions, allergens')
-        .eq('restaurant_id', id)
+        .eq('restaurant_id', restaurant.id)
         .eq('is_active', true)
         .order('created_at', { ascending: false });
 
@@ -277,8 +304,10 @@ export default function RestaurantMenu() {
                       {restaurant.name}
                     </h1>
                     <div className="space-y-1 text-muted-foreground text-sm">
-                      <button 
-                        onClick={() => openDirections(restaurant.address)}
+                       <button 
+                        onClick={() => {
+                          setShowMapModal(true);
+                        }}
                         className="text-primary hover:underline transition-all cursor-pointer text-left"
                       >
                         {restaurant.address}
@@ -374,16 +403,26 @@ export default function RestaurantMenu() {
                       <div className="flex items-center gap-3">
                         <div className="flex gap-3">
                           {restaurant.instagram_url && (
-                            <a href={restaurant.instagram_url} target="_blank" rel="noopener noreferrer"
-                               className="w-8 h-8 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform">
+                            <button 
+                              onClick={() => {
+                                setSocialModalUrl(restaurant.instagram_url!);
+                                setSocialModalType('instagram');
+                                setShowSocialModal(true);
+                              }}
+                              className="w-8 h-8 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform">
                               <Instagram className="h-4 w-4 text-white" />
-                            </a>
+                            </button>
                           )}
                           {restaurant.facebook_url && (
-                            <a href={restaurant.facebook_url} target="_blank" rel="noopener noreferrer"
-                               className="w-8 h-8 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform">
+                            <button 
+                              onClick={() => {
+                                setSocialModalUrl(restaurant.facebook_url!);
+                                setSocialModalType('facebook');
+                                setShowSocialModal(true);
+                              }}
+                              className="w-8 h-8 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform">
                               <Facebook className="h-4 w-4 text-white" />
-                            </a>
+                            </button>
                           )}
                         </div>
                       </div>
@@ -423,6 +462,22 @@ export default function RestaurantMenu() {
                 {restaurant.restaurant_specialties && restaurant.restaurant_specialties.length > 0 && (
                   <div className="text-sm text-muted-foreground">
                     <span className="font-medium">{t('restaurantMenu.specialties')}:</span> {restaurant.restaurant_specialties.join(' • ')}
+                  </div>
+                )}
+
+                {/* Dress Code */}
+                {restaurant.dress_code && (
+                  <div className="space-y-2">
+                    <h4 className="font-medium">{t('restaurantProfile.dressCode')}</h4>
+                    <p className="text-sm text-muted-foreground">{restaurant.dress_code}</p>
+                  </div>
+                )}
+
+                {/* Parking */}
+                {restaurant.parking && (
+                  <div className="space-y-2">
+                    <h4 className="font-medium">{t('restaurantProfile.parking')}</h4>
+                    <p className="text-sm text-muted-foreground">{restaurant.parking}</p>
                   </div>
                 )}
               </TabsContent>
@@ -548,13 +603,28 @@ export default function RestaurantMenu() {
       />
       
       {restaurant && (
-        <ReservationModal
-          isOpen={showReservationModal}
-          onClose={() => setShowReservationModal(false)}
-          restaurantId={restaurant.id}
-          restaurantName={restaurant.name}
-          openingHours={restaurant.opening_hours}
-        />
+        <>
+          <ReservationModal
+            isOpen={showReservationModal}
+            onClose={() => setShowReservationModal(false)}
+            restaurantId={restaurant.id}
+            restaurantName={restaurant.name}
+            openingHours={restaurant.opening_hours}
+          />
+          
+          <EmbeddedMapModal
+            open={showMapModal}
+            onOpenChange={setShowMapModal}
+            address={restaurant.address}
+          />
+          
+          <SocialMediaModal
+            open={showSocialModal}
+            onOpenChange={setShowSocialModal}
+            url={socialModalUrl}
+            type={socialModalType}
+          />
+        </>
       )}
     </div>
   );
