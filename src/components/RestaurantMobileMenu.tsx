@@ -100,7 +100,7 @@ export const RestaurantMobileMenu = ({
                 onClick={() => handleMenuClick(onRestaurantProfileClick)}
               >
                 <ChefHat className="h-5 w-5 mr-3" />
-                <span className="text-base">{t('filters.restaurantProfile')}</span>
+                <span className="text-base">{t('filters.profile')}</span>
               </Button>
 
               <Button
