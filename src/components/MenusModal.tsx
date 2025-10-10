@@ -338,9 +338,6 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('menusModal.title')}</DialogTitle>
-          <DialogDescription>
-            {t('menusModal.description')}
-          </DialogDescription>
         </DialogHeader>
 
         {!restaurantId ? (
