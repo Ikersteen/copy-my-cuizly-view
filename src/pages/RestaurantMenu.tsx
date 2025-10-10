@@ -298,7 +298,7 @@ export default function RestaurantMenu() {
                     )}
                   </div>
                   
-                  {/* Restaurant Information */}
+                  {/* Informations du restaurant */}
                   <div className="flex-1 min-w-0">
                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
                       {restaurant.name}
@@ -312,24 +312,11 @@ export default function RestaurantMenu() {
                       >
                         {restaurant.address}
                       </button>
-                      <div className="flex items-center space-x-2 flex-wrap">
+                      <div className="flex items-center space-x-2">
                         {restaurant.price_range && (
                           <span className="font-medium">{restaurant.price_range}</span>
                         )}
                         <RatingDisplay restaurantId={restaurant.id} />
-                        {/* Service Types */}
-                        {restaurant.service_types && restaurant.service_types.length > 0 && (
-                          <>
-                            <span className="text-muted-foreground">•</span>
-                            <div className="flex flex-wrap gap-1">
-                              {restaurant.service_types.slice(0, 3).map((service: string, index: number) => (
-                                <Badge key={`header-service-${index}`} variant="outline" className="text-xs">
-                                  {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[currentLanguage] || service}
-                                </Badge>
-                              ))}
-                            </div>
-                          </>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -411,10 +398,10 @@ export default function RestaurantMenu() {
                       </div>
                     )}
                     
-                    {/* Social Media - Visible with Icons */}
+                    {/* Social Media */}
                     {(restaurant.instagram_url || restaurant.facebook_url) && (
-                      <div className="flex items-start gap-3">
-                        <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
+                        <div className="flex gap-3">
                           {restaurant.instagram_url && (
                             <button 
                               onClick={() => {
@@ -422,9 +409,8 @@ export default function RestaurantMenu() {
                                 setSocialModalType('instagram');
                                 setShowSocialModal(true);
                               }}
-                              className="w-9 h-9 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform shadow-md"
-                              aria-label="Instagram">
-                              <Instagram className="h-5 w-5 text-white" />
+                              className="w-8 h-8 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform">
+                              <Instagram className="h-4 w-4 text-white" />
                             </button>
                           )}
                           {restaurant.facebook_url && (
@@ -434,9 +420,8 @@ export default function RestaurantMenu() {
                                 setSocialModalType('facebook');
                                 setShowSocialModal(true);
                               }}
-                              className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform shadow-md"
-                              aria-label="Facebook">
-                              <Facebook className="h-5 w-5 text-white" />
+                              className="w-8 h-8 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform">
+                              <Facebook className="h-4 w-4 text-white" />
                             </button>
                           )}
                         </div>

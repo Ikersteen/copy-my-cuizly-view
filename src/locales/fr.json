@@ -1857,7 +1857,7 @@
   },
   "filters": {
     "newOffer": "Nouvelle offre",
-    "restaurantProfile": "Profil",
+    "restaurantProfile": "Profil du restaurant",
     "manageMenus": "Menus",
     "welcomeMessage": "Bienvenue dans votre espace restaurateur !",
     "welcomeDesc": "Gérez votre restaurant, vos offres et vos menus en toute simplicité.",
@@ -1874,8 +1874,7 @@
     "stars": "étoiles",
     "maximumDistance": "Distance maximum",
     "applyFilters": "Appliquer les filtres",
-    "reset": "Réinitialiser",
-    "profile": "Profil"
+    "reset": "Réinitialiser"
   },
   "menus": {
     "errorLoading": "Erreur lors du chargement des menus",

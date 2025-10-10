@@ -1528,7 +1528,7 @@
   },
   "filters": {
     "newOffer": "New offer",
-    "restaurantProfile": "Profile",
+    "restaurantProfile": "Restaurant profile",
     "manageMenus": "Menus",
     "welcomeMessage": "Welcome to your restaurant space!",
     "welcomeDesc": "Manage your restaurant, offers and menus with ease.",
@@ -1545,8 +1545,7 @@
     "stars": "stars",
     "maximumDistance": "Maximum distance",
     "applyFilters": "Apply filters",
-    "reset": "Reset",
-    "profile": "Profile"
+    "reset": "Reset"
   },
   "menus": {
     "errorLoading": "Error loading menus",
