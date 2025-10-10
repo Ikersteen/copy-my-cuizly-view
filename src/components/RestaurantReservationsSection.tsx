@@ -32,20 +32,7 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
   };
 
   const getStatusLabel = (status: string) => {
-    switch (status) {
-      case "confirmed":
-        return "Confirmée";
-      case "pending":
-        return "En attente";
-      case "cancelled":
-        return "Annulée";
-      case "completed":
-        return "Complétée";
-      case "no_show":
-        return "Absent";
-      default:
-        return status;
-    }
+    return t(`reservation.status.${status}`) || status;
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
@@ -61,7 +48,7 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
     return (
       <Card>
         <CardContent className="py-8 text-center">
-          <div className="text-muted-foreground">Chargement des réservations...</div>
+          <div className="text-muted-foreground">{t("common.loading")}</div>
         </CardContent>
       </Card>
     );
@@ -74,7 +61,7 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
           <CardTitle className="text-xl">{t("reservation.reservations")}</CardTitle>
         </CardHeader>
         <CardContent className="py-8 text-center text-muted-foreground">
-          Aucune réservation pour le moment
+          {t("reservation.noReservations")}
         </CardContent>
       </Card>
     );
@@ -111,7 +98,7 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Users className="h-4 w-4 text-muted-foreground" />
-                  <span>{reservation.party_size} personnes</span>
+                  <span>{reservation.party_size} {t("reservation.guests")}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Mail className="h-4 w-4 text-muted-foreground" />
@@ -128,7 +115,7 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
 
               {reservation.special_requests && (
                 <div className="text-sm">
-                  <p className="font-medium mb-1">Demandes spéciales:</p>
+                  <p className="font-medium mb-1">{t("reservation.specialRequests")}:</p>
                   <p className="text-muted-foreground">{reservation.special_requests}</p>
                 </div>
               )}
@@ -139,14 +126,14 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
                     size="sm"
                     onClick={() => handleStatusChange(reservation.id, "confirmed")}
                   >
-                    Confirmer
+                    {t("reservation.confirmButton")}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleStatusChange(reservation.id, "cancelled")}
                   >
-                    Refuser
+                    {t("reservation.rejectButton")}
                   </Button>
                 </div>
               )}
@@ -157,14 +144,14 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
                     size="sm"
                     onClick={() => handleStatusChange(reservation.id, "completed")}
                   >
-                    Marquer comme complétée
+                    {t("reservation.markAsCompleted")}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleStatusChange(reservation.id, "no_show")}
                   >
-                    Client absent
+                    {t("reservation.markAsNoShow")}
                   </Button>
                 </div>
               )}
