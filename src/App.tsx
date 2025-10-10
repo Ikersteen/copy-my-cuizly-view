@@ -28,6 +28,7 @@ import Waitlist from "./pages/Waitlist";
 import VoiceChat from "./pages/VoiceChat";
 import RestaurantMenu from "./pages/RestaurantMenu";
 import EmailConfirmed from "./pages/EmailConfirmed";
+import RestaurantReservations from "./pages/RestaurantReservations";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -139,6 +140,12 @@ const AppContent = () => {
           </>
         } />
         <Route path="/restaurant/:id" element={<RestaurantMenu />} />
+        <Route path="/restaurant/reservations" element={
+          <>
+            <Header />
+            <RestaurantReservations />
+          </>
+        } />
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
 
         {/* French routes */}
@@ -202,6 +209,12 @@ const AppContent = () => {
           <>
             <Header />
             <VoiceChat />
+          </>
+        } />
+        <Route path="/restaurant/reservations" element={
+          <>
+            <Header />
+            <RestaurantReservations />
           </>
         } />
         <Route path="/courriel-confirme" element={<EmailConfirmed />} />

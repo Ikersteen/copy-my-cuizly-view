@@ -14,6 +14,7 @@ export const routeTranslations = {
   '/voice': '/assistant-vocal',
   '/dashboard': '/tableau-de-bord',
   '/restaurant': '/restaurant',
+  '/restaurant/reservations': '/restaurant/reservations',
   '/email-confirmed': '/courriel-confirme'
 } as const;
 
