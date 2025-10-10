@@ -208,6 +208,7 @@ export type Database = {
       menus: {
         Row: {
           allergens: string[] | null
+          category: string | null
           created_at: string
           cuisine_type: string | null
           description: string
@@ -215,11 +216,14 @@ export type Database = {
           id: string
           image_url: string
           is_active: boolean
+          pdf_menu_url: string | null
           restaurant_id: string
+          subcategory: string | null
           updated_at: string
         }
         Insert: {
           allergens?: string[] | null
+          category?: string | null
           created_at?: string
           cuisine_type?: string | null
           description: string
@@ -227,11 +231,14 @@ export type Database = {
           id?: string
           image_url: string
           is_active?: boolean
+          pdf_menu_url?: string | null
           restaurant_id: string
+          subcategory?: string | null
           updated_at?: string
         }
         Update: {
           allergens?: string[] | null
+          category?: string | null
           created_at?: string
           cuisine_type?: string | null
           description?: string
@@ -239,7 +246,9 @@ export type Database = {
           id?: string
           image_url?: string
           is_active?: boolean
+          pdf_menu_url?: string | null
           restaurant_id?: string
+          subcategory?: string | null
           updated_at?: string
         }
         Relationships: []

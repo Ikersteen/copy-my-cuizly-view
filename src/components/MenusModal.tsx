@@ -22,6 +22,9 @@ interface Menu {
   dietary_restrictions: string[];
   allergens: string[];
   is_active: boolean;
+  category?: string;
+  subcategory?: string;
+  pdf_menu_url?: string;
 }
 
 interface MenusModalProps {
@@ -41,7 +44,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
     image_url: "", 
     cuisine_type: "",
     dietary_restrictions: [] as string[],
-    allergens: [] as string[]
+    allergens: [] as string[],
+    category: "",
+    subcategory: "",
+    pdf_menu_url: ""
   });
   const [editingMenu, setEditingMenu] = useState<Menu | null>(null);
   const [photoAdjustmentOpen, setPhotoAdjustmentOpen] = useState(false);
@@ -180,10 +186,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
       return;
     }
 
-    if (menus.length >= 5) {
+    if (menus.length >= 200) {
       toast({
         title: t('common.error'),
-        description: t('menus.maxMenus'),
+        description: t('menus.maxMenus200'),
         variant: "destructive"
       });
       return;
@@ -199,7 +205,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           description: newMenu.description.trim(),
           cuisine_type: newMenu.cuisine_type.trim(),
           dietary_restrictions: newMenu.dietary_restrictions,
-          allergens: newMenu.allergens
+          allergens: newMenu.allergens,
+          category: newMenu.category?.trim() || null,
+          subcategory: newMenu.subcategory?.trim() || null,
+          pdf_menu_url: newMenu.pdf_menu_url?.trim() || null
         })
         .select()
         .single();
@@ -212,7 +221,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
         image_url: "", 
         cuisine_type: "",
         dietary_restrictions: [],
-        allergens: []
+        allergens: [],
+        category: "",
+        subcategory: "",
+        pdf_menu_url: ""
       });
       
       // Reload menus to ensure we have the latest data
@@ -298,7 +310,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
           cuisine_type: editingMenu.cuisine_type,
           image_url: editingMenu.image_url,
           dietary_restrictions: editingMenu.dietary_restrictions,
-          allergens: editingMenu.allergens
+          allergens: editingMenu.allergens,
+          category: editingMenu.category?.trim() || null,
+          subcategory: editingMenu.subcategory?.trim() || null,
+          pdf_menu_url: editingMenu.pdf_menu_url?.trim() || null
         })
         .eq('id', editingMenu.id);
 
@@ -406,7 +421,29 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                       </option>
                     ))}
-                  </select>
+                   </select>
+
+          <Label>{t('menusModal.category')}</Label>
+          <Input
+            value={newMenu.category}
+            onChange={(e) => setNewMenu(prev => ({ ...prev, category: e.target.value }))}
+            placeholder={t('menusModal.categoryPlaceholder')}
+          />
+
+          <Label>{t('menusModal.subcategory')}</Label>
+          <Input
+            value={newMenu.subcategory}
+            onChange={(e) => setNewMenu(prev => ({ ...prev, subcategory: e.target.value }))}
+            placeholder={t('menusModal.subcategoryPlaceholder')}
+          />
+
+          <Label>{t('menusModal.pdfMenuUrl')}</Label>
+          <Input
+            type="url"
+            value={newMenu.pdf_menu_url}
+            onChange={(e) => setNewMenu(prev => ({ ...prev, pdf_menu_url: e.target.value }))}
+            placeholder={t('menusModal.pdfMenuUrlPlaceholder')}
+          />
 
           <Label>{t('menusModal.description')} *</Label>
           <Textarea
@@ -459,11 +496,11 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                     ))}
                   </div>
 
-                  <Button 
-                    onClick={handleAddMenu}
-                    disabled={loading || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim() || menus.length >= 5}
-                    className="w-full"
-                  >
+                   <Button 
+                     onClick={handleAddMenu}
+                     disabled={loading || !newMenu.image_url || !newMenu.description.trim() || !newMenu.cuisine_type.trim() || menus.length >= 200}
+                     className="w-full"
+                   >
                     {loading ? (
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     ) : (
@@ -476,10 +513,10 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
             </CardContent>
           </Card>
 
-          {/* Liste des menus existants */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium">{t('menusModal.yourMenus')} ({menus.length}/5)</h3>
+           {/* Liste des menus existants */}
+           <div className="space-y-4">
+             <div className="flex items-center justify-between">
+               <h3 className="font-medium">{t('menusModal.yourMenus')} ({menus.length}/200)</h3>
               <Badge variant="outline">{menus.filter(m => m.is_active).length} {t('menusModal.active')}</Badge>
             </div>
 
@@ -510,8 +547,9 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         </div>
                       )}
                       
-                      <div className="mb-3 flex items-center justify-between">
-                           <Badge variant="outline">
+                       <div className="mb-3 space-y-2">
+                         <div className="flex items-center justify-between">
+                            <Badge variant="outline">
                           {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || menu.cuisine_type}
                          </Badge>
                          <Badge 
@@ -519,6 +557,23 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                          >
                            {menu.is_active ? t('menusModal.activeStatus') : t('menusModal.inactiveStatus')}
                          </Badge>
+                         </div>
+                         {menu.category && (
+                           <div className="text-xs text-muted-foreground">
+                             <span className="font-medium">{menu.category}</span>
+                             {menu.subcategory && <span> › {menu.subcategory}</span>}
+                           </div>
+                         )}
+                         {menu.pdf_menu_url && (
+                           <a 
+                             href={menu.pdf_menu_url} 
+                             target="_blank" 
+                             rel="noopener noreferrer"
+                             className="text-xs text-primary hover:underline flex items-center gap-1"
+                           >
+                             📄 {t('menusModal.viewPdfMenu')}
+                           </a>
+                         )}
                       </div>
                       <p className="text-sm text-foreground mb-3">
                         {menu.description}
@@ -647,7 +702,29 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                             {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en']}
                           </option>
                         ))}
-                      </select>
+                       </select>
+
+                      <Label>{t('menusModal.category')}</Label>
+                      <Input
+                        value={editingMenu.category || ""}
+                        onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, category: e.target.value }) : null)}
+                        placeholder={t('menusModal.categoryPlaceholder')}
+                      />
+
+                      <Label>{t('menusModal.subcategory')}</Label>
+                      <Input
+                        value={editingMenu.subcategory || ""}
+                        onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, subcategory: e.target.value }) : null)}
+                        placeholder={t('menusModal.subcategoryPlaceholder')}
+                      />
+
+                      <Label>{t('menusModal.pdfMenuUrl')}</Label>
+                      <Input
+                        type="url"
+                        value={editingMenu.pdf_menu_url || ""}
+                        onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, pdf_menu_url: e.target.value }) : null)}
+                        placeholder={t('menusModal.pdfMenuUrlPlaceholder')}
+                      />
 
                       <Label>{t('menusModal.description')} *</Label>
                       <Textarea
