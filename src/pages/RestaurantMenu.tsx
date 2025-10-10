@@ -103,6 +103,8 @@ interface Restaurant {
   restaurant_specialties?: string[];
   instagram_url?: string;
   facebook_url?: string;
+  dress_code?: string;
+  parking?: string;
   reservations_enabled?: boolean;
 }
 
@@ -423,6 +425,22 @@ export default function RestaurantMenu() {
                 {restaurant.restaurant_specialties && restaurant.restaurant_specialties.length > 0 && (
                   <div className="text-sm text-muted-foreground">
                     <span className="font-medium">{t('restaurantMenu.specialties')}:</span> {restaurant.restaurant_specialties.join(' • ')}
+                  </div>
+                )}
+
+                {/* Dress Code */}
+                {restaurant.dress_code && (
+                  <div className="text-sm">
+                    <span className="font-medium text-foreground">{t('restaurantProfile.dressCode')}:</span>{' '}
+                    <span className="text-muted-foreground">{restaurant.dress_code}</span>
+                  </div>
+                )}
+
+                {/* Parking */}
+                {restaurant.parking && (
+                  <div className="text-sm">
+                    <span className="font-medium text-foreground">{t('restaurantProfile.parking')}:</span>{' '}
+                    <span className="text-muted-foreground">{restaurant.parking}</span>
                   </div>
                 )}
               </TabsContent>
