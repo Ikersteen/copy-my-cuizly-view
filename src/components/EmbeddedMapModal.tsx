@@ -10,9 +10,9 @@ interface EmbeddedMapModalProps {
 export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapModalProps) => {
   const { t } = useTranslation();
   
-  // Encoder l'adresse pour l'URL Google Maps
+  // Encoder l'adresse pour l'URL Google Maps iframe
   const encodedAddress = encodeURIComponent(address);
-  const mapUrl = `https://www.google.com/maps?q=${encodedAddress}&output=embed`;
+  const mapUrl = `https://maps.google.com/maps?q=${encodedAddress}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
