@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import GoogleMap from './GoogleMap';
+import MapboxMap from './MapboxMap';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Star, Euro } from 'lucide-react';
-import { useGoogleMapsKey } from '@/hooks/useGoogleMapsKey';
 import { useTranslation } from 'react-i18next';
 
 interface Restaurant {
@@ -26,7 +25,6 @@ const RestaurantMapSection = () => {
   const { t } = useTranslation();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-  const { apiKey, loading: keyLoading, error: keyError } = useGoogleMapsKey();
 
   const handleRestaurantsLoaded = (loadedRestaurants: Restaurant[]) => {
     setRestaurants(loadedRestaurants);
@@ -70,36 +68,11 @@ const RestaurantMapSection = () => {
           <div className="lg:col-span-2">
             <Card className="h-[600px]">
               <CardContent className="p-0 h-full">
-                {keyError ? (
-                  <div className="h-full flex items-center justify-center text-center p-6">
-                     <div>
-                       <p className="text-destructive mb-2">{t('errors.configurationError')}</p>
-                       <p className="text-muted-foreground text-sm">
-                         {keyError}
-                       </p>
-                     </div>
-                  </div>
-                ) : keyLoading ? (
-                   <div className="h-full flex items-center justify-center">
-                     <div className="text-center">
-                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                       <p className="text-muted-foreground">Configuration de la carte...</p>
-                     </div>
-                   </div>
-                ) : apiKey ? (
-                  <GoogleMap 
-                    center={{ lat: 45.5017, lng: -73.5673 }}
-                    zoom={13}
-                    apiKey={apiKey}
-                    onRestaurantsLoaded={handleRestaurantsLoaded}
-                  />
-                ) : (
-                   <div className="h-full flex items-center justify-center text-center p-6">
-                     <div>
-                       <p className="text-muted-foreground">{t('errors.cannotLoadMap')}</p>
-                     </div>
-                   </div>
-                )}
+                <MapboxMap 
+                  center={{ lat: 45.5017, lng: -73.5673 }}
+                  zoom={13}
+                  onRestaurantsLoaded={handleRestaurantsLoaded}
+                />
               </CardContent>
             </Card>
           </div>

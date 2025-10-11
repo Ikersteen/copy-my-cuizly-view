@@ -2,8 +2,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
-import { useGoogleMapsKey } from "@/hooks/useGoogleMapsKey";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { useEffect, useRef } from "react";
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+// Token public Mapbox
+mapboxgl.accessToken = 'pk.eyJ1IjoiY3Vpemx5IiwiYSI6ImNtNWZyYjN4YzBhdmUyanM5cTBrbHZqajcifQ.example';
 
 interface EmbeddedMapModalProps {
   open: boolean;
@@ -13,9 +17,10 @@ interface EmbeddedMapModalProps {
 
 export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapModalProps) => {
   const { t } = useTranslation();
-  const { apiKey, loading, error } = useGoogleMapsKey();
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
 
-  const handleOpenInGoogleMaps = () => {
+  const handleOpenInMaps = () => {
     const encodedAddress = encodeURIComponent(address);
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const url = isIOS 
@@ -24,8 +29,34 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
     window.open(url, '_blank');
   };
 
-  const encodedAddress = encodeURIComponent(address);
-  const mapEmbedUrl = apiKey ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodedAddress}` : '';
+  useEffect(() => {
+    if (!open || !mapContainer.current) return;
+
+    // Géocoder l'adresse (vous pourriez utiliser un service de géocodage)
+    // Pour l'instant, on centre sur Montréal par défaut
+    const defaultCenter: [number, number] = [-73.5673, 45.5017];
+
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: defaultCenter,
+      zoom: 15
+    });
+
+    // Ajouter un marqueur
+    new mapboxgl.Marker()
+      .setLngLat(defaultCenter)
+      .setPopup(new mapboxgl.Popup().setHTML(`<div class="p-2"><strong>${address}</strong></div>`))
+      .addTo(map.current);
+
+    // Ajouter les contrôles
+    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    map.current.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+
+    return () => {
+      map.current?.remove();
+    };
+  }, [open, address]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -35,7 +66,7 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
           <Button
             variant="outline"
             size="sm"
-            onClick={handleOpenInGoogleMaps}
+            onClick={handleOpenInMaps}
             className="gap-2"
           >
             <ExternalLink className="h-4 w-4" />
@@ -43,31 +74,7 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
           </Button>
         </DialogHeader>
         <div className="w-full h-[600px] rounded-b-lg overflow-hidden">
-          {loading && (
-            <div className="w-full h-full flex items-center justify-center bg-muted">
-              <LoadingSpinner size="md" />
-            </div>
-          )}
-          {error && (
-            <div className="w-full h-full flex items-center justify-center bg-muted">
-              <div className="text-center p-6">
-                <p className="text-destructive mb-2">{t('map.loadError')}</p>
-                <p className="text-muted-foreground text-sm">{t('map.apiKeyError')}</p>
-              </div>
-            </div>
-          )}
-          {apiKey && !loading && !error && (
-            <iframe
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              src={mapEmbedUrl}
-              title={`Carte de ${address}`}
-            />
-          )}
+          <div ref={mapContainer} className="w-full h-full" />
         </div>
       </DialogContent>
     </Dialog>
