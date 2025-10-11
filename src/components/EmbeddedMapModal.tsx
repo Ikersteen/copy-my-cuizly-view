@@ -21,30 +21,50 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
 
-  const handleOpenInMaps = () => {
-    const encodedAddress = encodeURIComponent(address);
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const url = isIOS 
-      ? `https://maps.apple.com/?address=${encodedAddress}`
-      : `https://maps.google.com/?q=${encodedAddress}`;
-    window.open(url, '_blank');
+  const handleOpenInMaps = async () => {
+    try {
+      // Géocoder l'adresse pour obtenir les coordonnées
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${MAPBOX_TOKEN}&limit=1`
+      );
+      const data = await response.json();
+      const coordinates = data.features?.[0]?.center;
+      
+      if (coordinates) {
+        // Ouvrir la carte Mapbox dans un nouvel onglet avec les coordonnées
+        const [lng, lat] = coordinates;
+        const url = `https://www.mapbox.com/search/${encodeURIComponent(address)}/place/${lat},${lng}`;
+        window.open(url, '_blank');
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ouverture de la carte:', error);
+    }
   };
 
   useEffect(() => {
-    if (!open || !mapContainer.current) return;
+    if (!open || !mapContainer.current || map.current) return;
 
     // Géocoder l'adresse avec Mapbox Geocoding API
     const geocodeAddress = async () => {
       try {
+        console.log('Géocodage de l\'adresse:', address);
         const response = await fetch(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${MAPBOX_TOKEN}&limit=1`
         );
         const data = await response.json();
         
-        const center: [number, number] = data.features?.[0]?.center || [-73.5673, 45.5017];
+        if (!data.features || data.features.length === 0) {
+          console.error('Aucune coordonnée trouvée pour cette adresse');
+          return;
+        }
+        
+        const center: [number, number] = data.features[0].center;
+        console.log('Coordonnées trouvées:', center);
+
+        if (!mapContainer.current) return;
 
         map.current = new mapboxgl.Map({
-          container: mapContainer.current!,
+          container: mapContainer.current,
           style: 'mapbox://styles/mapbox/streets-v12',
           center: center,
           zoom: 15
@@ -67,7 +87,10 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
     geocodeAddress();
 
     return () => {
-      map.current?.remove();
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
     };
   }, [open, address]);
 
