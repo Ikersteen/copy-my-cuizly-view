@@ -33,26 +33,38 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
   useEffect(() => {
     if (!open || !mapContainer.current) return;
 
-    // Géocoder l'adresse (vous pourriez utiliser un service de géocodage)
-    // Pour l'instant, on centre sur Montréal par défaut
-    const defaultCenter: [number, number] = [-73.5673, 45.5017];
+    // Géocoder l'adresse avec Mapbox Geocoding API
+    const geocodeAddress = async () => {
+      try {
+        const response = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${MAPBOX_TOKEN}&limit=1`
+        );
+        const data = await response.json();
+        
+        const center: [number, number] = data.features?.[0]?.center || [-73.5673, 45.5017];
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: defaultCenter,
-      zoom: 15
-    });
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current!,
+          style: 'mapbox://styles/mapbox/streets-v12',
+          center: center,
+          zoom: 15
+        });
 
-    // Ajouter un marqueur
-    new mapboxgl.Marker()
-      .setLngLat(defaultCenter)
-      .setPopup(new mapboxgl.Popup().setHTML(`<div class="p-2"><strong>${address}</strong></div>`))
-      .addTo(map.current);
+        // Ajouter un marqueur
+        new mapboxgl.Marker()
+          .setLngLat(center)
+          .setPopup(new mapboxgl.Popup().setHTML(`<div class="p-2"><strong>${address}</strong></div>`))
+          .addTo(map.current);
 
-    // Ajouter les contrôles
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-    map.current.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+        // Ajouter les contrôles
+        map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+        map.current.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+      } catch (error) {
+        console.error('Erreur de géocodage:', error);
+      }
+    };
+
+    geocodeAddress();
 
     return () => {
       map.current?.remove();
