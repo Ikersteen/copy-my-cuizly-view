@@ -29,8 +29,8 @@ const initializeApp = () => {
       renderApp();
     });
   } else {
-    // Default to French if no valid language is saved
-    i18n.changeLanguage('fr').then(() => {
+    // Default to English if no valid language is saved
+    i18n.changeLanguage('en').then(() => {
       renderApp();
     });
   }

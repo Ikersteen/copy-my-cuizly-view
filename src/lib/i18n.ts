@@ -21,8 +21,8 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: localStorage.getItem('cuizly-language') || 'fr', // Default to French
-    fallbackLng: 'fr',
+    lng: localStorage.getItem('cuizly-language') || 'en', // Default to English
+    fallbackLng: 'en',
     debug: false,
     
     interpolation: {
