@@ -46,7 +46,12 @@ i18n
     
     // Load missing translations immediately
     load: 'languageOnly',
-    cleanCode: true
+    cleanCode: true,
+    
+    // Force namespace reloading to clear cache
+    ns: ['translation'],
+    defaultNS: 'translation',
+    fallbackNS: false
   });
 
 export default i18n;
