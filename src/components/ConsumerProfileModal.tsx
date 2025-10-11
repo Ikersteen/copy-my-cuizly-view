@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,14 +8,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Upload, X, Camera, User, Trash2, Edit2, LogOut, Shield, Bell, Mail, Loader2, Calendar } from "lucide-react";
+import { Upload, X, Camera, User, Trash2, Edit2, LogOut, Shield, Bell, Mail, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
 import { useProfile } from "@/hooks/useProfile";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { validateFileUpload } from "@/lib/security";
-import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 interface ConsumerProfileModalProps {
   isOpen: boolean;
@@ -26,10 +24,8 @@ interface ConsumerProfileModalProps {
 export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalProps) => {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const navigate = useNavigate();
   const { profile, loading: profileLoading, updateProfile } = useProfile();
   const { preferences, updatePreferences } = useUserPreferences();
-  const reservationsRoute = useLocalizedRoute('/my-reservations');
   
   const [formData, setFormData] = useState({
     first_name: "",
@@ -399,25 +395,6 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 </div>
                 
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-                    <div>
-                      <p className="font-medium text-sm">{t('reservation.myReservations')}</p>
-                      <p className="text-xs text-muted-foreground">{t('reservation.viewAllReservations')}</p>
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => {
-                        onClose();
-                        navigate(reservationsRoute);
-                      }}
-                      className="shrink-0"
-                    >
-                      <Calendar className="h-4 w-4 mr-2" />
-                      {t('common.view')}
-                    </Button>
-                  </div>
-
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
                     <div>
                       <p className="font-medium text-sm">{t('profile.password')}</p>
