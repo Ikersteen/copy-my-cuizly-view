@@ -14,6 +14,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
 import { ReservationModal } from "./ReservationModal";
+import { EmbeddedMapModal } from "./EmbeddedMapModal";
 
 interface Restaurant {
   id: string;
@@ -44,6 +45,8 @@ export const RecommendationCardsSection = () => {
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [reservationRestaurant, setReservationRestaurant] = useState<{ id: string; name: string; opening_hours?: any } | null>(null);
+  const [showMapModal, setShowMapModal] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
 
   // Generate detailed, explanatory reasons for restaurant recommendations
   // Following strict priority order: Dietary restrictions, Allergens, Cuisines, Price, Timing, Location, Address
@@ -730,9 +733,17 @@ export const RecommendationCardsSection = () => {
                       <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-1">
                         {restaurant.name}
                       </CardTitle>
-                      <div className="flex items-center space-x-1 mt-0.5">
-                        <span className="text-sm text-muted-foreground">{restaurant.address}</span>
-                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedAddress(restaurant.address);
+                          setShowMapModal(true);
+                        }}
+                        className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer group/address mt-0.5 text-left"
+                      >
+                        <MapPin className="h-4 w-4 flex-shrink-0" />
+                        <span className="group-hover/address:underline">{restaurant.address}</span>
+                      </button>
                       <CardDescription className="line-clamp-2 text-sm mt-1">
                         {getTranslatedDescription(restaurant, currentLanguage)}
                       </CardDescription>
@@ -942,6 +953,12 @@ export const RecommendationCardsSection = () => {
           openingHours={reservationRestaurant.opening_hours}
         />
       )}
+      
+      <EmbeddedMapModal
+        open={showMapModal}
+        onOpenChange={setShowMapModal}
+        address={selectedAddress}
+      />
     </section>
   );
 };
