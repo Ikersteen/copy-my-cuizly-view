@@ -546,7 +546,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         </div>
                       )}
                       
-                        <div className="space-y-1.5">
+                        <div className="space-y-1.5 text-left mb-4">
                           <div className="text-sm text-foreground">
                             <span className="text-muted-foreground">{t('menusModal.cuisineType')} :</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || menu.cuisine_type}
                           </div>
@@ -574,14 +574,16 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           )}
                           
                           {menu.pdf_menu_url && (
-                            <a 
-                              href={menu.pdf_menu_url} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
-                            >
-                              📄 {t('menusModal.viewMenu')}
-                            </a>
+                            <div className="mt-2">
+                              <a 
+                                href={menu.pdf_menu_url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1"
+                              >
+                                📄 {t('menusModal.viewMenu')}
+                              </a>
+                            </div>
                           )}
                         </div>
 

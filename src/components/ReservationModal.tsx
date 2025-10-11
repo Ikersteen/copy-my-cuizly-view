@@ -9,6 +9,7 @@ import { useReservations } from "@/hooks/useReservations";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { fr } from "date-fns/locale";
 
 interface ReservationModalProps {
   isOpen: boolean;
@@ -25,7 +26,7 @@ export const ReservationModal = ({
   restaurantName,
   openingHours,
 }: ReservationModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useUserProfile();
   const { createReservation } = useReservations(user?.id);
   
@@ -99,6 +100,7 @@ export const ReservationModal = ({
                 onSelect={setDate}
                 disabled={(date) => date < new Date()}
                 className="rounded-md border pointer-events-auto"
+                locale={i18n.language === 'fr' ? fr : undefined}
               />
             </div>
 
