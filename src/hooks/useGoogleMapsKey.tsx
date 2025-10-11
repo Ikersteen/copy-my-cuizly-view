@@ -1,39 +1,15 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 export const useGoogleMapsKey = () => {
   const [apiKey, setApiKey] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchApiKey = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const { data, error: functionError } = await supabase.functions.invoke(
-          'get-google-maps-key'
-        );
-
-        if (functionError) {
-          throw functionError;
-        }
-
-        if (data?.apiKey) {
-          setApiKey(data.apiKey);
-        } else {
-          throw new Error('No API key received');
-        }
-      } catch (err) {
-        console.error('Error fetching Google Maps API key:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch API key');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchApiKey();
+    // Pour l'instant, retourner null car le système de maps a été retiré
+    // Si vous avez besoin de réactiver Google Maps, ajoutez votre clé API ici
+    setApiKey(null);
+    setLoading(false);
   }, []);
 
   return { apiKey, loading, error };

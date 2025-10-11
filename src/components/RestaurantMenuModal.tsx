@@ -15,15 +15,14 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_TRANSLATIONS, CATEGORY_TRANSLATIONS } from "@/constants/cuisineTypes";
-import { EmbeddedMapModal } from "@/components/EmbeddedMapModal";
+import { openDirections } from "@/utils/mapUtils";
 import { SocialMediaModal } from "@/components/SocialMediaModal";
 
 // Composant pour afficher l'évaluation avec le prix
-const RatingDisplay = ({ restaurantId, priceRange, address, onMapClick }: { 
+const RatingDisplay = ({ restaurantId, priceRange, address }: { 
   restaurantId: string; 
   priceRange?: string; 
   address?: string;
-  onMapClick?: () => void;
 }) => {
   const [rating, setRating] = useState<number | null>(null);
   const [totalRatings, setTotalRatings] = useState(0);
@@ -70,9 +69,9 @@ const RatingDisplay = ({ restaurantId, priceRange, address, onMapClick }: {
   return (
     <div className="space-y-1">
       {/* Address on its own line */}
-      {address && onMapClick && (
+      {address && (
         <button 
-          onClick={onMapClick}
+          onClick={() => openDirections(address)}
           className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer group w-full text-left"
         >
           <MapPin className="h-4 w-4 flex-shrink-0" />
@@ -154,7 +153,6 @@ export const RestaurantMenuModal = ({
   const [menus, setMenus] = useState<Menu[]>([]);
   const [loading, setLoading] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [showMapModal, setShowMapModal] = useState(false);
   const [showInstagramModal, setShowInstagramModal] = useState(false);
   const [showFacebookModal, setShowFacebookModal] = useState(false);
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
@@ -230,7 +228,6 @@ export const RestaurantMenuModal = ({
                 restaurantId={restaurant.id} 
                 priceRange={restaurant.price_range} 
                 address={restaurant.address}
-                onMapClick={() => setShowMapModal(true)}
               />
             </div>
             {/* Retirer le petit coeur rouge - supprimé */}
@@ -532,12 +529,6 @@ export const RestaurantMenuModal = ({
           open={showCommentModal}
           onOpenChange={setShowCommentModal}
           restaurant={restaurant}
-        />
-
-        <EmbeddedMapModal
-          open={showMapModal}
-          onOpenChange={setShowMapModal}
-          address={restaurant.address}
         />
 
         {restaurant.instagram_url && (

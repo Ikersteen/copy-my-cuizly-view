@@ -13,7 +13,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
 import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_TRANSLATIONS, CATEGORY_TRANSLATIONS } from "@/constants/cuisineTypes";
-import { EmbeddedMapModal } from "@/components/EmbeddedMapModal";
+import { openDirections } from "@/utils/mapUtils";
 import { SocialMediaModal } from "@/components/SocialMediaModal";
 import { ReservationModal } from "@/components/ReservationModal";
 
@@ -121,7 +121,6 @@ export default function RestaurantMenu() {
   const [menusLoading, setMenusLoading] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
-  const [showMapModal, setShowMapModal] = useState(false);
   const [showInstagramModal, setShowInstagramModal] = useState(false);
   const [showFacebookModal, setShowFacebookModal] = useState(false);
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -305,7 +304,7 @@ export default function RestaurantMenu() {
                     </h1>
                     <div className="space-y-1 text-muted-foreground text-sm">
                       <button 
-                        onClick={() => setShowMapModal(true)}
+                        onClick={() => openDirections(restaurant.address)}
                         className="text-primary hover:underline transition-all cursor-pointer text-left"
                       >
                         {restaurant.address}
@@ -635,12 +634,6 @@ export default function RestaurantMenu() {
 
       {restaurant && (
         <>
-          <EmbeddedMapModal
-            open={showMapModal}
-            onOpenChange={setShowMapModal}
-            address={restaurant.address}
-          />
-          
           {restaurant.instagram_url && (
             <SocialMediaModal
               open={showInstagramModal}
