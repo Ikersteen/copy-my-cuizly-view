@@ -111,6 +111,7 @@ interface Menu {
   dietary_restrictions?: string[];
   allergens?: string[];
   pdf_menu_url?: string;
+  category?: string;
 }
 
 interface Restaurant {
@@ -173,7 +174,7 @@ export const RestaurantMenuModal = ({
     try {
       const { data, error } = await supabase
         .from('menus')
-        .select('id, image_url, description, cuisine_type, is_active, dietary_restrictions, allergens, pdf_menu_url')
+        .select('id, image_url, description, cuisine_type, is_active, dietary_restrictions, allergens, pdf_menu_url, category')
         .eq('restaurant_id', restaurant.id)
         .eq('is_active', true)
         .order('created_at', { ascending: false });
@@ -451,30 +452,34 @@ export const RestaurantMenuModal = ({
                         )}
                         
                           <div className="space-y-2">
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1.5 text-sm text-muted-foreground">
+                              {menu.category && (
+                                <div>
+                                  <span className="font-semibold text-foreground">{t('menus.meal')} › </span>
+                                  <span>{menu.category}</span>
+                                </div>
+                              )}
+                              <div>
+                                <span className="font-semibold text-foreground">{t('menus.cuisineTypes')} : </span>
+                                <span>{CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}</span>
+                              </div>
                               {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
-                                <div className="text-xs text-muted-foreground">
-                                  <span className="font-semibold">{t('menus.dietaryRestrictions')}</span> {menu.dietary_restrictions.map(dr => 
+                                <div>
+                                  <span className="font-semibold text-foreground">{t('menus.dietaryCompatible')} : </span>
+                                  <span>{menu.dietary_restrictions.map(dr => 
                                     DIETARY_RESTRICTIONS_TRANSLATIONS[dr as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[currentLanguage] || dr
-                                  ).join(', ')}
+                                  ).join(', ')}</span>
                                 </div>
                               )}
                               {menu.allergens && menu.allergens.length > 0 && (
-                                <div className="text-xs text-muted-foreground">
-                                  <span className="font-semibold">{t('menus.allergens')}</span> {menu.allergens.map(allergen => 
+                                <div>
+                                  <span className="font-semibold text-foreground">{t('menus.allergensPresent')} : </span>
+                                  <span>{menu.allergens.map(allergen => 
                                     ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[currentLanguage] || allergen
-                                  ).join(', ')}
+                                  ).join(', ')}</span>
                                 </div>
                               )}
-                              <div className="text-xs text-muted-foreground">
-                                <span className="font-semibold">{t('restaurant.cuisineType')}</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
-                              </div>
                             </div>
-                            {menu.description && (
-                              <p className="text-sm text-foreground line-clamp-3">
-                                <span className="font-semibold">{t('menus.description')}</span> {menu.description}
-                              </p>
-                            )}
                             {menu.pdf_menu_url && (
                               <Button
                                 variant="outline"
@@ -482,7 +487,7 @@ export const RestaurantMenuModal = ({
                                 className="w-full text-xs"
                                 onClick={() => window.open(menu.pdf_menu_url, '_blank')}
                               >
-                                {t('menusModal.viewPdfMenu')}
+                                {t('menusModal.viewMenu')}
                               </Button>
                             )}
                           </div>

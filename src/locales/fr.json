@@ -854,6 +854,17 @@
     "changesDesc": "Les modifications ont été sauvegardées",
     "restaurantNotConfigured": "Votre restaurant n'est pas encore configuré"
   },
+  "menus": {
+    "meal": "Repas",
+    "cuisineTypes": "Types de cuisine",
+    "dietaryCompatible": "Régimes compatibles",
+    "allergensPresent": "Allergènes présents",
+    "dietaryRestrictions": "Restrictions alimentaires",
+    "allergens": "Allergènes",
+    "description": "Description",
+    "noMenusAvailable": "Aucun menu disponible",
+    "noMenusYet": "Ce restaurant n'a pas encore ajouté de menus"
+  },
   "cuisines": {
     "typeLabel": "Types de cuisine",
     "descriptionLabel": "Description *",
