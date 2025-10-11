@@ -827,6 +827,7 @@
     "selectCuisineType": "Sélectionner les types de cuisine",
     "description": "Description",
     "category": "Catégorie principale",
+    "mainDish": "Plat principal",
     "categoryPlaceholder": "Ex: Boissons, Plats, Desserts",
     "subcategory": "Sous-catégorie",
     "subcategoryPlaceholder": "Ex: Cocktails, Vins, Bières",

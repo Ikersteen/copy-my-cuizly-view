@@ -841,6 +841,7 @@
     "selectCuisineType": "Select cuisine types",
     "description": "Description",
     "category": "Main category",
+    "mainDish": "Main dish",
     "categoryPlaceholder": "E.g: Drinks, Dishes, Desserts",
     "subcategory": "Subcategory",
     "subcategoryPlaceholder": "E.g: Cocktails, Wines, Beers",
