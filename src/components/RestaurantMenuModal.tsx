@@ -14,7 +14,7 @@ import { CommentModal } from "@/components/CommentModal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import { getTranslatedDescription } from "@/lib/translations";
-import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_TRANSLATIONS, CATEGORY_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { EmbeddedMapModal } from "@/components/EmbeddedMapModal";
 import { SocialMediaModal } from "@/components/SocialMediaModal";
 
@@ -456,7 +456,7 @@ export const RestaurantMenuModal = ({
                               {menu.category && (
                                 <div>
                                   <span className="font-semibold text-foreground">{t('menus.meal')} › </span>
-                                  <span>{menu.category}</span>
+                                  <span>{CATEGORY_TRANSLATIONS[menu.category as keyof typeof CATEGORY_TRANSLATIONS]?.[currentLanguage] || menu.category}</span>
                                 </div>
                               )}
                               <div>

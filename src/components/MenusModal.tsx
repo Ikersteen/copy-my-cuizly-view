@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
 
-import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, DIETARY_RESTRICTIONS_OPTIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_OPTIONS, ALLERGENS_TRANSLATIONS } from "@/constants/cuisineTypes";
+import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, DIETARY_RESTRICTIONS_OPTIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_OPTIONS, ALLERGENS_TRANSLATIONS, CATEGORY_TRANSLATIONS } from "@/constants/cuisineTypes";
 
 interface Menu {
   id: string;
@@ -553,7 +553,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           
                           {menu.category && (
                             <div className="text-sm text-foreground">
-                              {menu.category}{menu.subcategory && <span> › {menu.subcategory}</span>}
+                              {CATEGORY_TRANSLATIONS[menu.category as keyof typeof CATEGORY_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || menu.category}{menu.subcategory && <span> › {menu.subcategory}</span>}
                             </div>
                           )}
                           

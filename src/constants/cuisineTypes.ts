@@ -110,6 +110,19 @@ export const SERVICE_TYPES_TRANSLATIONS = {
   late_night: { fr: "Tard le soir", en: "Late Night" }
 };
 
+export const CATEGORY_OPTIONS = [
+  "Breakfast", "Lunch", "Dinner", "Brunch", "Snack", "Dessert"
+];
+
+export const CATEGORY_TRANSLATIONS = {
+  Breakfast: { fr: "Petit-déjeuner", en: "Breakfast" },
+  Lunch: { fr: "Déjeuner", en: "Lunch" },
+  Dinner: { fr: "Dîner", en: "Dinner" },
+  Brunch: { fr: "Brunch", en: "Brunch" },
+  Snack: { fr: "Collation", en: "Snack" },
+  Dessert: { fr: "Dessert", en: "Dessert" }
+};
+
 export const PRICE_RANGE_OPTIONS = [
   "$", "$$", "$$$", "$$$$"
 ];

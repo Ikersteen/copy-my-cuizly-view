@@ -6,7 +6,7 @@ import { RatingComponent } from '@/components/RatingComponent';
 import { useToast } from '@/hooks/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
-import { CUISINE_TRANSLATIONS } from '@/constants/cuisineTypes';
+import { CUISINE_TRANSLATIONS, DIETARY_RESTRICTIONS_TRANSLATIONS, ALLERGENS_TRANSLATIONS, CATEGORY_TRANSLATIONS } from '@/constants/cuisineTypes';
 
 interface Menu {
   id: string;
@@ -218,7 +218,7 @@ export const AllMenusSection = () => {
                 <div className="space-y-2 text-sm">
                   {menu.category && (
                     <div className="text-foreground">
-                      <span className="text-muted-foreground">{t('menus.meal')}</span> › {menu.category}
+                      <span className="text-muted-foreground">{t('menus.meal')}</span> › {CATEGORY_TRANSLATIONS[menu.category as keyof typeof CATEGORY_TRANSLATIONS]?.[currentLanguage] || menu.category}
                     </div>
                   )}
                   
@@ -230,13 +230,17 @@ export const AllMenusSection = () => {
                   
                   {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
                     <div className="text-foreground">
-                      <span className="text-muted-foreground">{t('menus.dietaryCompatible')} :</span> {menu.dietary_restrictions.join(', ')}
+                      <span className="text-muted-foreground">{t('menus.dietaryCompatible')} :</span> {menu.dietary_restrictions.map(restriction => 
+                        DIETARY_RESTRICTIONS_TRANSLATIONS[restriction as keyof typeof DIETARY_RESTRICTIONS_TRANSLATIONS]?.[currentLanguage] || restriction
+                      ).join(', ')}
                     </div>
                   )}
                   
                   {menu.allergens && menu.allergens.length > 0 && (
                     <div className="text-foreground">
-                      <span className="text-muted-foreground">{t('menus.allergensPresent')} :</span> {menu.allergens.join(', ')}
+                      <span className="text-muted-foreground">{t('menus.allergensPresent')} :</span> {menu.allergens.map(allergen => 
+                        ALLERGENS_TRANSLATIONS[allergen as keyof typeof ALLERGENS_TRANSLATIONS]?.[currentLanguage] || allergen
+                      ).join(', ')}
                     </div>
                   )}
                 </div>
