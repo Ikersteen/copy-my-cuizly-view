@@ -422,7 +422,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('menusModal.category')}</Label>
+                    <Label>{t('menusModal.mainDish') || "Plat principal"}</Label>
                     <Input
                       value={newMenu.category}
                       onChange={(e) => setNewMenu(prev => ({ ...prev, category: e.target.value }))}
@@ -431,7 +431,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{t('menusModal.subcategory')}</Label>
+                    <Label>{t('menusModal.description') || "Description"}</Label>
                     <Input
                       value={newMenu.subcategory}
                       onChange={(e) => setNewMenu(prev => ({ ...prev, subcategory: e.target.value }))}
@@ -684,7 +684,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         </div>
 
                         <div className="space-y-2">
-                          <Label>{t('menusModal.category')}</Label>
+                          <Label>{t('menusModal.mainDish') || "Plat principal"}</Label>
                           <Input
                             value={editingMenu.category || ""}
                             onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, category: e.target.value }) : null)}
@@ -693,7 +693,7 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                         </div>
 
                         <div className="space-y-2">
-                          <Label>{t('menusModal.subcategory')}</Label>
+                          <Label>{t('menusModal.description') || "Description"}</Label>
                           <Input
                             value={editingMenu.subcategory || ""}
                             onChange={(e) => setEditingMenu(prev => prev ? ({ ...prev, subcategory: e.target.value }) : null)}
