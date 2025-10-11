@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Star, ArrowRight, MapPin } from "lucide-react";
+import { Heart, Star, ArrowRight } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,7 +11,6 @@ import { CUISINE_TRANSLATIONS } from "@/constants/cuisineTypes";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTranslatedDescription } from "@/lib/translations";
 import { useNavigate } from "react-router-dom";
-import { EmbeddedMapModal } from "./EmbeddedMapModal";
 
 interface Restaurant {
   id: string;
@@ -34,8 +33,6 @@ export const SavedFavoritesSection = () => {
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [restaurantRatings, setRestaurantRatings] = useState<Record<string, { rating: number | null; totalRatings: number }>>({});
-  const [showMapModal, setShowMapModal] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState<string>("");
 
 
   const getRealRating = async (restaurantId: string): Promise<{ rating: number | null; totalRatings: number }> => {
@@ -252,17 +249,7 @@ export const SavedFavoritesSection = () => {
                         {restaurant.name}
                       </CardTitle>
                         <div className="space-y-0.5">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedAddress(restaurant.address);
-                              setShowMapModal(true);
-                            }}
-                            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer group/address w-full text-left"
-                          >
-                            <MapPin className="h-4 w-4 flex-shrink-0" />
-                            <span className="group-hover/address:underline">{restaurant.address}</span>
-                          </button>
+                          <div className="text-sm text-muted-foreground">{restaurant.address}</div>
                           <div className="flex items-center space-x-1">
                             {restaurant.price_range && (
                               <span className="text-sm font-bold text-muted-foreground">{restaurant.price_range}</span>
@@ -329,12 +316,6 @@ export const SavedFavoritesSection = () => {
           </div>
         )}
       </div>
-      
-      <EmbeddedMapModal
-        open={showMapModal}
-        onOpenChange={setShowMapModal}
-        address={selectedAddress}
-      />
     </section>
   );
 };
