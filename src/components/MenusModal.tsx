@@ -553,7 +553,13 @@ export const MenusModal = ({ open, onOpenChange, restaurantId, onSuccess }: Menu
                           
                           {menu.category && (
                             <div className="text-sm text-foreground">
-                              {CATEGORY_TRANSLATIONS[menu.category as keyof typeof CATEGORY_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || menu.category}{menu.subcategory && <span> › {menu.subcategory}</span>}
+                              <span className="text-muted-foreground">{t('menusModal.mainDish')} :</span> {menu.category}
+                            </div>
+                          )}
+                          
+                          {menu.subcategory && (
+                            <div className="text-sm text-foreground">
+                              <span className="text-muted-foreground">{t('menusModal.description')} :</span> {menu.subcategory}
                             </div>
                           )}
                           
