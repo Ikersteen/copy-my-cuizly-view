@@ -23,6 +23,6 @@ export const useLanguage = () => {
     currentLanguage,
     changeLanguage,
     isLanguage,
-    availableLanguages: ['fr', 'en'] as SupportedLanguage[]
+    availableLanguages: ['en', 'fr'] as SupportedLanguage[]
   };
 };
