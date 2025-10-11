@@ -13,7 +13,7 @@ interface RestaurantReservationsSectionProps {
 }
 
 export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReservationsSectionProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { reservations, isLoading, updateReservation } = useReservations(undefined, restaurantId);
 
   const getStatusColor = (status: string) => {
@@ -57,9 +57,6 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
   if (!reservations || reservations.length === 0) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">{t("reservation.reservations")}</CardTitle>
-        </CardHeader>
         <CardContent className="py-8 text-center text-muted-foreground">
           {t("reservation.noReservations")}
         </CardContent>
@@ -69,10 +66,7 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="text-xl">{t("reservation.reservations")}</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <div className="space-y-6">
           {reservations.map((reservation) => (
             <div key={reservation.id} className="border rounded-lg p-4 space-y-4">
@@ -89,7 +83,7 @@ export const RestaurantReservationsSection = ({ restaurantId }: RestaurantReserv
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span>
-                    {format(new Date(reservation.reservation_date), "d MMMM yyyy", { locale: fr })}
+                    {format(new Date(reservation.reservation_date), "d MMMM yyyy", { locale: i18n.language === 'fr' ? fr : undefined })}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
