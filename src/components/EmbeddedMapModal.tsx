@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
@@ -99,6 +99,9 @@ export const EmbeddedMapModal = ({ open, onOpenChange, address }: EmbeddedMapMod
       <DialogContent className="max-w-5xl max-h-[90vh] p-0">
         <DialogHeader className="px-6 pt-6 pb-4 flex flex-row items-center justify-between">
           <DialogTitle>{address}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {t('map.viewLocation')}
+          </DialogDescription>
           <Button
             variant="outline"
             size="sm"
