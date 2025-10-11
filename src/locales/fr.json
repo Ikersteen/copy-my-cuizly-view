@@ -2165,7 +2165,8 @@
       "friday": "Ven",
       "saturday": "Sam",
       "sunday": "Dim"
-    }
+    },
+    "closed": "Fermé"
   },
   "recommendations": {
     "aiRecommendations": "Recommandations par Cuizly",
