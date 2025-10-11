@@ -132,6 +132,24 @@ export default function RestaurantMenu() {
     if (id) {
       loadRestaurant();
       loadMenus();
+
+      // Subscribe to real-time menu updates
+      const menuChannel = supabase
+        .channel(`menus-${id}`)
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'menus',
+          filter: `restaurant_id=eq.${id}`
+        }, () => {
+          console.log('Menu updated, reloading...');
+          loadMenus();
+        })
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(menuChannel);
+      };
     }
   }, [id]);
 

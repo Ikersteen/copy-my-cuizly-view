@@ -13,7 +13,11 @@ interface Menu {
   restaurant_id: string;
   description: string;
   cuisine_type?: string;
+  category?: string;
+  dietary_restrictions?: string[];
+  allergens?: string[];
   image_url: string;
+  pdf_menu_url?: string;
   created_at: string;
   restaurants: {
     id: string;
@@ -37,7 +41,7 @@ export const AllMenusSection = () => {
     try {
       const { data, error } = await supabase
         .from('menus')
-        .select('*')
+        .select('id, restaurant_id, description, cuisine_type, category, dietary_restrictions, allergens, image_url, pdf_menu_url, created_at')
         .eq('is_active', true)
         .order('created_at', { ascending: false });
 
@@ -210,20 +214,29 @@ export const AllMenusSection = () => {
                   </div>
                 )}
 
-                {/* Menu Description */}
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground line-clamp-3">
-                    {menu.description}
-                  </p>
+                {/* Menu Info */}
+                <div className="space-y-2 text-sm">
+                  {menu.category && (
+                    <div className="text-foreground">
+                      <span className="text-muted-foreground">{t('menus.meal')}</span> › {menu.category}
+                    </div>
+                  )}
                   
-                  {/* Cuisine Types */}
-                  {menu.restaurants.cuisine_type && (
-                    <div className="flex flex-wrap gap-1">
-                      {menu.restaurants.cuisine_type.map((cuisine, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">
-                          {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || cuisine}
-                        </Badge>
-                      ))}
+                  {menu.cuisine_type && (
+                    <div className="text-foreground">
+                      <span className="text-muted-foreground">{t('menus.cuisineTypes')} :</span> {CUISINE_TRANSLATIONS[menu.cuisine_type as keyof typeof CUISINE_TRANSLATIONS]?.[currentLanguage] || menu.cuisine_type}
+                    </div>
+                  )}
+                  
+                  {menu.dietary_restrictions && menu.dietary_restrictions.length > 0 && (
+                    <div className="text-foreground">
+                      <span className="text-muted-foreground">{t('menus.dietaryCompatible')} :</span> {menu.dietary_restrictions.join(', ')}
+                    </div>
+                  )}
+                  
+                  {menu.allergens && menu.allergens.length > 0 && (
+                    <div className="text-foreground">
+                      <span className="text-muted-foreground">{t('menus.allergensPresent')} :</span> {menu.allergens.join(', ')}
                     </div>
                   )}
                 </div>
