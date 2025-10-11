@@ -15,6 +15,7 @@ export const routeTranslations = {
   '/dashboard': '/tableau-de-bord',
   '/restaurant': '/restaurant',
   '/restaurant/reservations': '/restaurant/reservations',
+  '/my-reservations': '/mes-reservations',
   '/email-confirmed': '/courriel-confirme'
 } as const;
 

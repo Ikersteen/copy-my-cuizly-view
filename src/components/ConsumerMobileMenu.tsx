@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Settings, LayoutDashboard, LogOut, Home, User } from "lucide-react";
+import { Menu, Settings, LayoutDashboard, LogOut, Home, User, Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,7 @@ export const ConsumerMobileMenu = ({
   // Get localized routes
   const homeRoute = useLocalizedRoute('/');
   const dashboardRoute = useLocalizedRoute('/dashboard');
+  const reservationsRoute = useLocalizedRoute('/my-reservations');
 
   const handleLogout = async () => {
     try {
@@ -108,6 +109,15 @@ export const ConsumerMobileMenu = ({
               >
                 <LayoutDashboard className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('navigation.dashboard')}</span>
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-left h-auto py-3"
+                onClick={() => handleMenuClick(() => navigate(reservationsRoute))}
+              >
+                <Calendar className="h-5 w-5 mr-3" />
+                <span className="text-base">{t('reservation.myReservations')}</span>
               </Button>
 
               <Button
