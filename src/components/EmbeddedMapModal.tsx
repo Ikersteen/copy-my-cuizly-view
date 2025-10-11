@@ -5,9 +5,10 @@ import { ExternalLink } from "lucide-react";
 import { useEffect, useRef } from "react";
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { MAPBOX_TOKEN } from '@/lib/mapboxConfig';
 
-// Token public Mapbox
-mapboxgl.accessToken = 'pk.eyJ1IjoiY3Vpemx5IiwiYSI6ImNtNWZyYjN4YzBhdmUyanM5cTBrbHZqajcifQ.example';
+// Configuration du token Mapbox
+mapboxgl.accessToken = MAPBOX_TOKEN;
 
 interface EmbeddedMapModalProps {
   open: boolean;

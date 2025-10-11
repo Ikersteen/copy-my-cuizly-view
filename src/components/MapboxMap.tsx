@@ -3,10 +3,10 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
+import { MAPBOX_TOKEN } from '@/lib/mapboxConfig';
 
-// Token public Mapbox - À remplacer par votre token
-// Obtenez-le sur https://account.mapbox.com/access-tokens/
-mapboxgl.accessToken = 'pk.eyJ1IjoiY3Vpemx5IiwiYSI6ImNtNWZyYjN4YzBhdmUyanM5cTBrbHZqajcifQ.example';
+// Configuration du token Mapbox
+mapboxgl.accessToken = MAPBOX_TOKEN;
 
 interface Restaurant {
   place_id: string;

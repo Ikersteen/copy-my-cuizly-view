@@ -3,9 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MapPin } from 'lucide-react';
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
-
-// Token public Mapbox
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiY3Vpemx5IiwiYSI6ImNtNWZyYjN4YzBhdmUyanM5cTBrbHZqajcifQ.example';
+import { MAPBOX_TOKEN } from '@/lib/mapboxConfig';
 
 interface MapboxFeature {
   id: string;
