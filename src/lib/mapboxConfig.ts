@@ -2,7 +2,7 @@
 // Obtenez votre token sur : https://account.mapbox.com/access-tokens/
 // C'est un token PUBLIC, il est sécuritaire de le mettre dans le code
 
-export const MAPBOX_TOKEN = 'pk.eyJ1IjoiY3Vpemx5IiwiYSI6ImNtNWZyYjN4YzBhdmUyanM5cTBrbHZqajcifQ.example';
+export const MAPBOX_TOKEN = 'pk.eyJ1IjoiY3Vpemx5IiwiYSI6ImNtZ21pNmhiZTAyczgybG9jd2o1YzN3bWkifQ.QXOv79S2LxQkhfFxhyLCpQ';
 
 // Style de carte par défaut
 export const MAPBOX_STYLE = 'mapbox://styles/mapbox/streets-v12';
