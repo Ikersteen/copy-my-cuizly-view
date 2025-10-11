@@ -2,9 +2,5 @@
 # Redirect root domain to www
 https://cuizly.ca/*    https://www.cuizly.ca/:splat  301!
 
-# Language-based routing
-# Default to English for root
-/   /en   302
-
 # Serve the app
 /*    /index.html   200

@@ -19,9 +19,9 @@ export const generateUserUrl = (
   userType: 'consumer' | 'restaurant_owner',
   profile: any,
   restaurant: any = null,
-  language: string = 'en'
+  language: string = 'fr'
 ): string => {
-  const basePath = language === 'fr' ? `/${language}/tableau-de-bord` : `/${language}/dashboard`;
+  const basePath = language === 'fr' ? '/tableau-de-bord' : '/dashboard';
   
   if (userType === 'restaurant_owner' && restaurant?.name) {
     const slug = createSlug(restaurant.name);
@@ -46,8 +46,8 @@ export const generateUserUrl = (
 
 // Fonction pour extraire et valider un slug depuis l'URL
 export const extractSlugFromUrl = (pathname: string): string | null => {
-  const match = pathname.match(/\/(en|fr)\/(tableau-de-bord|dashboard)\/([^\/]+)/);
-  return match ? match[3] : null;
+  const match = pathname.match(/\/(tableau-de-bord|dashboard)\/([^\/]+)/);
+  return match ? match[2] : null;
 };
 
 // Hook pour générer l'URL personnalisée de l'utilisateur actuel

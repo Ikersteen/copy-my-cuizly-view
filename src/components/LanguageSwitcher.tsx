@@ -7,38 +7,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useCallback } from 'react';
 
 const LanguageSwitcher = () => {
   const { currentLanguage, changeLanguage, availableLanguages } = useLanguage();
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const languageLabels: Record<string, string> = {
-    en: 'English',
-    fr: 'Français'
+    fr: 'Français',
+    en: 'English'
   };
 
   const languageFlags: Record<string, string> = {
-    en: '🇺🇸',
-    fr: '🇫🇷'
+    fr: '🇫🇷',
+    en: '🇺🇸'
   };
-
-  // Order: English first, then French
-  const orderedLanguages = ['en', 'fr'] as const;
-
-  const handleLanguageChange = useCallback((lang: string) => {
-    // Get current path without language prefix
-    const currentPath = location.pathname.replace(/^\/(en|fr)/, '');
-    
-    // Change language
-    changeLanguage(lang as 'en' | 'fr');
-    
-    // Navigate to same page with new language prefix
-    const newPath = `/${lang}${currentPath || ''}`;
-    navigate(newPath);
-  }, [location.pathname, changeLanguage, navigate]);
 
   return (
     <DropdownMenu>
@@ -49,10 +30,10 @@ const LanguageSwitcher = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {orderedLanguages.map((lang) => (
+        {availableLanguages.map((lang) => (
           <DropdownMenuItem
             key={lang}
-            onClick={() => handleLanguageChange(lang)}
+            onClick={() => changeLanguage(lang)}
             className={currentLanguage === lang ? 'bg-accent' : ''}
           >
             <span className="mr-2">{languageFlags[lang]}</span>
