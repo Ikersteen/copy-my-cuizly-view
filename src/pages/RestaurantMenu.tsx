@@ -83,6 +83,7 @@ interface Menu {
   allergens?: string[];
   pdf_menu_url?: string;
   category?: string;
+  subcategory?: string;
 }
 
 interface Restaurant {
@@ -187,7 +188,7 @@ export default function RestaurantMenu() {
     try {
       const { data, error } = await supabase
         .from('menus')
-        .select('id, image_url, description, cuisine_type, is_active, dietary_restrictions, allergens, pdf_menu_url, category')
+        .select('id, image_url, description, cuisine_type, is_active, dietary_restrictions, allergens, pdf_menu_url, category, subcategory')
         .eq('restaurant_id', id)
         .eq('is_active', true)
         .order('created_at', { ascending: false });
@@ -533,8 +534,14 @@ export default function RestaurantMenu() {
                             <div className="flex flex-col gap-2 text-sm text-muted-foreground">
                               {menu.category && (
                                 <div>
-                                  <span className="font-semibold text-foreground">{t('menus.meal')} › </span>
-                                  <span>{CATEGORY_TRANSLATIONS[menu.category as keyof typeof CATEGORY_TRANSLATIONS]?.[currentLanguage] || menu.category}</span>
+                                  <span className="font-semibold text-foreground">{t('menusModal.mainDish')} › </span>
+                                  <span>{menu.category}</span>
+                                </div>
+                              )}
+                              {menu.subcategory && (
+                                <div>
+                                  <span className="font-semibold text-foreground">{t('menusModal.description')} › </span>
+                                  <span>{menu.subcategory}</span>
                                 </div>
                               )}
                               <div>
