@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Phone } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -68,14 +67,13 @@ export const PhoneInput = ({
       </Select>
       
       <div className="relative flex-1">
-        <Phone className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
         <Input
           id={id}
           type="tel"
           placeholder={placeholder}
           value={value}
           onChange={handlePhoneChange}
-          className={`pl-10 text-sm ${className}`}
+          className={`text-sm ${className}`}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
