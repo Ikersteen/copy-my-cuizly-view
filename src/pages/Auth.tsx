@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowLeft, Mail, Lock, User, Building, Eye, EyeOff, Phone, MessageCircle, Loader2 } from "lucide-react";
+import { ArrowLeft, Mail, Lock, User, Building, Eye, EyeOff, MessageCircle, Loader2 } from "lucide-react";
+import { PhoneInput } from "@/components/PhoneInput";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -961,27 +962,18 @@ const Auth = () => {
                          </p>
                        </div>
 
-                       {signinSmsVerificationStep === 'phone' && (
-                         <div className="space-y-3">
-                           <div className="space-y-2">
-                             <Label htmlFor="signin-phone" className="text-sm">{t('auth.smsVerification.phoneNumber')}</Label>
-                             <div className="relative">
-                               <Phone className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
-                                 <Input
-                                   id="signin-phone"
-                                   type="tel"
-                                   placeholder="+1 (514) 465-4783"
-                                  value={signinPhoneNumber}
-                                  onChange={(e) => setSigninPhoneNumber(e.target.value)}
-                                  className="pl-10 text-sm"
-                                  autoComplete="off"
-                                  autoCorrect="off"
-                                  autoCapitalize="off"
-                                  spellCheck="false"
-                                  required
-                                />
-                             </div>
-                           </div>
+                        {signinSmsVerificationStep === 'phone' && (
+                          <div className="space-y-3">
+                            <div className="space-y-2">
+                              <Label htmlFor="signin-phone" className="text-sm">{t('auth.smsVerification.phoneNumber')}</Label>
+                              <PhoneInput
+                                id="signin-phone"
+                                value={signinPhoneNumber}
+                                onChange={setSigninPhoneNumber}
+                                placeholder="(514) 465-4783"
+                                required
+                              />
+                            </div>
                            
                            {signinSmsError && (
                              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
@@ -1262,26 +1254,17 @@ const Auth = () => {
                         </p>
                       </div>
 
-                      {smsVerificationStep === 'phone' && (
+                       {smsVerificationStep === 'phone' && (
                         <div className="space-y-3">
                           <div className="space-y-2">
                             <Label htmlFor="phone" className="text-sm">{t('auth.smsVerification.phoneNumber')}</Label>
-                            <div className="relative">
-                              <Phone className="absolute left-3 top-3 h-4 w-4 text-cuizly-neutral" />
-                               <Input
-                                  id="phone"
-                                  type="tel"
-                                  placeholder="+1 (514) 465-4783"
-                                 value={phoneNumber}
-                                 onChange={(e) => setPhoneNumber(e.target.value)}
-                                 className="pl-10 text-sm"
-                                 autoComplete="off"
-                                 autoCorrect="off"
-                                 autoCapitalize="off"
-                                 spellCheck="false"
-                                 required
-                               />
-                            </div>
+                            <PhoneInput
+                              id="phone"
+                              value={phoneNumber}
+                              onChange={setPhoneNumber}
+                              placeholder="(514) 465-4783"
+                              required
+                            />
                           </div>
                           
                           {smsError && (
