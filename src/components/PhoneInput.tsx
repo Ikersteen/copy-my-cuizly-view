@@ -48,13 +48,11 @@ export const PhoneInput = ({
           if (selected) setSelectedCountry(selected);
         }}
       >
-        <SelectTrigger className="w-[120px]">
-          <SelectValue>
-            <div className="flex items-center gap-2">
-              <span className="text-xl">{selectedCountry.flag}</span>
-              <span className="text-sm">{selectedCountry.code}</span>
-            </div>
-          </SelectValue>
+        <SelectTrigger className="w-[120px] overflow-visible">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{selectedCountry.flag}</span>
+            <span className="text-sm">{selectedCountry.code}</span>
+          </div>
         </SelectTrigger>
         <SelectContent>
           {countries.map((country) => (
