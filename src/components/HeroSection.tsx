@@ -30,7 +30,7 @@ const HeroSection = () => {
 
 
         {/* Main Title */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground mb-4 sm:mb-6 leading-[1.3] tracking-tight animate-fade-in">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground mb-4 sm:mb-6 leading-[1.3] tracking-tight animate-fade-in pb-2">
           <span className="block">{t('hero.title.discover')}</span>
           <span className="block bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent font-extrabold">
             {t('hero.title.favorites')}
