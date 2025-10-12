@@ -48,7 +48,7 @@ export const PhoneInput = ({
           if (selected) setSelectedCountry(selected);
         }}
       >
-        <SelectTrigger className="w-[100px] [&>span]:overflow-visible [&>span]:text-ellipsis-none">
+        <SelectTrigger className="w-[85px] [&>span]:overflow-visible [&>span]:text-ellipsis-none">
           <div className="flex items-center gap-1.5 whitespace-nowrap">
             <span className="text-lg leading-none">{selectedCountry.flag}</span>
             <span className="text-sm">{selectedCountry.code}</span>
