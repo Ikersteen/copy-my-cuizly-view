@@ -253,6 +253,45 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean
+          link: string | null
+          message: string
+          metadata: Json | null
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message: string
+          metadata?: Json | null
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message?: string
+          metadata?: Json | null
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       offers: {
         Row: {
           category: string | null
@@ -866,6 +905,17 @@ export type Database = {
         }
         Returns: boolean
       }
+      create_notification: {
+        Args: {
+          p_link?: string
+          p_message: string
+          p_metadata?: Json
+          p_title: string
+          p_type: string
+          p_user_id: string
+        }
+        Returns: string
+      }
       create_restaurant_slug: {
         Args: { restaurant_name: string }
         Returns: string
@@ -1148,6 +1198,14 @@ export type Database = {
       }
       log_unauthorized_access_attempt: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      mark_all_notifications_read: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      mark_notification_read: {
+        Args: { p_notification_id: string }
         Returns: boolean
       }
       mask_sensitive_data: {
