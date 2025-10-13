@@ -1074,7 +1074,8 @@
     "restaurantSpecialty": "Restaurant specialty",
     "notDefined": "Not defined",
     "description": "Description",
-    "completeProfile": "Please complete your restaurant profile first"
+    "completeProfile": "Please complete your restaurant profile first",
+    "noCoverImage": "No cover image"
   },
   "theme": {
     "light": "Light",
