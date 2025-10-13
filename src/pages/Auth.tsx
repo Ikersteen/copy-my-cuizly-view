@@ -775,20 +775,31 @@ const Auth = () => {
   };
 
   const handleAppleAuth = async () => {
+    console.log('🍎 Apple Auth: Démarrage de la connexion Apple');
+    console.log('🍎 Apple Auth: Redirect URL:', `${window.location.origin}/dashboard`);
+    
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'apple',
         options: {
           redirectTo: `${window.location.origin}/dashboard`
         }
       });
       
+      console.log('🍎 Apple Auth: Réponse Supabase:', { data, error });
+      
       if (error) throw error;
+      
+      console.log('🍎 Apple Auth: Redirection vers Apple initiée');
     } catch (error: any) {
+      console.error('🍎 Apple Auth: Erreur complète:', error);
+      
       let errorMessage = "Unable to connect with Apple";
       
       if (error.message?.includes("provider is not enabled")) {
         errorMessage = "Apple OAuth is not configured for this application";
+      } else if (error.message) {
+        errorMessage = error.message;
       }
 
       toast({
