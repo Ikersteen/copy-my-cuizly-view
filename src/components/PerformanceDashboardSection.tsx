@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import performanceImage from '@/assets/cuizly-tableau-performances.jpg';
+import performanceImageEN from '@/assets/cuizly-tableau-performances-en.png';
 import performanceMobileImage from '@/assets/cuizly-performance-mobile.jpg';
 
 const PerformanceDashboardSection = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className="py-12 sm:py-16 lg:py-12">
@@ -28,7 +29,7 @@ const PerformanceDashboardSection = () => {
           />
           {/* Image desktop */}
           <img 
-            src={performanceImage}
+            src={i18n.language === 'en' ? performanceImageEN : performanceImage}
             alt="Tableau de performance Cuizly montrant les métriques en temps réel"
             className="w-full h-auto object-contain hidden md:block"
           />
