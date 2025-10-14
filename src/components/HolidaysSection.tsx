@@ -36,6 +36,27 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
     return nextYear;
   };
 
+  const translateHolidayName = (name: string) => {
+    const translations: Record<string, Record<string, string>> = {
+      "New Year's Day": { fr: "Jour de l'An", en: "New Year's Day" },
+      "Good Friday": { fr: "Vendredi saint", en: "Good Friday" },
+      "Easter Monday": { fr: "Lundi de Pâques", en: "Easter Monday" },
+      "Victoria Day": { fr: "Fête de la Reine", en: "Victoria Day" },
+      "Canada Day": { fr: "Fête du Canada", en: "Canada Day" },
+      "Civic Holiday": { fr: "Congé civique", en: "Civic Holiday" },
+      "Labour Day": { fr: "Fête du Travail", en: "Labour Day" },
+      "National Day for Truth and Reconciliation": { 
+        fr: "Journée nationale de la vérité et de la réconciliation", 
+        en: "National Day for Truth and Reconciliation" 
+      },
+      "Thanksgiving": { fr: "Action de grâces", en: "Thanksgiving" },
+      "Remembrance Day": { fr: "Jour du Souvenir", en: "Remembrance Day" },
+      "Christmas Day": { fr: "Noël", en: "Christmas Day" },
+      "Boxing Day": { fr: "Lendemain de Noël", en: "Boxing Day" },
+    };
+
+    return translations[name]?.[i18n.language] || name;
+  };
 
   if (isLoading) {
     return (
@@ -93,7 +114,7 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
                         htmlFor={`holiday-${holiday.id}`}
                         className="text-sm font-medium cursor-pointer"
                       >
-                        {holiday.holiday_name}
+                        {translateHolidayName(holiday.holiday_name)}
                       </Label>
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5">
