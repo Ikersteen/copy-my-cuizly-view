@@ -317,8 +317,12 @@ export const RestaurantMenuModal = ({
                   {/* Phone */}
                   {restaurant.phone && (
                     <button
-                      onClick={() => setShowPhoneModal(true)}
-                      className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowPhoneModal(true);
+                      }}
+                      className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer text-left bg-transparent border-0 p-0"
                     >
                       <Phone className="h-4 w-4 text-muted-foreground" />
                       <span className="hover:underline">{restaurant.phone}</span>
