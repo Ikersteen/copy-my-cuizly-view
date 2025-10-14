@@ -27,7 +27,7 @@ const getCanadianHolidays2025 = () => [
   { name: "Journée nationale de la vérité et de la réconciliation", date: "2025-09-30" },
   { name: "Action de grâce (Thanksgiving)", date: "2025-10-13" },
   { name: "Jour du Souvenir (Remembrance Day)", date: "2025-11-11" },
-  { name: "Noël (Christmas Day)", date: "2025-12-25" },
+  { name: "Noël", date: "2025-12-25" },
   { name: "Lendemain de Noël (Boxing Day)", date: "2025-12-26" },
 ];
 
