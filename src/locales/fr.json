@@ -591,7 +591,7 @@
   },
   "analytics": {
     "title": "Tableau de performance en temps réel",
-    "subtitle": "Aperçus sur les performances par segment (Mise à jour en temps réel)",
+    "subtitle": "Permet aux restaurateurs de visualiser en temps réel leurs performances par segment et de prendre des décisions plus précises, basées sur des données fiables.",
     "totalOffers": "Offres totales",
     "activeOffers": "offres actives",
     "menusAdded": "Nombre de menus",
