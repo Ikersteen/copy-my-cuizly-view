@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { X, Star } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileFiltersDrawer } from "./MobileFiltersDrawer";
@@ -110,28 +109,21 @@ export const FiltersModal = ({ open, onOpenChange, onApplyFilters }: FiltersModa
           {/* Types de cuisine */}
           <div>
             <Label className="text-base font-medium mb-3 block">Cuisines</Label>
-            <Select onValueChange={toggleCuisine}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('filters.selectCuisine') || "Sélectionner une cuisine"} />
-              </SelectTrigger>
-              <SelectContent>
-                {CUISINE_OPTIONS.map(cuisine => (
-                  <SelectItem key={cuisine.key} value={cuisine.value}>
-                    {cuisine.value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {filters.cuisines.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3">
-                {filters.cuisines.map(cuisineValue => (
-                  <Badge key={cuisineValue} variant="default" className="cursor-pointer" onClick={() => toggleCuisine(cuisineValue)}>
-                    {cuisineValue}
+            <div className="flex flex-wrap gap-2">
+              {CUISINE_OPTIONS.map(cuisine => (
+                <Badge
+                  key={cuisine.key}
+                  variant={filters.cuisines.includes(cuisine.value) ? "default" : "outline"}
+                  className="cursor-pointer transition-all duration-200 hover:scale-105"
+                  onClick={() => toggleCuisine(cuisine.value)}
+                >
+                  {cuisine.value}
+                  {filters.cuisines.includes(cuisine.value) && (
                     <X className="h-3 w-3 ml-1" />
-                  </Badge>
-                ))}
-              </div>
-            )}
+                  )}
+                </Badge>
+              ))}
+            </div>
           </div>
 
           <Separator />

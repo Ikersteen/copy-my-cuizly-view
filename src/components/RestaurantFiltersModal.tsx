@@ -6,7 +6,6 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { X, TrendingUp, DollarSign, Users, Clock } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import i18n from '@/lib/i18n';
@@ -167,28 +166,18 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
           {/* Types de cuisine */}
           <div>
             <Label className="text-base font-medium mb-3 block">{t('restaurantFilters.cuisineTypes')}</Label>
-            <Select onValueChange={toggleCuisine}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('restaurantFilters.selectCuisine') || "Sélectionner une cuisine"} />
-              </SelectTrigger>
-              <SelectContent>
-                {CUISINE_OPTIONS.map(cuisine => (
-                  <SelectItem key={cuisine} value={cuisine}>
-                    {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {filters.cuisines.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3">
-                {filters.cuisines.map(cuisine => (
-                  <Badge key={cuisine} variant="default" className="cursor-pointer" onClick={() => toggleCuisine(cuisine)}>
-                    {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
-                    <X className="h-3 w-3 ml-1" />
-                  </Badge>
-                ))}
-              </div>
-            )}
+            <div className="flex flex-wrap gap-2">
+              {CUISINE_OPTIONS.map(cuisine => (
+                <Badge
+                  key={cuisine}
+                  variant={filters.cuisines.includes(cuisine) ? "default" : "outline"}
+                  className="cursor-pointer transition-all duration-200 hover:scale-105"
+                  onClick={() => toggleCuisine(cuisine)}
+                >
+                  {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                </Badge>
+              ))}
+            </div>
           </div>
 
           <Separator />
@@ -196,28 +185,18 @@ export const RestaurantFiltersModal = ({ open, onOpenChange, onApplyFilters }: R
           {/* Types de service */}
           <div>
             <Label className="text-base font-medium mb-3 block">{t('restaurantFilters.serviceTypes')}</Label>
-            <Select onValueChange={toggleServiceType}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('restaurantFilters.selectService') || "Sélectionner un service"} />
-              </SelectTrigger>
-              <SelectContent>
-                {SERVICE_TYPE_OPTIONS.map(serviceType => (
-                  <SelectItem key={serviceType} value={serviceType}>
-                    {SERVICE_TYPES_TRANSLATIONS[serviceType as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || serviceType}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {filters.serviceTypes.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3">
-                {filters.serviceTypes.map(serviceType => (
-                  <Badge key={serviceType} variant="default" className="cursor-pointer" onClick={() => toggleServiceType(serviceType)}>
-                    {SERVICE_TYPES_TRANSLATIONS[serviceType as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || serviceType}
-                    <X className="h-3 w-3 ml-1" />
-                  </Badge>
-                ))}
-              </div>
-            )}
+            <div className="flex flex-wrap gap-2">
+              {SERVICE_TYPE_OPTIONS.map(serviceType => (
+                <Badge
+                  key={serviceType}
+                  variant={filters.serviceTypes.includes(serviceType) ? "default" : "outline"}
+                  className="cursor-pointer transition-all duration-200 hover:scale-105"
+                  onClick={() => toggleServiceType(serviceType)}
+                >
+                  {SERVICE_TYPES_TRANSLATIONS[serviceType as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || serviceType}
+                </Badge>
+              ))}
+            </div>
           </div>
 
           <Separator />
