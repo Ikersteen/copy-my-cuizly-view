@@ -2312,6 +2312,11 @@
     "redirectMessage": "Vous allez être redirigé vers {{platform}} pour voir ce contenu.",
     "openButton": "Ouvrir {{platform}}"
   },
+  "phone": {
+    "callRestaurant": "Appeler le restaurant",
+    "confirmCall": "Voulez-vous appeler {{restaurant}} ?",
+    "callNow": "Appeler maintenant"
+  },
   "accessibility": {
     "voiceAssistant": "Assistant vocal",
     "backToTop": "Retour en haut de la page"
