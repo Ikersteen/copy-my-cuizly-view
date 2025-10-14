@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Info, Menu, MessageCircle, MapPin, Navigation } from "lucide-react";
+import { PhoneCallModal } from "./PhoneCallModal";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -155,6 +156,7 @@ export const RestaurantMenuModal = ({
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showInstagramModal, setShowInstagramModal] = useState(false);
   const [showFacebookModal, setShowFacebookModal] = useState(false);
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const { toast } = useToast();
   const { currentLanguage } = useLanguage();
@@ -314,10 +316,17 @@ export const RestaurantMenuModal = ({
                   
                   {/* Phone */}
                   {restaurant.phone && (
-                    <div className="flex items-center gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowPhoneModal(true);
+                      }}
+                      className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer text-left bg-transparent border-0 p-0 text-sm"
+                    >
                       <Phone className="h-4 w-4 text-muted-foreground" />
-                      <span>{restaurant.phone}</span>
-                    </div>
+                      <span className="hover:underline">{restaurant.phone}</span>
+                    </button>
                   )}
                   
                   {/* Social Media */}
@@ -546,6 +555,15 @@ export const RestaurantMenuModal = ({
             onOpenChange={setShowFacebookModal}
             url={restaurant.facebook_url}
             type="facebook"
+          />
+        )}
+
+        {restaurant.phone && (
+          <PhoneCallModal
+            open={showPhoneModal}
+            onOpenChange={setShowPhoneModal}
+            phoneNumber={restaurant.phone}
+            restaurantName={restaurant.name}
           />
         )}
       </DialogContent>

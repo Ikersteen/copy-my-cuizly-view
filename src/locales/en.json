@@ -1879,6 +1879,12 @@
     "redirectMessage": "You will be redirected to {{platform}} to view this content.",
     "openButton": "Open {{platform}}"
   },
+  "phone": {
+    "callTitle": "Call restaurant",
+    "callMessage": "You are about to call {{phone}}",
+    "callMessageWithName": "You are about to call {{name}} at {{phone}}",
+    "callButton": "Call now"
+  },
   "accessibility": {
     "voiceAssistant": "Voice assistant",
     "backToTop": "Back to top"
