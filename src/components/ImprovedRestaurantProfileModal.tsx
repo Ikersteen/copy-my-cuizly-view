@@ -912,15 +912,37 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <Label htmlFor="specialties">{t('restaurantProfile.specialties')}</Label>
-              <Textarea
+              <Input
                 id="specialties"
-                value={formData.restaurant_specialties.join(', ')}
+                value=""
                 onChange={(e) => {
-                  const specialties = e.target.value.split(',').map(s => s.trim()).filter(s => s);
-                  setFormData(prev => ({ ...prev, restaurant_specialties: specialties }));
+                  const value = e.target.value;
+                  if (value.includes(',')) {
+                    const newSpecialty = value.replace(',', '').trim();
+                    if (newSpecialty && !formData.restaurant_specialties.includes(newSpecialty)) {
+                      setFormData(prev => ({ 
+                        ...prev, 
+                        restaurant_specialties: [...prev.restaurant_specialties, newSpecialty] 
+                      }));
+                    }
+                    e.target.value = '';
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === ',' || e.key === 'Enter') {
+                    e.preventDefault();
+                    const input = e.currentTarget;
+                    const value = input.value.trim();
+                    if (value && !formData.restaurant_specialties.includes(value)) {
+                      setFormData(prev => ({ 
+                        ...prev, 
+                        restaurant_specialties: [...prev.restaurant_specialties, value] 
+                      }));
+                      input.value = '';
+                    }
+                  }
                 }}
                 placeholder={t('restaurantProfile.specialtiesPlaceholder')}
-                className="min-h-[80px]"
               />
               <p className="text-xs text-muted-foreground">
                 {t('restaurantProfile.specialtiesHint')}
