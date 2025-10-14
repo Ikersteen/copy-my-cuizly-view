@@ -13,7 +13,10 @@ interface PhoneCallModalProps {
 export const PhoneCallModal = ({ open, onOpenChange, phoneNumber, restaurantName }: PhoneCallModalProps) => {
   const { t } = useTranslation();
 
+  console.log('PhoneCallModal rendered:', { open, phoneNumber, restaurantName });
+
   const handleCall = () => {
+    console.log('Calling:', phoneNumber);
     window.location.href = `tel:${phoneNumber}`;
     onOpenChange(false);
   };

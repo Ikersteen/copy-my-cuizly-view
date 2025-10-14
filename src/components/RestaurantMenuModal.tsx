@@ -317,12 +317,15 @@ export const RestaurantMenuModal = ({
                   {/* Phone */}
                   {restaurant.phone && (
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
+                        console.log('Phone button clicked!', restaurant.phone);
                         setShowPhoneModal(true);
                       }}
-                      className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer text-left bg-transparent border-0 p-0 text-sm"
+                      className="flex items-center gap-2 hover:text-primary transition-colors !cursor-pointer text-left bg-transparent border-none p-0 text-sm outline-none"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       <Phone className="h-4 w-4 text-muted-foreground" />
                       <span className="hover:underline">{restaurant.phone}</span>
