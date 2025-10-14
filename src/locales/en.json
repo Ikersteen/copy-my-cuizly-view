@@ -1879,11 +1879,6 @@
     "redirectMessage": "You will be redirected to {{platform}} to view this content.",
     "openButton": "Open {{platform}}"
   },
-  "phone": {
-    "callRestaurant": "Call Restaurant",
-    "confirmCall": "Would you like to call {{restaurant}}?",
-    "callNow": "Call Now"
-  },
   "accessibility": {
     "voiceAssistant": "Voice assistant",
     "backToTop": "Back to top"
