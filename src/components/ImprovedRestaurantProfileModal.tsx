@@ -972,12 +972,16 @@ export const ImprovedRestaurantProfileModal = ({
                 {t('restaurantProfile.specialtiesHint')}
               </p>
               {formData.restaurant_specialties.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-2">
+                <div className="flex flex-wrap gap-2 mt-3 p-3 border rounded-lg bg-muted/30">
                   {formData.restaurant_specialties.map((specialty, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
+                    <Badge 
+                      key={index} 
+                      variant="secondary" 
+                      className="px-3 py-1.5 text-sm cursor-pointer hover:bg-secondary/80 transition-colors"
+                    >
                       {specialty}
                       <X 
-                        className="h-3 w-3 ml-1 cursor-pointer" 
+                        className="ml-1.5 h-3.5 w-3.5 hover:text-destructive transition-colors" 
                         onClick={() => setFormData(prev => ({ 
                           ...prev, 
                           restaurant_specialties: prev.restaurant_specialties.filter((_, i) => i !== index) 
