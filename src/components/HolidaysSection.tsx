@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useHolidays } from "@/hooks/useHolidays";
@@ -7,6 +6,7 @@ import { format } from "date-fns";
 import { fr, enUS } from "date-fns/locale";
 import { Calendar } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 
 interface HolidaysSectionProps {
   restaurantId: string;
@@ -61,94 +61,82 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-8 w-1/3" />
-          <Skeleton className="h-4 w-2/3 mt-2" />
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-16 w-full" />
-          ))}
-        </CardContent>
-      </Card>
+      <div className="space-y-2">
+        <Skeleton className="h-5 w-32" />
+        <Skeleton className="h-16 w-full" />
+      </div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Calendar className="h-5 w-5" />
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Calendar className="h-4 w-4 text-muted-foreground" />
+        <p className="text-xs sm:text-sm text-muted-foreground font-semibold">
           {i18n.language === 'fr' ? 'Jours fériés' : 'Holidays'}
-        </CardTitle>
-        <CardDescription>
-          {i18n.language === 'fr' 
-            ? 'Sélectionnez les jours fériés où votre restaurant sera fermé. Le système mettra automatiquement à jour les heures d\'ouverture et bloquera les réservations.'
-            : 'Select the holidays when your restaurant will be closed. The system will automatically update opening hours and block reservations.'}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          {/* Country selector */}
-          <div className="pb-4 border-b">
-            <Label className="text-sm font-medium">
-              {i18n.language === 'fr' ? 'Pays pour les jours fériés' : 'Country for holidays'}
-            </Label>
-            <p className="text-sm text-muted-foreground mt-1">
-              Canada
-            </p>
-          </div>
+        </p>
+      </div>
+      
+      <p className="text-xs text-muted-foreground">
+        {i18n.language === 'fr' 
+          ? 'Sélectionnez les jours fériés où votre restaurant sera fermé'
+          : 'Select holidays when your restaurant will be closed'}
+      </p>
 
-          {/* Holidays list */}
-          <div className="space-y-4">
-            {holidays?.map((holiday) => {
-              const nextDate = getNextOccurrence(holiday.holiday_date);
-              const isPast = new Date(holiday.holiday_date) < new Date();
-              
-              return (
-                <div
-                  key={holiday.id}
-                  className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+      <Separator className="my-3" />
+
+      {/* Country */}
+      <div className="mb-3">
+        <Label className="text-xs text-muted-foreground">
+          {i18n.language === 'fr' ? 'Pays pour les jours fériés' : 'Country for holidays'}
+        </Label>
+        <p className="text-sm font-medium mt-1">Canada</p>
+      </div>
+
+      {/* Holidays list */}
+      <div className="space-y-2">
+        {holidays?.map((holiday) => {
+          const nextDate = getNextOccurrence(holiday.holiday_date);
+          
+          return (
+            <div
+              key={holiday.id}
+              className="flex items-center justify-between py-2 px-3 rounded-md border hover:bg-muted/30 transition-colors"
+            >
+              <div className="flex-1 min-w-0">
+                <Label
+                  htmlFor={`holiday-${holiday.id}`}
+                  className="text-sm font-medium cursor-pointer block"
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <Label
-                        htmlFor={`holiday-${holiday.id}`}
-                        className="font-medium cursor-pointer"
-                      >
-                        {translateHolidayName(holiday.holiday_name)}
-                      </Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {i18n.language === 'fr' ? 'Prochain : ' : 'Next: '}
-                      {formatDate(nextDate.toISOString())}
-                    </p>
-                  </div>
-                  <Switch
-                    id={`holiday-${holiday.id}`}
-                    checked={holiday.is_enabled}
-                    onCheckedChange={(checked) =>
-                      toggleHoliday.mutate({ id: holiday.id, is_enabled: checked })
-                    }
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          {holidays?.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>
-                {i18n.language === 'fr'
-                  ? 'Aucun jour férié configuré'
-                  : 'No holidays configured'}
-              </p>
+                  {translateHolidayName(holiday.holiday_name)}
+                </Label>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {i18n.language === 'fr' ? 'Prochain : ' : 'Next: '}
+                  {formatDate(nextDate.toISOString())}
+                </p>
+              </div>
+              <Switch
+                id={`holiday-${holiday.id}`}
+                checked={holiday.is_enabled}
+                onCheckedChange={(checked) =>
+                  toggleHoliday.mutate({ id: holiday.id, is_enabled: checked })
+                }
+              />
             </div>
-          )}
+          );
+        })}
+      </div>
+
+      {holidays?.length === 0 && (
+        <div className="text-center py-6 text-muted-foreground">
+          <Calendar className="h-8 w-8 mx-auto mb-2 opacity-50" />
+          <p className="text-xs">
+            {i18n.language === 'fr'
+              ? 'Aucun jour férié configuré'
+              : 'No holidays configured'}
+          </p>
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 };

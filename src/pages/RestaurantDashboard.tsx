@@ -227,9 +227,6 @@ const RestaurantDashboard = () => {
         {/* Section analytics */}
         <AnalyticsSection restaurantId={restaurant?.id} />
 
-        {/* Section holidays */}
-        {restaurant?.id && <HolidaysSection restaurantId={restaurant.id} />}
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
 
           {/* Restaurant Info */}
@@ -356,6 +353,11 @@ const RestaurantDashboard = () => {
                       ) : (
                         <p className="text-foreground text-sm">{t('restaurantInfo.notSpecified')}</p>
                       )}
+                    </div>
+                    
+                    {/* Holidays Section */}
+                    <div className="md:col-span-2">
+                      <HolidaysSection restaurantId={restaurant.id} />
                     </div>
                     
                     {/* Social Media Icons */}
