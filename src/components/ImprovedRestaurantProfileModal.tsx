@@ -90,6 +90,10 @@ export const ImprovedRestaurantProfileModal = ({
   const [coverAdjustmentOpen, setCoverAdjustmentOpen] = useState(false);
   const [tempLogoUrl, setTempLogoUrl] = useState<string>('');
   const [tempCoverUrl, setTempCoverUrl] = useState<string>('');
+  
+  // Select dropdown values for cuisine and service types
+  const [cuisineSelectValue, setCuisineSelectValue] = useState<string>('');
+  const [serviceSelectValue, setServiceSelectValue] = useState<string>('');
 
   // Debug log for modal state
   // console.log('Modal states:', { photoModalOpen, photoModalType });
@@ -866,11 +870,15 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <Label>{t('restaurant.cuisineType')}</Label>
-              <Select onValueChange={(value) => {
-                if (!formData.cuisine_type.includes(value)) {
-                  setFormData(prev => ({ ...prev, cuisine_type: [...prev.cuisine_type, value] }));
-                }
-              }}>
+              <Select 
+                value={cuisineSelectValue}
+                onValueChange={(value) => {
+                  if (!formData.cuisine_type.includes(value)) {
+                    setFormData(prev => ({ ...prev, cuisine_type: [...prev.cuisine_type, value] }));
+                  }
+                  setCuisineSelectValue(''); // Reset to placeholder
+                }}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder={t('restaurant.selectCuisine') || "Sélectionner une cuisine"} />
                 </SelectTrigger>
@@ -902,11 +910,15 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <Label>{t('restaurant.serviceTypes')}</Label>
-              <Select onValueChange={(value) => {
-                if (!formData.service_types.includes(value)) {
-                  setFormData(prev => ({ ...prev, service_types: [...prev.service_types, value] }));
-                }
-              }}>
+              <Select 
+                value={serviceSelectValue}
+                onValueChange={(value) => {
+                  if (!formData.service_types.includes(value)) {
+                    setFormData(prev => ({ ...prev, service_types: [...prev.service_types, value] }));
+                  }
+                  setServiceSelectValue(''); // Reset to placeholder
+                }}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder={t('restaurant.selectService') || "Sélectionner un service"} />
                 </SelectTrigger>
