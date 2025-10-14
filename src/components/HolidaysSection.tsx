@@ -18,7 +18,7 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     const locale = i18n.language === 'fr' ? fr : enUS;
-    return format(date, 'PPP', { locale });
+    return format(date, 'd MMMM yyyy', { locale });
   };
 
   const getNextOccurrence = (dateStr: string) => {
