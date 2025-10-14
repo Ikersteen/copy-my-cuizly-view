@@ -14,11 +14,6 @@ import { AuthenticatedConsumerHeader } from "@/components/AuthenticatedConsumerH
 import { AuthenticatedRestaurantHeader } from "@/components/AuthenticatedRestaurantHeader";
 import { ConsumerMobileMenu } from "@/components/ConsumerMobileMenu";
 import { RestaurantMobileMenu } from "@/components/RestaurantMobileMenu";
-import { MenusModal } from "@/components/MenusModal";
-import { PreferencesModal } from "@/components/PreferencesModal";
-import { NewOfferModal } from "@/components/NewOfferModal";
-import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileModal";
-import { ConsumerProfileModal } from "@/components/ConsumerProfileModal";
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
@@ -27,13 +22,6 @@ const Header = () => {
   const { toast } = useToast();
   const { user, profile, isAuthenticated, isConsumer, isRestaurant, loading } = useUserProfile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [showPreferences, setShowPreferences] = useState(false);
-  const [showNewOffer, setShowNewOffer] = useState(false);
-  const [showRestaurantProfile, setShowRestaurantProfile] = useState(false);
-  const [showConsumerProfile, setShowConsumerProfile] = useState(false);
-  const [showMenus, setShowMenus] = useState(false);
-  const [restaurant, setRestaurant] = useState(null);
-  
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,42 +29,6 @@ const Header = () => {
   // Get localized routes
   const authRoute = useLocalizedRoute('/auth');
   const dashboardRoute = useLocalizedRoute('/dashboard');
-
-  // Load restaurant data when user is a restaurant owner
-  const loadRestaurantData = async (userId: string) => {
-    try {
-      const { data: restaurantData, error } = await supabase
-        .from('restaurants')
-        .select('*')
-        .eq('owner_id', userId)
-        .maybeSingle();
-
-      if (!error && restaurantData) {
-        setRestaurant(restaurantData);
-      }
-    } catch (error) {
-      console.error('Error loading restaurant data:', error);
-    }
-  };
-
-  // Load restaurant data when isRestaurant changes
-  useEffect(() => {
-    if (isRestaurant && user?.id) {
-      loadRestaurantData(user.id);
-    }
-  }, [isRestaurant, user?.id]);
-
-  const handleMenusClick = () => {
-    if (!restaurant?.id) {
-      toast({
-        title: t('common.error'),
-        description: t('dashboard.completeProfile'),
-        variant: "destructive"
-      });
-      return;
-    }
-    setShowMenus(true);
-  };
 
   const handleNavigate = (path: string) => {
     setIsSheetOpen(false);
@@ -156,19 +108,8 @@ const Header = () => {
               {/* Language Switcher & Menu - Always visible together on mobile */}
               <div className="flex items-center gap-2 ml-2">
                 <LanguageSwitcher />
-                {isConsumer && (
-                  <ConsumerMobileMenu 
-                    onPreferencesClick={() => setShowPreferences(true)}
-                    onProfileClick={() => setShowConsumerProfile(true)}
-                  />
-                )}
-                {isRestaurant && (
-                  <RestaurantMobileMenu 
-                    onNewOfferClick={() => setShowNewOffer(true)}
-                    onRestaurantProfileClick={() => setShowRestaurantProfile(true)}
-                    onMenusClick={handleMenusClick}
-                  />
-                )}
+                {isConsumer && <ConsumerMobileMenu />}
+                {isRestaurant && <RestaurantMobileMenu />}
               </div>
             </>
           ) : (
@@ -273,54 +214,6 @@ const Header = () => {
           onOpenChange={setShowProfileSwitch}
           currentProfile={profile?.user_type || 'consumer'}
         />
-      )}
-      
-      {/* Other Modals - Only show when authenticated */}
-      {isAuthenticated && (
-        <>
-          {isConsumer && (
-            <>
-              <PreferencesModal 
-                open={showPreferences} 
-                onOpenChange={setShowPreferences}
-              />
-              <ConsumerProfileModal
-                isOpen={showConsumerProfile}
-                onClose={() => setShowConsumerProfile(false)}
-              />
-            </>
-          )}
-          {isRestaurant && (
-            <>
-              <NewOfferModal 
-                open={showNewOffer}
-                onOpenChange={setShowNewOffer}
-                restaurantId={null}
-                onSuccess={() => {}}
-              />
-              <RestaurantProfileModal 
-                open={showRestaurantProfile}
-                onOpenChange={setShowRestaurantProfile}
-                restaurant={null}
-                onUpdate={() => {
-                  if (user?.id) {
-                    loadRestaurantData(user.id);
-                  }
-                }}
-              />
-              <MenusModal 
-                open={showMenus}
-                onOpenChange={setShowMenus}
-                restaurantId={restaurant?.id || null}
-                onSuccess={() => {
-                  if (restaurant?.id && user?.id) {
-                    loadRestaurantData(user.id);
-                  }
-                }}
-              />
-            </>
-          )}
-        </>
       )}
     </header>
   );

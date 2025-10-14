@@ -15,6 +15,11 @@ export const routeTranslations = {
   '/dashboard': '/tableau-de-bord',
   '/restaurant': '/restaurant',
   '/restaurant/reservations': '/restaurant/reservations',
+  '/restaurant/profile': '/restaurant/profil',
+  '/restaurant/new-offer': '/restaurant/nouvelle-offre',
+  '/restaurant/menus': '/restaurant/menus',
+  '/profile': '/profil',
+  '/preferences': '/preferences',
   '/my-reservations': '/mes-reservations',
   '/email-confirmed': '/courriel-confirme'
 } as const;

@@ -9,14 +9,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 interface ConsumerMobileMenuProps {
-  onPreferencesClick: () => void;
-  onProfileClick: () => void;
+  // Props removed as we're now using navigation
 }
 
-export const ConsumerMobileMenu = ({
-  onPreferencesClick,
-  onProfileClick,
-}: ConsumerMobileMenuProps) => {
+export const ConsumerMobileMenu = (props: ConsumerMobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -26,6 +22,8 @@ export const ConsumerMobileMenu = ({
   const homeRoute = useLocalizedRoute('/');
   const dashboardRoute = useLocalizedRoute('/dashboard');
   const reservationsRoute = useLocalizedRoute('/my-reservations');
+  const profileRoute = useLocalizedRoute('/profile');
+  const preferencesRoute = useLocalizedRoute('/preferences');
 
   const handleLogout = async () => {
     try {
@@ -87,7 +85,7 @@ export const ConsumerMobileMenu = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(onProfileClick)}
+                onClick={() => handleMenuClick(() => navigate(profileRoute))}
               >
                 <User className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('profile.title', 'Profil')}</span>
@@ -96,7 +94,7 @@ export const ConsumerMobileMenu = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(onPreferencesClick)}
+                onClick={() => handleMenuClick(() => navigate(preferencesRoute))}
               >
                 <Settings className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('dashboard.preferences')}</span>
