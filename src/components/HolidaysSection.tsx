@@ -1,7 +1,7 @@
-import { useTranslation } from "react-i18next";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useHolidays } from "@/hooks/useHolidays";
+import { useLanguage } from "@/hooks/useLanguage";
 import { format } from "date-fns";
 import { fr, enUS } from "date-fns/locale";
 import { Calendar } from "lucide-react";
@@ -12,12 +12,12 @@ interface HolidaysSectionProps {
 }
 
 export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
-  const { t, i18n } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const { holidays, isLoading, toggleHoliday } = useHolidays(restaurantId);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    const locale = i18n.language === 'fr' ? fr : enUS;
+    const locale = currentLanguage === 'fr' ? fr : enUS;
     return format(date, 'd MMMM yyyy', { locale });
   };
 
@@ -55,7 +55,7 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
       "Boxing Day": { fr: "Lendemain de Noël", en: "Boxing Day" },
     };
 
-    return translations[name]?.[i18n.language] || name;
+    return translations[name]?.[currentLanguage] || name;
   };
 
   if (isLoading) {
@@ -77,10 +77,10 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
       <div>
         <Label className="text-sm font-semibold flex items-center gap-2">
           <Calendar className="h-4 w-4" />
-          {i18n.language === 'fr' ? 'Jours fériés' : 'Holidays'}
+          {currentLanguage === 'fr' ? 'Jours fériés' : 'Holidays'}
         </Label>
         <p className="text-xs text-muted-foreground mt-0.5">
-          {i18n.language === 'fr' 
+          {currentLanguage === 'fr' 
             ? 'Sélectionnez les jours fériés où votre restaurant sera fermé.'
             : 'Select holidays when your restaurant will be closed.'}
         </p>
@@ -90,7 +90,7 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
           {/* Country selector */}
           <div className="pb-2">
             <Label className="text-xs font-medium">
-              {i18n.language === 'fr' ? 'Pays pour les jours fériés' : 'Country for holidays'}
+              {currentLanguage === 'fr' ? 'Pays pour les jours fériés' : 'Country for holidays'}
             </Label>
             <p className="text-xs text-muted-foreground mt-0.5">
               Canada
@@ -118,7 +118,7 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
                       </Label>
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {i18n.language === 'fr' ? 'Prochain : ' : 'Next: '}
+                      {currentLanguage === 'fr' ? 'Prochain : ' : 'Next: '}
                       {formatDate(nextDate.toISOString())}
                     </p>
                   </div>
@@ -138,7 +138,7 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
             <div className="text-center py-8 text-muted-foreground">
               <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>
-                {i18n.language === 'fr'
+                {currentLanguage === 'fr'
                   ? 'Aucun jour férié configuré'
                   : 'No holidays configured'}
               </p>
