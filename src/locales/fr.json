@@ -2312,12 +2312,6 @@
     "redirectMessage": "Vous allez être redirigé vers {{platform}} pour voir ce contenu.",
     "openButton": "Ouvrir {{platform}}"
   },
-  "phone": {
-    "callTitle": "Appeler le restaurant",
-    "callMessage": "Vous allez appeler le {{phone}}",
-    "callMessageWithName": "Vous allez appeler {{name}} au {{phone}}",
-    "callButton": "Appeler maintenant"
-  },
   "accessibility": {
     "voiceAssistant": "Assistant vocal",
     "backToTop": "Retour en haut de la page"
