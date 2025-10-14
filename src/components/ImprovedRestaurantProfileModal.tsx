@@ -91,6 +91,9 @@ export const ImprovedRestaurantProfileModal = ({
   const [tempLogoUrl, setTempLogoUrl] = useState<string>('');
   const [tempCoverUrl, setTempCoverUrl] = useState<string>('');
   
+  // Specialty input state
+  const [specialtyInput, setSpecialtyInput] = useState<string>('');
+  
   // Debug log for modal state
   // console.log('Modal states:', { photoModalOpen, photoModalType });
 
@@ -914,7 +917,7 @@ export const ImprovedRestaurantProfileModal = ({
               <Label htmlFor="specialties">{t('restaurantProfile.specialties')}</Label>
               <Input
                 id="specialties"
-                value=""
+                value={specialtyInput}
                 onChange={(e) => {
                   const value = e.target.value;
                   if (value.includes(',')) {
@@ -925,20 +928,21 @@ export const ImprovedRestaurantProfileModal = ({
                         restaurant_specialties: [...prev.restaurant_specialties, newSpecialty] 
                       }));
                     }
-                    e.target.value = '';
+                    setSpecialtyInput('');
+                  } else {
+                    setSpecialtyInput(value);
                   }
                 }}
                 onKeyDown={(e) => {
                   if (e.key === ',' || e.key === 'Enter') {
                     e.preventDefault();
-                    const input = e.currentTarget;
-                    const value = input.value.trim();
+                    const value = specialtyInput.trim();
                     if (value && !formData.restaurant_specialties.includes(value)) {
                       setFormData(prev => ({ 
                         ...prev, 
                         restaurant_specialties: [...prev.restaurant_specialties, value] 
                       }));
-                      input.value = '';
+                      setSpecialtyInput('');
                     }
                   }
                 }}
