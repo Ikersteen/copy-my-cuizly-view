@@ -322,7 +322,7 @@ export const RestaurantMenuModal = ({
                         e.stopPropagation();
                         setShowPhoneModal(true);
                       }}
-                      className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer text-left bg-transparent border-0 p-0"
+                      className="flex items-center gap-2 hover:text-primary transition-colors !cursor-pointer text-left bg-transparent border-0 p-0 text-sm"
                     >
                       <Phone className="h-4 w-4 text-muted-foreground" />
                       <span className="hover:underline">{restaurant.phone}</span>
