@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useHolidays } from "@/hooks/useHolidays";
@@ -61,34 +60,32 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-8 w-1/3" />
-          <Skeleton className="h-4 w-2/3 mt-2" />
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-1/3" />
+        <Skeleton className="h-4 w-2/3" />
+        <div className="space-y-4">
           {[1, 2, 3, 4].map((i) => (
             <Skeleton key={i} className="h-16 w-full" />
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+    <div className="space-y-4">
+      <div>
+        <Label className="text-base font-semibold flex items-center gap-2">
           <Calendar className="h-5 w-5" />
           {i18n.language === 'fr' ? 'Jours fériés' : 'Holidays'}
-        </CardTitle>
-        <CardDescription>
+        </Label>
+        <p className="text-sm text-muted-foreground mt-1">
           {i18n.language === 'fr' 
             ? 'Sélectionnez les jours fériés où votre restaurant sera fermé. Le système mettra automatiquement à jour les heures d\'ouverture et bloquera les réservations.'
             : 'Select the holidays when your restaurant will be closed. The system will automatically update opening hours and block reservations.'}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </p>
+      </div>
+      <div>
         <div className="space-y-6">
           {/* Country selector */}
           <div className="pb-4 border-b">
@@ -148,7 +145,7 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
             </div>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };

@@ -19,6 +19,7 @@ import { createAddressInput } from "@/lib/addressUtils";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
 import { validateFileUpload } from "@/lib/security";
+import { HolidaysSection } from "@/components/HolidaysSection";
 
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, SERVICE_TYPES_OPTIONS, SERVICE_TYPES_TRANSLATIONS, PRICE_RANGE_OPTIONS, PRICE_RANGE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
@@ -829,9 +830,18 @@ export const ImprovedRestaurantProfileModal = ({
                    </div>
                  );
                  })}
-              </div>
+               </div>
             </div>
 
+
+            <Separator />
+
+            {/* Holidays Section */}
+            {restaurant && (
+              <HolidaysSection restaurantId={restaurant.id} />
+            )}
+
+            <Separator />
 
             <div className="space-y-2">
               <Label>{t('restaurantProfile.priceRange')}</Label>
