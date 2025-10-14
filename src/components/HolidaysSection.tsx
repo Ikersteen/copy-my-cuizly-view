@@ -73,32 +73,32 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div>
-        <Label className="text-base font-semibold flex items-center gap-2">
-          <Calendar className="h-5 w-5" />
+        <Label className="text-sm font-semibold flex items-center gap-2">
+          <Calendar className="h-4 w-4" />
           {i18n.language === 'fr' ? 'Jours fériés' : 'Holidays'}
         </Label>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-xs text-muted-foreground mt-0.5">
           {i18n.language === 'fr' 
-            ? 'Sélectionnez les jours fériés où votre restaurant sera fermé. Le système mettra automatiquement à jour les heures d\'ouverture et bloquera les réservations.'
-            : 'Select the holidays when your restaurant will be closed. The system will automatically update opening hours and block reservations.'}
+            ? 'Sélectionnez les jours fériés où votre restaurant sera fermé.'
+            : 'Select holidays when your restaurant will be closed.'}
         </p>
       </div>
       <div>
-        <div className="space-y-6">
+        <div className="space-y-3">
           {/* Country selector */}
-          <div className="pb-4">
-            <Label className="text-sm font-medium">
+          <div className="pb-2">
+            <Label className="text-xs font-medium">
               {i18n.language === 'fr' ? 'Pays pour les jours fériés' : 'Country for holidays'}
             </Label>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Canada
             </p>
           </div>
 
           {/* Holidays list */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             {holidays?.map((holiday) => {
               const nextDate = getNextOccurrence(holiday.holiday_date);
               const isPast = new Date(holiday.holiday_date) < new Date();
@@ -106,18 +106,18 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
               return (
                 <div
                   key={holiday.id}
-                  className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                  className="flex items-center justify-between p-2.5 rounded-lg border hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <Label
                         htmlFor={`holiday-${holiday.id}`}
-                        className="font-medium cursor-pointer"
+                        className="text-sm font-medium cursor-pointer"
                       >
                         {translateHolidayName(holiday.holiday_name)}
                       </Label>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-0.5">
                       {i18n.language === 'fr' ? 'Prochain : ' : 'Next: '}
                       {formatDate(nextDate.toISOString())}
                     </p>
