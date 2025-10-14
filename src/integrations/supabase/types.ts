@@ -600,6 +600,50 @@ export type Database = {
           },
         ]
       }
+      restaurant_holidays: {
+        Row: {
+          country: string
+          created_at: string | null
+          holiday_date: string
+          holiday_name: string
+          id: string
+          is_enabled: boolean
+          is_recurring: boolean
+          restaurant_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          country?: string
+          created_at?: string | null
+          holiday_date: string
+          holiday_name: string
+          id?: string
+          is_enabled?: boolean
+          is_recurring?: boolean
+          restaurant_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          country?: string
+          created_at?: string | null
+          holiday_date?: string
+          holiday_name?: string
+          id?: string
+          is_enabled?: boolean
+          is_recurring?: boolean
+          restaurant_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_holidays_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurants: {
         Row: {
           address: string | null
