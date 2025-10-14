@@ -16,18 +16,19 @@ export interface Holiday {
 
 // Default Canadian holidays for 2025
 const getCanadianHolidays2025 = () => [
-  { name: "New Year's Day", date: "2025-01-01" },
-  { name: "Good Friday", date: "2025-04-18" },
-  { name: "Easter Monday", date: "2025-04-21" },
-  { name: "Victoria Day", date: "2025-05-19" },
-  { name: "Canada Day", date: "2025-07-01" },
-  { name: "Civic Holiday", date: "2025-08-04" },
-  { name: "Labour Day", date: "2025-09-01" },
-  { name: "National Day for Truth and Reconciliation", date: "2025-09-30" },
-  { name: "Thanksgiving", date: "2025-10-13" },
-  { name: "Remembrance Day", date: "2025-11-11" },
-  { name: "Christmas Day", date: "2025-12-25" },
-  { name: "Boxing Day", date: "2025-12-26" },
+  { name: "Jour de l'An", date: "2025-01-01" },
+  { name: "Vendredi saint", date: "2025-04-18" },
+  { name: "Lundi de Pâques", date: "2025-04-21" },
+  { name: "Fête de la Reine (Victoria Day)", date: "2025-05-19" },
+  { name: "Fête nationale des Patriotes", date: "2025-05-19" },
+  { name: "Fête nationale du Québec (Saint-Jean-Baptiste)", date: "2025-06-24" },
+  { name: "Fête du Canada (Canada Day)", date: "2025-07-01" },
+  { name: "Fête du Travail (Labour Day)", date: "2025-09-01" },
+  { name: "Journée nationale de la vérité et de la réconciliation", date: "2025-09-30" },
+  { name: "Action de grâce (Thanksgiving)", date: "2025-10-13" },
+  { name: "Jour du Souvenir (Remembrance Day)", date: "2025-11-11" },
+  { name: "Noël (Christmas Day)", date: "2025-12-25" },
+  { name: "Lendemain de Noël (Boxing Day)", date: "2025-12-26" },
 ];
 
 export const useHolidays = (restaurantId?: string) => {
