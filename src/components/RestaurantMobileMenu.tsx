@@ -9,10 +9,16 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 interface RestaurantMobileMenuProps {
-  // Props removed as we're now using navigation
+  onNewOfferClick: () => void;
+  onRestaurantProfileClick: () => void;
+  onMenusClick: () => void;
 }
 
-export const RestaurantMobileMenu = (props: RestaurantMobileMenuProps) => {
+export const RestaurantMobileMenu = ({
+  onNewOfferClick,
+  onRestaurantProfileClick,
+  onMenusClick,
+}: RestaurantMobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -21,9 +27,6 @@ export const RestaurantMobileMenu = (props: RestaurantMobileMenuProps) => {
   // Get localized routes
   const homeRoute = useLocalizedRoute('/');
   const dashboardRoute = useLocalizedRoute('/dashboard');
-  const newOfferRoute = useLocalizedRoute('/restaurant/new-offer');
-  const profileRoute = useLocalizedRoute('/restaurant/profile');
-  const menusRoute = useLocalizedRoute('/restaurant/menus');
 
   const handleLogout = async () => {
     try {
@@ -85,7 +88,7 @@ export const RestaurantMobileMenu = (props: RestaurantMobileMenuProps) => {
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(() => navigate(newOfferRoute))}
+                onClick={() => handleMenuClick(onNewOfferClick)}
               >
                 <Plus className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('filters.newOffer')}</span>
@@ -94,7 +97,7 @@ export const RestaurantMobileMenu = (props: RestaurantMobileMenuProps) => {
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(() => navigate(profileRoute))}
+                onClick={() => handleMenuClick(onRestaurantProfileClick)}
               >
                 <ChefHat className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('filters.restaurantProfile')}</span>
@@ -103,7 +106,7 @@ export const RestaurantMobileMenu = (props: RestaurantMobileMenuProps) => {
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(() => navigate(menusRoute))}
+                onClick={() => handleMenuClick(onMenusClick)}
               >
                 <BookOpen className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('filters.manageMenus')}</span>

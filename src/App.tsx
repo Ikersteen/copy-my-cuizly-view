@@ -31,11 +31,6 @@ import EmailConfirmed from "./pages/EmailConfirmed";
 import RestaurantReservations from "./pages/RestaurantReservations";
 import ConsumerReservations from "./pages/ConsumerReservations";
 import NotFound from "./pages/NotFound";
-import ConsumerProfile from "./pages/ConsumerProfile";
-import Preferences from "./pages/Preferences";
-import RestaurantProfile from "./pages/RestaurantProfile";
-import RestaurantNewOffer from "./pages/RestaurantNewOffer";
-import RestaurantMenus from "./pages/RestaurantMenus";
 
 const queryClient = new QueryClient();
 
@@ -152,36 +147,6 @@ const AppContent = () => {
             <RestaurantReservations />
           </>
         } />
-        <Route path="/restaurant/profile" element={
-          <>
-            <Header />
-            <RestaurantProfile />
-          </>
-        } />
-        <Route path="/restaurant/new-offer" element={
-          <>
-            <Header />
-            <RestaurantNewOffer />
-          </>
-        } />
-        <Route path="/restaurant/menus" element={
-          <>
-            <Header />
-            <RestaurantMenus />
-          </>
-        } />
-        <Route path="/profile" element={
-          <>
-            <Header />
-            <ConsumerProfile />
-          </>
-        } />
-        <Route path="/preferences" element={
-          <>
-            <Header />
-            <Preferences />
-          </>
-        } />
         <Route path="/my-reservations" element={
           <>
             <Header />
@@ -257,36 +222,6 @@ const AppContent = () => {
           <>
             <Header />
             <RestaurantReservations />
-          </>
-        } />
-        <Route path="/restaurant/profil" element={
-          <>
-            <Header />
-            <RestaurantProfile />
-          </>
-        } />
-        <Route path="/restaurant/nouvelle-offre" element={
-          <>
-            <Header />
-            <RestaurantNewOffer />
-          </>
-        } />
-        <Route path="/restaurant/menus" element={
-          <>
-            <Header />
-            <RestaurantMenus />
-          </>
-        } />
-        <Route path="/profil" element={
-          <>
-            <Header />
-            <ConsumerProfile />
-          </>
-        } />
-        <Route path="/preferences" element={
-          <>
-            <Header />
-            <Preferences />
           </>
         } />
         <Route path="/mes-reservations" element={

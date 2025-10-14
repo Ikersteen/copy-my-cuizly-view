@@ -9,10 +9,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 interface ConsumerMobileMenuProps {
-  // Props removed as we're now using navigation
+  onPreferencesClick: () => void;
+  onProfileClick: () => void;
 }
 
-export const ConsumerMobileMenu = (props: ConsumerMobileMenuProps) => {
+export const ConsumerMobileMenu = ({
+  onPreferencesClick,
+  onProfileClick,
+}: ConsumerMobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -22,8 +26,6 @@ export const ConsumerMobileMenu = (props: ConsumerMobileMenuProps) => {
   const homeRoute = useLocalizedRoute('/');
   const dashboardRoute = useLocalizedRoute('/dashboard');
   const reservationsRoute = useLocalizedRoute('/my-reservations');
-  const profileRoute = useLocalizedRoute('/profile');
-  const preferencesRoute = useLocalizedRoute('/preferences');
 
   const handleLogout = async () => {
     try {
@@ -85,7 +87,7 @@ export const ConsumerMobileMenu = (props: ConsumerMobileMenuProps) => {
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(() => navigate(profileRoute))}
+                onClick={() => handleMenuClick(onProfileClick)}
               >
                 <User className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('profile.title', 'Profil')}</span>
@@ -94,7 +96,7 @@ export const ConsumerMobileMenu = (props: ConsumerMobileMenuProps) => {
               <Button
                 variant="ghost"
                 className="w-full justify-start text-left h-auto py-3"
-                onClick={() => handleMenuClick(() => navigate(preferencesRoute))}
+                onClick={() => handleMenuClick(onPreferencesClick)}
               >
                 <Settings className="h-5 w-5 mr-3" />
                 <span className="text-base">{t('dashboard.preferences')}</span>
