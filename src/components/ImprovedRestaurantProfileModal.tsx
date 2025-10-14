@@ -866,112 +866,74 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <Label>{t('restaurant.cuisineType')}</Label>
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {CUISINE_OPTIONS.map((cuisine) => {
-                    const isSelected = formData.cuisine_type.includes(cuisine);
-                    return (
-                      <Button
-                        key={cuisine}
-                        type="button"
-                        variant={isSelected ? "default" : "outline"}
-                        size="sm"
-                        className="justify-start h-auto py-2 px-3 text-xs"
-                        onClick={() => {
-                          const newSelection = isSelected
-                            ? formData.cuisine_type.filter(c => c !== cuisine)
-                            : [...formData.cuisine_type, cuisine];
-                          setFormData(prev => ({ ...prev, cuisine_type: newSelection }));
-                        }}
-                      >
-                        <div className="flex items-center gap-2 w-full">
-                          <div className={`w-3 h-3 border rounded-sm flex items-center justify-center ${
-                            isSelected ? 'bg-primary-foreground border-primary-foreground' : 'border-muted-foreground'
-                          }`}>
-                            {isSelected && <span className="text-xs text-primary">✓</span>}
-                          </div>
-                          <span className="text-left truncate">
-                            {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || 
-                             cuisine}
-                          </span>
-                        </div>
-                      </Button>
-                    );
-                  })}
+              <Select onValueChange={(value) => {
+                if (!formData.cuisine_type.includes(value)) {
+                  setFormData(prev => ({ ...prev, cuisine_type: [...prev.cuisine_type, value] }));
+                }
+              }}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t('restaurant.selectCuisine') || "Sélectionner une cuisine"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {CUISINE_OPTIONS.map((cuisine) => (
+                    <SelectItem key={cuisine} value={cuisine}>
+                      {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {formData.cuisine_type.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {formData.cuisine_type.map((cuisine) => (
+                    <Badge key={cuisine} variant="secondary" className="text-xs">
+                      {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                      <X 
+                        className="h-3 w-3 ml-1 cursor-pointer hover:bg-secondary-foreground/20 rounded" 
+                        onClick={() => setFormData(prev => ({ 
+                          ...prev, 
+                          cuisine_type: prev.cuisine_type.filter(c => c !== cuisine) 
+                        }))}
+                      />
+                    </Badge>
+                  ))}
                 </div>
-                {formData.cuisine_type.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {formData.cuisine_type.map((cuisine) => (
-                      <Badge key={cuisine} variant="secondary" className="text-xs">
-                         {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || 
-                          cuisine}
-                        <X 
-                          className="h-3 w-3 ml-1 cursor-pointer hover:bg-secondary-foreground/20 rounded" 
-                          onClick={() => setFormData(prev => ({ 
-                            ...prev, 
-                            cuisine_type: prev.cuisine_type.filter(c => c !== cuisine) 
-                          }))}
-                        />
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </div>
+              )}
             </div>
 
             <div className="space-y-2">
               <Label>{t('restaurant.serviceTypes')}</Label>
-              <div className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {SERVICE_TYPES_OPTIONS.map((service) => {
-                    const isSelected = formData.service_types.includes(service);
-                    return (
-                      <Button
-                        key={service}
-                        type="button"
-                        variant={isSelected ? "default" : "outline"}
-                        size="sm"
-                        className="justify-start h-auto py-2 px-3 text-xs"
-                        onClick={() => {
-                          const newSelection = isSelected
-                            ? formData.service_types.filter(s => s !== service)
-                            : [...formData.service_types, service];
-                          setFormData(prev => ({ ...prev, service_types: newSelection }));
-                        }}
-                      >
-                        <div className="flex items-center gap-2 w-full">
-                          <div className={`w-3 h-3 border rounded-sm flex items-center justify-center ${
-                            isSelected ? 'bg-primary-foreground border-primary-foreground' : 'border-muted-foreground'
-                          }`}>
-                            {isSelected && <span className="text-xs text-primary">✓</span>}
-                          </div>
-                          <span className="text-left truncate">
-                            {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || 
-                             service}
-                          </span>
-                        </div>
-                      </Button>
-                    );
-                  })}
+              <Select onValueChange={(value) => {
+                if (!formData.service_types.includes(value)) {
+                  setFormData(prev => ({ ...prev, service_types: [...prev.service_types, value] }));
+                }
+              }}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t('restaurant.selectService') || "Sélectionner un service"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {SERVICE_TYPES_OPTIONS.map((service) => (
+                    <SelectItem key={service} value={service}>
+                      {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {formData.service_types.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {formData.service_types.map((service) => (
+                    <Badge key={service} variant="secondary" className="text-xs">
+                      {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
+                      <X 
+                        className="h-3 w-3 ml-1 cursor-pointer hover:bg-secondary-foreground/20 rounded" 
+                        onClick={() => setFormData(prev => ({
+                          ...prev, 
+                          service_types: prev.service_types.filter(s => s !== service) 
+                        }))}
+                      />
+                    </Badge>
+                  ))}
                 </div>
-                {formData.service_types.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {formData.service_types.map((service) => (
-                      <Badge key={service} variant="secondary" className="text-xs">
-                         {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || 
-                          service}
-                        <X 
-                          className="h-3 w-3 ml-1 cursor-pointer hover:bg-secondary-foreground/20 rounded" 
-                          onClick={() => setFormData(prev => ({
-                            ...prev, 
-                            service_types: prev.service_types.filter(s => s !== service) 
-                          }))}
-                        />
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </div>
+              )}
             </div>
 
             <div className="space-y-2">
