@@ -91,10 +91,6 @@ export const ImprovedRestaurantProfileModal = ({
   const [tempLogoUrl, setTempLogoUrl] = useState<string>('');
   const [tempCoverUrl, setTempCoverUrl] = useState<string>('');
   
-  // Select dropdown values for cuisine and service types
-  const [cuisineSelectValue, setCuisineSelectValue] = useState<string>('');
-  const [serviceSelectValue, setServiceSelectValue] = useState<string>('');
-
   // Debug log for modal state
   // console.log('Modal states:', { photoModalOpen, photoModalType });
 
@@ -870,90 +866,48 @@ export const ImprovedRestaurantProfileModal = ({
 
             <div className="space-y-2">
               <Label>{t('restaurant.cuisineType')}</Label>
-              <Select 
-                value={cuisineSelectValue}
-                onValueChange={(value) => {
-                  if (!formData.cuisine_type.includes(value)) {
-                    setFormData(prev => ({ ...prev, cuisine_type: [...prev.cuisine_type, value] }));
-                  }
-                  setCuisineSelectValue(''); // Reset to placeholder
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t('restaurant.selectCuisine') || "Sélectionner une cuisine"} />
-                </SelectTrigger>
-                <SelectContent>
-                  {CUISINE_OPTIONS.map((cuisine) => (
-                    <SelectItem key={cuisine} value={cuisine}>
-                      {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {formData.cuisine_type.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3 p-3 border rounded-lg bg-muted/30">
-                  {formData.cuisine_type.map((cuisine) => (
-                    <Badge 
-                      key={cuisine} 
-                      variant="secondary" 
-                      className="px-3 py-1.5 text-sm cursor-pointer hover:bg-secondary/80 transition-colors"
-                    >
-                      {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
-                      <X 
-                        className="ml-1.5 h-3.5 w-3.5 hover:text-destructive transition-colors" 
-                        onClick={() => setFormData(prev => ({ 
-                          ...prev, 
-                          cuisine_type: prev.cuisine_type.filter(c => c !== cuisine) 
-                        }))}
-                      />
-                    </Badge>
-                  ))}
-                </div>
-              )}
+              <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                {CUISINE_OPTIONS.sort().map((cuisine) => (
+                  <Badge
+                    key={cuisine}
+                    variant={formData.cuisine_type.includes(cuisine) ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setFormData(prev => ({
+                        ...prev,
+                        cuisine_type: prev.cuisine_type.includes(cuisine)
+                          ? prev.cuisine_type.filter(c => c !== cuisine)
+                          : [...prev.cuisine_type, cuisine]
+                      }));
+                    }}
+                  >
+                    {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
+                  </Badge>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-2">
               <Label>{t('restaurant.serviceTypes')}</Label>
-              <Select 
-                value={serviceSelectValue}
-                onValueChange={(value) => {
-                  if (!formData.service_types.includes(value)) {
-                    setFormData(prev => ({ ...prev, service_types: [...prev.service_types, value] }));
-                  }
-                  setServiceSelectValue(''); // Reset to placeholder
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t('restaurant.selectService') || "Sélectionner un service"} />
-                </SelectTrigger>
-                <SelectContent>
-                  {SERVICE_TYPES_OPTIONS.map((service) => (
-                    <SelectItem key={service} value={service}>
-                      {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {formData.service_types.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3 p-3 border rounded-lg bg-muted/30">
-                  {formData.service_types.map((service) => (
-                    <Badge 
-                      key={service} 
-                      variant="secondary" 
-                      className="px-3 py-1.5 text-sm cursor-pointer hover:bg-secondary/80 transition-colors"
-                    >
-                      {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
-                      <X 
-                        className="ml-1.5 h-3.5 w-3.5 hover:text-destructive transition-colors" 
-                        onClick={() => setFormData(prev => ({
-                          ...prev, 
-                          service_types: prev.service_types.filter(s => s !== service) 
-                        }))}
-                      />
-                    </Badge>
-                  ))}
-                </div>
-              )}
+              <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-background min-h-[40px]">
+                {SERVICE_TYPES_OPTIONS.sort().map((service) => (
+                  <Badge
+                    key={service}
+                    variant={formData.service_types.includes(service) ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setFormData(prev => ({
+                        ...prev,
+                        service_types: prev.service_types.includes(service)
+                          ? prev.service_types.filter(s => s !== service)
+                          : [...prev.service_types, service]
+                      }));
+                    }}
+                  >
+                    {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
+                  </Badge>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-2">
