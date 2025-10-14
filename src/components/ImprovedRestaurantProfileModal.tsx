@@ -891,12 +891,16 @@ export const ImprovedRestaurantProfileModal = ({
                 </SelectContent>
               </Select>
               {formData.cuisine_type.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
+                <div className="flex flex-wrap gap-2 mt-3 p-3 border rounded-lg bg-muted/30">
                   {formData.cuisine_type.map((cuisine) => (
-                    <Badge key={cuisine} variant="secondary" className="text-xs">
+                    <Badge 
+                      key={cuisine} 
+                      variant="secondary" 
+                      className="px-3 py-1.5 text-sm cursor-pointer hover:bg-secondary/80 transition-colors"
+                    >
                       {CUISINE_TRANSLATIONS[cuisine as keyof typeof CUISINE_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || cuisine}
                       <X 
-                        className="h-3 w-3 ml-1 cursor-pointer hover:bg-secondary-foreground/20 rounded" 
+                        className="ml-1.5 h-3.5 w-3.5 hover:text-destructive transition-colors" 
                         onClick={() => setFormData(prev => ({ 
                           ...prev, 
                           cuisine_type: prev.cuisine_type.filter(c => c !== cuisine) 
@@ -931,12 +935,16 @@ export const ImprovedRestaurantProfileModal = ({
                 </SelectContent>
               </Select>
               {formData.service_types.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
+                <div className="flex flex-wrap gap-2 mt-3 p-3 border rounded-lg bg-muted/30">
                   {formData.service_types.map((service) => (
-                    <Badge key={service} variant="secondary" className="text-xs">
+                    <Badge 
+                      key={service} 
+                      variant="secondary" 
+                      className="px-3 py-1.5 text-sm cursor-pointer hover:bg-secondary/80 transition-colors"
+                    >
                       {SERVICE_TYPES_TRANSLATIONS[service as keyof typeof SERVICE_TYPES_TRANSLATIONS]?.[i18n.language as 'fr' | 'en'] || service}
                       <X 
-                        className="h-3 w-3 ml-1 cursor-pointer hover:bg-secondary-foreground/20 rounded" 
+                        className="ml-1.5 h-3.5 w-3.5 hover:text-destructive transition-colors" 
                         onClick={() => setFormData(prev => ({
                           ...prev, 
                           service_types: prev.service_types.filter(s => s !== service) 
