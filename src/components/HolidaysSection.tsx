@@ -88,7 +88,7 @@ export const HolidaysSection = ({ restaurantId }: HolidaysSectionProps) => {
       <div>
         <div className="space-y-6">
           {/* Country selector */}
-          <div className="pb-4 border-b">
+          <div className="pb-4">
             <Label className="text-sm font-medium">
               {i18n.language === 'fr' ? 'Pays pour les jours fériés' : 'Country for holidays'}
             </Label>
