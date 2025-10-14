@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import performanceImage from '@/assets/cuizly-tableau-performances.jpg';
 import performanceImageEN from '@/assets/cuizly-tableau-performances-en.png';
 import performanceMobileImage from '@/assets/cuizly-performance-mobile.jpg';
+import performanceMobileImageEN from '@/assets/cuizly-performance-mobile-en.jpg';
 
 const PerformanceDashboardSection = () => {
   const { t, i18n } = useTranslation();
@@ -23,7 +24,7 @@ const PerformanceDashboardSection = () => {
         <div className="w-full rounded-xl overflow-hidden bg-muted">
           {/* Image mobile */}
           <img 
-            src={performanceMobileImage} 
+            src={i18n.language === 'en' ? performanceMobileImageEN : performanceMobileImage} 
             alt="Tableau de performance Cuizly montrant les métriques en temps réel"
             className="w-full h-auto object-contain block md:hidden"
           />
