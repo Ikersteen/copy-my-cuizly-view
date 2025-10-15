@@ -36,13 +36,20 @@ const HowItWorksSection = () => {
           {/* Demo Image */}
           <div className="mb-12 max-w-5xl mx-auto">
             <div className="bg-card rounded-2xl shadow-xl p-3 sm:p-8 border">
+              {/* Mobile: nouvelles images FR/EN */}
               <img 
                 src={i18n.language === 'en' 
                   ? "/lovable-uploads/cuizly-assistant-interface-en.jpeg"
                   : "/lovable-uploads/cuizly-assistant-interface-fr.jpeg"
                 }
                 alt="Interface Cuizly Assistant" 
-                className="w-full h-auto object-cover rounded-xl scale-[1.02] sm:scale-105"
+                className="md:hidden w-full h-auto object-cover rounded-xl scale-[1.02]"
+              />
+              {/* Tablet & Desktop: ancienne image */}
+              <img 
+                src="/lovable-uploads/cuizly-assistance-interface.png"
+                alt="Interface Cuizly Assistant" 
+                className="hidden md:block w-full h-auto object-cover rounded-xl sm:scale-105"
               />
             </div>
           </div>
