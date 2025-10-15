@@ -154,8 +154,9 @@ const Header = () => {
               {isRestaurant && <AuthenticatedRestaurantHeader />}
               
               {/* Language Switcher & Menu - Always visible together on mobile */}
-              <div className="flex items-center gap-2 ml-2">
+              <div className="flex items-center gap-1 ml-2 border border-border rounded-full px-2 py-1 bg-background/50 backdrop-blur-sm">
                 <LanguageSwitcher />
+                <div className="w-px h-6 bg-border"></div>
                 {isConsumer && (
                   <ConsumerMobileMenu 
                     onPreferencesClick={() => setShowPreferences(true)}
@@ -208,14 +209,15 @@ const Header = () => {
               </div>
               
               {/* Language Switcher & Menu - Always visible together on mobile */}
-              <div className="flex items-center gap-2 ml-2">
+              <div className="flex items-center gap-1 ml-2 border border-border rounded-full px-2 py-1 bg-background/50 backdrop-blur-sm">
                 <LanguageSwitcher />
+                <div className="w-px h-6 bg-border"></div>
                 <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                   <SheetTrigger asChild>
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="p-2 shadow-[0_0_10px_rgba(255,255,255,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.5)] hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.6)] transition-shadow duration-300"
+                      className="p-2 hover:bg-accent/50 transition-colors"
                     >
                       <Menu className="h-5 w-5" />
                       <span className="sr-only">{t('navigation.menu')}</span>
