@@ -45,9 +45,12 @@ const HowItWorksSection = () => {
                 alt="Interface Cuizly Assistant" 
                 className="md:hidden w-full h-auto object-cover rounded-xl scale-[1.02]"
               />
-              {/* Tablet & Desktop: ancienne image */}
+              {/* Tablet & Desktop: images FR/EN */}
               <img 
-                src="/lovable-uploads/cuizly-assistance-interface.png"
+                src={i18n.language === 'en'
+                  ? "/lovable-uploads/cuizly-assistance-interface-en.png"
+                  : "/lovable-uploads/cuizly-assistance-interface-new.png"
+                }
                 alt="Interface Cuizly Assistant" 
                 className="hidden md:block w-full h-auto object-cover rounded-xl sm:scale-105"
               />
