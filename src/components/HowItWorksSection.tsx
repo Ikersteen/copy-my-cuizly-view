@@ -38,8 +38,8 @@ const HowItWorksSection = () => {
             <div className="bg-card rounded-2xl shadow-xl p-3 sm:p-8 border">
               <img 
                 src={i18n.language === 'en' 
-                  ? "/lovable-uploads/cuizly-assistance-interface-en.png"
-                  : "/lovable-uploads/cuizly-assistance-interface-new.png"
+                  ? "/lovable-uploads/cuizly-assistant-interface-en.jpeg"
+                  : "/lovable-uploads/cuizly-assistant-interface-fr.jpeg"
                 }
                 alt="Interface Cuizly Assistant" 
                 className="w-full h-auto object-cover rounded-xl scale-[1.02] sm:scale-105"
