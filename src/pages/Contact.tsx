@@ -8,15 +8,41 @@ import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
 import { useTranslation } from 'react-i18next';
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const Contact = () => {
   const { t } = useTranslation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
     const formData = new FormData(e.target as HTMLFormElement);
-    const email = `mailto:Iker-ceo@cuizly.ca?subject=${encodeURIComponent(formData.get('subject') as string)}&body=${encodeURIComponent(`De: ${formData.get('firstName')} ${formData.get('lastName')} (${formData.get('email')})\n\nMessage:\n${formData.get('message')}`)}`;
-    window.location.href = email;
+    
+    try {
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          firstName: formData.get('firstName'),
+          lastName: formData.get('lastName'),
+          email: formData.get('email'),
+          subject: formData.get('subject'),
+          message: formData.get('message'),
+        },
+      });
+
+      if (error) throw error;
+
+      toast.success(t('contact.form.success'));
+      (e.target as HTMLFormElement).reset();
+    } catch (error) {
+      console.error('Error sending contact email:', error);
+      toast.error(t('contact.form.error'));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -77,8 +103,12 @@ const Contact = () => {
                       required 
                     />
                   </div>
-                  <Button type="submit" className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base">
-                    {t('contact.form.send')}
+                  <Button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full bg-foreground hover:bg-foreground/90 text-background text-sm sm:text-base"
+                  >
+                    {isSubmitting ? t('contact.form.sending') : t('contact.form.send')}
                   </Button>
                 </form>
               </CardContent>

@@ -1657,7 +1657,10 @@
       "subjectPlaceholder": "How can we help you?",
       "message": "Message",
       "messagePlaceholder": "Describe your request...",
-      "send": "Send message"
+      "send": "Send message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Error sending message. Please try again."
     },
     "info": {
       "title": "Contact information",
