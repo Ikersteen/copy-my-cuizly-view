@@ -592,6 +592,8 @@
   "analytics": {
     "title": "Un tableau de performance précis et intelligent",
     "subtitle": "Permet aux restaurateurs de visualiser en temps réel leurs performances par segment et de prendre des décisions plus précises, basées sur des données fiables.",
+    "dashboardTitle": "Tableau de performance en temps réel",
+    "dashboardSubtitle": "Aperçus sur les performances par segment (Mise à jour en temps réel).",
     "totalOffers": "Offres totales",
     "activeOffers": "offres actives",
     "menusAdded": "Nombre de menus",

@@ -296,9 +296,9 @@ export const AnalyticsSection = ({ restaurantId }: AnalyticsSectionProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg sm:text-xl">{t('analytics.title')}</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">{t('analytics.dashboardTitle')}</CardTitle>
         <CardDescription className="text-sm">
-          {t('analytics.subtitle')}
+          {t('analytics.dashboardSubtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent>
