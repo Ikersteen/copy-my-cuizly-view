@@ -1878,6 +1878,7 @@
   "social": {
     "viewInstagram": "View Instagram profile",
     "viewFacebook": "View Facebook page",
+    "viewTikTok": "View TikTok profile",
     "redirectMessage": "You will be redirected to {{platform}} to view this content.",
     "openButton": "Open {{platform}}"
   },

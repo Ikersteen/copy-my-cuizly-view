@@ -1,32 +1,34 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useTranslation } from "react-i18next";
-import { Instagram, Facebook, ExternalLink } from "lucide-react";
+import { Instagram, Facebook, Music2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface SocialMediaModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   url: string;
-  type: 'instagram' | 'facebook';
+  type: 'instagram' | 'facebook' | 'tiktok';
 }
 
 export const SocialMediaModal = ({ open, onOpenChange, url, type }: SocialMediaModalProps) => {
   const { t } = useTranslation();
   
   const getTitle = () => {
-    return type === 'instagram' 
-      ? t('social.viewInstagram') 
-      : t('social.viewFacebook');
+    if (type === 'instagram') return t('social.viewInstagram');
+    if (type === 'facebook') return t('social.viewFacebook');
+    return t('social.viewTikTok');
   };
 
   const getIcon = () => {
-    return type === 'instagram' 
-      ? <Instagram className="h-8 w-8" />
-      : <Facebook className="h-8 w-8" />;
+    if (type === 'instagram') return <Instagram className="h-8 w-8" />;
+    if (type === 'facebook') return <Facebook className="h-8 w-8" />;
+    return <Music2 className="h-8 w-8" />;
   };
 
   const getPlatformName = () => {
-    return type === 'instagram' ? 'Instagram' : 'Facebook';
+    if (type === 'instagram') return 'Instagram';
+    if (type === 'facebook') return 'Facebook';
+    return 'TikTok';
   };
 
   const handleOpenExternal = () => {

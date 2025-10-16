@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Info, Menu, MessageCircle, MapPin, Navigation } from "lucide-react";
+import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Music2, Info, Menu, MessageCircle, MapPin, Navigation } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -135,6 +135,7 @@ interface Restaurant {
   restaurant_specialties?: string[];
   instagram_url?: string;
   facebook_url?: string;
+  tiktok_url?: string;
   dress_code?: string;
   parking?: string;
 }
@@ -155,6 +156,7 @@ export const RestaurantMenuModal = ({
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showInstagramModal, setShowInstagramModal] = useState(false);
   const [showFacebookModal, setShowFacebookModal] = useState(false);
+  const [showTikTokModal, setShowTikTokModal] = useState(false);
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const { toast } = useToast();
   const { currentLanguage } = useLanguage();
@@ -326,7 +328,7 @@ export const RestaurantMenuModal = ({
                   )}
                   
                   {/* Social Media */}
-                  {(restaurant.instagram_url || restaurant.facebook_url) && (
+                  {(restaurant.instagram_url || restaurant.facebook_url || restaurant.tiktok_url) && (
                     <div className="flex items-center gap-2">
                       <div className="flex gap-2">
                         {restaurant.instagram_url && (
@@ -343,6 +345,14 @@ export const RestaurantMenuModal = ({
                             className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform"
                           >
                             <Facebook className="h-3 w-3 text-white" />
+                          </button>
+                        )}
+                        {restaurant.tiktok_url && (
+                          <button 
+                            onClick={() => setShowTikTokModal(true)}
+                            className="w-6 h-6 rounded bg-black flex items-center justify-center hover:scale-110 transition-transform"
+                          >
+                            <Music2 className="h-3 w-3 text-white" />
                           </button>
                         )}
                       </div>
@@ -551,6 +561,15 @@ export const RestaurantMenuModal = ({
             onOpenChange={setShowFacebookModal}
             url={restaurant.facebook_url}
             type="facebook"
+          />
+        )}
+
+        {restaurant.tiktok_url && (
+          <SocialMediaModal
+            open={showTikTokModal}
+            onOpenChange={setShowTikTokModal}
+            url={restaurant.tiktok_url}
+            type="tiktok"
           />
         )}
       </DialogContent>

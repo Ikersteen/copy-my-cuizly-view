@@ -2311,6 +2311,7 @@
   "social": {
     "viewInstagram": "Voir le profil Instagram",
     "viewFacebook": "Voir la page Facebook",
+    "viewTikTok": "Voir le profil TikTok",
     "redirectMessage": "Vous allez être redirigé vers {{platform}} pour voir ce contenu.",
     "openButton": "Ouvrir {{platform}}"
   },
