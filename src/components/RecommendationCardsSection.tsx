@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Star, MapPin, ChefHat, Filter, Heart, ArrowRight, Loader2, Calendar } from "lucide-react";
+import { Sparkles, Star, MapPin, ChefHat, Filter, Heart, ArrowRight, Loader2, Calendar, Instagram, Facebook, Music2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
@@ -29,6 +29,9 @@ interface Restaurant {
   reasons?: (string | { text: string; type: string })[];
   reservations_enabled?: boolean;
   opening_hours?: any;
+  instagram_url?: string;
+  facebook_url?: string;
+  tiktok_url?: string;
 }
 
 export const RecommendationCardsSection = () => {
@@ -750,6 +753,45 @@ export const RecommendationCardsSection = () => {
                     <Heart className={`h-4 w-4 ${isFavorite(restaurant.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`} />
                   </Button>
                 </div>
+
+                {/* Social Media Icons */}
+                {(restaurant.instagram_url || restaurant.facebook_url || restaurant.tiktok_url) && (
+                  <div className="flex items-center gap-2 mt-2">
+                    {restaurant.instagram_url && (
+                      <a
+                        href={restaurant.instagram_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-7 h-7 rounded bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform"
+                      >
+                        <Instagram className="h-3.5 w-3.5 text-white" />
+                      </a>
+                    )}
+                    {restaurant.facebook_url && (
+                      <a
+                        href={restaurant.facebook_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform"
+                      >
+                        <Facebook className="h-3.5 w-3.5 text-white" />
+                      </a>
+                    )}
+                    {restaurant.tiktok_url && (
+                      <a
+                        href={restaurant.tiktok_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-7 h-7 rounded bg-black flex items-center justify-center hover:scale-110 transition-transform"
+                      >
+                        <Music2 className="h-3.5 w-3.5 text-white" />
+                      </a>
+                    )}
+                  </div>
+                )}
 
                 <div className="flex items-center text-sm pt-2">
                   {(() => {
