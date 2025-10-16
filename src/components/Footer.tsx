@@ -166,6 +166,16 @@ const Footer = () => {
                 <span className="relative z-10">LinkedIn</span>
                 <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
+              <div className="w-px h-4 bg-border/50"></div>
+              <a 
+                href="https://www.tiktok.com/@cuizly?_t=ZS-90bnsnMfoga&_r=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"
+              >
+                <span className="relative z-10">TikTok</span>
+                <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
+              </a>
             </div>
             
             <div className="flex items-center space-x-2 text-cuizly-neutral/80 text-xs sm:text-sm">
