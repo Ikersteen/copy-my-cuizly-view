@@ -26,7 +26,7 @@ const handler = async (req: Request): Promise<Response> => {
     const { firstName, lastName, email, subject, message }: ContactEmailRequest = await req.json();
 
     const emailResponse = await resend.emails.send({
-      from: "Cuizly Contact <onboarding@resend.dev>",
+      from: "Cuizly Contact <notifications@cuizly.ca>",
       to: ["Iker-ceo@cuizly.ca"],
       replyTo: email,
       subject: `Contact Form: ${subject}`,
