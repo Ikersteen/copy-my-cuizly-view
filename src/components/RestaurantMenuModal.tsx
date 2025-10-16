@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Info, Menu, MessageCircle, MapPin, Navigation } from "lucide-react";
+import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Info, Menu, MessageCircle, MapPin, Navigation, Music2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -326,7 +326,7 @@ export const RestaurantMenuModal = ({
                   )}
                   
                   {/* Social Media */}
-                  {(restaurant.instagram_url || restaurant.facebook_url) && (
+                  {(restaurant.instagram_url || restaurant.facebook_url || (restaurant as any).tiktok_url) && (
                     <div className="flex items-center gap-2">
                       <div className="flex gap-2">
                         {restaurant.instagram_url && (
@@ -344,6 +344,16 @@ export const RestaurantMenuModal = ({
                           >
                             <Facebook className="h-3 w-3 text-white" />
                           </button>
+                        )}
+                        {(restaurant as any).tiktok_url && (
+                          <a 
+                            href={(restaurant as any).tiktok_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-6 h-6 rounded bg-black flex items-center justify-center hover:scale-110 transition-transform"
+                          >
+                            <Music2 className="h-3 w-3 text-white" />
+                          </a>
                         )}
                       </div>
                     </div>
