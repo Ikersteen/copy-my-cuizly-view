@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, User as UserIcon, Camera } from "lucide-react";
+import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, Music2, User as UserIcon, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAddresses } from "@/hooks/useAddresses";
 
@@ -37,6 +37,7 @@ interface Restaurant {
   cover_image_url?: string;
   instagram_url?: string;
   facebook_url?: string;
+  tiktok_url?: string;
   dress_code?: string;
   parking?: string;
   created_at?: string;
@@ -355,7 +356,7 @@ const RestaurantDashboard = () => {
                     </div>
                     
                     {/* Social Media Icons */}
-                    {(restaurant.instagram_url || restaurant.facebook_url) && (
+                    {(restaurant.instagram_url || restaurant.facebook_url || restaurant.tiktok_url) && (
                       <div className="md:col-span-2">
                         <p className="text-xs sm:text-sm text-muted-foreground font-semibold mb-2">{t('restaurantProfile.socialMedia')}</p>
                         <div className="flex items-center gap-3">
@@ -377,6 +378,16 @@ const RestaurantDashboard = () => {
                               className="flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200 hover:shadow-lg"
                             >
                               <Facebook size={20} />
+                            </a>
+                          )}
+                          {restaurant.tiktok_url && (
+                            <a 
+                              href={restaurant.tiktok_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 hover:shadow-lg"
+                            >
+                              <img src="/lovable-uploads/tiktok-logo.png" alt="TikTok" className="w-10 h-10" />
                             </a>
                           )}
                         </div>
