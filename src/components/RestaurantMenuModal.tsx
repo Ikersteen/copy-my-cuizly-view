@@ -352,7 +352,7 @@ export const RestaurantMenuModal = ({
                             onClick={() => setShowTikTokModal(true)}
                             className="w-6 h-6 rounded flex items-center justify-center hover:scale-110 transition-transform"
                           >
-                            <img src="/lovable-uploads/tiktok-logo.png" alt="TikTok" className="h-6 w-6" />
+                            <img src="/lovable-uploads/tiktok-icon.png" alt="TikTok" className="h-6 w-6" />
                           </button>
                         )}
                       </div>

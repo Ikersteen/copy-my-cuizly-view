@@ -387,7 +387,7 @@ const RestaurantDashboard = () => {
                               rel="noopener noreferrer"
                               className="flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 hover:shadow-lg"
                             >
-                              <img src="/lovable-uploads/tiktok-logo.png" alt="TikTok" className="w-10 h-10" />
+                              <img src="/lovable-uploads/tiktok-icon.png" alt="TikTok" className="w-10 h-10" />
                             </a>
                           )}
                         </div>
