@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, ArrowLeft, MapPin, Calendar } from "lucide-react";
+import { Star, Clock, Heart, Phone, Mail, ChefHat, MessageSquare, Instagram, Facebook, Music2, ArrowLeft, MapPin, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
@@ -107,6 +107,7 @@ interface Restaurant {
   restaurant_specialties?: string[];
   instagram_url?: string;
   facebook_url?: string;
+  tiktok_url?: string;
   dress_code?: string;
   parking?: string;
   reservations_enabled?: boolean;
@@ -123,6 +124,7 @@ export default function RestaurantMenu() {
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [showInstagramModal, setShowInstagramModal] = useState(false);
   const [showFacebookModal, setShowFacebookModal] = useState(false);
+  const [showTikTokModal, setShowTikTokModal] = useState(false);
   const { toggleFavorite, isFavorite } = useFavorites();
   const { toast } = useToast();
   const { currentLanguage } = useLanguage();
@@ -401,7 +403,7 @@ export default function RestaurantMenu() {
                     )}
                     
                     {/* Social Media */}
-                    {(restaurant.instagram_url || restaurant.facebook_url) && (
+                    {(restaurant.instagram_url || restaurant.facebook_url || restaurant.tiktok_url) && (
                       <div className="flex items-center gap-3">
                         <div className="flex gap-3">
                           {restaurant.instagram_url && (
@@ -418,6 +420,14 @@ export default function RestaurantMenu() {
                               className="w-8 h-8 rounded bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform"
                             >
                               <Facebook className="h-4 w-4 text-white" />
+                            </button>
+                          )}
+                          {restaurant.tiktok_url && (
+                            <button 
+                              onClick={() => setShowTikTokModal(true)}
+                              className="w-8 h-8 rounded bg-[#00f2ea] flex items-center justify-center hover:scale-110 transition-transform"
+                            >
+                              <Music2 className="h-4 w-4 text-black" />
                             </button>
                           )}
                         </div>
@@ -649,6 +659,15 @@ export default function RestaurantMenu() {
               onOpenChange={setShowFacebookModal}
               url={restaurant.facebook_url}
               type="facebook"
+            />
+          )}
+
+          {restaurant.tiktok_url && (
+            <SocialMediaModal
+              open={showTikTokModal}
+              onOpenChange={setShowTikTokModal}
+              url={restaurant.tiktok_url}
+              type="tiktok"
             />
           )}
         </>
