@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MapPin, Phone, ArrowLeft } from "lucide-react";
+import { Mail, MapPin, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
@@ -108,16 +108,6 @@ const Contact = () => {
                   <div>
                     <h3 className="font-medium text-foreground text-sm sm:text-base">{t('contact.info.address.label')}</h3>
                     <p className="text-cuizly-neutral text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: t('contact.info.address.value') }} />
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-foreground text-sm sm:text-base">{t('contact.info.phone.label')}</h3>
-                    <p className="text-cuizly-neutral text-sm sm:text-base">{t('contact.info.phone.value')}</p>
                   </div>
                 </div>
               </div>

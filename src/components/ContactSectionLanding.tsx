@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useTranslation } from 'react-i18next';
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 
 const ContactSectionLanding = () => {
   const { t } = useTranslation();
@@ -100,16 +100,6 @@ const ContactSectionLanding = () => {
                       className="text-cuizly-neutral text-sm sm:text-base"
                       dangerouslySetInnerHTML={{ __html: t('contact.info.address.value') }}
                     />
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cuizly-surface rounded-lg flex items-center justify-center">
-                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground text-sm sm:text-base">{t('contact.info.phone.label')}</h4>
-                    <p className="text-cuizly-neutral text-sm sm:text-base">{t('contact.info.phone.value')}</p>
                   </div>
                 </div>
               </div>

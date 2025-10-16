@@ -1990,10 +1990,6 @@
       "address": {
         "label": "Adresse",
         "value": "Montréal, QC (Canada)"
-      },
-      "phone": {
-        "label": "Téléphone",
-        "value": "+1 (514) 465-4783"
       }
     },
     "hours": {
@@ -2613,10 +2609,6 @@
       "address": {
         "label": "Adresse",
         "value": "Montréal, QC, Canada"
-      },
-      "phone": {
-        "label": "Téléphone",
-        "value": "+1 (514) 465-4783"
       }
     }
   },
