@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook, MapPin, Music2 } from "lucide-react";
+import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
@@ -64,7 +64,6 @@ export const ImprovedRestaurantProfileModal = ({
     allergens: [] as string[],
     instagram_url: "",
     facebook_url: "",
-    tiktok_url: "",
     price_range: "" as string,
     reservations_enabled: false,
     dress_code: "",
@@ -146,7 +145,6 @@ export const ImprovedRestaurantProfileModal = ({
         restaurant_specialties: data.restaurant_specialties || [],
         instagram_url: data.instagram_url || "",
         facebook_url: data.facebook_url || "",
-        tiktok_url: (data as any).tiktok_url || "",
         service_types: (data as any).service_types || [],
         dietary_restrictions: data.dietary_restrictions || [],
         allergens: data.allergens || [],
@@ -434,7 +432,6 @@ export const ImprovedRestaurantProfileModal = ({
         restaurant_specialties: formData.restaurant_specialties,
         instagram_url: formData.instagram_url.trim() || null,
         facebook_url: formData.facebook_url.trim() || null,
-        tiktok_url: formData.tiktok_url.trim() || null,
         dietary_restrictions: formData.dietary_restrictions,
         allergens: formData.allergens,
         service_types: formData.service_types,
@@ -680,52 +677,32 @@ export const ImprovedRestaurantProfileModal = ({
               />
             </div>
 
-            <Separator />
-            
-            <div className="space-y-4">
-              <Label className="text-base font-medium">{t('restaurantProfile.socialMedia', 'Réseaux sociaux')}</Label>
-              
-              <div className="space-y-2">
-                <Label htmlFor="instagram_url" className="flex items-center gap-2">
-                  <Instagram className="h-4 w-4" />
-                  Instagram
-                </Label>
-                <Input
-                  id="instagram_url"
-                  type="url"
-                  value={formData.instagram_url}
-                  onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
-                  placeholder={t('restaurantProfile.instagramPlaceholder')}
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="instagram_url" className="flex items-center gap-2">
+                <Instagram className="h-4 w-4" />
+                Instagram
+              </Label>
+              <Input
+                id="instagram_url"
+                type="url"
+                value={formData.instagram_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, instagram_url: e.target.value }))}
+                placeholder={t('restaurantProfile.instagramPlaceholder')}
+              />
+            </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="facebook_url" className="flex items-center gap-2">
-                  <Facebook className="h-4 w-4" />
-                  Facebook
-                </Label>
-                <Input
-                  id="facebook_url"
-                  type="url"
-                  value={formData.facebook_url}
-                  onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
-                  placeholder={t('restaurantProfile.facebookPlaceholder')}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="tiktok_url" className="flex items-center gap-2">
-                  <Music2 className="h-4 w-4" />
-                  TikTok
-                </Label>
-                <Input
-                  id="tiktok_url"
-                  type="url"
-                  value={formData.tiktok_url}
-                  onChange={(e) => setFormData(prev => ({ ...prev, tiktok_url: e.target.value }))}
-                  placeholder="https://www.tiktok.com/@votrerestaurant"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="facebook_url" className="flex items-center gap-2">
+                <Facebook className="h-4 w-4" />
+                Facebook
+              </Label>
+              <Input
+                id="facebook_url"
+                type="url"
+                value={formData.facebook_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, facebook_url: e.target.value }))}
+                placeholder={t('restaurantProfile.facebookPlaceholder')}
+              />
             </div>
 
             <Separator />
