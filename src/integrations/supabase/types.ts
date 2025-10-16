@@ -672,6 +672,7 @@ export type Database = {
           reservations_enabled: boolean
           restaurant_specialties: string[] | null
           service_types: string[] | null
+          tiktok_url: string | null
           updated_at: string
         }
         Insert: {
@@ -701,6 +702,7 @@ export type Database = {
           reservations_enabled?: boolean
           restaurant_specialties?: string[] | null
           service_types?: string[] | null
+          tiktok_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -730,6 +732,7 @@ export type Database = {
           reservations_enabled?: boolean
           restaurant_specialties?: string[] | null
           service_types?: string[] | null
+          tiktok_url?: string | null
           updated_at?: string
         }
         Relationships: []
