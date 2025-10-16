@@ -598,8 +598,8 @@
     "preview": "Preview"
   },
   "analytics": {
-    "title": "A smart, data-driven performance dashboard",
-    "subtitle": "Allows restaurant owners to visualize their segment performance in real time and make more precise, data-driven decisions.",
+    "title": "Real-time Performance Dashboard",
+    "subtitle": "Performance insights by segment (Real-time updates)",
     "totalOffers": "Total Offers",
     "activeOffers": "active offers",
     "menusAdded": "Number of menus",
