@@ -1054,6 +1054,7 @@ export type Database = {
           reservations_enabled: boolean
           restaurant_specialties: string[]
           service_types: string[]
+          tiktok_url: string
           updated_at: string
         }[]
       }
