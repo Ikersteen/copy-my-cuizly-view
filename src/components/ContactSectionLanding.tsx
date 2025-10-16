@@ -8,6 +8,15 @@ import { Mail, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useState } from "react";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  firstName: z.string().trim().min(1, "Le prénom est requis").max(50, "Max 50 caractères"),
+  lastName: z.string().trim().min(1, "Le nom est requis").max(50, "Max 50 caractères"),
+  email: z.string().trim().email("Email invalide").max(255, "Max 255 caractères"),
+  subject: z.string().trim().min(1, "Le sujet est requis").max(200, "Max 200 caractères"),
+  message: z.string().trim().min(10, "Message trop court (min 10 caractères)").max(2000, "Max 2000 caractères"),
+});
 
 const ContactSectionLanding = () => {
   const { t } = useTranslation();
@@ -18,25 +27,40 @@ const ContactSectionLanding = () => {
     setIsSubmitting(true);
     
     const formData = new FormData(e.target as HTMLFormElement);
+    const data = {
+      firstName: formData.get('firstName') as string,
+      lastName: formData.get('lastName') as string,
+      email: formData.get('email') as string,
+      subject: formData.get('subject') as string,
+      message: formData.get('message') as string,
+    };
     
     try {
-      const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: {
-          firstName: formData.get('firstName'),
-          lastName: formData.get('lastName'),
-          email: formData.get('email'),
-          subject: formData.get('subject'),
-          message: formData.get('message'),
-        },
+      // Validation côté client
+      const validated = contactSchema.parse(data);
+      console.log('📧 Envoi du message de contact...', { email: validated.email, subject: validated.subject });
+      
+      const { data: responseData, error } = await supabase.functions.invoke('send-contact-email', {
+        body: validated,
       });
 
-      if (error) throw error;
+      console.log('📧 Réponse de la fonction edge:', { responseData, error });
+
+      if (error) {
+        console.error('❌ Erreur de la fonction edge:', error);
+        throw error;
+      }
 
       toast.success(t('contact.form.success'));
       (e.target as HTMLFormElement).reset();
     } catch (error) {
-      console.error('Error sending contact email:', error);
-      toast.error(t('contact.form.error'));
+      if (error instanceof z.ZodError) {
+        console.error('❌ Erreur de validation:', error.issues);
+        toast.error(error.issues[0].message);
+      } else {
+        console.error('❌ Erreur lors de l\'envoi:', error);
+        toast.error(t('contact.form.error'));
+      }
     } finally {
       setIsSubmitting(false);
     }
