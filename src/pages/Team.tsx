@@ -83,7 +83,7 @@ const Team = () => {
                     className="flex items-center gap-2"
                     asChild
                   >
-                    <a href="mailto:Iker-ceo@cuizly.ca">
+                    <a href="mailto:support@cuizly.ca">
                       <Mail className="h-4 w-4" />
                       {t('team.contact')}
                     </a>
