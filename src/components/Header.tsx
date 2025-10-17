@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
@@ -184,7 +185,130 @@ const Header = () => {
               {/* Auth Actions Desktop & Mobile - Public */}
               <div className="flex items-center gap-2 flex-shrink-0">
                 <LanguageSwitcher />
-                <Link to={authRoute}>
+                
+                {/* Mobile Menu Burger - Only for Public */}
+                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                  <SheetTrigger asChild className="lg:hidden">
+                    <Button variant="ghost" size="icon">
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="right" className="w-[300px] sm:w-[350px] overflow-y-auto">
+                    <div className="flex flex-col gap-6 mt-8">
+                      <Accordion type="single" collapsible className="w-full">
+                        {/* Produit */}
+                        <AccordionItem value="product">
+                          <AccordionTrigger className="text-lg font-semibold">
+                            {t('navigation.product')}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="flex flex-col gap-2 pl-4">
+                              <Link 
+                                to={useLocalizedRoute('/features')}
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 text-muted-foreground hover:text-foreground transition-colors"
+                              >
+                                {t('navigation.features')}
+                              </Link>
+                              <Link 
+                                to={useLocalizedRoute('/pricing')}
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 text-muted-foreground hover:text-foreground transition-colors"
+                              >
+                                {t('navigation.pricing')}
+                              </Link>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+
+                        {/* Support */}
+                        <AccordionItem value="support">
+                          <AccordionTrigger className="text-lg font-semibold">
+                            {t('navigation.support')}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="flex flex-col gap-2 pl-4">
+                              <Link 
+                                to={useLocalizedRoute('/contact')}
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 text-muted-foreground hover:text-foreground transition-colors"
+                              >
+                                {t('navigation.contactUs')}
+                              </Link>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+
+                        {/* Entreprise */}
+                        <AccordionItem value="company">
+                          <AccordionTrigger className="text-lg font-semibold">
+                            {t('navigation.company')}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="flex flex-col gap-2 pl-4">
+                              <Link 
+                                to={useLocalizedRoute('/team')}
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 text-muted-foreground hover:text-foreground transition-colors"
+                              >
+                                {t('navigation.team')}
+                              </Link>
+                              <Link 
+                                to={useLocalizedRoute('/mentions')}
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 text-muted-foreground hover:text-foreground transition-colors"
+                              >
+                                {t('navigation.legal')}
+                              </Link>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+
+                        {/* Légal */}
+                        <AccordionItem value="legal">
+                          <AccordionTrigger className="text-lg font-semibold">
+                            {t('navigation.legalMenu')}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="flex flex-col gap-2 pl-4">
+                              <Link 
+                                to={useLocalizedRoute('/privacy')}
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 text-muted-foreground hover:text-foreground transition-colors"
+                              >
+                                {t('navigation.privacy')}
+                              </Link>
+                              <Link 
+                                to={useLocalizedRoute('/terms')}
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 text-muted-foreground hover:text-foreground transition-colors"
+                              >
+                                {t('navigation.terms')}
+                              </Link>
+                              <Link 
+                                to={useLocalizedRoute('/cookies')}
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 text-muted-foreground hover:text-foreground transition-colors"
+                              >
+                                {t('navigation.cookies')}
+                              </Link>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+
+                      {/* Login Button in Mobile Menu */}
+                      <Link to={authRoute} onClick={() => setIsSheetOpen(false)}>
+                        <Button className="w-full bg-foreground hover:bg-foreground/90 text-background">
+                          {t('navigation.login')}
+                        </Button>
+                      </Link>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+
+                {/* Desktop Login Button */}
+                <Link to={authRoute} className="hidden lg:block">
                   <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
                     {t('navigation.login')}
                   </Button>
