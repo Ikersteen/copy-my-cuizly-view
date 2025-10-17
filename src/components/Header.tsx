@@ -203,12 +203,12 @@ const Header = () => {
                 </div>
 
                 {/* Mobile: Language + Burger in capsule */}
-                <div className="lg:hidden flex items-center gap-1 border border-border rounded-full px-3 py-2 bg-background/50 backdrop-blur-sm">
+                <div className="lg:hidden flex items-center gap-1 border border-border rounded-full px-2 py-1 bg-background/50 backdrop-blur-sm">
                   <LanguageSwitcher />
-                  <div className="w-px h-5 bg-border mx-1"></div>
+                  <div className="w-px h-6 bg-border"></div>
                   <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                     <SheetTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-transparent">
                         <Menu className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
