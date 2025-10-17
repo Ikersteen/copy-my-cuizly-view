@@ -69,7 +69,7 @@ const Team = () => {
                     asChild
                   >
                     <a 
-                      href="https://www.linkedin.com/in/ikrlnd" 
+                      href="https://www.linkedin.com/company/cuizly" 
                       target="_blank" 
                       rel="noopener noreferrer"
                     >
