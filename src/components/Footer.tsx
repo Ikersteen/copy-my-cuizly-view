@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLocalizedRoute } from '@/lib/routeTranslations';
+import { Instagram, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -151,9 +152,10 @@ const Footer = () => {
                 href="https://www.instagram.com/cuizly"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"
+                className="group relative text-cuizly-neutral hover:text-cuizly-primary transition-all duration-300 hover:scale-110"
+                aria-label="Instagram"
               >
-                <span className="relative z-10">{t('footer.instagram')}</span>
+                <Instagram className="w-6 h-6 sm:w-7 sm:h-7" />
                 <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
               <div className="w-px h-4 bg-border/50"></div>
@@ -161,9 +163,10 @@ const Footer = () => {
                 href="https://linkedin.com/company/cuizly"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"
+                className="group relative text-cuizly-neutral hover:text-cuizly-primary transition-all duration-300 hover:scale-110"
+                aria-label="LinkedIn"
               >
-                <span className="relative z-10">LinkedIn</span>
+                <Linkedin className="w-6 h-6 sm:w-7 sm:h-7" />
                 <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
               <div className="w-px h-4 bg-border/50"></div>
@@ -171,9 +174,12 @@ const Footer = () => {
                 href="https://www.tiktok.com/@cuizly?_t=ZS-90bnsnMfoga&_r=1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative text-cuizly-neutral hover:text-cuizly-primary text-sm sm:text-base font-medium transition-all duration-300 hover:scale-105"
+                className="group relative text-cuizly-neutral hover:text-cuizly-primary transition-all duration-300 hover:scale-110"
+                aria-label="TikTok"
               >
-                <span className="relative z-10">TikTok</span>
+                <svg className="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
                 <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
             </div>
