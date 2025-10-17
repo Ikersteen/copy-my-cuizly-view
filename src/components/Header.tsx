@@ -192,15 +192,26 @@ const Header = () => {
 
               {/* Auth Actions Desktop & Mobile - Public */}
               <div className="flex items-center gap-2 flex-shrink-0">
-                <LanguageSwitcher />
-                
-                {/* Mobile Menu Burger */}
-                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="lg:hidden">
-                      <Menu className="h-5 w-5" />
+                {/* Desktop: Language + Login */}
+                <div className="hidden lg:flex items-center gap-2">
+                  <LanguageSwitcher />
+                  <Link to={authRoute}>
+                    <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
+                      {t('navigation.login')}
                     </Button>
-                  </SheetTrigger>
+                  </Link>
+                </div>
+
+                {/* Mobile: Language + Burger in capsule */}
+                <div className="lg:hidden flex items-center gap-1 border border-border rounded-full px-3 py-2 bg-background/50 backdrop-blur-sm">
+                  <LanguageSwitcher />
+                  <div className="w-px h-5 bg-border mx-1"></div>
+                  <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Menu className="h-5 w-5" />
+                      </Button>
+                    </SheetTrigger>
                   <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background z-50">
                     <nav className="flex flex-col gap-4 mt-8">
                       <Accordion type="single" collapsible className="w-full">
@@ -307,13 +318,7 @@ const Header = () => {
                     </nav>
                   </SheetContent>
                 </Sheet>
-
-                {/* Desktop Login Button */}
-                <Link to={authRoute} className="hidden lg:block">
-                  <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
-                    {t('navigation.login')}
-                  </Button>
-                </Link>
+                </div>
               </div>
             </>
           )}
