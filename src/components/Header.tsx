@@ -21,6 +21,7 @@ import { RestaurantProfileModal } from "@/components/ImprovedRestaurantProfileMo
 import { ConsumerProfileModal } from "@/components/ConsumerProfileModal";
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { PublicNavigationMenu } from "@/components/PublicNavigationMenu";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -177,26 +178,7 @@ const Header = () => {
             <>
               {/* Navigation Desktop - Centre */}
               <nav className="hidden lg:flex items-center justify-center flex-1">
-                <div className="flex items-center space-x-8">
-                  <button 
-                    onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-cuizly-neutral hover:text-foreground transition-colors text-sm font-medium px-2 py-2"
-                  >
-                    {t('navigation.pricing')}
-                  </button>
-                  <button 
-                    onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-cuizly-neutral hover:text-foreground transition-colors text-sm font-medium px-2 py-2"
-                  >
-                    {t('navigation.features')}
-                  </button>
-                  <button 
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-cuizly-neutral hover:text-foreground transition-colors text-sm font-medium px-2 py-2"
-                  >
-                    {t('navigation.contact')}
-                  </button>
-                </div>
+                <PublicNavigationMenu />
               </nav>
 
               {/* Auth Actions Desktop - Public */}
