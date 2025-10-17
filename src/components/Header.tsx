@@ -272,6 +272,13 @@ const Header = () => {
                               >
                                 {t('navigation.team')}
                               </Link>
+                              <Link 
+                                to={legalRoute} 
+                                onClick={() => setIsSheetOpen(false)}
+                                className="py-2 hover:text-primary transition-colors"
+                              >
+                                {t('navigation.legal')}
+                              </Link>
                             </div>
                           </AccordionContent>
                         </AccordionItem>
@@ -303,13 +310,6 @@ const Header = () => {
                                 className="py-2 hover:text-primary transition-colors"
                               >
                                 {t('navigation.cookies')}
-                              </Link>
-                              <Link 
-                                to={legalRoute} 
-                                onClick={() => setIsSheetOpen(false)}
-                                className="py-2 hover:text-primary transition-colors"
-                              >
-                                {t('navigation.legal')}
                               </Link>
                             </div>
                           </AccordionContent>
