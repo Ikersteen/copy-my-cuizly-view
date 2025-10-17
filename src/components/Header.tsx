@@ -181,70 +181,14 @@ const Header = () => {
                 <PublicNavigationMenu />
               </nav>
 
-              {/* Auth Actions Desktop - Public */}
-              <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+              {/* Auth Actions Desktop & Mobile - Public */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <LanguageSwitcher />
                 <Link to={authRoute}>
                   <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
                     {t('navigation.login')}
                   </Button>
                 </Link>
-              </div>
-              
-              {/* Language Switcher & Menu - Always visible together on mobile */}
-              <div className="flex items-center gap-1 ml-2 border border-border rounded-full px-2 py-1 bg-background/50 backdrop-blur-sm">
-                <LanguageSwitcher />
-                <div className="w-px h-6 bg-border"></div>
-                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                  <SheetTrigger asChild>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="p-2 hover:bg-accent/50 transition-colors"
-                    >
-                      <Menu className="h-5 w-5" />
-                      <span className="sr-only">{t('navigation.menu')}</span>
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                    <div className="flex flex-col space-y-4 mt-8">
-                      <button
-                        onClick={() => {
-                          document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
-                          setIsSheetOpen(false);
-                        }}
-                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
-                      >
-                        {t('navigation.pricing')}
-                      </button>
-                      <button 
-                        onClick={() => {
-                          document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-                          setIsSheetOpen(false);
-                        }}
-                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
-                      >
-                        {t('navigation.features')}
-                      </button>
-                      <button 
-                        onClick={() => {
-                          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                          setIsSheetOpen(false);
-                        }}
-                        className="text-lg text-foreground hover:text-cuizly-accent transition-colors py-2 border-b border-border text-left"
-                      >
-                        {t('navigation.contact')}
-                      </button>
-                      <div className="pt-4">
-                        <Button 
-                          className="w-full bg-foreground hover:bg-foreground/90 text-background text-lg"
-                          onClick={() => handleNavigate(authRoute)}
-                        >
-                          {t('navigation.login')}
-                        </Button>
-                      </div>
-                    </div>
-                  </SheetContent>
-                </Sheet>
               </div>
             </>
           )}
