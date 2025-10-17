@@ -43,6 +43,14 @@ const Header = () => {
   // Get localized routes
   const authRoute = useLocalizedRoute('/auth');
   const dashboardRoute = useLocalizedRoute('/dashboard');
+  const featuresRoute = useLocalizedRoute('/features');
+  const pricingRoute = useLocalizedRoute('/pricing');
+  const contactRoute = useLocalizedRoute('/contact');
+  const teamRoute = useLocalizedRoute('/team');
+  const termsRoute = useLocalizedRoute('/terms');
+  const privacyRoute = useLocalizedRoute('/privacy');
+  const cookiesRoute = useLocalizedRoute('/cookies');
+  const legalRoute = useLocalizedRoute('/legal');
 
   // Load restaurant data when user is a restaurant owner
   const loadRestaurantData = async (userId: string) => {
@@ -204,14 +212,14 @@ const Header = () => {
                           <AccordionContent>
                             <div className="flex flex-col gap-2 pl-4">
                               <Link 
-                                to={useLocalizedRoute('/features')} 
+                                to={featuresRoute} 
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
                                 {t('navigation.features')}
                               </Link>
                               <Link 
-                                to={useLocalizedRoute('/pricing')} 
+                                to={pricingRoute} 
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
@@ -229,7 +237,7 @@ const Header = () => {
                           <AccordionContent>
                             <div className="flex flex-col gap-2 pl-4">
                               <Link 
-                                to={useLocalizedRoute('/contact')} 
+                                to={contactRoute} 
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
@@ -247,7 +255,7 @@ const Header = () => {
                           <AccordionContent>
                             <div className="flex flex-col gap-2 pl-4">
                               <Link 
-                                to={useLocalizedRoute('/team')} 
+                                to={teamRoute} 
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
@@ -265,28 +273,28 @@ const Header = () => {
                           <AccordionContent>
                             <div className="flex flex-col gap-2 pl-4">
                               <Link 
-                                to={useLocalizedRoute('/terms')} 
+                                to={termsRoute} 
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
                                 {t('navigation.terms')}
                               </Link>
                               <Link 
-                                to={useLocalizedRoute('/privacy')} 
+                                to={privacyRoute} 
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
                                 {t('navigation.privacy')}
                               </Link>
                               <Link 
-                                to={useLocalizedRoute('/cookies')} 
+                                to={cookiesRoute} 
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
                                 {t('navigation.cookies')}
                               </Link>
                               <Link 
-                                to={useLocalizedRoute('/legal')} 
+                                to={legalRoute} 
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
