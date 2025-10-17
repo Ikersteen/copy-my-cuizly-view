@@ -7,14 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Upload, X, Camera, User, Trash2, Edit2, LogOut, Shield, Bell, Mail, Loader2 } from "lucide-react";
+import { Upload, X, Camera, User, Trash2, Edit2, LogOut, Shield, Bell, Mail, Loader2, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
 import { useProfile } from "@/hooks/useProfile";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { validateFileUpload } from "@/lib/security";
+import { AccountSettingsSection } from "@/components/AccountSettingsSection";
 
 interface ConsumerProfileModalProps {
   isOpen: boolean;
@@ -45,7 +47,6 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
   
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
@@ -277,8 +278,20 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
               onChange={handleAvatarUpload}
             />
 
-            {/* Content Grid */}
-            <div className="space-y-6">
+            {/* Tabs for Profile and Account Settings */}
+            <Tabs defaultValue="profile" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="profile" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  {t('profile.profileTab')}
+                </TabsTrigger>
+                <TabsTrigger value="security" className="flex items-center gap-2">
+                  <Settings className="h-4 w-4" />
+                  {t('profile.securityTab')}
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="profile" className="space-y-6">
               {/* Personal Information Card */}
               <div className="bg-card border border-border rounded-xl p-6 space-y-4">
                 <div className="flex items-center gap-3 mb-4">
@@ -397,20 +410,6 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
                     <div>
-                      <p className="font-medium text-sm">{t('profile.password')}</p>
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => setShowPasswordModal(true)}
-                      className="shrink-0"
-                    >
-                      {t('profile.edit')}
-                    </Button>
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-                    <div>
                       <p className="font-medium text-sm">{t('profile.logout')}</p>
                     </div>
                     <Button variant="outline" size="sm" onClick={handleLogout} className="shrink-0">
@@ -449,7 +448,22 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
                   </div>
                 </div>
               </div>
-            </div>
+              </TabsContent>
+
+              <TabsContent value="security" className="space-y-6">
+                <AccountSettingsSection
+                  currentEmail={formData.email || userEmail}
+                  currentPhone={formData.phone}
+                  onSuccess={() => {
+                    // Refresh will happen automatically via profile hook
+                    toast({
+                      title: t('profile.settingsUpdated'),
+                      description: t('profile.settingsUpdatedDesc'),
+                    });
+                  }}
+                />
+              </TabsContent>
+            </Tabs>
           </div>
 
           {/* Actions */}
@@ -466,34 +480,6 @@ export const ConsumerProfileModal = ({ isOpen, onClose }: ConsumerProfileModalPr
               ) : (
                 t('common.save')
               )}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Password Change Modal - Placeholder */}
-      <Dialog open={showPasswordModal} onOpenChange={setShowPasswordModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{t('profile.changePassword')}</DialogTitle>
-            <DialogDescription>
-              {t('profile.changePasswordDesc')}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <Alert>
-              <Shield className="h-4 w-4" />
-              <AlertDescription>
-                {t('profile.resetLinkInfo')}
-              </AlertDescription>
-            </Alert>
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setShowPasswordModal(false)}>
-              {t('common.cancel')}
-            </Button>
-            <Button onClick={() => setShowPasswordModal(false)}>
-              {t('profile.sendLink')}
             </Button>
           </div>
         </DialogContent>
