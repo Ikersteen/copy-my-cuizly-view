@@ -279,7 +279,7 @@ const Header = () => {
                         {/* Légal */}
                         <AccordionItem value="legal">
                           <AccordionTrigger className="text-lg font-semibold hover:no-underline">
-                            {t('navigation.legal')}
+                            {t('navigation.legalMenu')}
                           </AccordionTrigger>
                           <AccordionContent>
                             <div className="flex flex-col gap-2 pl-4">
@@ -309,7 +309,7 @@ const Header = () => {
                                 onClick={() => setIsSheetOpen(false)}
                                 className="py-2 hover:text-primary transition-colors"
                               >
-                                {t('navigation.legalNotice')}
+                                {t('navigation.legal')}
                               </Link>
                             </div>
                           </AccordionContent>
