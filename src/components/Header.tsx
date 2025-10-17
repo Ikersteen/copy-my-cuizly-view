@@ -212,12 +212,12 @@ const Header = () => {
                         <Menu className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
-                  <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background z-50">
+                    <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background z-50">
                     <nav className="flex flex-col gap-4 mt-8">
                       <Accordion type="single" collapsible className="w-full">
                         {/* Produit */}
                         <AccordionItem value="product">
-                          <AccordionTrigger className="text-lg font-semibold">
+                          <AccordionTrigger className="text-lg font-semibold hover:no-underline">
                             {t('navigation.product')}
                           </AccordionTrigger>
                           <AccordionContent>
@@ -242,7 +242,7 @@ const Header = () => {
 
                         {/* Support */}
                         <AccordionItem value="support">
-                          <AccordionTrigger className="text-lg font-semibold">
+                          <AccordionTrigger className="text-lg font-semibold hover:no-underline">
                             {t('navigation.support')}
                           </AccordionTrigger>
                           <AccordionContent>
@@ -260,7 +260,7 @@ const Header = () => {
 
                         {/* Entreprise */}
                         <AccordionItem value="company">
-                          <AccordionTrigger className="text-lg font-semibold">
+                          <AccordionTrigger className="text-lg font-semibold hover:no-underline">
                             {t('navigation.company')}
                           </AccordionTrigger>
                           <AccordionContent>
@@ -278,7 +278,7 @@ const Header = () => {
 
                         {/* Légal */}
                         <AccordionItem value="legal">
-                          <AccordionTrigger className="text-lg font-semibold">
+                          <AccordionTrigger className="text-lg font-semibold hover:no-underline">
                             {t('navigation.legal')}
                           </AccordionTrigger>
                           <AccordionContent>
@@ -315,6 +315,15 @@ const Header = () => {
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>
+
+                      {/* Login Button */}
+                      <div className="mt-4 px-4">
+                        <Link to={authRoute} onClick={() => setIsSheetOpen(false)}>
+                          <Button className="w-full bg-foreground hover:bg-foreground/90 text-background">
+                            {t('navigation.login')}
+                          </Button>
+                        </Link>
+                      </div>
                     </nav>
                   </SheetContent>
                 </Sheet>
