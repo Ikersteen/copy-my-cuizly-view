@@ -9,7 +9,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook, MapPin, Music2 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook, MapPin, Music2, Settings, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
@@ -20,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
 import { validateFileUpload } from "@/lib/security";
 import { HolidaysSection } from "@/components/HolidaysSection";
+import { AccountSettingsSection } from "@/components/AccountSettingsSection";
 
 import { CUISINE_OPTIONS, CUISINE_TRANSLATIONS, SERVICE_TYPES_OPTIONS, SERVICE_TYPES_TRANSLATIONS, PRICE_RANGE_OPTIONS, PRICE_RANGE_TRANSLATIONS } from "@/constants/cuisineTypes";
 
@@ -597,6 +599,21 @@ export const ImprovedRestaurantProfileModal = ({
             {/* Spacer for the overlay */}
             <div className="h-8"></div>
 
+            {/* Tabs for Profile and Account Settings */}
+            <Tabs defaultValue="profile" className="w-full space-y-6">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="profile" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  {t('profile.profileTab')}
+                </TabsTrigger>
+                <TabsTrigger value="security" className="flex items-center gap-2">
+                  <Settings className="h-4 w-4" />
+                  {t('profile.securityTab')}
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="profile" className="space-y-6 mt-6">
+
             {/* Rest of the form */}
             <div className="space-y-2">
               <Label htmlFor="name">{t('restaurantProfile.restaurantName')}</Label>
@@ -985,18 +1002,33 @@ export const ImprovedRestaurantProfileModal = ({
                 </div>
               )}
             </div>
+            </TabsContent>
 
-            <div className="flex justify-end gap-2 pt-4">
-              <Button variant="outline" onClick={() => {
+            <TabsContent value="security" className="space-y-6 mt-6">
+              <AccountSettingsSection
+                currentEmail={formData.email}
+                currentPhone={formData.phone}
+                onSuccess={() => {
+                  toast({
+                    title: t('profile.settingsUpdated'),
+                    description: t('profile.settingsUpdatedDesc'),
+                  });
+                }}
+              />
+            </TabsContent>
+          </Tabs>
+
+          <div className="flex justify-end gap-2 pt-4">
+            <Button variant="outline" onClick={() => {
               onClose?.();
               onOpenChange?.(false);
             }}>
               {t('restaurantProfile.cancel')}
             </Button>
-              <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
-                {t('restaurantProfile.save')}
-              </Button>
-            </div>
+            <Button onClick={handleSave} disabled={saving || !formData.name.trim()}>
+              {t('restaurantProfile.save')}
+            </Button>
+          </div>
           </div>
         </div>
       </DialogContent>
