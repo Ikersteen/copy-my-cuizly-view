@@ -2142,6 +2142,7 @@
     "passwordChangeSuccessDesc": "Votre mot de passe a été mis à jour avec succès",
     "passwordChangeError": "Erreur de modification",
     "currentEmail": "Courriel actuel",
+    "newEmail": "Nouvelle adresse courriel",
     "enterNewEmail": "Entrez votre nouvelle adresse courriel",
     "emailVerificationInfo": "Un lien de vérification sera envoyé à votre nouvelle adresse courriel. Vous devrez cliquer sur ce lien pour confirmer le changement.",
     "sendVerification": "Envoyer la vérification",
