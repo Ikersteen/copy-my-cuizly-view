@@ -1305,7 +1305,7 @@
     "priceRangeDesc": "Choose your usual budget",
     "selectPriceRange": "Select a price range",
     "priceRanges": {
-      "economic": "$ - Budget-friendly",
+      "economic": "$ - Economic",
       "moderate": "$$ - Moderate",
       "elevated": "$$$ - Upscale",
       "luxury": "$$$$ - Luxury"
