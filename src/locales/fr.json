@@ -2336,6 +2336,7 @@
     "email": "Courriel",
     "priceRange": "Gamme de prix",
     "deliveryRadius": "Rayon de livraison",
+    "cuisineTypes": "Types de cuisine",
     "cuisineType": "Type de cuisine :",
     "selectCuisine": "Sélectionner une cuisine",
     "serviceTypes": "Types de service",

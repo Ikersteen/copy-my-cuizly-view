@@ -128,7 +128,7 @@ export const PRICE_RANGE_OPTIONS = [
 ];
 
 export const PRICE_RANGE_TRANSLATIONS = {
-  "$": { fr: "Économique ($)", en: "Budget ($)" },
+  "$": { fr: "Économique ($)", en: "Economic ($)" },
   "$$": { fr: "Modéré ($$)", en: "Moderate ($$)" },
   "$$$": { fr: "Cher ($$$)", en: "Expensive ($$$)" },
   "$$$$": { fr: "Luxe ($$$$)", en: "Luxury ($$$$)" }
