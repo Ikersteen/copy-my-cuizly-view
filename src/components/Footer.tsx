@@ -146,6 +146,10 @@ const Footer = () => {
               {t('footer.tagline')}
             </p>
             
+            <div className="text-cuizly-neutral/80 text-xs sm:text-sm">
+              <span>© 2025 {t('footer.companyName')} {t('footer.allRightsReserved')}</span>
+            </div>
+            
             {/* Enhanced Social Links */}
             <div className="flex items-center space-x-6 sm:space-x-8">
               <a 
@@ -182,10 +186,6 @@ const Footer = () => {
                 </svg>
                 <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
-            </div>
-            
-            <div className="text-cuizly-neutral/80 text-xs sm:text-sm">
-              <span>© 2025 {t('footer.companyName')} {t('footer.allRightsReserved')}</span>
             </div>
           </div>
         </div>
