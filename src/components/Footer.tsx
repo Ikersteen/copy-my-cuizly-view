@@ -185,7 +185,7 @@ const Footer = () => {
             </div>
             
             <div className="text-cuizly-neutral/80 text-xs sm:text-sm">
-              <span>© 2025 {t('footer.companyName')} • {t('footer.allRightsReserved')}</span>
+              <span>© 2025 {t('footer.companyName')} {t('footer.allRightsReserved')}</span>
             </div>
           </div>
         </div>
