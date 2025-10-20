@@ -163,10 +163,9 @@ const Header = () => {
               {isConsumer && <AuthenticatedConsumerHeader />}
               {isRestaurant && <AuthenticatedRestaurantHeader />}
               
-              {/* Language Switcher & Menu - Always visible together on mobile */}
-              <div className="flex items-center gap-1 ml-2 border border-border rounded-full px-2 py-1 bg-background/50 backdrop-blur-sm">
+              {/* Language Switcher & Menu */}
+              <div className="flex items-center gap-2 ml-2">
                 <LanguageSwitcher />
-                <div className="w-px h-6 bg-border"></div>
                 {isConsumer && (
                   <ConsumerMobileMenu 
                     onPreferencesClick={() => setShowPreferences(true)}
@@ -202,13 +201,15 @@ const Header = () => {
                   </Link>
                 </div>
 
-                {/* Mobile: Language + Burger in capsule */}
-                <div className="lg:hidden flex items-center gap-1 border border-border rounded-full px-2 py-1 bg-background/50 backdrop-blur-sm">
+                {/* Mobile: Language + Burger */}
+                <div className="lg:hidden flex items-center gap-2">
                   <LanguageSwitcher />
-                  <div className="w-px h-6 bg-border"></div>
                   <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                     <SheetTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-transparent">
+                      <Button 
+                        size="sm" 
+                        className="bg-foreground hover:bg-foreground/90 text-background rounded-full h-9 w-9 p-0"
+                      >
                         <Menu className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
