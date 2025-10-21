@@ -217,7 +217,7 @@ export default function RestaurantMenu() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
-        <LoadingSpinner size="xl" />
+        <LoadingSpinner size="md" />
       </div>
     );
   }
