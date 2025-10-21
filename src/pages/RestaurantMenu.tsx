@@ -16,7 +16,6 @@ import { CUISINE_TRANSLATIONS, SERVICE_TYPES_TRANSLATIONS, DIETARY_RESTRICTIONS_
 import { openDirections } from "@/utils/mapUtils";
 import { SocialMediaModal } from "@/components/SocialMediaModal";
 import { ReservationModal } from "@/components/ReservationModal";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 const RatingDisplay = ({ restaurantId }: { restaurantId: string }) => {
   const [rating, setRating] = useState<number | null>(null);
@@ -217,7 +216,16 @@ export default function RestaurantMenu() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
-        <LoadingSpinner size="xl" />
+        <div className="text-center">
+          <div className="space-y-2">
+            <p className="text-cuizly-neutral font-medium">Chargement du restaurant...</p>
+            <div className="flex justify-center space-x-1">
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-cuizly-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
