@@ -417,9 +417,9 @@ export default function RestaurantMenu() {
                           {restaurant.tiktok_url && (
                             <button 
                               onClick={() => setShowTikTokModal(true)}
-                              className="w-8 h-8 rounded flex items-center justify-center hover:scale-110 transition-transform overflow-hidden"
+                              className="w-8 h-8 rounded flex items-center justify-center hover:scale-110 transition-transform overflow-hidden bg-black"
                             >
-                              <img src="/lovable-uploads/tiktok-icon.png" alt="TikTok" className="h-8 w-8 rounded" />
+                              <img src="/lovable-uploads/tiktok-icon.png" alt="TikTok" className="h-4 w-4" />
                             </button>
                           )}
                         </div>
