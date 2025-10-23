@@ -10,7 +10,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook, MapPin, Music2, Settings, Shield } from "lucide-react";
+import { Upload, X, Camera, User, Trash2, Edit2, Crop, ChevronDown, Instagram, Facebook, MapPin, Music2, Settings, Shield, Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAdjustmentModal } from "@/components/PhotoAdjustmentModal";
@@ -799,6 +799,37 @@ export const ImprovedRestaurantProfileModal = ({
                 {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
                   const hours = formData.opening_hours[day as keyof typeof formData.opening_hours];
                   if (!hours) return null;
+                  
+                  const normalizeTime = (time: string): string => {
+                    // Normaliser le format de temps (ajouter le 0 devant si nécessaire)
+                    const parts = time.split(':');
+                    if (parts.length === 2) {
+                      const hour = parts[0].padStart(2, '0');
+                      const minute = parts[1].padStart(2, '0');
+                      return `${hour}:${minute}`;
+                    }
+                    return time;
+                  };
+                  
+                  const copyHoursToAll = () => {
+                    const newHours = { ...formData.opening_hours };
+                    const sourceDayHours = newHours[day as keyof typeof newHours];
+                    Object.keys(newHours).forEach(targetDay => {
+                      if (targetDay !== day) {
+                        newHours[targetDay as keyof typeof newHours] = {
+                          open: sourceDayHours.open,
+                          close: sourceDayHours.close,
+                          closed: sourceDayHours.closed
+                        };
+                      }
+                    });
+                    setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                    toast({
+                      title: t('restaurantProfile.hoursCopied'),
+                      description: t('restaurantProfile.hoursCopiedDesc')
+                    });
+                  };
+                  
                   return (
                     <div key={day} className="flex items-center gap-2">
                       <div className="w-20 text-sm font-medium">
@@ -828,11 +859,18 @@ export const ImprovedRestaurantProfileModal = ({
                             onPaste={(e) => {
                               e.preventDefault();
                               const pastedText = e.clipboardData.getData('text').trim();
-                              // Valider le format HH:MM
+                              // Valider et normaliser le format HH:MM ou H:MM
                               if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(pastedText)) {
+                                const normalizedTime = normalizeTime(pastedText);
                                 const newHours = { ...formData.opening_hours };
-                                newHours[day as keyof typeof newHours].open = pastedText;
+                                newHours[day as keyof typeof newHours].open = normalizedTime;
                                 setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                              } else {
+                                toast({
+                                  title: t('restaurantProfile.error'),
+                                  description: t('restaurantProfile.invalidTimeFormat'),
+                                  variant: "destructive"
+                                });
                               }
                             }}
                             className="w-24"
@@ -849,15 +887,32 @@ export const ImprovedRestaurantProfileModal = ({
                             onPaste={(e) => {
                               e.preventDefault();
                               const pastedText = e.clipboardData.getData('text').trim();
-                              // Valider le format HH:MM
+                              // Valider et normaliser le format HH:MM ou H:MM
                               if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(pastedText)) {
+                                const normalizedTime = normalizeTime(pastedText);
                                 const newHours = { ...formData.opening_hours };
-                                newHours[day as keyof typeof newHours].close = pastedText;
+                                newHours[day as keyof typeof newHours].close = normalizedTime;
                                 setFormData(prev => ({ ...prev, opening_hours: newHours }));
+                              } else {
+                                toast({
+                                  title: t('restaurantProfile.error'),
+                                  description: t('restaurantProfile.invalidTimeFormat'),
+                                  variant: "destructive"
+                                });
                               }
                             }}
                             className="w-24"
                           />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={copyHoursToAll}
+                            className="h-8 px-2 text-xs"
+                            title={t('restaurantProfile.copyToAllDays')}
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
                         </>
                       )}
                       {hours.closed && (
