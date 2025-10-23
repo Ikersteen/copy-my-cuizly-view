@@ -800,34 +800,21 @@ export const ImprovedRestaurantProfileModal = ({
                   const hours = formData.opening_hours[day as keyof typeof formData.opening_hours];
                   if (!hours) return null;
                   
-                  const normalizeTime = (time: string): string => {
-                    // Normaliser le format de temps (ajouter le 0 devant si nécessaire)
-                    const parts = time.split(':');
-                    if (parts.length === 2) {
-                      const hour = parts[0].padStart(2, '0');
-                      const minute = parts[1].padStart(2, '0');
-                      return `${hour}:${minute}`;
+                  const copyHoursToClipboard = async () => {
+                    const textToCopy = `${hours.open}-${hours.close}`;
+                    try {
+                      await navigator.clipboard.writeText(textToCopy);
+                      toast({
+                        title: t('restaurantProfile.hoursCopied'),
+                        description: t('restaurantProfile.hoursCopiedDesc')
+                      });
+                    } catch (err) {
+                      toast({
+                        title: t('restaurantProfile.error'),
+                        description: t('restaurantProfile.copyError'),
+                        variant: "destructive"
+                      });
                     }
-                    return time;
-                  };
-                  
-                  const copyHoursToAll = () => {
-                    const newHours = { ...formData.opening_hours };
-                    const sourceDayHours = newHours[day as keyof typeof newHours];
-                    Object.keys(newHours).forEach(targetDay => {
-                      if (targetDay !== day) {
-                        newHours[targetDay as keyof typeof newHours] = {
-                          open: sourceDayHours.open,
-                          close: sourceDayHours.close,
-                          closed: sourceDayHours.closed
-                        };
-                      }
-                    });
-                    setFormData(prev => ({ ...prev, opening_hours: newHours }));
-                    toast({
-                      title: t('restaurantProfile.hoursCopied'),
-                      description: t('restaurantProfile.hoursCopiedDesc')
-                    });
                   };
                   
                   return (
@@ -856,23 +843,6 @@ export const ImprovedRestaurantProfileModal = ({
                               newHours[day as keyof typeof newHours].open = e.target.value;
                               setFormData(prev => ({ ...prev, opening_hours: newHours }));
                             }}
-                            onPaste={(e) => {
-                              e.preventDefault();
-                              const pastedText = e.clipboardData.getData('text').trim();
-                              // Valider et normaliser le format HH:MM ou H:MM
-                              if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(pastedText)) {
-                                const normalizedTime = normalizeTime(pastedText);
-                                const newHours = { ...formData.opening_hours };
-                                newHours[day as keyof typeof newHours].open = normalizedTime;
-                                setFormData(prev => ({ ...prev, opening_hours: newHours }));
-                              } else {
-                                toast({
-                                  title: t('restaurantProfile.error'),
-                                  description: t('restaurantProfile.invalidTimeFormat'),
-                                  variant: "destructive"
-                                });
-                              }
-                            }}
                             className="w-24"
                           />
                           <span className="text-sm text-muted-foreground">à</span>
@@ -884,32 +854,15 @@ export const ImprovedRestaurantProfileModal = ({
                               newHours[day as keyof typeof newHours].close = e.target.value;
                               setFormData(prev => ({ ...prev, opening_hours: newHours }));
                             }}
-                            onPaste={(e) => {
-                              e.preventDefault();
-                              const pastedText = e.clipboardData.getData('text').trim();
-                              // Valider et normaliser le format HH:MM ou H:MM
-                              if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(pastedText)) {
-                                const normalizedTime = normalizeTime(pastedText);
-                                const newHours = { ...formData.opening_hours };
-                                newHours[day as keyof typeof newHours].close = normalizedTime;
-                                setFormData(prev => ({ ...prev, opening_hours: newHours }));
-                              } else {
-                                toast({
-                                  title: t('restaurantProfile.error'),
-                                  description: t('restaurantProfile.invalidTimeFormat'),
-                                  variant: "destructive"
-                                });
-                              }
-                            }}
                             className="w-24"
                           />
                           <Button
                             type="button"
                             variant="ghost"
                             size="sm"
-                            onClick={copyHoursToAll}
+                            onClick={copyHoursToClipboard}
                             className="h-8 px-2 text-xs"
-                            title={t('restaurantProfile.copyToAllDays')}
+                            title={t('restaurantProfile.copyHours')}
                           >
                             <Copy className="h-3 w-3" />
                           </Button>
