@@ -643,24 +643,24 @@ export const ImprovedRestaurantProfileModal = ({
                     ? 'text-orange-500' 
                     : 'text-muted-foreground'
                 }`}>
-                  {formData.description.length}/500
+                  {formData.description.length}/1000
                 </span>
               </div>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => {
-                  if (e.target.value.length <= 500) {
+                  if (e.target.value.length <= 1000) {
                     setFormData(prev => ({ ...prev, description: e.target.value }));
                   }
                 }}
                 placeholder={t('restaurantProfile.descriptionPlaceholder')}
                 className="min-h-[120px]"
-                maxLength={500}
+                maxLength={1000}
               />
-              {formData.description.length > 450 && (
+              {formData.description.length > 950 && (
                 <p className="text-xs text-muted-foreground">
-                  {t('restaurantProfile.charactersRemaining', { count: 500 - formData.description.length })}
+                  {t('restaurantProfile.charactersRemaining', { count: 1000 - formData.description.length })}
                 </p>
               )}
             </div>
