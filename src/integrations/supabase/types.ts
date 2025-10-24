@@ -743,7 +743,7 @@ export type Database = {
           event_details: Json | null
           event_type: string
           id: string
-          ip_address: unknown
+          ip_address: unknown | null
           user_agent: string | null
           user_id: string | null
         }
@@ -752,7 +752,7 @@ export type Database = {
           event_details?: Json | null
           event_type: string
           id?: string
-          ip_address?: unknown
+          ip_address?: unknown | null
           user_agent?: string | null
           user_id?: string | null
         }
@@ -761,64 +761,7 @@ export type Database = {
           event_details?: Json | null
           event_type?: string
           id?: string
-          ip_address?: unknown
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      user_activity_logs: {
-        Row: {
-          browser: string | null
-          created_at: string | null
-          device_type: string | null
-          duration_seconds: number | null
-          event_data: Json | null
-          event_type: string
-          id: string
-          ip_address: unknown
-          os: string | null
-          page_title: string | null
-          page_url: string
-          referrer: string | null
-          session_id: string
-          updated_at: string | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          browser?: string | null
-          created_at?: string | null
-          device_type?: string | null
-          duration_seconds?: number | null
-          event_data?: Json | null
-          event_type: string
-          id?: string
-          ip_address?: unknown
-          os?: string | null
-          page_title?: string | null
-          page_url: string
-          referrer?: string | null
-          session_id: string
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          browser?: string | null
-          created_at?: string | null
-          device_type?: string | null
-          duration_seconds?: number | null
-          event_data?: Json | null
-          event_type?: string
-          id?: string
-          ip_address?: unknown
-          os?: string | null
-          page_title?: string | null
-          page_url?: string
-          referrer?: string | null
-          session_id?: string
-          updated_at?: string | null
+          ip_address?: unknown | null
           user_agent?: string | null
           user_id?: string | null
         }
@@ -996,7 +939,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      allow_public_restaurant_data: { Args: never; Returns: boolean }
+      allow_public_restaurant_data: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       check_reservation_availability: {
         Args: {
           p_date: string
@@ -1021,15 +967,24 @@ export type Database = {
         Args: { restaurant_name: string }
         Returns: string
       }
-      decrypt_pii:
-        | {
-            Args: { encrypted_data: string; secret_key?: string }
-            Returns: string
-          }
-        | { Args: { encrypted_text: string }; Returns: string }
-      detect_address_enumeration: { Args: never; Returns: undefined }
-      detect_suspicious_admin_activity: { Args: never; Returns: undefined }
-      emergency_admin_verification: { Args: never; Returns: boolean }
+      decrypt_pii: {
+        Args:
+          | { encrypted_data: string; secret_key?: string }
+          | { encrypted_text: string }
+        Returns: string
+      }
+      detect_address_enumeration: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      detect_suspicious_admin_activity: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      emergency_admin_verification: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       emergency_decrypt_customer_data: {
         Args: { justification: string; record_id: string }
         Returns: {
@@ -1039,22 +994,9 @@ export type Database = {
           decrypted_phone: string
         }[]
       }
-      encrypt_pii:
-        | { Args: { plain_text: string }; Returns: string }
-        | { Args: { data: string; secret_key?: string }; Returns: string }
-      get_analytics_summary: {
-        Args: { end_date?: string; start_date?: string }
-        Returns: {
-          avg_session_duration: number
-          browser_breakdown: Json
-          device_breakdown: Json
-          event_breakdown: Json
-          top_pages: Json
-          total_events: number
-          total_page_views: number
-          unique_sessions: number
-          unique_users: number
-        }[]
+      encrypt_pii: {
+        Args: { data: string; secret_key?: string } | { plain_text: string }
+        Returns: string
       }
       get_available_time_slots: {
         Args: { p_date: string; p_party_size: number; p_restaurant_id: string }
@@ -1084,7 +1026,7 @@ export type Database = {
         }[]
       }
       get_public_restaurants: {
-        Args: never
+        Args: Record<PropertyKey, never>
         Returns: {
           address: string
           allergens: string[]
@@ -1164,7 +1106,10 @@ export type Database = {
           phone: string
         }[]
       }
-      get_security_status: { Args: never; Returns: Json }
+      get_security_status: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       get_translated_description: {
         Args: {
           language?: string
@@ -1281,8 +1226,14 @@ export type Database = {
         }
         Returns: undefined
       }
-      is_admin: { Args: never; Returns: boolean }
-      is_authenticated_user: { Args: never; Returns: boolean }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_authenticated_user: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       log_security_event: {
         Args: {
           p_event_details?: Json
@@ -1293,20 +1244,14 @@ export type Database = {
         }
         Returns: string
       }
-      log_unauthorized_access_attempt: { Args: never; Returns: boolean }
-      log_user_activity: {
-        Args: {
-          p_duration_seconds?: number
-          p_event_data?: Json
-          p_event_type: string
-          p_page_title?: string
-          p_page_url?: string
-          p_referrer?: string
-          p_session_id: string
-        }
-        Returns: string
+      log_unauthorized_access_attempt: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
-      mark_all_notifications_read: { Args: never; Returns: number }
+      mark_all_notifications_read: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       mark_notification_read: {
         Args: { p_notification_id: string }
         Returns: boolean
@@ -1342,8 +1287,14 @@ export type Database = {
         Args: { p_image_type: string; p_image_url: string }
         Returns: string
       }
-      validate_admin_session: { Args: never; Returns: boolean }
-      validate_email_domain: { Args: { email: string }; Returns: boolean }
+      validate_admin_session: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      validate_email_domain: {
+        Args: { email: string }
+        Returns: boolean
+      }
       validate_password_strength: {
         Args: { password: string }
         Returns: boolean
@@ -1357,7 +1308,10 @@ export type Database = {
         }
         Returns: boolean
       }
-      verify_admin_access: { Args: never; Returns: boolean }
+      verify_admin_access: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       verify_secure_address_access: {
         Args: { p_address_id?: string; p_user_id: string }
         Returns: boolean
@@ -1366,9 +1320,18 @@ export type Database = {
         Args: { max_hourly_accesses?: number }
         Returns: boolean
       }
-      verify_ultra_secure_waitlist_access: { Args: never; Returns: boolean }
-      verify_waitlist_admin_context: { Args: never; Returns: boolean }
-      verify_waitlist_security_status: { Args: never; Returns: Json }
+      verify_ultra_secure_waitlist_access: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      verify_waitlist_admin_context: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      verify_waitlist_security_status: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

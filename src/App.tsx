@@ -31,15 +31,12 @@ import EmailConfirmed from "./pages/EmailConfirmed";
 import RestaurantReservations from "./pages/RestaurantReservations";
 import ConsumerReservations from "./pages/ConsumerReservations";
 import NotFound from "./pages/NotFound";
-import SystemAnalyticsDashboard from "./pages/SystemAnalyticsDashboard";
-import { useActivityTracker } from "./hooks/useActivityTracker";
 
 const queryClient = new QueryClient();
 
 const AppContent = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  useActivityTracker();
   const showScrollToTop = !location.pathname.includes('/auth') && 
                           !location.pathname.includes('/dashboard') && 
                           !location.pathname.includes('/tableau-de-bord') && 
@@ -234,7 +231,6 @@ const AppContent = () => {
           </>
         } />
         <Route path="/courriel-confirme" element={<EmailConfirmed />} />
-        <Route path="/system-analytics-cuizly-2024" element={<SystemAnalyticsDashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showScrollToTop && <ScrollToTopButton />}
