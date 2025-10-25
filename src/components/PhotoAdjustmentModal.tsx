@@ -76,24 +76,28 @@ export const PhotoAdjustmentModal = ({
     const scaleRatio = scale[0] / 100;
     const rotationRad = (rotation * Math.PI) / 180;
     
-    // Calculate bounding box for rotated image
+    // Calculate bounding box for rotated and scaled image
+    const scaledWidth = originalWidth * scaleRatio;
+    const scaledHeight = originalHeight * scaleRatio;
+    
     const cos = Math.abs(Math.cos(rotationRad));
     const sin = Math.abs(Math.sin(rotationRad));
-    const rotatedWidth = (originalWidth * cos + originalHeight * sin) * scaleRatio;
-    const rotatedHeight = (originalWidth * sin + originalHeight * cos) * scaleRatio;
+    const rotatedWidth = scaledWidth * cos + scaledHeight * sin;
+    const rotatedHeight = scaledWidth * sin + scaledHeight * cos;
     
-    // Set canvas size to accommodate the full transformed image
-    canvas.width = Math.ceil(rotatedWidth);
-    canvas.height = Math.ceil(rotatedHeight);
+    // Add padding to ensure image fits completely
+    const padding = 50;
+    canvas.width = Math.ceil(rotatedWidth) + padding;
+    canvas.height = Math.ceil(rotatedHeight) + padding;
 
-    // Clear canvas with transparent background
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Calculate position scaling from preview to final canvas
-    const previewContainer = 300; // preview height
-    const previewScale = previewContainer / Math.max(originalWidth, originalHeight);
-    const finalPositionX = position.x / previewScale;
-    const finalPositionY = position.y / previewScale;
+    // Clear canvas with white background for JPEG, transparent for PNG
+    const isTransparent = imageUrl.toLowerCase().includes('data:image/png') || 
+                         imageUrl.toLowerCase().includes('.png');
+    
+    if (!isTransparent) {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
     // Apply transformations
     ctx.save();
@@ -101,26 +105,23 @@ export const PhotoAdjustmentModal = ({
     // Move to center of canvas
     ctx.translate(canvas.width / 2, canvas.height / 2);
     
-    // Apply user transformations
+    // Apply rotation and scale
     ctx.rotate(rotationRad);
     ctx.scale(scaleRatio, scaleRatio);
-    ctx.translate(finalPositionX, finalPositionY);
     
-    // Draw image centered
+    // Draw image centered (position is already applied in preview, we ignore it for final render)
     ctx.drawImage(img, -originalWidth / 2, -originalHeight / 2, originalWidth, originalHeight);
     
     ctx.restore();
 
-    // Detect if image has transparency or if original was PNG
-    const isTransparent = imageUrl.toLowerCase().includes('data:image/png') || 
-                         imageUrl.toLowerCase().includes('.png');
-    
-    console.log('🖼️ Image type detected:', isTransparent ? 'PNG (transparent)' : 'JPEG');
+    console.log('🖼️ Canvas dimensions:', canvas.width, 'x', canvas.height);
+    console.log('🔄 Rotation:', rotation, '° | Scale:', scale[0], '%');
+    console.log('📐 Original:', originalWidth, 'x', originalHeight);
     
     // Get the adjusted image data with appropriate format
     const adjustedImageData = isTransparent 
-      ? canvas.toDataURL('image/png') // Keep PNG for transparency
-      : canvas.toDataURL('image/jpeg', 0.95); // Higher quality JPEG
+      ? canvas.toDataURL('image/png') 
+      : canvas.toDataURL('image/jpeg', 0.92);
       
     console.log('💾 Generated image data length:', adjustedImageData.length);
     onSave(adjustedImageData);
