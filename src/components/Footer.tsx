@@ -190,6 +190,13 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      
+      {/* Legal Disclaimer */}
+      <div className="bg-black py-3 px-4">
+        <p className="text-white/70 text-xs text-center max-w-6xl mx-auto leading-relaxed">
+          Les offres promotionnelles sont régies par les conditions indiquées sur la page de chaque restaurant. Les offres portant sur les boissons alcoolisées sont strictement réservées aux adultes de 18 ans et plus. L'abus d'alcool est dangereux pour votre santé. Consommez avec modération.
+        </p>
+      </div>
     </footer>
   );
 };
