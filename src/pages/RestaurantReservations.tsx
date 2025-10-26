@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { RestaurantReservationsSection } from "@/components/RestaurantReservationsSection";
+import { ReservationSettingsSection } from "@/components/ReservationSettingsSection";
 import { useLocalizedRoute } from "@/lib/routeTranslations";
 
 const RestaurantReservations = () => {
@@ -107,6 +108,10 @@ const RestaurantReservations = () => {
             {t('reservation.manageReservations')}
           </p>
         </div>
+
+        <Card className="mb-6 p-6">
+          <ReservationSettingsSection restaurantId={restaurantId} />
+        </Card>
 
         <RestaurantReservationsSection restaurantId={restaurantId} />
       </div>

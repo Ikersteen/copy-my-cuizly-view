@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ReservationSettingsSectionProps {
   restaurantId: string;
@@ -31,9 +31,18 @@ export const ReservationSettingsSection = ({ restaurantId }: ReservationSettings
     },
   });
 
-  const [numberOfTables, setNumberOfTables] = useState<number>(restaurant?.number_of_tables || 10);
-  const [turnoverMinutes, setTurnoverMinutes] = useState<number>(restaurant?.reservation_turnover_minutes || 30);
-  const [maxDuration, setMaxDuration] = useState<number>(restaurant?.max_reservation_duration_minutes || 120);
+  const [numberOfTables, setNumberOfTables] = useState<number>(10);
+  const [turnoverMinutes, setTurnoverMinutes] = useState<number>(30);
+  const [maxDuration, setMaxDuration] = useState<number>(120);
+
+  // Update local state when restaurant data loads
+  useEffect(() => {
+    if (restaurant) {
+      setNumberOfTables(restaurant.number_of_tables || 10);
+      setTurnoverMinutes(restaurant.reservation_turnover_minutes || 30);
+      setMaxDuration(restaurant.max_reservation_duration_minutes || 120);
+    }
+  }, [restaurant]);
 
   const updateReservationSettings = useMutation({
     mutationFn: async (enabled: boolean) => {
