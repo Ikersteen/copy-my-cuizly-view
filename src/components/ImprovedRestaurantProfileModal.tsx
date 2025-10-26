@@ -767,31 +767,6 @@ export const ImprovedRestaurantProfileModal = ({
 
             <Separator />
 
-            <div className="space-y-3">
-              <div>
-                <h3 className="text-sm font-semibold text-foreground mb-1">
-                  {t("reservation.reservationSettings")}
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  {t("reservation.reservationSettingsDesc")}
-                </p>
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="reservations-toggle" className="cursor-pointer text-sm">
-                  {formData.reservations_enabled 
-                    ? t("reservation.disableReservations")
-                    : t("reservation.enableReservations")}
-                </Label>
-                <Switch
-                  id="reservations-toggle"
-                  checked={formData.reservations_enabled}
-                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, reservations_enabled: checked }))}
-                />
-              </div>
-            </div>
-
-            <Separator />
-
             <div className="space-y-2">
               <Label>{t('restaurantProfile.openingHours')}</Label>
               <p className="text-sm text-muted-foreground">{t('restaurantProfile.openingHoursDescription')}</p>
