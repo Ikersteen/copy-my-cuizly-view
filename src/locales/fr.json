@@ -2400,7 +2400,15 @@
       "cancelled": "Annulée",
       "completed": "Complétée",
       "no_show": "Absent"
-    }
+    },
+    "settingsUpdated": "Paramètres mis à jour avec succès",
+    "tableConfiguration": "Configuration des tables",
+    "numberOfTables": "Nombre de tables",
+    "numberOfTablesDesc": "Définissez le nombre de tables disponibles pour les réservations",
+    "turnoverTime": "Temps de rotation",
+    "turnoverTimeDesc": "Temps entre deux réservations pour préparer la table",
+    "maxDuration": "Durée maximale",
+    "maxDurationDesc": "Durée maximale d'une réservation"
   },
   "map": {
     "directions": "Itinéraire",

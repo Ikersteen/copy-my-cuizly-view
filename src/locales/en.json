@@ -1929,7 +1929,15 @@
       "cancelled": "Cancelled",
       "completed": "Completed",
       "no_show": "No show"
-    }
+    },
+    "settingsUpdated": "Settings updated successfully",
+    "tableConfiguration": "Table configuration",
+    "numberOfTables": "Number of tables",
+    "numberOfTablesDesc": "Set the number of tables available for reservations",
+    "turnoverTime": "Turnover time",
+    "turnoverTimeDesc": "Time between two reservations to prepare the table",
+    "maxDuration": "Maximum duration",
+    "maxDurationDesc": "Maximum duration of a reservation"
   },
   "map": {
     "directions": "Directions",
