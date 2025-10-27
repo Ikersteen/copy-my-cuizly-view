@@ -9,6 +9,7 @@ import i18n from "@/lib/i18n";
 import { routeTranslations } from "@/lib/routeTranslations";
 import Header from "@/components/Header";
 import CookieBanner from "@/components/CookieBanner";
+import ScrollToTop from "@/components/ScrollToTop";
 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -38,6 +39,7 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={
           <>
