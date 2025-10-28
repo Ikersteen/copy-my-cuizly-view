@@ -106,6 +106,20 @@ export const ConfirmationEmail = ({
           <em>Ton prochain coup de cœur culinaire en un swipe.</em>
         </Text>
 
+        <Text style={socialLinks}>
+          <Link href="https://www.linkedin.com/company/cuizly" target="_blank" style={socialLink}>
+            LinkedIn
+          </Link>
+          {' | '}
+          <Link href="https://www.instagram.com/cuizly" target="_blank" style={socialLink}>
+            Instagram
+          </Link>
+          {' | '}
+          <Link href="https://www.tiktok.com/@cuizly" target="_blank" style={socialLink}>
+            TikTok
+          </Link>
+        </Text>
+
         <Text style={disclaimer}>
           Si vous n'avez pas créé ce compte, vous pouvez ignorer cet email en toute sécurité.
         </Text>
@@ -211,6 +225,20 @@ const footer = {
   marginTop: '40px',
   paddingTop: '20px',
   borderTop: '1px solid #e5e5e5',
+}
+
+const socialLinks = {
+  color: '#737373',
+  fontSize: '12px',
+  textAlign: 'center' as const,
+  marginTop: '10px',
+  marginBottom: '0',
+}
+
+const socialLink = {
+  color: '#171717',
+  textDecoration: 'none',
+  fontWeight: '600',
 }
 
 const disclaimer = {
