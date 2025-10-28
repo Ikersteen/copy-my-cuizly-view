@@ -190,18 +190,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      
-      {/* Legal Disclaimer */}
-      <div className="bg-black py-3 px-4">
-        <div className="text-white/70 text-xs text-center max-w-6xl mx-auto space-y-1">
-          <p className="leading-relaxed">
-            {t('footer.promoDisclaimer')}
-          </p>
-          <p className="leading-relaxed">
-            {t('footer.alcoholDisclaimer')}
-          </p>
-        </div>
-      </div>
     </footer>
   );
 };
