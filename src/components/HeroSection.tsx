@@ -65,7 +65,7 @@ const HeroSection = () => {
           <Button 
             size="lg" 
             variant="outline"
-            className="bg-transparent border-2 border-white/30 text-white hover:bg-transparent hover:border-white/30 px-10 sm:px-8 py-5 text-lg sm:text-xl font-semibold min-h-[60px] w-full sm:w-auto touch-device"
+            className="bg-transparent border-2 border-white/30 text-white hover:bg-transparent hover:border-white/30 hover:text-white px-10 sm:px-8 py-5 text-lg sm:text-xl font-semibold min-h-[60px] w-full sm:w-auto touch-device"
             onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
           >
             {t('hero.bookDemo')}
