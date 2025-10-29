@@ -128,7 +128,7 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="relative border-t-2 border-border/60 mt-8 sm:mt-12 pt-8 sm:pt-10">
+        <div className="relative mt-8 sm:mt-12 pt-8 sm:pt-10">
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
             <a 
@@ -138,7 +138,7 @@ const Footer = () => {
               <img 
                 src="/cuizly-logo-official.png" 
                 alt="Cuizly" 
-                className="h-[70px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+                className="h-[100px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
               />
             </a>
             
