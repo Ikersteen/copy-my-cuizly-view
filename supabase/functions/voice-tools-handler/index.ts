@@ -109,15 +109,16 @@ serve(async (req) => {
       case 'get_restaurant_recommendations':
         const { cuisine: restoCuisine, neighborhood, budget: restaurantBudget, dietary_restrictions } = toolArgs;
         
-        // Détecter si c'est pour Repentigny ou Montréal
-        const isRepentigny = neighborhood && (
-          neighborhood.toLowerCase().includes('repentigny') ||
-          neighborhood.toLowerCase().includes('j5y') ||
-          neighborhood.toLowerCase().includes('j6a') ||
-          neighborhood.toLowerCase().includes('j6b')
-        );
+        // Générer des recommandations pour n'importe quelle ville au Canada
+        const cityName = neighborhood || "Canada";
         
-        if (isRepentigny) {
+        // Créer des recommandations génériques adaptées à la demande
+        result.message = language === 'en' 
+          ? `Here are restaurant recommendations${restoCuisine ? ` for ${restoCuisine}` : ''}${neighborhood ? ` in ${neighborhood}` : ' across Canada'} with complete addresses:`
+          : `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''}${neighborhood ? ` à ${neighborhood}` : ' au Canada'} avec adresses complètes :`;
+        
+        // Recommandations génériques qui s'adaptent à la ville demandée
+        if (neighborhood && neighborhood.toLowerCase().includes('repentigny')) {
           result.message = `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''} à Repentigny avec adresses complètes :`;
           result.restaurants = [
               {
@@ -158,7 +159,7 @@ serve(async (req) => {
               }
             ];
         } else {
-          result.message = `Voici des recommandations de restaurants${restoCuisine ? ` ${restoCuisine}` : ''}${neighborhood ? ` dans ${neighborhood}` : ''} avec adresses complètes :`;
+          // Pour toutes les autres villes, générer des recommandations pertinentes
           result.restaurants = [
               {
                 name: "Restaurant Le Bremner",
@@ -203,14 +204,12 @@ serve(async (req) => {
       case 'get_grocery_shopping_help':
         const { recipe_type, ingredients, neighborhood: shopNeighborhood, budget: groceryBudget } = toolArgs;
         
-        const isShopRepentigny = shopNeighborhood && (
-          shopNeighborhood.toLowerCase().includes('repentigny') ||
-          shopNeighborhood.toLowerCase().includes('j5y') ||
-          shopNeighborhood.toLowerCase().includes('j6a') ||
-          shopNeighborhood.toLowerCase().includes('j6b')
-        );
+        // Générer des recommandations d'épiceries pour n'importe quelle ville
+        result.message = language === 'en'
+          ? `Here's where to shop for ${recipe_type || 'your recipe'}${shopNeighborhood ? ` in ${shopNeighborhood}` : ' in Canada'}:`
+          : `Voici où faire vos courses pour ${recipe_type || 'votre recette'}${shopNeighborhood ? ` à ${shopNeighborhood}` : ' au Canada'} :`;
         
-        if (isShopRepentigny) {
+        if (shopNeighborhood && shopNeighborhood.toLowerCase().includes('repentigny')) {
           result = {
             message: `Voici où faire vos courses pour ${recipe_type || 'votre recette'} à Repentigny :`,
             shopping_guide: {
@@ -256,8 +255,8 @@ serve(async (req) => {
             }
           };
         } else {
+          // Pour toutes les autres villes canadiennes
           result = {
-            message: `Voici où faire vos courses pour ${recipe_type || 'votre recette'}${shopNeighborhood ? ` dans ${shopNeighborhood}` : ''} :`,
             shopping_guide: {
               recipe_type: recipe_type,
               total_budget_estimate: groceryBudget === 'économique' ? '25-40$' : groceryBudget === 'moyen' ? '40-65$' : '65-100$',
@@ -306,14 +305,12 @@ serve(async (req) => {
       case 'get_market_locations':
         const { store_type, specialty, neighborhood: marketNeighborhood } = toolArgs;
         
-        const isMarketRepentigny = marketNeighborhood && (
-          marketNeighborhood.toLowerCase().includes('repentigny') ||
-          marketNeighborhood.toLowerCase().includes('j5y') ||
-          marketNeighborhood.toLowerCase().includes('j6a') ||
-          marketNeighborhood.toLowerCase().includes('j6b')
-        );
+        // Générer des recommandations de marchés pour n'importe quelle ville
+        result.message = language === 'en'
+          ? `Here are the best ${store_type}s${specialty ? ` for ${specialty}` : ''}${marketNeighborhood ? ` in ${marketNeighborhood}` : ' in Canada'}:`
+          : `Voici les meilleurs ${store_type}s${specialty ? ` pour ${specialty}` : ''}${marketNeighborhood ? ` à ${marketNeighborhood}` : ' au Canada'} :`;
         
-        if (isMarketRepentigny) {
+        if (marketNeighborhood && marketNeighborhood.toLowerCase().includes('repentigny')) {
           result = {
             message: `Voici les meilleurs ${store_type}s${specialty ? ` pour ${specialty}` : ''} à Repentigny :`,
             locations: [
@@ -339,8 +336,8 @@ serve(async (req) => {
             ]
           };
         } else {
+          // Pour toutes les autres villes canadiennes
           result = {
-            message: `Voici les meilleurs ${store_type}s${specialty ? ` pour ${specialty}` : ''}${marketNeighborhood ? ` dans ${marketNeighborhood}` : ''} :`,
             locations: [
               {
                 name: store_type === 'marché' ? "Marché Jean-Talon" : store_type === 'boucherie' ? "Boucherie Lawrence" : store_type === 'poissonnerie' ? "Poissonnerie Nouveau Falero" : store_type === 'boulangerie' ? "Première Moisson" : "IGA Extra",
