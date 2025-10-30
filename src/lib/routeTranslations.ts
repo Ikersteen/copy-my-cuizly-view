@@ -11,7 +11,7 @@ export const routeTranslations = {
   '/mentions': '/mentions-legales',
   '/cookies': '/politique-de-cookies',
   '/waitlist': '/liste-attente',
-  '/cuizlyassistant': '/assistant-vocal',
+  '/cuizlyassistant': '/cuizlyassistant',
   '/dashboard': '/tableau-de-bord',
   '/restaurant': '/restaurant',
   '/restaurant/reservations': '/restaurant/reservations',
