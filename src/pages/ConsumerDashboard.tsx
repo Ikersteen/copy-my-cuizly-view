@@ -47,6 +47,7 @@ const ConsumerDashboard = () => {
   
   // Get localized routes
   const homeRoute = useLocalizedRoute('/');
+  const cuizlyAssistantRoute = useLocalizedRoute('/cuizlyassistant');
 
 
   useEffect(() => {
@@ -203,7 +204,7 @@ const ConsumerDashboard = () => {
 
       {/* Floating Voice Assistant Button - Redirects to Cuizly Assistant */}
       <Button
-        onClick={() => window.open('https://www.cuizly.ca/cuizlyassistant', '_blank')}
+        onClick={() => navigate(cuizlyAssistantRoute)}
         className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 z-50"
         aria-label={t('accessibility.voiceAssistant')}
       >
