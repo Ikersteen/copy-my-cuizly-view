@@ -128,7 +128,7 @@ const AppContent = () => {
           </>
         } />
         <Route path="/waitlist" element={<Waitlist />} />
-        <Route path="/voice" element={
+        <Route path="/cuizlyassistant" element={
           <>
             <Header />
             <VoiceChat />
