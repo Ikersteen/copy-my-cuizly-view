@@ -683,9 +683,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
                   {message.type === 'assistant' ? (
                     <>
-                      <AvatarImage src="/cuizly-icône-official.png" alt="Cuizly Assistant" />
+                      <AvatarImage src="/cuizly-chef-icon.png" alt="Cuizly Assistant" />
                       <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
-                        <UserIcon className="h-5 w-5" />
+                        <ChefHat className="h-5 w-5" />
                       </AvatarFallback>
                     </>
                   ) : (
@@ -745,9 +745,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             <div className="flex justify-start">
               <div className="flex items-start gap-4 max-w-[85%]">
                 <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
-                  <AvatarImage src="/cuizly-icône-official.png" alt="Cuizly Assistant" />
+                  <AvatarImage src="/cuizly-chef-icon.png" alt="Cuizly Assistant" />
                   <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
-                    <UserIcon className="h-5 w-5" />
+                    <ChefHat className="h-5 w-5" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="rounded-3xl px-6 py-4 bg-muted text-foreground">
