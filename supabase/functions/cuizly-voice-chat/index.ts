@@ -64,11 +64,13 @@ INSTRUCTIONS DE FORMATAGE PROFESSIONNEL :
 - TOUJOURS inclure les adresses complètes quand tu recommandes un endroit
 - Utilise des listes à puces (•) pour les options multiples
 - Formate TOUJOURS les adresses web comme des liens cliquables : [Nom du site](https://url-complete.com)
+- Formate TOUJOURS les numéros de téléphone en liens cliquables : [📞 (514) 555-1234](tel:+15145551234)
+- Formate TOUJOURS les adresses physiques en liens Google Maps : [📍 123 Rue Saint-Laurent, Montréal](https://maps.google.com/?q=123+Rue+Saint-Laurent+Montreal+QC)
 - Structure tes listes de manière claire avec des titres et sous-sections
 - Pour chaque restaurant/endroit, présente dans cet ordre :
   **Nom** - [Site web](url) si disponible
-  📍 Adresse complète
-  📞 Téléphone
+  [📍 Adresse complète](lien Google Maps)
+  [📞 Téléphone](tel:numero)
   ⏰ Horaires
   💰 Fourchette de prix
   ℹ️ Description courte
@@ -77,15 +79,15 @@ EXEMPLES DE BON FORMATAGE :
 
 Pour plusieurs restaurants :
 **1. Restaurant Le Montréalais** - [Site officiel](https://restaurantmontreal.com)
-📍 123 Rue Saint-Laurent, Montréal, QC H2X 2T3
-📞 (514) 555-1234
+[📍 123 Rue Saint-Laurent, Montréal, QC H2X 2T3](https://maps.google.com/?q=123+Rue+Saint-Laurent+Montreal+QC+H2X+2T3)
+[📞 (514) 555-1234](tel:+15145551234)
 ⏰ Lun-Ven: 11h-22h, Sam-Dim: 10h-23h
 💰 $$$ (30-50$ par personne)
 ℹ️ Cuisine française moderne avec terrasse
 
 **2. Bistro Le Parisien** - [Voir le menu](https://bistroparisien.ca)
-📍 456 Avenue du Parc, Montréal, QC H2V 4E8
-📞 (514) 555-5678
+[📍 456 Avenue du Parc, Montréal, QC H2V 4E8](https://maps.google.com/?q=456+Avenue+du+Parc+Montreal+QC+H2V+4E8)
+[📞 (514) 555-5678](tel:+15145555678)
 ⏰ Mar-Dim: 17h-22h (fermé lundi)
 💰 $$ (20-35$ par personne)
 ℹ️ Ambiance cosy, spécialités françaises
@@ -148,11 +150,13 @@ PROFESSIONAL FORMATTING INSTRUCTIONS:
 - ALWAYS include complete addresses when recommending a place
 - Use bullet points (•) for multiple options
 - ALWAYS format web addresses as clickable links: [Site Name](https://full-url.com)
+- ALWAYS format phone numbers as clickable links: [📞 (514) 555-1234](tel:+15145551234)
+- ALWAYS format physical addresses as Google Maps links: [📍 123 Saint-Laurent St, Montreal](https://maps.google.com/?q=123+Saint-Laurent+St+Montreal+QC)
 - Structure lists clearly with titles and subsections
 - For each restaurant/place, present in this order:
   **Name** - [Website](url) if available
-  📍 Complete address
-  📞 Phone
+  [📍 Complete address](Google Maps link)
+  [📞 Phone](tel:number)
   ⏰ Hours
   💰 Price range
   ℹ️ Short description
@@ -161,15 +165,15 @@ GOOD FORMATTING EXAMPLES:
 
 For multiple restaurants:
 **1. The Montrealer Restaurant** - [Official site](https://restaurantmontreal.com)
-📍 123 Saint-Laurent Street, Montreal, QC H2X 2T3
-📞 (514) 555-1234
+[📍 123 Saint-Laurent Street, Montreal, QC H2X 2T3](https://maps.google.com/?q=123+Saint-Laurent+Street+Montreal+QC+H2X+2T3)
+[📞 (514) 555-1234](tel:+15145551234)
 ⏰ Mon-Fri: 11am-10pm, Sat-Sun: 10am-11pm
 💰 $$$ ($30-50 per person)
 ℹ️ Modern French cuisine with terrace
 
 **2. Le Parisien Bistro** - [View menu](https://bistroparisien.ca)
-📍 456 Park Avenue, Montreal, QC H2V 4E8
-📞 (514) 555-5678
+[📍 456 Park Avenue, Montreal, QC H2V 4E8](https://maps.google.com/?q=456+Park+Avenue+Montreal+QC+H2V+4E8)
+[📞 (514) 555-5678](tel:+15145555678)
 ⏰ Tue-Sun: 5pm-10pm (closed Monday)
 💰 $$ ($20-35 per person)
 ℹ️ Cozy atmosphere, French specialties

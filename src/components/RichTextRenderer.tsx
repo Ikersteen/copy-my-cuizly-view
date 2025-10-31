@@ -50,7 +50,8 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content, className 
           // Links with security and styling
           a: ({ href, children }) => {
             const isExternal = href && (href.startsWith('http') || href.startsWith('https'));
-            const isValidUrl = href && (href.startsWith('http') || href.startsWith('https') || href.startsWith('/') || href.startsWith('#'));
+            const isTel = href && href.startsWith('tel:');
+            const isValidUrl = href && (href.startsWith('http') || href.startsWith('https') || href.startsWith('/') || href.startsWith('#') || href.startsWith('tel:'));
             
             // Security check - only allow safe URLs
             if (!isValidUrl) {
@@ -65,7 +66,7 @@ const RichTextRenderer: React.FC<RichTextRendererProps> = ({ content, className 
                 className="text-primary hover:text-primary/80 underline decoration-primary/30 hover:decoration-primary/60 transition-colors inline-flex items-center gap-1"
               >
                 {children}
-                {isExternal && (
+                {isExternal && !isTel && (
                   <ExternalLink className="w-3 h-3 opacity-60" />
                 )}
               </a>

@@ -196,9 +196,9 @@ const Header = () => {
                 <div className="hidden lg:flex items-center gap-2">
                   <Link to={cuizlyAssistantRoute}>
                     <Button 
-                      variant="outline" 
+                      variant="ghost" 
                       size="sm"
-                      className="flex items-center gap-2 bg-transparent hover:bg-accent text-foreground border-border"
+                      className="flex items-center gap-2 hover:bg-accent text-foreground"
                     >
                       <Sparkles className="h-4 w-4" />
                       <span>Cuizly Assistant</span>
