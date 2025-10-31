@@ -198,7 +198,7 @@ const Header = () => {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      className="flex items-center gap-2 bg-white hover:bg-gray-50 text-foreground border-border"
+                      className="flex items-center gap-2 bg-transparent hover:bg-accent text-foreground border-border"
                     >
                       <Sparkles className="h-4 w-4" />
                       <span>Cuizly Assistant</span>
