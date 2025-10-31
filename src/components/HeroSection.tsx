@@ -25,7 +25,7 @@ const HeroSection = () => {
   };
   
   return (
-    <section className="relative overflow-hidden pt-2 pb-6 sm:py-16 lg:py-12">
+    <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
@@ -55,21 +55,12 @@ const HeroSection = () => {
         />
 
         {/* CTA */}
-        <div className="animate-fade-in flex flex-col sm:flex-row gap-3 sm:gap-2 justify-center items-center">
+        <div className="animate-fade-in flex justify-center items-center">
           <Link to="/auth?type=restaurant&tab=signup" className="w-full sm:w-auto">
             <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 px-10 sm:px-8 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-white/25 min-h-[60px] w-full sm:w-auto touch-device">
               {t('hero.createAccount')}
             </Button>
           </Link>
-          
-          <Button 
-            size="lg" 
-            variant="outline"
-            className="bg-transparent border-2 border-white/30 text-white hover:bg-transparent hover:border-white/30 hover:text-white px-10 sm:px-8 py-5 text-lg sm:text-xl font-semibold min-h-[60px] w-full sm:w-auto touch-device"
-            onClick={() => window.open('https://calendly.com/cuizlycanada/30min', '_blank')}
-          >
-            {t('hero.bookDemo')}
-          </Button>
         </div>
 
         {/* Profile Switch Modal removed - always redirect to auth */}
