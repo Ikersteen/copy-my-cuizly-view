@@ -903,7 +903,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 accept="image/*"
                 onChange={handleImageUpload}
                 className="hidden"
-                capture="environment"
               />
               
               {/* Dropdown menu for image upload options */}
