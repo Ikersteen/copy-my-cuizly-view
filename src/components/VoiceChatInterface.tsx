@@ -53,6 +53,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -625,8 +626,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     setShouldStopTyping(false); // Reset the stop signal
   };
 
-  const handleTextSubmit = (e: React.FormEvent) => {
+  const handleTextSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // If there's a selected image, process it with the text message
+    if (selectedImage) {
+      await processImageWithMessage(selectedImage, textInput.trim());
+      setSelectedImage(null);
+      setTextInput('');
+      return;
+    }
+    
+    // Otherwise, process text normally
     if (textInput.trim() && !isProcessing) {
       processTextInput(textInput);
       setTextInput('');
@@ -647,23 +658,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Handle image upload
+  // Handle image upload - just store the image, don't send yet
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleImageUpload called');
     const file = e.target.files?.[0];
-    console.log('File selected:', file);
-    if (!file) {
-      console.log('No file selected');
-      return;
-    }
+    if (!file) return;
 
     // Reset input to allow selecting the same file again
     e.target.value = '';
 
     // Check if file is an image
-    console.log('File type:', file.type, 'File size:', file.size);
     if (!file.type.startsWith('image/')) {
-      console.log('Invalid file type');
       toast({
         title: t('errors.title'),
         description: t('errors.invalidFileType') || 'Veuillez sélectionner une image',
@@ -671,105 +675,86 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       });
       return;
     }
-    
-    console.log('Starting image processing...');
-
-    setIsProcessing(true);
 
     try {
-      // Convert image to base64
       const reader = new FileReader();
-      
+      reader.onload = (event) => {
+        const imageBase64 = event.target?.result as string;
+        setSelectedImage(imageBase64);
+      };
       reader.onerror = () => {
         toast({
           title: t('errors.title'),
           description: t('errors.fileReadError') || 'Erreur lors de la lecture du fichier',
           variant: "destructive",
         });
-        setIsProcessing(false);
       };
-      
-      reader.onload = async (event) => {
-        try {
-          console.log('FileReader onload triggered');
-          const imageBase64 = event.target?.result as string;
-          console.log('Image base64 length:', imageBase64?.length);
-          
-          // Add user message with image
-          const userMessageId = Date.now().toString();
-          const userMessage: Message = {
-            id: userMessageId,
-            type: 'user',
-            content: t('voiceChat.analyzingImage') || '📸 Analyse de l\'image...',
-            timestamp: new Date(),
-            isAudio: false,
-            imageUrl: imageBase64
-          };
-          
-          console.log('Adding user message with image');
-          setMessages(prev => [...prev, userMessage]);
-          setIsThinking(true);
-          console.log('Calling analyze-food-image function...');
-
-          try {
-            // Call edge function to analyze the image
-            const response = await supabase.functions.invoke('analyze-food-image', {
-              body: { 
-                imageBase64,
-                language: i18n.language === 'en' ? 'en' : 'fr'
-              }
-            });
-
-            if (response.error) throw new Error(response.error.message);
-
-            const analysis = response.data?.analysis;
-            if (!analysis) throw new Error('No analysis received');
-
-            setIsThinking(false);
-            
-            // Add AI response
-            const aiMessageId = (Date.now() + 1).toString();
-            setMessages(prev => [...prev, {
-              id: aiMessageId,
-              type: 'assistant',
-              content: analysis,
-              timestamp: new Date(),
-              isTyping: true
-            }]);
-
-          } catch (error) {
-            console.error('Error analyzing image:', error);
-            setIsThinking(false);
-            toast({
-              title: t('errors.title'),
-              description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
-              variant: "destructive",
-            });
-            // Remove user message on error
-            setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
-          } finally {
-            setIsProcessing(false);
-          }
-        } catch (error) {
-          console.error('Error in reader.onload:', error);
-          setIsProcessing(false);
-          toast({
-            title: t('errors.title'),
-            description: t('errors.fileReadError') || 'Erreur lors de la lecture du fichier',
-            variant: "destructive",
-          });
-        }
-      };
-      
       reader.readAsDataURL(file);
     } catch (error) {
       console.error('Error reading file:', error);
-      setIsProcessing(false);
       toast({
         title: t('errors.title'),
         description: t('errors.fileReadError') || 'Erreur lors de la lecture du fichier',
         variant: "destructive",
       });
+    }
+  };
+
+  // Process image with optional text message
+  const processImageWithMessage = async (imageBase64: string, message: string) => {
+    setIsProcessing(true);
+    
+    const userMessageId = Date.now().toString();
+    const userMessage: Message = {
+      id: userMessageId,
+      type: 'user',
+      content: message || (t('voiceChat.analyzingImage') || '📸 Analyse de l\'image...'),
+      timestamp: new Date(),
+      isAudio: false,
+      imageUrl: imageBase64
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    setIsThinking(true);
+
+    try {
+      // Call edge function to analyze the image
+      const response = await supabase.functions.invoke('analyze-food-image', {
+        body: { 
+          imageBase64,
+          userMessage: message,
+          language: i18n.language === 'en' ? 'en' : 'fr'
+        }
+      });
+
+      if (response.error) throw new Error(response.error.message);
+
+      const analysis = response.data?.analysis;
+      if (!analysis) throw new Error('No analysis received');
+
+      setIsThinking(false);
+      
+      // Add AI response
+      const aiMessageId = (Date.now() + 1).toString();
+      setMessages(prev => [...prev, {
+        id: aiMessageId,
+        type: 'assistant',
+        content: analysis,
+        timestamp: new Date(),
+        isTyping: true
+      }]);
+
+    } catch (error) {
+      console.error('Error analyzing image:', error);
+      setIsThinking(false);
+      toast({
+        title: t('errors.title'),
+        description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
+        variant: "destructive",
+      });
+      setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -901,6 +886,26 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
         <div className="flex-shrink-0 border-t border-border bg-background px-6 py-6">
           <form onSubmit={handleTextSubmit} className="space-y-4">
+            {/* Image preview */}
+            {selectedImage && (
+              <div className="relative inline-block">
+                <img 
+                  src={selectedImage} 
+                  alt="Preview" 
+                  className="max-h-32 rounded-lg border border-border"
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                  onClick={() => setSelectedImage(null)}
+                >
+                  ×
+                </Button>
+              </div>
+            )}
+            
             <div className="flex gap-3">
               {/* Hidden file inputs */}
               <input
@@ -963,7 +968,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               <Button
                 type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
                 onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
-                disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim()}
+                disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim() && !selectedImage}
                 className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
               >
                 {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
