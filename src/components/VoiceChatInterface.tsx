@@ -649,8 +649,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   // Handle image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handleImageUpload called');
     const file = e.target.files?.[0];
-    if (!file) return;
+    console.log('File selected:', file);
+    if (!file) {
+      console.log('No file selected');
+      return;
+    }
 
     // Reset input to allow selecting the same file again
     e.target.value = '';
@@ -918,11 +923,17 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-56">
-                  <DropdownMenuItem onClick={() => cameraInputRef.current?.click()}>
+                  <DropdownMenuItem onClick={() => {
+                    console.log('Camera option clicked');
+                    cameraInputRef.current?.click();
+                  }}>
                     <Camera className="mr-2 h-4 w-4" />
                     <span>{t('voiceChat.takePhoto') || 'Prendre une photo'}</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => fileInputRef.current?.click()}>
+                  <DropdownMenuItem onClick={() => {
+                    console.log('Gallery option clicked');
+                    fileInputRef.current?.click();
+                  }}>
                     <ImageIcon className="mr-2 h-4 w-4" />
                     <span>{t('voiceChat.choosePhoto') || 'Choisir une photo'}</span>
                   </DropdownMenuItem>
