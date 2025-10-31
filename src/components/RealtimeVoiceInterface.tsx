@@ -292,27 +292,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
             key={message.id}
             className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div className={`flex items-start gap-4 max-w-[85%] ${
-              message.type === 'user' ? 'flex-row-reverse' : 'flex-row'
-            }`}>
-                <Avatar className="w-10 h-10 flex-shrink-0 mt-1">
-                  {message.type === 'assistant' ? (
-                    <>
-                      <AvatarImage src="/cuizly-chef-icon.png" alt="Cuizly Assistant" />
-                      <AvatarFallback className="bg-background dark:bg-primary/20 text-foreground border border-border dark:border-primary/30">
-                        <Sparkles className="h-5 w-5" />
-                      </AvatarFallback>
-                    </>
-                  ) : (
-                    <>
-                      <AvatarImage src={userProfile?.avatar_url} />
-                      <AvatarFallback className="bg-primary text-primary-foreground">
-                        <UserIcon className="h-5 w-5" />
-                      </AvatarFallback>
-                    </>
-                  )}
-                </Avatar>
-              
+            <div className={`max-w-[85%]`}>
               <div className={`rounded-3xl px-6 py-4 ${
                 message.type === 'user' 
                   ? 'bg-primary text-primary-foreground' 
