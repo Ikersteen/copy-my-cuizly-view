@@ -31,7 +31,7 @@ const HeroSection = () => {
         <img 
           src={heroRestaurantImage} 
           alt="Cuizly restaurant management"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center md:object-center"
         />
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
