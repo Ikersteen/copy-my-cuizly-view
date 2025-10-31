@@ -39,8 +39,8 @@ const HowItWorksSection = () => {
               {/* Mobile: nouvelles images FR/EN */}
               <img 
                 src={i18n.language === 'en' 
-                  ? "/lovable-uploads/cuizly-assistant-interface-mobile-en.jpeg"
-                  : "/lovable-uploads/cuizly-assistant-interface-mobile-fr.jpeg"
+                  ? "/lovable-uploads/cuizly-assistant-interface-en.jpeg"
+                  : "/lovable-uploads/cuizly-assistant-interface-fr.jpeg"
                 }
                 alt="Interface Cuizly Assistant" 
                 className="md:hidden w-full h-auto object-cover rounded-xl scale-[1.02]"
@@ -48,8 +48,8 @@ const HowItWorksSection = () => {
               {/* Tablet & Desktop: images FR/EN */}
               <img 
                 src={i18n.language === 'en'
-                  ? "/lovable-uploads/cuizly-assistant-homepage-desktop-en.png"
-                  : "/lovable-uploads/cuizly-assistant-homepage-desktop-fr.png"
+                  ? "/lovable-uploads/cuizly-assistance-interface-en.png"
+                  : "/lovable-uploads/cuizly-assistance-interface-new.png"
                 }
                 alt="Interface Cuizly Assistant" 
                 className="hidden md:block w-full h-auto object-cover rounded-xl sm:scale-105"
