@@ -34,6 +34,8 @@ interface UserPreferences {
   postal_code?: string;
   favorite_meal_times?: string[];
   allergens?: string[];
+  latitude?: number;
+  longitude?: number;
 }
 
 interface AIScore {
@@ -180,8 +182,20 @@ serve(async (req) => {
       })
     );
 
-    // Trier par score IA
-    const sortedRestaurants = aiScoredRestaurants.sort((a, b) => b.ai_score - a.ai_score);
+    // 🎯 ÉTAPE 3: TRIER PAR POPULARITÉ (profile_views) ET SCORE IA
+    const sortedRestaurants = aiScoredRestaurants.sort((a, b) => {
+      // Priorité 1: Nombre de vues (popularité)
+      const viewsA = a.profile_views || 0;
+      const viewsB = b.profile_views || 0;
+      
+      // Si différence significative de vues (>50%), prioriser la popularité
+      if (Math.abs(viewsA - viewsB) > Math.max(viewsA, viewsB) * 0.5) {
+        return viewsB - viewsA;
+      }
+      
+      // Sinon, trier par score IA
+      return b.ai_score - a.ai_score;
+    });
 
     // Log pour analytics
     if (userId) {

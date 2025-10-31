@@ -1322,6 +1322,8 @@
     "deliveryAddress": "Your address",
     "addressSelected": "Selected address",
     "deliveryRadius": "Delivery radius",
+    "deliveryDistance": "Search distance",
+    "deliveryDistanceDesc": "Adjust the maximum distance to search for restaurants (5-25 km)",
     "mealTimes": "Favorite meal times",
     "mealTimesDesc": "When do you usually order?",
     "notifications": "Notification preferences",

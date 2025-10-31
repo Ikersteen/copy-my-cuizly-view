@@ -1641,6 +1641,8 @@
     "deliveryAddress": "Votre adresse",
     "addressSelected": "Adresse sélectionnée",
     "deliveryRadius": "Rayon de livraison",
+    "deliveryDistance": "Distance de recherche",
+    "deliveryDistanceDesc": "Ajustez la distance maximale pour chercher des restaurants (5-25 km)",
     "mealTimes": "Moments de repas favoris",
     "mealTimesDesc": "Quand commandez-vous habituellement ?",
     "notifications": "Préférences de notification",

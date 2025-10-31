@@ -6,6 +6,7 @@ import { Sparkles, Star, MapPin, ChefHat, Filter, Heart, ArrowRight, Loader2, Ca
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useAddresses } from "@/hooks/useAddresses";
 import LoadingSpinner from "./LoadingSpinner";
 import { RestaurantFiltersModal, RestaurantFilterOptions } from "./RestaurantFiltersModal";
 import { useTranslation } from 'react-i18next';
@@ -36,6 +37,7 @@ export const RecommendationCardsSection = () => {
   const { currentLanguage } = useLanguage();
   const navigate = useNavigate();
   const { preferences } = useUserPreferences();
+  const { primaryAddress: deliveryAddress } = useAddresses('user_delivery');
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const [recommendedRestaurants, setRecommendedRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
@@ -245,7 +247,12 @@ export const RecommendationCardsSection = () => {
           const { data: aiResult, error: aiError } = await supabase.functions.invoke('ai-recommendations', {
             body: {
               restaurants: filteredRestaurants, // No more slice limit - analyze ALL matching restaurants
-              preferences: preferences,
+              preferences: {
+                ...preferences,
+                full_address: deliveryAddress?.formatted_address || preferences?.full_address,
+                latitude: deliveryAddress?.latitude,
+                longitude: deliveryAddress?.longitude
+              },
               userId: (await supabase.auth.getUser()).data.user?.id,
               language: i18n.language === 'en' ? 'en' : 'fr'
             }

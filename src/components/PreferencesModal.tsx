@@ -83,12 +83,13 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         dietary_restrictions: preferences.dietary_restrictions || [],
         allergens: preferences.allergens || [],
         price_range: preferences.price_range || "",
-        delivery_radius: preferences.delivery_radius || 1,
+        delivery_radius: preferences.delivery_radius || 5,
         favorite_meal_times: preferences.favorite_meal_times || [],
-        notification_preferences: preferences.notification_preferences || { push: false, email: false }
+        notification_preferences: preferences.notification_preferences || { push: false, email: false },
+        full_address: deliveryAddress?.formatted_address || ""
       });
     }
-  }, [open, preferences]);
+  }, [open, preferences, deliveryAddress]);
 
   const handleSave = async () => {
     try {
@@ -280,7 +281,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
           {/* Delivery address */}
           <div>
             <AddressSelector
-              value={deliveryAddress?.formatted_address || ""}
+              value={(localPrefs as any).full_address || deliveryAddress?.formatted_address || ""}
               onChange={(address) => {
                 setLocalPrefs(prev => ({
                   ...prev,
@@ -290,11 +291,38 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
               label={t('preferences.deliveryAddress')}
               placeholder={t('preferences.enterAddress')}
             />
-            {deliveryAddress?.formatted_address && (
+            {((localPrefs as any).full_address || deliveryAddress?.formatted_address) && (
               <p className="text-xs text-muted-foreground mt-2">
-                📍 {t('preferences.selectedAddress')}: {deliveryAddress.formatted_address}
+                📍 {t('preferences.selectedAddress')}: {(localPrefs as any).full_address || deliveryAddress.formatted_address}
               </p>
             )}
+          </div>
+
+          <Separator />
+
+          {/* Distance radius slider */}
+          <div>
+            <Label className="text-base font-medium">{t('preferences.deliveryDistance')}</Label>
+            <p className="text-sm text-muted-foreground mb-3">
+              {t('preferences.deliveryDistanceDesc')}
+            </p>
+            <div className="space-y-4">
+              <Slider
+                value={[localPrefs.delivery_radius || 5]}
+                onValueChange={([value]) => setLocalPrefs(prev => ({ ...prev, delivery_radius: value }))}
+                min={5}
+                max={25}
+                step={1}
+                className="w-full"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>5 km</span>
+                <span className="font-semibold text-primary">
+                  {localPrefs.delivery_radius || 5} km
+                </span>
+                <span>25 km</span>
+              </div>
+            </div>
           </div>
 
           <Separator />
