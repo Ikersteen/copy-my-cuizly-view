@@ -689,13 +689,23 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
+              {/* Desktop images */}
               <img 
                 src={i18n.language === 'fr' 
                   ? "/lovable-uploads/cuizly-assistance-interface-new.png" 
                   : "/lovable-uploads/cuizly-assistant-interface-en.png"
                 }
                 alt="Cuizly Assistant Vocal"
-                className="w-full max-w-2xl h-auto"
+                className="hidden md:block w-full max-w-2xl h-auto"
+              />
+              {/* Mobile images */}
+              <img 
+                src={i18n.language === 'fr' 
+                  ? "/lovable-uploads/cuizly-assistant-interface-mobile-fr.jpeg" 
+                  : "/lovable-uploads/cuizly-assistant-interface-mobile-en.jpeg"
+                }
+                alt="Cuizly Assistant Vocal"
+                className="md:hidden w-full max-w-md h-auto"
               />
               <div className="space-y-3 max-w-lg">
                 <p className="text-base text-muted-foreground leading-relaxed">
