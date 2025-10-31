@@ -713,7 +713,8 @@ export const RecommendationCardsSection = () => {
           {recommendedRestaurants.map((restaurant) => (
             <Card 
               key={restaurant.id}
-              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80 min-h-96 flex flex-col"
+              className="group cursor-pointer border-0 shadow-md bg-gradient-to-br from-card to-card/80 flex flex-col"
+              style={{ display: 'grid', gridTemplateRows: 'auto 1fr' }}
             >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
@@ -795,8 +796,8 @@ export const RecommendationCardsSection = () => {
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-0 flex flex-col h-full">
-                <div className="flex-1">
+              <CardContent className="flex flex-col justify-between" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div>
                 <div className="grid grid-cols-3 gap-2 mb-4">
                   {restaurant.cuisine_type?.sort((a, b) => {
                     const indexA = CUISINE_OPTIONS.indexOf(a);
@@ -821,12 +822,11 @@ export const RecommendationCardsSection = () => {
                   })}
                 </div>
 
-                <div className="mt-5 mb-6">
                 {(() => {
                   const reasons = restaurant.reasons || [];
                   
                   return reasons.length > 0 && (
-                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-3 border border-primary/20 min-h-[140px]">
+                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-3 border border-primary/20 h-[140px] flex flex-col">
                        <div className="flex items-center gap-2 mb-3">
                          <div className="flex items-center gap-1.5">
                            <Sparkles className="h-4 w-4 text-primary" />
@@ -883,10 +883,9 @@ export const RecommendationCardsSection = () => {
                           })}
                        </div>
                     </div>
-                  );
-                  })()}
-                  </div>
-                  </div>
+                   );
+                   })()}
+                </div>
 
                   <div className="flex gap-2">
                     {restaurant.reservations_enabled && (
