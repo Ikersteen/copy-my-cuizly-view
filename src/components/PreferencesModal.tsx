@@ -111,11 +111,14 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         await deleteDeliveryAddress();
       }
       
-    onOpenChange(false);
-    toast({
-      title: t('toasts.preferencesUpdated'),
-      description: t('toasts.preferencesSavedSuccessfully')
-    });
+      toast({
+        title: t('toasts.preferencesUpdated'),
+        description: t('toasts.preferencesSavedSuccessfully')
+      });
+      
+      // Close modal and refresh the page to load updated preferences
+      onOpenChange(false);
+      window.location.reload();
     } catch (error) {
       console.error('Error saving preferences:', error);
       toast({
