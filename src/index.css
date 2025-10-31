@@ -81,7 +81,8 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-white text-foreground;
+    @apply text-foreground;
+    background: transparent;
   }
 
   /* Allow copy-paste everywhere */

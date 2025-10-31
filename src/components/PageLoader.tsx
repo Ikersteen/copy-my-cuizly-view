@@ -23,7 +23,7 @@ const PageLoader = ({ isLoading, children, minLoadTime = 500 }: PageLoaderProps)
 
   if (isLoading || !showContent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner size="xl" />
       </div>
     );

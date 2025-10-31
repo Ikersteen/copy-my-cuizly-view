@@ -25,9 +25,9 @@ const HeroSection = () => {
   };
   
   return (
-    <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-white">
+    <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
       {/* Background Image */}
-      <div className="absolute inset-0 bg-white">
+      <div className="absolute inset-0">
         <img 
           src={heroRestaurantImage} 
           alt="Cuizly restaurant management"
