@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ import ThinkingIndicator from '@/components/ThinkingIndicator';
 import TypewriterRichText from '@/components/TypewriterRichText';
 import RichTextRenderer from '@/components/RichTextRenderer';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
+import { useConversations } from '@/hooks/useConversations';
 
 interface Message {
   id: string;
@@ -43,6 +44,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [textInput, setTextInput] = useState('');
   const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -50,6 +53,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const voiceDetectionRef = useRef<any>(null);
   const realtimeClientRef = useRef<RealtimeVoiceClient | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  
+  const { createConversation, saveMessage, loadConversations } = useConversations();
 
   useEffect(() => {
     const initUser = async () => {
@@ -62,36 +68,50 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           .eq('user_id', session.user.id)
           .single();
         setUserProfile(profile);
+        
+        // Créer une nouvelle conversation pour cet utilisateur
+        const conversationId = await createConversation('text', 'Cuizly Assistant Chat');
+        if (conversationId) {
+          setCurrentConversationId(conversationId);
+        }
       }
     };
     initUser();
   }, []);
 
-  // Auto-scroll when messages change or content updates
+  // Détection du scroll pour afficher/cacher l'indicateur
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    const container = messagesContainerRef.current;
+    if (!container) return;
 
-  // Auto-scroll during typing animation - only if user is near bottom
-  useEffect(() => {
-    const scrollToBottomIfNearBottom = () => {
-      const container = messagesEndRef.current?.parentElement;
-      if (!container) return;
-      
+    const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container;
-      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100; // 100px threshold
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 150;
       
-      // Only auto-scroll if user is near the bottom
-      if (isNearBottom) {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }
+      // Afficher l'indicateur seulement si:
+      // 1. L'utilisateur n'est pas près du bas
+      // 2. ET il y a un message en cours de génération (thinking, typing ou speaking)
+      const hasActiveGeneration = isThinking || messages.some(msg => msg.isTyping) || isSpeaking;
+      setShowScrollIndicator(!isNearBottom && hasActiveGeneration);
     };
 
-    // Check if there's a typing message and scroll periodically only if near bottom
-    const hasTypingMessage = messages.some(msg => msg.isTyping);
-    if (hasTypingMessage) {
-      const interval = setInterval(scrollToBottomIfNearBottom, 100);
-      return () => clearInterval(interval);
+    container.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial state
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [messages, isThinking, isSpeaking]);
+
+  // Scroll vers le bas seulement si l'utilisateur est déjà proche du bas
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    const isNearBottom = scrollHeight - scrollTop - clientHeight < 150;
+    
+    // Auto-scroll uniquement si l'utilisateur est près du bas
+    if (isNearBottom) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
@@ -358,6 +378,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           ? { ...msg, content: transcription, isProcessing: false }
           : msg
       ));
+      
+      // Sauvegarder le message utilisateur vocal dans la base de données
+      if (userId && currentConversationId) {
+        await saveMessage(currentConversationId, 'user', transcription, 'audio');
+      }
 
       // Show thinking indicator
       setIsThinking(true);
@@ -386,6 +411,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         timestamp: new Date(),
         isTyping: true
       }]);
+      
+      // Sauvegarder la réponse de l'assistant dans la base de données
+      if (userId && currentConversationId) {
+        await saveMessage(currentConversationId, 'assistant', aiResponse, 'text');
+      }
 
       const ttsResponse = await supabase.functions.invoke('cuizly-voice-elevenlabs', {
         body: { text: aiResponse }
@@ -418,13 +448,20 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     setAbortController(controller);
     
     const userMessageId = Date.now().toString();
-    setMessages(prev => [...prev, {
+    const userMessage = {
       id: userMessageId,
-      type: 'user',
+      type: 'user' as const,
       content: text,
       timestamp: new Date(),
       isAudio: false
-    }]);
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    
+    // Sauvegarder le message utilisateur dans la base de données
+    if (userId && currentConversationId) {
+      await saveMessage(currentConversationId, 'user', text, 'text');
+    }
 
     try {
       // If realtime client is connected, send via realtime
@@ -459,13 +496,20 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       // Hide thinking indicator and show response with typing effect
       setIsThinking(false);
       const aiMessageId = (Date.now() + 1).toString();
-      setMessages(prev => [...prev, {
+      const assistantMessage = {
         id: aiMessageId,
-        type: 'assistant',
+        type: 'assistant' as const,
         content: aiResponse,
         timestamp: new Date(),
         isTyping: true
-      }]);
+      };
+      
+      setMessages(prev => [...prev, assistantMessage]);
+      
+      // Sauvegarder la réponse de l'assistant dans la base de données
+      if (userId && currentConversationId) {
+        await saveMessage(currentConversationId, 'assistant', aiResponse, 'text');
+      }
 
     } catch (error) {
       if (controller.signal.aborted) {
@@ -601,10 +645,17 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   // Check if any message is currently typing
   const hasTypingMessage = messages.some(msg => msg.isTyping);
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="h-full bg-background flex flex-col">
-      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full min-h-0">
-        <div className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 space-y-6">
+      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full min-h-0 relative">
+        <div 
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 space-y-6"
+        >
           
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
@@ -725,6 +776,21 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           
           <div ref={messagesEndRef} />
         </div>
+        
+        {/* Indicateur de scroll pour descendre */}
+        {showScrollIndicator && (
+          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10">
+            <Button
+              onClick={scrollToBottom}
+              variant="secondary"
+              size="sm"
+              className="rounded-full shadow-lg border border-border bg-background hover:bg-muted"
+            >
+              <ArrowDown className="w-4 h-4 mr-2 animate-bounce" />
+              {t('voiceChat.newResponse') || 'Nouvelle réponse'}
+            </Button>
+          </div>
+        )}
 
         <div className="flex-shrink-0 border-t border-border bg-background px-6 py-6">
           <form onSubmit={handleTextSubmit} className="space-y-4">

@@ -1227,7 +1227,7 @@
     "processing": "🧠 Processing...",
     "processingAudio": "Processing audio...",
     "voiceMessage": "Voice message",
-    "assistantSpeaking": "🗣️ Assistant responding...",
+    "assistantSpeaking": "🗣️ Assistant speaking...",
     "stopSpeech": "Stop",
     "listeningTitle": "Listening...",
     "listeningDescription": "Speak now, click to stop",
@@ -1245,8 +1245,9 @@
         "description": "Unable to play voice response"
       }
     },
-    "disclaimer": "Cuizly can sometimes make mistakes, remember to verify important information.",
-    "inputPlaceholder": "Ask Cuizly a question"
+    "disclaimer": "Cuizly can sometimes make mistakes, please verify important information.",
+    "inputPlaceholder": "Ask Cuizly a question",
+    "newResponse": "New response"
   },
   "restaurantFilters": {
     "title": "Filter your offers and menus",

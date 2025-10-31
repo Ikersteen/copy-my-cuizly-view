@@ -1202,7 +1202,8 @@
       }
     },
     "disclaimer": "Cuizly peut parfois se tromper, pensez à vérifier les infos importantes.",
-    "inputPlaceholder": "Posez une question à Cuizly"
+    "inputPlaceholder": "Posez une question à Cuizly",
+    "newResponse": "Nouvelle réponse"
   },
   "cta": {
     "title": "Prêt à révolutionner votre expérience culinaire ?",
