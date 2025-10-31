@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover-foreground: 0 0% 9%;
 
     --primary: 0 0% 9%;
-    --primary-foreground: 225 100% 96%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 9%;
@@ -44,10 +44,10 @@ All colors MUST be HSL.
     --cuizly-surface: 0 0% 98%;
     --cuizly-accent: 0 0% 20%;
     --cuizly-pro: 197 71% 52%;
-    --cuizly-pro-foreground: 225 100% 96%;
+    --cuizly-pro-foreground: 0 0% 100%;
     --cuizly-assistant: 214 100% 59%; /* Bleu spécifique du logo Cuizly Assistant */
     --cuizly-analytics: 142 71% 45%;
-    --cuizly-analytics-foreground: 225 100% 96%;
+    --cuizly-analytics-foreground: 0 0% 100%;
     --cuizly-allergen: 0 100% 60%;
 
     /* Minimal gradients */
@@ -109,15 +109,15 @@ All colors MUST be HSL.
     --cuizly-surface: 217.2 32.6% 25%;
     --cuizly-accent: 210 40% 80%;
     --cuizly-pro: 197 71% 52%;
-    --cuizly-pro-foreground: 225 100% 96%;
+    --cuizly-pro-foreground: 0 0% 100%;
     --cuizly-analytics: 142 71% 45%;
-    --cuizly-analytics-foreground: 225 100% 96%;
+    --cuizly-analytics-foreground: 0 0% 100%;
     --cuizly-allergen: 0 100% 60%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 225 100% 96%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
