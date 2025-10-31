@@ -38,7 +38,7 @@ const AppContent = () => {
   const { t, i18n } = useTranslation();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-black">
       <ScrollToTop />
       <Routes>
         <Route path="/" element={

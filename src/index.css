@@ -82,7 +82,7 @@ All colors MUST be HSL.
 
   body {
     @apply text-foreground;
-    background: transparent;
+    background: #000000;
   }
 
   /* Allow copy-paste everywhere */
