@@ -56,7 +56,7 @@ const HeroSection = () => {
 
         {/* CTA */}
         <div className="animate-fade-in flex justify-center items-center">
-          <Link to="/auth?type=restaurant&tab=signup" className="w-full sm:w-auto">
+          <Link to="/auth?type=consumer&tab=signup" className="w-full sm:w-auto">
             <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 px-10 sm:px-8 py-5 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-white/25 min-h-[60px] w-full sm:w-auto touch-device">
               {t('hero.createAccount')}
             </Button>
