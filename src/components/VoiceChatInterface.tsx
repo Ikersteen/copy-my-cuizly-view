@@ -652,6 +652,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Reset input to allow selecting the same file again
+    e.target.value = '';
+
     // Check if file is an image
     if (!file.type.startsWith('image/')) {
       toast({
@@ -667,61 +670,81 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     try {
       // Convert image to base64
       const reader = new FileReader();
+      
+      reader.onerror = () => {
+        toast({
+          title: t('errors.title'),
+          description: t('errors.fileReadError') || 'Erreur lors de la lecture du fichier',
+          variant: "destructive",
+        });
+        setIsProcessing(false);
+      };
+      
       reader.onload = async (event) => {
-        const imageBase64 = event.target?.result as string;
-        
-        // Add user message with image
-        const userMessageId = Date.now().toString();
-        const userMessage: Message = {
-          id: userMessageId,
-          type: 'user',
-          content: t('voiceChat.analyzingImage') || '📸 Analyse de l\'image...',
-          timestamp: new Date(),
-          isAudio: false,
-          imageUrl: imageBase64
-        };
-        
-        setMessages(prev => [...prev, userMessage]);
-        setIsThinking(true);
-
         try {
-          // Call edge function to analyze the image
-          const response = await supabase.functions.invoke('analyze-food-image', {
-            body: { 
-              imageBase64,
-              language: i18n.language === 'en' ? 'en' : 'fr'
-            }
-          });
-
-          if (response.error) throw new Error(response.error.message);
-
-          const analysis = response.data?.analysis;
-          if (!analysis) throw new Error('No analysis received');
-
-          setIsThinking(false);
+          const imageBase64 = event.target?.result as string;
           
-          // Add AI response
-          const aiMessageId = (Date.now() + 1).toString();
-          setMessages(prev => [...prev, {
-            id: aiMessageId,
-            type: 'assistant',
-            content: analysis,
+          // Add user message with image
+          const userMessageId = Date.now().toString();
+          const userMessage: Message = {
+            id: userMessageId,
+            type: 'user',
+            content: t('voiceChat.analyzingImage') || '📸 Analyse de l\'image...',
             timestamp: new Date(),
-            isTyping: true
-          }]);
+            isAudio: false,
+            imageUrl: imageBase64
+          };
+          
+          setMessages(prev => [...prev, userMessage]);
+          setIsThinking(true);
 
+          try {
+            // Call edge function to analyze the image
+            const response = await supabase.functions.invoke('analyze-food-image', {
+              body: { 
+                imageBase64,
+                language: i18n.language === 'en' ? 'en' : 'fr'
+              }
+            });
+
+            if (response.error) throw new Error(response.error.message);
+
+            const analysis = response.data?.analysis;
+            if (!analysis) throw new Error('No analysis received');
+
+            setIsThinking(false);
+            
+            // Add AI response
+            const aiMessageId = (Date.now() + 1).toString();
+            setMessages(prev => [...prev, {
+              id: aiMessageId,
+              type: 'assistant',
+              content: analysis,
+              timestamp: new Date(),
+              isTyping: true
+            }]);
+
+          } catch (error) {
+            console.error('Error analyzing image:', error);
+            setIsThinking(false);
+            toast({
+              title: t('errors.title'),
+              description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
+              variant: "destructive",
+            });
+            // Remove user message on error
+            setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
+          } finally {
+            setIsProcessing(false);
+          }
         } catch (error) {
-          console.error('Error analyzing image:', error);
-          setIsThinking(false);
+          console.error('Error in reader.onload:', error);
+          setIsProcessing(false);
           toast({
             title: t('errors.title'),
-            description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
+            description: t('errors.fileReadError') || 'Erreur lors de la lecture du fichier',
             variant: "destructive",
           });
-          // Remove user message on error
-          setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
-        } finally {
-          setIsProcessing(false);
         }
       };
       
@@ -734,11 +757,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         description: t('errors.fileReadError') || 'Erreur lors de la lecture du fichier',
         variant: "destructive",
       });
-    }
-
-    // Reset file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
     }
   };
 
