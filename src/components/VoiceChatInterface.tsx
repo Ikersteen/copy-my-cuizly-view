@@ -661,7 +661,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     e.target.value = '';
 
     // Check if file is an image
+    console.log('File type:', file.type, 'File size:', file.size);
     if (!file.type.startsWith('image/')) {
+      console.log('Invalid file type');
       toast({
         title: t('errors.title'),
         description: t('errors.invalidFileType') || 'Veuillez sélectionner une image',
@@ -669,6 +671,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       });
       return;
     }
+    
+    console.log('Starting image processing...');
 
     setIsProcessing(true);
 
@@ -687,7 +691,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       
       reader.onload = async (event) => {
         try {
+          console.log('FileReader onload triggered');
           const imageBase64 = event.target?.result as string;
+          console.log('Image base64 length:', imageBase64?.length);
           
           // Add user message with image
           const userMessageId = Date.now().toString();
@@ -700,8 +706,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             imageUrl: imageBase64
           };
           
+          console.log('Adding user message with image');
           setMessages(prev => [...prev, userMessage]);
           setIsThinking(true);
+          console.log('Calling analyze-food-image function...');
 
           try {
             // Call edge function to analyze the image
@@ -908,6 +916,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 accept="image/*"
                 onChange={handleImageUpload}
                 className="hidden"
+                capture="user"
               />
               
               {/* Dropdown menu for image upload options */}
