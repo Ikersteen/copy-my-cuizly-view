@@ -631,9 +631,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     
     // If there's a selected image, process it with the text message
     if (selectedImage) {
-      await processImageWithMessage(selectedImage, textInput.trim());
+      const imageToProcess = selectedImage;
+      const messageToSend = textInput.trim();
+      
+      // Clear immediately
       setSelectedImage(null);
       setTextInput('');
+      
+      // Then process
+      await processImageWithMessage(imageToProcess, messageToSend);
       return;
     }
     
@@ -658,6 +664,39 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Compress and resize image
+  const compressImage = (base64: string, maxWidth = 1024, maxHeight = 1024, quality = 0.8): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // Calculate new dimensions while maintaining aspect ratio
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = base64;
+    });
+  };
+
   // Handle image upload - just store the image, don't send yet
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -678,9 +717,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
     try {
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         const imageBase64 = event.target?.result as string;
-        setSelectedImage(imageBase64);
+        // Compress image before storing
+        const compressedImage = await compressImage(imageBase64);
+        setSelectedImage(compressedImage);
       };
       reader.onerror = () => {
         toast({
