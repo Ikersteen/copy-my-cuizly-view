@@ -192,8 +192,18 @@ const Header = () => {
 
               {/* Auth Actions Desktop & Mobile - Public */}
               <div className="flex items-center gap-2 flex-shrink-0">
-                {/* Desktop: Language + Login */}
+                {/* Desktop: Cuizly Assistant + Language + Login */}
                 <div className="hidden lg:flex items-center gap-2">
+                  <Link to={cuizlyAssistantRoute}>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="flex items-center gap-2 hover:bg-primary/10"
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      <span>Cuizly Assistant</span>
+                    </Button>
+                  </Link>
                   <LanguageSwitcher />
                   <Link to={authRoute}>
                     <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
