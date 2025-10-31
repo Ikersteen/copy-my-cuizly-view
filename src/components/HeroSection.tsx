@@ -25,7 +25,7 @@ const HeroSection = () => {
   };
   
   return (
-    <section className="relative overflow-hidden pt-2 pb-6 sm:py-16 lg:py-12">
+    <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
