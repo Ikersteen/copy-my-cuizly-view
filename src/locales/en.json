@@ -1252,8 +1252,8 @@
     "inputPlaceholder": "Ask Cuizly a question",
     "newResponse": "New response",
     "analyzingImage": "📸 Analyzing image...",
-    "takePhoto": "Take a photo",
-    "choosePhoto": "Choose a photo"
+    "takePhoto": "Camera",
+    "choosePhoto": "Attach"
   },
   "restaurantFilters": {
     "title": "Filter your offers and menus",

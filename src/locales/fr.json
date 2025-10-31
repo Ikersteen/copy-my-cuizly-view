@@ -1208,8 +1208,8 @@
     "inputPlaceholder": "Posez une question à Cuizly",
     "newResponse": "Nouvelle réponse",
     "analyzingImage": "📸 Analyse de l'image en cours...",
-    "takePhoto": "Prendre une photo",
-    "choosePhoto": "Choisir une photo"
+    "takePhoto": "Caméra",
+    "choosePhoto": "Galerie"
   },
   "cta": {
     "title": "Prêt à révolutionner votre expérience culinaire ?",
