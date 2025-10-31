@@ -23,11 +23,15 @@ export const PublicNavigationMenu = () => {
   const cookiesRoute = useLocalizedRoute('/cookies');
 
   return (
-    <NavigationMenu>
+    <NavigationMenu skipDelayDuration={0}>
       <NavigationMenuList>
         {/* Produit */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-cuizly-neutral hover:text-foreground">
+          <NavigationMenuTrigger 
+            className="text-sm font-medium text-cuizly-neutral hover:text-foreground"
+            onPointerEnter={(e) => e.preventDefault()}
+            onPointerMove={(e) => e.preventDefault()}
+          >
             {t('navigation.product')}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -44,7 +48,11 @@ export const PublicNavigationMenu = () => {
 
         {/* Support */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-cuizly-neutral hover:text-foreground">
+          <NavigationMenuTrigger 
+            className="text-sm font-medium text-cuizly-neutral hover:text-foreground"
+            onPointerEnter={(e) => e.preventDefault()}
+            onPointerMove={(e) => e.preventDefault()}
+          >
             {t('navigation.support')}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -58,7 +66,11 @@ export const PublicNavigationMenu = () => {
 
         {/* Entreprise */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-cuizly-neutral hover:text-foreground">
+          <NavigationMenuTrigger 
+            className="text-sm font-medium text-cuizly-neutral hover:text-foreground"
+            onPointerEnter={(e) => e.preventDefault()}
+            onPointerMove={(e) => e.preventDefault()}
+          >
             {t('navigation.company')}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -75,7 +87,11 @@ export const PublicNavigationMenu = () => {
 
         {/* Légal */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-cuizly-neutral hover:text-foreground">
+          <NavigationMenuTrigger 
+            className="text-sm font-medium text-cuizly-neutral hover:text-foreground"
+            onPointerEnter={(e) => e.preventDefault()}
+            onPointerMove={(e) => e.preventDefault()}
+          >
             {t('navigation.legalMenu')}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
