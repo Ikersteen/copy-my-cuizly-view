@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";  
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { User } from "@supabase/supabase-js";
@@ -43,6 +43,7 @@ const Header = () => {
   // Get localized routes
   const authRoute = useLocalizedRoute('/auth');
   const dashboardRoute = useLocalizedRoute('/dashboard');
+  const cuizlyAssistantRoute = useLocalizedRoute('/cuizlyassistant');
   const featuresRoute = useLocalizedRoute('/features');
   const pricingRoute = useLocalizedRoute('/pricing');
   const contactRoute = useLocalizedRoute('/contact');
@@ -163,6 +164,18 @@ const Header = () => {
               {isConsumer && <AuthenticatedConsumerHeader />}
               {isRestaurant && <AuthenticatedRestaurantHeader />}
               
+              {/* Cuizly Assistant Button - Always visible */}
+              <Link to={cuizlyAssistantRoute}>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="hidden md:flex items-center gap-2 hover:bg-primary/10"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  <span>Cuizly Assistant</span>
+                </Button>
+              </Link>
+              
               {/* Language Switcher & Menu */}
               <div className="flex items-center gap-2 ml-2">
                 <LanguageSwitcher />
@@ -191,8 +204,18 @@ const Header = () => {
 
               {/* Auth Actions Desktop & Mobile - Public */}
               <div className="flex items-center gap-2 flex-shrink-0">
-                {/* Desktop: Language + Login */}
+                {/* Desktop: Cuizly Assistant + Language + Login */}
                 <div className="hidden lg:flex items-center gap-2">
+                  <Link to={cuizlyAssistantRoute}>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="flex items-center gap-2 hover:bg-primary/10"
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      <span>Cuizly Assistant</span>
+                    </Button>
+                  </Link>
                   <LanguageSwitcher />
                   <Link to={authRoute}>
                     <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
