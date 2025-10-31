@@ -826,7 +826,7 @@ export const RecommendationCardsSection = () => {
                   const reasons = restaurant.reasons || [];
                   
                   return reasons.length > 0 && (
-                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-3 border border-primary/20">
+                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-3 border border-primary/20 min-h-[140px]">
                        <div className="flex items-center gap-2 mb-3">
                          <div className="flex items-center gap-1.5">
                            <Sparkles className="h-4 w-4 text-primary" />
