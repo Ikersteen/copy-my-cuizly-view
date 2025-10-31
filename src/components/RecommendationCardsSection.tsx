@@ -679,7 +679,7 @@ export const RecommendationCardsSection = () => {
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => window.location.reload()}
+                    onClick={generateRecommendations}
                     disabled={loading}
                     className="flex items-center gap-2"
                   >

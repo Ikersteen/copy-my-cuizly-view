@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, Music2, User as UserIcon, Camera, Sparkles } from "lucide-react";
+import { Plus, Edit3, MapPin, LogOut, Instagram, Facebook, Music2, User as UserIcon, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAddresses } from "@/hooks/useAddresses";
 
@@ -58,7 +58,6 @@ const RestaurantDashboard = () => {
   // Get localized routes
   const homeRoute = useLocalizedRoute('/');
   const authRoute = useLocalizedRoute('/auth');
-  const cuizlyAssistantRoute = useLocalizedRoute('/cuizlyassistant');
 
   useEffect(() => {
     loadData();
@@ -440,15 +439,6 @@ const RestaurantDashboard = () => {
 
       {/* Modals */}
       {/* Modals removed - functionality moved to Header component */}
-
-      {/* Floating Cuizly Assistant Button */}
-      <Button
-        onClick={() => navigate(cuizlyAssistantRoute)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-        aria-label={t('accessibility.voiceAssistant')}
-      >
-        <Sparkles className="w-6 h-6" />
-      </Button>
 
     </div>
   );

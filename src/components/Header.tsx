@@ -164,6 +164,18 @@ const Header = () => {
               {isConsumer && <AuthenticatedConsumerHeader />}
               {isRestaurant && <AuthenticatedRestaurantHeader />}
               
+              {/* Cuizly Assistant Button - Always visible */}
+              <Link to={cuizlyAssistantRoute}>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="hidden md:flex items-center gap-2 hover:bg-primary/10"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  <span>Cuizly Assistant</span>
+                </Button>
+              </Link>
+              
               {/* Language Switcher & Menu */}
               <div className="flex items-center gap-2 ml-2">
                 <LanguageSwitcher />
@@ -192,8 +204,18 @@ const Header = () => {
 
               {/* Auth Actions Desktop & Mobile - Public */}
               <div className="flex items-center gap-2 flex-shrink-0">
-                {/* Desktop: Language + Login */}
+                {/* Desktop: Cuizly Assistant + Language + Login */}
                 <div className="hidden lg:flex items-center gap-2">
+                  <Link to={cuizlyAssistantRoute}>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="flex items-center gap-2 hover:bg-primary/10"
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      <span>Cuizly Assistant</span>
+                    </Button>
+                  </Link>
                   <LanguageSwitcher />
                   <Link to={authRoute}>
                     <Button size="sm" className="bg-foreground hover:bg-foreground/90 text-background">
@@ -318,8 +340,18 @@ const Header = () => {
                         </AccordionItem>
                       </Accordion>
 
-                      {/* Login Button */}
+                      {/* Cuizly Assistant Button */}
                       <div className="mt-4 px-4">
+                        <Link to={cuizlyAssistantRoute} onClick={() => setIsSheetOpen(false)}>
+                          <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                            <Sparkles className="h-4 w-4" />
+                            <span>Cuizly Assistant</span>
+                          </Button>
+                        </Link>
+                      </div>
+
+                      {/* Login Button */}
+                      <div className="mt-2 px-4">
                         <Link to={authRoute} onClick={() => setIsSheetOpen(false)}>
                           <Button className="w-full bg-foreground hover:bg-foreground/90 text-background">
                             {t('navigation.login')}
