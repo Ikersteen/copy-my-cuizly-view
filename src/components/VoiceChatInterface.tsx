@@ -187,10 +187,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         }
         break;
       case 'response.audio_transcript.done':
-        // Mark transcript as complete
+        // Mark transcript as complete and save to database
         setMessages(prev => {
           const lastMessage = prev[prev.length - 1];
           if (lastMessage && lastMessage.type === 'assistant' && lastMessage.isTyping) {
+            // Save assistant message to database
+            if (currentConversationId && lastMessage.content) {
+              saveMessage(currentConversationId, 'assistant', lastMessage.content, 'audio');
+            }
             return [
               ...prev.slice(0, -1),
               {
@@ -282,6 +286,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setIsConversationActive(true);
       setIsRecording(true);
       console.log('Starting realtime conversation...');
+      
+      // Create conversation if needed
+      let conversationId = currentConversationId;
+      if (!conversationId && userId) {
+        conversationId = await createConversation('voice');
+        if (conversationId) {
+          setCurrentConversationId(conversationId);
+        }
+      }
       
       // Initialize realtime voice client
       realtimeClientRef.current = new RealtimeVoiceClient(handleRealtimeMessage);
@@ -456,6 +469,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     const controller = new AbortController();
     setAbortController(controller);
     
+    // Create conversation if needed
+    let conversationId = currentConversationId;
+    if (!conversationId && userId) {
+      conversationId = await createConversation('voice');
+      if (conversationId) {
+        setCurrentConversationId(conversationId);
+      }
+    }
+    
     const userMessageId = Date.now().toString();
     const userMessage = {
       id: userMessageId,
@@ -466,6 +488,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     };
     
     setMessages(prev => [...prev, userMessage]);
+    
+    // Save user message to database
+    if (conversationId) {
+      await saveMessage(conversationId, 'user', text, 'text');
+    }
 
     try {
       // If realtime client is connected, send via realtime
@@ -509,6 +536,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       };
       
       setMessages(prev => [...prev, assistantMessage]);
+      
+      // Save assistant message to database
+      if (conversationId) {
+        await saveMessage(conversationId, 'assistant', aiResponse, 'text');
+      }
 
     } catch (error) {
       if (controller.signal.aborted) {
@@ -942,7 +974,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           </div>
         )}
 
-        <div className="flex-shrink-0 border-t border-border bg-background px-6 py-6">
+        <div className="flex-shrink-0 bg-background px-6 py-6">
           <form onSubmit={handleTextSubmit} className="space-y-4">
             {/* Image preview */}
             {selectedImage && (
