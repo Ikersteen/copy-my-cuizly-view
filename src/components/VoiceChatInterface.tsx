@@ -829,13 +829,27 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             >
               <div className={`max-w-[85%]`}>
                 {message.imageUrl ? (
-                  // If message has image, show only the image without frame
-                  <div className="rounded-2xl overflow-hidden">
-                    <img 
-                      src={message.imageUrl} 
-                      alt="Uploaded food" 
-                      className="w-full h-auto"
-                    />
+                  // If message has image, show image and optional text below
+                  <div className="space-y-2">
+                    <div className="rounded-2xl overflow-hidden">
+                      <img 
+                        src={message.imageUrl} 
+                        alt="Uploaded food" 
+                        className="w-full h-auto"
+                      />
+                    </div>
+                    {message.content && (
+                      <div className={`rounded-3xl px-6 py-4 ${
+                        message.type === 'user' 
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'bg-muted text-foreground'
+                      }`}>
+                        <RichTextRenderer 
+                          content={message.content} 
+                          className="text-base leading-relaxed"
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : (
                   // Otherwise show normal message bubble
