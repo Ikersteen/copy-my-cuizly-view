@@ -340,8 +340,18 @@ const Header = () => {
                         </AccordionItem>
                       </Accordion>
 
-                      {/* Login Button */}
+                      {/* Cuizly Assistant Button */}
                       <div className="mt-4 px-4">
+                        <Link to={cuizlyAssistantRoute} onClick={() => setIsSheetOpen(false)}>
+                          <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                            <Sparkles className="h-4 w-4" />
+                            <span>Cuizly Assistant</span>
+                          </Button>
+                        </Link>
+                      </div>
+
+                      {/* Login Button */}
+                      <div className="mt-2 px-4">
                         <Link to={authRoute} onClick={() => setIsSheetOpen(false)}>
                           <Button className="w-full bg-foreground hover:bg-foreground/90 text-background">
                             {t('navigation.login')}
