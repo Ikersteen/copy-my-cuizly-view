@@ -75,7 +75,8 @@ export const secureLogout = async (): Promise<void> => {
     }
   } catch (error) {
     console.error('Error during logout:', error);
-    // Error will be handled by calling component
+    // Force reload to clear state
+    window.location.reload();
   }
 };
 

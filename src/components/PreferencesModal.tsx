@@ -116,8 +116,9 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         description: t('toasts.preferencesSavedSuccessfully')
       });
       
-      // Close modal
+      // Close modal and refresh the page to load updated preferences
       onOpenChange(false);
+      window.location.reload();
     } catch (error) {
       console.error('Error saving preferences:', error);
       toast({

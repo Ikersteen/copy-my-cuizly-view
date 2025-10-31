@@ -3,11 +3,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 const PricingSection = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   
   const plans = [
     {
@@ -74,7 +72,7 @@ const PricingSection = () => {
               
                 <Button 
                   className="w-full bg-cuizly-accent hover:bg-cuizly-accent/90 text-white"
-                  onClick={() => navigate('/auth')}
+                  onClick={() => window.location.href = '/auth'}
                 >
                   {plans[0].cta}
                 </Button>
@@ -114,7 +112,7 @@ const PricingSection = () => {
                 
                 <Button 
                   className="w-full bg-cuizly-primary hover:bg-cuizly-primary/90 text-white"
-                  onClick={() => navigate(plan.type === 'pro' ? '/auth?type=restaurant&tab=signup' : '/waitlist')}
+                  onClick={() => window.location.href = plan.type === 'pro' ? '/auth?type=restaurant&tab=signup' : '/waitlist'}
                 >
                   {plan.cta}
                 </Button>
