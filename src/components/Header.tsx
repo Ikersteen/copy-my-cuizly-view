@@ -196,9 +196,9 @@ const Header = () => {
                 <div className="hidden lg:flex items-center gap-2">
                   <Link to={cuizlyAssistantRoute}>
                     <Button 
-                      variant="ghost" 
+                      variant="outline" 
                       size="sm"
-                      className="flex items-center gap-2 hover:bg-primary/10"
+                      className="flex items-center gap-2 bg-white hover:bg-gray-50 text-foreground border-border"
                     >
                       <Sparkles className="h-4 w-4" />
                       <span>Cuizly Assistant</span>
@@ -331,7 +331,7 @@ const Header = () => {
                       {/* Cuizly Assistant Button */}
                       <div className="mt-4 px-4">
                         <Link to={cuizlyAssistantRoute} onClick={() => setIsSheetOpen(false)}>
-                          <Button className="w-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20">
+                          <Button className="w-full bg-white hover:bg-gray-50 text-foreground border border-border">
                             <Sparkles className="h-4 w-4 mr-2" />
                             Cuizly Assistant
                           </Button>
