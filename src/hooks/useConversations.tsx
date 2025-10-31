@@ -122,6 +122,12 @@ export const useConversations = () => {
 
       if (error) throw error;
       
+      // Mettre à jour le timestamp de la conversation
+      await supabase
+        .from('conversations')
+        .update({ updated_at: new Date().toISOString() })
+        .eq('id', conversationId);
+      
       // Recharger la conversation courante si c'est celle-ci
       if (currentConversation?.id === conversationId) {
         await loadConversationMessages(conversationId);

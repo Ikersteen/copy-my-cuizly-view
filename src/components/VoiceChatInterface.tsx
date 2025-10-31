@@ -55,7 +55,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const realtimeClientRef = useRef<RealtimeVoiceClient | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   
-  const { createConversation, saveMessage, loadConversations } = useConversations();
+  const { createConversation, saveMessage, loadConversations, loadConversationMessages } = useConversations();
 
   useEffect(() => {
     const initUser = async () => {
@@ -69,10 +69,40 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           .single();
         setUserProfile(profile);
         
-        // Créer une nouvelle conversation pour cet utilisateur
-        const conversationId = await createConversation('text', 'Cuizly Assistant Chat');
-        if (conversationId) {
-          setCurrentConversationId(conversationId);
+        // Charger la dernière conversation ou en créer une nouvelle
+        const { data: existingConversations, error } = await supabase
+          .from('conversations')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .order('updated_at', { ascending: false })
+          .limit(1);
+
+        if (!error && existingConversations && existingConversations.length > 0) {
+          // Charger la dernière conversation existante
+          const lastConversation = existingConversations[0];
+          setCurrentConversationId(lastConversation.id);
+          
+          // Charger les messages de cette conversation
+          const conversation = await loadConversationMessages(lastConversation.id);
+          if (conversation?.messages) {
+            // Convertir les messages de la DB au format de l'interface
+            const loadedMessages: Message[] = conversation.messages.map(msg => ({
+              id: msg.id,
+              type: msg.role === 'system' ? 'system' : msg.role,
+              content: msg.content,
+              timestamp: new Date(msg.created_at),
+              isAudio: msg.message_type === 'audio',
+              isProcessing: false,
+              isTyping: false
+            }));
+            setMessages(loadedMessages);
+          }
+        } else {
+          // Créer une nouvelle conversation si aucune n'existe
+          const conversationId = await createConversation('text', 'Cuizly Assistant Chat');
+          if (conversationId) {
+            setCurrentConversationId(conversationId);
+          }
         }
       }
     };
