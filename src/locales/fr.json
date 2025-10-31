@@ -1207,7 +1207,9 @@
     "disclaimer": "Cuizly peut parfois se tromper, pensez à vérifier les infos importantes.",
     "inputPlaceholder": "Posez une question à Cuizly",
     "newResponse": "Nouvelle réponse",
-    "analyzingImage": "📸 Analyse de l'image en cours..."
+    "analyzingImage": "📸 Analyse de l'image en cours...",
+    "takePhoto": "Prendre une photo",
+    "choosePhoto": "Choisir une photo"
   },
   "cta": {
     "title": "Prêt à révolutionner votre expérience culinaire ?",

@@ -1251,7 +1251,9 @@
     "disclaimer": "Cuizly can sometimes make mistakes, please verify important information.",
     "inputPlaceholder": "Ask Cuizly a question",
     "newResponse": "New response",
-    "analyzingImage": "📸 Analyzing image..."
+    "analyzingImage": "📸 Analyzing image...",
+    "takePhoto": "Take a photo",
+    "choosePhoto": "Choose a photo"
   },
   "restaurantFilters": {
     "title": "Filter your offers and menus",
