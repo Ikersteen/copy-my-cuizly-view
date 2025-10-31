@@ -10,6 +10,9 @@ import { routeTranslations } from "@/lib/routeTranslations";
 import Header from "@/components/Header";
 import CookieBanner from "@/components/CookieBanner";
 import ScrollToTop from "@/components/ScrollToTop";
+import HeyLuizlyVoiceAssistant from "@/components/HeyLuizlyVoiceAssistant";
+import { useSecureAuth } from "@/hooks/useSecureAuth";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -36,10 +39,17 @@ const queryClient = new QueryClient();
 const AppContent = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
+  const { isAuthenticated } = useSecureAuth();
+  const { preferences } = useUserPreferences();
 
   return (
     <div className="min-h-screen bg-background">
       <ScrollToTop />
+      {isAuthenticated && (
+        <HeyLuizlyVoiceAssistant 
+          enabled={preferences?.voice_activation_enabled || false} 
+        />
+      )}
       <Routes>
         <Route path="/" element={
           <>

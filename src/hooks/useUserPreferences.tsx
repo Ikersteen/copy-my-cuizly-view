@@ -18,6 +18,7 @@ export interface UserPreferences {
     push: boolean;
     email: boolean;
   };
+  voice_activation_enabled?: boolean;
   // Legacy address fields - now handled by addresses table
   street?: string;
   full_address?: string;
@@ -35,7 +36,8 @@ const defaultPreferences: Omit<UserPreferences, 'user_id'> = {
   notification_preferences: {
     push: false,
     email: false
-  }
+  },
+  voice_activation_enabled: false
 };
 
 export const useUserPreferences = () => {
