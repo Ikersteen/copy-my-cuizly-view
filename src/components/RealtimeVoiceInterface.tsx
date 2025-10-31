@@ -60,31 +60,7 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
           .order('updated_at', { ascending: false })
           .limit(1);
 
-        if (!error && existingConversations && existingConversations.length > 0) {
-          // Charger la dernière conversation existante
-          const lastConversation = existingConversations[0];
-          setCurrentConversationId(lastConversation.id);
-          
-          // Charger les messages de cette conversation
-          const conversation = await loadConversationMessages(lastConversation.id);
-          if (conversation?.messages) {
-            // Convertir les messages de la DB au format de l'interface
-            const loadedMessages: Message[] = conversation.messages.map(msg => ({
-              id: msg.id,
-              type: msg.role === 'user' ? 'user' : 'assistant',
-              content: msg.content,
-              timestamp: new Date(msg.created_at),
-              isTyping: false
-            }));
-            setMessages(loadedMessages);
-          }
-        } else {
-          // Créer une nouvelle conversation vocale si aucune n'existe
-          const conversationId = await createConversation('voice', 'Cuizly Assistant Vocal');
-          if (conversationId) {
-            setCurrentConversationId(conversationId);
-          }
-        }
+        // Ne plus charger l'historique des conversations
       }
     };
     initUser();
@@ -143,11 +119,6 @@ const RealtimeVoiceInterface: React.FC<RealtimeVoiceInterfaceProps> = ({ onClose
               ? { ...msg, isTyping: false }
               : msg
           ));
-          
-          // Sauvegarder le message dans la DB si connecté et conversationId existe
-          if (userId && currentConversationId && currentMessage) {
-            saveMessage(currentConversationId, 'assistant', currentMessage, 'audio');
-          }
           
           setCurrentAssistantMessageId(null);
         }

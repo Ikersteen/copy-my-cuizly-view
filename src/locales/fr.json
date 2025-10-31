@@ -720,7 +720,10 @@
     "loadOffers": "Impossible de charger les offres",
     "networkError": "Erreur de connexion réseau",
     "serverError": "Erreur du serveur",
-    "validationError": "Erreur de validation"
+    "validationError": "Erreur de validation",
+    "invalidFileType": "Type de fichier invalide. Veuillez sélectionner une image.",
+    "imageAnalysisFailed": "Erreur lors de l'analyse de l'image. Veuillez réessayer.",
+    "fileReadError": "Erreur lors de la lecture du fichier. Veuillez réessayer."
   },
   "profile": {
     "title": "Profil",
@@ -1203,7 +1206,8 @@
     },
     "disclaimer": "Cuizly peut parfois se tromper, pensez à vérifier les infos importantes.",
     "inputPlaceholder": "Posez une question à Cuizly",
-    "newResponse": "Nouvelle réponse"
+    "newResponse": "Nouvelle réponse",
+    "analyzingImage": "📸 Analyse de l'image en cours..."
   },
   "cta": {
     "title": "Prêt à révolutionner votre expérience culinaire ?",

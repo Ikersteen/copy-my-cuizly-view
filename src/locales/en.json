@@ -724,7 +724,10 @@
     "checkInternetConnection": "Check your internet connection",
     "systemError": "System error",
     "unexpectedError": "An unexpected error occurred",
-    "general": "An error occurred. Please try again."
+    "general": "An error occurred. Please try again.",
+    "invalidFileType": "Invalid file type. Please select an image.",
+    "imageAnalysisFailed": "Error analyzing image. Please try again.",
+    "fileReadError": "Error reading file. Please try again."
   },
   "profile": {
     "title": "Profile",
@@ -1247,7 +1250,8 @@
     },
     "disclaimer": "Cuizly can sometimes make mistakes, please verify important information.",
     "inputPlaceholder": "Ask Cuizly a question",
-    "newResponse": "New response"
+    "newResponse": "New response",
+    "analyzingImage": "📸 Analyzing image..."
   },
   "restaurantFilters": {
     "title": "Filter your offers and menus",

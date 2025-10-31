@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +21,7 @@ interface Message {
   isAudio?: boolean;
   isProcessing?: boolean;
   isTyping?: boolean;
+  imageUrl?: string;
 }
 
 interface VoiceChatInterfaceProps {
@@ -46,6 +47,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -81,28 +83,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           // Charger la dernière conversation existante
           const lastConversation = existingConversations[0];
           setCurrentConversationId(lastConversation.id);
-          
-          // Charger les messages de cette conversation
-          const conversation = await loadConversationMessages(lastConversation.id);
-          if (conversation?.messages) {
-            // Convertir les messages de la DB au format de l'interface
-            const loadedMessages: Message[] = conversation.messages.map(msg => ({
-              id: msg.id,
-              type: msg.role === 'system' ? 'system' : msg.role,
-              content: msg.content,
-              timestamp: new Date(msg.created_at),
-              isAudio: msg.message_type === 'audio',
-              isProcessing: false,
-              isTyping: false
-            }));
-            setMessages(loadedMessages);
-          }
-        } else {
-          // Créer une nouvelle conversation si aucune n'existe
-          const conversationId = await createConversation('text', 'Cuizly Assistant Chat');
-          if (conversationId) {
-            setCurrentConversationId(conversationId);
-          }
+          // Ne plus charger l'historique des conversations
         }
       }
     };
@@ -408,11 +389,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           ? { ...msg, content: transcription, isProcessing: false }
           : msg
       ));
-      
-      // Sauvegarder le message utilisateur vocal dans la base de données
-      if (userId && currentConversationId) {
-        await saveMessage(currentConversationId, 'user', transcription, 'audio');
-      }
 
       // Show thinking indicator
       setIsThinking(true);
@@ -441,11 +417,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         timestamp: new Date(),
         isTyping: true
       }]);
-      
-      // Sauvegarder la réponse de l'assistant dans la base de données
-      if (userId && currentConversationId) {
-        await saveMessage(currentConversationId, 'assistant', aiResponse, 'text');
-      }
 
       const ttsResponse = await supabase.functions.invoke('cuizly-voice-elevenlabs', {
         body: { text: aiResponse }
@@ -487,11 +458,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     };
     
     setMessages(prev => [...prev, userMessage]);
-    
-    // Sauvegarder le message utilisateur dans la base de données
-    if (userId && currentConversationId) {
-      await saveMessage(currentConversationId, 'user', text, 'text');
-    }
 
     try {
       // If realtime client is connected, send via realtime
@@ -535,11 +501,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       };
       
       setMessages(prev => [...prev, assistantMessage]);
-      
-      // Sauvegarder la réponse de l'assistant dans la base de données
-      if (userId && currentConversationId) {
-        await saveMessage(currentConversationId, 'assistant', aiResponse, 'text');
-      }
 
     } catch (error) {
       if (controller.signal.aborted) {
@@ -679,6 +640,101 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Handle image upload
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check if file is an image
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: t('errors.title'),
+        description: t('errors.invalidFileType') || 'Veuillez sélectionner une image',
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      // Convert image to base64
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const imageBase64 = event.target?.result as string;
+        
+        // Add user message with image
+        const userMessageId = Date.now().toString();
+        const userMessage: Message = {
+          id: userMessageId,
+          type: 'user',
+          content: t('voiceChat.analyzingImage') || '📸 Analyse de l\'image...',
+          timestamp: new Date(),
+          isAudio: false,
+          imageUrl: imageBase64
+        };
+        
+        setMessages(prev => [...prev, userMessage]);
+        setIsThinking(true);
+
+        try {
+          // Call edge function to analyze the image
+          const response = await supabase.functions.invoke('analyze-food-image', {
+            body: { 
+              imageBase64,
+              language: i18n.language === 'en' ? 'en' : 'fr'
+            }
+          });
+
+          if (response.error) throw new Error(response.error.message);
+
+          const analysis = response.data?.analysis;
+          if (!analysis) throw new Error('No analysis received');
+
+          setIsThinking(false);
+          
+          // Add AI response
+          const aiMessageId = (Date.now() + 1).toString();
+          setMessages(prev => [...prev, {
+            id: aiMessageId,
+            type: 'assistant',
+            content: analysis,
+            timestamp: new Date(),
+            isTyping: true
+          }]);
+
+        } catch (error) {
+          console.error('Error analyzing image:', error);
+          setIsThinking(false);
+          toast({
+            title: t('errors.title'),
+            description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
+            variant: "destructive",
+          });
+          // Remove user message on error
+          setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
+        } finally {
+          setIsProcessing(false);
+        }
+      };
+      
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error reading file:', error);
+      setIsProcessing(false);
+      toast({
+        title: t('errors.title'),
+        description: t('errors.fileReadError') || 'Erreur lors de la lecture du fichier',
+        variant: "destructive",
+      });
+    }
+
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   return (
     <div className="h-full bg-background flex flex-col">
       <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full min-h-0 relative">
@@ -745,6 +801,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <ThinkingIndicator />
                     </div>
                   )}
+                  {message.imageUrl && (
+                    <div className="mt-3 rounded-xl overflow-hidden max-w-sm">
+                      <img 
+                        src={message.imageUrl} 
+                        alt="Uploaded food" 
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -799,6 +864,23 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         <div className="flex-shrink-0 border-t border-border bg-background px-6 py-6">
           <form onSubmit={handleTextSubmit} className="space-y-4">
             <div className="flex gap-3">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                capture="environment"
+              />
+              <Button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isProcessing}
+                variant="outline"
+                className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
+              >
+                <Plus className="w-5 h-5" />
+              </Button>
               <Input
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
@@ -815,7 +897,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
                 onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
                 disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim()}
-                className="rounded-full w-10 h-10 p-0 flex items-center justify-center"
+                className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
               >
                 {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
                   <Square className="w-3.5 h-3.5 fill-white dark:fill-black" />
