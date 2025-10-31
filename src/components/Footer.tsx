@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLocalizedRoute } from '@/lib/routeTranslations';
-import { Instagram, Linkedin } from 'lucide-react';
+import { Instagram, Linkedin, Mail } from 'lucide-react';
+import { Twitter } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ const Footer = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
       
       <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center justify-items-center">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center justify-items-center">
           <div className="flex flex-col items-center">
             <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.product')}</h3>
             <ul className="space-y-2 sm:space-y-3 flex flex-col items-center">
@@ -49,21 +50,6 @@ const Footer = () => {
                   className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
                 >
                   {t('footer.rates')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.support')}</h3>
-            <ul className="space-y-2 sm:space-y-3 flex flex-col items-center">
-              <li>
-                <Link 
-                  to={contactRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.contactUs')}
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
                 </Link>
               </li>
@@ -156,35 +142,50 @@ const Footer = () => {
                 href="https://www.instagram.com/cuizly"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative text-cuizly-neutral hover:text-cuizly-primary transition-all duration-300 hover:scale-110"
+                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
                 aria-label="Instagram"
               >
                 <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />
-                <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
               <div className="w-px h-4 bg-border/50"></div>
               <a 
                 href="https://linkedin.com/company/cuizly"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative text-cuizly-neutral hover:text-cuizly-primary transition-all duration-300 hover:scale-110"
+                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5 sm:w-6 sm:h-6" />
-                <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
               </a>
               <div className="w-px h-4 bg-border/50"></div>
               <a 
                 href="https://www.tiktok.com/@cuizly?_t=ZS-90bnsnMfoga&_r=1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative text-cuizly-neutral hover:text-cuizly-primary transition-all duration-300 hover:scale-110"
+                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
                 aria-label="TikTok"
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
                 </svg>
-                <div className="absolute inset-0 -m-2 bg-gradient-to-r from-cuizly-primary/5 to-cuizly-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100"></div>
+              </a>
+              <div className="w-px h-4 bg-border/50"></div>
+              <a 
+                href="https://x.com/cuizly"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                aria-label="X (Twitter)"
+              >
+                <Twitter className="w-5 h-5 sm:w-6 sm:h-6" />
+              </a>
+              <div className="w-px h-4 bg-border/50"></div>
+              <a 
+                href="mailto:support@cuizly.ca"
+                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                aria-label="Email"
+              >
+                <Mail className="w-5 h-5 sm:w-6 sm:h-6" />
               </a>
             </div>
           </div>
