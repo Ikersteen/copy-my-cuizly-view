@@ -665,7 +665,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   };
 
   // Compress and resize image
-  const compressImage = (base64: string, maxWidth = 1024, maxHeight = 1024, quality = 0.8): Promise<string> => {
+  const compressImage = (base64: string, maxWidth = 512, maxHeight = 512, quality = 0.6): Promise<string> => {
     return new Promise((resolve) => {
       const img = new Image();
       img.onload = () => {
