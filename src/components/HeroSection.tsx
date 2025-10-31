@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { ProfileSwitchModal } from "@/components/ProfileSwitchModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import heroRestaurantImage from "@/assets/get-cuizly-restaurant.jpg";
 
@@ -12,7 +12,16 @@ const HeroSection = () => {
   const { t } = useTranslation();
   const { isAuthenticated, profile } = useUserProfile();
   const [showProfileSwitch, setShowProfileSwitch] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const navigate = useNavigate();
+
+  // Preload hero image
+  useEffect(() => {
+    const img = new Image();
+    img.src = heroRestaurantImage;
+    img.onload = () => setImageLoaded(true);
+    if (img.complete) setImageLoaded(true);
+  }, []);
 
   // Removed handleCTAClick - always redirect to auth
 
@@ -24,6 +33,10 @@ const HeroSection = () => {
     navigate('/auth');
   };
   
+  if (!imageLoaded) {
+    return null;
+  }
+
   return (
     <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
       {/* Background Image */}
@@ -31,7 +44,7 @@ const HeroSection = () => {
         <img 
           src={heroRestaurantImage} 
           alt="Cuizly restaurant management"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover animate-fade-in"
         />
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
