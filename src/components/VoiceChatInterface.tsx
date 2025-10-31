@@ -708,7 +708,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     const userMessage: Message = {
       id: userMessageId,
       type: 'user',
-      content: message || (t('voiceChat.analyzingImage') || '📸 Analyse de l\'image...'),
+      content: message || '',
       timestamp: new Date(),
       isAudio: false,
       imageUrl: imageBase64
@@ -787,53 +787,56 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div className={`max-w-[85%]`}>
-                <div className={`rounded-3xl px-6 py-4 ${
-                  message.type === 'user' 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'bg-muted text-foreground'
-                } ${message.isProcessing ? 'animate-pulse' : ''}`}>
-                  {message.isTyping && message.type === 'assistant' ? (
-                    <TypewriterRichText 
-                      text={message.content}
-                      speed={20}
-                      className="text-base leading-relaxed"
-                      shouldStop={shouldStopTyping}
-                      onComplete={() => {
-                        setMessages(prev => prev.map(msg => 
-                          msg.id === message.id 
-                            ? { ...msg, isTyping: false }
-                            : msg
-                        ));
-                      }}
-                      onStopped={(partialText) => handleTypewriterStop(partialText, message.id)}
+                {message.imageUrl ? (
+                  // If message has image, show only the image without frame
+                  <div className="rounded-2xl overflow-hidden">
+                    <img 
+                      src={message.imageUrl} 
+                      alt="Uploaded food" 
+                      className="w-full h-auto"
                     />
-                  ) : (
-                    <RichTextRenderer 
-                      content={message.content} 
-                      className="text-base leading-relaxed"
-                    />
-                  )}
-                  {message.isAudio && (
-                    <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
-                      <Volume2 className="w-3 h-3" />
-                      <span>{t('voiceChat.voiceMessage')}</span>
-                    </div>
-                  )}
-                  {message.isProcessing && (
-                    <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
-                      <ThinkingIndicator />
-                    </div>
-                  )}
-                  {message.imageUrl && (
-                    <div className="mt-3 rounded-xl overflow-hidden max-w-sm">
-                      <img 
-                        src={message.imageUrl} 
-                        alt="Uploaded food" 
-                        className="w-full h-auto"
+                  </div>
+                ) : (
+                  // Otherwise show normal message bubble
+                  <div className={`rounded-3xl px-6 py-4 ${
+                    message.type === 'user' 
+                      ? 'bg-primary text-primary-foreground' 
+                      : 'bg-muted text-foreground'
+                  } ${message.isProcessing ? 'animate-pulse' : ''}`}>
+                    {message.isTyping && message.type === 'assistant' ? (
+                      <TypewriterRichText 
+                        text={message.content}
+                        speed={20}
+                        className="text-base leading-relaxed"
+                        shouldStop={shouldStopTyping}
+                        onComplete={() => {
+                          setMessages(prev => prev.map(msg => 
+                            msg.id === message.id 
+                              ? { ...msg, isTyping: false }
+                              : msg
+                          ));
+                        }}
+                        onStopped={(partialText) => handleTypewriterStop(partialText, message.id)}
                       />
-                    </div>
-                  )}
-                </div>
+                    ) : (
+                      <RichTextRenderer 
+                        content={message.content} 
+                        className="text-base leading-relaxed"
+                      />
+                    )}
+                    {message.isAudio && (
+                      <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
+                        <Volume2 className="w-3 h-3" />
+                        <span>{t('voiceChat.voiceMessage')}</span>
+                      </div>
+                    )}
+                    {message.isProcessing && (
+                      <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
+                        <ThinkingIndicator />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}
