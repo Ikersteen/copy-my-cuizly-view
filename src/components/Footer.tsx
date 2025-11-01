@@ -53,7 +53,7 @@ const Footer = () => {
                   href="https://www.instagram.com/cuizly"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                  className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-4 h-4" />
@@ -62,7 +62,7 @@ const Footer = () => {
                   href="https://linkedin.com/company/cuizly"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                  className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-4 h-4" />
@@ -71,14 +71,14 @@ const Footer = () => {
                   href="https://x.com/cuizly"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                  className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   aria-label="X (Twitter)"
                 >
                   <Twitter className="w-4 h-4" />
                 </a>
                 <a 
                   href="mailto:support@cuizly.ca"
-                  className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                  className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   aria-label="Email"
                 >
                   <Mail className="w-4 h-4" />
@@ -89,7 +89,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={mentionsRoute}
-                    className="text-cuizly-neutral hover:text-foreground transition-colors"
+                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   >
                     {t('footer.legal')}
                   </Link>
@@ -98,7 +98,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={privacyRoute}
-                    className="text-cuizly-neutral hover:text-foreground transition-colors"
+                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   >
                     {t('footer.privacy')}
                   </Link>
@@ -107,7 +107,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={termsRoute}
-                    className="text-cuizly-neutral hover:text-foreground transition-colors"
+                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   >
                     {t('footer.terms')}
                   </Link>
