@@ -34,7 +34,7 @@ const Footer = () => {
               <img 
                 src="/cuizly-logo-colorful.png" 
                 alt="Cuizly" 
-                className="h-[200px] w-auto transition-all duration-300 group-hover:scale-110"
+                className="h-[280px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </a>
             
