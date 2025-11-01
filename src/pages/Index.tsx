@@ -1,26 +1,16 @@
-import HeroSection from "@/components/HeroSection";
-import HowItWorksSection from "@/components/HowItWorksSection";
-import FeaturesSectionLanding from "@/components/FeaturesSectionLanding";
-import PerformanceDashboardSection from "@/components/PerformanceDashboardSection";
-import PricingSectionLanding from "@/components/PricingSectionLanding";
-import CTASection from "@/components/CTASection";
-import Footer from "@/components/Footer";
-import { useTranslation } from "react-i18next";
-
 const Index = () => {
-  const { t } = useTranslation();
-
   return (
-    <>
-      <HeroSection />
-      
-      <FeaturesSectionLanding />
-      <PerformanceDashboardSection />
-      <HowItWorksSection />
-      <PricingSectionLanding />
-      <CTASection />
-      <Footer />
-    </>
+    <div className="min-h-screen w-full flex items-center justify-center bg-background">
+      <video 
+        autoPlay 
+        loop 
+        muted 
+        playsInline
+        className="max-w-full max-h-screen"
+      >
+        <source src="/cuizly-products-video.mp4" type="video/mp4" />
+      </video>
+    </div>
   );
 };
 
