@@ -27,12 +27,13 @@ const LanguageSwitcher = () => {
         <Button variant="ghost" size="sm" className="h-9 px-2 gap-1.5">
           <Globe className="h-5 w-5" />
           <span 
-            className="text-sm font-medium uppercase"
+            className="text-sm font-medium uppercase text-cuizly-primary"
             style={{
               background: 'linear-gradient(90deg, #42c2f4, #cb44e3, #f9566e, #ffbala)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
+              backgroundClip: 'text',
+              display: 'inline-block'
             }}
           >
             {currentLanguage}
@@ -49,11 +50,13 @@ const LanguageSwitcher = () => {
           >
             <span className="mr-2">{languageFlags[lang]}</span>
             <span
+              className="text-cuizly-primary"
               style={{
                 background: 'linear-gradient(90deg, #42c2f4, #cb44e3, #f9566e, #ffbala)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                backgroundClip: 'text',
+                display: 'inline-block'
               }}
             >
               {languageLabels[lang]}
