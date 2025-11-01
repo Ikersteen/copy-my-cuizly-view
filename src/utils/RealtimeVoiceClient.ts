@@ -131,13 +131,10 @@ export class RealtimeVoiceClient {
       this.dc.addEventListener("message", async (e) => {
         const event = JSON.parse(e.data);
         
-        // Seulement les événements essentiels pour éviter le spam de logs
-        const essentialEvents = ['session.created', 'error', 'conversation.item.created'];
-        if (essentialEvents.includes(event.type)) {
-          console.log("Voice client event:", event.type);
-        }
+        // Logger tous les événements pour le debug
+        console.log("Voice client event:", event.type);
         
-        // Intercepter les transcriptions pour ElevenLabs
+        // Intercepter les transcriptions audio pour ElevenLabs
         if (event.type === 'response.audio_transcript.done' && event.transcript) {
           console.log('🎤 Processing transcript with ElevenLabs:', event.transcript);
           await this.processWithElevenLabs(event.transcript);

@@ -30,8 +30,19 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "gpt-4o-realtime-preview-2024-12-17",
         voice: "echo",
-        modalities: ["text"], // Seulement texte, pas d'audio de sortie
-        instructions: "Tu es Cuizly Assistant, un assistant vocal culinaire chaleureux et naturel, spécialisé dans la cuisine québécoise et montréalaise. Tu parles français de façon fluide et conversationnelle, comme un ami passionné de cuisine. Évite les réponses robotiques - sois spontané, engageant et utilise un ton naturel. Donne des conseils concrets et personnalisés sur les restaurants de Montréal. Réponds de manière conversationnelle, pas comme un assistant formel. Tes réponses seront lues par une voix synthétique masculine, alors écris de façon naturelle pour l'oral. Quand tu es activé, réponds toujours brièvement pour confirmer ta présence, puis écoute l'utilisateur."
+        modalities: ["text", "audio"],
+        instructions: "Tu es Cuizly Assistant, un assistant vocal culinaire chaleureux et naturel, spécialisé dans la cuisine québécoise et montréalaise. Tu parles français de façon fluide et conversationnelle, comme un ami passionné de cuisine. Évite les réponses robotiques - sois spontané, engageant et utilise un ton naturel. Donne des conseils concrets et personnalisés sur les restaurants de Montréal. Réponds de manière conversationnelle, pas comme un assistant formel. Tes réponses seront lues par une voix synthétique masculine, alors écris de façon naturelle pour l'oral. Quand tu es activé, réponds toujours brièvement pour confirmer ta présence, puis écoute l'utilisateur.",
+        output_audio_format: "pcm16",
+        input_audio_format: "pcm16",
+        input_audio_transcription: {
+          model: "whisper-1"
+        },
+        turn_detection: {
+          type: "server_vad",
+          threshold: 0.5,
+          prefix_padding_ms: 300,
+          silence_duration_ms: 500
+        }
       }),
     });
 
