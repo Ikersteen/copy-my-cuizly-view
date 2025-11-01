@@ -218,6 +218,12 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
   };
 
   const handleRealtimeEvent = (event: any) => {
+    // Détecter si l'utilisateur veut terminer
+    if (event.type === 'user_wants_to_end') {
+      deactivateVoiceAssistant();
+      return;
+    }
+    
     // Réinitialiser le timeout pour tout événement de conversation active
     if (event.type === 'input_audio_buffer.speech_started' ||
         event.type === 'input_audio_buffer.speech_stopped' ||

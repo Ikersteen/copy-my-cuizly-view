@@ -130,9 +130,36 @@ export class RealtimeVoiceClient {
       this.dc.addEventListener("message", async (e) => {
         const event = JSON.parse(e.data);
         
-        // Logger les événements importants
+        // Détecter les appels de fonction
+        if (event.type === 'response.function_call_arguments.done') {
+          const functionName = event.name;
+          const args = JSON.parse(event.arguments);
+          
+          if (functionName === 'end_conversation') {
+            // L'utilisateur veut terminer - fermer immédiatement
+            this.onMessage({ type: 'user_wants_to_end' });
+            return;
+          } else if (functionName === 'search_restaurants') {
+            // Rechercher des restaurants
+            const result = await this.searchRestaurants(args.query, args.location);
+            
+            // Envoyer le résultat à OpenAI
+            if (this.dc?.readyState === 'open') {
+              this.dc.send(JSON.stringify({
+                type: 'conversation.item.create',
+                item: {
+                  type: 'function_call_output',
+                  call_id: event.call_id,
+                  output: JSON.stringify(result)
+                }
+              }));
+            }
+          }
+        }
+        
+        // Logger les événements audio importants
         if (event.type === 'response.audio.delta' || event.type === 'response.audio.done') {
-          console.log("Voice client event:", event.type);
+          // Audio events for status
         }
         
         // Transmettre tous les événements
@@ -211,8 +238,6 @@ export class RealtimeVoiceClient {
       throw new Error('Data channel not ready');
     }
 
-    console.log('Sending text message:', text);
-
     const event = {
       type: 'conversation.item.create',
       item: {
@@ -229,6 +254,33 @@ export class RealtimeVoiceClient {
 
     this.dc.send(JSON.stringify(event));
     this.dc.send(JSON.stringify({type: 'response.create'}));
+  }
+
+  // Rechercher des restaurants via Lovable AI
+  private async searchRestaurants(query: string, location?: string): Promise<any> {
+    try {
+      const searchQuery = location 
+        ? `${query} restaurants in ${location}, Canada with menu, reviews, and contact information`
+        : `${query} restaurants in Canada with menu, reviews, and contact information`;
+      
+      const { data, error } = await supabase.functions.invoke("ai-recommendations", {
+        body: { 
+          prompt: searchQuery,
+          type: "recommend"
+        }
+      });
+      
+      if (error) {
+        return { error: "Unable to search restaurants at the moment" };
+      }
+      
+      return { 
+        results: data?.recommendations || data?.text || "No restaurants found",
+        source: "Cuizly database"
+      };
+    } catch (error) {
+      return { error: "Search failed" };
+    }
   }
 
   // Nouvelle méthode pour traiter avec ElevenLabs

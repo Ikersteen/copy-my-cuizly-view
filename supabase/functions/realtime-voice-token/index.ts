@@ -22,12 +22,11 @@ serve(async (req) => {
     const { language } = await req.json().catch(() => ({ language: 'fr' }));
     
     // Une seule voix masculine française mature pour les deux langues
-    // "echo" a une tonalité plus mature et professionnelle
     const voice = 'echo';
     
     const instructions = language === 'en' 
-      ? "You are Cuizly Assistant, a warm and natural culinary voice assistant specializing in Quebec and Montreal cuisine. You speak English fluently and conversationally, like a passionate foodie friend. Avoid robotic responses - be spontaneous, engaging and use a natural tone. Give concrete and personalized advice on Montreal restaurants. Respond conversationally, not like a formal assistant. When activated, always respond briefly to confirm your presence, then listen to the user."
-      : "Tu es Cuizly Assistant, un assistant vocal culinaire chaleureux et naturel, spécialisé dans la cuisine québécoise et montréalaise. Tu parles français de façon fluide et conversationnelle, comme un ami passionné de cuisine. Évite les réponses robotiques - sois spontané, engageant et utilise un ton naturel. Donne des conseils concrets et personnalisés sur les restaurants de Montréal. Réponds de manière conversationnelle, pas comme un assistant formel. Quand tu es activé, réponds toujours brièvement pour confirmer ta présence, puis écoute l'utilisateur.";
+      ? "You are Cuizly Assistant, a warm and natural culinary voice assistant specializing in Quebec and Montreal cuisine. You have extensive knowledge about all restaurants in Canada. When users say goodbye phrases like 'bye', 'nothing bye', 'see you later', 'no nothing', etc., immediately end the conversation. Be spontaneous, engaging and conversational. When activated, respond briefly to confirm your presence, then listen to the user."
+      : "Tu es Cuizly Assistant, un assistant vocal culinaire chaleureux et naturel, spécialisé dans la cuisine québécoise et montréalaise. Tu connais tous les restaurants du Canada. Quand l'utilisateur dit des phrases d'adieu comme 'bye', 'non rien bye', 'à plus', 'non rien', etc., termine immédiatement la conversation en disant simplement 'Au revoir!' ou 'À bientôt!'. Sois spontané, engageant et conversationnel. Quand tu es activé, réponds brièvement pour confirmer ta présence, puis écoute l'utilisateur.";
 
     // Request an ephemeral token from OpenAI
     const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
@@ -51,7 +50,44 @@ serve(async (req) => {
           threshold: 0.5,
           prefix_padding_ms: 300,
           silence_duration_ms: 500
-        }
+        },
+        tools: [
+          {
+            type: "function",
+            name: "search_restaurants",
+            description: "Search for restaurants in Canada with detailed information about cuisine, location, menu, and reviews. Use this when user asks about specific restaurants or food recommendations.",
+            parameters: {
+              type: "object",
+              properties: {
+                query: {
+                  type: "string",
+                  description: "The search query (restaurant name, cuisine type, or location)"
+                },
+                location: {
+                  type: "string",
+                  description: "The city or region in Canada (e.g., Montreal, Toronto, Vancouver)"
+                }
+              },
+              required: ["query"]
+            }
+          },
+          {
+            type: "function",
+            name: "end_conversation",
+            description: "End the conversation when user says goodbye phrases like 'bye', 'non rien', 'à plus', 'see you later', etc.",
+            parameters: {
+              type: "object",
+              properties: {
+                farewell_message: {
+                  type: "string",
+                  description: "A brief farewell message"
+                }
+              },
+              required: ["farewell_message"]
+            }
+          }
+        ],
+        tool_choice: "auto"
       }),
     });
 
