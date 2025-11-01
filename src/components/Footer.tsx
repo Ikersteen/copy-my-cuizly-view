@@ -8,11 +8,9 @@ const Footer = () => {
   const { t } = useTranslation();
   
   // Get localized routes
-  const teamRoute = useLocalizedRoute('/team');
   const mentionsRoute = useLocalizedRoute('/mentions');
   const privacyRoute = useLocalizedRoute('/privacy');
   const termsRoute = useLocalizedRoute('/terms');
-  const cookiesRoute = useLocalizedRoute('/cookies');
   
   return (
     <footer className="relative bg-card overflow-hidden">
@@ -25,63 +23,35 @@ const Footer = () => {
       </div>
       
       <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12">
-      <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center justify-items-center">
-          <div className="flex flex-col items-center">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.company')}</h3>
-            <ul className="space-y-2 sm:space-y-3 flex flex-col items-center">
-              <li>
-                <Link 
-                  to={teamRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.team')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to={mentionsRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.legalNotices')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.legal')}</h3>
-            <ul className="space-y-2 sm:space-y-3 flex flex-col items-center">
-              <li>
-                <Link 
-                  to={privacyRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.privacyPolicy')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to={termsRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.termsOfUse')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to={cookiesRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.cookiePolicy')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-            </ul>
-          </div>
+      <div className="flex justify-end">
+          <ul className="flex items-center gap-3 text-xs">
+            <li>
+              <Link 
+                to={mentionsRoute}
+                className="text-cuizly-neutral hover:text-foreground transition-colors"
+              >
+                Legal
+              </Link>
+            </li>
+            <li className="text-cuizly-neutral/40">|</li>
+            <li>
+              <Link 
+                to={privacyRoute}
+                className="text-cuizly-neutral hover:text-foreground transition-colors"
+              >
+                Privacy
+              </Link>
+            </li>
+            <li className="text-cuizly-neutral/40">|</li>
+            <li>
+              <Link 
+                to={termsRoute}
+                className="text-cuizly-neutral hover:text-foreground transition-colors"
+              >
+                Terms
+              </Link>
+            </li>
+          </ul>
         </div>
         
         <div className="relative mt-8 sm:mt-12 pt-8 sm:pt-10">
