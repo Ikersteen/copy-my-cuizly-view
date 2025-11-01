@@ -8,10 +8,10 @@ interface VoiceActivationOrbProps {
 const VoiceActivationOrb: React.FC<VoiceActivationOrbProps> = ({ state, onClick }) => {
   const getOrbSize = () => {
     switch (state) {
-      case 'idle': return 'w-16 h-16';
-      case 'listening': return 'w-24 h-24';
-      case 'speaking': return 'w-20 h-20';
-      default: return 'w-16 h-16';
+      case 'idle': return 'w-12 h-12';
+      case 'listening': return 'w-16 h-16';
+      case 'speaking': return 'w-14 h-14';
+      default: return 'w-12 h-12';
     }
   };
 
@@ -25,7 +25,7 @@ const VoiceActivationOrb: React.FC<VoiceActivationOrbProps> = ({ state, onClick 
   };
 
   return (
-    <div className="fixed bottom-8 right-8 z-50">
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
       <div
         className={`${getOrbSize()} rounded-full cursor-pointer transition-all duration-300 ${getOrbAnimation()}`}
         style={{
@@ -37,8 +37,8 @@ const VoiceActivationOrb: React.FC<VoiceActivationOrbProps> = ({ state, onClick 
           backgroundSize: '400% 400%',
           animation: state !== 'idle' ? `gradient-flow 3s ease infinite, ${getOrbAnimation()} ${state === 'speaking' ? '0.6s' : '3s'} ease infinite` : `${getOrbAnimation()} 2s ease-in-out infinite`,
           boxShadow: state === 'idle' 
-            ? '0 10px 30px -10px hsl(var(--primary) / 0.5)'
-            : '0 20px 60px -10px rgba(0, 245, 255, 0.6)'
+            ? '0 8px 24px -8px hsl(var(--primary) / 0.5)'
+            : '0 12px 40px -8px rgba(0, 245, 255, 0.6)'
         }}
         onClick={onClick}
       >
@@ -47,7 +47,7 @@ const VoiceActivationOrb: React.FC<VoiceActivationOrbProps> = ({ state, onClick 
       
       {state !== 'idle' && (
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full pointer-events-none orb-glow"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full pointer-events-none orb-glow"
           style={{
             background: 'radial-gradient(circle, rgba(0,245,255,0.2) 0%, transparent 70%)',
           }}
