@@ -100,27 +100,33 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={mentionsRoute}
-                    className="text-cuizly-neutral transition-colors duration-300 hover:text-cuizly-primary"
+                    className="text-cuizly-neutral transition-all duration-300 group"
                   >
-                    {t('footer.legal')}
+                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
+                      {t('footer.legal')}
+                    </span>
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
                 <li>
                   <Link 
                     to={privacyRoute}
-                    className="text-cuizly-neutral transition-colors duration-300 hover:text-cuizly-primary"
+                    className="text-cuizly-neutral transition-all duration-300 group"
                   >
-                    {t('footer.privacy')}
+                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
+                      {t('footer.privacy')}
+                    </span>
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
                 <li>
                   <Link 
                     to={termsRoute}
-                    className="text-cuizly-neutral transition-colors duration-300 hover:text-cuizly-primary"
+                    className="text-cuizly-neutral transition-all duration-300 group"
                   >
-                    {t('footer.terms')}
+                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
+                      {t('footer.terms')}
+                    </span>
                   </Link>
                 </li>
               </ul>
