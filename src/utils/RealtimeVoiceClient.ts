@@ -6,11 +6,15 @@ export class AudioRecorder {
   private processor: ScriptProcessorNode | null = null;
   private source: MediaStreamAudioSourceNode | null = null;
 
-  constructor(private onAudioData: (audioData: Float32Array) => void) {}
+  constructor(
+    private onAudioData: (audioData: Float32Array) => void,
+    private existingStream?: MediaStream
+  ) {}
 
   async start() {
     try {
-      this.stream = await navigator.mediaDevices.getUserMedia({
+      // Utiliser le stream existant si disponible
+      this.stream = this.existingStream || await navigator.mediaDevices.getUserMedia({
         audio: {
           sampleRate: 24000,
           channelCount: 1,
@@ -56,10 +60,11 @@ export class AudioRecorder {
       this.processor.disconnect();
       this.processor = null;
     }
-    if (this.stream) {
+    // Ne pas arrêter le stream s'il était fourni de l'extérieur
+    if (this.stream && !this.existingStream) {
       this.stream.getTracks().forEach(track => track.stop());
-      this.stream = null;
     }
+    this.stream = null;
     if (this.audioContext) {
       this.audioContext.close();
       this.audioContext = null;
@@ -75,6 +80,7 @@ export class RealtimeVoiceClient {
   private isConnected = false;
   private audioQueue: HTMLAudioElement[] = [];
   private isPlayingAudio = false;
+  private mediaStream: MediaStream | null = null;
 
   constructor(private onMessage: (message: any) => void) {
     this.audioEl = document.createElement("audio");
@@ -83,6 +89,19 @@ export class RealtimeVoiceClient {
 
   async connect() {
     try {
+      // Demander la permission microphone UNE SEULE FOIS
+      if (!this.mediaStream) {
+        this.mediaStream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            sampleRate: 24000,
+            channelCount: 1,
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
+      }
+      
       // Get current language
       const currentLanguage = localStorage.getItem('i18nextLng') || 'fr';
       
@@ -113,17 +132,8 @@ export class RealtimeVoiceClient {
         this.audioEl.play().catch(() => {});
       };
 
-      // Add local audio track
-      const ms = await navigator.mediaDevices.getUserMedia({ 
-        audio: {
-          sampleRate: 24000,
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        }
-      });
-      this.pc.addTrack(ms.getTracks()[0]);
+      // Utiliser le stream déjà autorisé
+      this.pc.addTrack(this.mediaStream.getTracks()[0]);
 
       // Set up data channel for handling events
       this.dc = this.pc.createDataChannel("oai-events");
@@ -195,7 +205,7 @@ export class RealtimeVoiceClient {
       
       await this.pc.setRemoteDescription(answer);
 
-      // Start recording and encoding audio
+      // Start recording and encoding audio avec le stream existant
       this.recorder = new AudioRecorder((audioData) => {
         if (this.dc?.readyState === 'open') {
           this.dc.send(JSON.stringify({
@@ -203,7 +213,7 @@ export class RealtimeVoiceClient {
             audio: this.encodeAudioData(audioData)
           }));
         }
-      });
+      }, this.mediaStream);
       await this.recorder.start();
 
       this.isConnected = true;
@@ -371,6 +381,16 @@ export class RealtimeVoiceClient {
     this.pc = null;
     this.dc = null;
     this.recorder = null;
+    // Garder le mediaStream pour la prochaine connexion
+  }
+
+  // Méthode pour libérer complètement les ressources (appelée quand on désactive complètement l'assistant)
+  cleanup() {
+    this.disconnect();
+    if (this.mediaStream) {
+      this.mediaStream.getTracks().forEach(track => track.stop());
+      this.mediaStream = null;
+    }
   }
 
   getConnectionStatus(): boolean {
