@@ -86,6 +86,7 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
         delivery_radius: preferences.delivery_radius || 5,
         favorite_meal_times: preferences.favorite_meal_times || [],
         notification_preferences: preferences.notification_preferences || { push: false, email: false },
+        voice_activation_enabled: preferences.voice_activation_enabled || false,
         full_address: deliveryAddress?.formatted_address || ""
       });
     }
@@ -347,6 +348,31 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
                   </Badge>
                 );
               })}
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Voice Assistant */}
+          <div>
+            <Label className="text-base font-medium">{t('preferences.voiceAssistant')}</Label>
+            <div className="space-y-4 mt-3">
+              <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
+                <div>
+                  <Label htmlFor="voice-activation" className="font-medium">{t('preferences.heyCuizly')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('preferences.heyCuizlyDesc')}</p>
+                </div>
+                <Switch
+                  id="voice-activation"
+                  checked={localPrefs.voice_activation_enabled === true}
+                  onCheckedChange={(checked) =>
+                    setLocalPrefs(prev => ({
+                      ...prev,
+                      voice_activation_enabled: checked
+                    }))
+                  }
+                />
+              </div>
             </div>
           </div>
 
