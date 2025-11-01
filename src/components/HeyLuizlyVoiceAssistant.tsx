@@ -6,11 +6,14 @@ import { useTranslation } from 'react-i18next';
 
 interface HeyLuizlyVoiceAssistantProps {
   enabled: boolean;
+  onDisable?: () => void;
 }
 
-const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabled }) => {
+const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabled, onDisable }) => {
   const [state, setState] = useState<'idle' | 'listening' | 'speaking'>('idle');
   const [isActive, setIsActive] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
   const { t } = useTranslation();
   const realtimeClientRef = useRef<RealtimeVoiceClient | null>(null);
@@ -257,11 +260,68 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     }
   };
 
-  if (!enabled) {
+  const handleHideForOneHour = () => {
+    // Arrêter tous les services
+    stopAllServices();
+    
+    // Cacher la boule
+    setIsHidden(true);
+    
+    toast({
+      title: t('voiceAssistant.hidden'),
+      description: t('voiceAssistant.hiddenFor1Hour'),
+    });
+
+    // Réactiver après 1 heure
+    hideTimeoutRef.current = setTimeout(() => {
+      setIsHidden(false);
+      toast({
+        title: t('voiceAssistant.reactivated'),
+        description: t('voiceAssistant.assistantBack'),
+      });
+    }, 60 * 60 * 1000); // 1 heure
+  };
+
+  const handleDisable = () => {
+    // Arrêter tous les services
+    stopAllServices();
+    
+    // Annuler le timeout de cache s'il existe
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+    }
+
+    toast({
+      title: t('voiceAssistant.disabled'),
+      description: t('voiceAssistant.disabledMessage'),
+    });
+
+    // Appeler le callback parent pour désactiver dans les paramètres
+    onDisable?.();
+  };
+
+  // Nettoyer le timeout de cache au démontage
+  useEffect(() => {
+    return () => {
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  if (!enabled || isHidden) {
     return null;
   }
 
-  return <VoiceActivationOrb state={state} onClick={handleOrbClick} />;
+  return (
+    <VoiceActivationOrb 
+      state={state} 
+      onClick={handleOrbClick}
+      onHideForOneHour={handleHideForOneHour}
+      onDisable={handleDisable}
+    />
+  );
 };
 
 export default HeyLuizlyVoiceAssistant;

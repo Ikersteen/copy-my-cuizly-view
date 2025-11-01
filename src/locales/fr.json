@@ -1174,7 +1174,13 @@
     "transcriptionFailed": "Échec de la transcription",
     "noTranscription": "Aucune transcription reçue",
     "aiProcessingFailed": "Échec du traitement IA",
-    "noAiResponse": "Aucune réponse IA reçue"
+    "noAiResponse": "Aucune réponse IA reçue",
+    "hidden": "Assistant caché",
+    "hiddenFor1Hour": "Cuizly reviendra dans 1 heure",
+    "reactivated": "Assistant réactivé",
+    "assistantBack": "Cuizly est de retour et prêt à vous aider",
+    "disabled": "Assistant désactivé",
+    "disabledMessage": "Vous pouvez le réactiver dans vos préférences"
   },
   "voiceChat": {
     "title": "Assistant Vocal",

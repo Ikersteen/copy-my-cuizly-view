@@ -40,14 +40,19 @@ const AppContent = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const { isAuthenticated } = useSecureAuth();
-  const { preferences } = useUserPreferences();
+  const { preferences, updatePreferences } = useUserPreferences();
+
+  const handleDisableVoiceAssistant = () => {
+    updatePreferences({ voice_activation_enabled: false });
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <ScrollToTop />
       {isAuthenticated && (
         <HeyLuizlyVoiceAssistant 
-          enabled={preferences?.voice_activation_enabled || false} 
+          enabled={preferences?.voice_activation_enabled || false}
+          onDisable={handleDisableVoiceAssistant}
         />
       )}
       <Routes>

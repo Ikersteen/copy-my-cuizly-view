@@ -1218,7 +1218,13 @@
     "transcriptionFailed": "Transcription failed",
     "noTranscription": "No transcription received",
     "aiProcessingFailed": "AI processing failed",
-    "noAiResponse": "No AI response received"
+    "noAiResponse": "No AI response received",
+    "hidden": "Assistant hidden",
+    "hiddenFor1Hour": "Cuizly will be back in 1 hour",
+    "reactivated": "Assistant reactivated",
+    "assistantBack": "Cuizly is back and ready to help",
+    "disabled": "Assistant disabled",
+    "disabledMessage": "You can reactivate it in your preferences"
   },
   "voiceChat": {
     "title": "Voice Assistant",
