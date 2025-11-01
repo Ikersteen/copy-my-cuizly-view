@@ -842,7 +842,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20">
               <img 
-                src="/lovable-uploads/cuizly-assistant-logo.png" 
+                src="/cuizly-assistant-logo.png" 
                 alt="Cuizly Assistant Vocal"
                 className="h-16 w-auto"
               />
