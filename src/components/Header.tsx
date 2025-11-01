@@ -30,7 +30,7 @@ const Header = () => {
       <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo - Extrême gauche */}
-          <div className="flex-shrink-0 flex items-center gap-4">
+          <div className="flex-shrink-0">
             <a 
               href="/"
               className="flex items-center space-x-3 group cursor-pointer"
@@ -41,16 +41,6 @@ const Header = () => {
                 className="h-[50px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </a>
-            <Link 
-              to="/cuizlyassistant"
-              className="flex items-center group cursor-pointer"
-            >
-              <img 
-                src="/cuizly-assistant-logo.png" 
-                alt="Cuizly Assistant" 
-                className="h-[35px] w-auto transition-all duration-300 group-hover:opacity-80"
-              />
-            </Link>
           </div>
 
           {/* Navigation Desktop - Centre */}
@@ -87,9 +77,20 @@ const Header = () => {
             </Link>
           </nav>
 
-          {/* Language + Mobile Menu */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Language + Assistant Logo + Mobile Menu */}
+          <div className="flex items-center gap-4 flex-shrink-0">
             <LanguageSwitcher />
+            
+            <Link 
+              to="/cuizlyassistant"
+              className="hidden sm:flex items-center group cursor-pointer"
+            >
+              <img 
+                src="/cuizly-assistant-logo.png" 
+                alt="Cuizly Assistant" 
+                className="h-[35px] w-auto transition-all duration-300 group-hover:opacity-80"
+              />
+            </Link>
             
             {/* Mobile Menu */}
             <div className="lg:hidden">
