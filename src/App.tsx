@@ -9,6 +9,7 @@ import i18n from "@/lib/i18n";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 
+import Index from "./pages/Index";
 import Team from "./pages/Team";
 import Legal from "./pages/Legal";
 import Privacy from "./pages/Privacy";
@@ -24,11 +25,11 @@ const AppContent = () => {
     <div className="min-h-screen bg-background">
       <ScrollToTop />
       <Routes>
-        {/* Redirect root to team page */}
+        {/* Homepage */}
         <Route path="/" element={
           <>
             <Header />
-            <Team />
+            <Index />
           </>
         } />
         
