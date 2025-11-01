@@ -100,33 +100,27 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={mentionsRoute}
-                    className="text-cuizly-neutral transition-all duration-300 group"
+                    className="text-cuizly-neutral hover:text-black dark:hover:text-white transition-colors duration-300"
                   >
-                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
-                      {t('footer.legal')}
-                    </span>
+                    {t('footer.legal')}
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
                 <li>
                   <Link 
                     to={privacyRoute}
-                    className="text-cuizly-neutral transition-all duration-300 group"
+                    className="text-cuizly-neutral hover:text-black dark:hover:text-white transition-colors duration-300"
                   >
-                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
-                      {t('footer.privacy')}
-                    </span>
+                    {t('footer.privacy')}
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
                 <li>
                   <Link 
                     to={termsRoute}
-                    className="text-cuizly-neutral transition-all duration-300 group"
+                    className="text-cuizly-neutral hover:text-black dark:hover:text-white transition-colors duration-300"
                   >
-                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
-                      {t('footer.terms')}
-                    </span>
+                    {t('footer.terms')}
                   </Link>
                 </li>
               </ul>
