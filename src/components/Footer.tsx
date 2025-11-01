@@ -15,7 +15,7 @@ const Footer = () => {
   const cookiesRoute = useLocalizedRoute('/cookies');
   
   return (
-    <footer className="relative bg-card border-t border-border/50 overflow-hidden">
+    <footer className="relative bg-card overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="absolute inset-0" style={{
@@ -23,9 +23,6 @@ const Footer = () => {
           backgroundSize: '24px 24px'
         }}></div>
       </div>
-      
-      {/* Subtle glow effect */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
       
       <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12">
       <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center justify-items-center">
@@ -109,59 +106,57 @@ const Footer = () => {
               <span>© 2025 {t('footer.companyName')} {t('footer.allRightsReserved')}</span>
             </div>
             
-            {/* Enhanced Social Links */}
-            <div className="flex items-center space-x-6 sm:space-x-8">
-              <a 
-                href="https://www.instagram.com/cuizly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />
-              </a>
-              <div className="w-px h-4 bg-border/50"></div>
-              <a 
-                href="https://linkedin.com/company/cuizly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5 sm:w-6 sm:h-6" />
-              </a>
-              <div className="w-px h-4 bg-border/50"></div>
-              <a 
-                href="https://www.tiktok.com/@cuizly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cuizly-neutral hover:text-background transition-colors duration-300 flex items-center"
-                aria-label="TikTok"
-              >
-                <img 
-                  src="/lovable-uploads/tiktok-icon.png" 
-                  alt="TikTok" 
-                  className="w-5 h-5 sm:w-6 sm:h-6"
-                />
-              </a>
-              <div className="w-px h-4 bg-border/50"></div>
-              <a 
-                href="https://x.com/cuizly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
-                aria-label="X (Twitter)"
-              >
-                <Twitter className="w-5 h-5 sm:w-6 sm:h-6" />
-              </a>
-              <div className="w-px h-4 bg-border/50"></div>
-              <a 
-                href="mailto:support@cuizly.ca"
-                className="text-cuizly-neutral hover:text-background transition-colors duration-300"
-                aria-label="Email"
-              >
-                <Mail className="w-5 h-5 sm:w-6 sm:h-6" />
-              </a>
+            {/* Social Links - Small and left aligned */}
+            <div className="w-full flex justify-start pl-4">
+              <div className="flex items-center space-x-4">
+                <a 
+                  href="https://www.instagram.com/cuizly"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://linkedin.com/company/cuizly"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://www.tiktok.com/@cuizly"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cuizly-neutral hover:text-background transition-colors duration-300 flex items-center"
+                  aria-label="TikTok"
+                >
+                  <img 
+                    src="/lovable-uploads/tiktok-icon.png" 
+                    alt="TikTok" 
+                    className="w-4 h-4"
+                  />
+                </a>
+                <a 
+                  href="https://x.com/cuizly"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                  aria-label="X (Twitter)"
+                >
+                  <Twitter className="w-4 h-4" />
+                </a>
+                <a 
+                  href="mailto:support@cuizly.ca"
+                  className="text-cuizly-neutral hover:text-background transition-colors duration-300"
+                  aria-label="Email"
+                >
+                  <Mail className="w-4 h-4" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
