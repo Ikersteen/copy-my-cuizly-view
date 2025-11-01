@@ -30,11 +30,6 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     
     if (!SpeechRecognition) {
       console.error('Speech Recognition not supported');
-      toast({
-        title: t('common.error'),
-        description: "La reconnaissance vocale n'est pas supportée sur ce navigateur",
-        variant: 'destructive'
-      });
       return;
     }
 
@@ -69,14 +64,6 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     recognition.onerror = (event: any) => {
       if (event.error !== 'aborted') {
         console.error('Erreur de reconnaissance vocale:', event.error);
-        
-        if (event.error === 'not-allowed') {
-          toast({
-            title: 'Microphone requis',
-            description: 'Veuillez autoriser l\'accès au microphone pour utiliser "Hey Cuizly"',
-            variant: 'destructive'
-          });
-        }
       }
       isRecognitionRunningRef.current = false;
       
@@ -120,11 +107,6 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
         recognition.start();
         hasStartedListeningRef.current = true;
         console.log('🎧 Écoute active pour "Hey Cuizly"...');
-        
-        toast({
-          title: 'Cuizly Assistant',
-          description: 'Dites "Hey Cuizly" pour activer l\'assistant vocal',
-        });
       } catch (e) {
         console.log('Erreur de démarrage:', e);
       }
@@ -171,24 +153,11 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
 
       console.log('✅ Cuizly Assistant activé - En écoute...');
 
-      // Envoyer un message de confirmation
-      if (realtimeClientRef.current) {
-        toast({
-          title: 'Cuizly Assistant',
-          description: 'Je vous écoute! Posez-moi votre question.',
-        });
-      }
-
       // Démarrer le timeout d'inactivité de 3 secondes
       startInactivityTimeout();
 
     } catch (error) {
       console.error('Error activating voice assistant:', error);
-      toast({
-        title: t('common.error'),
-        description: "Impossible d'activer l'assistant vocal",
-        variant: 'destructive'
-      });
       deactivateVoiceAssistant();
     }
   };
