@@ -58,7 +58,6 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
 
     recognition.onstart = () => {
       isRecognitionRunningRef.current = true;
-      console.log('🎤 Reconnaissance vocale démarrée - dites "Hey Cuizly"');
     };
 
     recognition.onerror = (event: any) => {
@@ -72,9 +71,8 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
           if (enabled && !isActive && recognitionRef.current && !isRecognitionRunningRef.current) {
             try {
               recognitionRef.current.start();
-              console.log('🔄 Reconnaissance vocale redémarrée');
             } catch (e) {
-              console.log('Erreur de redémarrage:', e);
+              // Silent restart
             }
           }
         }, 1000);
@@ -83,16 +81,14 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
 
     recognition.onend = () => {
       isRecognitionRunningRef.current = false;
-      console.log('🛑 Reconnaissance vocale arrêtée');
       
       if (enabled && !isActive && !hasStartedListeningRef.current) {
         setTimeout(() => {
           if (enabled && !isActive && recognitionRef.current && !isRecognitionRunningRef.current) {
             try {
               recognition.start();
-              console.log('🔄 Reconnaissance vocale redémarrée automatiquement');
             } catch (e) {
-              console.log('Erreur de redémarrage:', e);
+              // Silent restart
             }
           }
         }, 500);
@@ -106,9 +102,8 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       try {
         recognition.start();
         hasStartedListeningRef.current = true;
-        console.log('🎧 Écoute active pour "Hey Cuizly"...');
       } catch (e) {
-        console.log('Erreur de démarrage:', e);
+        // Silent start
       }
     }
 
@@ -151,9 +146,7 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       await client.connect();
       realtimeClientRef.current = client;
 
-      console.log('✅ Cuizly Assistant activé - En écoute...');
-
-      // Démarrer le timeout d'inactivité de 3 secondes
+      // Démarrer le timeout d'inactivité de 15 secondes
       startInactivityTimeout();
 
     } catch (error) {
@@ -170,7 +163,6 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
 
     // Démarrer un nouveau timeout de 15 secondes
     inactivityTimeoutRef.current = setTimeout(() => {
-      console.log('⏱️ Inactivity timeout - deactivating assistant');
       deactivateVoiceAssistant();
     }, 15000);
   };
@@ -180,8 +172,6 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
   };
 
   const deactivateVoiceAssistant = () => {
-    console.log('🛑 Deactivating Cuizly Assistant...');
-    
     // Annuler le timeout d'inactivité
     if (inactivityTimeoutRef.current) {
       clearTimeout(inactivityTimeoutRef.current);
@@ -206,7 +196,7 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
             hasStartedListeningRef.current = true;
           }
         } catch (e) {
-          console.log('Restart recognition error:', e);
+          // Silent restart
         }
       }, 1000);
     }
@@ -232,8 +222,6 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
   };
 
   const handleRealtimeEvent = (event: any) => {
-    console.log('Voice client event:', event.type);
-    
     // Réinitialiser le timeout pour tout événement de conversation active
     if (event.type === 'input_audio_buffer.speech_started' ||
         event.type === 'input_audio_buffer.speech_stopped' ||
@@ -249,13 +237,10 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     // Gérer les états visuels
     if (event.type === 'input_audio_buffer.speech_started') {
       setState('listening');
-      console.log('👂 Utilisateur parle...');
     } else if (event.type === 'response.audio.delta') {
       setState('speaking');
-      console.log('🗣️ Cuizly répond...');
     } else if (event.type === 'response.audio.done') {
       setState('listening');
-      console.log('✅ Réponse terminée - En écoute...');
     } else if (event.type === 'error') {
       console.error('Realtime error:', event);
       deactivateVoiceAssistant();

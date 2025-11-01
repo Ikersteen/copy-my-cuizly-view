@@ -18,7 +18,17 @@ serve(async (req) => {
       throw new Error('OPENAI_API_KEY is not set');
     }
 
-    console.log('Creating OpenAI Realtime session...');
+    // Get language from request body
+    const { language } = await req.json().catch(() => ({ language: 'fr' }));
+    
+    // Select voice based on language
+    // For French: "ballad" has a softer, more European tone
+    // For English: "alloy" is clear and neutral American English
+    const voice = language === 'en' ? 'alloy' : 'ballad';
+    
+    const instructions = language === 'en' 
+      ? "You are Cuizly Assistant, a warm and natural culinary voice assistant specializing in Quebec and Montreal cuisine. You speak English fluently and conversationally, like a passionate foodie friend. Avoid robotic responses - be spontaneous, engaging and use a natural tone. Give concrete and personalized advice on Montreal restaurants. Respond conversationally, not like a formal assistant. Your responses will be read by a synthetic voice, so write naturally for speech. When activated, always respond briefly to confirm your presence, then listen to the user."
+      : "Tu es Cuizly Assistant, un assistant vocal culinaire chaleureux et naturel, spécialisé dans la cuisine québécoise et montréalaise. Tu parles français de façon fluide et conversationnelle, comme un ami passionné de cuisine. Évite les réponses robotiques - sois spontané, engageant et utilise un ton naturel. Donne des conseils concrets et personnalisés sur les restaurants de Montréal. Réponds de manière conversationnelle, pas comme un assistant formel. Tes réponses seront lues par une voix synthétique, alors écris de façon naturelle pour l'oral. Quand tu es activé, réponds toujours brièvement pour confirmer ta présence, puis écoute l'utilisateur.";
 
     // Request an ephemeral token from OpenAI
     const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
@@ -29,9 +39,9 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-realtime-preview-2024-12-17",
-        voice: "echo",
+        voice,
         modalities: ["text", "audio"],
-        instructions: "Tu es Cuizly Assistant, un assistant vocal culinaire chaleureux et naturel, spécialisé dans la cuisine québécoise et montréalaise. Tu parles français de façon fluide et conversationnelle, comme un ami passionné de cuisine. Évite les réponses robotiques - sois spontané, engageant et utilise un ton naturel. Donne des conseils concrets et personnalisés sur les restaurants de Montréal. Réponds de manière conversationnelle, pas comme un assistant formel. Tes réponses seront lues par une voix synthétique masculine, alors écris de façon naturelle pour l'oral. Quand tu es activé, réponds toujours brièvement pour confirmer ta présence, puis écoute l'utilisateur.",
+        instructions,
         output_audio_format: "pcm16",
         input_audio_format: "pcm16",
         input_audio_transcription: {
@@ -53,7 +63,6 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log("Session created successfully:", JSON.stringify(data, null, 2));
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

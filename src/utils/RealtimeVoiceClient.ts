@@ -10,7 +10,6 @@ export class AudioRecorder {
 
   async start() {
     try {
-      console.log('Starting audio recorder...');
       this.stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           sampleRate: 24000,
@@ -42,8 +41,6 @@ export class AudioRecorder {
       
       this.source.connect(this.processor);
       this.processor.connect(this.audioContext.destination);
-      
-      console.log('Audio recorder started successfully');
     } catch (error) {
       console.error('Error accessing microphone:', error);
       throw error;
@@ -51,7 +48,6 @@ export class AudioRecorder {
   }
 
   stop() {
-    console.log('Stopping audio recorder...');
     if (this.source) {
       this.source.disconnect();
       this.source = null;
@@ -87,10 +83,13 @@ export class RealtimeVoiceClient {
 
   async connect() {
     try {
-      console.log('Connecting to realtime voice...');
+      // Get current language
+      const currentLanguage = localStorage.getItem('i18nextLng') || 'fr';
       
       // Get ephemeral token from our Supabase Edge Function
-      const { data, error } = await supabase.functions.invoke("realtime-voice-token");
+      const { data, error } = await supabase.functions.invoke("realtime-voice-token", {
+        body: { language: currentLanguage }
+      });
       
       if (error) {
         console.error('Error getting token:', error);
@@ -103,17 +102,15 @@ export class RealtimeVoiceClient {
       }
 
       const EPHEMERAL_KEY = data.client_secret.value;
-      console.log('Got ephemeral token, setting up WebRTC...');
 
       // Create peer connection
       this.pc = new RTCPeerConnection();
 
-      // Set up remote audio - lecture directe de l'audio OpenAI
+      // Set up remote audio - lecture silencieuse
       this.pc.ontrack = e => {
-        console.log('Received remote audio track');
         this.audioEl.srcObject = e.streams[0];
         this.audioEl.autoplay = true;
-        this.audioEl.play().catch(e => console.error('Error playing audio:', e));
+        this.audioEl.play().catch(() => {});
       };
 
       // Add local audio track
@@ -170,7 +167,6 @@ export class RealtimeVoiceClient {
       };
       
       await this.pc.setRemoteDescription(answer);
-      console.log("WebRTC connection established");
 
       // Start recording and encoding audio
       this.recorder = new AudioRecorder((audioData) => {
@@ -184,7 +180,6 @@ export class RealtimeVoiceClient {
       await this.recorder.start();
 
       this.isConnected = true;
-      console.log('Realtime voice client connected successfully');
 
     } catch (error) {
       console.error("Error initializing realtime voice:", error);
@@ -317,7 +312,6 @@ export class RealtimeVoiceClient {
   }
 
   disconnect() {
-    console.log('Disconnecting realtime voice client...');
     this.isConnected = false;
     this.recorder?.stop();
     this.dc?.close();
