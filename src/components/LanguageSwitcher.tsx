@@ -35,10 +35,10 @@ const LanguageSwitcher = () => {
           <DropdownMenuItem
             key={lang}
             onClick={() => changeLanguage(lang)}
-            className="group cursor-pointer bg-transparent hover:bg-transparent focus:bg-transparent"
+            className="cursor-pointer bg-transparent hover:bg-transparent focus:bg-transparent"
           >
             <span className="mr-2">{languageFlags[lang]}</span>
-            <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] transition-all duration-300">
+            <span className="bg-clip-text text-transparent [background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
               {languageLabels[lang]}
             </span>
           </DropdownMenuItem>
