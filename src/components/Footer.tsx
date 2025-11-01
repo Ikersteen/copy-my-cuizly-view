@@ -97,7 +97,7 @@ const Footer = () => {
               <img 
                 src="/cuizly-logo-new.png" 
                 alt="Cuizly" 
-                className="h-[60px] w-auto transition-all duration-300 group-hover:scale-110"
+                className="h-[100px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </a>
             
