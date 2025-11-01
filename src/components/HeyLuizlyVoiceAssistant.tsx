@@ -40,26 +40,43 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
 
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
-    recognition.interimResults = false;
+    recognition.interimResults = true; // Changé à true pour obtenir des résultats intermédiaires
     recognition.lang = 'fr-CA';
+    recognition.maxAlternatives = 3; // Augmenter les alternatives
 
     recognition.onresult = (event: any) => {
-      const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
-      console.log('🎤 Heard:', transcript);
+      const last = event.results.length - 1;
+      const transcript = event.results[last][0].transcript.toLowerCase();
+      const confidence = event.results[last][0].confidence;
+      
+      console.log('🎤 Entendu:', transcript, '(confiance:', confidence, ')');
 
-      if (transcript.includes('hey cuizly') || transcript.includes('hey cuisely') || transcript.includes('ey cuizly')) {
-        console.log('✅ Wake word detected!');
+      if (transcript.includes('hey cuizly') || 
+          transcript.includes('hey cuisely') || 
+          transcript.includes('ey cuizly') ||
+          transcript.includes('hé cuizly') ||
+          transcript.includes('et cuizly')) {
+        console.log('✅ Mot d\'activation détecté!');
         activateVoiceAssistant();
       }
     };
 
     recognition.onstart = () => {
       isRecognitionRunningRef.current = true;
+      console.log('🎤 Reconnaissance vocale démarrée - dites "Hey Cuizly"');
     };
 
     recognition.onerror = (event: any) => {
       if (event.error !== 'aborted') {
-        console.error('Speech recognition error:', event.error);
+        console.error('Erreur de reconnaissance vocale:', event.error);
+        
+        if (event.error === 'not-allowed') {
+          toast({
+            title: 'Microphone requis',
+            description: 'Veuillez autoriser l\'accès au microphone pour utiliser "Hey Cuizly"',
+            variant: 'destructive'
+          });
+        }
       }
       isRecognitionRunningRef.current = false;
       
@@ -68,8 +85,9 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
           if (enabled && !isActive && recognitionRef.current && !isRecognitionRunningRef.current) {
             try {
               recognitionRef.current.start();
+              console.log('🔄 Reconnaissance vocale redémarrée');
             } catch (e) {
-              console.log('Recognition restart error:', e);
+              console.log('Erreur de redémarrage:', e);
             }
           }
         }, 1000);
@@ -78,14 +96,16 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
 
     recognition.onend = () => {
       isRecognitionRunningRef.current = false;
+      console.log('🛑 Reconnaissance vocale arrêtée');
       
       if (enabled && !isActive && !hasStartedListeningRef.current) {
         setTimeout(() => {
           if (enabled && !isActive && recognitionRef.current && !isRecognitionRunningRef.current) {
             try {
               recognition.start();
+              console.log('🔄 Reconnaissance vocale redémarrée automatiquement');
             } catch (e) {
-              console.log('Recognition restart error:', e);
+              console.log('Erreur de redémarrage:', e);
             }
           }
         }, 500);
@@ -99,9 +119,14 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       try {
         recognition.start();
         hasStartedListeningRef.current = true;
-        console.log('🎧 Listening for "Hey Cuizly"...');
+        console.log('🎧 Écoute active pour "Hey Cuizly"...');
+        
+        toast({
+          title: 'Cuizly Assistant',
+          description: 'Dites "Hey Cuizly" pour activer l\'assistant vocal',
+        });
       } catch (e) {
-        console.log('Recognition start error (might already be running):', e);
+        console.log('Erreur de démarrage:', e);
       }
     }
 
@@ -110,13 +135,13 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
         try {
           recognitionRef.current.stop();
         } catch (e) {
-          console.log('Recognition stop error:', e);
+          console.log('Erreur d\'arrêt:', e);
         }
         recognitionRef.current = null;
         hasStartedListeningRef.current = false;
       }
     };
-  }, [enabled, isActive]);
+  }, [enabled, isActive, toast, t]);
 
   const activateVoiceAssistant = async () => {
     if (isActive) return;
@@ -144,7 +169,15 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       await client.connect();
       realtimeClientRef.current = client;
 
-      console.log('✅ Cuizly Assistant activated');
+      console.log('✅ Cuizly Assistant activé - En écoute...');
+
+      // Envoyer un message de confirmation
+      if (realtimeClientRef.current) {
+        toast({
+          title: 'Cuizly Assistant',
+          description: 'Je vous écoute! Posez-moi votre question.',
+        });
+      }
 
       // Démarrer le timeout d'inactivité de 3 secondes
       startInactivityTimeout();
