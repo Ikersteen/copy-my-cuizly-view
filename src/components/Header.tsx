@@ -5,9 +5,9 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 const Header = () => {
   const { t } = useTranslation();
 
-  // Utilise le logo Cuizly Assistant
+  // Utilise le nouveau logo (icône)
   const getLogoSrc = () => {
-    return "/cuizly-assistant-logo.png";
+    return "/cuizly-icon-new.png";
   };
 
   return (
