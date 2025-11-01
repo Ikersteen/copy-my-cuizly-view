@@ -26,18 +26,7 @@ const LanguageSwitcher = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="h-9 px-2 gap-1.5">
           <Globe className="h-5 w-5" />
-          <span 
-            className="text-sm font-medium uppercase text-cuizly-primary"
-            style={{
-              background: 'linear-gradient(90deg, #42c2f4, #cb44e3, #f9566e, #ffbala)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              display: 'inline-block'
-            }}
-          >
-            {currentLanguage}
-          </span>
+          <span className="text-sm font-medium uppercase">{currentLanguage}</span>
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>
@@ -49,16 +38,7 @@ const LanguageSwitcher = () => {
             className="cursor-pointer bg-transparent hover:bg-transparent focus:bg-transparent"
           >
             <span className="mr-2">{languageFlags[lang]}</span>
-            <span
-              className="text-cuizly-primary"
-              style={{
-                background: 'linear-gradient(90deg, #42c2f4, #cb44e3, #f9566e, #ffbala)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                display: 'inline-block'
-              }}
-            >
+            <span className="bg-clip-text text-transparent [background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
               {languageLabels[lang]}
             </span>
           </DropdownMenuItem>
