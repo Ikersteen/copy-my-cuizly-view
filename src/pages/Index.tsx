@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Pause, Play } from "lucide-react";
@@ -17,6 +17,17 @@ const Index = () => {
       setIsPlaying(!isPlaying);
     }
   };
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        toggleVideo();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [isPlaying]);
 
   return (
     <>
