@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 
 import Index from "./pages/Index";
+import VoiceChat from "./pages/VoiceChat";
 import Team from "./pages/Team";
 import Legal from "./pages/Legal";
 import Privacy from "./pages/Privacy";
@@ -30,6 +31,14 @@ const AppContent = () => {
           <>
             <Header />
             <Index />
+          </>
+        } />
+        
+        {/* Cuizly Assistant */}
+        <Route path="/cuizlyassistant" element={
+          <>
+            <Header />
+            <VoiceChat />
           </>
         } />
         
