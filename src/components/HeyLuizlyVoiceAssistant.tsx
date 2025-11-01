@@ -16,6 +16,7 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
   const realtimeClientRef = useRef<RealtimeVoiceClient | null>(null);
   const recognitionRef = useRef<any>(null);
   const hasStartedListeningRef = useRef(false);
+  const inactivityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialiser la reconnaissance vocale pour "Hey Cuizly"
   useEffect(() => {
@@ -129,7 +130,10 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       await client.connect();
       realtimeClientRef.current = client;
 
-      console.log('✅ Voice assistant activated');
+      console.log('✅ Cuizly Assistant activated');
+
+      // Démarrer le timeout d'inactivité de 3 secondes
+      startInactivityTimeout();
 
     } catch (error) {
       console.error('Error activating voice assistant:', error);
@@ -142,9 +146,32 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     }
   };
 
+  const startInactivityTimeout = () => {
+    // Annuler le timeout précédent s'il existe
+    if (inactivityTimeoutRef.current) {
+      clearTimeout(inactivityTimeoutRef.current);
+    }
+
+    // Démarrer un nouveau timeout de 3 secondes
+    inactivityTimeoutRef.current = setTimeout(() => {
+      console.log('⏱️ Inactivity timeout - deactivating assistant');
+      deactivateVoiceAssistant();
+    }, 3000);
+  };
+
+  const resetInactivityTimeout = () => {
+    startInactivityTimeout();
+  };
+
   const deactivateVoiceAssistant = () => {
-    console.log('🛑 Deactivating voice assistant...');
+    console.log('🛑 Deactivating Cuizly Assistant...');
     
+    // Annuler le timeout d'inactivité
+    if (inactivityTimeoutRef.current) {
+      clearTimeout(inactivityTimeoutRef.current);
+      inactivityTimeoutRef.current = null;
+    }
+
     if (realtimeClientRef.current) {
       realtimeClientRef.current.disconnect();
       realtimeClientRef.current = null;
@@ -189,10 +216,13 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     // Gérer les événements de l'API Realtime
     if (event.type === 'response.audio_transcript.delta') {
       setState('speaking');
+      resetInactivityTimeout(); // Réinitialiser le timeout quand l'assistant parle
     } else if (event.type === 'response.audio_transcript.done') {
       setState('listening');
+      startInactivityTimeout(); // Redémarrer le timeout après la réponse
     } else if (event.type === 'input_audio_buffer.speech_started') {
       setState('listening');
+      resetInactivityTimeout(); // Réinitialiser le timeout quand l'utilisateur parle
     } else if (event.type === 'error') {
       console.error('Realtime error:', event);
       deactivateVoiceAssistant();
