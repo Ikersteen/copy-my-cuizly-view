@@ -14,6 +14,17 @@ const Footer = () => {
   
   return (
     <footer className="relative bg-card overflow-hidden">
+      {/* SVG Gradient Definition */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <defs>
+          <linearGradient id="footer-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#42c2f4" />
+            <stop offset="33%" stopColor="#cb44e3" />
+            <stop offset="66%" stopColor="#f9566e" />
+            <stop offset="100%" stopColor="#ffbala" />
+          </linearGradient>
+        </defs>
+      </svg>
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="absolute inset-0" style={{
@@ -53,35 +64,35 @@ const Footer = () => {
                   href="https://www.instagram.com/cuizly"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
+                  className="group"
                   aria-label="Instagram"
                 >
-                  <Instagram className="w-4 h-4" />
+                  <Instagram className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
                 </a>
                 <a 
                   href="https://linkedin.com/company/cuizly"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
+                  className="group"
                   aria-label="LinkedIn"
                 >
-                  <Linkedin className="w-4 h-4" />
+                  <Linkedin className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
                 </a>
                 <a 
                   href="https://x.com/cuizly"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
+                  className="group"
                   aria-label="X (Twitter)"
                 >
-                  <Twitter className="w-4 h-4" />
+                  <Twitter className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
                 </a>
                 <a 
                   href="mailto:support@cuizly.ca"
-                  className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
+                  className="group"
                   aria-label="Email"
                 >
-                  <Mail className="w-4 h-4" />
+                  <Mail className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
                 </a>
               </div>
 
