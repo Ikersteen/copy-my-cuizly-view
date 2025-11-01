@@ -30,12 +30,15 @@ const LanguageSwitcher = () => {
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-background border-border">
+      <DropdownMenuContent 
+        align="end" 
+        className="bg-transparent border-none shadow-none backdrop-blur-none animate-none data-[state=open]:animate-none data-[state=closed]:animate-none"
+      >
         {availableLanguages.map((lang) => (
           <DropdownMenuItem
             key={lang}
             onClick={() => changeLanguage(lang)}
-            className="hover:bg-transparent focus:bg-transparent cursor-pointer hover:text-cuizly-primary transition-colors"
+            className="bg-transparent hover:bg-transparent focus:bg-transparent cursor-pointer hover:text-cuizly-primary transition-colors"
           >
             <span className="mr-2">{languageFlags[lang]}</span>
             {languageLabels[lang]}
