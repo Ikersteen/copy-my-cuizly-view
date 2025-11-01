@@ -23,36 +23,6 @@ const Footer = () => {
       </div>
       
       <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12">
-      <div className="flex justify-end">
-          <ul className="flex items-center gap-3 text-xs">
-            <li>
-              <Link 
-                to={mentionsRoute}
-                className="text-cuizly-neutral hover:text-foreground transition-colors"
-              >
-                Legal
-              </Link>
-            </li>
-            <li className="text-cuizly-neutral/40">|</li>
-            <li>
-              <Link 
-                to={privacyRoute}
-                className="text-cuizly-neutral hover:text-foreground transition-colors"
-              >
-                Privacy
-              </Link>
-            </li>
-            <li className="text-cuizly-neutral/40">|</li>
-            <li>
-              <Link 
-                to={termsRoute}
-                className="text-cuizly-neutral hover:text-foreground transition-colors"
-              >
-                Terms
-              </Link>
-            </li>
-          </ul>
-        </div>
         
         <div className="relative mt-8 sm:mt-12 pt-8 sm:pt-10">
           
@@ -64,17 +34,13 @@ const Footer = () => {
               <img 
                 src="/cuizly-logo-new.png" 
                 alt="Cuizly" 
-                className="h-[100px] w-auto transition-all duration-300 group-hover:scale-110"
+                className="h-[180px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </a>
             
             <p className="text-cuizly-neutral text-sm sm:text-base italic text-center max-w-md leading-relaxed">
               {t('footer.tagline')}
             </p>
-            
-            <div className="text-cuizly-neutral/80 text-xs sm:text-sm">
-              <span>© 2025 {t('footer.companyName')} {t('footer.allRightsReserved')}</span>
-            </div>
             
             {/* Social Links - Small and left aligned */}
             <div className="w-full flex justify-start pl-4">
@@ -98,19 +64,6 @@ const Footer = () => {
                   <Linkedin className="w-4 h-4" />
                 </a>
                 <a 
-                  href="https://www.tiktok.com/@cuizly"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-cuizly-neutral hover:text-background transition-colors duration-300 flex items-center"
-                  aria-label="TikTok"
-                >
-                  <img 
-                    src="/lovable-uploads/tiktok-icon.png" 
-                    alt="TikTok" 
-                    className="w-4 h-4"
-                  />
-                </a>
-                <a 
                   href="https://x.com/cuizly"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -127,6 +80,42 @@ const Footer = () => {
                   <Mail className="w-4 h-4" />
                 </a>
               </div>
+            </div>
+
+            <div className="text-cuizly-neutral/80 text-xs sm:text-sm">
+              <span>© 2025 {t('footer.companyName')} {t('footer.allRightsReserved')}</span>
+            </div>
+
+            {/* Legal links at the bottom */}
+            <div className="flex justify-center pt-2">
+              <ul className="flex items-center gap-3 text-xs">
+                <li>
+                  <Link 
+                    to={mentionsRoute}
+                    className="text-cuizly-neutral hover:text-foreground transition-colors"
+                  >
+                    Legal
+                  </Link>
+                </li>
+                <li className="text-cuizly-neutral/40">|</li>
+                <li>
+                  <Link 
+                    to={privacyRoute}
+                    className="text-cuizly-neutral hover:text-foreground transition-colors"
+                  >
+                    Privacy
+                  </Link>
+                </li>
+                <li className="text-cuizly-neutral/40">|</li>
+                <li>
+                  <Link 
+                    to={termsRoute}
+                    className="text-cuizly-neutral hover:text-foreground transition-colors"
+                  >
+                    Terms
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
