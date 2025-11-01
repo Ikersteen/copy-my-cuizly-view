@@ -100,7 +100,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={mentionsRoute}
-                    className="bg-clip-text text-transparent [background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]"
+                    className="[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-clip:text]"
                   >
                     {t('footer.legal')}
                   </Link>
@@ -109,7 +109,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={privacyRoute}
-                    className="bg-clip-text text-transparent [background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]"
+                    className="[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-clip:text]"
                   >
                     {t('footer.privacy')}
                   </Link>
@@ -118,7 +118,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={termsRoute}
-                    className="bg-clip-text text-transparent [background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]"
+                    className="[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-clip:text]"
                   >
                     {t('footer.terms')}
                   </Link>
