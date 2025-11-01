@@ -67,7 +67,7 @@ const Footer = () => {
                   className="group"
                   aria-label="Instagram"
                 >
-                  <Instagram className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
+                  <Instagram className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)]" />
                 </a>
                 <a 
                   href="https://linkedin.com/company/cuizly"
@@ -76,7 +76,7 @@ const Footer = () => {
                   className="group"
                   aria-label="LinkedIn"
                 >
-                  <Linkedin className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
+                  <Linkedin className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)]" />
                 </a>
                 <a 
                   href="https://x.com/cuizly"
@@ -85,14 +85,14 @@ const Footer = () => {
                   className="group"
                   aria-label="X (Twitter)"
                 >
-                  <Twitter className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
+                  <Twitter className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)]" />
                 </a>
                 <a 
                   href="mailto:support@cuizly.ca"
                   className="group"
                   aria-label="Email"
                 >
-                  <Mail className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
+                  <Mail className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)]" />
                 </a>
               </div>
 
@@ -100,7 +100,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={mentionsRoute}
-                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
+                    className="text-cuizly-neutral transition-all duration-300 hover:bg-gradient-to-r hover:from-[#42c2f4] hover:via-[#cb44e3] hover:via-[#f9566e] hover:to-[#ffbala] hover:bg-clip-text hover:text-transparent"
                   >
                     {t('footer.legal')}
                   </Link>
@@ -109,7 +109,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={privacyRoute}
-                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
+                    className="text-cuizly-neutral transition-all duration-300 hover:bg-gradient-to-r hover:from-[#42c2f4] hover:via-[#cb44e3] hover:via-[#f9566e] hover:to-[#ffbala] hover:bg-clip-text hover:text-transparent"
                   >
                     {t('footer.privacy')}
                   </Link>
@@ -118,7 +118,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={termsRoute}
-                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
+                    className="text-cuizly-neutral transition-all duration-300 hover:bg-gradient-to-r hover:from-[#42c2f4] hover:via-[#cb44e3] hover:via-[#f9566e] hover:to-[#ffbala] hover:bg-clip-text hover:text-transparent"
                   >
                     {t('footer.terms')}
                   </Link>
