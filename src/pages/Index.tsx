@@ -3,13 +3,13 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <>
-      <div className="min-h-screen w-full flex items-center justify-center bg-background">
+      <div className="min-h-screen w-full bg-background">
         <video 
           autoPlay 
           loop 
           muted 
           playsInline
-          className="max-w-full max-h-screen"
+          className="w-full h-screen object-cover"
         >
           <source src="/cuizly-products-video.mp4" type="video/mp4" />
         </video>
