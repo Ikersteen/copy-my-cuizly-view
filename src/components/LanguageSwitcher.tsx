@@ -11,9 +11,15 @@ import {
 const LanguageSwitcher = () => {
   const { currentLanguage, changeLanguage, availableLanguages } = useLanguage();
 
-  const languageLabels: Record<string, string> = {
-    fr: 'Français',
-    en: 'English'
+  const languageLabels: Record<string, Record<string, string>> = {
+    fr: {
+      fr: 'Français',
+      en: 'Anglais'
+    },
+    en: {
+      fr: 'French',
+      en: 'English'
+    }
   };
 
   const languageFlags: Record<string, string> = {
@@ -38,7 +44,7 @@ const LanguageSwitcher = () => {
             className="cursor-pointer"
           >
             <span className="mr-2">{languageFlags[lang]}</span>
-            <span>{languageLabels[lang]}</span>
+            <span>{languageLabels[currentLanguage][lang]}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
