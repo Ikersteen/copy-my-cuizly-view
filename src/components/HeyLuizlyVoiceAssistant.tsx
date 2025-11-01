@@ -250,10 +250,10 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     if (event.type === 'input_audio_buffer.speech_started') {
       setState('listening');
       console.log('👂 Utilisateur parle...');
-    } else if (event.type === 'response.audio.delta' || event.type === 'response.audio_transcript.delta') {
+    } else if (event.type === 'response.audio.delta') {
       setState('speaking');
       console.log('🗣️ Cuizly répond...');
-    } else if (event.type === 'response.audio.done' || event.type === 'response.audio_transcript.done') {
+    } else if (event.type === 'response.audio.done') {
       setState('listening');
       console.log('✅ Réponse terminée - En écoute...');
     } else if (event.type === 'error') {

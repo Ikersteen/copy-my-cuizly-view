@@ -82,7 +82,7 @@ export class RealtimeVoiceClient {
 
   constructor(private onMessage: (message: any) => void) {
     this.audioEl = document.createElement("audio");
-    this.audioEl.autoplay = false; // Désactivé car on utilisera ElevenLabs
+    this.audioEl.autoplay = true;
   }
 
   async connect() {
@@ -108,10 +108,12 @@ export class RealtimeVoiceClient {
       // Create peer connection
       this.pc = new RTCPeerConnection();
 
-      // Set up remote audio
+      // Set up remote audio - lecture directe de l'audio OpenAI
       this.pc.ontrack = e => {
         console.log('Received remote audio track');
         this.audioEl.srcObject = e.streams[0];
+        this.audioEl.autoplay = true;
+        this.audioEl.play().catch(e => console.error('Error playing audio:', e));
       };
 
       // Add local audio track
@@ -131,13 +133,9 @@ export class RealtimeVoiceClient {
       this.dc.addEventListener("message", async (e) => {
         const event = JSON.parse(e.data);
         
-        // Logger tous les événements pour le debug
-        console.log("Voice client event:", event.type);
-        
-        // Intercepter les transcriptions audio pour ElevenLabs
-        if (event.type === 'response.audio_transcript.done' && event.transcript) {
-          console.log('🎤 Processing transcript with ElevenLabs:', event.transcript);
-          await this.processWithElevenLabs(event.transcript);
+        // Logger les événements importants
+        if (event.type === 'response.audio.delta' || event.type === 'response.audio.done') {
+          console.log("Voice client event:", event.type);
         }
         
         // Transmettre tous les événements
