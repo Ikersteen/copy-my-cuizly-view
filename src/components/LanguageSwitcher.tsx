@@ -1,54 +1,26 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import { Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 const LanguageSwitcher = () => {
-  const { currentLanguage, changeLanguage, availableLanguages } = useLanguage();
+  const { currentLanguage, changeLanguage } = useLanguage();
 
-  const languageLabels: Record<string, Record<string, string>> = {
-    fr: {
-      fr: 'Français',
-      en: 'Anglais'
-    },
-    en: {
-      fr: 'French',
-      en: 'English'
-    }
-  };
-
-  const languageFlags: Record<string, string> = {
-    fr: '🇫🇷',
-    en: '🇺🇸'
+  const handleToggleLanguage = () => {
+    const newLanguage = currentLanguage === 'fr' ? 'en' : 'fr';
+    changeLanguage(newLanguage);
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-9 px-2 gap-1.5 !bg-transparent hover:!bg-transparent focus:!bg-transparent active:!bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 transition-none hover:scale-100">
-          <Globe className="h-5 w-5" />
-          <span className="text-sm font-medium uppercase">{currentLanguage}</span>
-          <span className="sr-only">Change language</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-card border-border">
-        {availableLanguages.map((lang) => (
-          <DropdownMenuItem
-            key={lang}
-            onClick={() => changeLanguage(lang)}
-            className="cursor-pointer"
-          >
-            <span className="mr-2">{languageFlags[lang]}</span>
-            <span>{languageLabels[currentLanguage][lang]}</span>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button 
+      variant="ghost" 
+      size="sm" 
+      onClick={handleToggleLanguage}
+      className="h-9 px-2 gap-1.5 !bg-transparent hover:!bg-transparent focus:!bg-transparent active:!bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 transition-none hover:scale-100"
+    >
+      <Globe className="h-5 w-5" />
+      <span className="text-sm font-medium uppercase">{currentLanguage}</span>
+      <span className="sr-only">Change language</span>
+    </Button>
   );
 };
 
