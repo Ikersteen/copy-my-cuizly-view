@@ -32,9 +32,9 @@ const Footer = () => {
               className="flex items-center space-x-3 group cursor-pointer"
             >
               <img 
-                src="/cuizly-assistant-logo.png" 
-                alt="Cuizly Assistant" 
-                className="h-[180px] w-auto transition-all duration-300 group-hover:scale-110"
+                src="/cuizly-logo-colorful.png" 
+                alt="Cuizly" 
+                className="h-[120px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </a>
             
