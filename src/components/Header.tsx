@@ -30,13 +30,11 @@ const Header = () => {
 
           {/* Navigation Desktop - Removed */}
 
-          {/* Language + Assistant Logo */}
+          {/* Assistant Logo + Language */}
           <div className="flex items-center gap-4 flex-shrink-0">
-            <LanguageSwitcher />
-            
             <Link 
               to="/cuizlyassistant"
-              className="hidden sm:flex items-center group cursor-pointer"
+              className="flex items-center group cursor-pointer"
             >
               <img 
                 src="/cuizly-assistant-logo.png" 
@@ -44,6 +42,8 @@ const Header = () => {
                 className="h-[35px] w-auto transition-all duration-300 group-hover:opacity-80"
               />
             </Link>
+            
+            <LanguageSwitcher />
           </div>
         </div>
       </div>
