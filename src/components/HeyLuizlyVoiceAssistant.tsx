@@ -17,6 +17,7 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
   const recognitionRef = useRef<any>(null);
   const hasStartedListeningRef = useRef(false);
   const inactivityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isRecognitionRunningRef = useRef(false);
 
   // Initialiser la reconnaissance vocale pour "Hey Cuizly"
   useEffect(() => {
@@ -52,16 +53,23 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       }
     };
 
+    recognition.onstart = () => {
+      isRecognitionRunningRef.current = true;
+    };
+
     recognition.onerror = (event: any) => {
-      console.error('Speech recognition error:', event.error);
-      if (event.error === 'no-speech') {
-        // Redémarrer automatiquement
+      if (event.error !== 'aborted') {
+        console.error('Speech recognition error:', event.error);
+      }
+      isRecognitionRunningRef.current = false;
+      
+      if (event.error === 'no-speech' && enabled && !isActive) {
         setTimeout(() => {
-          if (enabled && !isActive && recognitionRef.current) {
+          if (enabled && !isActive && recognitionRef.current && !isRecognitionRunningRef.current) {
             try {
               recognitionRef.current.start();
             } catch (e) {
-              console.log('Recognition already started or stopped');
+              console.log('Recognition restart error:', e);
             }
           }
         }, 1000);
@@ -69,12 +77,16 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     };
 
     recognition.onend = () => {
-      if (enabled && !isActive) {
+      isRecognitionRunningRef.current = false;
+      
+      if (enabled && !isActive && !hasStartedListeningRef.current) {
         setTimeout(() => {
-          try {
-            recognition.start();
-          } catch (e) {
-            console.log('Recognition already started');
+          if (enabled && !isActive && recognitionRef.current && !isRecognitionRunningRef.current) {
+            try {
+              recognition.start();
+            } catch (e) {
+              console.log('Recognition restart error:', e);
+            }
           }
         }, 500);
       }
@@ -114,9 +126,11 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       setIsActive(true);
 
       // Arrêter la reconnaissance du wake word
-      if (recognitionRef.current) {
+      if (recognitionRef.current && isRecognitionRunningRef.current) {
         try {
           recognitionRef.current.stop();
+          isRecognitionRunningRef.current = false;
+          hasStartedListeningRef.current = false;
         } catch (e) {
           console.log('Stop recognition error:', e);
         }
@@ -182,11 +196,13 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     hasStartedListeningRef.current = false;
 
     // Redémarrer l'écoute du wake word
-    if (enabled && recognitionRef.current) {
+    if (enabled && recognitionRef.current && !isRecognitionRunningRef.current) {
       setTimeout(() => {
         try {
-          recognitionRef.current.start();
-          hasStartedListeningRef.current = true;
+          if (!isRecognitionRunningRef.current) {
+            recognitionRef.current.start();
+            hasStartedListeningRef.current = true;
+          }
         } catch (e) {
           console.log('Restart recognition error:', e);
         }
@@ -195,9 +211,10 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
   };
 
   const stopAllServices = () => {
-    if (recognitionRef.current) {
+    if (recognitionRef.current && isRecognitionRunningRef.current) {
       try {
         recognitionRef.current.stop();
+        isRecognitionRunningRef.current = false;
       } catch (e) {
         console.log('Stop recognition error:', e);
       }
