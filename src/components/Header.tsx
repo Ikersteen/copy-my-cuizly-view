@@ -1,24 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";  
-import { useState } from "react";
-import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Link } from "react-router-dom";  
 import { useTranslation } from "react-i18next";
-import { useLocalizedRoute } from "@/lib/routeTranslations";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Header = () => {
   const { t } = useTranslation();
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const navigate = useNavigate();
-  
-  // Get localized routes
-  const teamRoute = useLocalizedRoute('/team');
-  const termsRoute = useLocalizedRoute('/terms');
-  const privacyRoute = useLocalizedRoute('/privacy');
-  const cookiesRoute = useLocalizedRoute('/cookies');
-  const legalRoute = useLocalizedRoute('/legal');
 
   // Utilise le nouveau logo (icône)
   const getLogoSrc = () => {
@@ -45,7 +30,7 @@ const Header = () => {
 
           {/* Navigation Desktop - Removed */}
 
-          {/* Language + Assistant Logo + Mobile Menu */}
+          {/* Language + Assistant Logo */}
           <div className="flex items-center gap-4 flex-shrink-0">
             <LanguageSwitcher />
             
@@ -59,82 +44,6 @@ const Header = () => {
                 className="h-[35px] w-auto transition-all duration-300 group-hover:opacity-80"
               />
             </Link>
-            
-            {/* Mobile Menu */}
-            <div className="lg:hidden">
-              <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                <SheetTrigger asChild>
-                  <Button 
-                    size="sm" 
-                    className="bg-foreground hover:bg-foreground/90 text-background rounded-full h-9 w-9 p-0"
-                  >
-                    <Menu className="h-5 w-5" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background z-50">
-                  <nav className="flex flex-col gap-4 mt-8">
-                    <Accordion type="single" collapsible className="w-full">
-                      {/* Entreprise */}
-                      <AccordionItem value="company">
-                        <AccordionTrigger className="text-lg font-semibold hover:no-underline">
-                          {t('navigation.company')}
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="flex flex-col gap-2 pl-4">
-                            <Link 
-                              to={teamRoute} 
-                              onClick={() => setIsSheetOpen(false)}
-                              className="py-2 hover:text-primary transition-colors"
-                            >
-                              {t('navigation.team')}
-                            </Link>
-                            <Link 
-                              to={legalRoute} 
-                              onClick={() => setIsSheetOpen(false)}
-                              className="py-2 hover:text-primary transition-colors"
-                            >
-                              {t('navigation.legal')}
-                            </Link>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-
-                      {/* Légal */}
-                      <AccordionItem value="legal">
-                        <AccordionTrigger className="text-lg font-semibold hover:no-underline">
-                          {t('navigation.legalMenu')}
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="flex flex-col gap-2 pl-4">
-                            <Link 
-                              to={termsRoute} 
-                              onClick={() => setIsSheetOpen(false)}
-                              className="py-2 hover:text-primary transition-colors"
-                            >
-                              {t('navigation.terms')}
-                            </Link>
-                            <Link 
-                              to={privacyRoute} 
-                              onClick={() => setIsSheetOpen(false)}
-                              className="py-2 hover:text-primary transition-colors"
-                            >
-                              {t('navigation.privacy')}
-                            </Link>
-                            <Link 
-                              to={cookiesRoute} 
-                              onClick={() => setIsSheetOpen(false)}
-                              className="py-2 hover:text-primary transition-colors"
-                            >
-                              {t('navigation.cookies')}
-                            </Link>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </nav>
-                </SheetContent>
-              </Sheet>
-            </div>
           </div>
         </div>
       </div>
