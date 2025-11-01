@@ -35,7 +35,6 @@ const LanguageSwitcher = () => {
           <DropdownMenuItem
             key={lang}
             onClick={() => changeLanguage(lang)}
-            className={currentLanguage === lang ? 'bg-accent' : ''}
           >
             <span className="mr-2">{languageFlags[lang]}</span>
             {languageLabels[lang]}

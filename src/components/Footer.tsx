@@ -100,7 +100,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={mentionsRoute}
-                    className="text-cuizly-neutral transition-all duration-300 hover:bg-gradient-to-r hover:from-[#42c2f4] hover:via-[#cb44e3] hover:via-[#f9566e] hover:to-[#ffbala] hover:bg-clip-text hover:text-transparent"
+                    className="text-cuizly-neutral transition-colors duration-300 hover:text-cuizly-primary"
                   >
                     {t('footer.legal')}
                   </Link>
@@ -109,7 +109,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={privacyRoute}
-                    className="text-cuizly-neutral transition-all duration-300 hover:bg-gradient-to-r hover:from-[#42c2f4] hover:via-[#cb44e3] hover:via-[#f9566e] hover:to-[#ffbala] hover:bg-clip-text hover:text-transparent"
+                    className="text-cuizly-neutral transition-colors duration-300 hover:text-cuizly-primary"
                   >
                     {t('footer.privacy')}
                   </Link>
@@ -118,7 +118,7 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={termsRoute}
-                    className="text-cuizly-neutral transition-all duration-300 hover:bg-gradient-to-r hover:from-[#42c2f4] hover:via-[#cb44e3] hover:via-[#f9566e] hover:to-[#ffbala] hover:bg-clip-text hover:text-transparent"
+                    className="text-cuizly-neutral transition-colors duration-300 hover:text-cuizly-primary"
                   >
                     {t('footer.terms')}
                   </Link>
