@@ -38,7 +38,7 @@ const LanguageSwitcher = () => {
             className="cursor-pointer bg-transparent hover:bg-transparent focus:bg-transparent"
           >
             <span className="mr-2">{languageFlags[lang]}</span>
-            <span className="[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-clip:text]">
+            <span className="bg-clip-text text-transparent [background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
               {languageLabels[lang]}
             </span>
           </DropdownMenuItem>

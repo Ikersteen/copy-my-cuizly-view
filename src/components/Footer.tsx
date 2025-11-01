@@ -100,27 +100,33 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={mentionsRoute}
-                    className="[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-clip:text]"
+                    className="text-cuizly-neutral transition-all duration-300 group"
                   >
-                    {t('footer.legal')}
+                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
+                      {t('footer.legal')}
+                    </span>
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
                 <li>
                   <Link 
                     to={privacyRoute}
-                    className="[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-clip:text]"
+                    className="text-cuizly-neutral transition-all duration-300 group"
                   >
-                    {t('footer.privacy')}
+                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
+                      {t('footer.privacy')}
+                    </span>
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
                 <li>
                   <Link 
                     to={termsRoute}
-                    className="[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-clip:text]"
+                    className="text-cuizly-neutral transition-all duration-300 group"
                   >
-                    {t('footer.terms')}
+                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
+                      {t('footer.terms')}
+                    </span>
                   </Link>
                 </li>
               </ul>
