@@ -37,7 +37,7 @@ const LanguageSwitcher = () => {
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="h-9 px-2 gap-1.5 bg-transparent hover:bg-transparent group">
+          <Button variant="ghost" size="sm" className="h-9 px-2 gap-1.5 bg-transparent hover:bg-transparent focus:bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 group">
             <Globe className="h-5 w-5 group-hover:[stroke:url(#language-gradient)]" />
             <span className="text-sm font-medium uppercase group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">{currentLanguage}</span>
             <span className="sr-only">Change language</span>
