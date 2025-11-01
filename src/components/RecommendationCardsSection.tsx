@@ -665,8 +665,8 @@ export const RecommendationCardsSection = () => {
               <div className="flex flex-col items-center space-y-6">
                 <div className="p-4 rounded-full bg-background border border-muted/20">
                   <img 
-                    src="/lovable-uploads/cuizly-chef-icon.jpg" 
-                    alt="Cuizly Chef Icon" 
+                    src="/cuizly-icon-new.png" 
+                    alt="Cuizly" 
                     className="h-12 w-12 object-contain" 
                   />
                 </div>
