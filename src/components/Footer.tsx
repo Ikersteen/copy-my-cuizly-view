@@ -32,8 +32,8 @@ const Footer = () => {
               className="flex items-center space-x-3 group cursor-pointer"
             >
               <img 
-                src="/cuizly-assistant-logo.png" 
-                alt="Cuizly Assistant" 
+                src="/cuizly-logo-new.png" 
+                alt="Cuizly" 
                 className="h-[180px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </a>
