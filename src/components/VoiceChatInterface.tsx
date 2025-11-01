@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, Mic } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Switch } from "@/components/ui/switch";
 
 interface Message {
   id: string;
@@ -54,8 +55,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [voiceActivationEnabled, setVoiceActivationEnabled] = useState(false);
+  const [isListeningForWakeWord, setIsListeningForWakeWord] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const wakeWordRecognitionRef = useRef<any>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -622,6 +626,109 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }
   };
 
+  // Wake word detection
+  const startWakeWordDetection = async () => {
+    try {
+      console.log('Starting wake word detection...');
+      
+      // Check if browser supports SpeechRecognition
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        toast({
+          title: "Non supporté",
+          description: "La reconnaissance vocale n'est pas supportée sur ce navigateur.",
+          variant: "destructive"
+        });
+        setVoiceActivationEnabled(false);
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = i18n.language === 'fr' ? 'fr-FR' : 'en-US';
+
+      recognition.onstart = () => {
+        console.log('Wake word detection started');
+        setIsListeningForWakeWord(true);
+      };
+
+      recognition.onresult = (event: any) => {
+        const transcript = Array.from(event.results)
+          .map((result: any) => result[0].transcript.toLowerCase())
+          .join('');
+        
+        console.log('Heard:', transcript);
+
+        // Check for wake words
+        if (transcript.includes('cuizly') || transcript.includes('hey cuizly') || 
+            transcript.includes('hey couzly') || transcript.includes('couzly')) {
+          console.log('Wake word detected!');
+          toast({
+            title: "Cuizly activé",
+            description: "Je vous écoute...",
+          });
+          // Start conversation mode
+          if (!isConversationActive) {
+            startConversation();
+          }
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error('Wake word detection error:', event.error);
+        if (event.error === 'no-speech') {
+          // Restart if no speech detected
+          recognition.start();
+        }
+      };
+
+      recognition.onend = () => {
+        console.log('Wake word detection ended');
+        // Restart if still enabled
+        if (voiceActivationEnabled) {
+          setTimeout(() => recognition.start(), 100);
+        } else {
+          setIsListeningForWakeWord(false);
+        }
+      };
+
+      recognition.start();
+      wakeWordRecognitionRef.current = recognition;
+
+    } catch (error) {
+      console.error('Error starting wake word detection:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de démarrer la détection vocale.",
+        variant: "destructive"
+      });
+      setVoiceActivationEnabled(false);
+    }
+  };
+
+  const stopWakeWordDetection = () => {
+    if (wakeWordRecognitionRef.current) {
+      wakeWordRecognitionRef.current.stop();
+      wakeWordRecognitionRef.current = null;
+      setIsListeningForWakeWord(false);
+      console.log('Wake word detection stopped');
+    }
+  };
+
+  // Handle voice activation toggle
+  useEffect(() => {
+    if (voiceActivationEnabled) {
+      startWakeWordDetection();
+    } else {
+      stopWakeWordDetection();
+    }
+
+    return () => {
+      stopWakeWordDetection();
+    };
+  }, [voiceActivationEnabled, i18n.language]);
+
   const stopGeneration = () => {
     // Stop abort controller
     if (abortController) {
@@ -1026,23 +1133,43 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     <Plus className="w-5 h-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56">
-                  <DropdownMenuItem onClick={() => {
-                    console.log('Camera option clicked');
-                    cameraInputRef.current?.click();
-                  }}>
-                    <Camera className="mr-2 h-4 w-4" />
-                    <span>{t('voiceChat.takePhoto') || 'Prendre une photo'}</span>
+                <DropdownMenuContent 
+                  align="start" 
+                  className="w-56 bg-popover border-2 shadow-lg rounded-xl p-2"
+                  sideOffset={8}
+                >
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      console.log('Camera option clicked');
+                      cameraInputRef.current?.click();
+                    }}
+                    className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
+                  >
+                    <Camera className="mr-3 h-5 w-5" />
+                    <span className="font-medium">{t('voiceChat.takePhoto') || 'Prendre une photo'}</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => {
-                    console.log('Gallery option clicked');
-                    fileInputRef.current?.click();
-                  }}>
-                    <ImageIcon className="mr-2 h-4 w-4" />
-                    <span>{t('voiceChat.choosePhoto') || 'Choisir une photo'}</span>
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      console.log('Gallery option clicked');
+                      fileInputRef.current?.click();
+                    }}
+                    className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
+                  >
+                    <ImageIcon className="mr-3 h-5 w-5" />
+                    <span className="font-medium">{t('voiceChat.choosePhoto') || 'Choisir une photo'}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              {/* Voice activation toggle */}
+              <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-background/50">
+                <Mic className={`w-4 h-4 ${isListeningForWakeWord ? 'text-red-500 animate-pulse' : 'text-muted-foreground'}`} />
+                <Switch
+                  checked={voiceActivationEnabled}
+                  onCheckedChange={setVoiceActivationEnabled}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </div>
               <Input
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
