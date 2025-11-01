@@ -43,39 +43,7 @@ const Header = () => {
             </a>
           </div>
 
-          {/* Navigation Desktop - Centre */}
-          <nav className="hidden lg:flex items-center justify-center flex-1 gap-8">
-            <Link 
-              to={teamRoute}
-              className="text-foreground hover:text-cuizly-primary transition-colors font-medium"
-            >
-              {t('navigation.team')}
-            </Link>
-            <Link 
-              to={legalRoute}
-              className="text-foreground hover:text-cuizly-primary transition-colors font-medium"
-            >
-              {t('navigation.legal')}
-            </Link>
-            <Link 
-              to={privacyRoute}
-              className="text-foreground hover:text-cuizly-primary transition-colors font-medium"
-            >
-              {t('navigation.privacy')}
-            </Link>
-            <Link 
-              to={termsRoute}
-              className="text-foreground hover:text-cuizly-primary transition-colors font-medium"
-            >
-              {t('navigation.terms')}
-            </Link>
-            <Link 
-              to={cookiesRoute}
-              className="text-foreground hover:text-cuizly-primary transition-colors font-medium"
-            >
-              {t('navigation.cookies')}
-            </Link>
-          </nav>
+          {/* Navigation Desktop - Removed */}
 
           {/* Language + Assistant Logo + Mobile Menu */}
           <div className="flex items-center gap-4 flex-shrink-0">
