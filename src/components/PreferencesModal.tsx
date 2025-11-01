@@ -94,10 +94,13 @@ export const PreferencesModal = ({ open, onOpenChange }: PreferencesModalProps) 
 
   const handleSave = async () => {
     try {
-      console.log('Saving preferences:', localPrefs);
+      console.log('🔍 Saving preferences:', localPrefs);
+      console.log('🔍 voice_activation_enabled:', localPrefs.voice_activation_enabled);
       
       // Update main preferences (excluding legacy address fields)
       const { street, full_address, neighborhood, postal_code, ...prefsToSave } = localPrefs;
+      console.log('🔍 Preferences to save after filtering:', prefsToSave);
+      
       await updatePreferences(prefsToSave);
       
       // Handle delivery address changes
