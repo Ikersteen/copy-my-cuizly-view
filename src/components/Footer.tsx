@@ -91,7 +91,7 @@ const Footer = () => {
                     to={mentionsRoute}
                     className="text-cuizly-neutral hover:text-foreground transition-colors"
                   >
-                    Legal
+                    {t('footer.legal')}
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
@@ -100,7 +100,7 @@ const Footer = () => {
                     to={privacyRoute}
                     className="text-cuizly-neutral hover:text-foreground transition-colors"
                   >
-                    Privacy
+                    {t('footer.privacy')}
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
@@ -109,7 +109,7 @@ const Footer = () => {
                     to={termsRoute}
                     className="text-cuizly-neutral hover:text-foreground transition-colors"
                   >
-                    Terms
+                    {t('footer.terms')}
                   </Link>
                 </li>
               </ul>
