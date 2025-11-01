@@ -1021,7 +1021,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     type="button"
                     disabled={isProcessing}
                     variant="outline"
-                    className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
+                    className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0 transition-none hover:scale-100"
                   >
                     <Plus className="w-5 h-5" />
                   </Button>
