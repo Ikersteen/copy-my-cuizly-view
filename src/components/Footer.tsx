@@ -42,8 +42,12 @@ const Footer = () => {
               {t('footer.tagline')}
             </p>
             
-            {/* Social Links - Small and left aligned */}
-            <div className="w-full flex justify-start pl-4">
+            <div className="text-cuizly-neutral/80 text-xs sm:text-sm">
+              <span>© 2025 {t('footer.companyName')} {t('footer.allRightsReserved')}</span>
+            </div>
+
+            {/* Social Links (left) and Legal links (right) on same line */}
+            <div className="w-full flex justify-between items-center">
               <div className="flex items-center space-x-4">
                 <a 
                   href="https://www.instagram.com/cuizly"
@@ -80,14 +84,7 @@ const Footer = () => {
                   <Mail className="w-4 h-4" />
                 </a>
               </div>
-            </div>
 
-            <div className="text-cuizly-neutral/80 text-xs sm:text-sm">
-              <span>© 2025 {t('footer.companyName')} {t('footer.allRightsReserved')}</span>
-            </div>
-
-            {/* Legal links at the bottom */}
-            <div className="flex justify-center pt-2">
               <ul className="flex items-center gap-3 text-xs">
                 <li>
                   <Link 
