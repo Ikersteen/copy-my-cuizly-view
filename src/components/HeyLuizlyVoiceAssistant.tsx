@@ -168,11 +168,11 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       clearTimeout(inactivityTimeoutRef.current);
     }
 
-    // Démarrer un nouveau timeout de 3 secondes
+    // Démarrer un nouveau timeout de 15 secondes
     inactivityTimeoutRef.current = setTimeout(() => {
       console.log('⏱️ Inactivity timeout - deactivating assistant');
       deactivateVoiceAssistant();
-    }, 3000);
+    }, 15000);
   };
 
   const resetInactivityTimeout = () => {
@@ -232,16 +232,30 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
   };
 
   const handleRealtimeEvent = (event: any) => {
-    // Gérer les événements de l'API Realtime
-    if (event.type === 'response.audio_transcript.delta') {
+    console.log('Voice client event:', event.type);
+    
+    // Réinitialiser le timeout pour tout événement de conversation active
+    if (event.type === 'input_audio_buffer.speech_started' ||
+        event.type === 'input_audio_buffer.speech_stopped' ||
+        event.type === 'input_audio_buffer.committed' ||
+        event.type === 'response.created' ||
+        event.type === 'response.output_item.added' ||
+        event.type === 'response.content_part.added' ||
+        event.type === 'response.audio.delta' ||
+        event.type === 'response.audio_transcript.delta') {
+      resetInactivityTimeout();
+    }
+
+    // Gérer les états visuels
+    if (event.type === 'input_audio_buffer.speech_started') {
+      setState('listening');
+      console.log('👂 Utilisateur parle...');
+    } else if (event.type === 'response.audio.delta' || event.type === 'response.audio_transcript.delta') {
       setState('speaking');
-      resetInactivityTimeout(); // Réinitialiser le timeout quand l'assistant parle
-    } else if (event.type === 'response.audio_transcript.done') {
+      console.log('🗣️ Cuizly répond...');
+    } else if (event.type === 'response.audio.done' || event.type === 'response.audio_transcript.done') {
       setState('listening');
-      startInactivityTimeout(); // Redémarrer le timeout après la réponse
-    } else if (event.type === 'input_audio_buffer.speech_started') {
-      setState('listening');
-      resetInactivityTimeout(); // Réinitialiser le timeout quand l'utilisateur parle
+      console.log('✅ Réponse terminée - En écoute...');
     } else if (event.type === 'error') {
       console.error('Realtime error:', event);
       deactivateVoiceAssistant();
