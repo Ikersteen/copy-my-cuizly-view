@@ -26,7 +26,7 @@ const LanguageSwitcher = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="h-9 px-2 gap-1.5">
           <Globe className="h-5 w-5" />
-          <span className="text-sm font-medium uppercase">{currentLanguage}</span>
+          <span className="text-sm font-medium uppercase [background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-clip:text]">{currentLanguage}</span>
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>
