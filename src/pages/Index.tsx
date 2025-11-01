@@ -20,7 +20,7 @@ const Index = () => {
 
   return (
     <>
-      <div className="min-h-screen w-full bg-background relative flex items-center justify-center md:block">
+      <div className="min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block">
         <video 
           ref={videoRef}
           autoPlay 
