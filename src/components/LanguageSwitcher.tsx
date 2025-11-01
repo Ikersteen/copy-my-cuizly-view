@@ -30,17 +30,15 @@ const LanguageSwitcher = () => {
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-card border-border">
+      <DropdownMenuContent align="end">
         {availableLanguages.map((lang) => (
           <DropdownMenuItem
             key={lang}
             onClick={() => changeLanguage(lang)}
-            className="cursor-pointer bg-transparent hover:bg-transparent focus:bg-transparent"
+            className={currentLanguage === lang ? 'bg-accent' : ''}
           >
             <span className="mr-2">{languageFlags[lang]}</span>
-            <span className="bg-clip-text text-transparent [background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
-              {languageLabels[lang]}
-            </span>
+            {languageLabels[lang]}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

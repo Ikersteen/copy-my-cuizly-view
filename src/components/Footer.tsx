@@ -67,7 +67,7 @@ const Footer = () => {
                   className="group"
                   aria-label="Instagram"
                 >
-                  <Instagram className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)]" />
+                  <Instagram className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
                 </a>
                 <a 
                   href="https://linkedin.com/company/cuizly"
@@ -76,7 +76,7 @@ const Footer = () => {
                   className="group"
                   aria-label="LinkedIn"
                 >
-                  <Linkedin className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)]" />
+                  <Linkedin className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
                 </a>
                 <a 
                   href="https://x.com/cuizly"
@@ -85,14 +85,14 @@ const Footer = () => {
                   className="group"
                   aria-label="X (Twitter)"
                 >
-                  <Twitter className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)]" />
+                  <Twitter className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
                 </a>
                 <a 
                   href="mailto:support@cuizly.ca"
                   className="group"
                   aria-label="Email"
                 >
-                  <Mail className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)]" />
+                  <Mail className="w-4 h-4 text-cuizly-neutral group-hover:[stroke:url(#footer-gradient)] transition-all duration-300" />
                 </a>
               </div>
 
@@ -100,33 +100,27 @@ const Footer = () => {
                 <li>
                   <Link 
                     to={mentionsRoute}
-                    className="text-cuizly-neutral transition-all duration-300 group"
+                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   >
-                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
-                      {t('footer.legal')}
-                    </span>
+                    {t('footer.legal')}
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
                 <li>
                   <Link 
                     to={privacyRoute}
-                    className="text-cuizly-neutral transition-all duration-300 group"
+                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   >
-                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
-                      {t('footer.privacy')}
-                    </span>
+                    {t('footer.privacy')}
                   </Link>
                 </li>
                 <li className="text-cuizly-neutral/40">|</li>
                 <li>
                   <Link 
                     to={termsRoute}
-                    className="text-cuizly-neutral transition-all duration-300 group"
+                    className="text-cuizly-neutral transition-all duration-300 hover:[background:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] hover:[background-clip:text]"
                   >
-                    <span className="group-hover:bg-clip-text group-hover:text-transparent group-hover:[background-image:linear-gradient(90deg,#42c2f4,#cb44e3,#f9566e,#ffbala)]">
-                      {t('footer.terms')}
-                    </span>
+                    {t('footer.terms')}
                   </Link>
                 </li>
               </ul>
