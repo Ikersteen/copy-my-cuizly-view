@@ -8,9 +8,6 @@ const Footer = () => {
   const { t } = useTranslation();
   
   // Get localized routes
-  const featuresRoute = useLocalizedRoute('/features');
-  const pricingRoute = useLocalizedRoute('/pricing');
-  const contactRoute = useLocalizedRoute('/contact');
   const teamRoute = useLocalizedRoute('/team');
   const mentionsRoute = useLocalizedRoute('/mentions');
   const privacyRoute = useLocalizedRoute('/privacy');
@@ -31,46 +28,7 @@ const Footer = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
       
       <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center justify-items-center">
-          <div className="flex flex-col items-center">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.product')}</h3>
-            <ul className="space-y-2 sm:space-y-3 flex flex-col items-center">
-              <li>
-                <Link 
-                  to={featuresRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.features')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to={pricingRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.rates')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.support')}</h3>
-            <ul className="space-y-2 sm:space-y-3 flex flex-col items-center">
-              <li>
-                <Link 
-                  to={contactRoute}
-                  className="group relative text-cuizly-neutral hover:text-foreground text-xs sm:text-sm transition-all duration-300 hover:translate-x-1 inline-block hover:scale-105"
-                >
-                  {t('footer.contactUs')}
-                  <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-cuizly-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-          
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8 text-center justify-items-center">
           <div className="flex flex-col items-center">
             <h3 className="font-semibold text-foreground mb-3 sm:mb-4 text-sm sm:text-base tracking-wide">{t('footer.company')}</h3>
             <ul className="space-y-2 sm:space-y-3 flex flex-col items-center">
@@ -137,9 +95,9 @@ const Footer = () => {
               className="flex items-center space-x-3 group cursor-pointer"
             >
               <img 
-                src="/cuizly-logo-official.png" 
+                src="/cuizly-logo-new.png" 
                 alt="Cuizly" 
-                className="h-[100px] w-auto transition-all duration-300 group-hover:scale-110 dark:filter dark:invert dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+                className="h-[60px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </a>
             
@@ -171,6 +129,20 @@ const Footer = () => {
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5 sm:w-6 sm:h-6" />
+              </a>
+              <div className="w-px h-4 bg-border/50"></div>
+              <a 
+                href="https://www.tiktok.com/@cuizly"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cuizly-neutral hover:text-background transition-colors duration-300 flex items-center"
+                aria-label="TikTok"
+              >
+                <img 
+                  src="/lovable-uploads/tiktok-icon.png" 
+                  alt="TikTok" 
+                  className="w-5 h-5 sm:w-6 sm:h-6"
+                />
               </a>
               <div className="w-px h-4 bg-border/50"></div>
               <a 
