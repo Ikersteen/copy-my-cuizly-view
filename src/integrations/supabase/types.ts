@@ -912,6 +912,7 @@ export type Database = {
           street: string | null
           updated_at: string
           user_id: string
+          voice_activation_enabled: boolean | null
         }
         Insert: {
           allergens?: string[] | null
@@ -929,6 +930,7 @@ export type Database = {
           street?: string | null
           updated_at?: string
           user_id: string
+          voice_activation_enabled?: boolean | null
         }
         Update: {
           allergens?: string[] | null
@@ -946,6 +948,7 @@ export type Database = {
           street?: string | null
           updated_at?: string
           user_id?: string
+          voice_activation_enabled?: boolean | null
         }
         Relationships: []
       }
