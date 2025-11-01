@@ -42,16 +42,12 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     recognition.onresult = (event: any) => {
       const last = event.results.length - 1;
       const transcript = event.results[last][0].transcript.toLowerCase();
-      const confidence = event.results[last][0].confidence;
       
-      console.log('🎤 Entendu:', transcript, '(confiance:', confidence, ')');
-
       if (transcript.includes('hey cuizly') || 
           transcript.includes('hey cuisely') || 
           transcript.includes('ey cuizly') ||
           transcript.includes('hé cuizly') ||
           transcript.includes('et cuizly')) {
-        console.log('✅ Mot d\'activation détecté!');
         activateVoiceAssistant();
       }
     };
@@ -127,14 +123,14 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
       setState('listening');
       setIsActive(true);
 
-      // Arrêter la reconnaissance du wake word
+      // Arrêter la reconnaissance du wake word silencieusement
       if (recognitionRef.current && isRecognitionRunningRef.current) {
         try {
           recognitionRef.current.stop();
           isRecognitionRunningRef.current = false;
           hasStartedListeningRef.current = false;
         } catch (e) {
-          console.log('Stop recognition error:', e);
+          // Ignore
         }
       }
 
