@@ -1327,7 +1327,7 @@
     "mealTimes": "Favorite meal times",
     "mealTimesDesc": "When do you usually order?",
     "voiceAssistant": "Voice Assistant",
-    "heyCuizly": "Enable \"Hey Cuizly\"",
+    "heyCuizly": "Enable \"Cuizly Voice Assistant (CVA)\"",
     "heyCuizlyDesc": "Activate the voice assistant by saying \"Hey Cuizly\"",
     "notifications": "Notification preferences",
     "pushNotifications": "Push notifications",
