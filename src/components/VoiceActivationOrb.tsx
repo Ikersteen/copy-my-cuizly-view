@@ -6,6 +6,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { EyeOff, XCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface VoiceActivationOrbProps {
   state: 'idle' | 'listening' | 'speaking';
@@ -15,6 +16,8 @@ interface VoiceActivationOrbProps {
 }
 
 const VoiceActivationOrb: React.FC<VoiceActivationOrbProps> = ({ state, onClick, onHideForOneHour, onDisable }) => {
+  const { t } = useTranslation();
+  
   const getOrbSize = () => {
     switch (state) {
       case 'idle': return 'w-12 h-12';
@@ -75,7 +78,7 @@ const VoiceActivationOrb: React.FC<VoiceActivationOrbProps> = ({ state, onClick,
           className="cursor-pointer"
         >
           <EyeOff className="mr-2 h-4 w-4" />
-          <span>Cacher pendant 1 heure</span>
+          <span>{t('voiceAssistant.hideFor1Hour')}</span>
         </ContextMenuItem>
         <ContextMenuItem
           onClick={(e) => {
@@ -85,7 +88,7 @@ const VoiceActivationOrb: React.FC<VoiceActivationOrbProps> = ({ state, onClick,
           className="cursor-pointer text-destructive focus:text-destructive"
         >
           <XCircle className="mr-2 h-4 w-4" />
-          <span>Désactiver Cuizly</span>
+          <span>{t('voiceAssistant.disableCuizly')}</span>
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

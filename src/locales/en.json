@@ -1224,7 +1224,9 @@
     "reactivated": "Assistant reactivated",
     "assistantBack": "Cuizly is back and ready to help",
     "disabled": "Assistant disabled",
-    "disabledMessage": "You can reactivate it in your preferences"
+    "disabledMessage": "You can reactivate it in your preferences",
+    "hideFor1Hour": "Hide for 1 hour",
+    "disableCuizly": "Disable Cuizly"
   },
   "voiceChat": {
     "title": "Voice Assistant",

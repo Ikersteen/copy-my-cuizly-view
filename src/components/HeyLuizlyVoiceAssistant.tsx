@@ -123,6 +123,15 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     if (isActive) return;
 
     try {
+      // Si caché, annuler le timeout et réafficher
+      if (isHidden) {
+        if (hideTimeoutRef.current) {
+          clearTimeout(hideTimeoutRef.current);
+          hideTimeoutRef.current = null;
+        }
+        setIsHidden(false);
+      }
+
       setState('listening');
       setIsActive(true);
 
@@ -310,7 +319,12 @@ const HeyLuizlyVoiceAssistant: React.FC<HeyLuizlyVoiceAssistantProps> = ({ enabl
     };
   }, []);
 
-  if (!enabled || isHidden) {
+  if (!enabled) {
+    return null;
+  }
+
+  // Si caché, ne pas afficher la boule mais garder la reconnaissance vocale active
+  if (isHidden) {
     return null;
   }
 

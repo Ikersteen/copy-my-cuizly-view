@@ -1180,7 +1180,9 @@
     "reactivated": "Assistant réactivé",
     "assistantBack": "Cuizly est de retour et prêt à vous aider",
     "disabled": "Assistant désactivé",
-    "disabledMessage": "Vous pouvez le réactiver dans vos préférences"
+    "disabledMessage": "Vous pouvez le réactiver dans vos préférences",
+    "hideFor1Hour": "Cacher pendant 1 heure",
+    "disableCuizly": "Désactiver Cuizly"
   },
   "voiceChat": {
     "title": "Assistant Vocal",
