@@ -33,9 +33,9 @@ const Footer = () => {
         }}></div>
       </div>
       
-      <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12">
+      <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
         
-        <div className="relative mt-8 sm:mt-12 pt-8 sm:pt-10">
+        <div className="relative mt-4 sm:mt-6 pt-4 sm:pt-6">
           
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
             <a 
