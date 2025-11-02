@@ -43,7 +43,8 @@ const Index = () => {
           playsInline
           className="w-full h-[50vh] md:h-screen object-cover"
         >
-          <source src="/cuizly-products-video.mp4" type="video/mp4" />
+          <source src="/cuizly-products-video-new.mov" type="video/quicktime" />
+          <source src="/cuizly-products-video-new.mov" type="video/mp4" />
         </video>
         <Button
           onClick={toggleVideo}
