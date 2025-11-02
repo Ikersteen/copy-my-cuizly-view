@@ -933,8 +933,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="h-full bg-background flex flex-col">
-      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full min-h-0 relative">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
+      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full relative overflow-hidden">
         <div 
           ref={messagesContainerRef}
           className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 space-y-6"

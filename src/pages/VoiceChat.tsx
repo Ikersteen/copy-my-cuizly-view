@@ -2,11 +2,7 @@ import React from 'react';
 import VoiceChatInterface from '@/components/VoiceChatInterface';
 
 const VoiceChat = () => {
-  return (
-    <div className="h-screen overflow-hidden">
-      <VoiceChatInterface />
-    </div>
-  );
+  return <VoiceChatInterface />;
 };
 
 export default VoiceChat;
