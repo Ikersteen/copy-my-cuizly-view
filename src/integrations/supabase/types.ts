@@ -126,6 +126,7 @@ export type Database = {
           conversation_id: string
           created_at: string
           id: string
+          image_url: string | null
           message_type: string
           role: string
           transcription: string | null
@@ -136,6 +137,7 @@ export type Database = {
           conversation_id: string
           created_at?: string
           id?: string
+          image_url?: string | null
           message_type?: string
           role: string
           transcription?: string | null
@@ -146,6 +148,7 @@ export type Database = {
           conversation_id?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           message_type?: string
           role?: string
           transcription?: string | null

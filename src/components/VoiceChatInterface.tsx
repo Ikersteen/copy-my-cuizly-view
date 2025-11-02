@@ -825,26 +825,64 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       }
     }
     
-    const userMessageId = Date.now().toString();
-    const userMessage: Message = {
-      id: userMessageId,
-      type: 'user',
-      content: message || '',
-      timestamp: new Date(),
-      isAudio: false,
-      imageUrl: imageBase64
-    };
-    
-    setMessages(prev => [...prev, userMessage]);
-    
-    // Save user message to database (without the base64 image data to save space)
-    if (conversationId) {
-      await saveMessage(
-        conversationId, 
-        'user', 
-        message || t('voiceChat.imageUploaded') || 'Image envoyée', 
-        'text'
-      );
+    try {
+      // Upload image to Supabase Storage
+      const base64Data = imageBase64.split(',')[1];
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      
+      const fileName = `${userId || 'anonymous'}_${Date.now()}.jpg`;
+      const filePath = `${fileName}`;
+      
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('chat-images')
+        .upload(filePath, blob);
+      
+      if (uploadError) throw uploadError;
+      
+      // Get public URL for the uploaded image
+      const { data: { publicUrl } } = supabase.storage
+        .from('chat-images')
+        .getPublicUrl(filePath);
+      
+      const userMessageId = Date.now().toString();
+      const userMessage: Message = {
+        id: userMessageId,
+        type: 'user',
+        content: message || '',
+        timestamp: new Date(),
+        isAudio: false,
+        imageUrl: publicUrl
+      };
+      
+      setMessages(prev => [...prev, userMessage]);
+      
+      // Save user message to database with the image URL
+      if (conversationId) {
+        await saveMessage(
+          conversationId, 
+          'user', 
+          message || t('voiceChat.imageUploaded') || 'Image envoyée', 
+          'text',
+          undefined,
+          undefined,
+          publicUrl
+        );
+      }
+    } catch (uploadError) {
+      console.error('Error uploading image:', uploadError);
+      toast({
+        title: t('errors.title'),
+        description: 'Erreur lors de l\'upload de l\'image',
+        variant: "destructive",
+      });
+      setIsProcessing(false);
+      return;
     }
     
     setIsThinking(true);

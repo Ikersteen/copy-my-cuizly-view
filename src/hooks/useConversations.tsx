@@ -10,6 +10,7 @@ export interface ConversationMessage {
   message_type?: 'text' | 'audio' | 'system';
   audio_url?: string;
   transcription?: string;
+  image_url?: string;
   created_at: string;
 }
 
@@ -135,7 +136,8 @@ export const useConversations = () => {
     content: string,
     messageType: 'text' | 'audio' | 'system' = 'text',
     audioUrl?: string,
-    transcription?: string
+    transcription?: string,
+    imageUrl?: string
   ) => {
     try {
       const { error } = await supabase
@@ -146,7 +148,8 @@ export const useConversations = () => {
           content,
           message_type: messageType,
           audio_url: audioUrl,
-          transcription: transcription
+          transcription: transcription,
+          image_url: imageUrl
         });
 
       if (error) throw error;
