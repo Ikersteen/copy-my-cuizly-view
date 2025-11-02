@@ -37,7 +37,7 @@ const Footer = () => {
         
         <div className="relative mt-4 sm:mt-6 pt-4 sm:pt-6">
           
-          <div className="flex flex-col items-center space-y-4 sm:space-y-6">
+          <div className="flex flex-col items-center space-y-2 sm:space-y-3">
             <a 
               href="/"
               className="flex items-center space-x-3 group cursor-pointer"
