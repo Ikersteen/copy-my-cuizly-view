@@ -136,7 +136,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [messages, isThinking, isSpeaking]);
 
-  // Scroll vers le bas seulement si l'utilisateur est déjà proche du bas
+  // Désactiver le scroll automatique - garder la question de l'utilisateur visible
   useEffect(() => {
     const container = messagesContainerRef.current;
     if (!container) return;
@@ -144,10 +144,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     const { scrollTop, scrollHeight, clientHeight } = container;
     const isNearBottom = scrollHeight - scrollTop - clientHeight < 150;
     
-    // Ne pas auto-scroll pour garder la question de l'utilisateur visible
-    // L'utilisateur peut utiliser le bouton de scroll manuel si nécessaire
-    setShowScrollIndicator(!isNearBottom && messages.length > 0);
-  }, [messages]);
+    // Afficher l'indicateur dès qu'il y a de nouveaux messages et que l'utilisateur n'est pas en bas
+    const hasActiveGeneration = isThinking || messages.some(msg => msg.isTyping) || isSpeaking;
+    setShowScrollIndicator(!isNearBottom && hasActiveGeneration);
+  }, [messages, isThinking, isSpeaking]);
 
   // Handle realtime voice messages
   const handleRealtimeMessage = (event: any) => {
