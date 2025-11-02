@@ -234,6 +234,7 @@ export type Database = {
       menus: {
         Row: {
           allergens: string[] | null
+          category: string | null
           created_at: string
           cuisine_type: string[] | null
           description: string | null
@@ -242,12 +243,14 @@ export type Database = {
           image_url: string | null
           is_active: boolean
           name: string
+          pdf_menu_url: string | null
           price: number | null
           restaurant_id: string
           updated_at: string
         }
         Insert: {
           allergens?: string[] | null
+          category?: string | null
           created_at?: string
           cuisine_type?: string[] | null
           description?: string | null
@@ -256,12 +259,14 @@ export type Database = {
           image_url?: string | null
           is_active?: boolean
           name: string
+          pdf_menu_url?: string | null
           price?: number | null
           restaurant_id: string
           updated_at?: string
         }
         Update: {
           allergens?: string[] | null
+          category?: string | null
           created_at?: string
           cuisine_type?: string[] | null
           description?: string | null
@@ -270,6 +275,7 @@ export type Database = {
           image_url?: string | null
           is_active?: boolean
           name?: string
+          pdf_menu_url?: string | null
           price?: number | null
           restaurant_id?: string
           updated_at?: string
@@ -376,6 +382,36 @@ export type Database = {
         }
         Relationships: []
       }
+      ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          restaurant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          restaurant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          restaurant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       restaurant_analytics: {
         Row: {
           created_at: string
@@ -413,6 +449,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      restaurant_holidays: {
+        Row: {
+          country: string
+          created_at: string
+          holiday_date: string
+          holiday_name: string
+          id: string
+          is_enabled: boolean
+          is_recurring: boolean
+          restaurant_id: string
+        }
+        Insert: {
+          country?: string
+          created_at?: string
+          holiday_date: string
+          holiday_name: string
+          id?: string
+          is_enabled?: boolean
+          is_recurring?: boolean
+          restaurant_id: string
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          holiday_date?: string
+          holiday_name?: string
+          id?: string
+          is_enabled?: boolean
+          is_recurring?: boolean
+          restaurant_id?: string
+        }
+        Relationships: []
       }
       restaurants: {
         Row: {
@@ -543,6 +612,27 @@ export type Database = {
           ip_address?: unknown
           user_agent?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_favorites: {
+        Row: {
+          created_at: string
+          id: string
+          restaurant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          restaurant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          restaurant_id?: string
+          user_id?: string
         }
         Relationships: []
       }
