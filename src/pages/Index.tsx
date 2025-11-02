@@ -35,13 +35,13 @@ const Index = () => {
   return (
     <>
       {/* Première vidéo - AI Powered */}
-      <div className="h-auto md:h-screen w-full bg-background relative flex items-center justify-center md:block py-4 md:py-0">
+      <div className="min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block">
         <video 
           autoPlay 
           loop 
           muted 
           playsInline
-          className="w-full h-auto md:h-screen object-contain"
+          className="w-full h-[50vh] md:h-screen object-contain"
         >
           <source src="/cuizly-ai-powered.mp4" type="video/mp4" />
         </video>
