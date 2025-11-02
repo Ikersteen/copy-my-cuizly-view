@@ -927,7 +927,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
         variant: "destructive",
       });
-      setMessages(prev => prev.filter(msg => msg.id !== userMessageId));
     } finally {
       setIsProcessing(false);
     }

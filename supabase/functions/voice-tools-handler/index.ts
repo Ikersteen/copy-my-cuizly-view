@@ -302,6 +302,113 @@ serve(async (req) => {
         }
         break;
 
+      case 'get_health_nutrition_advice':
+        const { health_goal, dietary_restrictions: healthRestrictions, current_diet, health_concerns } = toolArgs;
+        
+        result.message = language === 'en'
+          ? `Here are personalized health and nutrition recommendations${health_goal ? ` for ${health_goal}` : ''}:`
+          : `Voici des recommandations santé et nutrition personnalisées${health_goal ? ` pour ${health_goal}` : ''} :`;
+        
+        result.health_advice = {
+          goal: health_goal,
+          key_recommendations: language === 'en' ? [
+            "Prioritize whole, unprocessed foods",
+            "Stay well hydrated (8-10 glasses of water daily)",
+            "Include protein in every meal for satiety",
+            "Consume colorful vegetables and fruits (5-7 servings/day)",
+            "Choose healthy fats (avocado, nuts, olive oil)",
+            "Limit added sugars and ultra-processed foods"
+          ] : [
+            "Privilégier les aliments entiers, non transformés",
+            "Bien s'hydrater (8-10 verres d'eau par jour)",
+            "Inclure des protéines à chaque repas pour la satiété",
+            "Consommer des légumes et fruits colorés (5-7 portions/jour)",
+            "Choisir des bonnes graisses (avocat, noix, huile d'olive)",
+            "Limiter les sucres ajoutés et aliments ultra-transformés"
+          ],
+          meal_suggestions: language === 'en' ? [
+            {
+              meal: "Breakfast",
+              suggestion: "Greek yogurt with berries, nuts and chia seeds",
+              benefits: "High protein, antioxidants, omega-3, sustained energy"
+            },
+            {
+              meal: "Lunch",
+              suggestion: "Quinoa bowl with grilled chicken, vegetables and tahini",
+              benefits: "Complete proteins, fiber, vitamins, minerals"
+            },
+            {
+              meal: "Dinner",
+              suggestion: "Baked salmon with sweet potato and broccoli",
+              benefits: "Omega-3, complex carbs, vitamins A and C"
+            },
+            {
+              meal: "Snacks",
+              suggestion: "Hummus with vegetable sticks or handful of almonds",
+              benefits: "Protein, fiber, healthy fats, long-lasting satiety"
+            }
+          ] : [
+            {
+              meal: "Petit-déjeuner",
+              suggestion: "Yogourt grec avec baies, noix et graines de chia",
+              benefits: "Riche en protéines, antioxydants, oméga-3, énergie durable"
+            },
+            {
+              meal: "Dîner",
+              suggestion: "Bol de quinoa avec poulet grillé, légumes et tahini",
+              benefits: "Protéines complètes, fibres, vitamines, minéraux"
+            },
+            {
+              meal: "Souper",
+              suggestion: "Saumon au four avec patate douce et brocoli",
+              benefits: "Oméga-3, glucides complexes, vitamines A et C"
+            },
+            {
+              meal: "Collations",
+              suggestion: "Houmous avec bâtonnets de légumes ou poignée d'amandes",
+              benefits: "Protéines, fibres, bonnes graisses, satiété durable"
+            }
+          ],
+          healthy_swaps: language === 'en' ? [
+            "White pasta → Whole wheat pasta or zucchini noodles",
+            "White bread → Whole grain bread or sprouted bread",
+            "Soda → Sparkling water with lemon or fruit infusion",
+            "Chips → Air-popped popcorn or roasted chickpeas",
+            "Candy → Fresh fruit or dark chocolate (70%+)",
+            "Cream sauce → Greek yogurt or cashew cream"
+          ] : [
+            "Pâtes blanches → Pâtes de blé entier ou nouilles de courgettes",
+            "Pain blanc → Pain de grains entiers ou pain germé",
+            "Boissons gazeuses → Eau pétillante au citron ou infusion de fruits",
+            "Chips → Pop-corn soufflé à l'air ou pois chiches rôtis",
+            "Bonbons → Fruits frais ou chocolat noir (70%+)",
+            "Sauce à la crème → Yogourt grec ou crème de cajou"
+          ],
+          tips: language === 'en' ? [
+            "Eat mindfully, slowly, listening to hunger cues",
+            "Prepare meals in advance to avoid unhealthy choices",
+            "Keep healthy snacks visible and accessible",
+            "Sleep 7-9 hours per night for optimal metabolism",
+            "Exercise regularly (150 min/week minimum)"
+          ] : [
+            "Manger en pleine conscience, lentement, à l'écoute de sa faim",
+            "Préparer ses repas à l'avance pour éviter les choix malsains",
+            "Garder des collations saines visibles et accessibles",
+            "Dormir 7-9h par nuit pour un métabolisme optimal",
+            "Faire de l'exercice régulièrement (150 min/semaine minimum)"
+          ]
+        };
+        
+        if (healthRestrictions) {
+          result.health_advice.adapted_for = healthRestrictions;
+        }
+        if (health_concerns) {
+          result.health_advice.considerations = language === 'en'
+            ? `Special attention to ${health_concerns}. Consult healthcare professional for personalized advice.`
+            : `Attention particulière à ${health_concerns}. Consulter un professionnel de santé pour conseils personnalisés.`;
+        }
+        break;
+
       case 'get_market_locations':
         const { store_type, specialty, neighborhood: marketNeighborhood } = toolArgs;
         

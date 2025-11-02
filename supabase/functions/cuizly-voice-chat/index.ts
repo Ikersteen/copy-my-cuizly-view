@@ -47,12 +47,24 @@ TES CAPACITÉS PRINCIPALES :
 - Recommander des marchés locaux et épiceries spécialisées ethniques
 - Partager des recettes et techniques culinaires internationales
 - Mémoriser les préférences utilisateur pour de meilleures recommandations
+- DONNER DES CONSEILS SANTÉ ET NUTRITION personnalisés pour adopter de bonnes habitudes alimentaires
+- Aider à atteindre des objectifs de santé (perte de poids, gain de masse, énergie, digestion, etc.)
+- Suggérer des alternatives saines aux plats préférés
+- Expliquer les bienfaits nutritionnels des aliments et recettes
 
 COUVERTURE GÉOGRAPHIQUE :
 Tu connais TOUTES les villes du Canada : Toronto, Vancouver, Calgary, Edmonton, Ottawa, Québec, Halifax, Winnipeg, Victoria, Saskatoon, Regina, et TOUTES les autres villes canadiennes, grandes ou petites.
 
 EXPERTISE CULINAIRE MONDIALE :
 Tu es expert en TOUTES les cuisines du monde : asiatique (chinoise, japonaise, coréenne, thaï, vietnamienne, indienne), européenne (française, italienne, espagnole, grecque), africaine (marocaine, éthiopienne, sénégalaise), américaine (mexicaine, brésilienne, péruvienne), et bien plus.
+
+EXPERTISE SANTÉ ET NUTRITION :
+- Tu es également expert en nutrition et santé alimentaire
+- Tu connais les valeurs nutritionnelles des aliments, les macronutriments (protéines, glucides, lipides)
+- Tu comprends les différents régimes alimentaires (méditerranéen, cétogène, végétarien, etc.)
+- Tu peux adapter tes recommandations selon les objectifs de santé (perte de poids, gain musculaire, meilleure énergie, digestion)
+- Tu suggères des alternatives saines sans sacrifier le plaisir gustatif
+- Tu expliques les bienfaits des aliments de manière simple et accessible
 
 INSTRUCTIONS CRITIQUES DE RÉFLEXION :
 - Si la demande de l'utilisateur est vague ou ambiguë, POSE DES QUESTIONS de clarification AVANT de répondre
@@ -133,12 +145,24 @@ YOUR MAIN CAPABILITIES:
 - Recommend local markets and ethnic specialty grocery stores
 - Share international recipes and cooking techniques
 - Remember user preferences for better recommendations
+- PROVIDE PERSONALIZED HEALTH AND NUTRITION ADVICE for better eating habits
+- Help achieve health goals (weight loss, muscle gain, energy, digestion, etc.)
+- Suggest healthy alternatives to favorite dishes
+- Explain nutritional benefits of foods and recipes
 
 GEOGRAPHICAL COVERAGE:
 You know ALL cities in Canada: Toronto, Vancouver, Calgary, Edmonton, Ottawa, Quebec City, Halifax, Winnipeg, Victoria, Saskatoon, Regina, and ALL other Canadian cities, big or small.
 
 WORLD CULINARY EXPERTISE:
 You are an expert in ALL world cuisines: Asian (Chinese, Japanese, Korean, Thai, Vietnamese, Indian), European (French, Italian, Spanish, Greek), African (Moroccan, Ethiopian, Senegalese), American (Mexican, Brazilian, Peruvian), and much more.
+
+HEALTH AND NUTRITION EXPERTISE:
+- You are also an expert in nutrition and dietary health
+- You know nutritional values of foods, macronutrients (proteins, carbohydrates, fats)
+- You understand different dietary approaches (Mediterranean, ketogenic, vegetarian, etc.)
+- You can adapt recommendations based on health goals (weight loss, muscle gain, better energy, digestion)
+- You suggest healthy alternatives without sacrificing taste pleasure
+- You explain food benefits in simple, accessible ways
 
 CRITICAL THINKING INSTRUCTIONS:
 - If the user's request is vague or ambiguous, ASK CLARIFYING QUESTIONS BEFORE responding
@@ -199,11 +223,11 @@ IMPORTANT: You must ALWAYS respond in English, it's the user's language.`;
 
     const systemPrompt = language === 'en' ? systemPromptEN : systemPromptFR;
 
-    // Build message history for context
+    // Build message history for context with improved memory (10 messages instead of 5)
     const messages = [
       { role: 'system', content: systemPrompt },
-      // Add conversation history for memory
-      ...conversationHistory.slice(-5).map((msg: any) => ({
+      // Add conversation history for better memory retention
+      ...conversationHistory.slice(-10).map((msg: any) => ({
         role: msg.type === 'user' ? 'user' : 'assistant',
         content: msg.content
       })),
@@ -311,6 +335,44 @@ IMPORTANT: You must ALWAYS respond in English, it's the user's language.`;
                     description: language === 'en'
                       ? "Preferred neighborhood or city anywhere in Canada"
                       : "Quartier ou ville préférée n'importe où au Canada"
+                  }
+                }
+              }
+            }
+          },
+          {
+            type: "function",
+            function: {
+              name: "get_health_nutrition_advice",
+              description: language === 'en'
+                ? "Get personalized health and nutrition advice for better eating habits"
+                : "Obtenir des conseils santé et nutrition personnalisés pour de meilleures habitudes alimentaires",
+              parameters: {
+                type: "object",
+                properties: {
+                  health_goal: {
+                    type: "string",
+                    description: language === 'en'
+                      ? "Health goal (weight loss, muscle gain, more energy, better digestion, etc.)"
+                      : "Objectif de santé (perte de poids, gain musculaire, plus d'énergie, meilleure digestion, etc.)"
+                  },
+                  dietary_restrictions: {
+                    type: "string",
+                    description: language === 'en'
+                      ? "Dietary restrictions or preferences (vegetarian, vegan, gluten-free, etc.)"
+                      : "Restrictions ou préférences alimentaires (végétarien, végétalien, sans gluten, etc.)"
+                  },
+                  current_diet: {
+                    type: "string",
+                    description: language === 'en'
+                      ? "Description of current diet or eating habits"
+                      : "Description du régime actuel ou des habitudes alimentaires"
+                  },
+                  health_concerns: {
+                    type: "string",
+                    description: language === 'en'
+                      ? "Specific health concerns (diabetes, high cholesterol, allergies, etc.)"
+                      : "Préoccupations de santé spécifiques (diabète, cholestérol élevé, allergies, etc.)"
                   }
                 }
               }
