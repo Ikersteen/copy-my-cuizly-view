@@ -884,7 +884,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   <div className={`${
                     message.type === 'user' 
                       ? 'rounded-3xl px-6 py-4 bg-primary text-primary-foreground' 
-                      : ''
+                      : 'rounded-3xl px-6 py-4 bg-muted'
                   } ${message.isProcessing ? 'animate-pulse' : ''}`}>
                     {message.isTyping && message.type === 'assistant' ? (
                       <TypewriterRichText 
