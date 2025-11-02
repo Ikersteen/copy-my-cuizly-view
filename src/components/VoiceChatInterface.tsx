@@ -526,10 +526,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       isAudio: false
     };
     
-    // Pour les utilisateurs anonymes: sauvegarder en BD mais NE PAS afficher
-    if (!isAnonymous) {
-      setMessages(prev => [...prev, userMessage]);
-    }
+    setMessages(prev => [...prev, userMessage]);
     
     // Save user message to database (even for anonymous users)
     if (conversationId) {
@@ -577,27 +574,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         isTyping: true
       };
       
-      // Pour les utilisateurs anonymes: afficher temporairement puis effacer
-      if (isAnonymous) {
-        setMessages(prev => [...prev, assistantMessage]);
-        
-        // Sauvegarder en BD
-        if (conversationId) {
-          await saveMessage(conversationId, 'assistant', aiResponse, 'text');
-        }
-        
-        // Effacer l'interface après 5 secondes pour permettre la lecture
-        setTimeout(() => {
-          setMessages([]);
-        }, 5000);
-      } else {
-        // Pour les utilisateurs connectés: afficher normalement
-        setMessages(prev => [...prev, assistantMessage]);
-        
-        // Save assistant message to database
-        if (conversationId) {
-          await saveMessage(conversationId, 'assistant', aiResponse, 'text');
-        }
+      setMessages(prev => [...prev, assistantMessage]);
+      
+      // Save assistant message to database
+      if (conversationId) {
+        await saveMessage(conversationId, 'assistant', aiResponse, 'text');
       }
 
     } catch (error) {
