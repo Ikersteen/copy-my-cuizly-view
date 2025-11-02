@@ -881,7 +881,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   </div>
                 ) : (
                   // Otherwise show normal message bubble
-                  <div className={`${message.isProcessing ? 'animate-pulse' : ''}`}>
+                  <div className={`${
+                    message.type === 'user' 
+                      ? 'rounded-3xl px-6 py-4 bg-primary text-primary-foreground' 
+                      : ''
+                  } ${message.isProcessing ? 'animate-pulse' : ''}`}>
                     {message.isTyping && message.type === 'assistant' ? (
                       <TypewriterRichText 
                         text={message.content}
