@@ -2,8 +2,10 @@ import { useRef, useState, useEffect } from "react";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Pause, Play } from "lucide-react";
+import { useAnonymousTracking } from "@/hooks/useAnonymousTracking";
 
 const Index = () => {
+  useAnonymousTracking('homepage');
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
 
