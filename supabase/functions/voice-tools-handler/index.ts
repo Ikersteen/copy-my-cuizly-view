@@ -363,6 +363,246 @@ serve(async (req) => {
         }
         break;
 
+      case 'get_health_nutrition_advice':
+        const { health_goal, dietary_restrictions: healthRestrictions, health_concern, meal_type } = toolArgs;
+        
+        result.message = language === 'en'
+          ? `Here are personalized health and nutrition recommendations${health_goal ? ` for ${health_goal}` : ''}:`
+          : `Voici des conseils santé et nutrition personnalisés${health_goal ? ` pour ${health_goal}` : ''} :`;
+        
+        const nutritionAdvice = {
+          health_goal: health_goal,
+          dietary_restrictions: healthRestrictions,
+          health_concern: health_concern,
+          meal_type: meal_type
+        };
+
+        // Conseils nutritionnels basés sur les objectifs
+        if (language === 'en') {
+          result.advice = {
+            general_tips: [
+              "🥗 Balance your meals with vegetables (50%), proteins (25%), and complex carbs (25%)",
+              "💧 Stay hydrated: drink at least 8 glasses of water per day",
+              "🍎 Prioritize whole, unprocessed foods over packaged foods",
+              "⏰ Eat at regular times to maintain stable energy levels"
+            ],
+            specific_recommendations: [],
+            foods_to_favor: [],
+            foods_to_limit: [],
+            healthy_habits: [
+              "Eat slowly and mindfully to improve digestion",
+              "Include fiber in every meal for better satiety",
+              "Plan your meals to avoid unhealthy impulse choices",
+              "Cook at home more often to control ingredients"
+            ]
+          };
+
+          // Recommandations selon l'objectif
+          if (health_goal) {
+            if (health_goal.toLowerCase().includes('weight loss') || health_goal.toLowerCase().includes('lose weight')) {
+              result.advice.specific_recommendations.push(
+                "Create a moderate caloric deficit (300-500 calories/day)",
+                "Focus on lean proteins to maintain muscle mass",
+                "Increase vegetable intake for satiety with fewer calories",
+                "Avoid sugary drinks and opt for water or herbal tea"
+              );
+              result.advice.foods_to_favor.push("leafy greens", "lean proteins (chicken, fish)", "legumes", "berries");
+              result.advice.foods_to_limit.push("refined sugars", "fried foods", "processed snacks", "alcohol");
+            } else if (health_goal.toLowerCase().includes('muscle') || health_goal.toLowerCase().includes('gain')) {
+              result.advice.specific_recommendations.push(
+                "Increase protein intake to 1.6-2.2g per kg of body weight",
+                "Eat in a moderate caloric surplus (200-300 calories/day)",
+                "Distribute protein throughout the day (every 3-4 hours)",
+                "Include complex carbs post-workout for recovery"
+              );
+              result.advice.foods_to_favor.push("eggs", "chicken breast", "Greek yogurt", "nuts", "oats", "sweet potatoes");
+              result.advice.foods_to_limit.push("empty calories", "excessive alcohol", "processed meats");
+            } else if (health_goal.toLowerCase().includes('energy') || health_goal.toLowerCase().includes('boost')) {
+              result.advice.specific_recommendations.push(
+                "Eat complex carbs for sustained energy",
+                "Include iron-rich foods to combat fatigue",
+                "Maintain stable blood sugar with regular meals",
+                "Get enough B vitamins from whole grains and vegetables"
+              );
+              result.advice.foods_to_favor.push("whole grains", "bananas", "nuts", "spinach", "lentils", "citrus fruits");
+              result.advice.foods_to_limit.push("refined sugars", "caffeine excess", "heavy meals");
+            } else if (health_goal.toLowerCase().includes('digestion')) {
+              result.advice.specific_recommendations.push(
+                "Increase fiber intake gradually to 25-30g/day",
+                "Include probiotic foods for gut health",
+                "Stay well hydrated to aid digestion",
+                "Eat smaller, more frequent meals if needed"
+              );
+              result.advice.foods_to_favor.push("yogurt", "kefir", "kimchi", "whole grains", "apples", "ginger");
+              result.advice.foods_to_limit.push("fried foods", "dairy if intolerant", "carbonated drinks", "spicy foods if sensitive");
+            }
+          }
+
+          // Recommandations selon les restrictions alimentaires
+          if (healthRestrictions && healthRestrictions.length > 0) {
+            if (healthRestrictions.includes('vegetarian') || healthRestrictions.includes('vegan')) {
+              result.advice.specific_recommendations.push(
+                "Ensure adequate protein from plant sources (legumes, tofu, tempeh)",
+                "Supplement with B12 if vegan (essential for nerve health)",
+                "Include iron-rich plant foods with vitamin C for better absorption",
+                "Consider omega-3 from flaxseeds, chia seeds, or algae supplements"
+              );
+            }
+            if (healthRestrictions.includes('gluten-free')) {
+              result.advice.specific_recommendations.push(
+                "Focus on naturally gluten-free whole grains (quinoa, rice, buckwheat)",
+                "Ensure adequate fiber from fruits, vegetables, and gluten-free grains",
+                "Check labels carefully for hidden gluten",
+                "Consider B vitamin supplementation if needed"
+              );
+            }
+          }
+
+          // Recommandations selon les préoccupations santé
+          if (health_concern) {
+            if (health_concern.toLowerCase().includes('diabetes')) {
+              result.advice.specific_recommendations.push(
+                "Choose low glycemic index foods to stabilize blood sugar",
+                "Monitor carbohydrate portions at each meal",
+                "Include fiber to slow sugar absorption",
+                "Regular meal timing is crucial for blood sugar control"
+              );
+              result.advice.foods_to_favor.push("non-starchy vegetables", "legumes", "whole grains", "lean proteins");
+              result.advice.foods_to_limit.push("refined sugars", "white bread", "sugary drinks", "processed carbs");
+            } else if (health_concern.toLowerCase().includes('pressure') || health_concern.toLowerCase().includes('hypertension')) {
+              result.advice.specific_recommendations.push(
+                "Reduce sodium intake to less than 2300mg/day",
+                "Follow DASH diet principles (fruits, vegetables, low-fat dairy)",
+                "Increase potassium-rich foods to balance sodium",
+                "Limit processed foods which are high in hidden sodium"
+              );
+              result.advice.foods_to_favor.push("bananas", "leafy greens", "beets", "garlic", "low-fat dairy");
+              result.advice.foods_to_limit.push("salt", "processed meats", "canned soups", "fast food");
+            } else if (health_concern.toLowerCase().includes('cholesterol')) {
+              result.advice.specific_recommendations.push(
+                "Increase soluble fiber intake (oats, beans, apples)",
+                "Include omega-3 fatty acids from fish or plant sources",
+                "Choose lean proteins and limit saturated fats",
+                "Add plant sterols/stanols to help block cholesterol absorption"
+              );
+              result.advice.foods_to_favor.push("oats", "fatty fish", "nuts", "avocado", "olive oil", "legumes");
+              result.advice.foods_to_limit.push("saturated fats", "trans fats", "organ meats", "fried foods");
+            }
+          }
+        } else {
+          // Version française
+          result.advice = {
+            general_tips: [
+              "🥗 Équilibrez vos repas avec des légumes (50%), protéines (25%) et glucides complexes (25%)",
+              "💧 Restez hydraté : buvez au moins 8 verres d'eau par jour",
+              "🍎 Privilégiez les aliments entiers et non transformés plutôt que les produits industriels",
+              "⏰ Mangez à heures régulières pour maintenir un niveau d'énergie stable"
+            ],
+            specific_recommendations: [],
+            foods_to_favor: [],
+            foods_to_limit: [],
+            healthy_habits: [
+              "Mangez lentement et en pleine conscience pour améliorer la digestion",
+              "Incluez des fibres à chaque repas pour une meilleure satiété",
+              "Planifiez vos repas pour éviter les choix impulsifs malsains",
+              "Cuisinez plus souvent à la maison pour contrôler les ingrédients"
+            ]
+          };
+
+          if (health_goal) {
+            if (health_goal.toLowerCase().includes('perte de poids') || health_goal.toLowerCase().includes('maigrir')) {
+              result.advice.specific_recommendations.push(
+                "Créez un déficit calorique modéré (300-500 calories/jour)",
+                "Privilégiez les protéines maigres pour maintenir la masse musculaire",
+                "Augmentez la consommation de légumes pour la satiété avec moins de calories",
+                "Évitez les boissons sucrées et optez pour l'eau ou tisanes"
+              );
+              result.advice.foods_to_favor.push("légumes verts", "protéines maigres (poulet, poisson)", "légumineuses", "petits fruits");
+              result.advice.foods_to_limit.push("sucres raffinés", "fritures", "collations transformées", "alcool");
+            } else if (health_goal.toLowerCase().includes('muscle') || health_goal.toLowerCase().includes('masse')) {
+              result.advice.specific_recommendations.push(
+                "Augmentez l'apport en protéines à 1,6-2,2g par kg de poids corporel",
+                "Mangez avec un surplus calorique modéré (200-300 calories/jour)",
+                "Répartissez les protéines tout au long de la journée (toutes les 3-4h)",
+                "Incluez des glucides complexes après l'entraînement pour la récupération"
+              );
+              result.advice.foods_to_favor.push("œufs", "poulet", "yogourt grec", "noix", "avoine", "patates douces");
+              result.advice.foods_to_limit.push("calories vides", "alcool excessif", "charcuteries");
+            } else if (health_goal.toLowerCase().includes('énergie') || health_goal.toLowerCase().includes('boost')) {
+              result.advice.specific_recommendations.push(
+                "Consommez des glucides complexes pour une énergie durable",
+                "Incluez des aliments riches en fer pour combattre la fatigue",
+                "Maintenez une glycémie stable avec des repas réguliers",
+                "Assurez un apport suffisant en vitamines B via céréales et légumes"
+              );
+              result.advice.foods_to_favor.push("grains entiers", "bananes", "noix", "épinards", "lentilles", "agrumes");
+              result.advice.foods_to_limit.push("sucres raffinés", "excès de caféine", "repas lourds");
+            } else if (health_goal.toLowerCase().includes('digestion')) {
+              result.advice.specific_recommendations.push(
+                "Augmentez graduellement l'apport en fibres à 25-30g/jour",
+                "Incluez des aliments probiotiques pour la santé intestinale",
+                "Restez bien hydraté pour faciliter la digestion",
+                "Mangez de plus petits repas plus fréquents si nécessaire"
+              );
+              result.advice.foods_to_favor.push("yogourt", "kéfir", "kimchi", "grains entiers", "pommes", "gingembre");
+              result.advice.foods_to_limit.push("fritures", "produits laitiers si intolérance", "boissons gazeuses", "aliments épicés si sensible");
+            }
+          }
+
+          if (healthRestrictions && healthRestrictions.length > 0) {
+            if (healthRestrictions.includes('végétarien') || healthRestrictions.includes('végétalien') || 
+                healthRestrictions.includes('vegetarian') || healthRestrictions.includes('vegan')) {
+              result.advice.specific_recommendations.push(
+                "Assurez un apport adéquat en protéines végétales (légumineuses, tofu, tempeh)",
+                "Supplémentez en B12 si végétalien (essentiel pour la santé nerveuse)",
+                "Incluez des aliments riches en fer avec vitamine C pour meilleure absorption",
+                "Considérez les oméga-3 des graines de lin, chia ou suppléments d'algues"
+              );
+            }
+            if (healthRestrictions.includes('sans gluten') || healthRestrictions.includes('gluten-free')) {
+              result.advice.specific_recommendations.push(
+                "Privilégiez les grains entiers naturellement sans gluten (quinoa, riz, sarrasin)",
+                "Assurez un apport adéquat en fibres via fruits, légumes et grains sans gluten",
+                "Vérifiez soigneusement les étiquettes pour le gluten caché",
+                "Considérez une supplémentation en vitamines B si nécessaire"
+              );
+            }
+          }
+
+          if (health_concern) {
+            if (health_concern.toLowerCase().includes('diabète') || health_concern.toLowerCase().includes('diabetes')) {
+              result.advice.specific_recommendations.push(
+                "Choisissez des aliments à faible index glycémique pour stabiliser la glycémie",
+                "Surveillez les portions de glucides à chaque repas",
+                "Incluez des fibres pour ralentir l'absorption du sucre",
+                "Les horaires de repas réguliers sont cruciaux pour contrôler la glycémie"
+              );
+              result.advice.foods_to_favor.push("légumes non féculents", "légumineuses", "grains entiers", "protéines maigres");
+              result.advice.foods_to_limit.push("sucres raffinés", "pain blanc", "boissons sucrées", "glucides transformés");
+            } else if (health_concern.toLowerCase().includes('tension') || health_concern.toLowerCase().includes('hypertension') ||
+                       health_concern.toLowerCase().includes('pressure')) {
+              result.advice.specific_recommendations.push(
+                "Réduisez l'apport en sodium à moins de 2300mg/jour",
+                "Suivez les principes du régime DASH (fruits, légumes, produits laitiers faibles en gras)",
+                "Augmentez les aliments riches en potassium pour équilibrer le sodium",
+                "Limitez les aliments transformés riches en sodium caché"
+              );
+              result.advice.foods_to_favor.push("bananes", "légumes verts", "betteraves", "ail", "produits laitiers faibles en gras");
+              result.advice.foods_to_limit.push("sel", "charcuteries", "soupes en conserve", "restauration rapide");
+            } else if (health_concern.toLowerCase().includes('cholestérol') || health_concern.toLowerCase().includes('cholesterol')) {
+              result.advice.specific_recommendations.push(
+                "Augmentez l'apport en fibres solubles (avoine, haricots, pommes)",
+                "Incluez des acides gras oméga-3 de poisson ou sources végétales",
+                "Choisissez des protéines maigres et limitez les graisses saturées",
+                "Ajoutez des stérols/stanols végétaux pour bloquer l'absorption du cholestérol"
+              );
+              result.advice.foods_to_favor.push("avoine", "poissons gras", "noix", "avocat", "huile d'olive", "légumineuses");
+              result.advice.foods_to_limit.push("graisses saturées", "gras trans", "abats", "fritures");
+            }
+          }
+        }
+        break;
+
       default:
         result = { message: "Outil non reconnu" };
     }
