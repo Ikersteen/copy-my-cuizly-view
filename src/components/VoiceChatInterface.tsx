@@ -867,15 +867,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <img 
                         src={message.imageUrl} 
                         alt="Uploaded food" 
-                        className="w-full h-auto"
+                        className="max-w-sm max-h-64 object-cover"
                       />
                     </div>
                     {message.content && (
-                      <div className={`rounded-3xl px-6 py-4 ${
-                        message.type === 'user' 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'bg-muted text-foreground'
-                      }`}>
+                      <div>
                         <RichTextRenderer 
                           content={message.content} 
                           className="text-base leading-relaxed"
@@ -885,11 +881,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   </div>
                 ) : (
                   // Otherwise show normal message bubble
-                  <div className={`rounded-3xl px-6 py-4 ${
-                    message.type === 'user' 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-muted text-foreground'
-                  } ${message.isProcessing ? 'animate-pulse' : ''}`}>
+                  <div className={`${message.isProcessing ? 'animate-pulse' : ''}`}>
                     {message.isTyping && message.type === 'assistant' ? (
                       <TypewriterRichText 
                         text={message.content}
@@ -932,7 +924,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           {isThinking && (
             <div className="flex justify-start">
               <div className="max-w-[85%]">
-                <div className="rounded-3xl px-6 py-4 bg-muted text-foreground">
+                <div>
                   <ThinkingIndicator className="py-2" />
                 </div>
               </div>
