@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, Copy, Check } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -57,7 +57,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
-  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -736,21 +735,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const copyMessage = async (content: string, messageId: string) => {
-    try {
-      await navigator.clipboard.writeText(content);
-      setCopiedMessageId(messageId);
-      setTimeout(() => setCopiedMessageId(null), 2000);
-    } catch (error) {
-      console.error('Failed to copy message:', error);
-      toast({
-        title: t('errors.title'),
-        description: 'Impossible de copier le message',
-        variant: "destructive",
-      });
-    }
-  };
-
   // Compress and resize image
   const compressImage = (base64: string, maxWidth = 512, maxHeight = 512, quality = 0.6): Promise<string> => {
     return new Promise((resolve) => {
@@ -974,9 +958,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} group`}
+              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[85%] w-full`}>
+              <div className={`max-w-[85%]`}>
                 {message.imageUrl ? (
                   // If message has image, show image and optional text below
                   <div className="space-y-2">
@@ -988,84 +972,52 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       />
                     </div>
                     {message.content && (
-                      <div className="relative">
-                        <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted w-fit' : ''}>
-                          <RichTextRenderer 
-                            content={message.content} 
-                            className="text-base leading-relaxed"
-                          />
-                        </div>
-                        {!message.isTyping && !message.isProcessing && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyMessage(message.content, message.id)}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity absolute -bottom-8 right-0 h-6 px-2"
-                          >
-                            {copiedMessageId === message.id ? (
-                              <Check className="w-3.5 h-3.5" />
-                            ) : (
-                              <Copy className="w-3.5 h-3.5" />
-                            )}
-                          </Button>
-                        )}
+                      <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted w-fit' : ''}>
+                        <RichTextRenderer 
+                          content={message.content} 
+                          className="text-base leading-relaxed"
+                        />
                       </div>
                     )}
                   </div>
                 ) : (
                   // Otherwise show normal message bubble
-                  <div className="relative">
-                    <div className={`${
-                      message.type === 'user' 
-                        ? 'rounded-3xl px-6 py-4 bg-muted w-fit' 
-                        : ''
-                     } ${message.isProcessing ? 'animate-pulse' : ''}`}>
-                      {message.isTyping && message.type === 'assistant' ? (
-                        <TypewriterRichText 
-                          text={message.content}
-                          speed={20}
-                          className="text-base leading-relaxed"
-                          shouldStop={shouldStopTyping}
-                          onComplete={() => {
-                            setMessages(prev => prev.map(msg => 
-                              msg.id === message.id 
-                                ? { ...msg, isTyping: false }
-                                : msg
-                            ));
-                          }}
-                          onStopped={(partialText) => handleTypewriterStop(partialText, message.id)}
-                        />
-                      ) : (
-                        <RichTextRenderer 
-                          content={message.content} 
-                          className="text-base leading-relaxed"
-                        />
-                      )}
-                      {message.isAudio && (
-                        <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
-                          <Volume2 className="w-3 h-3" />
-                          <span>{t('voiceChat.voiceMessage')}</span>
-                        </div>
-                      )}
-                      {message.isProcessing && (
-                        <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
-                          <ThinkingIndicator />
-                        </div>
-                      )}
-                    </div>
-                    {!message.isTyping && !message.isProcessing && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyMessage(message.content, message.id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity absolute -bottom-8 right-0 h-6 px-2"
-                      >
-                        {copiedMessageId === message.id ? (
-                          <Check className="w-3.5 h-3.5" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </Button>
+                  <div className={`${
+                    message.type === 'user' 
+                      ? 'rounded-3xl px-6 py-4 bg-muted w-fit' 
+                      : ''
+                   } ${message.isProcessing ? 'animate-pulse' : ''}`}>
+                    {message.isTyping && message.type === 'assistant' ? (
+                      <TypewriterRichText 
+                        text={message.content}
+                        speed={20}
+                        className="text-base leading-relaxed"
+                        shouldStop={shouldStopTyping}
+                        onComplete={() => {
+                          setMessages(prev => prev.map(msg => 
+                            msg.id === message.id 
+                              ? { ...msg, isTyping: false }
+                              : msg
+                          ));
+                        }}
+                        onStopped={(partialText) => handleTypewriterStop(partialText, message.id)}
+                      />
+                    ) : (
+                      <RichTextRenderer 
+                        content={message.content} 
+                        className="text-base leading-relaxed"
+                      />
+                    )}
+                    {message.isAudio && (
+                      <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
+                        <Volume2 className="w-3 h-3" />
+                        <span>{t('voiceChat.voiceMessage')}</span>
+                      </div>
+                    )}
+                    {message.isProcessing && (
+                      <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
+                        <ThinkingIndicator />
+                      </div>
                     )}
                   </div>
                 )}
