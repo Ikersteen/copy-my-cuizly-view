@@ -33,9 +33,9 @@ const Footer = () => {
         }}></div>
       </div>
       
-      <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
+      <div className="relative max-w-6xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4">
         
-        <div className="relative mt-4 sm:mt-6 pt-4 sm:pt-6">
+        <div className="relative mt-2 sm:mt-4 pt-2 sm:pt-4">
           
           <div className="flex flex-col items-center space-y-2 sm:space-y-3">
             <a 
@@ -45,7 +45,7 @@ const Footer = () => {
               <img 
                 src="/cuizly-logo-colorful.png" 
                 alt="Cuizly" 
-                className="h-[280px] w-auto transition-all duration-300 group-hover:scale-110"
+                className="h-[160px] sm:h-[200px] md:h-[280px] w-auto transition-all duration-300 group-hover:scale-110"
               />
             </a>
             
