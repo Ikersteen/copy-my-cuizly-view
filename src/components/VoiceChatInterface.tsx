@@ -871,7 +871,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       />
                     </div>
                     {message.content && (
-                      <div>
+                      <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted' : ''}>
                         <RichTextRenderer 
                           content={message.content} 
                           className="text-base leading-relaxed"
