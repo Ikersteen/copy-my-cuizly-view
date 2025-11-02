@@ -1093,29 +1093,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
             )}
             
-            {/* Disclaimer */}
-            <p className="text-center text-xs text-muted-foreground px-2">
-              {i18n.language === 'fr' ? (
-                <>
-                  En discutant avec Cuizly Assistant, vous acceptez nos{' '}
-                  <a href="/terms" className="underline hover:text-foreground transition-colors">conditions</a>
-                  {' '}et avez lu notre{' '}
-                  <a href="/privacy" className="underline hover:text-foreground transition-colors">politique de confidentialité</a>
-                  . Voir les{' '}
-                  <a href="/cookies" className="underline hover:text-foreground transition-colors">préférences de cookies</a>.
-                </>
-              ) : (
-                <>
-                  By chatting with Cuizly Assistant, you accept our{' '}
-                  <a href="/terms" className="underline hover:text-foreground transition-colors">terms</a>
-                  {' '}and have read our{' '}
-                  <a href="/privacy" className="underline hover:text-foreground transition-colors">privacy policy</a>
-                  . See{' '}
-                  <a href="/cookies" className="underline hover:text-foreground transition-colors">cookie preferences</a>.
-                </>
-              )}
-            </p>
-            
             <div className="flex gap-3">
               {/* Hidden file inputs */}
               <input
@@ -1198,6 +1175,29 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 )}
               </Button>
             </div>
+            
+            {/* Disclaimer */}
+            <p className="text-center text-xs text-muted-foreground px-2 mt-2">
+              {i18n.language === 'fr' ? (
+                <>
+                  En discutant avec Cuizly Assistant, vous acceptez nos{' '}
+                  <a href="/terms" className="underline hover:text-foreground transition-colors">conditions</a>
+                  {' '}et avez lu notre{' '}
+                  <a href="/privacy" className="underline hover:text-foreground transition-colors">politique de confidentialité</a>
+                  . Voir les{' '}
+                  <a href="/cookies" className="underline hover:text-foreground transition-colors">préférences de cookies</a>.
+                </>
+              ) : (
+                <>
+                  By chatting with Cuizly Assistant, you accept our{' '}
+                  <a href="/terms" className="underline hover:text-foreground transition-colors">terms</a>
+                  {' '}and have read our{' '}
+                  <a href="/privacy" className="underline hover:text-foreground transition-colors">privacy policy</a>
+                  . See{' '}
+                  <a href="/cookies" className="underline hover:text-foreground transition-colors">cookie preferences</a>.
+                </>
+              )}
+            </p>
           </form>
         </div>
       </main>
