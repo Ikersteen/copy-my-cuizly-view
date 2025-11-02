@@ -45,6 +45,17 @@ const Index = () => {
         >
           <source src="/cuizly-products-video.mp4" type="video/mp4" />
         </video>
+        
+        {/* Overlay Content */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 md:mb-6 animate-fade-in">
+            AI powered restaurants
+          </h1>
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 max-w-4xl animate-fade-in">
+            Cuizly helps restaurants manage and fill their tables automatically.
+          </p>
+        </div>
+
         <Button
           onClick={toggleVideo}
           className="absolute bottom-8 right-8 rounded-full w-14 h-14 p-0"
