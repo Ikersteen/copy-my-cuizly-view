@@ -13,6 +13,7 @@ import RichTextRenderer from '@/components/RichTextRenderer';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { useConversations } from '@/hooks/useConversations';
 import { useUserLocation } from '@/hooks/useUserLocation';
+import { useAnonymousTracking } from '@/hooks/useAnonymousTracking';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,6 +56,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -68,12 +70,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   
   const { createConversation, saveMessage, loadConversations, loadConversationMessages } = useConversations();
   const { trackUserLocation } = useUserLocation();
+  
+  // Tracking de localisation pour utilisateurs anonymes
+  useAnonymousTracking('Cuizly Assistant');
 
   useEffect(() => {
     const initUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
         setUserId(session.user.id);
+        setIsAnonymous(false);
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
@@ -98,6 +104,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           setCurrentConversationId(lastConversation.id);
           // Ne plus charger l'historique des conversations
         }
+      } else {
+        // Utilisateur non connecté = mode anonyme
+        setIsAnonymous(true);
+        setUserId(null);
+        setUserProfile(null);
       }
     };
     initUser();
@@ -497,10 +508,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     const controller = new AbortController();
     setAbortController(controller);
     
-    // Create conversation if needed
+    // Create conversation if needed (even for anonymous users)
     let conversationId = currentConversationId;
-    if (!conversationId && userId) {
-      conversationId = await createConversation('voice');
+    if (!conversationId) {
+      conversationId = await createConversation('text');
       if (conversationId) {
         setCurrentConversationId(conversationId);
       }
@@ -515,9 +526,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       isAudio: false
     };
     
-    setMessages(prev => [...prev, userMessage]);
+    // Pour les utilisateurs anonymes: sauvegarder en BD mais NE PAS afficher
+    if (!isAnonymous) {
+      setMessages(prev => [...prev, userMessage]);
+    }
     
-    // Save user message to database
+    // Save user message to database (even for anonymous users)
     if (conversationId) {
       await saveMessage(conversationId, 'user', text, 'text');
     }
@@ -563,11 +577,27 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         isTyping: true
       };
       
-      setMessages(prev => [...prev, assistantMessage]);
-      
-      // Save assistant message to database
-      if (conversationId) {
-        await saveMessage(conversationId, 'assistant', aiResponse, 'text');
+      // Pour les utilisateurs anonymes: afficher temporairement puis effacer
+      if (isAnonymous) {
+        setMessages(prev => [...prev, assistantMessage]);
+        
+        // Sauvegarder en BD
+        if (conversationId) {
+          await saveMessage(conversationId, 'assistant', aiResponse, 'text');
+        }
+        
+        // Effacer l'interface après 5 secondes pour permettre la lecture
+        setTimeout(() => {
+          setMessages([]);
+        }, 5000);
+      } else {
+        // Pour les utilisateurs connectés: afficher normalement
+        setMessages(prev => [...prev, assistantMessage]);
+        
+        // Save assistant message to database
+        if (conversationId) {
+          await saveMessage(conversationId, 'assistant', aiResponse, 'text');
+        }
       }
 
     } catch (error) {

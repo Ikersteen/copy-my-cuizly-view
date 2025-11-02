@@ -56,23 +56,52 @@ export const useConversations = () => {
     }
   };
 
-  // Créer une nouvelle conversation
+  // Générer ou récupérer l'ID de session anonyme
+  const getAnonymousSessionId = (): string => {
+    let sessionId = localStorage.getItem('cuizly_anonymous_session_id');
+    if (!sessionId) {
+      sessionId = `anon_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+      localStorage.setItem('cuizly_anonymous_session_id', sessionId);
+    }
+    return sessionId;
+  };
+
+  // Créer une nouvelle conversation (supporte les utilisateurs anonymes)
   const createConversation = async (type: 'voice' | 'text' = 'voice', title?: string): Promise<string | null> => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
+      
+      // Pour les utilisateurs anonymes
       if (!session?.user) {
-        toast({
-          title: t('errors.title'),
-          description: t('errors.mustBeLoggedIn'),
-          variant: "destructive",
+        const anonymousSessionId = getAnonymousSessionId();
+        
+        const { data, error } = await supabase
+          .from('conversations')
+          .insert({
+            user_id: null,
+            anonymous_session_id: anonymousSessionId,
+            type,
+            title: title || `Conversation anonyme - ${new Date().toLocaleDateString('fr-FR')}`
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+        
+        setCurrentConversation({
+          ...data,
+          type: data.type as string
         });
-        return null;
+        
+        return data.id;
       }
 
+      // Pour les utilisateurs connectés
       const { data, error } = await supabase
         .from('conversations')
         .insert({
           user_id: session.user.id,
+          anonymous_session_id: null,
           type,
           title: title || `Conversation ${type === 'voice' ? 'vocale' : 'texte'} - ${new Date().toLocaleDateString('fr-FR')}`
         })
@@ -255,6 +284,7 @@ export const useConversations = () => {
     deleteConversation,
     updateConversationTitle,
     loadConversations,
-    setCurrentConversation
+    setCurrentConversation,
+    getAnonymousSessionId
   };
 };

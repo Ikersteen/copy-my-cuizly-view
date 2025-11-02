@@ -77,6 +77,48 @@ export type Database = {
         }
         Relationships: []
       }
+      anonymous_location_tracking: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string | null
+          id: string
+          ip_address: unknown
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          page_accessed: string
+          session_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          page_accessed: string
+          session_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          page_accessed?: string
+          session_id?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       conversation_messages: {
         Row: {
           audio_url: string | null
@@ -120,6 +162,7 @@ export type Database = {
       }
       conversations: {
         Row: {
+          anonymous_session_id: string | null
           created_at: string
           id: string
           title: string | null
@@ -128,6 +171,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          anonymous_session_id?: string | null
           created_at?: string
           id?: string
           title?: string | null
@@ -136,6 +180,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          anonymous_session_id?: string | null
           created_at?: string
           id?: string
           title?: string | null
@@ -725,6 +770,18 @@ export type Database = {
       }
       mask_sensitive_data: {
         Args: { data: string; mask_type?: string; security_level?: string }
+        Returns: string
+      }
+      track_anonymous_location: {
+        Args: {
+          p_city?: string
+          p_country?: string
+          p_latitude?: number
+          p_longitude?: number
+          p_metadata?: Json
+          p_page_accessed: string
+          p_session_id: string
+        }
         Returns: string
       }
       track_profile_view: {
