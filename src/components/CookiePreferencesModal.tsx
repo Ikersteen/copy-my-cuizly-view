@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Cookie, Shield, BarChart3, Target } from "lucide-react";
+import { Shield, BarChart3, Target } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { useCookieConsent } from "@/hooks/useCookieConsent";
 
@@ -53,7 +53,7 @@ const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalPr
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Cookie className="h-5 w-5 text-primary" />
+            <img src="/cuizly-icon-new.png" alt="Cuizly" className="h-5 w-5" />
             {t('cookiePreferences.title')}
           </DialogTitle>
           <DialogDescription>

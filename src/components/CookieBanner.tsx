@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Cookie, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useCookieConsent } from "@/hooks/useCookieConsent";
@@ -22,7 +22,7 @@ const CookieBanner = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 sm:p-6">
             <div className="flex items-center gap-3 flex-shrink-0">
               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Cookie className="h-5 w-5 text-primary" />
+                <img src="/cuizly-icon-new.png" alt="Cuizly" className="h-6 w-6" />
               </div>
             </div>
             
