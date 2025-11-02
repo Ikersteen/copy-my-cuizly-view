@@ -367,63 +367,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_activity_logs: {
-        Row: {
-          browser: string | null
-          created_at: string | null
-          device_type: string | null
-          duration_seconds: number | null
-          event_data: Json | null
-          event_type: string
-          id: string
-          ip_address: unknown
-          os: string | null
-          page_title: string | null
-          page_url: string
-          referrer: string | null
-          session_id: string
-          updated_at: string | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          browser?: string | null
-          created_at?: string | null
-          device_type?: string | null
-          duration_seconds?: number | null
-          event_data?: Json | null
-          event_type: string
-          id?: string
-          ip_address?: unknown
-          os?: string | null
-          page_title?: string | null
-          page_url: string
-          referrer?: string | null
-          session_id: string
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          browser?: string | null
-          created_at?: string | null
-          device_type?: string | null
-          duration_seconds?: number | null
-          event_data?: Json | null
-          event_type?: string
-          id?: string
-          ip_address?: unknown
-          os?: string | null
-          page_title?: string | null
-          page_url?: string
-          referrer?: string | null
-          session_id?: string
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       user_roles: {
         Row: {
           created_at: string
@@ -499,6 +442,22 @@ export type Database = {
       encrypt_pii:
         | { Args: { plain_text: string }; Returns: string }
         | { Args: { data: string; secret_key?: string }; Returns: string }
+      get_all_conversations_with_messages: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          anonymous_session_id: string
+          conversation_created_at: string
+          conversation_id: string
+          conversation_title: string
+          conversation_type: string
+          message_content: string
+          message_created_at: string
+          message_id: string
+          message_role: string
+          message_type: string
+          user_id: string
+        }[]
+      }
       get_analytics_summary: {
         Args: { end_date?: string; start_date?: string }
         Returns: {
@@ -518,6 +477,15 @@ export type Database = {
         Returns: {
           available_spots: number
           time_slot: string
+        }[]
+      }
+      get_conversation_stats: {
+        Args: never
+        Returns: {
+          anonymous_conversations: number
+          authenticated_conversations: number
+          total_conversations: number
+          total_messages: number
         }[]
       }
       get_offers_with_restaurant_names: {
