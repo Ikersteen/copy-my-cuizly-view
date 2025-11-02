@@ -77,66 +77,6 @@ export type Database = {
         }
         Relationships: []
       }
-      admin_rate_limits: {
-        Row: {
-          access_count: number | null
-          access_window: string
-          admin_user_id: string
-          created_at: string | null
-          id: string
-        }
-        Insert: {
-          access_count?: number | null
-          access_window: string
-          admin_user_id: string
-          created_at?: string | null
-          id?: string
-        }
-        Update: {
-          access_count?: number | null
-          access_window?: string
-          admin_user_id?: string
-          created_at?: string | null
-          id?: string
-        }
-        Relationships: []
-      }
-      comments: {
-        Row: {
-          comment_text: string | null
-          created_at: string
-          id: string
-          images: string[] | null
-          is_active: boolean
-          rating: number | null
-          restaurant_id: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          comment_text?: string | null
-          created_at?: string
-          id?: string
-          images?: string[] | null
-          is_active?: boolean
-          rating?: number | null
-          restaurant_id: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          comment_text?: string | null
-          created_at?: string
-          id?: string
-          images?: string[] | null
-          is_active?: boolean
-          rating?: number | null
-          restaurant_id?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       conversation_messages: {
         Row: {
           audio_url: string | null
@@ -144,7 +84,7 @@ export type Database = {
           conversation_id: string
           created_at: string
           id: string
-          message_type: string | null
+          message_type: string
           role: string
           transcription: string | null
         }
@@ -154,7 +94,7 @@ export type Database = {
           conversation_id: string
           created_at?: string
           id?: string
-          message_type?: string | null
+          message_type?: string
           role: string
           transcription?: string | null
         }
@@ -164,7 +104,7 @@ export type Database = {
           conversation_id?: string
           created_at?: string
           id?: string
-          message_type?: string | null
+          message_type?: string
           role?: string
           transcription?: string | null
         }
@@ -185,15 +125,15 @@ export type Database = {
           title: string | null
           type: string
           updated_at: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           title?: string | null
-          type?: string
+          type: string
           updated_at?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -201,187 +141,9 @@ export type Database = {
           title?: string | null
           type?: string
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
-      }
-      menus: {
-        Row: {
-          allergens: string[] | null
-          category: string | null
-          created_at: string
-          cuisine_type: string | null
-          description: string
-          dietary_restrictions: string[] | null
-          id: string
-          image_url: string
-          is_active: boolean
-          pdf_menu_url: string | null
-          restaurant_id: string
-          subcategory: string | null
-          updated_at: string
-        }
-        Insert: {
-          allergens?: string[] | null
-          category?: string | null
-          created_at?: string
-          cuisine_type?: string | null
-          description: string
-          dietary_restrictions?: string[] | null
-          id?: string
-          image_url: string
-          is_active?: boolean
-          pdf_menu_url?: string | null
-          restaurant_id: string
-          subcategory?: string | null
-          updated_at?: string
-        }
-        Update: {
-          allergens?: string[] | null
-          category?: string | null
-          created_at?: string
-          cuisine_type?: string | null
-          description?: string
-          dietary_restrictions?: string[] | null
-          id?: string
-          image_url?: string
-          is_active?: boolean
-          pdf_menu_url?: string | null
-          restaurant_id?: string
-          subcategory?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      notifications: {
-        Row: {
-          created_at: string
-          id: string
-          is_read: boolean
-          link: string | null
-          message: string
-          metadata: Json | null
-          read_at: string | null
-          title: string
-          type: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          link?: string | null
-          message: string
-          metadata?: Json | null
-          read_at?: string | null
-          title: string
-          type: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          link?: string | null
-          message?: string
-          metadata?: Json | null
-          read_at?: string | null
-          title?: string
-          type?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      offers: {
-        Row: {
-          category: string | null
-          created_at: string
-          cuisine_type: string | null
-          description: string | null
-          discount_amount: number | null
-          discount_percentage: number | null
-          id: string
-          is_active: boolean
-          restaurant_id: string
-          title: string
-          updated_at: string
-          valid_until: string | null
-        }
-        Insert: {
-          category?: string | null
-          created_at?: string
-          cuisine_type?: string | null
-          description?: string | null
-          discount_amount?: number | null
-          discount_percentage?: number | null
-          id?: string
-          is_active?: boolean
-          restaurant_id: string
-          title: string
-          updated_at?: string
-          valid_until?: string | null
-        }
-        Update: {
-          category?: string | null
-          created_at?: string
-          cuisine_type?: string | null
-          description?: string | null
-          discount_amount?: number | null
-          discount_percentage?: number | null
-          id?: string
-          is_active?: boolean
-          restaurant_id?: string
-          title?: string
-          updated_at?: string
-          valid_until?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_offers_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      orders: {
-        Row: {
-          created_at: string
-          id: string
-          restaurant_id: string
-          status: string
-          total_amount: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          restaurant_id: string
-          status?: string
-          total_amount: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          restaurant_id?: string
-          status?: string
-          total_amount?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_orders_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       profiles: {
         Row: {
@@ -427,222 +189,6 @@ export type Database = {
           username?: string | null
         }
         Relationships: []
-      }
-      ratings: {
-        Row: {
-          comment: string | null
-          created_at: string
-          id: string
-          rating: number
-          restaurant_id: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          comment?: string | null
-          created_at?: string
-          id?: string
-          rating: number
-          restaurant_id: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          comment?: string | null
-          created_at?: string
-          id?: string
-          rating?: number
-          restaurant_id?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      reservations: {
-        Row: {
-          cancellation_reason: string | null
-          cancelled_at: string | null
-          created_at: string
-          customer_email: string
-          customer_name: string
-          customer_phone: string | null
-          id: string
-          party_size: number
-          reservation_date: string
-          reservation_time: string
-          restaurant_id: string
-          special_requests: string | null
-          status: Database["public"]["Enums"]["reservation_status"]
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          cancellation_reason?: string | null
-          cancelled_at?: string | null
-          created_at?: string
-          customer_email: string
-          customer_name: string
-          customer_phone?: string | null
-          id?: string
-          party_size: number
-          reservation_date: string
-          reservation_time: string
-          restaurant_id: string
-          special_requests?: string | null
-          status?: Database["public"]["Enums"]["reservation_status"]
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          cancellation_reason?: string | null
-          cancelled_at?: string | null
-          created_at?: string
-          customer_email?: string
-          customer_name?: string
-          customer_phone?: string | null
-          id?: string
-          party_size?: number
-          reservation_date?: string
-          reservation_time?: string
-          restaurant_id?: string
-          special_requests?: string | null
-          status?: Database["public"]["Enums"]["reservation_status"]
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "reservations_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      restaurant_analytics: {
-        Row: {
-          average_rating: number | null
-          created_at: string
-          date: string
-          id: string
-          menu_views: number | null
-          offer_clicks: number | null
-          profile_views: number | null
-          rating_count: number | null
-          restaurant_id: string
-          updated_at: string
-        }
-        Insert: {
-          average_rating?: number | null
-          created_at?: string
-          date?: string
-          id?: string
-          menu_views?: number | null
-          offer_clicks?: number | null
-          profile_views?: number | null
-          rating_count?: number | null
-          restaurant_id: string
-          updated_at?: string
-        }
-        Update: {
-          average_rating?: number | null
-          created_at?: string
-          date?: string
-          id?: string
-          menu_views?: number | null
-          offer_clicks?: number | null
-          profile_views?: number | null
-          rating_count?: number | null
-          restaurant_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      restaurant_availability: {
-        Row: {
-          created_at: string
-          day_of_week: number
-          id: string
-          is_available: boolean
-          max_capacity: number
-          restaurant_id: string
-          time_slot: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          day_of_week: number
-          id?: string
-          is_available?: boolean
-          max_capacity: number
-          restaurant_id: string
-          time_slot: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          day_of_week?: number
-          id?: string
-          is_available?: boolean
-          max_capacity?: number
-          restaurant_id?: string
-          time_slot?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "restaurant_availability_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      restaurant_holidays: {
-        Row: {
-          country: string
-          created_at: string | null
-          holiday_date: string
-          holiday_name: string
-          id: string
-          is_enabled: boolean
-          is_recurring: boolean
-          restaurant_id: string
-          updated_at: string | null
-        }
-        Insert: {
-          country?: string
-          created_at?: string | null
-          holiday_date: string
-          holiday_name: string
-          id?: string
-          is_enabled?: boolean
-          is_recurring?: boolean
-          restaurant_id: string
-          updated_at?: string | null
-        }
-        Update: {
-          country?: string
-          created_at?: string | null
-          holiday_date?: string
-          holiday_name?: string
-          id?: string
-          is_enabled?: boolean
-          is_recurring?: boolean
-          restaurant_id?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "restaurant_holidays_restaurant_id_fkey"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       restaurants: {
         Row: {
@@ -830,152 +376,6 @@ export type Database = {
           updated_at?: string | null
           user_agent?: string | null
           user_id?: string | null
-        }
-        Relationships: []
-      }
-      user_favorites: {
-        Row: {
-          created_at: string
-          id: string
-          restaurant_id: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          restaurant_id: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          restaurant_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_favorites_restaurant"
-            columns: ["restaurant_id"]
-            isOneToOne: false
-            referencedRelation: "restaurants"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_learned_preferences: {
-        Row: {
-          context_preferences: Json | null
-          created_at: string | null
-          cuisine_weights: Json | null
-          dietary_scores: Json | null
-          id: string
-          last_updated: string | null
-          price_preferences: Json | null
-          user_id: string
-        }
-        Insert: {
-          context_preferences?: Json | null
-          created_at?: string | null
-          cuisine_weights?: Json | null
-          dietary_scores?: Json | null
-          id?: string
-          last_updated?: string | null
-          price_preferences?: Json | null
-          user_id: string
-        }
-        Update: {
-          context_preferences?: Json | null
-          created_at?: string | null
-          cuisine_weights?: Json | null
-          dietary_scores?: Json | null
-          id?: string
-          last_updated?: string | null
-          price_preferences?: Json | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-      user_preferences: {
-        Row: {
-          allergens: string[] | null
-          created_at: string
-          cuisine_preferences: string[] | null
-          delivery_radius: number | null
-          dietary_restrictions: string[] | null
-          favorite_meal_times: string[] | null
-          full_address: string | null
-          id: string
-          neighborhood: string | null
-          notification_preferences: Json | null
-          postal_code: string | null
-          price_range: string | null
-          street: string | null
-          updated_at: string
-          user_id: string
-          voice_activation_enabled: boolean | null
-        }
-        Insert: {
-          allergens?: string[] | null
-          created_at?: string
-          cuisine_preferences?: string[] | null
-          delivery_radius?: number | null
-          dietary_restrictions?: string[] | null
-          favorite_meal_times?: string[] | null
-          full_address?: string | null
-          id?: string
-          neighborhood?: string | null
-          notification_preferences?: Json | null
-          postal_code?: string | null
-          price_range?: string | null
-          street?: string | null
-          updated_at?: string
-          user_id: string
-          voice_activation_enabled?: boolean | null
-        }
-        Update: {
-          allergens?: string[] | null
-          created_at?: string
-          cuisine_preferences?: string[] | null
-          delivery_radius?: number | null
-          dietary_restrictions?: string[] | null
-          favorite_meal_times?: string[] | null
-          full_address?: string | null
-          id?: string
-          neighborhood?: string | null
-          notification_preferences?: Json | null
-          postal_code?: string | null
-          price_range?: string | null
-          street?: string | null
-          updated_at?: string
-          user_id?: string
-          voice_activation_enabled?: boolean | null
-        }
-        Relationships: []
-      }
-      user_restaurant_interactions: {
-        Row: {
-          context_data: Json | null
-          created_at: string | null
-          id: string
-          interaction_type: string
-          restaurant_id: string
-          user_id: string
-        }
-        Insert: {
-          context_data?: Json | null
-          created_at?: string | null
-          id?: string
-          interaction_type: string
-          restaurant_id: string
-          user_id: string
-        }
-        Update: {
-          context_data?: Json | null
-          created_at?: string | null
-          id?: string
-          interaction_type?: string
-          restaurant_id?: string
-          user_id?: string
         }
         Relationships: []
       }
