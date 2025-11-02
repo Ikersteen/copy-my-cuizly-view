@@ -144,10 +144,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     const { scrollTop, scrollHeight, clientHeight } = container;
     const isNearBottom = scrollHeight - scrollTop - clientHeight < 150;
     
-    // Auto-scroll uniquement si l'utilisateur est près du bas
-    if (isNearBottom) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    // Ne pas auto-scroll pour garder la question de l'utilisateur visible
+    // L'utilisateur peut utiliser le bouton de scroll manuel si nécessaire
+    setShowScrollIndicator(!isNearBottom && messages.length > 0);
   }, [messages]);
 
   // Handle realtime voice messages
