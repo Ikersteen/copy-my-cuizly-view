@@ -871,7 +871,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       />
                     </div>
                     {message.content && (
-                      <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted' : ''}>
+                      <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted w-fit' : ''}>
                         <RichTextRenderer 
                           content={message.content} 
                           className="text-base leading-relaxed"
@@ -883,7 +883,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   // Otherwise show normal message bubble
                   <div className={`${
                     message.type === 'user' 
-                      ? 'rounded-3xl px-6 py-4 bg-muted' 
+                      ? 'rounded-3xl px-6 py-4 bg-muted w-fit' 
                       : ''
                    } ${message.isProcessing ? 'animate-pulse' : ''}`}>
                     {message.isTyping && message.type === 'assistant' ? (
