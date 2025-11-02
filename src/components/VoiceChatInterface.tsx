@@ -805,6 +805,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const processImageWithMessage = async (imageBase64: string, message: string) => {
     setIsProcessing(true);
     
+    // Create conversation if needed
+    let conversationId = currentConversationId;
+    if (!conversationId && userId) {
+      conversationId = await createConversation('text');
+      if (conversationId) {
+        setCurrentConversationId(conversationId);
+      }
+    }
+    
     const userMessageId = Date.now().toString();
     const userMessage: Message = {
       id: userMessageId,
@@ -816,6 +825,17 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     };
     
     setMessages(prev => [...prev, userMessage]);
+    
+    // Save user message to database (without the base64 image data to save space)
+    if (conversationId) {
+      await saveMessage(
+        conversationId, 
+        'user', 
+        message || t('voiceChat.imageUploaded') || 'Image envoyée', 
+        'text'
+      );
+    }
+    
     setIsThinking(true);
 
     try {
@@ -844,6 +864,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         timestamp: new Date(),
         isTyping: true
       }]);
+      
+      // Save assistant message to database
+      if (conversationId) {
+        await saveMessage(conversationId, 'assistant', analysis, 'text');
+      }
 
     } catch (error) {
       console.error('Error analyzing image:', error);
