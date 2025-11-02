@@ -55,7 +55,7 @@ const Index = () => {
           loop 
           muted 
           playsInline
-          className="w-full h-[50vh] md:h-screen object-cover"
+          className="w-full h-[50vh] md:h-screen object-contain"
         >
           <source src="/cuizly-products-video-new.mp4" type="video/mp4" />
         </video>
