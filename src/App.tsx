@@ -8,6 +8,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "@/lib/i18n";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
+import CookieBanner from "@/components/CookieBanner";
 
 import Index from "./pages/Index";
 import VoiceChat from "./pages/VoiceChat";
@@ -138,6 +139,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AppContent />
+          <CookieBanner />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

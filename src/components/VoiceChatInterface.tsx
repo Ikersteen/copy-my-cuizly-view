@@ -12,6 +12,7 @@ import TypewriterRichText from '@/components/TypewriterRichText';
 import RichTextRenderer from '@/components/RichTextRenderer';
 import { RealtimeVoiceClient } from '@/utils/RealtimeVoiceClient';
 import { useConversations } from '@/hooks/useConversations';
+import { useUserLocation } from '@/hooks/useUserLocation';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,6 +67,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   
   const { createConversation, saveMessage, loadConversations, loadConversationMessages } = useConversations();
+  const { trackUserLocation } = useUserLocation();
 
   useEffect(() => {
     const initUser = async () => {
@@ -78,6 +80,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           .eq('user_id', session.user.id)
           .single();
         setUserProfile(profile);
+        
+        // Suivre la localisation de l'utilisateur
+        await trackUserLocation('Cuizly Assistant');
         
         // Charger la dernière conversation ou en créer une nouvelle
         const { data: existingConversations, error } = await supabase
@@ -216,6 +221,29 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         break;
       case 'input_audio_buffer.speech_stopped':
         console.log('User stopped speaking');
+        break;
+      case 'conversation.item.input_audio_transcription.completed':
+        // Sauvegarder le message vocal de l'utilisateur
+        if (event.transcript && currentConversationId) {
+          console.log('User transcript:', event.transcript);
+          saveMessage(currentConversationId, 'user', event.transcript, 'audio');
+          
+          // Ajouter le message à l'interface
+          setMessages(prev => {
+            // Vérifier si le message n'existe pas déjà
+            const lastUserMessage = prev.filter(m => m.type === 'user').pop();
+            if (!lastUserMessage || lastUserMessage.content !== event.transcript) {
+              return [...prev, {
+                id: Date.now().toString(),
+                type: 'user',
+                content: event.transcript,
+                timestamp: new Date(),
+                isAudio: true
+              }];
+            }
+            return prev;
+          });
+        }
         break;
     }
   };
