@@ -47,7 +47,6 @@ TES CAPACITÉS PRINCIPALES :
 - Recommander des marchés locaux et épiceries spécialisées ethniques
 - Partager des recettes et techniques culinaires internationales
 - Mémoriser les préférences utilisateur pour de meilleures recommandations
-- 🥗 CONSEILS SANTÉ ET NUTRITION : Fournir des recommandations nutritionnelles, des conseils sur l'équilibre alimentaire, les bienfaits des aliments, et promouvoir des habitudes alimentaires saines adaptées aux besoins de chaque utilisateur
 
 COUVERTURE GÉOGRAPHIQUE :
 Tu connais TOUTES les villes du Canada : Toronto, Vancouver, Calgary, Edmonton, Ottawa, Québec, Halifax, Winnipeg, Victoria, Saskatoon, Regina, et TOUTES les autres villes canadiennes, grandes ou petites.
@@ -134,7 +133,6 @@ YOUR MAIN CAPABILITIES:
 - Recommend local markets and ethnic specialty grocery stores
 - Share international recipes and cooking techniques
 - Remember user preferences for better recommendations
-- 🥗 HEALTH AND NUTRITION ADVICE: Provide nutritional recommendations, advice on dietary balance, food benefits, and promote healthy eating habits adapted to each user's needs
 
 GEOGRAPHICAL COVERAGE:
 You know ALL cities in Canada: Toronto, Vancouver, Calgary, Edmonton, Ottawa, Quebec City, Halifax, Winnipeg, Victoria, Saskatoon, Regina, and ALL other Canadian cities, big or small.
@@ -289,7 +287,7 @@ IMPORTANT: You must ALWAYS respond in English, it's the user's language.`;
             }
           },
           {
-            type: "function",
+            type: "function", 
             function: {
               name: "get_market_locations",
               description: language === 'en'
@@ -313,45 +311,6 @@ IMPORTANT: You must ALWAYS respond in English, it's the user's language.`;
                     description: language === 'en'
                       ? "Preferred neighborhood or city anywhere in Canada"
                       : "Quartier ou ville préférée n'importe où au Canada"
-                  }
-                }
-              }
-            }
-          },
-          {
-            type: "function",
-            function: {
-              name: "get_health_nutrition_advice",
-              description: language === 'en'
-                ? "Get personalized health and nutrition advice based on dietary goals, restrictions, or health concerns"
-                : "Obtenir des conseils santé et nutrition personnalisés selon les objectifs alimentaires, restrictions ou préoccupations santé",
-              parameters: {
-                type: "object",
-                properties: {
-                  health_goal: {
-                    type: "string",
-                    description: language === 'en'
-                      ? "Health or nutrition goal (e.g., weight loss, muscle gain, better digestion, energy boost)"
-                      : "Objectif santé ou nutrition (ex: perte de poids, gain musculaire, meilleure digestion, boost d'énergie)"
-                  },
-                  dietary_restrictions: {
-                    type: "array",
-                    items: { type: "string" },
-                    description: language === 'en'
-                      ? "Dietary restrictions or preferences (vegetarian, vegan, gluten-free, etc.)"
-                      : "Restrictions ou préférences alimentaires (végétarien, végétalien, sans gluten, etc.)"
-                  },
-                  health_concern: {
-                    type: "string",
-                    description: language === 'en'
-                      ? "Specific health concern (diabetes, high blood pressure, cholesterol, etc.)"
-                      : "Préoccupation santé spécifique (diabète, hypertension, cholestérol, etc.)"
-                  },
-                  meal_type: {
-                    type: "string",
-                    description: language === 'en'
-                      ? "Type of meal for advice (breakfast, lunch, dinner, snack)"
-                      : "Type de repas pour conseils (petit-déjeuner, déjeuner, dîner, collation)"
                   }
                 }
               }
