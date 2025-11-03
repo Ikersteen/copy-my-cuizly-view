@@ -20,16 +20,13 @@ const CookieBanner = () => {
       <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-in slide-in-from-bottom-2">
         <Card className="mx-auto max-w-4xl border border-border bg-background/95 backdrop-blur-sm shadow-lg">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 sm:p-6">
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                <img src="/cuizly-icon-new.png" alt="Cuizly" className="h-6 w-6" />
-              </div>
-            </div>
-            
             <div className="flex-1 space-y-3">
-              <h3 className="font-semibold text-foreground text-sm sm:text-base">
-                {t('cookieBanner.title')}
-              </h3>
+              <div className="flex items-center gap-2">
+                <img src="/cuizly-icon-new.png" alt="Cuizly" className="h-6 w-6" />
+                <h3 className="font-semibold text-foreground text-sm sm:text-base">
+                  {t('cookieBanner.title')}
+                </h3>
+              </div>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 {t('cookieBanner.description')}{" "}
                 <Link 
