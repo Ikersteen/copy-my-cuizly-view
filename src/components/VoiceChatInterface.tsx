@@ -162,26 +162,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     };
 
     container.addEventListener('scroll', handleScroll);
-    handleScroll(); // Vérifier l'état initial
+    // Ne plus appeler handleScroll() automatiquement pour éviter le scroll automatique
 
     return () => container.removeEventListener('scroll', handleScroll);
   }, [messages, isThinking, isSpeaking]);
-
-  // Auto-scroll uniquement si l'utilisateur était déjà en bas
-  useEffect(() => {
-    const container = messagesContainerRef.current;
-    if (!container) return;
-
-    const { scrollTop, scrollHeight, clientHeight } = container;
-    const wasNearBottom = scrollHeight - scrollTop - clientHeight < 150;
-
-    // Ne scroller automatiquement que si l'utilisateur était déjà proche du bas
-    if (wasNearBottom && messages.length > 0) {
-      requestAnimationFrame(() => {
-        container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
-      });
-    }
-  }, [messages.length]); // Déclenché uniquement quand le nombre de messages change
 
   // Handle realtime voice messages
   const handleRealtimeMessage = (event: any) => {
