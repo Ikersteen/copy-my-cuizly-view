@@ -167,6 +167,25 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [messages, isThinking, isSpeaking]);
 
+  // Auto-scroll vers la dernière réflexion/réponse
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+
+    // Scroll automatique vers le bas à chaque nouveau message ou changement d'état
+    const shouldAutoScroll = isThinking || isProcessing || isSpeaking || 
+      messages.some(msg => msg.isTyping || msg.isProcessing);
+
+    if (shouldAutoScroll) {
+      setTimeout(() => {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+  }, [messages, isThinking, isProcessing, isSpeaking]);
+
   // Handle realtime voice messages
   const handleRealtimeMessage = (event: any) => {
     console.log('Realtime event:', event);
