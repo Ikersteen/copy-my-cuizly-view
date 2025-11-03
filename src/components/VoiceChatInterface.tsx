@@ -973,11 +973,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   return (
     <>
-      <main className="h-screen bg-background flex flex-col max-w-6xl mx-auto w-full relative overflow-hidden">
+      <main className="fixed inset-0 bg-background flex flex-col max-w-6xl mx-auto w-full">
+        {/* Zone de conversation scrollable */}
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-40 space-y-6"
-          style={{ overflowAnchor: 'none' }}
+          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-6 space-y-6"
+          style={{ 
+            overflowAnchor: 'none',
+            height: 'calc(100vh - 140px)' // Hauteur = viewport - footer (chat + disclaimer)
+          }}
         >
           
           {messages.length === 0 && (
