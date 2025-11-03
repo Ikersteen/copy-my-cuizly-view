@@ -953,8 +953,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="h-screen bg-background flex flex-col overflow-hidden">
-      <main className="flex-1 flex flex-col max-w-6xl mx-auto w-full relative overflow-hidden">
+    <>
+      <div className="h-screen bg-background overflow-hidden">
+        <main className="h-full flex flex-col max-w-6xl mx-auto w-full relative overflow-hidden">
         <div 
           ref={messagesContainerRef}
           className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-40 space-y-6"
@@ -1075,23 +1076,24 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           )}
         </div>
         
-        {/* Indicateur de scroll pour descendre */}
-        {showScrollIndicator && (
-          <div className="fixed bottom-[140px] left-1/2 -translate-x-1/2 z-[60]">
-            <Button
-              onClick={scrollToBottom}
-              variant="secondary"
-              size="sm"
-              className="rounded-full shadow-lg border border-border bg-background hover:bg-muted"
-            >
-              <ArrowDown className="w-4 h-4 mr-2 animate-bounce" />
-              {t('voiceChat.newResponse') || 'Nouvelle réponse'}
-            </Button>
-          </div>
-        )}
-      </main>
+          {/* Indicateur de scroll pour descendre */}
+          {showScrollIndicator && (
+            <div className="fixed bottom-[140px] left-1/2 -translate-x-1/2 z-[60]">
+              <Button
+                onClick={scrollToBottom}
+                variant="secondary"
+                size="sm"
+                className="rounded-full shadow-lg border border-border bg-background hover:bg-muted"
+              >
+                <ArrowDown className="w-4 h-4 mr-2 animate-bounce" />
+                {t('voiceChat.newResponse') || 'Nouvelle réponse'}
+              </Button>
+            </div>
+          )}
+        </main>
+      </div>
 
-      {/* Chat input et disclaimer - indépendant du main */}
+      {/* Chat input et disclaimer - complètement indépendant */}
       <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm px-6 py-4 border-t border-border z-50">
         <form onSubmit={handleTextSubmit} className="space-y-3 max-w-4xl mx-auto">
           {/* Image preview */}
@@ -1221,7 +1223,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           )}
         </p>
       </div>
-    </div>
+    </>
   );
 };
 
