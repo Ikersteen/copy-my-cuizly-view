@@ -35,10 +35,26 @@ export const useConversations = () => {
   const loadConversations = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      let query = supabase
         .from('conversations')
         .select('*')
         .order('updated_at', { ascending: false });
+
+      // Filtrer selon le type d'utilisateur
+      if (session?.user) {
+        // Utilisateur connecté : filtrer par user_id
+        query = query.eq('user_id', session.user.id);
+      } else {
+        // Utilisateur anonyme : filtrer par anonymous_session_id
+        const anonymousSessionId = getAnonymousSessionId();
+        query = query
+          .is('user_id', null)
+          .eq('anonymous_session_id', anonymousSessionId);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
       setConversations((data || []).map(conv => ({
