@@ -1090,110 +1090,135 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           </div>
         )}
 
-        <form onSubmit={handleTextSubmit} className="space-y-3">
-          {/* Image preview */}
-          {selectedImage && (
-            <div className="relative inline-block">
-              <img 
-                src={selectedImage} 
-                alt="Preview" 
-                className="max-h-32 rounded-lg border border-border"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 bg-black hover:bg-black/80 text-white text-base font-bold leading-none flex items-center justify-center"
-                onClick={() => setSelectedImage(null)}
-              >
-                ×
-              </Button>
-            </div>
-          )}
-          
-          <div className="flex gap-3">
-            {/* Hidden file inputs */}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-            />
-            <input
-              ref={cameraInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-              capture="user"
-            />
-            
-            {/* Dropdown menu for image upload options */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+        <div className="mb-16">
+          <form onSubmit={handleTextSubmit} className="space-y-3">
+            {/* Image preview */}
+            {selectedImage && (
+              <div className="relative inline-block">
+                <img 
+                  src={selectedImage} 
+                  alt="Preview" 
+                  className="max-h-32 rounded-lg border border-border"
+                />
                 <Button
                   type="button"
-                  disabled={isProcessing}
-                  variant="outline"
-                  className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0 transition-none hover:scale-100"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 bg-black hover:bg-black/80 text-white text-base font-bold leading-none flex items-center justify-center"
+                  onClick={() => setSelectedImage(null)}
                 >
-                  <Plus className="w-5 h-5" />
+                  ×
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="start" 
-                className="w-56 bg-popover border-2 shadow-lg rounded-xl p-2"
-                sideOffset={8}
+              </div>
+            )}
+            
+            <div className="flex gap-3">
+              {/* Hidden file inputs */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              <input
+                ref={cameraInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                capture="user"
+              />
+              
+              {/* Dropdown menu for image upload options */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type="button"
+                    disabled={isProcessing}
+                    variant="outline"
+                    className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0 transition-none hover:scale-100"
+                  >
+                    <Plus className="w-5 h-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="start" 
+                  className="w-56 bg-popover border-2 shadow-lg rounded-xl p-2"
+                  sideOffset={8}
+                >
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      console.log('Camera option clicked');
+                      cameraInputRef.current?.click();
+                    }}
+                    className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
+                  >
+                    <Camera className="mr-3 h-5 w-5" />
+                    <span className="font-medium">{t('voiceChat.takePhoto') || 'Prendre une photo'}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      console.log('Gallery option clicked');
+                      fileInputRef.current?.click();
+                    }}
+                    className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
+                  >
+                    <ImageIcon className="mr-3 h-5 w-5" />
+                    <span className="font-medium">{t('voiceChat.choosePhoto') || 'Choisir une photo'}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Input
+                value={textInput}
+                onChange={(e) => setTextInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder={t('voiceChat.inputPlaceholder')}
+                disabled={isProcessing}
+                autoComplete="on"
+                autoCorrect="on"
+                autoCapitalize="sentences"
+                spellCheck="true"
+                className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+              <Button
+                type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
+                onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
+                disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim() && !selectedImage}
+                className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
               >
-                <DropdownMenuItem 
-                  onClick={() => {
-                    console.log('Camera option clicked');
-                    cameraInputRef.current?.click();
-                  }}
-                  className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
-                >
-                  <Camera className="mr-3 h-5 w-5" />
-                  <span className="font-medium">{t('voiceChat.takePhoto') || 'Prendre une photo'}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => {
-                    console.log('Gallery option clicked');
-                    fileInputRef.current?.click();
-                  }}
-                  className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
-                >
-                  <ImageIcon className="mr-3 h-5 w-5" />
-                  <span className="font-medium">{t('voiceChat.choosePhoto') || 'Choisir une photo'}</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Input
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder={t('voiceChat.inputPlaceholder')}
-              disabled={isProcessing}
-              autoComplete="on"
-              autoCorrect="on"
-              autoCapitalize="sentences"
-              spellCheck="true"
-              className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
-            />
-            <Button
-              type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
-              onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
-              disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim() && !selectedImage}
-              className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
-            >
-              {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
-                <Square className="w-3.5 h-3.5 fill-white dark:fill-black" />
-              ) : (
-                <Send className="w-3.5 h-3.5" />
-              )}
-            </Button>
-          </div>
-        </form>
+                {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
+                  <Square className="w-3.5 h-3.5 fill-white dark:fill-black" />
+                ) : (
+                  <Send className="w-3.5 h-3.5" />
+                )}
+              </Button>
+            </div>
+          </form>
+          
+          {/* Disclaimer text */}
+          <p className="text-center text-xs text-muted-foreground px-2 mt-3">
+            {i18n.language === 'fr' ? (
+              <>
+                En discutant avec Cuizly Assistant, vous acceptez nos{' '}
+                <a href="/terms" className="underline hover:text-foreground transition-colors">conditions</a>
+                {' '}et avez lu notre{' '}
+                <a href="/privacy" className="underline hover:text-foreground transition-colors">politique de confidentialité</a>
+                . Voir les{' '}
+                <a href="/cookies" className="underline hover:text-foreground transition-colors">préférences de cookies</a>.
+              </>
+            ) : (
+              <>
+                By chatting with Cuizly Assistant, you accept our{' '}
+                <a href="/terms" className="underline hover:text-foreground transition-colors">terms</a>
+                {' '}and have read our{' '}
+                <a href="/privacy" className="underline hover:text-foreground transition-colors">privacy policy</a>
+                . See{' '}
+                <a href="/cookies" className="underline hover:text-foreground transition-colors">cookie preferences</a>.
+              </>
+            )}
+          </p>
+        </div>
       </main>
     </div>
   );
