@@ -167,25 +167,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [messages, isThinking, isSpeaking]);
 
-  // Auto-scroll vers la dernière réflexion/réponse
-  useEffect(() => {
-    const container = messagesContainerRef.current;
-    if (!container) return;
-
-    // Scroll automatique vers le bas à chaque nouveau message ou changement d'état
-    const shouldAutoScroll = isThinking || isProcessing || isSpeaking || 
-      messages.some(msg => msg.isTyping || msg.isProcessing);
-
-    if (shouldAutoScroll) {
-      setTimeout(() => {
-        container.scrollTo({
-          top: container.scrollHeight,
-          behavior: 'smooth'
-        });
-      }, 100);
-    }
-  }, [messages, isThinking, isProcessing, isSpeaking]);
-
   // Handle realtime voice messages
   const handleRealtimeMessage = (event: any) => {
     console.log('Realtime event:', event);
@@ -973,14 +954,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   return (
     <>
-      <main className="fixed inset-0 bg-background flex flex-col max-w-6xl mx-auto w-full">
+      <main className="h-screen bg-background flex flex-col max-w-6xl mx-auto w-full relative overflow-hidden">
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 space-y-6"
-          style={{ 
-            overflowAnchor: 'none',
-            paddingBottom: '180px' // Reserve space for fixed chat bar and disclaimer
-          }}
+          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-40 space-y-6"
+          style={{ overflowAnchor: 'none' }}
         >
           
           {messages.length === 0 && (
