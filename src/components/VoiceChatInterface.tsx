@@ -1090,7 +1090,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           </div>
         )}
 
-        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm px-6 py-4 border-t border-border z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.1)]">
+        <div className="px-6 py-4 border-t border-border bg-background">
           <form onSubmit={handleTextSubmit} className="space-y-3 max-w-4xl mx-auto">
             {/* Image preview */}
             {selectedImage && (
