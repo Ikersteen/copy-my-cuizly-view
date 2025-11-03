@@ -1090,8 +1090,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           </div>
         )}
 
-        <div className="fixed bottom-0 left-0 right-0 bg-background px-6 py-4 border-t border-border z-50">
-          <form onSubmit={handleTextSubmit} className="space-y-3">
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm px-6 py-4 border-t border-border z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.1)]">
+          <form onSubmit={handleTextSubmit} className="space-y-3 max-w-4xl mx-auto">
             {/* Image preview */}
             {selectedImage && (
               <div className="relative inline-block">
@@ -1197,7 +1197,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           </form>
           
           {/* Disclaimer text */}
-          <p className="text-center text-xs text-muted-foreground px-2 mt-3">
+          <p className="text-center text-xs text-muted-foreground px-2 mt-3 max-w-4xl mx-auto">
             {i18n.language === 'fr' ? (
               <>
                 En discutant avec Cuizly Assistant, vous acceptez nos{' '}
