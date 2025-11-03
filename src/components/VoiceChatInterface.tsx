@@ -109,6 +109,37 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         setIsAnonymous(true);
         setUserId(null);
         setUserProfile(null);
+        
+        // Charger les conversations anonymes existantes
+        const anonymousSessionId = localStorage.getItem('cuizly_anonymous_session_id');
+        if (anonymousSessionId) {
+          const { data: existingConversations, error } = await supabase
+            .from('conversations')
+            .select('*')
+            .is('user_id', null)
+            .eq('anonymous_session_id', anonymousSessionId)
+            .order('updated_at', { ascending: false })
+            .limit(1);
+
+          if (!error && existingConversations && existingConversations.length > 0) {
+            // Charger la dernière conversation anonyme existante
+            const lastConversation = existingConversations[0];
+            setCurrentConversationId(lastConversation.id);
+            
+            // Charger les messages de cette conversation
+            const conversation = await loadConversationMessages(lastConversation.id);
+            if (conversation?.messages) {
+              const loadedMessages = conversation.messages.map(msg => ({
+                id: msg.id,
+                type: msg.role,
+                content: msg.content,
+                timestamp: new Date(msg.created_at),
+                isAudio: msg.message_type === 'audio'
+              }));
+              setMessages(loadedMessages);
+            }
+          }
+        }
       }
     };
     initUser();
