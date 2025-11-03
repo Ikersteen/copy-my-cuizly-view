@@ -718,7 +718,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const hasTypingMessage = messages.some(msg => msg.isTyping);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+    }
   };
 
   // Compress and resize image
@@ -1038,8 +1041,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               </div>
             </div>
           )}
-          
-          <div ref={messagesEndRef} />
         </div>
         
         {/* Indicateur de scroll pour descendre */}
