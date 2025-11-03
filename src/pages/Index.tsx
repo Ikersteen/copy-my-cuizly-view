@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Pause, Play } from "lucide-react";
 import { useAnonymousTracking } from "@/hooks/useAnonymousTracking";
+import VoiceChatInterface from "@/components/VoiceChatInterface";
 
 const Index = () => {
   useAnonymousTracking('homepage');
@@ -67,6 +68,10 @@ const Index = () => {
           {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
         </Button>
       </div>
+      
+      {/* Chat Interface */}
+      <VoiceChatInterface />
+      
       <Footer />
     </>
   );
