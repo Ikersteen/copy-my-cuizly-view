@@ -1091,8 +1091,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           )}
         </main>
 
-      {/* Chat input et disclaimer - complètement indépendant */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm px-6 py-4 z-50">
+      {/* Chat input - fixé en bas */}
+      <div className="fixed bottom-12 left-0 right-0 bg-background/95 backdrop-blur-sm px-6 py-4 z-50">
         <form onSubmit={handleTextSubmit} className="space-y-3 max-w-4xl mx-auto">
           {/* Image preview */}
           {selectedImage && (
@@ -1197,9 +1197,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             </Button>
           </div>
         </form>
+      </div>
         
-        {/* Disclaimer text */}
-        <p className="text-center text-xs text-muted-foreground px-2 mt-3 max-w-4xl mx-auto">
+      {/* Disclaimer - fixé en bas */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm px-6 py-2 z-50">
+        <p className="text-center text-xs text-muted-foreground max-w-4xl mx-auto">
           {i18n.language === 'fr' ? (
             <>
               En discutant avec Cuizly Assistant, vous acceptez nos{' '}
