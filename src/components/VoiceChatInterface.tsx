@@ -1071,7 +1071,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 bg-black hover:bg-black/80 text-white"
+                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 bg-black hover:bg-black/80 text-white text-base font-bold leading-none flex items-center justify-center"
                   onClick={() => setSelectedImage(null)}
                 >
                   ×
