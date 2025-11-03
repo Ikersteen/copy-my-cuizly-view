@@ -1090,7 +1090,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           </div>
         )}
 
-        <div className="fixed bottom-0 left-0 right-0 px-6 py-4 border-t border-border z-50" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
+        <div className="fixed bottom-0 left-0 right-0 bg-background px-6 py-4 border-t border-border z-50" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
           <div className="max-w-6xl mx-auto w-full">
           <form onSubmit={handleTextSubmit} className="space-y-3">
             {/* Image preview */}
