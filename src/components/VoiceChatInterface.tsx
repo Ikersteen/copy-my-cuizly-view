@@ -1088,7 +1088,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         
           {/* Indicateur de scroll pour descendre */}
           {showScrollIndicator && (
-            <div className="fixed bottom-[140px] left-1/2 -translate-x-1/2 z-[60]">
+            <div className="fixed bottom-[120px] left-1/2 -translate-x-1/2 z-[60]">
               <Button
                 onClick={scrollToBottom}
                 variant="secondary"
