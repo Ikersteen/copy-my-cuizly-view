@@ -57,6 +57,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+  const [isNearBottom, setIsNearBottom] = useState(true); // Track if user is near bottom
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -152,20 +153,32 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container;
-      const isNearBottom = scrollHeight - scrollTop - clientHeight < 150;
+      const nearBottom = scrollHeight - scrollTop - clientHeight < 150;
+      setIsNearBottom(nearBottom);
       
       // Afficher l'indicateur seulement si:
       // 1. L'utilisateur n'est pas près du bas
       // 2. ET il y a un message en cours de génération (thinking, typing ou speaking)
       const hasActiveGeneration = isThinking || messages.some(msg => msg.isTyping) || isSpeaking;
-      setShowScrollIndicator(!isNearBottom && hasActiveGeneration);
+      setShowScrollIndicator(!nearBottom && hasActiveGeneration);
     };
 
     container.addEventListener('scroll', handleScroll);
-    // Ne plus appeler handleScroll() automatiquement pour éviter le scroll automatique
+    // Call once to set initial state
+    handleScroll();
 
     return () => container.removeEventListener('scroll', handleScroll);
   }, [messages, isThinking, isSpeaking]);
+
+  // Auto-scroll only if user was near bottom when message was added
+  useEffect(() => {
+    if (isNearBottom && messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({ 
+        top: messagesContainerRef.current.scrollHeight, 
+        behavior: 'smooth' 
+      });
+    }
+  }, [messages, isNearBottom]);
 
   // Handle realtime voice messages
   const handleRealtimeMessage = (event: any) => {
