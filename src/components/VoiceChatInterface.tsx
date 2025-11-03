@@ -927,6 +927,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         <div 
           ref={messagesContainerRef}
           className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-40 space-y-6"
+          style={{ overflowAnchor: 'none' }}
         >
           
           {messages.length === 0 && (
