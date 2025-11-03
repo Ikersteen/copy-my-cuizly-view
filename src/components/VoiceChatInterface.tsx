@@ -67,6 +67,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const voiceDetectionRef = useRef<any>(null);
   const realtimeClientRef = useRef<RealtimeVoiceClient | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const thinkingIndicatorRef = useRef<HTMLDivElement | null>(null);
   
   const { createConversation, saveMessage, loadConversations, loadConversationMessages } = useConversations();
   const { trackUserLocation } = useUserLocation();
@@ -166,6 +167,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
     return () => container.removeEventListener('scroll', handleScroll);
   }, [messages, isThinking, isSpeaking]);
+
+  // Scroll automatique vers l'indicateur de réflexion
+  useEffect(() => {
+    if (isThinking && thinkingIndicatorRef.current) {
+      thinkingIndicatorRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+      });
+    }
+  }, [isThinking]);
 
   // Handle realtime voice messages
   const handleRealtimeMessage = (event: any) => {
@@ -1048,7 +1059,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
           {/* Thinking indicator when AI is processing */}
           {isThinking && (
-            <div className="flex justify-start">
+            <div ref={thinkingIndicatorRef} className="flex justify-start">
               <div className="max-w-[85%]">
                 <div>
                   <ThinkingIndicator className="py-2" />
