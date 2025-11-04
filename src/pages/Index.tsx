@@ -1,11 +1,8 @@
 import Footer from "@/components/Footer";
-import { useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
 const Index = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const video3Ref = useRef<HTMLVideoElement>(null);
-  const navigate = useNavigate();
 
   const toggleVideo = () => {
     if (videoRef.current) {
@@ -16,28 +13,6 @@ const Index = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const video3 = video3Ref.current;
-    if (!video3) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && video3.paused) {
-            video3.play();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(video3);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 
   return (
     <>
@@ -54,69 +29,6 @@ const Index = () => {
         >
           <source src="/cuizly-ai-powered.mp4" type="video/mp4" />
         </video>
-      </div>
-
-      {/* Image 1 - Automation text avec zone "Try" cliquable */}
-      <div className="min-h-[85vh] md:min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center py-4 md:py-0">
-        <img 
-          src="/cuizly-automation-text.jpg" 
-          alt="We build intelligent tools that help restaurants efficiently automate the management of their establishments"
-          className="w-full h-auto max-h-[80vh] md:max-h-screen object-contain"
-        />
-        {/* Zone cliquable pour "Try" */}
-        <a 
-          href="https://www.cuizly.ca/cuizlyassistant"
-          className="absolute top-[60%] left-1/2 -translate-x-1/2 w-32 h-14 md:w-40 md:h-16 cursor-pointer z-50"
-          aria-label="Try Cuizly Assistant"
-          style={{ pointerEvents: 'auto' }}
-        />
-      </div>
-
-      {/* Vidéo 2 */}
-      <div className="min-h-[85vh] md:min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block py-4 md:py-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="w-full h-auto max-h-[80vh] md:max-h-screen object-contain"
-        >
-          <source src="/cuizly-video-2.mp4" type="video/mp4" />
-        </video>
-      </div>
-
-      {/* Vidéo 3 - Joue une seule fois au scroll */}
-      <div className="min-h-[85vh] md:min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block py-4 md:py-0">
-        <video 
-          ref={video3Ref}
-          muted 
-          playsInline
-          className="w-full h-auto max-h-[80vh] md:max-h-screen object-contain"
-        >
-          <source src="/cuizly-video-3.mp4" type="video/mp4" />
-        </video>
-      </div>
-
-      {/* Vidéo 4 */}
-      <div className="min-h-[85vh] md:min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block py-4 md:py-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="w-full h-auto max-h-[80vh] md:max-h-screen object-contain"
-        >
-          <source src="/cuizly-video-4.mp4" type="video/mp4" />
-        </video>
-      </div>
-
-      {/* Image 5 - Future of foodtech */}
-      <div className="min-h-[85vh] md:min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center py-4 md:py-0">
-        <img 
-          src="/cuizly-future-foodtech.jpg" 
-          alt="Let's build the future of foodtech together"
-          className="w-full h-auto max-h-[80vh] md:max-h-screen object-contain"
-        />
       </div>
 
       <Footer />
