@@ -1063,7 +1063,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
+                        className="h-7 w-7 p-0 rounded-full transition-colors hover:bg-transparent"
                         onClick={() => {
                           navigator.clipboard.writeText(message.content);
                           setMessageActions(prev => ({
@@ -1076,7 +1076,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                           });
                         }}
                       >
-                        <Copy className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.copied ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
+                        <Copy 
+                          className={`w-3.5 h-3.5 transition-all ${
+                            messageActions[message.id]?.copied 
+                              ? 'fill-black dark:fill-white stroke-black dark:stroke-white' 
+                              : 'fill-none stroke-muted-foreground'
+                          }`} 
+                        />
                       </Button>
                     ) : (
                       // For assistant messages: Like, Dislike, Copy, Bookmark icons
@@ -1084,14 +1090,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
+                          className="h-7 w-7 p-0 rounded-full transition-colors hover:bg-transparent"
                           onClick={() => {
                             setMessageActions(prev => ({
                               ...prev,
                               [message.id]: { 
                                 ...prev[message.id], 
                                 liked: !prev[message.id]?.liked,
-                                disliked: false // Reset dislike when liking
+                                disliked: false
                               }
                             }));
                             toast({
@@ -1100,19 +1106,25 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                             });
                           }}
                         >
-                          <ThumbsUp className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.liked ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
+                          <ThumbsUp 
+                            className={`w-3.5 h-3.5 transition-all ${
+                              messageActions[message.id]?.liked 
+                                ? 'fill-black dark:fill-white stroke-black dark:stroke-white' 
+                                : 'fill-none stroke-muted-foreground'
+                            }`} 
+                          />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
+                          className="h-7 w-7 p-0 rounded-full transition-colors hover:bg-transparent"
                           onClick={() => {
                             setMessageActions(prev => ({
                               ...prev,
                               [message.id]: { 
                                 ...prev[message.id], 
                                 disliked: !prev[message.id]?.disliked,
-                                liked: false // Reset like when disliking
+                                liked: false
                               }
                             }));
                             toast({
@@ -1121,12 +1133,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                             });
                           }}
                         >
-                          <ThumbsDown className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.disliked ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
+                          <ThumbsDown 
+                            className={`w-3.5 h-3.5 transition-all ${
+                              messageActions[message.id]?.disliked 
+                                ? 'fill-black dark:fill-white stroke-black dark:stroke-white' 
+                                : 'fill-none stroke-muted-foreground'
+                            }`} 
+                          />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
+                          className="h-7 w-7 p-0 rounded-full transition-colors hover:bg-transparent"
                           onClick={() => {
                             navigator.clipboard.writeText(message.content);
                             setMessageActions(prev => ({
@@ -1139,12 +1157,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                             });
                           }}
                         >
-                          <Copy className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.copied ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
+                          <Copy 
+                            className={`w-3.5 h-3.5 transition-all ${
+                              messageActions[message.id]?.copied 
+                                ? 'fill-black dark:fill-white stroke-black dark:stroke-white' 
+                                : 'fill-none stroke-muted-foreground'
+                            }`} 
+                          />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
+                          className="h-7 w-7 p-0 rounded-full transition-colors hover:bg-transparent"
                           onClick={() => {
                             setMessageActions(prev => ({
                               ...prev,
@@ -1156,7 +1180,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                             });
                           }}
                         >
-                          <Bookmark className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.bookmarked ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
+                          <Bookmark 
+                            className={`w-3.5 h-3.5 transition-all ${
+                              messageActions[message.id]?.bookmarked 
+                                ? 'fill-black dark:fill-white stroke-black dark:stroke-white' 
+                                : 'fill-none stroke-muted-foreground'
+                            }`} 
+                          />
                         </Button>
                       </>
                     )}
