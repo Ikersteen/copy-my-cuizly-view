@@ -44,17 +44,14 @@ const Index = () => {
         />
       </div>
 
-      {/* Vidéo 2 - Cliquable pour aller à l'assistant */}
-      <div 
-        className="min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block cursor-pointer"
-        onClick={() => navigate('/voice-chat')}
-      >
+      {/* Vidéo 2 */}
+      <div className="min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block">
         <video 
           autoPlay 
           loop 
           muted 
           playsInline
-          className="w-full h-auto max-h-[70vh] md:max-h-screen object-contain pointer-events-none"
+          className="w-full h-auto max-h-[70vh] md:max-h-screen object-contain"
         >
           <source src="/cuizly-video-2.mp4" type="video/mp4" />
         </video>
