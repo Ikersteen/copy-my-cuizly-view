@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -1050,6 +1050,86 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <div className="flex items-center gap-2 text-xs mt-2 opacity-70">
                         <ThinkingIndicator />
                       </div>
+                    )}
+                  </div>
+                )}
+                
+                {/* Action icons below messages */}
+                {!message.isProcessing && !message.isTyping && (
+                  <div className="flex items-center gap-1 mt-2">
+                    {message.type === 'user' ? (
+                      // For user messages: only Copy icon
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                        onClick={() => {
+                          navigator.clipboard.writeText(message.content);
+                          toast({
+                            description: "Message copié",
+                            duration: 2000,
+                          });
+                        }}
+                      >
+                        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                      </Button>
+                    ) : (
+                      // For assistant messages: Like, Dislike, Copy, Bookmark icons
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                          onClick={() => {
+                            toast({
+                              description: "👍 Merci pour votre feedback!",
+                              duration: 2000,
+                            });
+                          }}
+                        >
+                          <ThumbsUp className="w-3.5 h-3.5 text-muted-foreground" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                          onClick={() => {
+                            toast({
+                              description: "👎 Merci pour votre feedback!",
+                              duration: 2000,
+                            });
+                          }}
+                        >
+                          <ThumbsDown className="w-3.5 h-3.5 text-muted-foreground" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                          onClick={() => {
+                            navigator.clipboard.writeText(message.content);
+                            toast({
+                              description: "Réponse copiée",
+                              duration: 2000,
+                            });
+                          }}
+                        >
+                          <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                          onClick={() => {
+                            toast({
+                              description: "Réponse enregistrée",
+                              duration: 2000,
+                            });
+                          }}
+                        >
+                          <Bookmark className="w-3.5 h-3.5 text-muted-foreground" />
+                        </Button>
+                      </>
                     )}
                   </div>
                 )}
