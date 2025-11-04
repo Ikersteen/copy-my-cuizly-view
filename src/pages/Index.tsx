@@ -56,16 +56,23 @@ const Index = () => {
         </video>
       </div>
 
-      {/* Image 1 - Automation text */}
+      {/* Image 1 - Automation text avec zone "Try" cliquable */}
       <div className="min-h-[85vh] md:min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center py-4 md:py-0">
         <img 
           src="/cuizly-automation-text.jpg" 
           alt="We build intelligent tools that help restaurants efficiently automate the management of their establishments"
           className="w-full h-auto max-h-[80vh] md:max-h-screen object-contain"
         />
+        {/* Zone cliquable pour "Try" */}
+        <a 
+          href="https://www.cuizly.ca/cuizlyassistant"
+          className="absolute top-[60%] left-1/2 -translate-x-1/2 w-32 h-14 md:w-40 md:h-16 cursor-pointer z-50"
+          aria-label="Try Cuizly Assistant"
+          style={{ pointerEvents: 'auto' }}
+        />
       </div>
 
-      {/* Vidéo 2 - Zone "Try" cliquable */}
+      {/* Vidéo 2 */}
       <div className="min-h-[85vh] md:min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block py-4 md:py-0">
         <video 
           autoPlay 
@@ -76,13 +83,6 @@ const Index = () => {
         >
           <source src="/cuizly-video-2.mp4" type="video/mp4" />
         </video>
-        {/* Zone cliquable pour "Try" - positionnée sur le bouton noir dans la vidéo */}
-        <a 
-          href="https://www.cuizly.ca/cuizlyassistant"
-          className="absolute top-[60%] left-1/2 -translate-x-1/2 w-32 h-14 md:w-40 md:h-16 cursor-pointer z-50"
-          aria-label="Try Cuizly Assistant"
-          style={{ pointerEvents: 'auto' }}
-        />
       </div>
 
       {/* Vidéo 3 - Joue une seule fois au scroll */}
