@@ -44,7 +44,7 @@ const Index = () => {
         />
       </div>
 
-      {/* Vidéo 2 */}
+      {/* Vidéo 2 - Zone "Try" cliquable */}
       <div className="min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block">
         <video 
           autoPlay 
@@ -55,6 +55,12 @@ const Index = () => {
         >
           <source src="/cuizly-video-2.mp4" type="video/mp4" />
         </video>
+        {/* Zone cliquable pour "Try" */}
+        <a 
+          href="https://www.cuizly.ca/cuizlyassistant"
+          className="absolute bottom-[15%] left-1/2 -translate-x-1/2 w-32 h-16 md:w-40 md:h-20 cursor-pointer z-10"
+          aria-label="Try Cuizly Assistant"
+        />
       </div>
 
       {/* Vidéo 3 - Sans boucle */}
