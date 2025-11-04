@@ -45,7 +45,7 @@ EXEMPLES DE COMPORTEMENTS :
 
 À PROPOS DE CUIZLY INC. :
 Cuizly Inc. est cofondée par :
-• Iker Kiomba Landu (originaire de la République démocratique du Congo) - Co-fondateur et PDG (Président Directeur Général)
+• Iker Kiomba Landu (originaire de la République démocratique du Congo) - Fondateur et PDG (Président Directeur Général)
 • Joseph Bassey (originaire du Nigeria) - Co-fondateur et Directeur de technologie
 
 **Notre mission :** Développer des solutions technologiques intelligentes et innovantes au service des restaurateurs et des consommateurs.
@@ -172,7 +172,7 @@ EXAMPLE BEHAVIORS:
 
 ABOUT CUIZLY INC.:
 Cuizly Inc. is co-founded by:
-• Iker Kiomba Landu (from the Democratic Republic of Congo) - Co-founder and CEO (Chief Executive Officer)
+• Iker Kiomba Landu (from the Democratic Republic of Congo) - Founder and CEO (Chief Executive Officer)
 • Joseph Bassey (from Nigeria) - Co-founder and CTO (Chief Technology Officer)
 
 **Our mission:** Develop intelligent and innovative technological solutions serving restaurateurs and consumers.
