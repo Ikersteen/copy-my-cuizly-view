@@ -71,6 +71,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   
   const { createConversation, saveMessage, loadConversations, loadConversationMessages } = useConversations();
   const { trackUserLocation } = useUserLocation();
+  const [messageActions, setMessageActions] = useState<Record<string, { liked?: boolean; disliked?: boolean; copied?: boolean; bookmarked?: boolean }>>({});
   
   // Tracking de localisation pour utilisateurs anonymes
   useAnonymousTracking('Cuizly Assistant');
@@ -1062,16 +1063,20 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                        className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
                         onClick={() => {
                           navigator.clipboard.writeText(message.content);
+                          setMessageActions(prev => ({
+                            ...prev,
+                            [message.id]: { ...prev[message.id], copied: !prev[message.id]?.copied }
+                          }));
                           toast({
                             description: "Message copié",
                             duration: 2000,
                           });
                         }}
                       >
-                        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                        <Copy className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.copied ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
                       </Button>
                     ) : (
                       // For assistant messages: Like, Dislike, Copy, Bookmark icons
@@ -1079,55 +1084,79 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                          className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
                           onClick={() => {
+                            setMessageActions(prev => ({
+                              ...prev,
+                              [message.id]: { 
+                                ...prev[message.id], 
+                                liked: !prev[message.id]?.liked,
+                                disliked: false // Reset dislike when liking
+                              }
+                            }));
                             toast({
-                              description: "👍 Merci pour votre feedback!",
+                              description: "Merci pour votre feedback!",
                               duration: 2000,
                             });
                           }}
                         >
-                          <ThumbsUp className="w-3.5 h-3.5 text-muted-foreground" />
+                          <ThumbsUp className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.liked ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                          className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
                           onClick={() => {
+                            setMessageActions(prev => ({
+                              ...prev,
+                              [message.id]: { 
+                                ...prev[message.id], 
+                                disliked: !prev[message.id]?.disliked,
+                                liked: false // Reset like when disliking
+                              }
+                            }));
                             toast({
-                              description: "👎 Merci pour votre feedback!",
+                              description: "Merci pour votre feedback!",
                               duration: 2000,
                             });
                           }}
                         >
-                          <ThumbsDown className="w-3.5 h-3.5 text-muted-foreground" />
+                          <ThumbsDown className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.disliked ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                          className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
                           onClick={() => {
                             navigator.clipboard.writeText(message.content);
+                            setMessageActions(prev => ({
+                              ...prev,
+                              [message.id]: { ...prev[message.id], copied: !prev[message.id]?.copied }
+                            }));
                             toast({
                               description: "Réponse copiée",
                               duration: 2000,
                             });
                           }}
                         >
-                          <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                          <Copy className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.copied ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 hover:bg-muted rounded-full"
+                          className="h-7 w-7 p-0 hover:bg-muted rounded-full transition-colors"
                           onClick={() => {
+                            setMessageActions(prev => ({
+                              ...prev,
+                              [message.id]: { ...prev[message.id], bookmarked: !prev[message.id]?.bookmarked }
+                            }));
                             toast({
                               description: "Réponse enregistrée",
                               duration: 2000,
                             });
                           }}
                         >
-                          <Bookmark className="w-3.5 h-3.5 text-muted-foreground" />
+                          <Bookmark className={`w-3.5 h-3.5 transition-colors ${messageActions[message.id]?.bookmarked ? 'text-black dark:text-white' : 'text-muted-foreground'}`} />
                         </Button>
                       </>
                     )}
