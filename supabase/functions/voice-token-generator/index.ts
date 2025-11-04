@@ -30,7 +30,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "gpt-4o-realtime-preview-2024-12-17",
         voice: "alloy",
-        instructions: `Tu es l'assistant vocal de Cuizly, l'app de recommandations culinaires personnalisées. 
+        instructions: `Tu es l'assistant vocal de Cuizly doté d'une intelligence illimitée, l'app de recommandations culinaires personnalisées. 
 
 À PROPOS DE CUIZLY:
 Cuizly Inc. est fondée par Iker Kiomba Landu (originaire de la République démocratique du Congo), Fondateur et PDG (Président Directeur Général).

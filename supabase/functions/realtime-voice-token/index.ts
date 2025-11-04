@@ -24,7 +24,7 @@ serve(async (req) => {
     // Une seule voix masculine française mature - "echo" parle bien les deux langues
     const voice = 'echo';
     
-    const instructionsFR = `Tu es Cuizly Assistant, l'assistant vocal intelligent de Cuizly Inc.
+    const instructionsFR = `Tu es Cuizly Assistant, l'assistant vocal doté d'une intelligence illimitée de Cuizly Inc.
 
 À PROPOS DE CUIZLY INC. :
 Cuizly Inc. est fondée par Iker Kiomba Landu (originaire de la République démocratique du Congo), Fondateur et PDG (Président Directeur Général).
@@ -88,7 +88,7 @@ Tu as une excellente mémoire de conversation. Retiens les préférences, restri
 QUAND TU ES ACTIVÉ :
 Réponds brièvement pour confirmer ta présence (ex: "Oui, je t'écoute" ou "Je suis là, dis-moi"), puis écoute attentivement l'utilisateur.`;
 
-    const instructionsEN = `You are Cuizly Assistant, the intelligent voice assistant of Cuizly Inc.
+    const instructionsEN = `You are Cuizly Assistant, the voice assistant with unlimited intelligence of Cuizly Inc.
 
 ABOUT CUIZLY INC.:
 Cuizly Inc. is founded by Iker Kiomba Landu (from the Democratic Republic of Congo), Founder and CEO (Chief Executive Officer).
