@@ -1125,7 +1125,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             </div>
           )}
           
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             {/* Hidden file inputs */}
             <input
               ref={fileInputRef}
