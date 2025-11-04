@@ -222,7 +222,7 @@
         "title": "12. Contact",
         "content": "Pour toute question, demande ou plainte :",
         "email": "Courriel : support@cuizly.ca",
-        "address": "Adresse : Montréal, QC, Canada"
+        "address": "Adresse : Toronto, ON, Canada"
       }
     }
   },
@@ -237,7 +237,7 @@
         "title": "1. Éditeur du site",
         "companyName": "Raison sociale : Cuizly Inc.",
         "legalForm": "Forme juridique : Startup indépendante",
-        "address": "Siège social : Montréal, QC, Canada",
+        "address": "Siège social : Toronto, ON, Canada",
         "email": "Courriel : support@cuizly.ca"
       },
       "hosting": {
@@ -286,8 +286,8 @@
       },
       "law": {
         "title": "8. Droit applicable et juridiction",
-        "applicableLaw": "Les présentes mentions légales sont régies par le droit québécois et canadien.",
-        "jurisdiction": "Tout litige lié à l'utilisation du site sera soumis aux tribunaux compétents du district judiciaire de Montréal (QC)."
+        "applicableLaw": "Les présentes mentions légales sont régies par le droit ontarien et canadien.",
+        "jurisdiction": "Tout litige lié à l'utilisation du site sera soumis aux tribunaux compétents du district judiciaire de Toronto (ON)."
       }
     }
   },
@@ -391,7 +391,7 @@
       },
       "law": {
         "title": "16) Droit applicable et litiges",
-        "content": "Ces Conditions sont régies par les lois du Québec et du Canada applicables, sans égard aux principes de conflits de lois. Tout litige sera soumis aux tribunaux du district judiciaire de Montréal (QC), sous réserve des règles impératives de protection du consommateur."
+        "content": "Ces Conditions sont régies par les lois de l'Ontario et du Canada applicables, sans égard aux principes de conflits de lois. Tout litige sera soumis aux tribunaux du district judiciaire de Toronto (ON), sous réserve des règles impératives de protection du consommateur."
       },
       "communications": {
         "title": "17) Communications électroniques et avis",
@@ -409,7 +409,7 @@
         "title": "20) Contact",
         "content": "Pour toute question :",
         "email": "Courriel : support@cuizly.ca",
-        "address": "Adresse : Montréal, QC, Canada"
+        "address": "Adresse : Toronto, ON, Canada"
       }
     }
   },
@@ -482,7 +482,7 @@
         "title": "6. Éditeur du site",
         "company": "Raison sociale : Cuizly Inc.",
         "form": "Forme juridique : Incorporation",
-        "address": "Siège social : Montréal, QC, Canada",
+        "address": "Siège social : Toronto, ON, Canada",
         "director": "Directeur de la publication :",
         "directorName": "Iker Kiomba Landu – Président Directeur Général"
       },
@@ -490,7 +490,7 @@
         "title": "7. Contact",
         "content": "Pour toute question sur l'utilisation des cookies :",
         "email": "Courriel : support@cuizly.ca",
-        "address": "Adresse : Montréal, QC, Canada"
+        "address": "Adresse : Toronto, ON, Canada"
       }
     }
   },
