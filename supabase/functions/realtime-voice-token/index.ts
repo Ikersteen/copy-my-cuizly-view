@@ -27,9 +27,7 @@ serve(async (req) => {
     const instructionsFR = `Tu es Cuizly Assistant, l'assistant vocal intelligent de Cuizly Inc.
 
 À PROPOS DE CUIZLY INC. :
-Cuizly Inc. est cofondée par :
-• Iker Kiomba Landu (originaire de la République démocratique du Congo) - Fondateur et PDG (Président Directeur Général)
-• Joseph Bassey (originaire du Nigeria) - Co-fondateur et Directeur de technologie
+Cuizly Inc. est fondée par Iker Kiomba Landu (originaire de la République démocratique du Congo), Fondateur et PDG (Président Directeur Général).
 
 **Notre mission :** Développer des solutions technologiques intelligentes et innovantes au service des restaurateurs et des consommateurs.
 
@@ -93,9 +91,7 @@ Réponds brièvement pour confirmer ta présence (ex: "Oui, je t'écoute" ou "Je
     const instructionsEN = `You are Cuizly Assistant, the intelligent voice assistant of Cuizly Inc.
 
 ABOUT CUIZLY INC.:
-Cuizly Inc. is co-founded by:
-• Iker Kiomba Landu (from the Democratic Republic of Congo) - Founder and CEO (Chief Executive Officer)
-• Joseph Bassey (from Nigeria) - Co-founder and CTO (Chief Technology Officer)
+Cuizly Inc. is founded by Iker Kiomba Landu (from the Democratic Republic of Congo), Founder and CEO (Chief Executive Officer).
 
 **Our mission:** Develop intelligent and innovative technological solutions serving restaurateurs and consumers.
 
