@@ -1092,11 +1092,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               <Button
                 onClick={scrollToBottom}
                 variant="secondary"
-                size="sm"
+                size="icon"
                 className="rounded-full shadow-lg border border-border bg-background hover:bg-muted"
               >
-                <ArrowDown className="w-4 h-4 mr-2 animate-bounce" />
-                {t('voiceChat.newResponse') || 'Nouvelle réponse'}
+                <ArrowDown className="w-4 h-4 animate-bounce" />
               </Button>
             </div>
           )}
