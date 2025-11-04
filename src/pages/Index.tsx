@@ -81,8 +81,9 @@ const Index = () => {
         {/* Zone cliquable pour "Try" - positionnée sur le bouton noir dans la vidéo */}
         <a 
           href="https://www.cuizly.ca/cuizlyassistant"
-          className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-28 h-12 md:w-36 md:h-14 cursor-pointer z-10 hover:opacity-75 transition-opacity"
+          className="absolute top-[60%] left-1/2 -translate-x-1/2 w-32 h-14 md:w-40 md:h-16 cursor-pointer z-50"
           aria-label="Try Cuizly Assistant"
+          style={{ pointerEvents: 'auto' }}
         />
       </div>
 
