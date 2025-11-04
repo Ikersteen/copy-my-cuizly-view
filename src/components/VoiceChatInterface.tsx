@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, Check } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -1068,12 +1068,20 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                           navigator.clipboard.writeText(message.content);
                           setMessageActions(prev => ({
                             ...prev,
-                            [message.id]: { ...prev[message.id], copied: !prev[message.id]?.copied }
+                            [message.id]: { ...prev[message.id], copied: true }
                           }));
                           toast({
                             description: "Message copié",
                             duration: 2000,
                           });
+                          
+                          // Reset après 1 seconde
+                          setTimeout(() => {
+                            setMessageActions(prev => ({
+                              ...prev,
+                              [message.id]: { ...prev[message.id], copied: false }
+                            }));
+                          }, 1000);
                         }}
                       >
                         <Copy 
@@ -1165,15 +1173,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                             }, 1000);
                           }}
                         >
-                          {messageActions[message.id]?.copied ? (
-                            <Check 
-                              className="w-3.5 h-3.5 fill-black dark:fill-white stroke-black dark:stroke-white transition-all animate-scale-in" 
-                            />
-                          ) : (
-                            <Copy 
-                              className="w-3.5 h-3.5 fill-none stroke-muted-foreground transition-all" 
-                            />
-                          )}
+                          <Copy 
+                            className={`w-3.5 h-3.5 transition-all ${
+                              messageActions[message.id]?.copied 
+                                ? 'fill-black dark:fill-white stroke-black dark:stroke-white' 
+                                : 'fill-none stroke-muted-foreground'
+                            }`} 
+                          />
                         </Button>
                         <Button
                           variant="ghost"
