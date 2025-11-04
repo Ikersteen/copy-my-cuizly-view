@@ -1,11 +1,12 @@
 import Footer from "@/components/Footer";
 import { useAnonymousTracking } from "@/hooks/useAnonymousTracking";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   useAnonymousTracking('homepage');
   const videoRef = useRef<HTMLVideoElement>(null);
+  const video3Ref = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
 
   const toggleVideo = () => {
@@ -17,6 +18,28 @@ const Index = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const video3 = video3Ref.current;
+    if (!video3) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && video3.paused) {
+            video3.play();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(video3);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <>
@@ -55,18 +78,18 @@ const Index = () => {
         >
           <source src="/cuizly-video-2.mp4" type="video/mp4" />
         </video>
-        {/* Zone cliquable pour "Try" */}
+        {/* Zone cliquable pour "Try" - positionnée sur le bouton noir dans la vidéo */}
         <a 
           href="https://www.cuizly.ca/cuizlyassistant"
-          className="absolute bottom-[15%] left-1/2 -translate-x-1/2 w-32 h-16 md:w-40 md:h-20 cursor-pointer z-10"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-[15%] w-36 h-14 md:w-44 md:h-16 cursor-pointer z-10 hover:opacity-75 transition-opacity"
           aria-label="Try Cuizly Assistant"
         />
       </div>
 
-      {/* Vidéo 3 - Sans boucle */}
+      {/* Vidéo 3 - Joue une seule fois au scroll */}
       <div className="min-h-[85vh] md:min-h-screen md:h-screen w-full bg-background relative flex items-center justify-center md:block py-4 md:py-0">
         <video 
-          autoPlay 
+          ref={video3Ref}
           muted 
           playsInline
           className="w-full h-auto max-h-[80vh] md:max-h-screen object-contain"
