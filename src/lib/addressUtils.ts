@@ -1,11 +1,11 @@
 import type { ParsedAddress, AddressInput } from '@/types/address';
-import { getCityByPostalCode, detectCityFromAddress, TORONTO_CONFIG, REPENTIGNY_CONFIG } from "@/constants/cities";
+import { getCityByPostalCode, detectCityFromAddress, MONTREAL_CONFIG, REPENTIGNY_CONFIG } from "@/constants/cities";
 
 /**
  * Parse a formatted address string into components
- * Handles Toronto-specific address formats like:
- * "123 Queen Street West, Downtown Toronto, Toronto, ON M5H 2M9"
- * "Downtown Toronto, Toronto, ON"
+ * Handles Montreal-specific address formats like:
+ * "1234 Rue Sainte-Catherine, Plateau-Mont-Royal, Montréal, QC H2X 3A5"
+ * "Plateau-Mont-Royal, Montréal, QC"
  */
 export function parseAddress(formattedAddress: string): ParsedAddress {
   const parts = formattedAddress.split(',').map(part => part.trim());
@@ -124,14 +124,14 @@ export function formatAddress(address: Partial<ParsedAddress>): string {
 }
 
 /**
- * Validate Toronto postal code format
+ * Validate Montreal postal code format
  */
-export function isValidTorontoPostalCode(postalCode: string): boolean {
+export function isValidMontrealPostalCode(postalCode: string): boolean {
   const cleanCode = postalCode.replace(/\s/g, '').toUpperCase();
   
-  // Toronto postal codes start with M
-  const torontoPattern = /^M[0-9][A-Z][0-9][A-Z][0-9]$/;
-  return torontoPattern.test(cleanCode);
+  // Montreal postal codes start with H
+  const montrealPattern = /^H[0-9][A-Z][0-9][A-Z][0-9]$/;
+  return montrealPattern.test(cleanCode);
 }
 
 /**
@@ -149,7 +149,7 @@ export function isValidRepentinyPostalCode(postalCode: string): boolean {
  * Validate postal code for supported cities
  */
 export function isValidPostalCode(postalCode: string): boolean {
-  return isValidTorontoPostalCode(postalCode) || isValidRepentinyPostalCode(postalCode);
+  return isValidMontrealPostalCode(postalCode) || isValidRepentinyPostalCode(postalCode);
 }
 
 /**
@@ -177,7 +177,7 @@ export function validateAddressInput(address: Partial<AddressInput>): {
   }
 
   if (address.postal_code && !isValidPostalCode(address.postal_code)) {
-    errors.postal_code = 'Code postal invalide (Toronto: M#X #X#, Repentigny: J5Y/J6A/J6B #X#)';
+    errors.postal_code = 'Code postal invalide (Montréal: H#X #X#, Repentigny: J5Y/J6A/J6B #X#)';
   }
 
   if (address.street_name && address.street_name.length < 2) {

@@ -44,7 +44,7 @@
   },
   "mission": {
     "title": "Mission",
-    "subtitle": "Connecter les gourmets aux meilleures expériences culinaires de Toronto",
+    "subtitle": "Connecter les gourmets aux meilleures expériences culinaires de Montréal",
     "description": "Cuizly révolutionne la découverte gastronomique en utilisant l'intelligence artificielle pour recommander des restaurants parfaitement adaptés aux préférences, au budget et aux envies des consommateurs."
   },
   "features": {
@@ -56,7 +56,7 @@
     },
     "geolocation": {
       "title": "Géolocalisation",
-      "description": "Trouvez les meilleures offres près de chez vous à Toronto."
+      "description": "Trouvez les meilleures offres près de chez vous à Montréal."
     },
     "real_time_alerts": {
       "title": "Alertes en temps réel",
@@ -84,7 +84,7 @@
     "restaurantSection": "Pour les restaurateurs",
     "consumer": {
       "title": "Cuizly Basique",
-      "subtitle": "Pour les gourmets qui veulent découvrir Toronto",
+      "subtitle": "Pour les gourmets qui veulent découvrir Montréal",
       "price": "Gratuit",
       "priceNote": "ou 119.88$ CAD/an",
       "features": [
@@ -222,7 +222,7 @@
         "title": "12. Contact",
         "content": "Pour toute question, demande ou plainte :",
         "email": "Courriel : support@cuizly.ca",
-        "address": "Adresse : Toronto, Ontario, Canada"
+        "address": "Adresse : Montréal, QC, Canada"
       }
     }
   },
@@ -237,7 +237,7 @@
         "title": "1. Éditeur du site",
         "companyName": "Raison sociale : Cuizly Inc.",
         "legalForm": "Forme juridique : Startup indépendante",
-        "address": "Siège social : Toronto, Ontario, Canada",
+        "address": "Siège social : Montréal, QC, Canada",
         "email": "Courriel : support@cuizly.ca"
       },
       "hosting": {
@@ -287,7 +287,7 @@
       "law": {
         "title": "8. Droit applicable et juridiction",
         "applicableLaw": "Les présentes mentions légales sont régies par le droit québécois et canadien.",
-        "jurisdiction": "Tout litige lié à l'utilisation du site sera soumis aux tribunaux compétents du district judiciaire de Toronto (Ontario)."
+        "jurisdiction": "Tout litige lié à l'utilisation du site sera soumis aux tribunaux compétents du district judiciaire de Montréal (QC)."
       }
     }
   },
@@ -391,7 +391,7 @@
       },
       "law": {
         "title": "16) Droit applicable et litiges",
-        "content": "Ces Conditions sont régies par les lois de l'Ontario et du Canada applicables, sans égard aux principes de conflits de lois. Tout litige sera soumis aux tribunaux du district judiciaire de Toronto (Ontario), sous réserve des règles impératives de protection du consommateur."
+        "content": "Ces Conditions sont régies par les lois du Québec et du Canada applicables, sans égard aux principes de conflits de lois. Tout litige sera soumis aux tribunaux du district judiciaire de Montréal (QC), sous réserve des règles impératives de protection du consommateur."
       },
       "communications": {
         "title": "17) Communications électroniques et avis",
@@ -409,7 +409,7 @@
         "title": "20) Contact",
         "content": "Pour toute question :",
         "email": "Courriel : support@cuizly.ca",
-        "address": "Adresse : Toronto, Ontario, Canada"
+        "address": "Adresse : Montréal, QC, Canada"
       }
     }
   },
@@ -482,7 +482,7 @@
         "title": "6. Éditeur du site",
         "company": "Raison sociale : Cuizly Inc.",
         "form": "Forme juridique : Incorporation",
-        "address": "Siège social : Toronto, Ontario, Canada",
+        "address": "Siège social : Montréal, QC, Canada",
         "director": "Directeur de la publication :",
         "directorName": "Iker Kiomba Landu – Président Directeur Général"
       },
@@ -490,7 +490,7 @@
         "title": "7. Contact",
         "content": "Pour toute question sur l'utilisation des cookies :",
         "email": "Courriel : support@cuizly.ca",
-        "address": "Adresse : Toronto, Ontario, Canada"
+        "address": "Adresse : Montréal, QC, Canada"
       }
     }
   },
@@ -1319,7 +1319,7 @@
     "journeyDetails": "Il y a deux ans, Iker, originaire de la République Démocratique du Congo, a fait un constat simple mais puissant sur la ville Montréal : face à l'immense diversité de restaurants multiculturels, il manquait un véritable repère pour bien manger selon son budget et ses préférences. De cette observation est né un déclic : concevoir une application dotée d'un système de matching culinaire propulsé par l'IA.",
     "vision": "La vision",
     "visionDetails": "En s'associant à Rayane, son cofondateur originaire de Djibouti, Iker a transformé une rencontre à l'Université de Montréal en bien plus qu'une simple amitié : la naissance d'une passion commune pour l'innovation. Ensemble, ils se sont donné une mission ambitieuse : Transformer chaque donnée en une expérience personnalisée et redéfinir la manière dont on découvre la gastronomie en ville, grâce à un système de recommandation intelligent, personnalisé et véritablement centré sur l'utilisateur.",
-    "location": "Toronto, Ontario",
+    "location": "Montréal, QC",
     "contact": "Contact",
     "foundingYear": "Année de fondation",
     "teamSize": "Membres fondateurs",
@@ -1794,7 +1794,7 @@
     "suggestedRestaurant": "Restaurant suggéré",
     "basedOnPreferences": "Basé sur vos préférences culinaires",
     "availableRestaurants": "Restaurants disponibles", 
-    "discoverMontreal": "Découvrez ce que Toronto a à offrir",
+    "discoverMontreal": "Découvrez ce que Montréal a à offrir",
     "restaurantAvailable": "Restaurant disponible",
     "exploreNewTastes": "Explorez de nouveaux goûts",
     "whyThisChoice": "Pourquoi ce choix ?",
@@ -2029,7 +2029,7 @@
       },
       "geolocation": {
         "title": "Géolocalisation",
-        "description": "Trouvez les meilleures offres près de chez vous à Toronto."
+        "description": "Trouvez les meilleures offres près de chez vous à Montréal."
       },
       "alerts": {
         "title": "Alertes en temps réel",

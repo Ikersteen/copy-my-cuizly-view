@@ -78,7 +78,7 @@ const RatingDisplay = ({ restaurantId, priceRange, address }: {
           <span className="group-hover:underline">{address}</span>
         </button>
       )}
-      {!address && <span className="text-sm text-muted-foreground">Toronto</span>}
+      {!address && <span className="text-sm text-muted-foreground">Montreal</span>}
       
       {/* Price range and rating on second line */}
       <div className="flex items-center space-x-1">

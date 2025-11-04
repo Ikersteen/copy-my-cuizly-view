@@ -44,7 +44,7 @@
   },
   "mission": {
     "title": "Mission",
-    "subtitle": "Connecting food lovers with the best culinary experiences in Toronto",
+    "subtitle": "Connecting food lovers with the best culinary experiences in Montreal",
     "description": "Cuizly revolutionizes dining discovery by using artificial intelligence to recommend restaurants perfectly tailored to consumers' preferences, budget and cravings."
   },
   "features": {
@@ -56,7 +56,7 @@
     },
     "geolocation": {
       "title": "Geolocation",
-      "description": "Find the best deals near you in Toronto."
+      "description": "Find the best deals near you in Montreal."
     },
     "real_time_alerts": {
       "title": "Real-time alerts",
@@ -84,7 +84,7 @@
     "restaurantSection": "For restaurateurs",
     "consumer": {
       "title": "Cuizly Basic",
-      "subtitle": "For food lovers who want to discover Toronto",
+      "subtitle": "For food lovers who want to discover Montreal",
       "price": "Free",
       "priceNote": "or $119.88 CAD/year",
       "features": [
@@ -222,7 +222,7 @@
         "title": "12. Contact",
         "content": "For any questions, requests or complaints:",
         "email": "Email: support@cuizly.ca",
-        "address": "Address: Toronto, Ontario, Canada"
+        "address": "Address: Montreal, QC, Canada"
       }
     }
   },
@@ -237,7 +237,7 @@
         "title": "1. Site publisher",
         "companyName": "Corporate name: Cuizly Inc.",
         "legalForm": "Legal form: Independent startup",
-        "address": "Head office: Toronto, Ontario, Canada",
+        "address": "Head office: Montreal, QC, Canada",
         "email": "Email: support@cuizly.ca"
       },
       "hosting": {
@@ -287,7 +287,7 @@
       "law": {
         "title": "8. Applicable law and jurisdiction",
         "applicableLaw": "These legal mentions are governed by Quebec and Canadian law.",
-        "jurisdiction": "Any dispute related to the use of the site will be submitted to the competent courts of the judicial district of Toronto (Ontario)."
+        "jurisdiction": "Any dispute related to the use of the site will be submitted to the competent courts of the judicial district of Montreal (QC)."
       }
     }
   },
@@ -391,7 +391,7 @@
       },
       "law": {
         "title": "16) Applicable law and disputes",
-        "content": "These Terms are governed by the laws of Ontario and Canada applicable, without regard to conflict of laws principles. Any dispute will be submitted to the courts of the judicial district of Toronto (Ontario), subject to mandatory consumer protection rules."
+        "content": "These Terms are governed by the laws of Quebec and Canada applicable, without regard to conflict of laws principles. Any dispute will be submitted to the courts of the judicial district of Montreal (QC), subject to mandatory consumer protection rules."
       },
       "communications": {
         "title": "17) Electronic communications and notices",
@@ -409,7 +409,7 @@
         "title": "20) Contact",
         "content": "For any questions:",
         "email": "Email: support@cuizly.ca",
-        "address": "Address: Toronto, Ontario, Canada"
+        "address": "Address: Montreal, QC, Canada"
       }
     }
   },
@@ -482,7 +482,7 @@
         "title": "6. Site publisher",
         "company": "Corporate name: Cuizly Inc.",
         "form": "Legal form: Incorporation",
-        "address": "Head office: Toronto, Ontario, Canada",
+        "address": "Head office: Montreal, QC, Canada",
         "director": "Publication director:",
         "directorName": "Iker Kiomba Landu – Chief Executive Officer"
       },
@@ -490,7 +490,7 @@
         "title": "7. Contact",
         "content": "For any questions about the use of cookies:",
         "email": "Email: support@cuizly.ca",
-        "address": "Address: Toronto, Ontario, Canada"
+        "address": "Address: Montreal, QC, Canada"
       }
     }
   },
@@ -991,7 +991,7 @@
       "L'Île-Bizard–Sainte-Geneviève", "Pierrefonds-Roxboro",
       "Montréal-Nord", "Saint-Léonard", "Rivière-des-Prairies–Pointe-aux-Trembles"
     ],
-    "placeholder": "Start typing an address in Toronto..."
+    "placeholder": "Start typing an address in Montreal..."
   },
   "address": {
     "delivery": "Delivery address",
@@ -1325,8 +1325,8 @@
       "elevated": "$$$ - Upscale",
       "luxury": "$$$$ - Luxury"
     },
-    "street": "Your street in Toronto",
-    "fullAddress": "Your full address in Toronto",
+    "street": "Your street in Montreal",
+    "fullAddress": "Your full address in Montreal",
     "deliveryAddress": "Your address",
     "addressSelected": "Selected address",
     "deliveryRadius": "Delivery radius",
@@ -1419,7 +1419,7 @@
     "restaurantAvailable": "Available restaurant",
     "exploreNewTastes": "Explore new tastes",
     "availableRestaurants": "Available restaurants",
-    "discoverMontreal": "Discover Toronto",
+    "discoverMontreal": "Discover Montreal",
     "basedOnPreferences": "Based on your preferences",
     "noRecommendationsTitle": "No recommendations found",
     "noRecommendationsDesc": "Modify your preferences to see more recommended restaurants.",
@@ -1703,7 +1703,7 @@
       },
       "geolocation": {
         "title": "Geolocation",
-        "description": "Find the best deals near you in Toronto."
+        "description": "Find the best deals near you in Montreal."
       },
       "alerts": {
         "title": "Real-time alerts",
@@ -1752,7 +1752,7 @@
       },
       "address": {
         "label": "Address",
-        "value": "Toronto, Ontario (Canada)"
+        "value": "Montreal, QC (Canada)"
       }
     },
     "hours": {
@@ -1766,7 +1766,7 @@
     "title": "Ready to revolutionize your culinary experience?",
     "description": "Join the large Cuizly community now.",
     "button": "Create my account",
-    "imageAlt": "Modern restaurant in Toronto",
+    "imageAlt": "Modern restaurant in Montreal",
     "disclaimer": "Free registration • No commitment"
   },
   "waitlist": {
@@ -1785,7 +1785,7 @@
       "phone": "Phone",
       "phonePlaceholder": "(514) 123-4567",
       "address": "Restaurant address",
-      "addressPlaceholder": "123 Queen Street West, Toronto, ON M5H 2M9",
+      "addressPlaceholder": "2900 Bd Édouard-Montpetit, Montreal, QC H3T 1J4",
       "restaurantType": "Restaurant type",
       "restaurantTypePlaceholder": "Select your restaurant type",
       "message": "Message (optional)",
@@ -1979,7 +1979,7 @@
   },
   "placeholders": {
     "searchConversation": "Search conversation...",
-    "addressInput": "Start typing your address (Toronto)..."
+    "addressInput": "Start typing your address (Montreal or Repentigny)..."
   },
   "emailConfirmed": {
     "title": "🎉 Email confirmed!",
@@ -2032,7 +2032,7 @@
     "turkish": "Turkish"
   },
   "addresses": {
-    "placeholder": "Start typing an address in Toronto...",
+    "placeholder": "Start typing an address in Montreal...",
     "label": "Address",
     "tip": "💡 Tip: Use suggestions for better location accuracy",
     "cannotLoad": "Unable to load addresses",
@@ -2083,7 +2083,7 @@
   },
   "restaurants": {
     "popularTitle": "Popular restaurants",
-    "discoverMontreal": "Discover Toronto restaurants",
+    "discoverMontreal": "Discover Montreal restaurants",
     "exploreInteractiveMap": "Explore the interactive map to discover the best restaurants near you. Click on markers for more information.",
     "nearbyRestaurants": "Nearby restaurants",
     "restaurantsFound": "restaurants found",
