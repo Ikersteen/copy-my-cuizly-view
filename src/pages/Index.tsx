@@ -81,7 +81,7 @@ const Index = () => {
         {/* Zone cliquable pour "Try" - positionnée sur le bouton noir dans la vidéo */}
         <a 
           href="https://www.cuizly.ca/cuizlyassistant"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-[15%] w-36 h-14 md:w-44 md:h-16 cursor-pointer z-10 hover:opacity-75 transition-opacity"
+          className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-28 h-12 md:w-36 md:h-14 cursor-pointer z-10 hover:opacity-75 transition-opacity"
           aria-label="Try Cuizly Assistant"
         />
       </div>
