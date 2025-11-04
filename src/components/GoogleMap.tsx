@@ -29,7 +29,7 @@ interface GoogleMapProps {
 }
 
 const GoogleMap: React.FC<GoogleMapProps> = ({ 
-  center = { lat: 45.5017, lng: -73.5673 }, // Montréal coordinates
+  center = { lat: 43.6532, lng: -79.3832 }, // Toronto coordinates
   zoom = 13,
   apiKey,
   onRestaurantsLoaded
@@ -67,7 +67,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
 
           setMap(mapInstance);
 
-          // Search for restaurants in Montreal
+          // Search for restaurants in Toronto
           const service = new google.maps.places.PlacesService(mapInstance);
           
           const request = {

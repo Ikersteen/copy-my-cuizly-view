@@ -9,7 +9,7 @@ const RestaurantsSection = () => {
     {
       id: 1,
       name: "Steen food",
-      location: "Montréal",
+      location: "Toronto",
       rating: 4.8,
       cuisine: "Nganda ntaba",
       category: "Cuisine variée"
@@ -17,7 +17,7 @@ const RestaurantsSection = () => {
     {
       id: 2,
       name: "Le Bernardin",
-      location: "Montréal",
+      location: "Toronto",
       rating: 4.9,
       cuisine: "Fruits de mer",
       category: "Cuisine française"
@@ -25,7 +25,7 @@ const RestaurantsSection = () => {
     {
       id: 3,
       name: "Toqué!",
-      location: "Montréal",
+      location: "Toronto",
       rating: 4.7,
       cuisine: "Gastronomie",
       category: "Cuisine moderne"

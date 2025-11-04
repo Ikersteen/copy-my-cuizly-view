@@ -21,13 +21,13 @@ interface PreferencesModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// Montreal streets list (sample)
-const montrealStreets = [
-  "Rue Saint-Denis", "Boulevard Saint-Laurent", "Rue Sainte-Catherine", 
-  "Avenue du Mont-Royal", "Rue Sherbrooke", "Boulevard René-Lévesque",
-  "Rue Saint-Jacques", "Avenue du Parc", "Rue Rachel", "Boulevard de Maisonneuve",
-  "Rue Crescent", "Rue Peel", "Boulevard Décarie", "Rue Fleury",
-  "Avenue Christophe-Colomb", "Rue Ontario", "Boulevard Pie-IX"
+// Toronto streets list (sample)
+const torontoStreets = [
+  "Yonge Street", "Queen Street West", "King Street West", 
+  "Bloor Street", "Spadina Avenue", "Bay Street",
+  "Dundas Street", "College Street", "Front Street", "University Avenue",
+  "Ossington Avenue", "Danforth Avenue", "St. Clair Avenue", "Eglinton Avenue",
+  "Adelaide Street", "Richmond Street", "Wellington Street"
 ];
 
 const PRICE_RANGES = ["$", "$$", "$$$", "$$$$"];

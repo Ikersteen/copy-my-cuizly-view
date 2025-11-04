@@ -7,7 +7,7 @@ import { MapPin, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { parseAddress, formatAddress } from "@/lib/addressUtils";
 import { useTranslation } from 'react-i18next';
-import { MONTREAL_CONFIG, REPENTIGNY_CONFIG, detectCityFromAddress } from '@/constants/cities';
+import { TORONTO_CONFIG, REPENTIGNY_CONFIG, detectCityFromAddress } from '@/constants/cities';
 
 interface AddressSelectorProps {
   value?: string;
@@ -19,15 +19,15 @@ interface AddressSelectorProps {
 }
 
 // Combiner les rues des deux villes pour l'autocomplete
-const MONTREAL_STREETS = MONTREAL_CONFIG.streets;
-const MONTREAL_NEIGHBORHOODS = MONTREAL_CONFIG.neighborhoods;
+const TORONTO_STREETS = TORONTO_CONFIG.streets;
+const TORONTO_NEIGHBORHOODS = TORONTO_CONFIG.neighborhoods;
 const REPENTIGNY_STREETS = REPENTIGNY_CONFIG.streets;
 const REPENTIGNY_NEIGHBORHOODS = REPENTIGNY_CONFIG.neighborhoods;
 
 export const AddressSelector = ({
   value = "",
   onChange,
-  placeholder = "Commencez à taper une adresse (Montréal ou Repentigny)...",
+  placeholder = "Commencez à taper une adresse (Toronto)...",
   label = "Adresse",
   className,
   required = false
@@ -35,7 +35,7 @@ export const AddressSelector = ({
   const { t } = useTranslation();
   
   // Use translation or fallback to defaults
-  const translatedPlaceholder = placeholder === "Commencez à taper une adresse (Montréal ou Repentigny)..." ? t('addresses.placeholder') : placeholder;
+  const translatedPlaceholder = placeholder === "Commencez à taper une adresse (Toronto)..." ? t('addresses.placeholder') : placeholder;
   const translatedLabel = label === "Adresse" ? t('addresses.label') : label;
   
   const [inputValue, setInputValue] = useState(value);
@@ -60,8 +60,8 @@ export const AddressSelector = ({
     const isRepentigny = detectedCity.id === 'repentigny';
     
     // Choisir les bonnes données selon la ville
-    const streets = isRepentigny ? REPENTIGNY_STREETS : MONTREAL_STREETS;
-    const neighborhoods = isRepentigny ? REPENTIGNY_NEIGHBORHOODS : MONTREAL_NEIGHBORHOODS;
+    const streets = isRepentigny ? REPENTIGNY_STREETS : TORONTO_STREETS;
+    const neighborhoods = isRepentigny ? REPENTIGNY_NEIGHBORHOODS : TORONTO_NEIGHBORHOODS;
     const cityName = detectedCity.name;
     
     // Filtrer les rues
