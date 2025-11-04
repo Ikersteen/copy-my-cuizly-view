@@ -1,10 +1,8 @@
 import Footer from "@/components/Footer";
-import { useAnonymousTracking } from "@/hooks/useAnonymousTracking";
 import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  useAnonymousTracking('homepage');
   const videoRef = useRef<HTMLVideoElement>(null);
   const video3Ref = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
