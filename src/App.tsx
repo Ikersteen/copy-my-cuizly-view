@@ -17,6 +17,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Mentions from "./pages/Mentions";
 import Cookies from "./pages/Cookies";
+import CuizlyAssistant from "./pages/CuizlyAssistant";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -113,6 +114,14 @@ const AppContent = () => {
           <>
             <Header />
             <Cookies />
+          </>
+        } />
+        
+        {/* Cuizly Assistant route */}
+        <Route path="/cuizlyassistant" element={
+          <>
+            <Header />
+            <CuizlyAssistant />
           </>
         } />
         
