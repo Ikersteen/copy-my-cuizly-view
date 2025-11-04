@@ -74,11 +74,13 @@ export const useConversations = () => {
   };
 
   // Générer ou récupérer l'ID de session anonyme
+  // Utilise sessionStorage au lieu de localStorage pour que les conversations
+  // disparaissent du frontend lors du rechargement, mais restent en DB pour Cuizly
   const getAnonymousSessionId = (): string => {
-    let sessionId = localStorage.getItem('cuizly_anonymous_session_id');
+    let sessionId = sessionStorage.getItem('cuizly_anonymous_session_id');
     if (!sessionId) {
       sessionId = `anon_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-      localStorage.setItem('cuizly_anonymous_session_id', sessionId);
+      sessionStorage.setItem('cuizly_anonymous_session_id', sessionId);
     }
     return sessionId;
   };
