@@ -1092,8 +1092,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               }
             }
 
-            // Stop thinking - content is already displayed from streaming
+            // Stop thinking, trigger typewriter
             setIsThinking(false);
+            setMessages(prev => prev.map(msg => 
+              msg.id === aiMessageId 
+                ? { ...msg, isTyping: true }
+                : msg
+            ));
 
             // Save to database
             if (conversationId && accumulatedContent) {
@@ -1150,22 +1155,22 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   return (
     <>
-      <main className="h-screen bg-background flex flex-col w-full relative touch-manipulation">
+      <main className="h-screen bg-background flex flex-col max-w-6xl mx-auto w-full relative">
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto scrollbar-hide px-3 sm:px-6 py-4 sm:py-8 pb-32 sm:pb-40 space-y-4 sm:space-y-6 overscroll-contain"
+          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-40 space-y-6 overscroll-contain"
           style={{ overflowAnchor: 'none' }}
         >
           
           {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 sm:space-y-6 py-12 sm:py-20 px-4">
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20 px-4">
               <img 
                 src="/cuizly-assistant-logo.png" 
                 alt="Cuizly Assistant Vocal"
-                className="h-12 sm:h-16 w-auto"
+                className="h-16 w-auto"
               />
-              <div className="space-y-2 sm:space-y-3 max-w-lg">
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+              <div className="space-y-3 max-w-lg">
+                <p className="text-base text-muted-foreground leading-relaxed">
                   {t('voiceChat.description')}
                 </p>
               </div>
@@ -1177,7 +1182,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               key={message.id}
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[95%] sm:max-w-[85%] ${message.type === 'assistant' ? 'overflow-y-auto' : ''}`}>
+              <div className={`max-w-[85%] ${message.type === 'assistant' ? 'overflow-y-auto' : ''}`}>
                 {message.imageUrl || message.documentUrl ? (
                   // If message has image or document, show it with optional text below
                   <div className="space-y-2">
@@ -1209,14 +1214,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   // Otherwise show normal message bubble
                   <div className={`${
                     message.type === 'user' 
-                      ? 'rounded-3xl px-4 sm:px-6 py-3 sm:py-4 bg-muted w-fit' 
+                      ? 'rounded-3xl px-6 py-4 bg-muted w-fit' 
                       : ''
                    } ${message.isProcessing ? 'animate-pulse' : ''}`}>
                     {message.isTyping && message.type === 'assistant' ? (
                       <TypewriterRichText 
                         text={message.content}
                         speed={20}
-                        className="text-sm sm:text-base leading-relaxed"
+                        className="text-base leading-relaxed"
                         shouldStop={shouldStopTyping}
                         onComplete={() => {
                           setMessages(prev => prev.map(msg => 
@@ -1230,7 +1235,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     ) : (
                       <RichTextRenderer 
                         content={message.content} 
-                        className="text-sm sm:text-base leading-relaxed"
+                        className="text-base leading-relaxed"
                       />
                     )}
                     {message.isAudio && (
@@ -1600,7 +1605,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               spellCheck="true"
               minRows={1}
               maxRows={5}
-              className="flex-1 rounded-3xl outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none py-2.5 px-3 border border-input bg-background text-base placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 transition-none"
+              className="flex-1 rounded-3xl outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none py-2.5 px-3 border border-input bg-background text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 transition-none"
             />
             <Button
               type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
