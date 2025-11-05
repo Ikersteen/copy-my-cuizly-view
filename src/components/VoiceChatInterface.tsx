@@ -986,13 +986,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           if (isPDF || isWordDoc) {
             // For PDFs and Word docs, use the document parser tool
             try {
-              toast({
-                description: i18n.language === 'fr' ? 
-                  'Extraction du contenu du document...' : 
-                  'Extracting document content...',
-                duration: 3000,
-              });
-              
               // Save file temporarily to storage for parsing
               const base64Data = documentFile.data.split(',')[1];
               const byteCharacters = atob(base64Data);
@@ -1122,10 +1115,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   return (
     <>
-      <main className="h-screen bg-background flex flex-col max-w-6xl mx-auto w-full relative overflow-hidden">
+      <main className="h-screen bg-background flex flex-col max-w-6xl mx-auto w-full relative">
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-40 space-y-6"
+          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-40 space-y-6 overscroll-contain"
           style={{ overflowAnchor: 'none' }}
         >
           
@@ -1458,7 +1451,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       </Button>
                     </div>
                   ) : (
-                    <div className="relative max-w-full overflow-hidden">
+                    <div className="relative">
                       <div className="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-border bg-muted min-w-[140px] max-w-[280px]">
                         <FileText className="w-5 h-5 flex-shrink-0 text-primary" />
                         <span className="text-sm truncate flex-1">{file.name}</span>
