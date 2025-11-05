@@ -1252,8 +1252,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   </div>
                 )}
                 
-                {/* Action icons below messages */}
-                {!message.isProcessing && !message.isTyping && (
+                {/* Action icons below messages - only show when message is complete and not during thinking */}
+                {!message.isProcessing && !message.isTyping && !isThinking && (
                   <div className="flex items-center gap-1 mt-2">
                     {message.type === 'user' ? (
                       // For user messages: only Copy icon
