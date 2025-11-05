@@ -73,6 +73,26 @@ Sois minutieux, précis et conversationnel. Extrais la valeur maximale de chaque
 
     console.log('Analyzing document with Lovable AI (streaming):', documentName);
 
+    // Prepare the message content with the document
+    const userMessage = {
+      role: 'user',
+      content: [
+        {
+          type: 'text',
+          text: language === 'en' 
+            ? `Please analyze this document "${documentName}" in detail. Extract all information and provide a comprehensive analysis.`
+            : `Analyse ce document "${documentName}" en détail s'il te plaît. Extrais toutes les informations et fournis une analyse complète.`
+        },
+        {
+          type: 'file',
+          file: {
+            data: documentContent,
+            mime_type: documentName.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'text/plain'
+          }
+        }
+      ]
+    };
+
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -86,12 +106,7 @@ Sois minutieux, précis et conversationnel. Extrais la valeur maximale de chaque
             role: 'system', 
             content: systemPrompt
           },
-          { 
-            role: 'user', 
-            content: language === 'en' 
-              ? `Please analyze this document "${documentName}":\n\n${documentContent.substring(0, 10000)}`
-              : `Analyse ce document "${documentName}" s'il te plaît :\n\n${documentContent.substring(0, 10000)}`
-          }
+          userMessage
         ],
         stream: true
       }),
