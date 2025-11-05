@@ -13,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { message, userId, conversationHistory = [], language = 'fr', fileUrls = [], fileTypes = [] } = await req.json();
+    const { message, userId, conversationHistory = [], language = 'fr' } = await req.json();
     
     if (!message) {
       throw new Error('Message is required');
@@ -277,36 +277,6 @@ IMPORTANT: You must ALWAYS respond in English, it's the user's language.`;
 
     const systemPrompt = language === 'en' ? systemPromptEN : systemPromptFR;
 
-    // Build user message with file attachments if present
-    let userMessage: any;
-    if (fileUrls.length > 0) {
-      // Build content array for multimodal message
-      const contentParts: any[] = [
-        { type: 'text', text: message }
-      ];
-      
-      // Add files to the content
-      fileUrls.forEach((url: string, index: number) => {
-        const fileType = fileTypes[index];
-        if (fileType === 'image') {
-          contentParts.push({
-            type: 'image_url',
-            image_url: { url }
-          });
-        } else {
-          // For documents, just mention them in the text since GPT-4 can't directly process files
-          contentParts[0].text += `\n\nDocument joint: ${url}`;
-        }
-      });
-      
-      userMessage = {
-        role: 'user',
-        content: contentParts
-      };
-    } else {
-      userMessage = { role: 'user', content: message };
-    }
-
     // Build message history for context with improved memory (10 messages instead of 5)
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -315,7 +285,7 @@ IMPORTANT: You must ALWAYS respond in English, it's the user's language.`;
         role: msg.type === 'user' ? 'user' : 'assistant',
         content: msg.content
       })),
-      userMessage
+      { role: 'user', content: message }
     ];
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {

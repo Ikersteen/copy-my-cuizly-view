@@ -920,25 +920,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       
       // Always create a message if files are uploaded
       const userMessageId = Date.now().toString();
-      
-      // Store all files (images and documents) in the message
-      const imageFiles = files.filter(f => f.type === 'image');
-      const documentFiles = files.filter(f => f.type === 'document');
-      
       const userMessage: Message = {
         id: userMessageId,
         type: 'user',
         content: message.trim(), // Empty string if no text
         timestamp: new Date(),
         isAudio: false,
-        imageUrl: imageFiles.length > 0 ? imageFiles[0].data : undefined,
-        documentUrl: documentFiles.length > 0 ? uploadedUrls[files.findIndex(f => f.type === 'document')] : undefined,
-        documentName: documentFiles.length > 0 ? documentFiles[0].name : undefined
+        imageUrl: files.find(f => f.type === 'image')?.data || uploadedUrls[0]
       };
       
       setMessages(prev => [...prev, userMessage]);
       
-      // Save user message to database with all file URLs
+      // Save user message to database with the file URLs
       if (conversationId) {
         await saveMessage(
           conversationId, 
@@ -947,9 +940,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           'text',
           undefined,
           undefined,
-          uploadedUrls[0],
-          undefined,
-          uploadedUrls.length > 1 ? uploadedUrls[1] : undefined
+          uploadedUrls[0]
         );
       }
       
@@ -966,61 +957,52 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       return;
     }
     
-    // Analyze all files together with AI
-    setIsThinking(true);
+    // Only analyze images
+    const imageFile = files.find(f => f.type === 'image');
+    if (imageFile) {
+      setIsThinking(true);
 
-    try {
-      // Prepare file information for AI
-      const fileDescriptions = files.map((file, index) => {
-        const url = uploadedUrls[index];
-        return `${file.type === 'image' ? 'Image' : 'Document'}: ${file.name} (${url})`;
-      }).join('\n');
+      try {
+        // Call edge function to analyze the image
+        const response = await supabase.functions.invoke('analyze-food-image', {
+          body: { 
+            imageBase64: imageFile.data,
+            userMessage: message,
+            language: i18n.language === 'en' ? 'en' : 'fr'
+          }
+        });
 
-      const contextMessage = message.trim() 
-        ? `${message}\n\nFichiers joints:\n${fileDescriptions}`
-        : `Fichiers joints:\n${fileDescriptions}`;
+        if (response.error) throw new Error(response.error.message);
 
-      // Call AI to analyze all files
-      const response = await supabase.functions.invoke('cuizly-voice-chat', {
-        body: { 
-          message: contextMessage,
-          conversationId: conversationId,
-          language: i18n.language === 'en' ? 'en' : 'fr',
-          fileUrls: uploadedUrls,
-          fileTypes: files.map(f => f.type)
+        const analysis = response.data?.analysis;
+        if (!analysis) throw new Error('No analysis received');
+
+        setIsThinking(false);
+        
+        // Add AI response
+        const aiMessageId = (Date.now() + 1).toString();
+        setMessages(prev => [...prev, {
+          id: aiMessageId,
+          type: 'assistant',
+          content: analysis,
+          timestamp: new Date(),
+          isTyping: true
+        }]);
+        
+        // Save assistant message to database
+        if (conversationId) {
+          await saveMessage(conversationId, 'assistant', analysis, 'text');
         }
-      });
 
-      if (response.error) throw new Error(response.error.message);
-
-      const analysis = response.data?.response;
-      if (!analysis) throw new Error('No response received');
-
-      setIsThinking(false);
-      
-      // Add AI response
-      const aiMessageId = (Date.now() + 1).toString();
-      setMessages(prev => [...prev, {
-        id: aiMessageId,
-        type: 'assistant',
-        content: analysis,
-        timestamp: new Date(),
-        isTyping: true
-      }]);
-      
-      // Save assistant message to database
-      if (conversationId) {
-        await saveMessage(conversationId, 'assistant', analysis, 'text');
+      } catch (error) {
+        console.error('Error analyzing image:', error);
+        setIsThinking(false);
+        toast({
+          title: t('errors.title'),
+          description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
+          variant: "destructive",
+        });
       }
-
-    } catch (error) {
-      console.error('Error analyzing files:', error);
-      setIsThinking(false);
-      toast({
-        title: t('errors.title'),
-        description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse',
-        variant: "destructive",
-      });
     }
     
     setIsProcessing(false);
@@ -1056,26 +1038,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div className={`max-w-[85%]`}>
-                {message.imageUrl || message.documentUrl ? (
-                  // If message has image or document, show them with optional text below
+                {message.imageUrl ? (
+                  // If message has image, show image and optional text below
                   <div className="space-y-2">
-                    {message.imageUrl && (
-                      <div className="rounded-2xl overflow-hidden">
-                        <img 
-                          src={message.imageUrl} 
-                          alt="Uploaded food" 
-                          className="max-w-xs max-h-48 object-cover"
-                        />
-                      </div>
-                    )}
-                    {message.documentUrl && (
-                      <div className={`flex items-center gap-2 rounded-xl p-3 ${
-                        message.type === 'user' ? 'bg-muted' : 'bg-accent/10'
-                      }`}>
-                        <FileText className="w-5 h-5 flex-shrink-0" />
-                        <span className="text-sm truncate max-w-[200px]">{message.documentName || 'Document'}</span>
-                      </div>
-                    )}
+                    <div className="rounded-2xl overflow-hidden">
+                      <img 
+                        src={message.imageUrl} 
+                        alt="Uploaded food" 
+                        className="max-w-xs max-h-48 object-cover"
+                      />
+                    </div>
                     {message.content && (
                       <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted w-fit' : ''}>
                         <RichTextRenderer 
