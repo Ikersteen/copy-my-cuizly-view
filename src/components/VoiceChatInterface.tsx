@@ -920,18 +920,25 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       
       // Always create a message if files are uploaded
       const userMessageId = Date.now().toString();
+      
+      // Store all files (images and documents) in the message
+      const imageFiles = files.filter(f => f.type === 'image');
+      const documentFiles = files.filter(f => f.type === 'document');
+      
       const userMessage: Message = {
         id: userMessageId,
         type: 'user',
         content: message.trim(), // Empty string if no text
         timestamp: new Date(),
         isAudio: false,
-        imageUrl: files.find(f => f.type === 'image')?.data || uploadedUrls[0]
+        imageUrl: imageFiles.length > 0 ? imageFiles[0].data : undefined,
+        documentUrl: documentFiles.length > 0 ? uploadedUrls[files.findIndex(f => f.type === 'document')] : undefined,
+        documentName: documentFiles.length > 0 ? documentFiles[0].name : undefined
       };
       
       setMessages(prev => [...prev, userMessage]);
       
-      // Save user message to database with the file URLs
+      // Save user message to database with all file URLs
       if (conversationId) {
         await saveMessage(
           conversationId, 
@@ -940,7 +947,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           'text',
           undefined,
           undefined,
-          uploadedUrls[0]
+          uploadedUrls[0],
+          undefined,
+          uploadedUrls.length > 1 ? uploadedUrls[1] : undefined
         );
       }
       
@@ -1047,16 +1056,26 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div className={`max-w-[85%]`}>
-                {message.imageUrl ? (
-                  // If message has image, show image and optional text below
+                {message.imageUrl || message.documentUrl ? (
+                  // If message has image or document, show them with optional text below
                   <div className="space-y-2">
-                    <div className="rounded-2xl overflow-hidden">
-                      <img 
-                        src={message.imageUrl} 
-                        alt="Uploaded food" 
-                        className="max-w-xs max-h-48 object-cover"
-                      />
-                    </div>
+                    {message.imageUrl && (
+                      <div className="rounded-2xl overflow-hidden">
+                        <img 
+                          src={message.imageUrl} 
+                          alt="Uploaded food" 
+                          className="max-w-xs max-h-48 object-cover"
+                        />
+                      </div>
+                    )}
+                    {message.documentUrl && (
+                      <div className={`flex items-center gap-2 rounded-xl p-3 ${
+                        message.type === 'user' ? 'bg-muted' : 'bg-accent/10'
+                      }`}>
+                        <FileText className="w-5 h-5 flex-shrink-0" />
+                        <span className="text-sm truncate max-w-[200px]">{message.documentName || 'Document'}</span>
+                      </div>
+                    )}
                     {message.content && (
                       <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted w-fit' : ''}>
                         <RichTextRenderer 
