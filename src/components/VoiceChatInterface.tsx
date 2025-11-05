@@ -1320,11 +1320,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <Button
                         type="button"
                         variant="ghost"
-                        size="icon"
-                        className="absolute top-1 right-1 h-[10px] w-[10px] rounded-full p-0 bg-black/80 hover:bg-black shadow-md flex items-center justify-center transition-all"
+                        size="sm"
+                        className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full p-0 bg-black hover:bg-black shadow-lg flex items-center justify-center md:h-1 md:w-1 lg:top-2 lg:right-2 lg:h-5 lg:w-5"
                         onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
                       >
-                        <span className="text-white text-[16px] font-bold leading-none">×</span>
+                        <span className="text-white text-[20px] font-bold leading-none">×</span>
                       </Button>
                     </div>
                   ) : (
@@ -1336,11 +1336,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <Button
                         type="button"
                         variant="ghost"
-                        size="icon"
-                        className="absolute top-1 right-1 h-[10px] w-[10px] rounded-full p-0 bg-black/80 hover:bg-black shadow-md flex items-center justify-center transition-all"
+                        size="sm"
+                        className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full p-0 bg-black hover:bg-black shadow-lg flex items-center justify-center md:h-1 md:w-1 lg:top-2 lg:right-2 lg:h-5 lg:w-5"
                         onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
                       >
-                        <span className="text-white text-[16px] font-bold leading-none">×</span>
+                        <span className="text-white text-[20px] font-bold leading-none">×</span>
                       </Button>
                     </div>
                   )}
