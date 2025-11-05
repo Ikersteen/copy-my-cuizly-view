@@ -1146,6 +1146,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                           size="sm"
                           className="h-7 w-7 p-0 rounded-full transition-colors hover:bg-transparent"
                           onClick={() => {
+                            const wasLiked = messageActions[message.id]?.liked;
                             setMessageActions(prev => ({
                               ...prev,
                               [message.id]: { 
@@ -1154,10 +1155,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                                 disliked: false
                               }
                             }));
-                            toast({
-                              description: "Merci pour votre feedback!",
-                              duration: 2000,
-                            });
+                            // Only show toast when adding like, not removing
+                            if (!wasLiked) {
+                              toast({
+                                description: "Thanks for your feedback!",
+                                duration: 2000,
+                              });
+                            }
                           }}
                         >
                           <ThumbsUp 
@@ -1173,6 +1177,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                           size="sm"
                           className="h-7 w-7 p-0 rounded-full transition-colors hover:bg-transparent"
                           onClick={() => {
+                            const wasDisliked = messageActions[message.id]?.disliked;
                             setMessageActions(prev => ({
                               ...prev,
                               [message.id]: { 
@@ -1181,10 +1186,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                                 liked: false
                               }
                             }));
-                            toast({
-                              description: "Merci pour votre feedback!",
-                              duration: 2000,
-                            });
+                            // Only show toast when adding dislike, not removing
+                            if (!wasDisliked) {
+                              toast({
+                                description: "Thanks for your feedback!",
+                                duration: 2000,
+                              });
+                            }
                           }}
                         >
                           <ThumbsDown 
@@ -1206,7 +1214,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                               [message.id]: { ...prev[message.id], copied: true }
                             }));
                             toast({
-                              description: "Réponse copiée",
+                              description: "Response copied",
                               duration: 2000,
                             });
                             
@@ -1232,14 +1240,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                           size="sm"
                           className="h-7 w-7 p-0 rounded-full transition-colors hover:bg-transparent"
                           onClick={() => {
+                            const wasBookmarked = messageActions[message.id]?.bookmarked;
                             setMessageActions(prev => ({
                               ...prev,
                               [message.id]: { ...prev[message.id], bookmarked: !prev[message.id]?.bookmarked }
                             }));
-                            toast({
-                              description: "Réponse enregistrée",
-                              duration: 2000,
-                            });
+                            // Only show toast when adding bookmark, not removing
+                            if (!wasBookmarked) {
+                              toast({
+                                description: "Response saved",
+                                duration: 2000,
+                              });
+                            }
                           }}
                         >
                           <Bookmark 
