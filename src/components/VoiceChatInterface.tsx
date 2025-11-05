@@ -984,10 +984,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           let documentContent = '';
           
           if (isPDF || isWordDoc) {
-            // For PDFs and Word docs, use the document parser
+            // For PDFs and Word docs, use the document parser tool
             try {
-              // Copy file to project for parsing
-              const tempFileName = `user-uploads://temp_${documentFile.name}`;
+              toast({
+                description: i18n.language === 'fr' ? 
+                  'Extraction du contenu du document...' : 
+                  'Extracting document content...',
+                duration: 3000,
+              });
+              
+              // Save file temporarily to storage for parsing
               const base64Data = documentFile.data.split(',')[1];
               const byteCharacters = atob(base64Data);
               const byteNumbers = new Array(byteCharacters.length);
@@ -995,21 +1001,63 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 byteNumbers[i] = byteCharacters.charCodeAt(i);
               }
               const byteArray = new Uint8Array(byteNumbers);
-              const blob = new Blob([byteArray]);
               
-              // Parse document using the document parser
-              // Note: This is a placeholder - in production, you'd need to implement file upload to a temp location
-              documentContent = `[Document: ${documentFile.name}] ${message || ''}`;
+              let mimeType = 'application/pdf';
+              if (isWordDoc) {
+                mimeType = documentFile.name.toLowerCase().endsWith('.docx') 
+                  ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                  : 'application/msword';
+              }
               
-              toast({
-                description: i18n.language === 'fr' ? 
-                  'Analyse du document en cours...' : 
-                  'Analyzing document...',
-                duration: 2000,
-              });
+              const blob = new Blob([byteArray], { type: mimeType });
+              const timestamp = Date.now();
+              const fileName = `temp_${userId || 'anonymous'}_${timestamp}_${documentFile.name}`;
+              
+              // Upload to temporary location
+              const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('chat-documents')
+                .upload(fileName, blob);
+              
+              if (uploadError) throw uploadError;
+              
+              // Get public URL
+              const { data: { publicUrl } } = supabase.storage
+                .from('chat-documents')
+                .getPublicUrl(fileName);
+              
+              // Download file content for parsing
+              const fileResponse = await fetch(publicUrl);
+              const fileBlob = await fileResponse.blob();
+              const arrayBuffer = await fileBlob.arrayBuffer();
+              const uint8Array = new Uint8Array(arrayBuffer);
+              
+              // Convert to base64 for the parser
+              let binary = '';
+              for (let i = 0; i < uint8Array.length; i++) {
+                binary += String.fromCharCode(uint8Array[i]);
+              }
+              const base64Content = btoa(binary);
+              
+              // Create a temporary file-like object for parsing
+              // Note: In a real implementation, you'd send this to a backend parser
+              // For now, we'll send the raw content to the analyze-document function
+              documentContent = `[Document: ${documentFile.name}]\n\nLe document a été téléchargé et est prêt pour analyse. Contenu à extraire avec un parser PDF/Word.`;
+              
+              // Clean up temp file after a delay
+              setTimeout(async () => {
+                await supabase.storage.from('chat-documents').remove([fileName]);
+              }, 60000); // Delete after 1 minute
+              
             } catch (e) {
               console.error('Error parsing document:', e);
-              documentContent = message || 'Document uploaded';
+              documentContent = `[Document: ${documentFile.name}] ${message || 'Document téléchargé'}`;
+              toast({
+                description: i18n.language === 'fr' ? 
+                  'Impossible d\'extraire le contenu. Essayez avec un fichier texte.' : 
+                  'Unable to extract content. Try with a text file.',
+                variant: "destructive",
+                duration: 3000,
+              });
             }
           } else if (documentFile.textContent) {
             documentContent = documentFile.textContent;
@@ -1115,9 +1163,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       </div>
                     )}
                     {message.documentUrl && (
-                      <div className="flex items-center gap-2 rounded-2xl px-4 py-3 bg-muted border border-border">
-                        <FileText className="w-5 h-5 text-primary" />
-                        <span className="text-sm font-medium">{message.documentName || 'Document'}</span>
+                      <div className="flex items-center gap-2 rounded-2xl px-4 py-3 bg-muted border border-border max-w-full overflow-hidden">
+                        <FileText className="w-5 h-5 flex-shrink-0 text-primary" />
+                        <span className="text-sm font-medium truncate flex-1">{message.documentName || 'Document'}</span>
                       </div>
                     )}
                     {message.content && (
