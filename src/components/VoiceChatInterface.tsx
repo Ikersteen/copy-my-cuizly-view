@@ -55,7 +55,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [abortController, setAbortController] = useState<AbortController | null>(null);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<Array<{id: string, type: 'image' | 'document', data: string, name: string}>>([]);
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -730,17 +730,17 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const handleTextSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // If there's a selected image, process it with the text message
-    if (selectedImage) {
-      const imageToProcess = selectedImage;
+    // If there are selected files, process them with the text message
+    if (selectedFiles.length > 0) {
+      const filesToProcess = [...selectedFiles];
       const messageToSend = textInput.trim();
       
       // Clear immediately
-      setSelectedImage(null);
+      setSelectedFiles([]);
       setTextInput('');
       
       // Then process
-      await processImageWithMessage(imageToProcess, messageToSend);
+      await processFilesWithMessage(filesToProcess, messageToSend);
       return;
     }
     
@@ -801,16 +801,26 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     });
   };
 
-  // Handle image upload - just store the image, don't send yet
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle file upload (images and documents) - just store the files, don't send yet
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, fileType: 'image' | 'document') => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     // Reset input to allow selecting the same file again
     e.target.value = '';
 
-    // Check if file is an image
-    if (!file.type.startsWith('image/')) {
+    // Check if we already have 5 files
+    if (selectedFiles.length >= 5) {
+      toast({
+        title: t('errors.title'),
+        description: i18n.language === 'fr' ? 'Vous pouvez ajouter jusqu\'à 5 fichiers maximum' : 'You can add up to 5 files maximum',
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file type
+    if (fileType === 'image' && !file.type.startsWith('image/')) {
       toast({
         title: t('errors.title'),
         description: t('errors.invalidFileType') || 'Veuillez sélectionner une image',
@@ -822,10 +832,22 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     try {
       const reader = new FileReader();
       reader.onload = async (event) => {
-        const imageBase64 = event.target?.result as string;
-        // Compress image before storing
-        const compressedImage = await compressImage(imageBase64);
-        setSelectedImage(compressedImage);
+        const fileData = event.target?.result as string;
+        
+        let processedData = fileData;
+        // Compress images before storing
+        if (fileType === 'image') {
+          processedData = await compressImage(fileData);
+        }
+        
+        const newFile = {
+          id: Date.now().toString() + Math.random(),
+          type: fileType,
+          data: processedData,
+          name: file.name
+        };
+        
+        setSelectedFiles(prev => [...prev, newFile]);
       };
       reader.onerror = () => {
         toast({
@@ -845,8 +867,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }
   };
 
-  // Process image with optional text message
-  const processImageWithMessage = async (imageBase64: string, message: string) => {
+  // Process multiple files with optional text message
+  const processFilesWithMessage = async (files: Array<{id: string, type: 'image' | 'document', data: string, name: string}>, message: string) => {
     setIsProcessing(true);
     
     // Create conversation if needed
@@ -859,43 +881,56 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }
     
     try {
-      // Upload image to Supabase Storage
-      const base64Data = imageBase64.split(',')[1];
-      const byteCharacters = atob(base64Data);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      // Upload all files to Supabase Storage
+      const uploadedUrls: string[] = [];
+      
+      for (const file of files) {
+        const base64Data = file.data.split(',')[1];
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        
+        const bucketName = file.type === 'image' ? 'chat-images' : 'chat-documents';
+        const mimeType = file.type === 'image' ? 'image/jpeg' : 'application/octet-stream';
+        const blob = new Blob([byteArray], { type: mimeType });
+        
+        const timestamp = Date.now();
+        const extension = file.name.split('.').pop() || (file.type === 'image' ? 'jpg' : 'pdf');
+        const fileName = `${userId || 'anonymous'}_${timestamp}_${Math.random().toString(36).substring(7)}.${extension}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from(bucketName)
+          .upload(fileName, blob);
+        
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw uploadError;
+        }
+        
+        // Get public URL for the uploaded file
+        const { data: { publicUrl } } = supabase.storage
+          .from(bucketName)
+          .getPublicUrl(fileName);
+        
+        uploadedUrls.push(publicUrl);
       }
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: 'image/jpeg' });
-      
-      const fileName = `${userId || 'anonymous'}_${Date.now()}.jpg`;
-      const filePath = `${fileName}`;
-      
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('chat-images')
-        .upload(filePath, blob);
-      
-      if (uploadError) throw uploadError;
-      
-      // Get public URL for the uploaded image
-      const { data: { publicUrl } } = supabase.storage
-        .from('chat-images')
-        .getPublicUrl(filePath);
       
       const userMessageId = Date.now().toString();
       const userMessage: Message = {
         id: userMessageId,
         type: 'user',
-        content: message || '',
+        content: message || (files.length === 1 ? files[0].name : `${files.length} fichiers`),
         timestamp: new Date(),
         isAudio: false,
-        imageUrl: publicUrl
+        imageUrl: files.find(f => f.type === 'image')?.data || uploadedUrls[0]
       };
       
       setMessages(prev => [...prev, userMessage]);
       
-      // Save user message to database with the image URL
+      // Save user message to database with the file URLs
       if (conversationId) {
         await saveMessage(
           conversationId, 
@@ -1260,23 +1295,34 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       {/* Chat input et disclaimer - complètement indépendant */}
       <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm px-6 py-4 z-50">
         <form onSubmit={handleTextSubmit} className="space-y-3 max-w-4xl mx-auto">
-          {/* Image preview */}
-          {selectedImage && (
-            <div className="relative inline-block">
-              <img 
-                src={selectedImage} 
-                alt="Preview" 
-                className="max-h-32 rounded-lg border border-border"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 bg-black hover:bg-black/80 text-white text-base font-bold leading-none flex items-center justify-center"
-                onClick={() => setSelectedImage(null)}
-              >
-                ×
-              </Button>
+          {/* Files preview */}
+          {selectedFiles.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {selectedFiles.map((file) => (
+                <div key={file.id} className="relative inline-block">
+                  {file.type === 'image' ? (
+                    <img 
+                      src={file.data} 
+                      alt={file.name} 
+                      className="max-h-32 rounded-lg border border-border"
+                    />
+                  ) : (
+                    <div className="flex items-center gap-2 px-4 py-3 rounded-lg border border-border bg-muted max-w-[200px]">
+                      <FileText className="w-5 h-5 flex-shrink-0" />
+                      <span className="text-sm truncate">{file.name}</span>
+                    </div>
+                  )}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 bg-black hover:bg-black/80 text-white text-base font-bold leading-none flex items-center justify-center"
+                    onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
+                  >
+                    ×
+                  </Button>
+                </div>
+              ))}
             </div>
           )}
           
@@ -1286,30 +1332,22 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              onChange={handleImageUpload}
+              onChange={(e) => handleFileUpload(e, 'image')}
               className="hidden"
             />
             <input
               ref={cameraInputRef}
               type="file"
               accept="image/*"
-              onChange={handleImageUpload}
+              onChange={(e) => handleFileUpload(e, 'image')}
               className="hidden"
               capture="user"
             />
             <input
               ref={pdfInputRef}
               type="file"
-              accept="application/pdf"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  toast({
-                    title: "PDF ajouté",
-                    description: file.name,
-                  });
-                }
-              }}
+              accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
+              onChange={(e) => handleFileUpload(e, 'document')}
               className="hidden"
             />
             
@@ -1352,13 +1390,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => {
-                    console.log('PDF option clicked');
+                    console.log('Document option clicked');
                     pdfInputRef.current?.click();
                   }}
                   className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
                 >
                   <FileText className="mr-3 h-5 w-5" />
-                  <span className="font-medium">{i18n.language === 'fr' ? 'Ajouter un PDF' : 'Add PDF'}</span>
+                  <span className="font-medium">{i18n.language === 'fr' ? 'Ajouter un document' : 'Add Document'}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -1377,7 +1415,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             <Button
               type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
               onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
-              disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim() && !selectedImage}
+              disabled={!(isProcessing || isThinking || isSpeaking || hasTypingMessage) && !textInput.trim() && selectedFiles.length === 0}
               className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
             >
               {(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? (
