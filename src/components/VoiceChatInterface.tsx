@@ -918,29 +918,32 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         uploadedUrls.push(publicUrl);
       }
       
-      const userMessageId = Date.now().toString();
-      const userMessage: Message = {
-        id: userMessageId,
-        type: 'user',
-        content: message || (files.length === 1 ? files[0].name : `${files.length} fichiers`),
-        timestamp: new Date(),
-        isAudio: false,
-        imageUrl: files.find(f => f.type === 'image')?.data || uploadedUrls[0]
-      };
-      
-      setMessages(prev => [...prev, userMessage]);
-      
-      // Save user message to database with the file URLs
-      if (conversationId) {
-        await saveMessage(
-          conversationId, 
-          'user', 
-          message || t('voiceChat.imageUploaded') || 'Fichier(s) envoyé(s)', 
-          'text',
-          undefined,
-          undefined,
-          uploadedUrls[0]
-        );
+      // Only add user message if there's actual text content
+      if (message.trim()) {
+        const userMessageId = Date.now().toString();
+        const userMessage: Message = {
+          id: userMessageId,
+          type: 'user',
+          content: message,
+          timestamp: new Date(),
+          isAudio: false,
+          imageUrl: files.find(f => f.type === 'image')?.data || uploadedUrls[0]
+        };
+        
+        setMessages(prev => [...prev, userMessage]);
+        
+        // Save user message to database with the file URLs
+        if (conversationId) {
+          await saveMessage(
+            conversationId, 
+            'user', 
+            message, 
+            'text',
+            undefined,
+            undefined,
+            uploadedUrls[0]
+          );
+        }
       }
       
       // Clear selected files after sending
@@ -1044,7 +1047,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <img 
                         src={message.imageUrl} 
                         alt="Uploaded food" 
-                        className="max-w-sm max-h-64 object-cover"
+                        className="max-w-xs max-h-48 object-cover"
                       />
                     </div>
                     {message.content && (
@@ -1311,12 +1314,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     <img 
                       src={file.data} 
                       alt={file.name} 
-                      className="max-h-32 rounded-lg border border-border"
+                      className="max-h-16 rounded-lg border border-border"
                     />
                   ) : (
-                    <div className="flex items-center gap-2 px-4 py-3 rounded-lg border border-border bg-muted max-w-[200px]">
-                      <FileText className="w-5 h-5 flex-shrink-0" />
-                      <span className="text-sm truncate">{file.name}</span>
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-muted max-w-[160px]">
+                      <FileText className="w-4 h-4 flex-shrink-0" />
+                      <span className="text-xs truncate">{file.name}</span>
                     </div>
                   )}
                   <Button
