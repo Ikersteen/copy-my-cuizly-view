@@ -1355,10 +1355,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute -top-0.5 -right-0.5 h-0.5 w-0.5 rounded-full p-0 bg-gray-700 hover:bg-gray-600 text-white shadow-lg flex items-center justify-center"
+                        className="absolute -top-0.5 -right-0.5 h-px w-px rounded-full p-0 bg-gray-700 hover:bg-gray-600 text-white shadow-lg flex items-center justify-center"
                         onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
                       >
-                        <span className="text-[14px] font-bold leading-none">×</span>
+                        <span className="text-[30px] font-bold leading-none">×</span>
                       </Button>
                     </div>
                   ) : (
@@ -1371,10 +1371,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute -top-0.5 -right-0.5 h-0.5 w-0.5 rounded-full p-0 bg-gray-700 hover:bg-gray-600 text-white shadow-lg flex items-center justify-center"
+                        className="absolute -top-0.5 -right-0.5 h-px w-px rounded-full p-0 bg-gray-700 hover:bg-gray-600 text-white shadow-lg flex items-center justify-center"
                         onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
                       >
-                        <span className="text-[14px] font-bold leading-none">×</span>
+                        <span className="text-[30px] font-bold leading-none">×</span>
                       </Button>
                     </div>
                   )}
