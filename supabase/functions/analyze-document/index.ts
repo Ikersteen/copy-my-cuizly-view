@@ -23,6 +23,8 @@ serve(async (req) => {
       );
     }
 
+    console.log('Document received:', documentName, 'Content length:', documentContent.length);
+
     const systemPrompt = language === 'en' 
       ? `You are Cuizly, an advanced AI assistant specialized in deeply analyzing and understanding all types of documents including PDFs, Word documents, text files, spreadsheets, presentations, and more.
 

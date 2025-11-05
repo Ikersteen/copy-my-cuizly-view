@@ -977,95 +977,21 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             }
           });
         } else if (documentFile) {
-          // Use document parser for PDFs and complex documents
-          const isPDF = documentFile.name.toLowerCase().endsWith('.pdf');
-          const isWordDoc = documentFile.name.toLowerCase().endsWith('.docx') || documentFile.name.toLowerCase().endsWith('.doc');
+          console.log('Processing document:', documentFile.name);
+          setIsThinking(true);
           
+          // Extract document content (text or base64)
           let documentContent = '';
           
-          if (isPDF || isWordDoc) {
-            // For PDFs and Word docs, use the document parser tool
-            try {
-              // Save file temporarily to storage for parsing
-              const base64Data = documentFile.data.split(',')[1];
-              const byteCharacters = atob(base64Data);
-              const byteNumbers = new Array(byteCharacters.length);
-              for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-              }
-              const byteArray = new Uint8Array(byteNumbers);
-              
-              let mimeType = 'application/pdf';
-              if (isWordDoc) {
-                mimeType = documentFile.name.toLowerCase().endsWith('.docx') 
-                  ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                  : 'application/msword';
-              }
-              
-              const blob = new Blob([byteArray], { type: mimeType });
-              const timestamp = Date.now();
-              const fileName = `temp_${userId || 'anonymous'}_${timestamp}_${documentFile.name}`;
-              
-              // Upload to temporary location
-              const { data: uploadData, error: uploadError } = await supabase.storage
-                .from('chat-documents')
-                .upload(fileName, blob);
-              
-              if (uploadError) throw uploadError;
-              
-              // Get public URL
-              const { data: { publicUrl } } = supabase.storage
-                .from('chat-documents')
-                .getPublicUrl(fileName);
-              
-              // Download file content for parsing
-              const fileResponse = await fetch(publicUrl);
-              const fileBlob = await fileResponse.blob();
-              const arrayBuffer = await fileBlob.arrayBuffer();
-              const uint8Array = new Uint8Array(arrayBuffer);
-              
-              // Convert to base64 for the parser
-              let binary = '';
-              for (let i = 0; i < uint8Array.length; i++) {
-                binary += String.fromCharCode(uint8Array[i]);
-              }
-              const base64Content = btoa(binary);
-              
-              // Create a temporary file-like object for parsing
-              // Note: In a real implementation, you'd send this to a backend parser
-              // For now, we'll send the raw content to the analyze-document function
-              documentContent = `[Document: ${documentFile.name}]\n\nLe document a été téléchargé et est prêt pour analyse. Contenu à extraire avec un parser PDF/Word.`;
-              
-              // Clean up temp file after a delay
-              setTimeout(async () => {
-                await supabase.storage.from('chat-documents').remove([fileName]);
-              }, 60000); // Delete after 1 minute
-              
-            } catch (e) {
-              console.error('Error parsing document:', e);
-              documentContent = `[Document: ${documentFile.name}] ${message || 'Document téléchargé'}`;
-              toast({
-                description: i18n.language === 'fr' ? 
-                  'Impossible d\'extraire le contenu. Essayez avec un fichier texte.' : 
-                  'Unable to extract content. Try with a text file.',
-                variant: "destructive",
-                duration: 3000,
-              });
-            }
-          } else if (documentFile.textContent) {
+          if (documentFile.textContent) {
             documentContent = documentFile.textContent;
           } else {
-            // Fallback: try to extract from base64 for text files
-            try {
-              const base64Data = documentFile.data.split(',')[1];
-              documentContent = atob(base64Data);
-            } catch (e) {
-              console.error('Error extracting document content:', e);
-              documentContent = message || 'Document uploaded';
-            }
+            // For PDFs and binary files, send base64
+            const base64Data = documentFile.data.split(',')[1];
+            documentContent = base64Data;
           }
           
-          // Create AI message that will be updated with streaming content
+          // Create AI message placeholder
           const aiMessageId = (Date.now() + 1).toString();
           const aiMessage: Message = {
             id: aiMessageId,
@@ -1076,107 +1002,113 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           };
           setMessages(prev => [...prev, aiMessage]);
           
-          // Stream document analysis using fetch
-          const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZ2t6dm5ic2RuZmdtY3h0dXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MDU5NDksImV4cCI6MjA3MDk4MTk0OX0.VJZg2dWjtNydKV5RRRrl69XiOTv_1rya4IN5cI1MAzM';
-          const streamResponse = await fetch('https://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/analyze-document', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${anonKey}`
-            },
-            body: JSON.stringify({
-              documentContent: documentContent,
-              documentName: documentFile.name,
-              language: i18n.language === 'en' ? 'en' : 'fr'
-            })
-          });
+          try {
+            // Stream document analysis
+            const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZ2t6dm5ic2RuZmdtY3h0dXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MDU5NDksImV4cCI6MjA3MDk4MTk0OX0.VJZg2dWjtNydKV5RRRrl69XiOTv_1rya4IN5cI1MAzM';
+            const streamResponse = await fetch('https://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/analyze-document', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${anonKey}`
+              },
+              body: JSON.stringify({
+                documentContent: documentContent.substring(0, 50000), // Limit size
+                documentName: documentFile.name,
+                language: i18n.language === 'en' ? 'en' : 'fr'
+              })
+            });
 
-          if (!streamResponse.ok || !streamResponse.body) {
-            throw new Error('Failed to start stream');
-          }
+            if (!streamResponse.ok || !streamResponse.body) {
+              throw new Error('Failed to start stream');
+            }
 
-          const reader = streamResponse.body.getReader();
-          const decoder = new TextDecoder();
-          let textBuffer = '';
-          let streamDone = false;
-          let accumulatedContent = '';
+            const reader = streamResponse.body.getReader();
+            const decoder = new TextDecoder();
+            let textBuffer = '';
+            let streamDone = false;
+            let accumulatedContent = '';
 
-          while (!streamDone) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            textBuffer += decoder.decode(value, { stream: true });
+            // Process streaming response
+            while (!streamDone) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              textBuffer += decoder.decode(value, { stream: true });
 
-            // Process line-by-line as data arrives
-            let newlineIndex: number;
-            while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
-              let line = textBuffer.slice(0, newlineIndex);
-              textBuffer = textBuffer.slice(newlineIndex + 1);
+              // Process line-by-line
+              let newlineIndex: number;
+              while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+                let line = textBuffer.slice(0, newlineIndex);
+                textBuffer = textBuffer.slice(newlineIndex + 1);
 
-              if (line.endsWith("\r")) line = line.slice(0, -1);
-              if (line.startsWith(":") || line.trim() === "") continue;
-              if (!line.startsWith("data: ")) continue;
+                if (line.endsWith("\r")) line = line.slice(0, -1);
+                if (line.startsWith(":") || line.trim() === "") continue;
+                if (!line.startsWith("data: ")) continue;
 
-              const jsonStr = line.slice(6).trim();
-              if (jsonStr === "[DONE]") {
-                streamDone = true;
-                break;
-              }
-
-              try {
-                const parsed = JSON.parse(jsonStr);
-                const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-                if (content) {
-                  accumulatedContent += content;
-                  // Update message in real-time
-                  setMessages(prev => prev.map(msg => 
-                    msg.id === aiMessageId 
-                      ? { ...msg, content: accumulatedContent }
-                      : msg
-                  ));
+                const jsonStr = line.slice(6).trim();
+                if (jsonStr === "[DONE]") {
+                  streamDone = true;
+                  break;
                 }
-              } catch {
-                // Incomplete JSON split across chunks: put it back and wait for more data
-                textBuffer = line + "\n" + textBuffer;
-                break;
+
+                try {
+                  const parsed = JSON.parse(jsonStr);
+                  const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+                  if (content) {
+                    accumulatedContent += content;
+                    setMessages(prev => prev.map(msg => 
+                      msg.id === aiMessageId 
+                        ? { ...msg, content: accumulatedContent }
+                        : msg
+                    ));
+                  }
+                } catch {
+                  textBuffer = line + "\n" + textBuffer;
+                  break;
+                }
               }
             }
-          }
 
-          // Final flush
-          if (textBuffer.trim()) {
-            for (let raw of textBuffer.split("\n")) {
-              if (!raw) continue;
-              if (raw.endsWith("\r")) raw = raw.slice(0, -1);
-              if (raw.startsWith(":") || raw.trim() === "") continue;
-              if (!raw.startsWith("data: ")) continue;
-              const jsonStr = raw.slice(6).trim();
-              if (jsonStr === "[DONE]") continue;
-              try {
-                const parsed = JSON.parse(jsonStr);
-                const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-                if (content) {
-                  accumulatedContent += content;
-                  setMessages(prev => prev.map(msg => 
-                    msg.id === aiMessageId 
-                      ? { ...msg, content: accumulatedContent }
-                      : msg
-                  ));
-                }
-              } catch { /* ignore partial leftovers */ }
+            // Final flush
+            if (textBuffer.trim()) {
+              for (let raw of textBuffer.split("\n")) {
+                if (!raw) continue;
+                if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+                if (raw.startsWith(":") || raw.trim() === "") continue;
+                if (!raw.startsWith("data: ")) continue;
+                const jsonStr = raw.slice(6).trim();
+                if (jsonStr === "[DONE]") continue;
+                try {
+                  const parsed = JSON.parse(jsonStr);
+                  const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+                  if (content) {
+                    accumulatedContent += content;
+                    setMessages(prev => prev.map(msg => 
+                      msg.id === aiMessageId 
+                        ? { ...msg, content: accumulatedContent }
+                        : msg
+                    ));
+                  }
+                } catch { }
+              }
             }
-          }
 
-          // Mark streaming as complete and trigger typewriter
-          setIsThinking(false);
-          setMessages(prev => prev.map(msg => 
-            msg.id === aiMessageId 
-              ? { ...msg, isTyping: true }
-              : msg
-          ));
+            // Stop thinking, trigger typewriter
+            setIsThinking(false);
+            setMessages(prev => prev.map(msg => 
+              msg.id === aiMessageId 
+                ? { ...msg, isTyping: true }
+                : msg
+            ));
 
-          // Save to database
-          if (conversationId && accumulatedContent) {
-            await saveMessage(conversationId, 'assistant', accumulatedContent, 'text');
+            // Save to database
+            if (conversationId && accumulatedContent) {
+              await saveMessage(conversationId, 'assistant', accumulatedContent, 'text');
+            }
+          } catch (error) {
+            console.error('Error analyzing document:', error);
+            toast.error(i18n.language === 'en' ? 'Error analyzing document' : 'Erreur lors de l\'analyse du document');
+            setMessages(prev => prev.filter(msg => msg.id !== aiMessageId));
+            setIsThinking(false);
           }
         }
 
