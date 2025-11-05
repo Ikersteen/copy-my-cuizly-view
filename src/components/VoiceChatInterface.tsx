@@ -1003,7 +1003,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           setMessages(prev => [...prev, aiMessage]);
           
           try {
-            // Stream document analysis
+            // Stream document analysis in background
             const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZ2t6dm5ic2RuZmdtY3h0dXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MDU5NDksImV4cCI6MjA3MDk4MTk0OX0.VJZg2dWjtNydKV5RRRrl69XiOTv_1rya4IN5cI1MAzM';
             const streamResponse = await fetch('https://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/analyze-document', {
               method: 'POST',
@@ -1028,7 +1028,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             let streamDone = false;
             let accumulatedContent = '';
 
-            // Process streaming response
+            // Process streaming response in background (no visual update)
             while (!streamDone) {
               const { done, value } = await reader.read();
               if (done) break;
@@ -1055,11 +1055,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   const content = parsed.choices?.[0]?.delta?.content as string | undefined;
                   if (content) {
                     accumulatedContent += content;
-                    setMessages(prev => prev.map(msg => 
-                      msg.id === aiMessageId 
-                        ? { ...msg, content: accumulatedContent }
-                        : msg
-                    ));
+                    // Don't update UI during streaming
                   }
                 } catch {
                   textBuffer = line + "\n" + textBuffer;
@@ -1082,21 +1078,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   const content = parsed.choices?.[0]?.delta?.content as string | undefined;
                   if (content) {
                     accumulatedContent += content;
-                    setMessages(prev => prev.map(msg => 
-                      msg.id === aiMessageId 
-                        ? { ...msg, content: accumulatedContent }
-                        : msg
-                    ));
                   }
                 } catch { }
               }
             }
 
-            // Stop thinking, trigger typewriter
+            // Stop thinking and trigger typewriter effect with full content
             setIsThinking(false);
             setMessages(prev => prev.map(msg => 
               msg.id === aiMessageId 
-                ? { ...msg, isTyping: true }
+                ? { ...msg, content: accumulatedContent, isTyping: true }
                 : msg
             ));
 
@@ -1155,21 +1146,21 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
 
   return (
     <>
-      <main className="h-screen bg-background flex flex-col max-w-6xl mx-auto w-full relative">
+      <main className="h-screen bg-background flex flex-col w-full relative touch-manipulation">
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto scrollbar-hide px-3 sm:px-6 py-4 md:py-8 pb-32 md:pb-40 space-y-4 md:space-y-6 overscroll-contain"
+          className="flex-1 overflow-y-auto scrollbar-hide px-3 sm:px-6 py-4 sm:py-8 pb-32 sm:pb-40 space-y-4 sm:space-y-6 overscroll-contain"
           style={{ overflowAnchor: 'none' }}
         >
           
           {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 md:space-y-6 py-12 md:py-20 px-3 sm:px-4">
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 sm:space-y-6 py-12 sm:py-20 px-4">
               <img 
                 src="/cuizly-assistant-logo.png" 
                 alt="Cuizly Assistant Vocal"
-                className="h-12 md:h-16 w-auto"
+                className="h-12 sm:h-16 w-auto"
               />
-              <div className="space-y-2 md:space-y-3 max-w-lg">
+              <div className="space-y-2 sm:space-y-3 max-w-lg">
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   {t('voiceChat.description')}
                 </p>
@@ -1182,7 +1173,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               key={message.id}
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[95%] md:max-w-[85%] ${message.type === 'assistant' ? 'max-h-[60vh] md:max-h-none overflow-y-auto' : ''}`}>
+              <div className={`max-w-[95%] sm:max-w-[85%] ${message.type === 'assistant' ? 'overflow-y-auto' : ''}`}>
                 {message.imageUrl || message.documentUrl ? (
                   // If message has image or document, show it with optional text below
                   <div className="space-y-2">
@@ -1202,10 +1193,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       </div>
                     )}
                     {message.content && (
-                      <div className={message.type === 'user' ? 'rounded-3xl px-4 sm:px-6 py-3 sm:py-4 bg-muted w-fit' : ''}>
+                      <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted w-fit' : ''}>
                         <RichTextRenderer 
                           content={message.content} 
-                          className="text-sm sm:text-base leading-relaxed"
+                          className="text-base leading-relaxed"
                         />
                       </div>
                     )}
@@ -1466,7 +1457,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         </main>
 
       {/* Chat input et disclaimer - complètement indépendant */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm px-3 sm:px-6 py-4 z-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm px-6 py-4 z-50">
         <form onSubmit={handleTextSubmit} className="space-y-3 max-w-4xl mx-auto">
           {/* Files preview */}
           {selectedFiles.length > 0 && (
