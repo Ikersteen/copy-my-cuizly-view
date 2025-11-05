@@ -23,6 +23,8 @@ serve(async (req) => {
       );
     }
 
+    console.log('Document received:', documentName, 'Content length:', documentContent.length);
+
     const systemPrompt = language === 'en' 
       ? `You are Cuizly, an advanced AI assistant specialized in deeply analyzing and understanding all types of documents including PDFs, Word documents, text files, spreadsheets, presentations, and more.
 
@@ -69,7 +71,7 @@ Lors de l'analyse de documents, fournis:
 
 Sois minutieux, précis et conversationnel. Extrais la valeur maximale de chaque document.`;
 
-    console.log('Analyzing document with Lovable AI:', documentName);
+    console.log('Analyzing document with Lovable AI (streaming):', documentName);
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -87,10 +89,11 @@ Sois minutieux, précis et conversationnel. Extrais la valeur maximale de chaque
           { 
             role: 'user', 
             content: language === 'en' 
-              ? `Please analyze this document "${documentName}":\n\n${documentContent.substring(0, 10000)}`
-              : `Analyse ce document "${documentName}" s'il te plaît :\n\n${documentContent.substring(0, 10000)}`
+              ? `Please analyze this PDF document "${documentName}" in detail. Here is the base64-encoded PDF content:\n\n${documentContent}`
+              : `Analyse ce document PDF "${documentName}" en détail s'il te plaît. Voici le contenu PDF encodé en base64:\n\n${documentContent}`
           }
         ],
+        stream: true
       }),
     });
 
@@ -112,19 +115,17 @@ Sois minutieux, précis et conversationnel. Extrais la valeur maximale de chaque
       throw new Error('AI Gateway error');
     }
 
-    const data = await response.json();
-    const analysis = data.choices?.[0]?.message?.content;
+    console.log('Streaming document analysis');
 
-    if (!analysis) {
-      throw new Error('No analysis received from AI');
-    }
-
-    console.log('Document analyzed successfully');
-
-    return new Response(
-      JSON.stringify({ analysis }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    // Return the stream directly to the client
+    return new Response(response.body, {
+      headers: { 
+        ...corsHeaders, 
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive'
+      }
+    });
   } catch (error) {
     console.error('Error in analyze-document function:', error);
     return new Response(
