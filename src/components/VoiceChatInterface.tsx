@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText } from 'lucide-react';
@@ -1586,17 +1586,28 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Input
+            <Textarea
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  if (textInput.trim() || selectedFiles.length > 0) {
+                    handleTextSubmit(e as any);
+                  }
+                }
+              }}
               placeholder={t('voiceChat.inputPlaceholder')}
               disabled={isProcessing}
               autoComplete="on"
               autoCorrect="on"
               autoCapitalize="sentences"
               spellCheck="true"
-              className="flex-1 rounded-full focus-visible:ring-0 focus-visible:ring-offset-0"
+              rows={1}
+              className="flex-1 rounded-3xl focus-visible:ring-0 focus-visible:ring-offset-0 resize-none min-h-[40px] max-h-[120px] overflow-y-auto py-2.5"
+              style={{ 
+                fieldSizing: 'content' as any
+              }}
             />
             <Button
               type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
@@ -1614,24 +1625,24 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         </form>
         
         {/* Disclaimer text */}
-        <p className="text-center text-xs text-muted-foreground px-2 mt-3 max-w-4xl mx-auto">
+        <p className="text-center text-xs text-muted-foreground px-2 mt-3 max-w-4xl mx-auto leading-relaxed">
           {i18n.language === 'fr' ? (
             <>
               En discutant avec Cuizly Assistant, vous acceptez nos{' '}
-              <a href="/terms" className="underline hover:text-foreground transition-colors">conditions</a>
+              <a href="/terms" className="underline hover:text-foreground transition-colors whitespace-nowrap">conditions</a>
               {' '}et avez lu notre{' '}
-              <a href="/privacy" className="underline hover:text-foreground transition-colors">politique de confidentialité</a>
+              <a href="/privacy" className="underline hover:text-foreground transition-colors whitespace-nowrap">politique de confidentialité</a>
               . Voir les{' '}
-              <a href="/cookies" className="underline hover:text-foreground transition-colors">préférences de cookies</a>.
+              <a href="/cookies" className="underline hover:text-foreground transition-colors whitespace-nowrap">préférences de cookies</a>.
             </>
           ) : (
             <>
               By chatting with Cuizly Assistant, you accept our{' '}
-              <a href="/terms" className="underline hover:text-foreground transition-colors">terms</a>
+              <a href="/terms" className="underline hover:text-foreground transition-colors whitespace-nowrap">terms</a>
               {' '}and have read our{' '}
-              <a href="/privacy" className="underline hover:text-foreground transition-colors">privacy policy</a>
+              <a href="/privacy" className="underline hover:text-foreground transition-colors whitespace-nowrap">privacy policy</a>
               . See{' '}
-              <a href="/cookies" className="underline hover:text-foreground transition-colors">cookie preferences</a>.
+              <a href="/cookies" className="underline hover:text-foreground transition-colors whitespace-nowrap">cookie preferences</a>.
             </>
           )}
         </p>
