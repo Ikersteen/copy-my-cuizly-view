@@ -30,6 +30,8 @@ interface Message {
   isProcessing?: boolean;
   isTyping?: boolean;
   imageUrl?: string;
+  documentUrl?: string;
+  documentName?: string;
 }
 
 interface VoiceChatInterfaceProps {
@@ -920,13 +922,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       
       // Always create a message if files are uploaded
       const userMessageId = Date.now().toString();
+      const imageFile = files.find(f => f.type === 'image');
+      const documentFile = files.find(f => f.type === 'document');
+      
       const userMessage: Message = {
         id: userMessageId,
         type: 'user',
         content: message.trim(), // Empty string if no text
         timestamp: new Date(),
         isAudio: false,
-        imageUrl: files.find(f => f.type === 'image')?.data || uploadedUrls[0]
+        imageUrl: imageFile?.data,
+        documentUrl: documentFile ? uploadedUrls[files.indexOf(documentFile)] : undefined,
+        documentName: documentFile?.name
       };
       
       setMessages(prev => [...prev, userMessage]);
@@ -1059,16 +1066,24 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div className={`max-w-[85%]`}>
-                {message.imageUrl ? (
-                  // If message has image, show image and optional text below
+                {message.imageUrl || message.documentUrl ? (
+                  // If message has image or document, show it with optional text below
                   <div className="space-y-2">
-                    <div className="rounded-2xl overflow-hidden">
-                      <img 
-                        src={message.imageUrl} 
-                        alt="Uploaded food" 
-                        className="max-w-xs max-h-48 object-cover"
-                      />
-                    </div>
+                    {message.imageUrl && (
+                      <div className="rounded-2xl overflow-hidden">
+                        <img 
+                          src={message.imageUrl} 
+                          alt="Uploaded food" 
+                          className="max-w-xs max-h-48 object-cover"
+                        />
+                      </div>
+                    )}
+                    {message.documentUrl && (
+                      <div className="flex items-center gap-2 rounded-2xl px-4 py-3 bg-muted border border-border">
+                        <FileText className="w-5 h-5 text-primary" />
+                        <span className="text-sm font-medium">{message.documentName || 'Document'}</span>
+                      </div>
+                    )}
                     {message.content && (
                       <div className={message.type === 'user' ? 'rounded-3xl px-6 py-4 bg-muted w-fit' : ''}>
                         <RichTextRenderer 
