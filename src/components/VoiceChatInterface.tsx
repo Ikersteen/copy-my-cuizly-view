@@ -1065,36 +1065,144 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             }
           }
           
-          // Call edge function to analyze the document
-          response = await supabase.functions.invoke('analyze-document', {
-            body: { 
+          // Create AI message that will be updated with streaming content
+          const aiMessageId = (Date.now() + 1).toString();
+          const aiMessage: Message = {
+            id: aiMessageId,
+            type: 'assistant',
+            content: '',
+            timestamp: new Date(),
+            isTyping: true
+          };
+          setMessages(prev => [...prev, aiMessage]);
+          
+          // Stream document analysis using fetch
+          const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZ2t6dm5ic2RuZmdtY3h0dXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MDU5NDksImV4cCI6MjA3MDk4MTk0OX0.VJZg2dWjtNydKV5RRRrl69XiOTv_1rya4IN5cI1MAzM';
+          const streamResponse = await fetch('https://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/analyze-document', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${anonKey}`
+            },
+            body: JSON.stringify({
               documentContent: documentContent,
               documentName: documentFile.name,
               language: i18n.language === 'en' ? 'en' : 'fr'
-            }
+            })
           });
+
+          if (!streamResponse.ok || !streamResponse.body) {
+            throw new Error('Failed to start stream');
+          }
+
+          const reader = streamResponse.body.getReader();
+          const decoder = new TextDecoder();
+          let textBuffer = '';
+          let streamDone = false;
+          let accumulatedContent = '';
+
+          while (!streamDone) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            textBuffer += decoder.decode(value, { stream: true });
+
+            // Process line-by-line as data arrives
+            let newlineIndex: number;
+            while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+              let line = textBuffer.slice(0, newlineIndex);
+              textBuffer = textBuffer.slice(newlineIndex + 1);
+
+              if (line.endsWith("\r")) line = line.slice(0, -1);
+              if (line.startsWith(":") || line.trim() === "") continue;
+              if (!line.startsWith("data: ")) continue;
+
+              const jsonStr = line.slice(6).trim();
+              if (jsonStr === "[DONE]") {
+                streamDone = true;
+                break;
+              }
+
+              try {
+                const parsed = JSON.parse(jsonStr);
+                const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+                if (content) {
+                  accumulatedContent += content;
+                  // Update message in real-time
+                  setMessages(prev => prev.map(msg => 
+                    msg.id === aiMessageId 
+                      ? { ...msg, content: accumulatedContent }
+                      : msg
+                  ));
+                }
+              } catch {
+                // Incomplete JSON split across chunks: put it back and wait for more data
+                textBuffer = line + "\n" + textBuffer;
+                break;
+              }
+            }
+          }
+
+          // Final flush
+          if (textBuffer.trim()) {
+            for (let raw of textBuffer.split("\n")) {
+              if (!raw) continue;
+              if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+              if (raw.startsWith(":") || raw.trim() === "") continue;
+              if (!raw.startsWith("data: ")) continue;
+              const jsonStr = raw.slice(6).trim();
+              if (jsonStr === "[DONE]") continue;
+              try {
+                const parsed = JSON.parse(jsonStr);
+                const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+                if (content) {
+                  accumulatedContent += content;
+                  setMessages(prev => prev.map(msg => 
+                    msg.id === aiMessageId 
+                      ? { ...msg, content: accumulatedContent }
+                      : msg
+                  ));
+                }
+              } catch { /* ignore partial leftovers */ }
+            }
+          }
+
+          // Mark as done typing
+          setIsThinking(false);
+          setMessages(prev => prev.map(msg => 
+            msg.id === aiMessageId 
+              ? { ...msg, isTyping: false }
+              : msg
+          ));
+
+          // Save to database
+          if (conversationId && accumulatedContent) {
+            await saveMessage(conversationId, 'assistant', accumulatedContent, 'text');
+          }
         }
 
-        if (response?.error) throw new Error(response.error.message);
+        // Handle image analysis (response variable is only set for images)
+        if (imageFile && response) {
+          if (response?.error) throw new Error(response.error.message);
 
-        const analysis = response?.data?.response || response?.data?.analysis;
-        if (!analysis) throw new Error('No analysis received');
+          const analysis = response?.data?.response || response?.data?.analysis;
+          if (!analysis) throw new Error('No analysis received');
 
-        setIsThinking(false);
-        
-        // Add AI response
-        const aiMessageId = (Date.now() + 1).toString();
-        setMessages(prev => [...prev, {
-          id: aiMessageId,
-          type: 'assistant',
-          content: analysis,
-          timestamp: new Date(),
-          isTyping: true
-        }]);
-        
-        // Save assistant message to database
-        if (conversationId) {
-          await saveMessage(conversationId, 'assistant', analysis, 'text');
+          setIsThinking(false);
+          
+          // Add AI response
+          const aiMessageId = (Date.now() + 1).toString();
+          setMessages(prev => [...prev, {
+            id: aiMessageId,
+            type: 'assistant',
+            content: analysis,
+            timestamp: new Date(),
+            isTyping: true
+          }]);
+          
+          // Save assistant message to database
+          if (conversationId) {
+            await saveMessage(conversationId, 'assistant', analysis, 'text');
+          }
         }
 
       } catch (error) {
