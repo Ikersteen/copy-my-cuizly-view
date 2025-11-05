@@ -1003,7 +1003,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           setMessages(prev => [...prev, aiMessage]);
           
           try {
-            // Stream document analysis
+            // Stream document analysis in background
             const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZ2t6dm5ic2RuZmdtY3h0dXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MDU5NDksImV4cCI6MjA3MDk4MTk0OX0.VJZg2dWjtNydKV5RRRrl69XiOTv_1rya4IN5cI1MAzM';
             const streamResponse = await fetch('https://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/analyze-document', {
               method: 'POST',
@@ -1028,7 +1028,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             let streamDone = false;
             let accumulatedContent = '';
 
-            // Process streaming response
+            // Process streaming response in background (no visual update)
             while (!streamDone) {
               const { done, value } = await reader.read();
               if (done) break;
@@ -1055,11 +1055,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   const content = parsed.choices?.[0]?.delta?.content as string | undefined;
                   if (content) {
                     accumulatedContent += content;
-                    setMessages(prev => prev.map(msg => 
-                      msg.id === aiMessageId 
-                        ? { ...msg, content: accumulatedContent }
-                        : msg
-                    ));
+                    // Don't update UI during streaming
                   }
                 } catch {
                   textBuffer = line + "\n" + textBuffer;
@@ -1082,18 +1078,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   const content = parsed.choices?.[0]?.delta?.content as string | undefined;
                   if (content) {
                     accumulatedContent += content;
-                    setMessages(prev => prev.map(msg => 
-                      msg.id === aiMessageId 
-                        ? { ...msg, content: accumulatedContent }
-                        : msg
-                    ));
                   }
                 } catch { }
               }
             }
 
-            // Stop thinking - content is already displayed from streaming
+            // Stop thinking and trigger typewriter effect with full content
             setIsThinking(false);
+            setMessages(prev => prev.map(msg => 
+              msg.id === aiMessageId 
+                ? { ...msg, content: accumulatedContent, isTyping: true }
+                : msg
+            ));
 
             // Save to database
             if (conversationId && accumulatedContent) {
