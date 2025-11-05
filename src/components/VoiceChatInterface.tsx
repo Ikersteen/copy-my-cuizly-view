@@ -1156,9 +1156,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       </div>
                     )}
                     {message.documentUrl && (
-                      <div className="flex items-center gap-2 rounded-2xl px-4 py-3 bg-muted border border-border max-w-full overflow-hidden">
+                      <div className="flex items-center gap-2 rounded-2xl px-4 py-3 bg-muted border border-border min-w-0">
                         <FileText className="w-5 h-5 flex-shrink-0 text-primary" />
-                        <span className="text-sm font-medium truncate flex-1">{message.documentName || 'Document'}</span>
+                        <span className="text-sm font-medium truncate min-w-0 flex-1">{message.documentName || 'Document'}</span>
                       </div>
                     )}
                     {message.content && (
