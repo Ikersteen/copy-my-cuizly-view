@@ -957,52 +957,61 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       return;
     }
     
-    // Only analyze images
-    const imageFile = files.find(f => f.type === 'image');
-    if (imageFile) {
-      setIsThinking(true);
+    // Analyze all files together with AI
+    setIsThinking(true);
 
-      try {
-        // Call edge function to analyze the image
-        const response = await supabase.functions.invoke('analyze-food-image', {
-          body: { 
-            imageBase64: imageFile.data,
-            userMessage: message,
-            language: i18n.language === 'en' ? 'en' : 'fr'
-          }
-        });
+    try {
+      // Prepare file information for AI
+      const fileDescriptions = files.map((file, index) => {
+        const url = uploadedUrls[index];
+        return `${file.type === 'image' ? 'Image' : 'Document'}: ${file.name} (${url})`;
+      }).join('\n');
 
-        if (response.error) throw new Error(response.error.message);
+      const contextMessage = message.trim() 
+        ? `${message}\n\nFichiers joints:\n${fileDescriptions}`
+        : `Fichiers joints:\n${fileDescriptions}`;
 
-        const analysis = response.data?.analysis;
-        if (!analysis) throw new Error('No analysis received');
-
-        setIsThinking(false);
-        
-        // Add AI response
-        const aiMessageId = (Date.now() + 1).toString();
-        setMessages(prev => [...prev, {
-          id: aiMessageId,
-          type: 'assistant',
-          content: analysis,
-          timestamp: new Date(),
-          isTyping: true
-        }]);
-        
-        // Save assistant message to database
-        if (conversationId) {
-          await saveMessage(conversationId, 'assistant', analysis, 'text');
+      // Call AI to analyze all files
+      const response = await supabase.functions.invoke('cuizly-voice-chat', {
+        body: { 
+          message: contextMessage,
+          conversationId: conversationId,
+          language: i18n.language === 'en' ? 'en' : 'fr',
+          fileUrls: uploadedUrls,
+          fileTypes: files.map(f => f.type)
         }
+      });
 
-      } catch (error) {
-        console.error('Error analyzing image:', error);
-        setIsThinking(false);
-        toast({
-          title: t('errors.title'),
-          description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
-          variant: "destructive",
-        });
+      if (response.error) throw new Error(response.error.message);
+
+      const analysis = response.data?.response;
+      if (!analysis) throw new Error('No response received');
+
+      setIsThinking(false);
+      
+      // Add AI response
+      const aiMessageId = (Date.now() + 1).toString();
+      setMessages(prev => [...prev, {
+        id: aiMessageId,
+        type: 'assistant',
+        content: analysis,
+        timestamp: new Date(),
+        isTyping: true
+      }]);
+      
+      // Save assistant message to database
+      if (conversationId) {
+        await saveMessage(conversationId, 'assistant', analysis, 'text');
       }
+
+    } catch (error) {
+      console.error('Error analyzing files:', error);
+      setIsThinking(false);
+      toast({
+        title: t('errors.title'),
+        description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse',
+        variant: "destructive",
+      });
     }
     
     setIsProcessing(false);
