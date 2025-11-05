@@ -1003,23 +1003,25 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           setMessages(prev => [...prev, aiMessage]);
           
           try {
-            // Stream document analysis in background
+            // Stream document analysis with real-time display
             const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZ2t6dm5ic2RuZmdtY3h0dXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MDU5NDksImV4cCI6MjA3MDk4MTk0OX0.VJZg2dWjtNydKV5RRRrl69XiOTv_1rya4IN5cI1MAzM';
             const streamResponse = await fetch('https://ffgkzvnbsdnfgmcxturx.supabase.co/functions/v1/analyze-document', {
               method: 'POST',
               headers: {
+                'Authorization': `Bearer ${anonKey}`,
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${anonKey}`
               },
               body: JSON.stringify({
-                documentContent: documentContent.substring(0, 50000), // Limit size
-                documentName: documentFile.name,
-                language: i18n.language === 'en' ? 'en' : 'fr'
-              })
+                text: fileContent,
+                userMessage: message,
+                userId: user?.id,
+                conversationId: conversationId || undefined,
+                language: i18n.language || 'fr',
+              }),
             });
 
             if (!streamResponse.ok || !streamResponse.body) {
-              throw new Error('Failed to start stream');
+              throw new Error('Failed to analyze document');
             }
 
             const reader = streamResponse.body.getReader();
@@ -1028,68 +1030,69 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             let streamDone = false;
             let accumulatedContent = '';
 
-            // Process streaming response in background (no visual update)
+            // Process streaming response with real-time UI updates
             while (!streamDone) {
               const { done, value } = await reader.read();
               if (done) break;
+
               textBuffer += decoder.decode(value, { stream: true });
+              const lines = textBuffer.split('\n');
+              textBuffer = lines.pop() || '';
 
-              // Process line-by-line
-              let newlineIndex: number;
-              while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
-                let line = textBuffer.slice(0, newlineIndex);
-                textBuffer = textBuffer.slice(newlineIndex + 1);
-
-                if (line.endsWith("\r")) line = line.slice(0, -1);
-                if (line.startsWith(":") || line.trim() === "") continue;
-                if (!line.startsWith("data: ")) continue;
-
-                const jsonStr = line.slice(6).trim();
-                if (jsonStr === "[DONE]") {
-                  streamDone = true;
-                  break;
-                }
-
-                try {
-                  const parsed = JSON.parse(jsonStr);
-                  const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-                  if (content) {
-                    accumulatedContent += content;
-                    // Don't update UI during streaming
+              for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                  const data = line.slice(6);
+                  
+                  if (data === '[DONE]') {
+                    streamDone = true;
+                    break;
                   }
-                } catch {
-                  textBuffer = line + "\n" + textBuffer;
-                  break;
+
+                  try {
+                    const parsed = JSON.parse(data);
+                    const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+                    if (content) {
+                      accumulatedContent += content;
+                      // Update UI in real-time for typewriter effect
+                      setMessages(prev => prev.map(msg => 
+                        msg.id === aiMessageId 
+                          ? { ...msg, content: accumulatedContent }
+                          : msg
+                      ));
+                    }
+                  } catch {
+                    textBuffer = line + "\n" + textBuffer;
+                  }
                 }
               }
             }
 
-            // Final flush
-            if (textBuffer.trim()) {
-              for (let raw of textBuffer.split("\n")) {
-                if (!raw) continue;
-                if (raw.endsWith("\r")) raw = raw.slice(0, -1);
-                if (raw.startsWith(":") || raw.trim() === "") continue;
-                if (!raw.startsWith("data: ")) continue;
-                const jsonStr = raw.slice(6).trim();
-                if (jsonStr === "[DONE]") continue;
-                try {
-                  const parsed = JSON.parse(jsonStr);
-                  const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-                  if (content) {
-                    accumulatedContent += content;
+            // Process any remaining buffer content
+            if (textBuffer.length > 0) {
+              const lines = textBuffer.split('\n');
+              for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                  const data = line.slice(6);
+                  if (data !== '[DONE]') {
+                    try {
+                      const parsed = JSON.parse(data);
+                      const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+                      if (content) {
+                        accumulatedContent += content;
+                        setMessages(prev => prev.map(msg => 
+                          msg.id === aiMessageId 
+                            ? { ...msg, content: accumulatedContent }
+                            : msg
+                        ));
+                      }
+                    } catch { }
                   }
-                } catch { }
+                }
               }
             }
 
-            // Stop thinking and trigger typewriter effect with full content
+            // Stop thinking - content already displayed via streaming
             setIsThinking(false);
-            setMessages(prev => prev.map(msg => 
-              msg.id === aiMessageId 
-                ? { ...msg, content: accumulatedContent, isTyping: true }
-                : msg
-            ));
 
             // Save to database
             if (conversationId && accumulatedContent) {
