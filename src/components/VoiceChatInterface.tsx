@@ -977,16 +977,27 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             }
           });
         } else if (documentFile) {
+          // Extract text content from document
+          let documentContent = '';
+          if (documentFile.textContent) {
+            documentContent = documentFile.textContent;
+          } else {
+            // Fallback: try to extract from base64
+            try {
+              const base64Data = documentFile.data.split(',')[1];
+              documentContent = atob(base64Data);
+            } catch (e) {
+              console.error('Error extracting document content:', e);
+              documentContent = message || 'Document uploaded';
+            }
+          }
+          
           // Call edge function to analyze the document
-          response = await supabase.functions.invoke('cuizly-voice-chat', {
+          response = await supabase.functions.invoke('analyze-document', {
             body: { 
-              message: message || 'Analyse ce document',
-              conversationHistory: messages.slice(-5).map(m => ({
-                role: m.type === 'user' ? 'user' : 'assistant',
-                content: m.content
-              })),
-              language: i18n.language === 'en' ? 'en' : 'fr',
-              documentData: documentFile.data
+              documentContent: documentContent,
+              documentName: documentFile.name,
+              language: i18n.language === 'en' ? 'en' : 'fr'
             }
           });
         }
