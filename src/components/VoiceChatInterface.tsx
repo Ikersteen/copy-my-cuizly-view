@@ -1542,7 +1542,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
                 >
                   <FileText className="mr-3 h-5 w-5" />
-                  <span className="font-medium">{i18n.language === 'fr' ? 'Ajouter un document' : 'Add Document'}</span>
+                  <span className="font-medium">{i18n.language === 'fr' ? 'Ajouter un document' : 'Document'}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
