@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -59,6 +59,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const pdfInputRef = useRef<HTMLInputElement>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -1296,6 +1297,21 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               className="hidden"
               capture="user"
             />
+            <input
+              ref={pdfInputRef}
+              type="file"
+              accept="application/pdf"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  toast({
+                    title: "PDF ajouté",
+                    description: file.name,
+                  });
+                }
+              }}
+              className="hidden"
+            />
             
             {/* Dropdown menu for image upload options */}
             <DropdownMenu>
@@ -1333,6 +1349,16 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 >
                   <ImageIcon className="mr-3 h-5 w-5" />
                   <span className="font-medium">{t('voiceChat.choosePhoto') || 'Choisir une photo'}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => {
+                    console.log('PDF option clicked');
+                    pdfInputRef.current?.click();
+                  }}
+                  className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
+                >
+                  <FileText className="mr-3 h-5 w-5" />
+                  <span className="font-medium">{i18n.language === 'fr' ? 'Ajouter un PDF' : 'Add PDF'}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
