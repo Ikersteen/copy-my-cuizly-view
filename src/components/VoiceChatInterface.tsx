@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -1354,11 +1354,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <Button
                         type="button"
                         variant="ghost"
-                        size="sm"
-                        className="absolute -top-0.5 -right-0.5 h-1 w-1 rounded-full p-0 bg-black hover:bg-gray-900 text-white shadow-lg flex items-center justify-center"
+                        size="icon"
+                        className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 bg-black/60 hover:bg-black/80 text-white shadow-lg flex items-center justify-center"
                         onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
                       >
-                        <span className="text-[20px] font-bold leading-none">×</span>
+                        <X className="h-4 w-4" />
                       </Button>
                     </div>
                   ) : (
@@ -1370,11 +1370,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <Button
                         type="button"
                         variant="ghost"
-                        size="sm"
-                        className="absolute -top-0.5 -right-0.5 h-1 w-1 rounded-full p-0 bg-black hover:bg-gray-900 text-white shadow-lg flex items-center justify-center"
+                        size="icon"
+                        className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 bg-black/60 hover:bg-black/80 text-white shadow-lg flex items-center justify-center"
                         onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
                       >
-                        <span className="text-[20px] font-bold leading-none">×</span>
+                        <X className="h-4 w-4" />
                       </Button>
                     </div>
                   )}
