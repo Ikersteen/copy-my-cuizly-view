@@ -72,7 +72,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const thinkingIndicatorRef = useRef<HTMLDivElement | null>(null);
   
-  const { createConversation, saveMessage, loadConversations, loadConversationMessages } = useConversations();
+  const { createConversation, saveMessage } = useConversations();
   const { trackUserLocation } = useUserLocation();
   const [messageActions, setMessageActions] = useState<Record<string, { liked?: boolean; disliked?: boolean; copied?: boolean; bookmarked?: boolean }>>({});
   
@@ -95,19 +95,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         // Suivre la localisation de l'utilisateur
         await trackUserLocation('Cuizly Assistant');
         
-        // Charger la dernière conversation ou en créer une nouvelle
-        const { data: existingConversations, error } = await supabase
-          .from('conversations')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .order('updated_at', { ascending: false })
-          .limit(1);
-
-        if (!error && existingConversations && existingConversations.length > 0) {
-          // Charger la dernière conversation existante
-          const lastConversation = existingConversations[0];
-          setCurrentConversationId(lastConversation.id);
-          // Ne plus charger l'historique des conversations
+        // Créer une nouvelle conversation pour stocker les messages (backend uniquement)
+        const newConvId = await createConversation('voice');
+        if (newConvId) {
+          setCurrentConversationId(newConvId);
         }
       } else {
         // Utilisateur non connecté = mode anonyme
@@ -115,35 +106,10 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         setUserId(null);
         setUserProfile(null);
         
-        // Charger les conversations anonymes existantes
-        const anonymousSessionId = localStorage.getItem('cuizly_anonymous_session_id');
-        if (anonymousSessionId) {
-          const { data: existingConversations, error } = await supabase
-            .from('conversations')
-            .select('*')
-            .is('user_id', null)
-            .eq('anonymous_session_id', anonymousSessionId)
-            .order('updated_at', { ascending: false })
-            .limit(1);
-
-          if (!error && existingConversations && existingConversations.length > 0) {
-            // Charger la dernière conversation anonyme existante
-            const lastConversation = existingConversations[0];
-            setCurrentConversationId(lastConversation.id);
-            
-            // Charger les messages de cette conversation
-            const conversation = await loadConversationMessages(lastConversation.id);
-            if (conversation?.messages) {
-              const loadedMessages = conversation.messages.map(msg => ({
-                id: msg.id,
-                type: msg.role,
-                content: msg.content,
-                timestamp: new Date(msg.created_at),
-                isAudio: msg.message_type === 'audio'
-              }));
-              setMessages(loadedMessages);
-            }
-          }
+        // Créer une nouvelle conversation anonyme pour le tracking backend uniquement
+        const newConvId = await createConversation('voice');
+        if (newConvId) {
+          setCurrentConversationId(newConvId);
         }
       }
     };
@@ -358,9 +324,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       setIsRecording(true);
       console.log('Starting realtime conversation...');
       
-      // Create conversation if needed
+      // Create conversation if needed (pour tracking backend)
       let conversationId = currentConversationId;
-      if (!conversationId && userId) {
+      if (!conversationId) {
         conversationId = await createConversation('voice');
         if (conversationId) {
           setCurrentConversationId(conversationId);
