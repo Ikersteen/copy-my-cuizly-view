@@ -1072,7 +1072,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             type: 'assistant',
             content: '',
             timestamp: new Date(),
-            isTyping: true
+            isTyping: false
           };
           setMessages(prev => [...prev, aiMessage]);
           
@@ -1166,11 +1166,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             }
           }
 
-          // Mark as done typing
+          // Mark streaming as complete and trigger typewriter
           setIsThinking(false);
           setMessages(prev => prev.map(msg => 
             msg.id === aiMessageId 
-              ? { ...msg, isTyping: false }
+              ? { ...msg, isTyping: true }
               : msg
           ));
 
