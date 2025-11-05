@@ -1459,7 +1459,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 size="icon"
                 className="rounded-full shadow-lg border border-border bg-background hover:bg-muted"
               >
-                <ArrowDown className="w-4 h-4 animate-bounce" />
+                <ArrowDown className="w-4 h-4" />
               </Button>
             </div>
           )}
@@ -1605,7 +1605,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               spellCheck="true"
               minRows={1}
               maxRows={5}
-              className="flex-1 rounded-3xl focus-visible:ring-0 focus-visible:ring-offset-0 resize-none py-2.5 px-3 border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex-1 rounded-3xl outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none py-2.5 px-3 border border-input bg-background text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 transition-none"
             />
             <Button
               type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
