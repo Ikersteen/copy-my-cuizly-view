@@ -1092,13 +1092,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               }
             }
 
-            // Stop thinking, trigger typewriter
+            // Stop thinking - content is already displayed from streaming
             setIsThinking(false);
-            setMessages(prev => prev.map(msg => 
-              msg.id === aiMessageId 
-                ? { ...msg, isTyping: true }
-                : msg
-            ));
 
             // Save to database
             if (conversationId && accumulatedContent) {
