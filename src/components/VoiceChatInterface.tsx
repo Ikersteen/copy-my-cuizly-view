@@ -1158,19 +1158,19 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       <main className="h-screen bg-background flex flex-col max-w-6xl mx-auto w-full relative">
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto scrollbar-hide px-2 md:px-6 py-4 md:py-8 pb-32 md:pb-40 space-y-4 md:space-y-6 overscroll-contain"
+          className="flex-1 overflow-y-auto scrollbar-hide px-6 py-8 pb-40 space-y-6 overscroll-contain"
           style={{ overflowAnchor: 'none' }}
         >
           
           {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 md:space-y-6 py-12 md:py-20 px-4">
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-20 px-4">
               <img 
                 src="/cuizly-assistant-logo.png" 
                 alt="Cuizly Assistant Vocal"
-                className="h-12 md:h-16 w-auto"
+                className="h-16 w-auto"
               />
-              <div className="space-y-2 md:space-y-3 max-w-lg">
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              <div className="space-y-3 max-w-lg">
+                <p className="text-base text-muted-foreground leading-relaxed">
                   {t('voiceChat.description')}
                 </p>
               </div>
@@ -1182,7 +1182,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               key={message.id}
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[90%] md:max-w-[85%] ${message.type === 'assistant' ? 'max-h-[60vh] md:max-h-none overflow-y-auto' : ''}`}>
+              <div className={`max-w-[85%] ${message.type === 'assistant' ? 'overflow-y-auto' : ''}`}>
                 {message.imageUrl || message.documentUrl ? (
                   // If message has image or document, show it with optional text below
                   <div className="space-y-2">
@@ -1214,7 +1214,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   // Otherwise show normal message bubble
                   <div className={`${
                     message.type === 'user' 
-                      ? 'rounded-3xl px-4 md:px-6 py-3 md:py-4 bg-muted w-fit' 
+                      ? 'rounded-3xl px-6 py-4 bg-muted w-fit' 
                       : ''
                    } ${message.isProcessing ? 'animate-pulse' : ''}`}>
                     {message.isTyping && message.type === 'assistant' ? (
