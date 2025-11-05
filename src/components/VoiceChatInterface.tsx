@@ -957,24 +957,43 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       return;
     }
     
-    // Only analyze images
+    // Analyze images or documents
     const imageFile = files.find(f => f.type === 'image');
-    if (imageFile) {
+    const documentFile = files.find(f => f.type === 'document');
+    
+    if (imageFile || documentFile) {
       setIsThinking(true);
 
       try {
-        // Call edge function to analyze the image
-        const response = await supabase.functions.invoke('analyze-food-image', {
-          body: { 
-            imageBase64: imageFile.data,
-            userMessage: message,
-            language: i18n.language === 'en' ? 'en' : 'fr'
-          }
-        });
+        let response;
+        
+        if (imageFile) {
+          // Call edge function to analyze the image
+          response = await supabase.functions.invoke('analyze-food-image', {
+            body: { 
+              imageBase64: imageFile.data,
+              userMessage: message,
+              language: i18n.language === 'en' ? 'en' : 'fr'
+            }
+          });
+        } else if (documentFile) {
+          // Call edge function to analyze the document
+          response = await supabase.functions.invoke('cuizly-voice-chat', {
+            body: { 
+              message: message || 'Analyse ce document',
+              conversationHistory: messages.slice(-5).map(m => ({
+                role: m.type === 'user' ? 'user' : 'assistant',
+                content: m.content
+              })),
+              language: i18n.language === 'en' ? 'en' : 'fr',
+              documentData: documentFile.data
+            }
+          });
+        }
 
-        if (response.error) throw new Error(response.error.message);
+        if (response?.error) throw new Error(response.error.message);
 
-        const analysis = response.data?.analysis;
+        const analysis = response?.data?.response || response?.data?.analysis;
         if (!analysis) throw new Error('No analysis received');
 
         setIsThinking(false);
@@ -995,11 +1014,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         }
 
       } catch (error) {
-        console.error('Error analyzing image:', error);
+        console.error('Error analyzing file:', error);
         setIsThinking(false);
         toast({
           title: t('errors.title'),
-          description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
+          description: imageFile 
+            ? (t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image')
+            : 'Erreur lors de l\'analyse du document',
           variant: "destructive",
         });
       }
