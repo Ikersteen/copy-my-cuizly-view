@@ -1182,7 +1182,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               key={message.id}
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[85%]`}>
+              <div className={`max-w-[85%] ${message.type === 'assistant' ? 'max-h-[60vh] md:max-h-none overflow-y-auto' : ''}`}>
                 {message.imageUrl || message.documentUrl ? (
                   // If message has image or document, show it with optional text below
                   <div className="space-y-2">
@@ -1484,7 +1484,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full p-0 hover:bg-black shadow-lg flex items-center justify-center md:bg-black md:h-1 md:w-1 lg:top-2 lg:right-2 lg:h-5 lg:w-5"
+                        className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full p-0 bg-black hover:bg-black shadow-lg flex items-center justify-center md:h-1 md:w-1 lg:top-2 lg:right-2 lg:h-5 lg:w-5"
                         onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
                       >
                         <span className="text-white text-[20px] font-bold leading-none">×</span>
@@ -1500,7 +1500,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full p-0 hover:bg-black shadow-lg flex items-center justify-center md:bg-black md:h-1 md:w-1 lg:top-2 lg:right-2 lg:h-5 lg:w-5"
+                        className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full p-0 bg-black hover:bg-black shadow-lg flex items-center justify-center md:h-1 md:w-1 lg:top-2 lg:right-2 lg:h-5 lg:w-5"
                         onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
                       >
                         <span className="text-white text-[20px] font-bold leading-none">×</span>
@@ -1582,7 +1582,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                   className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
                 >
                   <FileText className="mr-3 h-5 w-5" />
-                  <span className="font-medium">{i18n.language === 'fr' ? 'Ajouter un document' : 'Document'}</span>
+                  <span className="font-medium">Document</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
