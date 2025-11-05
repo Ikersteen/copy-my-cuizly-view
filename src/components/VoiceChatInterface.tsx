@@ -935,69 +935,76 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         await saveMessage(
           conversationId, 
           'user', 
-          message || t('voiceChat.imageUploaded') || 'Image envoyée', 
+          message || t('voiceChat.imageUploaded') || 'Fichier(s) envoyé(s)', 
           'text',
           undefined,
           undefined,
-          publicUrl
+          uploadedUrls[0]
         );
       }
+      
+      // Clear selected files after sending
+      setSelectedFiles([]);
     } catch (uploadError) {
-      console.error('Error uploading image:', uploadError);
+      console.error('Error uploading files:', uploadError);
       toast({
         title: t('errors.title'),
-        description: 'Erreur lors de l\'upload de l\'image',
+        description: 'Erreur lors de l\'upload des fichiers',
         variant: "destructive",
       });
       setIsProcessing(false);
       return;
     }
     
-    setIsThinking(true);
+    // Only analyze images
+    const imageFile = files.find(f => f.type === 'image');
+    if (imageFile) {
+      setIsThinking(true);
 
-    try {
-      // Call edge function to analyze the image
-      const response = await supabase.functions.invoke('analyze-food-image', {
-        body: { 
-          imageBase64,
-          userMessage: message,
-          language: i18n.language === 'en' ? 'en' : 'fr'
+      try {
+        // Call edge function to analyze the image
+        const response = await supabase.functions.invoke('analyze-food-image', {
+          body: { 
+            imageBase64: imageFile.data,
+            userMessage: message,
+            language: i18n.language === 'en' ? 'en' : 'fr'
+          }
+        });
+
+        if (response.error) throw new Error(response.error.message);
+
+        const analysis = response.data?.analysis;
+        if (!analysis) throw new Error('No analysis received');
+
+        setIsThinking(false);
+        
+        // Add AI response
+        const aiMessageId = (Date.now() + 1).toString();
+        setMessages(prev => [...prev, {
+          id: aiMessageId,
+          type: 'assistant',
+          content: analysis,
+          timestamp: new Date(),
+          isTyping: true
+        }]);
+        
+        // Save assistant message to database
+        if (conversationId) {
+          await saveMessage(conversationId, 'assistant', analysis, 'text');
         }
-      });
 
-      if (response.error) throw new Error(response.error.message);
-
-      const analysis = response.data?.analysis;
-      if (!analysis) throw new Error('No analysis received');
-
-      setIsThinking(false);
-      
-      // Add AI response
-      const aiMessageId = (Date.now() + 1).toString();
-      setMessages(prev => [...prev, {
-        id: aiMessageId,
-        type: 'assistant',
-        content: analysis,
-        timestamp: new Date(),
-        isTyping: true
-      }]);
-      
-      // Save assistant message to database
-      if (conversationId) {
-        await saveMessage(conversationId, 'assistant', analysis, 'text');
+      } catch (error) {
+        console.error('Error analyzing image:', error);
+        setIsThinking(false);
+        toast({
+          title: t('errors.title'),
+          description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
+          variant: "destructive",
+        });
       }
-
-    } catch (error) {
-      console.error('Error analyzing image:', error);
-      setIsThinking(false);
-      toast({
-        title: t('errors.title'),
-        description: t('errors.imageAnalysisFailed') || 'Erreur lors de l\'analyse de l\'image',
-        variant: "destructive",
-      });
-    } finally {
-      setIsProcessing(false);
     }
+    
+    setIsProcessing(false);
   };
 
   return (
