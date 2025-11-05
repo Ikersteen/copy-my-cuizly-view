@@ -1315,7 +1315,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                       <img 
                         src={file.data} 
                         alt={file.name} 
-                        className="h-24 w-auto max-w-[120px] rounded-xl border-2 border-border object-cover"
+                        className="h-24 w-auto max-w-[120px] rounded-xl object-cover"
                       />
                       <Button
                         type="button"
