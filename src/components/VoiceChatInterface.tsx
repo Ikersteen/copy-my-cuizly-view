@@ -797,22 +797,39 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       return;
     }
 
+    if (fileType === 'document' && !['text/plain', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.type)) {
+      toast({
+        title: t('errors.title'),
+        description: i18n.language === 'fr' ? 'Formats supportés : TXT, PDF, DOC, DOCX' : 'Supported formats: TXT, PDF, DOC, DOCX',
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const reader = new FileReader();
       reader.onload = async (event) => {
         const fileData = event.target?.result as string;
         
         let processedData = fileData;
+        let textContent = '';
+        
         // Compress images before storing
         if (fileType === 'image') {
           processedData = await compressImage(fileData);
+        }
+        
+        // Extract text from txt files
+        if (fileType === 'document' && file.type === 'text/plain') {
+          textContent = fileData.split(',')[1] ? atob(fileData.split(',')[1]) : '';
         }
         
         const newFile = {
           id: Date.now().toString() + Math.random(),
           type: fileType,
           data: processedData,
-          name: file.name
+          name: file.name,
+          textContent: textContent || undefined
         };
         
         setSelectedFiles(prev => [...prev, newFile]);
@@ -862,11 +879,21 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         const byteArray = new Uint8Array(byteNumbers);
         
         const bucketName = file.type === 'image' ? 'chat-images' : 'chat-documents';
-        const mimeType = file.type === 'image' ? 'image/jpeg' : 'application/octet-stream';
+        
+        // Determine mime type based on file extension
+        let mimeType = 'application/octet-stream';
+        if (file.type === 'image') {
+          mimeType = 'image/jpeg';
+        } else if (file.name.endsWith('.txt')) {
+          mimeType = 'text/plain';
+        } else if (file.name.endsWith('.pdf')) {
+          mimeType = 'application/pdf';
+        }
+        
         const blob = new Blob([byteArray], { type: mimeType });
         
         const timestamp = Date.now();
-        const extension = file.name.split('.').pop() || (file.type === 'image' ? 'jpg' : 'pdf');
+        const extension = file.name.split('.').pop() || (file.type === 'image' ? 'jpg' : 'txt');
         const fileName = `${userId || 'anonymous'}_${timestamp}_${Math.random().toString(36).substring(7)}.${extension}`;
         
         const { data: uploadData, error: uploadError } = await supabase.storage

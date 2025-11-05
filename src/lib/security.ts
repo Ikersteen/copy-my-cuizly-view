@@ -84,6 +84,7 @@ export const secureLogout = async (): Promise<void> => {
 export const validateFileUpload = (file: File): { isValid: boolean; error?: string } => {
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB (increased for better UX)
   const ALLOWED_TYPES = [
+    // Images
     'image/jpeg', 
     'image/jpg',
     'image/png', 
@@ -91,7 +92,12 @@ export const validateFileUpload = (file: File): { isValid: boolean; error?: stri
     'image/gif',
     'image/avif',  // Support for AVIF (modern format)
     'image/heic',  // Support for HEIC (iPhone photos)
-    'image/heif'   // Support for HEIF
+    'image/heif',  // Support for HEIF
+    // Documents
+    'text/plain',  // .txt files
+    'application/pdf',
+    'application/msword', // .doc
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx
   ];
   
   if (file.size > MAX_FILE_SIZE) {
@@ -99,7 +105,7 @@ export const validateFileUpload = (file: File): { isValid: boolean; error?: stri
   }
   
   if (!ALLOWED_TYPES.includes(file.type)) {
-    return { isValid: false, error: 'Formats supportés : JPEG, PNG, WebP, GIF, AVIF, HEIC' };
+    return { isValid: false, error: 'Formats supportés : Images (JPEG, PNG, WebP, GIF, AVIF, HEIC) et Documents (TXT, PDF, DOC, DOCX)' };
   }
   
   return { isValid: true };
