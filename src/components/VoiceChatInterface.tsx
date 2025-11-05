@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText, X } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -1341,43 +1341,30 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         <form onSubmit={handleTextSubmit} className="space-y-3 max-w-4xl mx-auto">
           {/* Files preview */}
           {selectedFiles.length > 0 && (
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
               {selectedFiles.map((file) => (
-                <div key={file.id} className="relative inline-block group">
+                <div key={file.id} className="relative inline-block">
                   {file.type === 'image' ? (
-                    <div className="relative">
-                      <img 
-                        src={file.data} 
-                        alt={file.name} 
-                        className="h-24 w-auto max-w-[120px] rounded-xl border-2 border-border object-cover"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute -top-1 -right-1 h-[18px] w-[18px] rounded-full p-0 bg-black hover:bg-gray-900 text-white shadow-lg flex items-center justify-center"
-                        onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
+                    <img 
+                      src={file.data} 
+                      alt={file.name} 
+                      className="max-h-16 rounded-lg border border-border"
+                    />
                   ) : (
-                    <div className="relative">
-                      <div className="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-border bg-muted min-w-[140px]">
-                        <FileText className="w-5 h-5 flex-shrink-0 text-primary" />
-                        <span className="text-sm truncate max-w-[100px]">{file.name}</span>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute -top-1 -right-1 h-[18px] w-[18px] rounded-full p-0 bg-black hover:bg-gray-900 text-white shadow-lg flex items-center justify-center"
-                        onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-muted max-w-[160px]">
+                      <FileText className="w-4 h-4 flex-shrink-0" />
+                      <span className="text-xs truncate">{file.name}</span>
                     </div>
                   )}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 bg-black hover:bg-black/80 text-white text-base font-bold leading-none flex items-center justify-center"
+                    onClick={() => setSelectedFiles(prev => prev.filter(f => f.id !== file.id))}
+                  >
+                    ×
+                  </Button>
                 </div>
               ))}
             </div>
