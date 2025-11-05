@@ -918,32 +918,30 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         uploadedUrls.push(publicUrl);
       }
       
-      // Only add user message if there's actual text content
-      if (message.trim()) {
-        const userMessageId = Date.now().toString();
-        const userMessage: Message = {
-          id: userMessageId,
-          type: 'user',
-          content: message,
-          timestamp: new Date(),
-          isAudio: false,
-          imageUrl: files.find(f => f.type === 'image')?.data || uploadedUrls[0]
-        };
-        
-        setMessages(prev => [...prev, userMessage]);
-        
-        // Save user message to database with the file URLs
-        if (conversationId) {
-          await saveMessage(
-            conversationId, 
-            'user', 
-            message, 
-            'text',
-            undefined,
-            undefined,
-            uploadedUrls[0]
-          );
-        }
+      // Always create a message if files are uploaded
+      const userMessageId = Date.now().toString();
+      const userMessage: Message = {
+        id: userMessageId,
+        type: 'user',
+        content: message.trim(), // Empty string if no text
+        timestamp: new Date(),
+        isAudio: false,
+        imageUrl: files.find(f => f.type === 'image')?.data || uploadedUrls[0]
+      };
+      
+      setMessages(prev => [...prev, userMessage]);
+      
+      // Save user message to database with the file URLs
+      if (conversationId) {
+        await saveMessage(
+          conversationId, 
+          'user', 
+          message.trim() || ' ', // Space if no text to indicate file only
+          'text',
+          undefined,
+          undefined,
+          uploadedUrls[0]
+        );
       }
       
       // Clear selected files after sending
