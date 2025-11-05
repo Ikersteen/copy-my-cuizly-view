@@ -1379,9 +1379,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                     </div>
                   ) : (
                     <div className="relative">
-                      <div className="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-border bg-muted min-w-[140px]">
+                      <div className="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-border bg-muted min-w-[140px] max-w-[280px]">
                         <FileText className="w-5 h-5 flex-shrink-0 text-primary" />
-                        <span className="text-sm truncate max-w-[100px]">{file.name}</span>
+                        <span className="text-sm truncate flex-1">{file.name}</span>
                       </div>
                       <Button
                         type="button"
