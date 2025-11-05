@@ -104,7 +104,7 @@ export const PhotoActionModal = ({
         {/* Photo Preview avec design moderne */}
         <div className="flex justify-center p-8 bg-gradient-to-br from-muted/50 to-background">
           <div className="relative">
-            <div className={`${imageSize} border-4 border-white shadow-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 ${photoType === 'cover' ? 'rounded-2xl' : 'rounded-full'}`}>
+            <div className={`${imageSize} shadow-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 ${photoType === 'cover' ? 'rounded-2xl' : 'rounded-full'}`}>
               {previewUrl ? (
                 <img 
                   src={previewUrl} 
