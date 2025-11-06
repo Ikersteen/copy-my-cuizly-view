@@ -1182,7 +1182,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               key={message.id}
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[90%] md:max-w-[85%] ${message.type === 'assistant' ? 'max-h-[60vh] md:max-h-none overflow-y-auto' : ''}`}>
+              <div className={`max-w-[90%] md:max-w-[85%]`}>
                 {message.imageUrl || message.documentUrl ? (
                   // If message has image or document, show it with optional text below
                   <div className="space-y-2">
