@@ -1254,7 +1254,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 
                 {/* Action icons below messages - only show when message is complete and not during thinking */}
                 {!message.isProcessing && !message.isTyping && !isThinking && (
-                  <div className="flex items-center gap-1 mt-2">
+                  <div className="flex items-center gap-0.5 mt-0.5">
                     {message.type === 'user' ? (
                       // For user messages: only Copy icon
                       <Button
@@ -1605,7 +1605,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               spellCheck="true"
               minRows={1}
               maxRows={5}
-              className="flex-1 rounded-3xl outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none py-2.5 px-3 border border-input bg-background text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 transition-none"
+              className="flex-1 rounded-3xl outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none py-2.5 px-3 border border-input bg-white md:bg-background text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 transition-none"
             />
             <Button
               type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
