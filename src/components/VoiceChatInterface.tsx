@@ -980,10 +980,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           console.log('Processing document:', documentFile.name);
           setIsThinking(true);
           
-          // Extract document content (text or base64)
+          //  Extract document content (text or base64)
           let documentContent = '';
           
+          // @ts-ignore - textContent may exist on document files
           if (documentFile.textContent) {
+            // @ts-ignore
             documentContent = documentFile.textContent;
           } else {
             // For PDFs and binary files, send base64
@@ -1106,7 +1108,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             }
           } catch (error) {
             console.error('Error analyzing document:', error);
-            toast.error(i18n.language === 'en' ? 'Error analyzing document' : 'Erreur lors de l\'analyse du document');
+            toast({
+              title: i18n.language === 'en' ? 'Error' : 'Erreur',
+              description: i18n.language === 'en' ? 'Error analyzing document' : 'Erreur lors de l\'analyse du document',
+              variant: 'destructive'
+            });
             setMessages(prev => prev.filter(msg => msg.id !== aiMessageId));
             setIsThinking(false);
           }
