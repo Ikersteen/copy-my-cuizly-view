@@ -20,6 +20,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Message {
   id: string;
@@ -62,8 +68,51 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const pdfInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [showCameraModal, setShowCameraModal] = useState(false);
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Effet pour démarrer la vidéo de la caméra
+  useEffect(() => {
+    if (showCameraModal && cameraStream && videoRef.current) {
+      videoRef.current.srcObject = cameraStream;
+      videoRef.current.play();
+    }
+  }, [showCameraModal, cameraStream]);
+
+  // Cleanup de la caméra quand le modal se ferme
+  useEffect(() => {
+    if (!showCameraModal && cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      setCameraStream(null);
+    }
+  }, [showCameraModal]);
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            const event = { target: { files: dataTransfer.files } } as any;
+            handleFileUpload(event, 'image');
+            setShowCameraModal(false);
+          }
+        }, 'image/jpeg', 0.95);
+      }
+    }
+  };
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -1561,9 +1610,29 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 sideOffset={8}
               >
                 <DropdownMenuItem 
-                  onClick={() => {
+                  onClick={async () => {
                     console.log('Camera option clicked');
-                    cameraInputRef.current?.click();
+                    // Sur desktop, ouvrir la caméra directement
+                    if (window.innerWidth >= 768) {
+                      try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ 
+                          video: { facingMode: 'user' },
+                          audio: false 
+                        });
+                        setCameraStream(stream);
+                        setShowCameraModal(true);
+                      } catch (error) {
+                        console.error('Error accessing camera:', error);
+                        toast({
+                          title: "Erreur",
+                          description: "Impossible d'accéder à la caméra",
+                          variant: "destructive"
+                        });
+                      }
+                    } else {
+                      // Sur mobile, utiliser l'input file avec capture
+                      cameraInputRef.current?.click();
+                    }
                   }}
                   className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
                 >
@@ -1651,6 +1720,39 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           )}
         </p>
       </div>
+
+      {/* Modal Caméra pour Desktop */}
+      <Dialog open={showCameraModal} onOpenChange={setShowCameraModal}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Prendre une photo</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <canvas ref={canvasRef} className="hidden" />
+            <div className="flex gap-2 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setShowCameraModal(false)}
+              >
+                Annuler
+              </Button>
+              <Button onClick={capturePhoto}>
+                <Camera className="mr-2 h-4 w-4" />
+                Capturer
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
