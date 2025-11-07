@@ -118,3 +118,18 @@ verify_jwt = false
 
 [functions.analyze-food-image]
 verify_jwt = false
+
+[functions.analyze-document]
+verify_jwt = false
+
+[functions.generate-image]
+verify_jwt = false
+
+[functions.analyze-video]
+verify_jwt = false
+
+[functions.realtime-voice-token]
+verify_jwt = false
+
+[functions.send-contact-email]
+verify_jwt = false

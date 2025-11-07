@@ -70,8 +70,12 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const pdfInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recordedChunksRef = useRef<Blob[]>([]);
   const [showCameraModal, setShowCameraModal] = useState(false);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [cameraMode, setCameraMode] = useState<'photo' | 'video'>('photo');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -113,7 +117,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       }
     }
   };
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const voiceDetectionRef = useRef<any>(null);
@@ -549,6 +552,20 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const processTextInput = async (text: string) => {
     if (!text.trim()) return;
     
+    // Detect if user wants to generate an image
+    const imageGenerationKeywords = i18n.language === 'fr' 
+      ? ['génère', 'génerer', 'crée', 'créer', 'dessine', 'dessiner', 'fais', 'faire', 'image', 'photo', 'illustration']
+      : ['generate', 'create', 'draw', 'make', 'image', 'picture', 'illustration', 'photo'];
+    
+    const lowerText = text.toLowerCase();
+    const wantsImage = imageGenerationKeywords.some(keyword => lowerText.includes(keyword)) && 
+                       (lowerText.includes('image') || lowerText.includes('photo') || lowerText.includes('illustration'));
+    
+    if (wantsImage) {
+      await handleImageGeneration(text);
+      return;
+    }
+    
     setIsProcessing(true);
     
     // Create abort controller for this request
@@ -639,6 +656,208 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     } finally {
       setIsProcessing(false);
       setAbortController(null);
+    }
+  };
+
+  // Handle image generation
+  const handleImageGeneration = async (prompt: string) => {
+    setIsProcessing(true);
+    
+    const userMessageId = Date.now().toString();
+    const userMessage = {
+      id: userMessageId,
+      type: 'user' as const,
+      content: prompt,
+      timestamp: new Date(),
+      isAudio: false
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    setIsThinking(true);
+
+    try {
+      const response = await supabase.functions.invoke('generate-image', {
+        body: { 
+          prompt,
+          language: i18n.language === 'en' ? 'en' : 'fr'
+        }
+      });
+
+      setIsThinking(false);
+
+      if (response.error) {
+        throw new Error(response.error.message || 'Image generation failed');
+      }
+
+      const { imageUrl, description } = response.data;
+      
+      const aiMessageId = (Date.now() + 1).toString();
+      const aiMessage = {
+        id: aiMessageId,
+        type: 'assistant' as const,
+        content: `${description}\n\n![Generated Image](${imageUrl})`,
+        timestamp: new Date(),
+        isTyping: true
+      };
+      
+      setMessages(prev => [...prev, aiMessage]);
+
+      toast({
+        title: i18n.language === 'fr' ? "Image générée" : "Image generated",
+        description: i18n.language === 'fr' ? "Votre image a été créée avec succès" : "Your image has been created successfully"
+      });
+
+    } catch (error: any) {
+      console.error('Error generating image:', error);
+      setIsThinking(false);
+      
+      toast({
+        title: i18n.language === 'fr' ? "Erreur" : "Error",
+        description: error.message || (i18n.language === 'fr' ? "Impossible de générer l'image" : "Failed to generate image"),
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Start video recording
+  const startVideoRecording = () => {
+    if (!cameraStream) return;
+    
+    recordedChunksRef.current = [];
+    const mediaRecorder = new MediaRecorder(cameraStream, {
+      mimeType: 'video/webm;codecs=vp8,opus'
+    });
+    
+    mediaRecorderRef.current = mediaRecorder;
+    
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data && event.data.size > 0) {
+        recordedChunksRef.current.push(event.data);
+      }
+    };
+    
+    mediaRecorder.onstop = async () => {
+      const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
+      await handleVideoUpload(blob);
+      setShowCameraModal(false);
+    };
+    
+    mediaRecorder.start();
+    setIsRecording(true);
+    setRecordingTime(0);
+    
+    // Max 30 seconds recording
+    const interval = setInterval(() => {
+      setRecordingTime(prev => {
+        if (prev >= 30) {
+          stopVideoRecording();
+          clearInterval(interval);
+          return 30;
+        }
+        return prev + 1;
+      });
+    }, 1000);
+  };
+
+  // Stop video recording
+  const stopVideoRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      setRecordingTime(0);
+    }
+  };
+
+  // Handle video upload and analysis
+  const handleVideoUpload = async (videoBlob: Blob) => {
+    try {
+      setIsProcessing(true);
+      
+      const userMessageId = Date.now().toString();
+      const videoBase64 = await blobToBase64(videoBlob);
+      
+      setMessages(prev => [...prev, {
+        id: userMessageId,
+        type: 'user',
+        content: i18n.language === 'fr' ? '📹 Vidéo envoyée pour analyse' : '📹 Video sent for analysis',
+        timestamp: new Date(),
+        isAudio: false
+      }]);
+      
+      setIsThinking(true);
+      
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`
+        },
+        body: JSON.stringify({
+          videoBase64,
+          language: i18n.language === 'en' ? 'en' : 'fr'
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Video analysis failed');
+      }
+      
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let analysisText = '';
+      const aiMessageId = (Date.now() + 1).toString();
+      
+      setIsThinking(false);
+      setMessages(prev => [...prev, {
+        id: aiMessageId,
+        type: 'assistant',
+        content: '',
+        timestamp: new Date(),
+        isTyping: true
+      }]);
+      
+      while (reader) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                analysisText += content;
+                setMessages(prev => prev.map(msg =>
+                  msg.id === aiMessageId
+                    ? { ...msg, content: analysisText }
+                    : msg
+                ));
+              }
+            } catch (e) {
+              // Ignore parse errors
+            }
+          }
+        }
+      }
+      
+    } catch (error) {
+      console.error('Error analyzing video:', error);
+      setIsThinking(false);
+      toast({
+        title: i18n.language === 'fr' ? "Erreur" : "Error",
+        description: i18n.language === 'fr' ? "Impossible d'analyser la vidéo" : "Failed to analyze video",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -1722,12 +1941,48 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       </div>
 
       {/* Modal Caméra pour Desktop */}
-      <Dialog open={showCameraModal} onOpenChange={setShowCameraModal}>
+      <Dialog open={showCameraModal} onOpenChange={(open) => {
+        if (!open && isRecording) {
+          stopVideoRecording();
+        }
+        setShowCameraModal(open);
+      }}>
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Prendre une photo</DialogTitle>
+            <DialogTitle>
+              {cameraMode === 'photo' 
+                ? (i18n.language === 'fr' ? 'Prendre une photo' : 'Take a photo')
+                : (i18n.language === 'fr' ? 'Enregistrer une vidéo' : 'Record a video')
+              }
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            {/* Mode selector */}
+            <div className="flex gap-2 justify-center">
+              <Button
+                variant={cameraMode === 'photo' ? 'default' : 'outline'}
+                onClick={() => {
+                  setCameraMode('photo');
+                  if (isRecording) stopVideoRecording();
+                }}
+                className="flex-1"
+              >
+                <Camera className="mr-2 h-4 w-4" />
+                {i18n.language === 'fr' ? 'Photo' : 'Photo'}
+              </Button>
+              <Button
+                variant={cameraMode === 'video' ? 'default' : 'outline'}
+                onClick={() => {
+                  setCameraMode('video');
+                }}
+                className="flex-1"
+              >
+                <FileText className="mr-2 h-4 w-4" />
+                {i18n.language === 'fr' ? 'Vidéo' : 'Video'}
+              </Button>
+            </div>
+
+            {/* Video preview */}
             <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
               <video
                 ref={videoRef}
@@ -1736,19 +1991,58 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 muted
                 className="w-full h-full object-cover"
               />
+              {isRecording && (
+                <div className="absolute top-4 left-4 flex items-center gap-2 bg-red-500 text-white px-3 py-1.5 rounded-full">
+                  <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
+                  <span className="font-mono font-semibold">
+                    {Math.floor(recordingTime / 60)}:{(recordingTime % 60).toString().padStart(2, '0')} / 0:30
+                  </span>
+                </div>
+              )}
             </div>
             <canvas ref={canvasRef} className="hidden" />
+            
+            {/* Action buttons */}
             <div className="flex gap-2 justify-end">
               <Button
                 variant="outline"
-                onClick={() => setShowCameraModal(false)}
+                onClick={() => {
+                  if (isRecording) stopVideoRecording();
+                  setShowCameraModal(false);
+                }}
               >
-                Annuler
+                {i18n.language === 'fr' ? 'Annuler' : 'Cancel'}
               </Button>
-              <Button onClick={capturePhoto}>
-                <Camera className="mr-2 h-4 w-4" />
-                Capturer
-              </Button>
+              
+              {cameraMode === 'photo' ? (
+                <Button onClick={capturePhoto}>
+                  <Camera className="mr-2 h-4 w-4" />
+                  {i18n.language === 'fr' ? 'Capturer' : 'Capture'}
+                </Button>
+              ) : (
+                <Button 
+                  onClick={() => {
+                    if (isRecording) {
+                      stopVideoRecording();
+                    } else {
+                      startVideoRecording();
+                    }
+                  }}
+                  variant={isRecording ? 'destructive' : 'default'}
+                >
+                  {isRecording ? (
+                    <>
+                      <Square className="mr-2 h-4 w-4" />
+                      {i18n.language === 'fr' ? 'Arrêter' : 'Stop'}
+                    </>
+                  ) : (
+                    <>
+                      <Camera className="mr-2 h-4 w-4" />
+                      {i18n.language === 'fr' ? 'Enregistrer' : 'Record'}
+                    </>
+                  )}
+                </Button>
+              )}
             </div>
           </div>
         </DialogContent>
