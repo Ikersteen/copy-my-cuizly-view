@@ -158,6 +158,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }
   }, [isThinking]);
 
+  // Attach camera stream to video element
+  useEffect(() => {
+    if (cameraStream && videoRef.current && showCameraModal) {
+      videoRef.current.srcObject = cameraStream;
+      videoRef.current.play().catch(err => console.error('Error playing video:', err));
+    }
+  }, [cameraStream, showCameraModal]);
+
   // Handle realtime voice messages
   const handleRealtimeMessage = (event: any) => {
     console.log('Realtime event:', event);
@@ -817,7 +825,8 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   };
 
   // Camera functions
-  const openCamera = async () => {
+  const openCamera = async (mode: 'photo' | 'video') => {
+    setCameraMode(mode);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
     if (isMobile) {
@@ -827,15 +836,15 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       // On desktop, use getUserMedia
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { facingMode: 'user' },
-          audio: cameraMode === 'video' 
+          video: { 
+            facingMode: 'user',
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: mode === 'video' 
         });
         setCameraStream(stream);
         setShowCameraModal(true);
-        
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
       } catch (error) {
         console.error('Error accessing camera:', error);
         toast({
@@ -1911,20 +1920,14 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 sideOffset={8}
               >
                 <DropdownMenuItem 
-                  onClick={() => {
-                    setCameraMode('photo');
-                    openCamera();
-                  }}
+                  onClick={() => openCamera('photo')}
                   className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
                 >
                   <Camera className="mr-3 h-5 w-5" />
                   <span className="font-medium">{t('voiceChat.takePhoto') || 'Prendre une photo'}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
-                  onClick={() => {
-                    setCameraMode('video');
-                    openCamera();
-                  }}
+                  onClick={() => openCamera('video')}
                   className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
                 >
                   <Video className="mr-3 h-5 w-5" />
