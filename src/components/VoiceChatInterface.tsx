@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText, Video } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface Message {
   id: string;
@@ -59,9 +60,18 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<Array<{id: string, type: 'image' | 'document', data: string, name: string}>>([]);
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+  const [showCameraModal, setShowCameraModal] = useState(false);
+  const [cameraMode, setCameraMode] = useState<'photo' | 'video'>('photo');
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+  const [isRecordingVideo, setIsRecordingVideo] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const pdfInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoMediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const videoChunksRef = useRef<Blob[]>([]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -496,9 +506,89 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     }
   };
 
+  // Handle image generation
+  const handleImageGeneration = async (prompt: string) => {
+    setIsProcessing(true);
+    setIsThinking(true);
+
+    try {
+      const response = await supabase.functions.invoke('generate-image', {
+        body: { 
+          prompt,
+          language: i18n.language === 'en' ? 'en' : 'fr'
+        }
+      });
+
+      setIsThinking(false);
+
+      if (response.error || !response.data?.success) {
+        throw new Error('Image generation failed');
+      }
+
+      const imageBase64 = `data:image/png;base64,${response.data.imageBase64}`;
+      
+      const aiMessageId = Date.now().toString();
+      setMessages(prev => [...prev, {
+        id: aiMessageId,
+        type: 'assistant',
+        content: i18n.language === 'fr' ? '✨ Voici l\'image générée :' : '✨ Here is the generated image:',
+        timestamp: new Date(),
+        imageUrl: imageBase64,
+        isTyping: false
+      }]);
+
+      toast({
+        title: i18n.language === 'fr' ? 'Image générée' : 'Image generated',
+        description: i18n.language === 'fr' ? 'Votre image a été créée avec succès' : 'Your image has been created successfully',
+      });
+    } catch (error) {
+      console.error('Error generating image:', error);
+      setIsThinking(false);
+      toast({
+        title: t('errors.title'),
+        description: i18n.language === 'fr' ? 'Erreur lors de la génération de l\'image' : 'Error generating image',
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   // Process text input
   const processTextInput = async (text: string) => {
     if (!text.trim()) return;
+
+    // Detect image generation requests
+    const imageGenerationKeywords = [
+      'génère une image', 'génère moi une image', 'crée une image', 'crée moi une image',
+      'dessine', 'dessine moi', 'illustre', 'fais une image',
+      'generate an image', 'create an image', 'draw', 'illustrate', 'make an image'
+    ];
+
+    const isImageRequest = imageGenerationKeywords.some(keyword => 
+      text.toLowerCase().includes(keyword)
+    );
+
+    if (isImageRequest) {
+      // Extract the actual prompt by removing the trigger phrase
+      let prompt = text;
+      imageGenerationKeywords.forEach(keyword => {
+        prompt = prompt.replace(new RegExp(keyword, 'gi'), '').trim();
+      });
+      
+      // Add user message
+      const userMessageId = Date.now().toString();
+      setMessages(prev => [...prev, {
+        id: userMessageId,
+        type: 'user',
+        content: text,
+        timestamp: new Date(),
+        isAudio: false
+      }]);
+
+      await handleImageGeneration(prompt || text);
+      return;
+    }
     
     setIsProcessing(true);
     
@@ -725,6 +815,266 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
       handleTextSubmit(e);
     }
   };
+
+  // Camera functions
+  const openCamera = async () => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // On mobile, use native file input with camera
+      cameraInputRef.current?.click();
+    } else {
+      // On desktop, use getUserMedia
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: 'user' },
+          audio: cameraMode === 'video' 
+        });
+        setCameraStream(stream);
+        setShowCameraModal(true);
+        
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+        toast({
+          title: t('errors.title'),
+          description: i18n.language === 'fr' ? 'Impossible d\'accéder à la caméra' : 'Cannot access camera',
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const closeCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      setCameraStream(null);
+    }
+    if (videoMediaRecorderRef.current && isRecordingVideo) {
+      videoMediaRecorderRef.current.stop();
+    }
+    setShowCameraModal(false);
+    setIsRecordingVideo(false);
+    setRecordingTime(0);
+  };
+
+  const capturePhoto = async () => {
+    if (!videoRef.current || !canvasRef.current) return;
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    ctx.drawImage(video, 0, 0);
+    
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const imageData = e.target?.result as string;
+        const compressedImage = await compressImage(imageData);
+        
+        const newFile = {
+          id: Date.now().toString() + Math.random(),
+          type: 'image' as const,
+          data: compressedImage,
+          name: `photo_${Date.now()}.jpg`
+        };
+        
+        setSelectedFiles(prev => [...prev, newFile]);
+        closeCamera();
+        
+        toast({
+          description: i18n.language === 'fr' ? 'Photo capturée' : 'Photo captured',
+        });
+      };
+      reader.readAsDataURL(blob);
+    }, 'image/jpeg', 0.8);
+  };
+
+  const startVideoRecording = () => {
+    if (!cameraStream) return;
+
+    try {
+      const mediaRecorder = new MediaRecorder(cameraStream, {
+        mimeType: 'video/webm;codecs=vp9'
+      });
+      
+      videoChunksRef.current = [];
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          videoChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const videoBlob = new Blob(videoChunksRef.current, { type: 'video/webm' });
+        await handleVideoUpload(videoBlob);
+      };
+
+      mediaRecorder.start();
+      videoMediaRecorderRef.current = mediaRecorder;
+      setIsRecordingVideo(true);
+      setRecordingTime(0);
+
+      // Auto-stop after 30 seconds
+      const recordingInterval = setInterval(() => {
+        setRecordingTime(prev => {
+          if (prev >= 29) {
+            stopVideoRecording();
+            clearInterval(recordingInterval);
+            return 30;
+          }
+          return prev + 1;
+        });
+      }, 1000);
+
+    } catch (error) {
+      console.error('Error starting video recording:', error);
+      toast({
+        title: t('errors.title'),
+        description: i18n.language === 'fr' ? 'Erreur lors du démarrage de l\'enregistrement' : 'Error starting recording',
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopVideoRecording = () => {
+    if (videoMediaRecorderRef.current && isRecordingVideo) {
+      videoMediaRecorderRef.current.stop();
+      setIsRecordingVideo(false);
+    }
+  };
+
+  const handleVideoUpload = async (videoBlob: Blob) => {
+    closeCamera();
+    setIsProcessing(true);
+    setIsThinking(true);
+
+    try {
+      // Convert video to base64
+      const videoBase64 = await blobToBase64(videoBlob);
+      const base64Data = videoBase64.split(',')[1];
+
+      // Add user message with video
+      const userMessageId = Date.now().toString();
+      setMessages(prev => [...prev, {
+        id: userMessageId,
+        type: 'user',
+        content: i18n.language === 'fr' ? '📹 Vidéo envoyée' : '📹 Video sent',
+        timestamp: new Date(),
+        isAudio: false
+      }]);
+
+      // Stream the AI response
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-video`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({
+            videoBase64: base64Data,
+            userMessage: '',
+            language: i18n.language === 'en' ? 'en' : 'fr'
+          })
+        }
+      );
+
+      setIsThinking(false);
+
+      if (!response.ok || !response.body) {
+        throw new Error('Failed to analyze video');
+      }
+
+      const aiMessageId = (Date.now() + 1).toString();
+      let fullResponse = '';
+
+      setMessages(prev => [...prev, {
+        id: aiMessageId,
+        type: 'assistant',
+        content: '',
+        timestamp: new Date(),
+        isTyping: true
+      }]);
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                fullResponse += content;
+                setMessages(prev => prev.map(msg =>
+                  msg.id === aiMessageId
+                    ? { ...msg, content: fullResponse }
+                    : msg
+                ));
+              }
+            } catch (e) {
+              // Ignore parsing errors
+            }
+          }
+        }
+      }
+
+      setMessages(prev => prev.map(msg =>
+        msg.id === aiMessageId
+          ? { ...msg, isTyping: false }
+          : msg
+      ));
+
+    } catch (error) {
+      console.error('Error analyzing video:', error);
+      setIsThinking(false);
+      toast({
+        title: t('errors.title'),
+        description: i18n.language === 'fr' ? 'Erreur lors de l\'analyse de la vidéo' : 'Error analyzing video',
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Recording timer effect
+  useEffect(() => {
+    if (isRecordingVideo && recordingTime >= 30) {
+      stopVideoRecording();
+    }
+  }, [recordingTime, isRecordingVideo]);
+
+  // Cleanup camera stream on unmount
+  useEffect(() => {
+    return () => {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [cameraStream]);
 
   // Check if any message is currently typing
   const hasTypingMessage = messages.some(msg => msg.isTyping);
@@ -1562,13 +1912,23 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               >
                 <DropdownMenuItem 
                   onClick={() => {
-                    console.log('Camera option clicked');
-                    cameraInputRef.current?.click();
+                    setCameraMode('photo');
+                    openCamera();
                   }}
                   className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
                 >
                   <Camera className="mr-3 h-5 w-5" />
                   <span className="font-medium">{t('voiceChat.takePhoto') || 'Prendre une photo'}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => {
+                    setCameraMode('video');
+                    openCamera();
+                  }}
+                  className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
+                >
+                  <Video className="mr-3 h-5 w-5" />
+                  <span className="font-medium">{i18n.language === 'fr' ? 'Enregistrer une vidéo' : 'Record a video'}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => {
@@ -1651,6 +2011,70 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
           )}
         </p>
       </div>
+
+      {/* Camera Modal */}
+      <Dialog open={showCameraModal} onOpenChange={(open) => !open && closeCamera()}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>
+              {cameraMode === 'photo' 
+                ? (i18n.language === 'fr' ? 'Prendre une photo' : 'Take a photo')
+                : (i18n.language === 'fr' ? 'Enregistrer une vidéo' : 'Record a video')
+              }
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                className="w-full h-full object-cover"
+              />
+              {isRecordingVideo && (
+                <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full flex items-center gap-2">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                  <span className="font-mono text-sm">{recordingTime}s / 30s</span>
+                </div>
+              )}
+            </div>
+
+            <canvas ref={canvasRef} className="hidden" />
+
+            <div className="flex gap-3 justify-center">
+              <Button
+                variant="outline"
+                onClick={closeCamera}
+              >
+                {i18n.language === 'fr' ? 'Annuler' : 'Cancel'}
+              </Button>
+
+              {cameraMode === 'photo' ? (
+                <Button onClick={capturePhoto}>
+                  <Camera className="w-4 h-4 mr-2" />
+                  {i18n.language === 'fr' ? 'Capturer' : 'Capture'}
+                </Button>
+              ) : (
+                <>
+                  {!isRecordingVideo ? (
+                    <Button onClick={startVideoRecording}>
+                      <Video className="w-4 h-4 mr-2" />
+                      {i18n.language === 'fr' ? 'Démarrer' : 'Start'}
+                    </Button>
+                  ) : (
+                    <Button onClick={stopVideoRecording} variant="destructive">
+                      <Square className="w-4 h-4 mr-2" />
+                      {i18n.language === 'fr' ? 'Arrêter' : 'Stop'}
+                    </Button>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
