@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -16,53 +16,41 @@ serve(async (req) => {
   try {
     const { prompt, language } = await req.json();
     
-    console.log('Generating image with Lovable AI (Nano banana) for prompt:', prompt);
+    console.log('Generating image with OpenAI gpt-image-1 for prompt:', prompt);
 
     // Enhance the prompt for better results
     const enhancedPrompt = language === 'en' 
-      ? `${prompt}. Ultra high resolution, photorealistic, professional quality, high detail, vivid colors, perfect lighting.`
-      : `${prompt}. Ultra haute résolution, photoréaliste, qualité professionnelle, haute définition, couleurs vives, éclairage parfait.`;
+      ? `Ultra high resolution, photorealistic, professional quality: ${prompt}. High detail, vivid colors, perfect lighting, 8K quality.`
+      : `Ultra haute résolution, photoréaliste, qualité professionnelle: ${prompt}. Haute définition, couleurs vives, éclairage parfait, qualité 8K.`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-image-preview',
-        messages: [
-          {
-            role: 'user',
-            content: enhancedPrompt
-          }
-        ],
-        modalities: ['image', 'text']
+        model: 'gpt-image-1',
+        prompt: enhancedPrompt,
+        n: 1,
+        size: '1024x1024',
+        quality: 'high',
+        response_format: 'b64_json'
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Lovable AI error:', response.status, errorText);
-      throw new Error(`AI API error: ${response.status}`);
+      console.error('OpenAI API error:', response.status, errorText);
+      throw new Error(`OpenAI API error: ${response.status}`);
     }
 
     const data = await response.json();
     console.log('Image generated successfully');
 
-    // Extract the base64 image from the response
-    const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-    
-    if (!imageUrl) {
-      throw new Error('No image returned from API');
-    }
-
-    // Remove the "data:image/png;base64," prefix if present
-    const imageBase64 = imageUrl.replace(/^data:image\/[^;]+;base64,/, '');
-
     return new Response(
       JSON.stringify({ 
-        imageBase64,
+        imageBase64: data.data[0].b64_json,
         success: true 
       }), 
       {
