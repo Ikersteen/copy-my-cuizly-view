@@ -148,6 +148,13 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [messages, isThinking, isSpeaking]);
 
+  // Attach camera stream to video element
+  useEffect(() => {
+    if (cameraStream && videoRef.current) {
+      videoRef.current.srcObject = cameraStream;
+    }
+  }, [cameraStream]);
+
   // Scroll automatique vers l'indicateur de réflexion
   useEffect(() => {
     if (isThinking && thinkingIndicatorRef.current) {
@@ -828,32 +835,26 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   const openCamera = async () => {
     // Always start with photo mode
     setCameraMode('photo');
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
-    if (isMobile) {
-      // On mobile, use native file input with camera
-      cameraInputRef.current?.click();
-    } else {
-      // On desktop, use getUserMedia
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { 
-            facingMode: 'user',
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          },
-          audio: true  // Always request audio for video capability
-        });
-        setCameraStream(stream);
-        setShowCameraModal(true);
-      } catch (error) {
-        console.error('Error accessing camera:', error);
-        toast({
-          title: t('errors.title'),
-          description: i18n.language === 'fr' ? 'Impossible d\'accéder à la caméra' : 'Cannot access camera',
-          variant: "destructive",
-        });
-      }
+    // Use getUserMedia on all platforms for consistent experience
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          facingMode: 'user',
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        },
+        audio: true  // Always request audio for video capability
+      });
+      setCameraStream(stream);
+      setShowCameraModal(true);
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      toast({
+        title: t('errors.title'),
+        description: i18n.language === 'fr' ? 'Impossible d\'accéder à la caméra' : 'Cannot access camera',
+        variant: "destructive",
+      });
     }
   };
 
