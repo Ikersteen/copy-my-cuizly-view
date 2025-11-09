@@ -825,8 +825,9 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
   };
 
   // Camera functions
-  const openCamera = async (mode: 'photo' | 'video') => {
-    setCameraMode(mode);
+  const openCamera = async () => {
+    // Always start with photo mode
+    setCameraMode('photo');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
     if (isMobile) {
@@ -841,7 +842,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
             width: { ideal: 1280 },
             height: { ideal: 720 }
           },
-          audio: mode === 'video' 
+          audio: true  // Always request audio for video capability
         });
         setCameraStream(stream);
         setShowCameraModal(true);
@@ -1902,7 +1903,7 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               className="hidden"
             />
             
-            {/* Dropdown menu for image upload options */}
+            {/* Dropdown menu for upload options */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -1920,18 +1921,11 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
                 sideOffset={8}
               >
                 <DropdownMenuItem 
-                  onClick={() => openCamera('photo')}
+                  onClick={openCamera}
                   className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
                 >
                   <Camera className="mr-3 h-5 w-5" />
-                  <span className="font-medium">{t('voiceChat.takePhoto') || 'Prendre une photo'}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => openCamera('video')}
-                  className="rounded-lg px-4 py-3 cursor-pointer hover:bg-accent transition-colors"
-                >
-                  <Video className="mr-3 h-5 w-5" />
-                  <span className="font-medium">{i18n.language === 'fr' ? 'Enregistrer une vidéo' : 'Record a video'}</span>
+                  <span className="font-medium">{i18n.language === 'fr' ? 'Caméra' : 'Camera'}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => {
@@ -2020,14 +2014,31 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
-              {cameraMode === 'photo' 
-                ? (i18n.language === 'fr' ? 'Prendre une photo' : 'Take a photo')
-                : (i18n.language === 'fr' ? 'Enregistrer une vidéo' : 'Record a video')
-              }
+              {i18n.language === 'fr' ? 'Caméra' : 'Camera'}
             </DialogTitle>
           </DialogHeader>
           
           <div className="space-y-4">
+            {/* Mode toggle buttons */}
+            <div className="flex gap-2 justify-center">
+              <Button
+                variant={cameraMode === 'photo' ? 'default' : 'outline'}
+                onClick={() => setCameraMode('photo')}
+                className="flex-1"
+              >
+                <Camera className="w-4 h-4 mr-2" />
+                {i18n.language === 'fr' ? 'Photo' : 'Photo'}
+              </Button>
+              <Button
+                variant={cameraMode === 'video' ? 'default' : 'outline'}
+                onClick={() => setCameraMode('video')}
+                className="flex-1"
+              >
+                <Video className="w-4 h-4 mr-2" />
+                {i18n.language === 'fr' ? 'Vidéo' : 'Video'}
+              </Button>
+            </div>
+
             <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
               <video
                 ref={videoRef}
