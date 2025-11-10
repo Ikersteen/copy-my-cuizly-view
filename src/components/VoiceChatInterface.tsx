@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText, Video, Mic } from 'lucide-react';
+import { Sparkles, MicOff, Volume2, VolumeX, Brain, ChefHat, User as UserIcon, Send, Keyboard, Square, ArrowDown, Plus, Image as ImageIcon, Camera, ThumbsUp, ThumbsDown, Copy, Bookmark, FileText, Video } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -1970,14 +1970,6 @@ const VoiceChatInterface: React.FC<VoiceChatInterfaceProps> = ({ onClose }) => {
               maxRows={5}
               className="flex-1 rounded-3xl outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 resize-none py-2.5 px-3 border border-input bg-white md:bg-background text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 transition-none"
             />
-            <Button
-              type="button"
-              onClick={() => isConversationActive ? stopConversation() : startConversation()}
-              variant="outline"
-              className={`rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0 transition-all ${isConversationActive ? 'bg-red-500 hover:bg-red-600 border-red-500' : ''}`}
-            >
-              <Mic className={`w-4 h-4 ${isConversationActive ? 'text-white animate-pulse' : ''}`} />
-            </Button>
             <Button
               type={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? "button" : "submit"}
               onClick={(isProcessing || isThinking || isSpeaking || hasTypingMessage) ? stopGeneration : undefined}
