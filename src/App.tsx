@@ -9,7 +9,6 @@ import i18n from "@/lib/i18n";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 import CookieBanner from "@/components/CookieBanner";
-import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 
 import Index from "./pages/Index";
 import VoiceChat from "./pages/VoiceChat";
@@ -141,7 +140,6 @@ const App = () => (
         <BrowserRouter>
           <AppContent />
           <CookieBanner />
-          <PWAInstallPrompt />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
