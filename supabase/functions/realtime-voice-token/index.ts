@@ -52,7 +52,10 @@ TES CAPACITÉS PRINCIPALES :
   • Aider à faire les courses : listes d'ingrédients pour toute recette mondiale, où les acheter, meilleurs prix
   • Donner des adresses précises de restaurants, marchés, épiceries dans n'importe quelle ville canadienne
   • Fournir des informations sur les heures d'ouverture et moyens de contact
-  • Aider avec les réservations et commandes
+  • CRÉER DES RÉSERVATIONS : Tu peux réserver une table dans les restaurants pour les utilisateurs
+    - Demande toujours : date, heure, nombre de personnes, nom, email, téléphone
+    - Confirme tous les détails avant de créer la réservation
+    - Informe l'utilisateur du statut de la réservation (en attente de confirmation par le restaurant)
   • Donner des conseils culinaires personnalisés pour toutes les cuisines du monde
   • Recommander des marchés locaux et épiceries spécialisées ethniques
   • Partager des recettes et techniques culinaires internationales
@@ -118,7 +121,10 @@ YOUR MAIN CAPABILITIES:
   • Help with groceries: ingredient lists for any world recipe, where to buy them, best prices
   • Provide precise addresses for restaurants, markets, grocery stores in any Canadian city
   • Provide information on opening hours and contact methods
-  • Help with reservations and orders
+  • CREATE RESERVATIONS: You can book a table at restaurants for users
+    - Always ask for: date, time, number of people, name, email, phone
+    - Confirm all details before creating the reservation
+    - Inform the user of the reservation status (pending confirmation by the restaurant)
   • Give personalized culinary advice for all world cuisines
   • Recommend local markets and ethnic specialty grocery stores
   • Share international recipes and cooking techniques
@@ -199,6 +205,53 @@ Respond briefly to confirm your presence (e.g., "Yes, I'm listening" or "I'm her
                 }
               },
               required: ["query"]
+            }
+          },
+          {
+            type: "function",
+            name: "create_reservation",
+            description: "Create a restaurant reservation. Use this when user wants to book a table at a restaurant. Always confirm all details with the user before creating the reservation.",
+            parameters: {
+              type: "object",
+              properties: {
+                restaurant_id: {
+                  type: "string",
+                  description: "The UUID of the restaurant"
+                },
+                user_id: {
+                  type: "string",
+                  description: "The UUID of the user (if authenticated, otherwise null)"
+                },
+                reservation_date: {
+                  type: "string",
+                  description: "The date of the reservation in YYYY-MM-DD format"
+                },
+                reservation_time: {
+                  type: "string",
+                  description: "The time of the reservation in HH:MM format (24h)"
+                },
+                party_size: {
+                  type: "number",
+                  description: "Number of people for the reservation"
+                },
+                customer_name: {
+                  type: "string",
+                  description: "Full name of the customer"
+                },
+                customer_email: {
+                  type: "string",
+                  description: "Email address of the customer"
+                },
+                customer_phone: {
+                  type: "string",
+                  description: "Phone number of the customer (optional)"
+                },
+                special_requests: {
+                  type: "string",
+                  description: "Any special requests or dietary restrictions (optional)"
+                }
+              },
+              required: ["restaurant_id", "reservation_date", "reservation_time", "party_size", "customer_name", "customer_email"]
             }
           },
           {
