@@ -124,3 +124,9 @@ verify_jwt = false
 
 [functions.analyze-video]
 verify_jwt = false
+
+[functions.create-reservation]
+verify_jwt = false
+
+[functions.realtime-voice-token]
+verify_jwt = false
